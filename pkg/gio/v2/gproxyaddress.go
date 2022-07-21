@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeProxyAddress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ProxyAddress").RegisteredGType())
+	gtype := coreglib.Type(C.g_proxy_address_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalProxyAddress)
 	return gtype
 }
@@ -88,28 +86,32 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 //    - proxyAddress: new Address.
 //
 func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname string, destPort uint16, username, password string) *ProxyAddress {
-	var _args [7]girepository.Argument
+	var _arg1 *C.GInetAddress   // out
+	var _arg2 C.guint16         // out
+	var _arg3 *C.gchar          // out
+	var _arg4 *C.gchar          // out
+	var _arg5 C.guint16         // out
+	var _arg6 *C.gchar          // out
+	var _arg7 *C.gchar          // out
+	var _cret *C.GSocketAddress // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(inetaddr).Native()))
-	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(port)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(destHostname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
-	*(*C.guint16)(unsafe.Pointer(&_args[4])) = C.guint16(destPort)
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(inetaddr).Native()))
+	_arg2 = C.guint16(port)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(destHostname)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = C.guint16(destPort)
 	if username != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[5])) = (*C.gchar)(unsafe.Pointer(C.CString(username)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[5]))))
+		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(username)))
+		defer C.free(unsafe.Pointer(_arg6))
 	}
 	if password != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[6])) = (*C.gchar)(unsafe.Pointer(C.CString(password)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[6]))))
+		_arg7 = (*C.gchar)(unsafe.Pointer(C.CString(password)))
+		defer C.free(unsafe.Pointer(_arg7))
 	}
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("new_ProxyAddress", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 	runtime.KeepAlive(inetaddr)
 	runtime.KeepAlive(port)
 	runtime.KeepAlive(protocol)
@@ -120,7 +122,7 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 
 	var _proxyAddress *ProxyAddress // out
 
-	_proxyAddress = wrapProxyAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_proxyAddress = wrapProxyAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _proxyAddress
 }
@@ -134,19 +136,17 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 //    - utf8 proxy's destination hostname.
 //
 func (proxy *ProxyAddress) DestinationHostname() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_destination_hostname", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_destination_hostname(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -160,19 +160,17 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 //    - guint16 proxy's destination port.
 //
 func (proxy *ProxyAddress) DestinationPort() uint16 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret C.guint16        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_destination_port", _args[:], nil)
-	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_destination_port(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -185,19 +183,17 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 //    - utf8 proxy's destination protocol.
 //
 func (proxy *ProxyAddress) DestinationProtocol() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_destination_protocol", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_destination_protocol(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -209,20 +205,18 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 //    - utf8 (optional) proxy's password.
 //
 func (proxy *ProxyAddress) Password() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_password", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_password(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -235,19 +229,17 @@ func (proxy *ProxyAddress) Password() string {
 //    - utf8 proxy's protocol.
 //
 func (proxy *ProxyAddress) Protocol() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_protocol", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_protocol(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -259,20 +251,18 @@ func (proxy *ProxyAddress) Protocol() string {
 //    - utf8 (optional) proxy's URI, or NULL if unknown.
 //
 func (proxy *ProxyAddress) URI() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_uri", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_uri(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -285,20 +275,18 @@ func (proxy *ProxyAddress) URI() string {
 //    - utf8 (optional) proxy's username.
 //
 func (proxy *ProxyAddress) Username() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyAddress")
-	_gret := _info.InvokeClassMethod("get_username", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_address_get_username(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8

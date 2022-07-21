@@ -7,14 +7,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeBidiType returns the GType for the type BidiType.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBidiType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "BidiType").RegisteredGType())
+	gtype := coreglib.Type(C.pango_bidi_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBidiType)
 	return gtype
 }
@@ -127,6 +125,70 @@ func (b BidiType) String() string {
 	}
 }
 
+// BidiTypeForUnichar determines the bidirectional type of a character.
+//
+// The bidirectional type is specified in the Unicode Character Database.
+//
+// A simplified version of this function is available as unichar_direction.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
+// The function returns the following values:
+//
+//    - bidiType: bidirectional character type, as used in the Unicode
+//      bidirectional algorithm.
+//
+func BidiTypeForUnichar(ch uint32) BidiType {
+	var _arg1 C.gunichar      // out
+	var _cret C.PangoBidiType // in
+
+	_arg1 = C.gunichar(ch)
+
+	_cret = C.pango_bidi_type_for_unichar(_arg1)
+	runtime.KeepAlive(ch)
+
+	var _bidiType BidiType // out
+
+	_bidiType = BidiType(_cret)
+
+	return _bidiType
+}
+
+// FindBaseDir searches a string the first character that has a strong
+// direction, according to the Unicode bidirectional algorithm.
+//
+// The function takes the following parameters:
+//
+//    - text to process. Must be valid UTF-8.
+//    - length of text in bytes (may be -1 if text is nul-terminated).
+//
+// The function returns the following values:
+//
+//    - direction corresponding to the first strong character. If no such
+//      character is found, then PANGO_DIRECTION_NEUTRAL is returned.
+//
+func FindBaseDir(text string, length int32) Direction {
+	var _arg1 *C.gchar         // out
+	var _arg2 C.gint           // out
+	var _cret C.PangoDirection // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(length)
+
+	_cret = C.pango_find_base_dir(_arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(length)
+
+	var _direction Direction // out
+
+	_direction = Direction(_cret)
+
+	return _direction
+}
+
 // GetMirrorChar returns the mirrored character of a Unicode character.
 //
 // Mirror characters are determined by the Unicode mirrored property.
@@ -145,23 +207,55 @@ func (b BidiType) String() string {
 //      FALSE otherwise.
 //
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
-	var _args [2]girepository.Argument
+	var _arg1 C.gunichar  // out
+	var _arg2 *C.gunichar // out
+	var _cret C.gboolean  // in
 
-	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(ch)
-	*(**C.gunichar)(unsafe.Pointer(&_args[1])) = (*C.gunichar)(unsafe.Pointer(mirroredCh))
+	_arg1 = C.gunichar(ch)
+	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
 
-	_info := girepository.MustFind("Pango", "get_mirror_char")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_get_mirror_char(_arg1, _arg2)
 	runtime.KeepAlive(ch)
 	runtime.KeepAlive(mirroredCh)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// UnicharDirection determines the inherent direction of a character.
+//
+// The inherent direction is either PANGO_DIRECTION_LTR, PANGO_DIRECTION_RTL, or
+// PANGO_DIRECTION_NEUTRAL.
+//
+// This function is useful to categorize characters into left-to-right letters,
+// right-to-left letters, and everything else. If full Unicode bidirectional
+// type of a character is needed, pango.BidiType.ForUnichar can be used instead.
+//
+// The function takes the following parameters:
+//
+//    - ch: unicode character.
+//
+// The function returns the following values:
+//
+//    - direction of the character.
+//
+func UnicharDirection(ch uint32) Direction {
+	var _arg1 C.gunichar       // out
+	var _cret C.PangoDirection // in
+
+	_arg1 = C.gunichar(ch)
+
+	_cret = C.pango_unichar_direction(_arg1)
+	runtime.KeepAlive(ch)
+
+	var _direction Direction // out
+
+	_direction = Direction(_cret)
+
+	return _direction
 }

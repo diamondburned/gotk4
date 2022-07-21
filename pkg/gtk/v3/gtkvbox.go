@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeVBox returns the GType for the type VBox.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeVBox() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "VBox").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_vbox_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalVBox)
 	return gtype
 }
@@ -119,23 +119,22 @@ func marshalVBox(p uintptr) (interface{}, error) {
 //    - vBox: new VBox.
 //
 func NewVBox(homogeneous bool, spacing int32) *VBox {
-	var _args [2]girepository.Argument
+	var _arg1 C.gboolean   // out
+	var _arg2 C.gint       // out
+	var _cret *C.GtkWidget // in
 
 	if homogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
+		_arg1 = C.TRUE
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
+	_arg2 = C.gint(spacing)
 
-	_info := girepository.MustFind("Gtk", "VBox")
-	_gret := _info.InvokeClassMethod("new_VBox", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_vbox_new(_arg1, _arg2)
 	runtime.KeepAlive(homogeneous)
 	runtime.KeepAlive(spacing)
 
 	var _vBox *VBox // out
 
-	_vBox = wrapVBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_vBox = wrapVBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vBox
 }

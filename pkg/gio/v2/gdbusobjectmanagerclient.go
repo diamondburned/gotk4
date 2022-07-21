@@ -3,24 +3,27 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(void*, void*, void*, gchar*, gchar*, GVariant*);
-// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(gpointer, void*, void*, GVariant*, gchar**, guintptr);
-// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, void*, void*, gchar*, gchar*, GVariant*, guintptr);
+// extern GType _gotk4_gio2_DBusProxyTypeFunc(GDBusObjectManagerClient*, gchar*, gchar*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(GDBusObjectManagerClient*, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*);
+// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(gpointer, GDBusObjectProxy*, GDBusProxy*, GVariant*, gchar**, guintptr);
+// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*, guintptr);
+// extern void callbackDelete(gpointer);
 import "C"
 
 // GTypeDBusObjectManagerClient returns the GType for the type DBusObjectManagerClient.
@@ -29,7 +32,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusObjectManagerClient() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManagerClient").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_object_manager_client_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManagerClient)
 	return gtype
 }
@@ -130,18 +133,17 @@ func classInitDBusObjectManagerClienter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "DBusObjectManagerClientClass")
+	pclass := (*C.GDBusObjectManagerClientClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 	}); ok {
-		o := pclass.StructFieldOffset("interface_proxy_signal")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal)
+		pclass.interface_proxy_signal = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal)
 	}
 }
 
 //export _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal
-func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant) {
+func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.GDBusObjectManagerClient, arg1 *C.GDBusObjectProxy, arg2 *C.GDBusProxy, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
@@ -189,7 +191,7 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged
-func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.GVariant, arg4 **C.gchar, arg5 C.guintptr) {
+func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(arg0 C.gpointer, arg1 *C.GDBusObjectProxy, arg2 *C.GDBusProxy, arg3 *C.GVariant, arg4 **C.gchar, arg5 C.guintptr) {
 	var f func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
@@ -249,7 +251,7 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f
 }
 
 //export _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal
-func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.guintptr) {
+func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpointer, arg1 *C.GDBusObjectProxy, arg2 *C.GDBusProxy, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.guintptr) {
 	var f func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg6))
@@ -309,22 +311,21 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objec
 //      is set. Free with g_object_unref().
 //
 func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GAsyncResult       // out
+	var _cret *C.GDBusObjectManager // in
+	var _cerr *C.GError             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
-	_gret := _info.InvokeClassMethod("new_DBusObjectManagerClient_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_client_new_finish(_arg1, &_cerr)
 	runtime.KeepAlive(res)
 
 	var _dBusObjectManagerClient *DBusObjectManagerClient // out
 	var _goerr error                                      // out
 
-	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _dBusObjectManagerClient, _goerr
@@ -344,22 +345,166 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 //      is set. Free with g_object_unref().
 //
 func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GAsyncResult       // out
+	var _cret *C.GDBusObjectManager // in
+	var _cerr *C.GError             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
-	_gret := _info.InvokeClassMethod("new_DBusObjectManagerClient_for_bus_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_client_new_for_bus_finish(_arg1, &_cerr)
 	runtime.KeepAlive(res)
 
 	var _dBusObjectManagerClient *DBusObjectManagerClient // out
 	var _goerr error                                      // out
 
-	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _dBusObjectManagerClient, _goerr
+}
+
+// NewDBusObjectManagerClientForBusSync: like
+// g_dbus_object_manager_client_new_sync() but takes a Type instead of a
+// BusConnection.
+//
+// This is a synchronous failable constructor - the calling thread is blocked
+// until a reply is received. See g_dbus_object_manager_client_new_for_bus() for
+// the asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - busType: Type.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//      enumeration.
+//    - name: owner of the control object (unique or well-known name).
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
+//      is set. Free with g_object_unref().
+//
+func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
+	var _arg8 *C.GCancellable                 // out
+	var _arg1 C.GBusType                      // out
+	var _arg2 C.GDBusObjectManagerClientFlags // out
+	var _arg3 *C.gchar                        // out
+	var _arg4 *C.gchar                        // out
+	var _arg5 C.GDBusProxyTypeFunc            // out
+	var _arg6 C.gpointer
+	var _arg7 C.GDestroyNotify
+	var _cret *C.GDBusObjectManager // in
+	var _cerr *C.GError             // in
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg8 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GBusType(busType)
+	_arg2 = C.GDBusObjectManagerClientFlags(flags)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg4))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	_cret = C.g_dbus_object_manager_client_new_for_bus_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, &_cerr)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(getProxyTypeFunc)
+
+	var _dBusObjectManagerClient *DBusObjectManagerClient // out
+	var _goerr error                                      // out
+
+	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _dBusObjectManagerClient, _goerr
+}
+
+// NewDBusObjectManagerClientSync creates a new BusObjectManagerClient object.
+//
+// This is a synchronous failable constructor - the calling thread is blocked
+// until a reply is received. See g_dbus_object_manager_client_new() for the
+// asynchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - connection: BusConnection.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//      enumeration.
+//    - name (optional): owner of the control object (unique or well-known name),
+//      or NULL when not using a message bus connection.
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
+//      is set. Free with g_object_unref().
+//
+func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
+	var _arg8 *C.GCancellable                 // out
+	var _arg1 *C.GDBusConnection              // out
+	var _arg2 C.GDBusObjectManagerClientFlags // out
+	var _arg3 *C.gchar                        // out
+	var _arg4 *C.gchar                        // out
+	var _arg5 C.GDBusProxyTypeFunc            // out
+	var _arg6 C.gpointer
+	var _arg7 C.GDestroyNotify
+	var _cret *C.GDBusObjectManager // in
+	var _cerr *C.GError             // in
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg8 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = C.GDBusObjectManagerClientFlags(flags)
+	if name != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg4))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	_cret = C.g_dbus_object_manager_client_new_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, &_cerr)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(getProxyTypeFunc)
+
+	var _dBusObjectManagerClient *DBusObjectManagerClient // out
+	var _goerr error                                      // out
+
+	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _dBusObjectManagerClient, _goerr
@@ -372,21 +517,42 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 //    - dBusConnection object. Do not free, the object belongs to manager.
 //
 func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerClient // out
+	var _cret *C.GDBusConnection          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
-	_gret := _info.InvokeClassMethod("get_connection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_client_get_connection(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
+}
+
+// Flags gets the flags that manager was constructed with.
+//
+// The function returns the following values:
+//
+//    - dBusObjectManagerClientFlags: zero of more flags from the
+//      BusObjectManagerClientFlags enumeration.
+//
+func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
+	var _arg0 *C.GDBusObjectManagerClient     // out
+	var _cret C.GDBusObjectManagerClientFlags // in
+
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	_cret = C.g_dbus_object_manager_client_get_flags(_arg0)
+	runtime.KeepAlive(manager)
+
+	var _dBusObjectManagerClientFlags DBusObjectManagerClientFlags // out
+
+	_dBusObjectManagerClientFlags = DBusObjectManagerClientFlags(_cret)
+
+	return _dBusObjectManagerClientFlags
 }
 
 // Name gets the name that manager is for, or NULL if not a message bus
@@ -398,19 +564,17 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 //      manager.
 //
 func (manager *DBusObjectManagerClient) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerClient // out
+	var _cret *C.gchar                    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
-	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_client_get_name(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -425,22 +589,150 @@ func (manager *DBusObjectManagerClient) Name() string {
 //      g_free().
 //
 func (manager *DBusObjectManagerClient) NameOwner() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerClient // out
+	var _cret *C.gchar                    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
-	_gret := _info.InvokeClassMethod("get_name_owner", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
+}
+
+// NewDBusObjectManagerClient: asynchronously creates a new
+// BusObjectManagerClient object.
+//
+// This is an asynchronous failable constructor. When the result is ready,
+// callback will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_object_manager_client_new_finish()
+// to get the result. See g_dbus_object_manager_client_new_sync() for the
+// synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - connection: BusConnection.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//      enumeration.
+//    - name: owner of the control object (unique or well-known name).
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//    - callback (optional) to call when the request is satisfied.
+//
+func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
+	var _arg8 *C.GCancellable                 // out
+	var _arg1 *C.GDBusConnection              // out
+	var _arg2 C.GDBusObjectManagerClientFlags // out
+	var _arg3 *C.gchar                        // out
+	var _arg4 *C.gchar                        // out
+	var _arg5 C.GDBusProxyTypeFunc            // out
+	var _arg6 C.gpointer
+	var _arg7 C.GDestroyNotify
+	var _arg9 C.GAsyncReadyCallback // out
+	var _arg10 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg8 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = C.GDBusObjectManagerClientFlags(flags)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg4))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+	if callback != nil {
+		_arg9 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg10 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_object_manager_client_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(getProxyTypeFunc)
+	runtime.KeepAlive(callback)
+}
+
+// NewDBusObjectManagerClientForBus: like g_dbus_object_manager_client_new() but
+// takes a Type instead of a BusConnection.
+//
+// This is an asynchronous failable constructor. When the result is ready,
+// callback will be invoked in the [thread-default main
+// loop][g-main-context-push-thread-default] of the thread you are calling this
+// method from. You can then call
+// g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
+// g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - busType: Type.
+//    - flags: zero or more flags from the BusObjectManagerClientFlags
+//      enumeration.
+//    - name: owner of the control object (unique or well-known name).
+//    - objectPath: object path of the control object.
+//    - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
+//      proxies.
+//    - callback (optional) to call when the request is satisfied.
+//
+func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
+	var _arg8 *C.GCancellable                 // out
+	var _arg1 C.GBusType                      // out
+	var _arg2 C.GDBusObjectManagerClientFlags // out
+	var _arg3 *C.gchar                        // out
+	var _arg4 *C.gchar                        // out
+	var _arg5 C.GDBusProxyTypeFunc            // out
+	var _arg6 C.gpointer
+	var _arg7 C.GDestroyNotify
+	var _arg9 C.GAsyncReadyCallback // out
+	var _arg10 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg8 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GBusType(busType)
+	_arg2 = C.GDBusObjectManagerClientFlags(flags)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg4))
+	if getProxyTypeFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_DBusProxyTypeFunc)
+		_arg6 = C.gpointer(gbox.Assign(getProxyTypeFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+	if callback != nil {
+		_arg9 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg10 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_object_manager_client_new_for_bus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(getProxyTypeFunc)
+	runtime.KeepAlive(callback)
 }

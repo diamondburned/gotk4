@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeActionBar returns the GType for the type ActionBar.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeActionBar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ActionBar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_action_bar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalActionBar)
 	return gtype
 }
@@ -83,13 +81,13 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 //    - actionBar: new GtkActionBar.
 //
 func NewActionBar() *ActionBar {
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_gret := _info.InvokeClassMethod("new_ActionBar", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_action_bar_new()
 
 	var _actionBar *ActionBar // out
 
-	_actionBar = wrapActionBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_actionBar = wrapActionBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _actionBar
 }
@@ -101,21 +99,19 @@ func NewActionBar() *ActionBar {
 //    - widget (optional): center GtkWidget or NULL.
 //
 func (actionBar *ActionBar) CenterWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_gret := _info.InvokeClassMethod("get_center_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_action_bar_get_center_widget(_arg0)
 	runtime.KeepAlive(actionBar)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -140,19 +136,17 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 //    - ok: current value of the gtk.ActionBar:revealed property.
 //
 func (actionBar *ActionBar) Revealed() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_gret := _info.InvokeClassMethod("get_revealed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_action_bar_get_revealed(_arg0)
 	runtime.KeepAlive(actionBar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -167,14 +161,13 @@ func (actionBar *ActionBar) Revealed() bool {
 //    - child: GtkWidget to be added to action_bar.
 //
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_info.InvokeClassMethod("pack_end", _args[:], nil)
-
+	C.gtk_action_bar_pack_end(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
 }
@@ -187,14 +180,13 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 //    - child: GtkWidget to be added to action_bar.
 //
 func (actionBar *ActionBar) PackStart(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_info.InvokeClassMethod("pack_start", _args[:], nil)
-
+	C.gtk_action_bar_pack_start(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
 }
@@ -206,14 +198,13 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 //    - child: GtkWidget to be removed.
 //
 func (actionBar *ActionBar) Remove(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.gtk_action_bar_remove(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
 }
@@ -225,16 +216,15 @@ func (actionBar *ActionBar) Remove(child Widgetter) {
 //    - centerWidget (optional): widget to use for the center.
 //
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 	if centerWidget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(centerWidget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(centerWidget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_info.InvokeClassMethod("set_center_widget", _args[:], nil)
-
+	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(centerWidget)
 }
@@ -249,16 +239,15 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 //    - revealed: new value of the property.
 //
 func (actionBar *ActionBar) SetRevealed(revealed bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 	if revealed {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ActionBar")
-	_info.InvokeClassMethod("set_revealed", _args[:], nil)
-
+	C.gtk_action_bar_set_revealed(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(revealed)
 }

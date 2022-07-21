@@ -5,14 +5,12 @@ package gsk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gsk/gsk.h>
 import "C"
 
 // GTypeBlendNode returns the GType for the type BlendNode.
@@ -21,7 +19,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBlendNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "BlendNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_blend_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBlendNode)
 	return gtype
 }
@@ -32,7 +30,7 @@ func GTypeBlendNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBlurNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "BlurNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_blur_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBlurNode)
 	return gtype
 }
@@ -43,7 +41,7 @@ func GTypeBlurNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBorderNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "BorderNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_border_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBorderNode)
 	return gtype
 }
@@ -54,7 +52,7 @@ func GTypeBorderNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCairoNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "CairoNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_cairo_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCairoNode)
 	return gtype
 }
@@ -65,7 +63,7 @@ func GTypeCairoNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeClipNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ClipNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_clip_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalClipNode)
 	return gtype
 }
@@ -76,7 +74,7 @@ func GTypeClipNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColorMatrixNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ColorMatrixNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_color_matrix_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColorMatrixNode)
 	return gtype
 }
@@ -87,7 +85,7 @@ func GTypeColorMatrixNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColorNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ColorNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_color_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColorNode)
 	return gtype
 }
@@ -98,7 +96,7 @@ func GTypeColorNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConicGradientNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ConicGradientNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_conic_gradient_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConicGradientNode)
 	return gtype
 }
@@ -109,7 +107,7 @@ func GTypeConicGradientNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeContainerNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ContainerNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_container_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalContainerNode)
 	return gtype
 }
@@ -120,7 +118,7 @@ func GTypeContainerNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCrossFadeNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "CrossFadeNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_cross_fade_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCrossFadeNode)
 	return gtype
 }
@@ -131,7 +129,7 @@ func GTypeCrossFadeNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDebugNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "DebugNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_debug_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDebugNode)
 	return gtype
 }
@@ -142,7 +140,7 @@ func GTypeDebugNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGLShaderNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "GLShaderNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_gl_shader_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGLShaderNode)
 	return gtype
 }
@@ -153,7 +151,7 @@ func GTypeGLShaderNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeInsetShadowNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "InsetShadowNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_inset_shadow_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalInsetShadowNode)
 	return gtype
 }
@@ -164,7 +162,7 @@ func GTypeInsetShadowNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLinearGradientNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "LinearGradientNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_linear_gradient_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLinearGradientNode)
 	return gtype
 }
@@ -175,7 +173,7 @@ func GTypeLinearGradientNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOpacityNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "OpacityNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_opacity_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOpacityNode)
 	return gtype
 }
@@ -186,7 +184,7 @@ func GTypeOpacityNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOutsetShadowNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "OutsetShadowNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_outset_shadow_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOutsetShadowNode)
 	return gtype
 }
@@ -197,7 +195,7 @@ func GTypeOutsetShadowNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRadialGradientNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "RadialGradientNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_radial_gradient_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRadialGradientNode)
 	return gtype
 }
@@ -208,7 +206,7 @@ func GTypeRadialGradientNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRepeatNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "RepeatNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_repeat_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRepeatNode)
 	return gtype
 }
@@ -219,7 +217,7 @@ func GTypeRepeatNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRepeatingLinearGradientNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "RepeatingLinearGradientNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_repeating_linear_gradient_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRepeatingLinearGradientNode)
 	return gtype
 }
@@ -230,7 +228,7 @@ func GTypeRepeatingLinearGradientNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRepeatingRadialGradientNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "RepeatingRadialGradientNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRepeatingRadialGradientNode)
 	return gtype
 }
@@ -241,7 +239,7 @@ func GTypeRepeatingRadialGradientNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRoundedClipNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "RoundedClipNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_rounded_clip_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRoundedClipNode)
 	return gtype
 }
@@ -252,7 +250,7 @@ func GTypeRoundedClipNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShadowNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ShadowNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_shadow_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShadowNode)
 	return gtype
 }
@@ -263,7 +261,7 @@ func GTypeShadowNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "TextNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_text_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextNode)
 	return gtype
 }
@@ -274,7 +272,7 @@ func GTypeTextNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextureNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "TextureNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_texture_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextureNode)
 	return gtype
 }
@@ -285,7 +283,7 @@ func GTypeTextureNode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTransformNode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "TransformNode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_transform_node_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTransformNode)
 	return gtype
 }

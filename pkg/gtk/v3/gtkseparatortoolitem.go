@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeSeparatorToolItem returns the GType for the type SeparatorToolItem.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSeparatorToolItem() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SeparatorToolItem").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_separator_tool_item_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSeparatorToolItem)
 	return gtype
 }
@@ -102,13 +102,13 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 //    - separatorToolItem: new SeparatorToolItem.
 //
 func NewSeparatorToolItem() *SeparatorToolItem {
-	_info := girepository.MustFind("Gtk", "SeparatorToolItem")
-	_gret := _info.InvokeClassMethod("new_SeparatorToolItem", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_separator_tool_item_new()
 
 	var _separatorToolItem *SeparatorToolItem // out
 
-	_separatorToolItem = wrapSeparatorToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_separatorToolItem = wrapSeparatorToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorToolItem
 }
@@ -121,19 +121,17 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 //    - ok: TRUE if item is drawn as a line, or just blank.
 //
 func (item *SeparatorToolItem) Draw() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSeparatorToolItem // out
+	var _cret C.gboolean              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_info := girepository.MustFind("Gtk", "SeparatorToolItem")
-	_gret := _info.InvokeClassMethod("get_draw", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 	runtime.KeepAlive(item)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -149,16 +147,15 @@ func (item *SeparatorToolItem) Draw() bool {
 //    - draw: whether item is drawn as a vertical line.
 //
 func (item *SeparatorToolItem) SetDraw(draw bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSeparatorToolItem // out
+	var _arg1 C.gboolean              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 	if draw {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "SeparatorToolItem")
-	_info.InvokeClassMethod("set_draw", _args[:], nil)
-
+	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(draw)
 }

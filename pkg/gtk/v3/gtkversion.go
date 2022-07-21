@@ -2,14 +2,10 @@
 
 package gtk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
-)
-
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at

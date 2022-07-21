@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeBorder returns the GType for the type Border.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBorder() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Border").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_border_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBorder)
 	return gtype
 }
@@ -38,31 +38,27 @@ type Border struct {
 
 // border is the struct that's finalized.
 type border struct {
-	native unsafe.Pointer
+	native *C.GtkBorder
 }
 
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Border{&border{(unsafe.Pointer)(b)}}, nil
+	return &Border{&border{(*C.GtkBorder)(b)}}, nil
 }
 
 // NewBorder constructs a struct Border.
 func NewBorder() *Border {
-	_info := girepository.MustFind("Gtk", "Border")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkBorder // in
+
+	_cret = C.gtk_border_new()
 
 	var _border *Border // out
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_border)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "Border").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_border_free((*C.GtkBorder)(intern.C))
 		},
 	)
 
@@ -71,66 +67,58 @@ func NewBorder() *Border {
 
 // Left: width of the left border.
 func (b *Border) Left() int16 {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("left")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.left
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
+	v = int16(*valptr)
 	return v
 }
 
 // Right: width of the right border.
 func (b *Border) Right() int16 {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("right")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.right
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
+	v = int16(*valptr)
 	return v
 }
 
 // Top: width of the top border.
 func (b *Border) Top() int16 {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("top")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.top
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
+	v = int16(*valptr)
 	return v
 }
 
 // Bottom: width of the bottom border.
 func (b *Border) Bottom() int16 {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("bottom")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.bottom
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
+	v = int16(*valptr)
 	return v
 }
 
 // Left: width of the left border.
 func (b *Border) SetLeft(left int16) {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("left")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
-	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(left)
+	valptr := &b.native.left
+	*valptr = C.gint16(left)
 }
 
 // Right: width of the right border.
 func (b *Border) SetRight(right int16) {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("right")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
-	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(right)
+	valptr := &b.native.right
+	*valptr = C.gint16(right)
 }
 
 // Top: width of the top border.
 func (b *Border) SetTop(top int16) {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("top")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
-	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(top)
+	valptr := &b.native.top
+	*valptr = C.gint16(top)
 }
 
 // Bottom: width of the bottom border.
 func (b *Border) SetBottom(bottom int16) {
-	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("bottom")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
-	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(bottom)
+	valptr := &b.native.bottom
+	*valptr = C.gint16(bottom)
 }
 
 // Copy copies a Border-struct.
@@ -140,27 +128,21 @@ func (b *Border) SetBottom(bottom int16) {
 //    - border: copy of border_.
 //
 func (border_ *Border) Copy() *Border {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBorder // out
+	var _cret *C.GtkBorder // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(border_)))
+	_arg0 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
 
-	_info := girepository.MustFind("Gtk", "Border")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_border_copy(_arg0)
 	runtime.KeepAlive(border_)
 
 	var _border *Border // out
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_border)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "Border").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_border_free((*C.GtkBorder)(intern.C))
 		},
 	)
 

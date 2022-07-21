@@ -7,13 +7,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePropMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "PropMode").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_prop_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPropMode)
 	return gtype
 }
@@ -75,22 +73,20 @@ func (p PropMode) String() string {
 //      system limits like memory or file descriptors are exceeded.).
 //
 func UTF8ToStringTarget(str string) string {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar // out
+	var _cret *C.gchar // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "utf8_to_string_target")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_utf8_to_string_target(_arg1)
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8

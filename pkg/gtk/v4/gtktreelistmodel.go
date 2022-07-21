@@ -7,17 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
+// extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 import "C"
 
 // GTypeTreeListModel returns the GType for the type TreeListModel.
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTreeListModel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeListModel").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tree_list_model_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTreeListModel)
 	return gtype
 }
@@ -37,7 +35,7 @@ func GTypeTreeListModel() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTreeListRow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeListRow").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tree_list_row_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTreeListRow)
 	return gtype
 }
@@ -52,7 +50,7 @@ func GTypeTreeListRow() coreglib.Type {
 type TreeListModelCreateModelFunc func(item *coreglib.Object) (listModel *gio.ListModel)
 
 //export _gotk4_gtk4_TreeListModelCreateModelFunc
-func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.void) {
+func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GListModel) {
 	var fn TreeListModelCreateModelFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -69,7 +67,7 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) 
 	listModel := fn(_item)
 
 	if listModel != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(listModel).Native()))
+		cret = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(listModel).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(listModel).Native()))
 	}
 
@@ -131,24 +129,27 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 //    - treeListModel: newly created GtkTreeListModel.
 //
 func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GListModel                     // out
+	var _arg2 C.gboolean                        // out
+	var _arg3 C.gboolean                        // out
+	var _arg4 C.GtkTreeListModelCreateModelFunc // out
+	var _arg5 C.gpointer
+	var _arg6 C.GDestroyNotify
+	var _cret *C.GtkTreeListModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(root).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(root).Native()))
 	if passthrough {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 	if autoexpand {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg3 = C.TRUE
 	}
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gtk4_TreeListModelCreateModelFunc)
-	_args[4] = C.gpointer(gbox.Assign(createFunc))
-	_args[5] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg4 = (*[0]byte)(C._gotk4_gtk4_TreeListModelCreateModelFunc)
+	_arg5 = C.gpointer(gbox.Assign(createFunc))
+	_arg6 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_gret := _info.InvokeClassMethod("new_TreeListModel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_model_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(root)
 	runtime.KeepAlive(passthrough)
 	runtime.KeepAlive(autoexpand)
@@ -156,7 +157,7 @@ func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, creat
 
 	var _treeListModel *TreeListModel // out
 
-	_treeListModel = wrapTreeListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_treeListModel = wrapTreeListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeListModel
 }
@@ -172,19 +173,17 @@ func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, creat
 //    - ok: TRUE if the model is set to autoexpand.
 //
 func (self *TreeListModel) Autoexpand() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListModel // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_gret := _info.InvokeClassMethod("get_autoexpand", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_model_get_autoexpand(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -208,22 +207,21 @@ func (self *TreeListModel) Autoexpand() bool {
 //    - treeListRow (optional): child in position.
 //
 func (self *TreeListModel) ChildRow(position uint32) *TreeListRow {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeListModel // out
+	var _arg1 C.guint             // out
+	var _cret *C.GtkTreeListRow   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(position)
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_gret := _info.InvokeClassMethod("get_child_row", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_model_get_child_row(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 
 	var _treeListRow *TreeListRow // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _treeListRow
@@ -236,20 +234,18 @@ func (self *TreeListModel) ChildRow(position uint32) *TreeListRow {
 //    - listModel: root model.
 //
 func (self *TreeListModel) Model() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListModel // out
+	var _cret *C.GListModel       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -273,19 +269,17 @@ func (self *TreeListModel) Model() *gio.ListModel {
 //    - ok: TRUE if the model is passing through original row items.
 //
 func (self *TreeListModel) Passthrough() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListModel // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_gret := _info.InvokeClassMethod("get_passthrough", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_model_get_passthrough(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -316,22 +310,21 @@ func (self *TreeListModel) Passthrough() bool {
 //    - treeListRow (optional): row item.
 //
 func (self *TreeListModel) Row(position uint32) *TreeListRow {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeListModel // out
+	var _arg1 C.guint             // out
+	var _cret *C.GtkTreeListRow   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(position)
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_gret := _info.InvokeClassMethod("get_row", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_model_get_row(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 
 	var _treeListRow *TreeListRow // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _treeListRow
@@ -348,16 +341,15 @@ func (self *TreeListModel) Row(position uint32) *TreeListRow {
 //    - autoexpand: TRUE to make the model autoexpand its rows.
 //
 func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeListModel // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if autoexpand {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeListModel")
-	_info.InvokeClassMethod("set_autoexpand", _args[:], nil)
-
+	C.gtk_tree_list_model_set_autoexpand(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(autoexpand)
 }
@@ -416,22 +408,21 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 //    - treeListRow (optional): child in position.
 //
 func (self *TreeListRow) ChildRow(position uint32) *TreeListRow {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _arg1 C.guint           // out
+	var _cret *C.GtkTreeListRow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(position)
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_child_row", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_child_row(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 
 	var _treeListRow *TreeListRow // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _treeListRow
@@ -449,21 +440,19 @@ func (self *TreeListRow) ChildRow(position uint32) *TreeListRow {
 //    - listModel (optional): model containing the children.
 //
 func (self *TreeListRow) Children() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret *C.GListModel     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_children(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}
@@ -486,19 +475,17 @@ func (self *TreeListRow) Children() *gio.ListModel {
 //    - guint: depth of this row.
 //
 func (self *TreeListRow) Depth() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret C.guint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_depth", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -510,19 +497,17 @@ func (self *TreeListRow) Depth() uint32 {
 //    - ok: TRUE if the row is expanded.
 //
 func (self *TreeListRow) Expanded() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_expanded", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_expanded(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -538,19 +523,17 @@ func (self *TreeListRow) Expanded() bool {
 //    - object (optional): item of this row or NULL when the row was destroyed.
 //
 func (self *TreeListRow) Item() *coreglib.Object {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret C.gpointer        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_item", _args[:], nil)
-	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_item(_arg0)
 	runtime.KeepAlive(self)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -568,20 +551,18 @@ func (self *TreeListRow) Item() *coreglib.Object {
 //    - treeListRow (optional): parent of self.
 //
 func (self *TreeListRow) Parent() *TreeListRow {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret *C.GtkTreeListRow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_parent(_arg0)
 	runtime.KeepAlive(self)
 
 	var _treeListRow *TreeListRow // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _treeListRow
@@ -595,19 +576,17 @@ func (self *TreeListRow) Parent() *TreeListRow {
 //    - guint: position in the model.
 //
 func (self *TreeListRow) Position() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret C.guint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("get_position", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_get_position(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -624,19 +603,17 @@ func (self *TreeListRow) Position() uint32 {
 //    - ok: TRUE if the row is expandable.
 //
 func (self *TreeListRow) IsExpandable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_gret := _info.InvokeClassMethod("is_expandable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_list_row_is_expandable(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -656,16 +633,15 @@ func (self *TreeListRow) IsExpandable() bool {
 //    - expanded: TRUE if the row should be expanded.
 //
 func (self *TreeListRow) SetExpanded(expanded bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeListRow // out
+	var _arg1 C.gboolean        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expanded {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeListRow")
-	_info.InvokeClassMethod("set_expanded", _args[:], nil)
-
+	C.gtk_tree_list_row_set_expanded(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expanded)
 }

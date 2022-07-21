@@ -7,14 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // ExportMenuModel exports menu on connection at object_path.
@@ -39,17 +36,18 @@ import "C"
 //    - guint: ID of the export (never zero), or 0 in case of failure.
 //
 func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint32, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GDBusConnection // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.GMenuModel      // out
+	var _cret C.guint            // in
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusConnection")
-	_gret := _info.InvokeClassMethod("export_menu_model", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_connection_export_menu_model(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(menu)
@@ -57,9 +55,9 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_guint = uint32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _guint, _goerr
@@ -77,14 +75,13 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 //    - exportId: ID from g_dbus_connection_export_menu_model().
 //
 func (connection *DBusConnection) UnexportMenuModel(exportId uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusConnection // out
+	var _arg1 C.guint            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(exportId)
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = C.guint(exportId)
 
-	_info := girepository.MustFind("Gio", "DBusConnection")
-	_info.InvokeClassMethod("unexport_menu_model", _args[:], nil)
-
+	C.g_dbus_connection_unexport_menu_model(_arg0, _arg1)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exportId)
 }

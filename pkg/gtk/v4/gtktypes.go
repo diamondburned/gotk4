@@ -7,14 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeBitset returns the GType for the type Bitset.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBitset() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Bitset").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_bitset_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBitset)
 	return gtype
 }
@@ -52,23 +50,23 @@ type Bitset struct {
 
 // bitset is the struct that's finalized.
 type bitset struct {
-	native unsafe.Pointer
+	native *C.GtkBitset
 }
 
 func marshalBitset(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Bitset{&bitset{(unsafe.Pointer)(b)}}, nil
+	return &Bitset{&bitset{(*C.GtkBitset)(b)}}, nil
 }
 
 // NewBitsetEmpty constructs a struct Bitset.
 func NewBitsetEmpty() *Bitset {
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("new_empty", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkBitset // in
+
+	_cret = C.gtk_bitset_new_empty()
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -81,21 +79,20 @@ func NewBitsetEmpty() *Bitset {
 
 // NewBitsetRange constructs a struct Bitset.
 func NewBitsetRange(start uint32, nItems uint32) *Bitset {
-	var _args [2]girepository.Argument
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _cret *C.GtkBitset // in
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(start)
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nItems)
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("new_range", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_new_range(_arg1, _arg2)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(nItems)
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -117,21 +114,20 @@ func NewBitsetRange(start uint32, nItems uint32) *Bitset {
 //    - ok: TRUE if value was not part of self and self was changed.
 //
 func (self *Bitset) Add(value uint32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(value)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(value)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("add", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_add(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -147,15 +143,15 @@ func (self *Bitset) Add(value uint32) bool {
 //    - nItems: number of consecutive values to add.
 //
 func (self *Bitset) AddRange(start uint32, nItems uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(start)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("add_range", _args[:], nil)
-
+	C.gtk_bitset_add_range(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(nItems)
@@ -170,15 +166,15 @@ func (self *Bitset) AddRange(start uint32, nItems uint32) {
 //    - last value to add.
 //
 func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(first)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(last)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(first)
+	_arg2 = C.guint(last)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("add_range_closed", _args[:], nil)
-
+	C.gtk_bitset_add_range_closed(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(last)
@@ -196,17 +192,19 @@ func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
 //    - stride: row stride of the grid.
 //
 func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stride uint32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
+	var _arg4 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(start)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(width)
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(height)
-	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(stride)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(width)
+	_arg3 = C.guint(height)
+	_arg4 = C.guint(stride)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("add_rectangle", _args[:], nil)
-
+	C.gtk_bitset_add_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(width)
@@ -225,21 +223,20 @@ func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stri
 //    - ok: TRUE if self contains value.
 //
 func (self *Bitset) Contains(value uint32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(value)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(value)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("contains", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_contains(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -253,19 +250,17 @@ func (self *Bitset) Contains(value uint32) bool {
 //    - bitset: new bitset that contains the same values as self.
 //
 func (self *Bitset) Copy() *Bitset {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _cret *C.GtkBitset // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_copy(_arg0)
 	runtime.KeepAlive(self)
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -290,14 +285,13 @@ func (self *Bitset) Copy() *Bitset {
 //    - other: GtkBitset to compute the difference from.
 //
 func (self *Bitset) Difference(other *Bitset) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("difference", _args[:], nil)
-
+	C.gtk_bitset_difference(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
 }
@@ -313,21 +307,20 @@ func (self *Bitset) Difference(other *Bitset) {
 //    - ok: TRUE if self and other contain the same values.
 //
 func (self *Bitset) Equals(other *Bitset) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("equals", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_equals(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -343,19 +336,17 @@ func (self *Bitset) Equals(other *Bitset) bool {
 //    - guint: largest value in self.
 //
 func (self *Bitset) Maximum() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _cret C.guint      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("get_maximum", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_get_maximum(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -369,19 +360,17 @@ func (self *Bitset) Maximum() uint32 {
 //    - guint: smallest value in self.
 //
 func (self *Bitset) Minimum() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _cret C.guint      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("get_minimum", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_get_minimum(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -399,21 +388,20 @@ func (self *Bitset) Minimum() uint32 {
 //    - guint: value of the nth item in self.
 //
 func (self *Bitset) Nth(nth uint32) uint32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _cret C.guint      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nth)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(nth)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("get_nth", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_get_nth(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(nth)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -431,19 +419,17 @@ func (self *Bitset) Nth(nth uint32) uint32 {
 //    - guint64: number of values in the set.
 //
 func (self *Bitset) Size() uint64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _cret C.guint64    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("get_size", _args[:], nil)
-	_cret := *(*C.guint64)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_get_size(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint64 uint64 // out
 
-	_guint64 = uint64(*(*C.guint64)(unsafe.Pointer(&_cret)))
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -465,23 +451,23 @@ func (self *Bitset) Size() uint64 {
 //    - guint64: number of values in the set from first to last.
 //
 func (self *Bitset) SizeInRange(first uint32, last uint32) uint64 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _cret C.guint64    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(first)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(last)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(first)
+	_arg2 = C.guint(last)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("get_size_in_range", _args[:], nil)
-	_cret := *(*C.guint64)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_get_size_in_range(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(last)
 
 	var _guint64 uint64 // out
 
-	_guint64 = uint64(*(*C.guint64)(unsafe.Pointer(&_cret)))
+	_guint64 = uint64(_cret)
 
 	return _guint64
 }
@@ -498,14 +484,13 @@ func (self *Bitset) SizeInRange(first uint32, last uint32) uint64 {
 //    - other: GtkBitset to intersect with.
 //
 func (self *Bitset) Intersect(other *Bitset) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("intersect", _args[:], nil)
-
+	C.gtk_bitset_intersect(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
 }
@@ -517,19 +502,17 @@ func (self *Bitset) Intersect(other *Bitset) {
 //    - ok: TRUE if self is empty.
 //
 func (self *Bitset) IsEmpty() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("is_empty", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_is_empty(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -547,21 +530,20 @@ func (self *Bitset) IsEmpty() bool {
 //    - ok: TRUE if value was part of self and self was changed.
 //
 func (self *Bitset) Remove(value uint32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(value)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(value)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_gret := _info.InvokeRecordMethod("remove", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -570,13 +552,11 @@ func (self *Bitset) Remove(value uint32) bool {
 
 // RemoveAll removes all values from the bitset so that it is empty again.
 func (self *Bitset) RemoveAll() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitset // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("remove_all", _args[:], nil)
-
+	C.gtk_bitset_remove_all(_arg0)
 	runtime.KeepAlive(self)
 }
 
@@ -589,15 +569,15 @@ func (self *Bitset) RemoveAll() {
 //    - nItems: number of consecutive values to remove.
 //
 func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(start)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(nItems)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("remove_range", _args[:], nil)
-
+	C.gtk_bitset_remove_range(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(nItems)
@@ -612,15 +592,15 @@ func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
 //    - last value to remove.
 //
 func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(first)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(last)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(first)
+	_arg2 = C.guint(last)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("remove_range_closed", _args[:], nil)
-
+	C.gtk_bitset_remove_range_closed(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(last)
@@ -638,17 +618,19 @@ func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
 //    - stride: row stride of the grid.
 //
 func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, stride uint32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
+	var _arg4 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(start)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(width)
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(height)
-	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(stride)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(start)
+	_arg2 = C.guint(width)
+	_arg3 = C.guint(height)
+	_arg4 = C.guint(stride)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("remove_rectangle", _args[:], nil)
-
+	C.gtk_bitset_remove_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(width)
@@ -665,14 +647,13 @@ func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, s
 //    - amount to shift all values to the left.
 //
 func (self *Bitset) ShiftLeft(amount uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(amount)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(amount)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("shift_left", _args[:], nil)
-
+	C.gtk_bitset_shift_left(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(amount)
 }
@@ -686,14 +667,13 @@ func (self *Bitset) ShiftLeft(amount uint32) {
 //    - amount to shift all values to the right.
 //
 func (self *Bitset) ShiftRight(amount uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(amount)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(amount)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("shift_right", _args[:], nil)
-
+	C.gtk_bitset_shift_right(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(amount)
 }
@@ -716,16 +696,17 @@ func (self *Bitset) ShiftRight(amount uint32) {
 //    - added: number of values to add.
 //
 func (self *Bitset) Splice(position uint32, removed uint32, added uint32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(removed)
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(added)
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(removed)
+	_arg3 = C.guint(added)
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("splice", _args[:], nil)
-
+	C.gtk_bitset_splice(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(removed)
@@ -744,14 +725,13 @@ func (self *Bitset) Splice(position uint32, removed uint32, added uint32) {
 //    - other: GtkBitset to subtract.
 //
 func (self *Bitset) Subtract(other *Bitset) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("subtract", _args[:], nil)
-
+	C.gtk_bitset_subtract(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
 }
@@ -768,14 +748,13 @@ func (self *Bitset) Subtract(other *Bitset) {
 //    - other: GtkBitset to union with.
 //
 func (self *Bitset) Union(other *Bitset) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gtk", "Bitset")
-	_info.InvokeRecordMethod("union", _args[:], nil)
-
+	C.gtk_bitset_union(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(other)
 }

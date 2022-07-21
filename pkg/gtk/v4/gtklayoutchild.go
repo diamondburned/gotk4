@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeLayoutChild returns the GType for the type LayoutChild.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLayoutChild() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "LayoutChild").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_layout_child_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLayoutChild)
 	return gtype
 }
@@ -94,20 +92,18 @@ func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
 //    - widget: Widget.
 //
 func (layoutChild *LayoutChild) ChildWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkLayoutChild // out
+	var _cret *C.GtkWidget      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
 
-	_info := girepository.MustFind("Gtk", "LayoutChild")
-	_gret := _info.InvokeClassMethod("get_child_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_layout_child_get_child_widget(_arg0)
 	runtime.KeepAlive(layoutChild)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -135,20 +131,18 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 //    - layoutManager: GtkLayoutManager.
 //
 func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkLayoutChild   // out
+	var _cret *C.GtkLayoutManager // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
 
-	_info := girepository.MustFind("Gtk", "LayoutChild")
-	_gret := _info.InvokeClassMethod("get_layout_manager", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_layout_child_get_layout_manager(_arg0)
 	runtime.KeepAlive(layoutChild)
 
 	var _layoutManager LayoutManagerer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.LayoutManagerer is nil")
 		}

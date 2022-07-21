@@ -6,14 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeFileChooserNative returns the GType for the type FileChooserNative.
@@ -22,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileChooserNative() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserNative").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_file_chooser_native_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserNative)
 	return gtype
 }
@@ -224,6 +224,61 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return wrapFileChooserNative(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewFileChooserNative creates a new FileChooserNative.
+//
+// The function takes the following parameters:
+//
+//    - title (optional): title of the native, or NULL.
+//    - parent (optional): transient parent of the native, or NULL.
+//    - action: open or save mode for the dialog.
+//    - acceptLabel (optional): text to go in the accept button, or NULL for the
+//      default.
+//    - cancelLabel (optional): text to go in the cancel button, or NULL for the
+//      default.
+//
+// The function returns the following values:
+//
+//    - fileChooserNative: new FileChooserNative.
+//
+func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel, cancelLabel string) *FileChooserNative {
+	var _arg1 *C.gchar                // out
+	var _arg2 *C.GtkWindow            // out
+	var _arg3 C.GtkFileChooserAction  // out
+	var _arg4 *C.gchar                // out
+	var _arg5 *C.gchar                // out
+	var _cret *C.GtkFileChooserNative // in
+
+	if title != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if parent != nil {
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	}
+	_arg3 = C.GtkFileChooserAction(action)
+	if acceptLabel != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
+	if cancelLabel != "" {
+		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
+
+	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(acceptLabel)
+	runtime.KeepAlive(cancelLabel)
+
+	var _fileChooserNative *FileChooserNative // out
+
+	_fileChooserNative = wrapFileChooserNative(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _fileChooserNative
+}
+
 // AcceptLabel retrieves the custom label text for the accept button.
 //
 // The function returns the following values:
@@ -232,20 +287,18 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 //      owned by GTK+ and should not be modified or freed.
 //
 func (self *FileChooserNative) AcceptLabel() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFileChooserNative // out
+	var _cret *C.char                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "FileChooserNative")
-	_gret := _info.InvokeClassMethod("get_accept_label", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -259,20 +312,18 @@ func (self *FileChooserNative) AcceptLabel() string {
 //      owned by GTK+ and should not be modified or freed.
 //
 func (self *FileChooserNative) CancelLabel() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFileChooserNative // out
+	var _cret *C.char                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "FileChooserNative")
-	_gret := _info.InvokeClassMethod("get_cancel_label", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -291,17 +342,16 @@ func (self *FileChooserNative) CancelLabel() string {
 //    - acceptLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFileChooserNative // out
+	var _arg1 *C.char                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if acceptLabel != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "FileChooserNative")
-	_info.InvokeClassMethod("set_accept_label", _args[:], nil)
-
+	C.gtk_file_chooser_native_set_accept_label(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(acceptLabel)
 }
@@ -319,17 +369,16 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 //    - cancelLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFileChooserNative // out
+	var _arg1 *C.char                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if cancelLabel != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "FileChooserNative")
-	_info.InvokeClassMethod("set_cancel_label", _args[:], nil)
-
+	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(cancelLabel)
 }

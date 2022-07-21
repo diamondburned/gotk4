@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeShortcut returns the GType for the type Shortcut.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcut() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Shortcut").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcut_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcut)
 	return gtype
 }
@@ -87,27 +85,26 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 //    - shortcut: new GtkShortcut.
 //
 func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkShortcutTrigger // out
+	var _arg2 *C.GtkShortcutAction  // out
+	var _cret *C.GtkShortcut        // in
 
 	if trigger != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
+		_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(trigger).Native()))
 	}
 	if action != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+		_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(action).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_gret := _info.InvokeClassMethod("new_Shortcut", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_new(_arg1, _arg2)
 	runtime.KeepAlive(trigger)
 	runtime.KeepAlive(action)
 
 	var _shortcut *Shortcut // out
 
-	_shortcut = wrapShortcut(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_shortcut = wrapShortcut(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _shortcut
 }
@@ -119,21 +116,19 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 //    - shortcutAction (optional): action.
 //
 func (self *Shortcut) Action() ShortcutActioner {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkShortcut       // out
+	var _cret *C.GtkShortcutAction // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_gret := _info.InvokeClassMethod("get_action", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_get_action(_arg0)
 	runtime.KeepAlive(self)
 
 	var _shortcutAction ShortcutActioner // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -158,21 +153,19 @@ func (self *Shortcut) Action() ShortcutActioner {
 //    - variant (optional): arguments.
 //
 func (self *Shortcut) Arguments() *glib.Variant {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkShortcut // out
+	var _cret *C.GVariant    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_gret := _info.InvokeClassMethod("get_arguments", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_get_arguments(_arg0)
 	runtime.KeepAlive(self)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
-		C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -191,21 +184,19 @@ func (self *Shortcut) Arguments() *glib.Variant {
 //    - shortcutTrigger (optional): trigger used.
 //
 func (self *Shortcut) Trigger() ShortcutTriggerer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkShortcut        // out
+	var _cret *C.GtkShortcutTrigger // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_gret := _info.InvokeClassMethod("get_trigger", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_get_trigger(_arg0)
 	runtime.KeepAlive(self)
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -231,17 +222,16 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 //      will be used.
 //
 func (self *Shortcut) SetAction(action ShortcutActioner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkShortcut       // out
+	var _arg1 *C.GtkShortcutAction // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if action != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+		_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(action).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_info.InvokeClassMethod("set_action", _args[:], nil)
-
+	C.gtk_shortcut_set_action(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(action)
 }
@@ -253,16 +243,15 @@ func (self *Shortcut) SetAction(action ShortcutActioner) {
 //    - args (optional) arguments to pass when activating self.
 //
 func (self *Shortcut) SetArguments(args *glib.Variant) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkShortcut // out
+	var _arg1 *C.GVariant    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if args != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_info.InvokeClassMethod("set_arguments", _args[:], nil)
-
+	C.gtk_shortcut_set_arguments(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(args)
 }
@@ -275,17 +264,16 @@ func (self *Shortcut) SetArguments(args *glib.Variant) {
 //      trigger will be used.
 //
 func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkShortcut        // out
+	var _arg1 *C.GtkShortcutTrigger // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if trigger != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
+		_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(trigger).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Shortcut")
-	_info.InvokeClassMethod("set_trigger", _args[:], nil)
-
+	C.gtk_shortcut_set_trigger(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(trigger)
 }

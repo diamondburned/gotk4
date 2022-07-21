@@ -8,16 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_FrameClass_compute_child_allocation(void*, void*);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
 import "C"
 
 // GTypeFrame returns the GType for the type Frame.
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFrame() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Frame").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_frame_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFrame)
 	return gtype
 }
@@ -96,16 +94,15 @@ func classInitFramer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "FrameClass")
+	pclass := (*C.GtkFrameClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ComputeChildAllocation(allocation *Allocation) }); ok {
-		o := pclass.StructFieldOffset("compute_child_allocation")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_FrameClass_compute_child_allocation)
+		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk4_FrameClass_compute_child_allocation)
 	}
 }
 
 //export _gotk4_gtk4_FrameClass_compute_child_allocation
-func _gotk4_gtk4_FrameClass_compute_child_allocation(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk4_FrameClass_compute_child_allocation(arg0 *C.GtkFrame, arg1 *C.GtkAllocation) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ComputeChildAllocation(allocation *Allocation) })
 
@@ -153,22 +150,20 @@ func marshalFrame(p uintptr) (interface{}, error) {
 //    - frame: new GtkFrame widget.
 //
 func NewFrame(label string) *Frame {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
 	if label != "" {
-		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_gret := _info.InvokeClassMethod("new_Frame", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_frame_new(_arg1)
 	runtime.KeepAlive(label)
 
 	var _frame *Frame // out
 
-	_frame = wrapFrame(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_frame = wrapFrame(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _frame
 }
@@ -180,21 +175,19 @@ func NewFrame(label string) *Frame {
 //    - widget (optional): child widget of frame.
 //
 func (frame *Frame) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFrame  // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_frame_get_child(_arg0)
 	runtime.KeepAlive(frame)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -223,20 +216,18 @@ func (frame *Frame) Child() Widgetter {
 //      must not be modified or freed.
 //
 func (frame *Frame) Label() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFrame // out
+	var _cret *C.char     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_frame_get_label(_arg0)
 	runtime.KeepAlive(frame)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -249,19 +240,17 @@ func (frame *Frame) Label() string {
 //    - gfloat frames X alignment.
 //
 func (frame *Frame) LabelAlign() float32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFrame // out
+	var _cret C.float     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_gret := _info.InvokeClassMethod("get_label_align", _args[:], nil)
-	_cret := *(*C.float)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_frame_get_label_align(_arg0)
 	runtime.KeepAlive(frame)
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -273,21 +262,19 @@ func (frame *Frame) LabelAlign() float32 {
 //    - widget (optional): label widget, or NULL if there is none.
 //
 func (frame *Frame) LabelWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFrame  // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_gret := _info.InvokeClassMethod("get_label_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_frame_get_label_widget(_arg0)
 	runtime.KeepAlive(frame)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -312,16 +299,15 @@ func (frame *Frame) LabelWidget() Widgetter {
 //    - child (optional) widget.
 //
 func (frame *Frame) SetChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFrame  // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_info.InvokeClassMethod("set_child", _args[:], nil)
-
+	C.gtk_frame_set_child(_arg0, _arg1)
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(child)
 }
@@ -334,17 +320,16 @@ func (frame *Frame) SetChild(child Widgetter) {
 //    - label (optional): text to use as the label of the frame.
 //
 func (frame *Frame) SetLabel(label string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFrame // out
+	var _arg1 *C.char     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	if label != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_info.InvokeClassMethod("set_label", _args[:], nil)
-
+	C.gtk_frame_set_label(_arg0, _arg1)
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(label)
 }
@@ -359,14 +344,13 @@ func (frame *Frame) SetLabel(label string) {
 //      of 0.0 represents left alignment; 1.0 represents right alignment.
 //
 func (frame *Frame) SetLabelAlign(xalign float32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFrame // out
+	var _arg1 C.float     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg1 = C.float(xalign)
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_info.InvokeClassMethod("set_label_align", _args[:], nil)
-
+	C.gtk_frame_set_label_align(_arg0, _arg1)
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(xalign)
 }
@@ -381,16 +365,15 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 //    - labelWidget (optional): new label widget.
 //
 func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFrame  // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	if labelWidget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Frame")
-	_info.InvokeClassMethod("set_label_widget", _args[:], nil)
-
+	C.gtk_frame_set_label_widget(_arg0, _arg1)
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(labelWidget)
 }

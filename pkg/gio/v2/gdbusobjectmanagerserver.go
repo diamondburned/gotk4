@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusObjectManagerServer() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManagerServer").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_object_manager_server_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManagerServer)
 	return gtype
 }
@@ -100,20 +98,18 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 //    - dBusObjectManagerServer object. Free with g_object_unref().
 //
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar                    // out
+	var _cret *C.GDBusObjectManagerServer // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_gret := _info.InvokeClassMethod("new_DBusObjectManagerServer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_server_new(_arg1)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObjectManagerServer *DBusObjectManagerServer // out
 
-	_dBusObjectManagerServer = wrapDBusObjectManagerServer(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusObjectManagerServer = wrapDBusObjectManagerServer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectManagerServer
 }
@@ -134,14 +130,13 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 //    - object: BusObjectSkeleton.
 //
 func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.GDBusObjectSkeleton      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_info.InvokeClassMethod("export", _args[:], nil)
-
+	C.g_dbus_object_manager_server_export(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
 }
@@ -156,14 +151,13 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 //    - object: object.
 //
 func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleton) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.GDBusObjectSkeleton      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_info.InvokeClassMethod("export_uniquely", _args[:], nil)
-
+	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
 }
@@ -176,19 +170,17 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 //      The returned object should be freed with g_object_unref().
 //
 func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _cret *C.GDBusConnection          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_gret := _info.InvokeClassMethod("get_connection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_server_get_connection(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }
@@ -204,21 +196,20 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 //    - ok: TRUE if object is exported.
 //
 func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.GDBusObjectSkeleton      // out
+	var _cret C.gboolean                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_gret := _info.InvokeClassMethod("is_exported", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -233,16 +224,15 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 //    - connection (optional) or NULL.
 //
 func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.GDBusConnection          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	if connection != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+		_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_info.InvokeClassMethod("set_connection", _args[:], nil)
-
+	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(connection)
 }
@@ -262,22 +252,21 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 //    - ok: TRUE if object at object_path was removed, FALSE otherwise.
 //
 func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.gchar                    // out
+	var _cret C.gboolean                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
-	_gret := _info.InvokeClassMethod("unexport", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

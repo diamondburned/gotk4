@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNativeSocketAddress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "NativeSocketAddress").RegisteredGType())
+	gtype := coreglib.Type(C.g_native_socket_address_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNativeSocketAddress)
 	return gtype
 }
@@ -76,21 +74,20 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 //    - nativeSocketAddress: new SocketAddress.
 //
 func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddress {
-	var _args [2]girepository.Argument
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cret *C.GSocketAddress // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(native))
-	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(len)
+	_arg1 = (C.gpointer)(unsafe.Pointer(native))
+	_arg2 = C.gsize(len)
 
-	_info := girepository.MustFind("Gio", "NativeSocketAddress")
-	_gret := _info.InvokeClassMethod("new_NativeSocketAddress", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_native_socket_address_new(_arg1, _arg2)
 	runtime.KeepAlive(native)
 	runtime.KeepAlive(len)
 
 	var _nativeSocketAddress *NativeSocketAddress // out
 
-	_nativeSocketAddress = wrapNativeSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_nativeSocketAddress = wrapNativeSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _nativeSocketAddress
 }

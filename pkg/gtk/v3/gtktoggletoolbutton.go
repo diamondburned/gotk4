@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_ToggleToolButtonClass_toggled(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ToggleToolButtonClass_toggled(GtkToggleToolButton*);
 // extern void _gotk4_gtk3_ToggleToolButton_ConnectToggled(gpointer, guintptr);
 import "C"
 
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeToggleToolButton() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToggleToolButton").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_toggle_tool_button_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalToggleToolButton)
 	return gtype
 }
@@ -61,16 +61,15 @@ func classInitToggleToolButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "ToggleToolButtonClass")
+	pclass := (*C.GtkToggleToolButtonClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
-		o := pclass.StructFieldOffset("toggled")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ToggleToolButtonClass_toggled)
+		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleToolButtonClass_toggled)
 	}
 }
 
 //export _gotk4_gtk3_ToggleToolButtonClass_toggled
-func _gotk4_gtk3_ToggleToolButtonClass_toggled(arg0 *C.void) {
+func _gotk4_gtk3_ToggleToolButtonClass_toggled(arg0 *C.GtkToggleToolButton) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
@@ -153,13 +152,13 @@ func (button *ToggleToolButton) ConnectToggled(f func()) coreglib.SignalHandle {
 //    - toggleToolButton: newly created ToggleToolButton.
 //
 func NewToggleToolButton() *ToggleToolButton {
-	_info := girepository.MustFind("Gtk", "ToggleToolButton")
-	_gret := _info.InvokeClassMethod("new_ToggleToolButton", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_toggle_tool_button_new()
 
 	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }
@@ -181,20 +180,18 @@ func NewToggleToolButton() *ToggleToolButton {
 //    - toggleToolButton: new ToggleToolButton.
 //
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar       // out
+	var _cret *C.GtkToolItem // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "ToggleToolButton")
-	_gret := _info.InvokeClassMethod("new_ToggleToolButton_from_stock", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 	runtime.KeepAlive(stockId)
 
 	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toggleToolButton
 }
@@ -207,19 +204,17 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 //    - ok: TRUE if the toggle tool button is pressed in, FALSE if not.
 //
 func (button *ToggleToolButton) Active() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkToggleToolButton // out
+	var _cret C.gboolean             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_info := girepository.MustFind("Gtk", "ToggleToolButton")
-	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -235,16 +230,15 @@ func (button *ToggleToolButton) Active() bool {
 //    - isActive: whether button should be active.
 //
 func (button *ToggleToolButton) SetActive(isActive bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkToggleToolButton // out
+	var _arg1 C.gboolean             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if isActive {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ToggleToolButton")
-	_info.InvokeClassMethod("set_active", _args[:], nil)
-
+	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(isActive)
 }

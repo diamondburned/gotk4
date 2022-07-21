@@ -7,17 +7,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_NativeDialogClass_hide(void*);
-// extern void _gotk4_gtk3_NativeDialogClass_response(void*, gint);
-// extern void _gotk4_gtk3_NativeDialogClass_show(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_NativeDialogClass_hide(GtkNativeDialog*);
+// extern void _gotk4_gtk3_NativeDialogClass_response(GtkNativeDialog*, gint);
+// extern void _gotk4_gtk3_NativeDialogClass_show(GtkNativeDialog*);
 // extern void _gotk4_gtk3_NativeDialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
@@ -27,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNativeDialog() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "NativeDialog").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_native_dialog_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNativeDialog)
 	return gtype
 }
@@ -93,26 +93,23 @@ func classInitNativeDialogger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "NativeDialogClass")
+	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Hide() }); ok {
-		o := pclass.StructFieldOffset("hide")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NativeDialogClass_hide)
+		pclass.hide = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_hide)
 	}
 
 	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
-		o := pclass.StructFieldOffset("response")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NativeDialogClass_response)
+		pclass.response = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_response)
 	}
 
 	if _, ok := goval.(interface{ Show() }); ok {
-		o := pclass.StructFieldOffset("show")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NativeDialogClass_show)
+		pclass.show = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_show)
 	}
 }
 
 //export _gotk4_gtk3_NativeDialogClass_hide
-func _gotk4_gtk3_NativeDialogClass_hide(arg0 *C.void) {
+func _gotk4_gtk3_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Hide() })
 
@@ -120,7 +117,7 @@ func _gotk4_gtk3_NativeDialogClass_hide(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_NativeDialogClass_response
-func _gotk4_gtk3_NativeDialogClass_response(arg0 *C.void, arg1 C.gint) {
+func _gotk4_gtk3_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Response(responseId int32) })
 
@@ -132,7 +129,7 @@ func _gotk4_gtk3_NativeDialogClass_response(arg0 *C.void, arg1 C.gint) {
 }
 
 //export _gotk4_gtk3_NativeDialogClass_show
-func _gotk4_gtk3_NativeDialogClass_show(arg0 *C.void) {
+func _gotk4_gtk3_NativeDialogClass_show(arg0 *C.GtkNativeDialog) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Show() })
 
@@ -198,13 +195,11 @@ func (self *NativeDialog) ConnectResponse(f func(responseId int32)) coreglib.Sig
 // destroying a GtkWindow) because there is no reference from the windowing
 // system to the NativeDialog.
 func (self *NativeDialog) Destroy() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_info.InvokeClassMethod("destroy", _args[:], nil)
-
+	C.gtk_native_dialog_destroy(_arg0)
 	runtime.KeepAlive(self)
 }
 
@@ -215,19 +210,17 @@ func (self *NativeDialog) Destroy() {
 //    - ok: TRUE if the dialog is set to be modal.
 //
 func (self *NativeDialog) Modal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_gret := _info.InvokeClassMethod("get_modal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_native_dialog_get_modal(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -243,20 +236,18 @@ func (self *NativeDialog) Modal() bool {
 //      modified or freed.
 //
 func (self *NativeDialog) Title() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _cret *C.char            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_native_dialog_get_title(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -271,20 +262,18 @@ func (self *NativeDialog) Title() string {
 //      transient parent has been set.
 //
 func (self *NativeDialog) TransientFor() *Window {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _cret *C.GtkWindow       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_gret := _info.InvokeClassMethod("get_transient_for", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
 	runtime.KeepAlive(self)
 
 	var _window *Window // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_window = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _window
@@ -297,19 +286,17 @@ func (self *NativeDialog) TransientFor() *Window {
 //    - ok: TRUE if the dialog is visible.
 //
 func (self *NativeDialog) Visible() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_native_dialog_get_visible(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -322,13 +309,11 @@ func (self *NativeDialog) Visible() bool {
 //
 // If the dialog is not visible this does nothing.
 func (self *NativeDialog) Hide() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_info.InvokeClassMethod("hide", _args[:], nil)
-
+	C.gtk_native_dialog_hide(_arg0)
 	runtime.KeepAlive(self)
 }
 
@@ -366,19 +351,17 @@ func (self *NativeDialog) Hide() {
 //    - gint: response ID.
 //
 func (self *NativeDialog) Run() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _cret C.gint             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_gret := _info.InvokeClassMethod("run", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_native_dialog_run(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -394,16 +377,15 @@ func (self *NativeDialog) Run() int32 {
 //    - modal: whether the window is modal.
 //
 func (self *NativeDialog) SetModal(modal bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 C.gboolean         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if modal {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_info.InvokeClassMethod("set_modal", _args[:], nil)
-
+	C.gtk_native_dialog_set_modal(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(modal)
 }
@@ -415,15 +397,14 @@ func (self *NativeDialog) SetModal(modal bool) {
 //    - title of the dialog.
 //
 func (self *NativeDialog) SetTitle(title string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 *C.char            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_info.InvokeClassMethod("set_title", _args[:], nil)
-
+	C.gtk_native_dialog_set_title(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(title)
 }
@@ -440,16 +421,15 @@ func (self *NativeDialog) SetTitle(title string) {
 //    - parent (optional) window, or NULL.
 //
 func (self *NativeDialog) SetTransientFor(parent *Window) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 *C.GtkWindow       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_info.InvokeClassMethod("set_transient_for", _args[:], nil)
-
+	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(parent)
 }
@@ -460,12 +440,10 @@ func (self *NativeDialog) SetTransientFor(parent *Window) {
 //
 // Multiple calls while the dialog is visible will be ignored.
 func (self *NativeDialog) Show() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNativeDialog // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "NativeDialog")
-	_info.InvokeClassMethod("show", _args[:], nil)
-
+	C.gtk_native_dialog_show(_arg0)
 	runtime.KeepAlive(self)
 }

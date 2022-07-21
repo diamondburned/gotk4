@@ -7,16 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern void _gotk4_atk1_MiscClass_threads_enter(void*);
-// extern void _gotk4_atk1_MiscClass_threads_leave(void*);
+// extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
+// extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
 import "C"
 
 // GTypeMisc returns the GType for the type Misc.
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMisc() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Misc").RegisteredGType())
+	gtype := coreglib.Type(C.atk_misc_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMisc)
 	return gtype
 }
@@ -70,21 +68,19 @@ func classInitMiscer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Atk", "MiscClass")
+	pclass := (*C.AtkMiscClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ThreadsEnter() }); ok {
-		o := pclass.StructFieldOffset("threads_enter")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_MiscClass_threads_enter)
+		pclass.threads_enter = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_enter)
 	}
 
 	if _, ok := goval.(interface{ ThreadsLeave() }); ok {
-		o := pclass.StructFieldOffset("threads_leave")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_MiscClass_threads_leave)
+		pclass.threads_leave = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_leave)
 	}
 }
 
 //export _gotk4_atk1_MiscClass_threads_enter
-func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.void) {
+func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsEnter() })
 
@@ -92,7 +88,7 @@ func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.void) {
 }
 
 //export _gotk4_atk1_MiscClass_threads_leave
-func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.void) {
+func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsLeave() })
 
@@ -115,13 +111,11 @@ func marshalMisc(p uintptr) (interface{}, error) {
 //
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsEnter() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkMisc // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	_info := girepository.MustFind("Atk", "Misc")
-	_info.InvokeClassMethod("threads_enter", _args[:], nil)
-
+	C.atk_misc_threads_enter(_arg0)
 	runtime.KeepAlive(misc)
 }
 
@@ -136,13 +130,11 @@ func (misc *Misc) ThreadsEnter() {
 //
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsLeave() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkMisc // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	_info := girepository.MustFind("Atk", "Misc")
-	_info.InvokeClassMethod("threads_leave", _args[:], nil)
-
+	C.atk_misc_threads_leave(_arg0)
 	runtime.KeepAlive(misc)
 }
 
@@ -156,13 +148,13 @@ func (misc *Misc) ThreadsLeave() {
 //    - misc: singleton instance of AtkMisc for this application.
 //
 func MiscGetInstance() *Misc {
-	_info := girepository.MustFind("Atk", "get_instance")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkMisc // in
+
+	_cret = C.atk_misc_get_instance()
 
 	var _misc *Misc // out
 
-	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _misc
 }

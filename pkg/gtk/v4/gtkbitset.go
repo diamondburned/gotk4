@@ -7,13 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // BitsetIter: opaque, stack-allocated struct for iterating over the elements of
@@ -30,7 +27,7 @@ type BitsetIter struct {
 
 // bitsetIter is the struct that's finalized.
 type bitsetIter struct {
-	native unsafe.Pointer
+	native *C.GtkBitsetIter
 }
 
 // Value gets the current value that iter points to.
@@ -43,19 +40,17 @@ type bitsetIter struct {
 //    - guint: current value pointer to by iter.
 //
 func (iter *BitsetIter) Value() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitsetIter // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "BitsetIter")
-	_gret := _info.InvokeRecordMethod("get_value", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_get_value(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -67,19 +62,17 @@ func (iter *BitsetIter) Value() uint32 {
 //    - ok: TRUE if iter points to a valid value.
 //
 func (iter *BitsetIter) IsValid() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBitsetIter // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "BitsetIter")
-	_gret := _info.InvokeRecordMethod("is_valid", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_is_valid(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -97,22 +90,20 @@ func (iter *BitsetIter) IsValid() bool {
 //    - ok: TRUE if a next value existed.
 //
 func (iter *BitsetIter) Next() (uint32, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkBitsetIter // out
+	var _arg1 C.guint          // in
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "BitsetIter")
-	_gret := _info.InvokeRecordMethod("next", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
 	runtime.KeepAlive(iter)
 
 	var _value uint32 // out
 	var _ok bool      // out
 
-	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_value = uint32(_arg1)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -130,22 +121,20 @@ func (iter *BitsetIter) Next() (uint32, bool) {
 //    - ok: TRUE if a previous value existed.
 //
 func (iter *BitsetIter) Previous() (uint32, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkBitsetIter // out
+	var _arg1 C.guint          // in
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkBitsetIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "BitsetIter")
-	_gret := _info.InvokeRecordMethod("previous", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
 	runtime.KeepAlive(iter)
 
 	var _value uint32 // out
 	var _ok bool      // out
 
-	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_value = uint32(_arg1)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -169,16 +158,16 @@ func (iter *BitsetIter) Previous() (uint32, bool) {
 //    - ok: TRUE if a value was found.
 //
 func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg1 C.GtkBitsetIter // in
+	var _arg2 *C.GtkBitset    // out
+	var _arg3 C.guint         // out
+	var _arg4 C.guint         // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(target)
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
+	_arg3 = C.guint(target)
 
-	_info := girepository.MustFind("Gtk", "init_at")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_init_at(&_arg1, _arg2, _arg3, &_arg4)
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(target)
 
@@ -186,9 +175,9 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 	var _value uint32     // out
 	var _ok bool          // out
 
-	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_value = uint32(_arg4)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -211,24 +200,23 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 //    - ok: TRUE if set isn't empty.
 //
 func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg1 C.GtkBitsetIter // in
+	var _arg2 *C.GtkBitset    // out
+	var _arg3 C.guint         // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
 
-	_info := girepository.MustFind("Gtk", "init_first")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_init_first(&_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(set)
 
 	var _iter *BitsetIter // out
 	var _value uint32     // out
 	var _ok bool          // out
 
-	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_value = uint32(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -251,24 +239,23 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
 //    - ok: TRUE if set isn't empty.
 //
 func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg1 C.GtkBitsetIter // in
+	var _arg2 *C.GtkBitset    // out
+	var _arg3 C.guint         // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(set)))
 
-	_info := girepository.MustFind("Gtk", "init_last")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bitset_iter_init_last(&_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(set)
 
 	var _iter *BitsetIter // out
 	var _value uint32     // out
 	var _ok bool          // out
 
-	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_value = uint32(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 

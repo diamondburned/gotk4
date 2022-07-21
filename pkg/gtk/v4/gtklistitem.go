@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeListItem returns the GType for the type ListItem.
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeListItem() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListItem").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_list_item_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalListItem)
 	return gtype
+}
+
+// ListItemOverrider contains methods that are overridable.
+type ListItemOverrider interface {
 }
 
 // ListItem: GtkListItem is used by list widgets to represent items in a
@@ -50,6 +52,14 @@ var (
 	_ coreglib.Objector = (*ListItem)(nil)
 )
 
+func classInitListItemmer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapListItem(obj *coreglib.Object) *ListItem {
 	return &ListItem{
 		Object: obj,
@@ -68,19 +78,17 @@ func marshalListItem(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the item is activatable.
 //
 func (self *ListItem) Activatable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_gret := _info.InvokeClassMethod("get_activatable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_list_item_get_activatable(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -95,21 +103,19 @@ func (self *ListItem) Activatable() bool {
 //    - widget (optional): child.
 //
 func (self *ListItem) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _cret *C.GtkWidget   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_list_item_get_child(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -136,19 +142,17 @@ func (self *ListItem) Child() Widgetter {
 //    - object (optional): item displayed.
 //
 func (self *ListItem) Item() *coreglib.Object {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _cret C.gpointer     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_gret := _info.InvokeClassMethod("get_item", _args[:], nil)
-	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_list_item_get_item(_arg0)
 	runtime.KeepAlive(self)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
+	_object = coreglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -162,19 +166,17 @@ func (self *ListItem) Item() *coreglib.Object {
 //    - guint: position of this item.
 //
 func (self *ListItem) Position() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _cret C.guint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_gret := _info.InvokeClassMethod("get_position", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_list_item_get_position(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -189,19 +191,17 @@ func (self *ListItem) Position() uint32 {
 //    - ok: TRUE if the item is selectable.
 //
 func (self *ListItem) Selectable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_gret := _info.InvokeClassMethod("get_selectable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_list_item_get_selectable(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -218,19 +218,17 @@ func (self *ListItem) Selectable() bool {
 //    - ok: TRUE if the item is selected.
 //
 func (self *ListItem) Selected() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_gret := _info.InvokeClassMethod("get_selected", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_list_item_get_selected(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -251,16 +249,15 @@ func (self *ListItem) Selected() bool {
 //    - activatable: if the item should be activatable.
 //
 func (self *ListItem) SetActivatable(activatable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if activatable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_info.InvokeClassMethod("set_activatable", _args[:], nil)
-
+	C.gtk_list_item_set_activatable(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activatable)
 }
@@ -275,16 +272,15 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //    - child (optional): list item's child or NULL to unset.
 //
 func (self *ListItem) SetChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _arg1 *C.GtkWidget   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_info.InvokeClassMethod("set_child", _args[:], nil)
-
+	C.gtk_list_item_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }
@@ -306,16 +302,15 @@ func (self *ListItem) SetChild(child Widgetter) {
 //    - selectable: if the item should be selectable.
 //
 func (self *ListItem) SetSelectable(selectable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkListItem // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkListItem)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if selectable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ListItem")
-	_info.InvokeClassMethod("set_selectable", _args[:], nil)
-
+	C.gtk_list_item_set_selectable(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(selectable)
 }

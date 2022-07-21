@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(gpointer, void*, guintptr);
+// extern void _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(gpointer, GdkDisplay*, guintptr);
 import "C"
 
 // GTypeDisplayManager returns the GType for the type DisplayManager.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDisplayManager() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DisplayManager").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_display_manager_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDisplayManager)
 	return gtype
 }
@@ -66,14 +64,12 @@ func GTypeDisplayManager() coreglib.Type {
 //    - backends: comma-separated list of backends.
 //
 func SetAllowedBackends(backends string) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char // out
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(backends)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(backends)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "set_allowed_backends")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gdk_set_allowed_backends(_arg1)
 	runtime.KeepAlive(backends)
 }
 
@@ -137,7 +133,7 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gdk4_DisplayManager_ConnectDisplayOpened
-func _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(arg0 C.gpointer, arg1 *C.GdkDisplay, arg2 C.guintptr) {
 	var f func(display *Display)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -168,20 +164,18 @@ func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) co
 //    - display (optional): GdkDisplay, or NULL if there is no default display.
 //
 func (manager *DisplayManager) DefaultDisplay() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplayManager // out
+	var _cret *C.GdkDisplay        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gdk", "DisplayManager")
-	_gret := _info.InvokeClassMethod("get_default_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_manager_get_default_display(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _display *Display // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display
@@ -195,23 +189,21 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 //      g_slist_free() when you are done with it.
 //
 func (manager *DisplayManager) ListDisplays() []*Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplayManager // out
+	var _cret *C.GSList            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gdk", "DisplayManager")
-	_gret := _info.InvokeClassMethod("list_displays", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_manager_list_displays(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _sList []*Display // out
 
-	_sList = make([]*Display, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*Display, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDisplay)(v)
 		var dst *Display // out
-		dst = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapDisplay(coreglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -230,23 +222,22 @@ func (manager *DisplayManager) ListDisplays() []*Display {
 //      opened.
 //
 func (manager *DisplayManager) OpenDisplay(name string) *Display {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDisplayManager // out
+	var _arg1 *C.char              // out
+	var _cret *C.GdkDisplay        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "DisplayManager")
-	_gret := _info.InvokeClassMethod("open_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(name)
 
 	var _display *Display // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display
@@ -259,14 +250,13 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 //    - display: GdkDisplay.
 //
 func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDisplayManager // out
+	var _arg1 *C.GdkDisplay        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "DisplayManager")
-	_info.InvokeClassMethod("set_default_display", _args[:], nil)
-
+	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(display)
 }
@@ -284,13 +274,13 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 //    - displayManager: global GdkDisplayManager singleton.
 //
 func DisplayManagerGet() *DisplayManager {
-	_info := girepository.MustFind("Gdk", "get")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GdkDisplayManager // in
+
+	_cret = C.gdk_display_manager_get()
 
 	var _displayManager *DisplayManager // out
 
-	_displayManager = wrapDisplayManager(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_displayManager = wrapDisplayManager(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _displayManager
 }

@@ -8,18 +8,18 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
 // extern gboolean _gotk4_gtk3_Socket_ConnectPlugRemoved(gpointer, guintptr);
-// extern void _gotk4_gtk3_SocketClass_plug_added(void*);
+// extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
 // extern void _gotk4_gtk3_Socket_ConnectPlugAdded(gpointer, guintptr);
 import "C"
 
@@ -29,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocket() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Socket").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_socket_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocket)
 	return gtype
 }
@@ -104,21 +104,19 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "SocketClass")
+	pclass := (*C.GtkSocketClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ PlugAdded() }); ok {
-		o := pclass.StructFieldOffset("plug_added")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SocketClass_plug_added)
+		pclass.plug_added = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_added)
 	}
 
 	if _, ok := goval.(interface{ PlugRemoved() bool }); ok {
-		o := pclass.StructFieldOffset("plug_removed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SocketClass_plug_removed)
+		pclass.plug_removed = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_removed)
 	}
 }
 
 //export _gotk4_gtk3_SocketClass_plug_added
-func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.void) {
+func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugAdded() })
 
@@ -126,7 +124,7 @@ func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_SocketClass_plug_removed
-func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.void) (cret C.gboolean) {
+func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugRemoved() bool })
 
@@ -220,13 +218,13 @@ func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) coreglib.SignalHan
 //    - socket: new Socket.
 //
 func NewSocket() *Socket {
-	_info := girepository.MustFind("Gtk", "Socket")
-	_gret := _info.InvokeClassMethod("new_Socket", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_socket_new()
 
 	var _socket *Socket // out
 
-	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -239,21 +237,19 @@ func NewSocket() *Socket {
 //    - window (optional) of the plug if available, or NULL.
 //
 func (socket_ *Socket) PlugWindow() gdk.Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSocket // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
 
-	_info := girepository.MustFind("Gtk", "Socket")
-	_gret := _info.InvokeClassMethod("get_plug_window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_socket_get_plug_window(_arg0)
 	runtime.KeepAlive(socket_)
 
 	var _window gdk.Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

@@ -9,18 +9,16 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_Seat_ConnectDeviceAdded(gpointer, void*, guintptr);
-// extern void _gotk4_gdk4_Seat_ConnectDeviceRemoved(gpointer, void*, guintptr);
-// extern void _gotk4_gdk4_Seat_ConnectToolAdded(gpointer, void*, guintptr);
-// extern void _gotk4_gdk4_Seat_ConnectToolRemoved(gpointer, void*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectToolAdded(gpointer, GdkDeviceTool*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectToolRemoved(gpointer, GdkDeviceTool*, guintptr);
 import "C"
 
 // GTypeSeatCapabilities returns the GType for the type SeatCapabilities.
@@ -29,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSeatCapabilities() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "SeatCapabilities").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_seat_capabilities_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSeatCapabilities)
 	return gtype
 }
@@ -40,7 +38,7 @@ func GTypeSeatCapabilities() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSeat() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Seat").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_seat_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSeat)
 	return gtype
 }
@@ -158,7 +156,7 @@ func BaseSeat(obj Seater) *Seat {
 }
 
 //export _gotk4_gdk4_Seat_ConnectDeviceAdded
-func _gotk4_gdk4_Seat_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Seat_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -200,7 +198,7 @@ func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) coreglib.SignalHand
 }
 
 //export _gotk4_gdk4_Seat_ConnectDeviceRemoved
-func _gotk4_gdk4_Seat_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Seat_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
 	var f func(device Devicer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -242,7 +240,7 @@ func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) coreglib.SignalHa
 }
 
 //export _gotk4_gdk4_Seat_ConnectToolAdded
-func _gotk4_gdk4_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
 	var f func(tool *DeviceTool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -272,7 +270,7 @@ func (seat *Seat) ConnectToolAdded(f func(tool *DeviceTool)) coreglib.SignalHand
 }
 
 //export _gotk4_gdk4_Seat_ConnectToolRemoved
-func _gotk4_gdk4_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
 	var f func(tool *DeviceTool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -297,6 +295,80 @@ func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) coreglib.SignalHa
 	return coreglib.ConnectGeneratedClosure(seat, "tool-removed", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectToolRemoved), f)
 }
 
+// Capabilities returns the capabilities this GdkSeat currently has.
+//
+// The function returns the following values:
+//
+//    - seatCapabilities: seat capabilities.
+//
+func (seat *Seat) Capabilities() SeatCapabilities {
+	var _arg0 *C.GdkSeat            // out
+	var _cret C.GdkSeatCapabilities // in
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
+
+	_cret = C.gdk_seat_get_capabilities(_arg0)
+	runtime.KeepAlive(seat)
+
+	var _seatCapabilities SeatCapabilities // out
+
+	_seatCapabilities = SeatCapabilities(_cret)
+
+	return _seatCapabilities
+}
+
+// Devices returns the devices that match the given capabilities.
+//
+// The function takes the following parameters:
+//
+//    - capabilities to get devices for.
+//
+// The function returns the following values:
+//
+//    - list: list of GdkDevices. The list must be freed with g_list_free(), the
+//      elements are owned by GTK and must not be freed.
+//
+func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
+	var _arg0 *C.GdkSeat            // out
+	var _arg1 C.GdkSeatCapabilities // out
+	var _cret *C.GList              // in
+
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
+	_arg1 = C.GdkSeatCapabilities(capabilities)
+
+	_cret = C.gdk_seat_get_devices(_arg0, _arg1)
+	runtime.KeepAlive(seat)
+	runtime.KeepAlive(capabilities)
+
+	var _list []Devicer // out
+
+	_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDevice)(v)
+		var dst Devicer // out
+		{
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gdk.Devicer is nil")
+			}
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Devicer)
+				return ok
+			})
+			rv, ok := casted.(Devicer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
+			}
+			dst = rv
+		}
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
 // Display returns the GdkDisplay this seat belongs to.
 //
 // The function returns the following values:
@@ -304,19 +376,17 @@ func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) coreglib.SignalHa
 //    - display: GdkDisplay. This object is owned by GTK and must not be freed.
 //
 func (seat *Seat) Display() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSeat    // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_info := girepository.MustFind("Gdk", "Seat")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_seat_get_display(_arg0)
 	runtime.KeepAlive(seat)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -329,21 +399,19 @@ func (seat *Seat) Display() *Display {
 //      owned by GTK and must not be freed.
 //
 func (seat *Seat) Keyboard() Devicer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSeat   // out
+	var _cret *C.GdkDevice // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_info := girepository.MustFind("Gdk", "Seat")
-	_gret := _info.InvokeClassMethod("get_keyboard", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_seat_get_keyboard(_arg0)
 	runtime.KeepAlive(seat)
 
 	var _device Devicer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -369,21 +437,19 @@ func (seat *Seat) Keyboard() Devicer {
 //      owned by GTK and must not be freed.
 //
 func (seat *Seat) Pointer() Devicer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSeat   // out
+	var _cret *C.GdkDevice // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_info := girepository.MustFind("Gdk", "Seat")
-	_gret := _info.InvokeClassMethod("get_pointer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_seat_get_pointer(_arg0)
 	runtime.KeepAlive(seat)
 
 	var _device Devicer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -408,23 +474,21 @@ func (seat *Seat) Pointer() Devicer {
 //    - list: A list of tools. Free with g_list_free().
 //
 func (seat *Seat) Tools() []*DeviceTool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSeat // out
+	var _cret *C.GList   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_info := girepository.MustFind("Gdk", "Seat")
-	_gret := _info.InvokeClassMethod("get_tools", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_seat_get_tools(_arg0)
 	runtime.KeepAlive(seat)
 
 	var _list []*DeviceTool // out
 
-	_list = make([]*DeviceTool, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*DeviceTool, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDeviceTool)(v)
 		var dst *DeviceTool // out
-		dst = wrapDeviceTool(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapDeviceTool(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

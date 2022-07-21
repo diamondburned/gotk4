@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRelationSet() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "RelationSet").RegisteredGType())
+	gtype := coreglib.Type(C.atk_relation_set_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRelationSet)
 	return gtype
 }
@@ -71,13 +69,13 @@ func marshalRelationSet(p uintptr) (interface{}, error) {
 //    - relationSet: new RelationSet.
 //
 func NewRelationSet() *RelationSet {
-	_info := girepository.MustFind("Atk", "RelationSet")
-	_gret := _info.InvokeClassMethod("new_RelationSet", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkRelationSet // in
+
+	_cret = C.atk_relation_set_new()
 
 	var _relationSet *RelationSet // out
 
-	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relationSet
 }
@@ -92,16 +90,110 @@ func NewRelationSet() *RelationSet {
 //    - relation: Relation.
 //
 func (set *RelationSet) Add(relation *Relation) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 *C.AtkRelation    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 
-	_info := girepository.MustFind("Atk", "RelationSet")
-	_info.InvokeClassMethod("add", _args[:], nil)
-
+	C.atk_relation_set_add(_arg0, _arg1)
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relation)
+}
+
+// AddRelationByType: add a new relation of the specified type with the
+// specified target to the current relation set if the relation set does not
+// contain a relation of that type. If it is does contain a relation of that
+// typea the target is added to the relation.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//    - target: Object.
+//
+func (set *RelationSet) AddRelationByType(relationship RelationType, target *ObjectClass) {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+}
+
+// Contains determines whether the relation set contains a relation that matches
+// the specified type.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if relationship is the relationship type of a relation in set,
+//      FALSE otherwise.
+//
+func (set *RelationSet) Contains(relationship RelationType) bool {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_set_contains(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ContainsTarget determines whether the relation set contains a relation that
+// matches the specified pair formed by type relationship and object target.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//    - target: Object.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if set contains a relation with the relationship type
+//      relationship with an object target, FALSE otherwise.
+//
+func (set *RelationSet) ContainsTarget(relationship RelationType, target *ObjectClass) bool {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // NRelations determines the number of relations in a relation set.
@@ -111,19 +203,17 @@ func (set *RelationSet) Add(relation *Relation) {
 //    - gint: integer representing the number of relations in the set.
 //
 func (set *RelationSet) NRelations() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkRelationSet // out
+	var _cret C.gint            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 
-	_info := girepository.MustFind("Atk", "RelationSet")
-	_gret := _info.InvokeClassMethod("get_n_relations", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_relation_set_get_n_relations(_arg0)
 	runtime.KeepAlive(set)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -140,21 +230,49 @@ func (set *RelationSet) NRelations() int32 {
 //    - relation which is the relation at position i in the set.
 //
 func (set *RelationSet) Relation(i int32) *Relation {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.gint            // out
+	var _cret *C.AtkRelation    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "RelationSet")
-	_gret := _info.InvokeClassMethod("get_relation", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(i)
 
 	var _relation *Relation // out
 
-	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _relation
+}
+
+// RelationByType finds a relation that matches the specified type.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//
+// The function returns the following values:
+//
+//    - relation which is a relation matching the specified type.
+//
+func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _cret *C.AtkRelation    // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+
+	var _relation *Relation // out
+
+	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _relation
 }
@@ -167,14 +285,13 @@ func (set *RelationSet) Relation(i int32) *Relation {
 //    - relation: Relation.
 //
 func (set *RelationSet) Remove(relation *Relation) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 *C.AtkRelation    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 
-	_info := girepository.MustFind("Atk", "RelationSet")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.atk_relation_set_remove(_arg0, _arg1)
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relation)
 }

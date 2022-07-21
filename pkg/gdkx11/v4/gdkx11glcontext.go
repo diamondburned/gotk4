@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeX11GLContext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11GLContext").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_x11_gl_context_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalX11GLContext)
 	return gtype
 }
@@ -37,28 +35,31 @@ func GTypeX11GLContext() coreglib.Type {
 //    - ok: TRUE if GLX is available.
 //
 func (display *X11Display) GLXVersion() (major, minor int32, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.int         // in
+	var _arg2 C.int         // in
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Display")
-	_gret := _info.InvokeClassMethod("get_glx_version", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)
 
 	var _major int32 // out
 	var _minor int32 // out
 	var _ok bool     // out
 
-	_major = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_minor = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_major = int32(_arg1)
+	_minor = int32(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _major, _minor, _ok
+}
+
+// X11GLContextOverrider contains methods that are overridable.
+type X11GLContextOverrider interface {
 }
 
 type X11GLContext struct {
@@ -69,6 +70,14 @@ type X11GLContext struct {
 var (
 	_ gdk.GLContexter = (*X11GLContext)(nil)
 )
+
+func classInitX11GLContexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11GLContext(obj *coreglib.Object) *X11GLContext {
 	return &X11GLContext{

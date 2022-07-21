@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeRecentChooserWidget returns the GType for the type RecentChooserWidget.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooserWidget").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_chooser_widget_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserWidget)
 	return gtype
 }
@@ -103,13 +103,13 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 //    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidget() *RecentChooserWidget {
-	_info := girepository.MustFind("Gtk", "RecentChooserWidget")
-	_gret := _info.InvokeClassMethod("new_RecentChooserWidget", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_recent_chooser_widget_new()
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }
@@ -129,19 +129,17 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkRecentManager // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooserWidget")
-	_gret := _info.InvokeClassMethod("new_RecentChooserWidget_for_manager", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 	runtime.KeepAlive(manager)
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
 }

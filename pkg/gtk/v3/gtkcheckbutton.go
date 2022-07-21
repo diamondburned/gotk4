@@ -9,15 +9,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(void*, void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(GtkCheckButton*, cairo_t*);
 import "C"
 
 // GTypeCheckButton returns the GType for the type CheckButton.
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCheckButton() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CheckButton").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_check_button_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCheckButton)
 	return gtype
 }
@@ -71,16 +71,15 @@ func classInitCheckButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "CheckButtonClass")
+	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
-		o := pclass.StructFieldOffset("draw_indicator")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
+		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
 	}
 }
 
 //export _gotk4_gtk3_CheckButtonClass_draw_indicator
-func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.GtkCheckButton, arg1 *C.cairo_t) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
 
@@ -89,7 +88,7 @@ func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.void, arg1 *C.void) {
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
 	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 
 	iface.DrawIndicator(_cr)
@@ -149,13 +148,13 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 //    - checkButton: Widget.
 //
 func NewCheckButton() *CheckButton {
-	_info := girepository.MustFind("Gtk", "CheckButton")
-	_gret := _info.InvokeClassMethod("new_CheckButton", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_check_button_new()
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -172,20 +171,18 @@ func NewCheckButton() *CheckButton {
 //    - checkButton: Widget.
 //
 func NewCheckButtonWithLabel(label string) *CheckButton {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "CheckButton")
-	_gret := _info.InvokeClassMethod("new_CheckButton_with_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_button_new_with_label(_arg1)
 	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }
@@ -204,20 +201,18 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 //    - checkButton: new CheckButton.
 //
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "CheckButton")
-	_gret := _info.InvokeClassMethod("new_CheckButton_with_mnemonic", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 	runtime.KeepAlive(label)
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
 }

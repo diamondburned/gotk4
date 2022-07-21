@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeDirectoryList returns the GType for the type DirectoryList.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDirectoryList() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DirectoryList").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_directory_list_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDirectoryList)
 	return gtype
 }
@@ -101,26 +99,25 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 //    - directoryList: new GtkDirectoryList.
 //
 func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
-	var _args [2]girepository.Argument
+	var _arg1 *C.char             // out
+	var _arg2 *C.GFile            // out
+	var _cret *C.GtkDirectoryList // in
 
 	if attributes != "" {
-		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if file != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		_arg2 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("new_DirectoryList", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_new(_arg1, _arg2)
 	runtime.KeepAlive(attributes)
 	runtime.KeepAlive(file)
 
 	var _directoryList *DirectoryList // out
 
-	_directoryList = wrapDirectoryList(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_directoryList = wrapDirectoryList(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _directoryList
 }
@@ -132,20 +129,18 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 //    - utf8 (optional): queried attributes.
 //
 func (self *DirectoryList) Attributes() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _cret *C.char             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_get_attributes(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -165,20 +160,18 @@ func (self *DirectoryList) Attributes() string {
 //    - err (optional): loading error or NULL if loading finished successfully.
 //
 func (self *DirectoryList) Error() error {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _cret *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("get_error", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_get_error(_arg0)
 	runtime.KeepAlive(self)
 
 	var _err error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cret)) != nil {
-		_err = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_err = gerror.Take(unsafe.Pointer(_cret))
 	}
 
 	return _err
@@ -191,21 +184,19 @@ func (self *DirectoryList) Error() error {
 //    - file (optional) whose children are enumerated.
 //
 func (self *DirectoryList) File() *gio.File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _cret *C.GFile            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("get_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_get_file(_arg0)
 	runtime.KeepAlive(self)
 
 	var _file *gio.File // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -222,19 +213,17 @@ func (self *DirectoryList) File() *gio.File {
 //    - gint: IO priority.
 //
 func (self *DirectoryList) IOPriority() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _cret C.int               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("get_io_priority", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -247,19 +236,17 @@ func (self *DirectoryList) IOPriority() int32 {
 //    - ok: TRUE if the directory is monitored.
 //
 func (self *DirectoryList) Monitored() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("get_monitored", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_get_monitored(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -276,19 +263,17 @@ func (self *DirectoryList) Monitored() bool {
 //    - ok: TRUE if self is loading.
 //
 func (self *DirectoryList) IsLoading() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_gret := _info.InvokeClassMethod("is_loading", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_directory_list_is_loading(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -306,17 +291,16 @@ func (self *DirectoryList) IsLoading() bool {
 //    - attributes (optional) to enumerate.
 //
 func (self *DirectoryList) SetAttributes(attributes string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 *C.char             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if attributes != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_info.InvokeClassMethod("set_attributes", _args[:], nil)
-
+	C.gtk_directory_list_set_attributes(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(attributes)
 }
@@ -330,16 +314,15 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 //    - file (optional) to be enumerated.
 //
 func (self *DirectoryList) SetFile(file gio.Filer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 *C.GFile            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if file != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_info.InvokeClassMethod("set_file", _args[:], nil)
-
+	C.gtk_directory_list_set_file(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(file)
 }
@@ -359,14 +342,13 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 //    - ioPriority: IO priority to use.
 //
 func (self *DirectoryList) SetIOPriority(ioPriority int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 C.int               // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(ioPriority)
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_info.InvokeClassMethod("set_io_priority", _args[:], nil)
-
+	C.gtk_directory_list_set_io_priority(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ioPriority)
 }
@@ -384,16 +366,15 @@ func (self *DirectoryList) SetIOPriority(ioPriority int32) {
 //    - monitored: TRUE to monitor the directory for changes.
 //
 func (self *DirectoryList) SetMonitored(monitored bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if monitored {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "DirectoryList")
-	_info.InvokeClassMethod("set_monitored", _args[:], nil)
-
+	C.gtk_directory_list_set_monitored(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(monitored)
 }

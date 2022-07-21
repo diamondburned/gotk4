@@ -9,14 +9,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeAttachOptions returns the GType for the type AttachOptions.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAttachOptions() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AttachOptions").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_attach_options_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAttachOptions)
 	return gtype
 }
@@ -36,7 +36,7 @@ func GTypeAttachOptions() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Table").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_table_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTable)
 	return gtype
 }
@@ -181,27 +181,98 @@ func marshalTable(p uintptr) (interface{}, error) {
 //    - table: pointer to the newly created table widget.
 //
 func NewTable(rows, columns uint32, homogeneous bool) *Table {
-	var _args [3]girepository.Argument
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.gboolean   // out
+	var _cret *C.GtkWidget // in
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(rows)
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(columns)
+	_arg1 = C.guint(rows)
+	_arg2 = C.guint(columns)
 	if homogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg3 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_gret := _info.InvokeClassMethod("new_Table", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_table_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(rows)
 	runtime.KeepAlive(columns)
 	runtime.KeepAlive(homogeneous)
 
 	var _table *Table // out
 
-	_table = wrapTable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_table = wrapTable(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _table
+}
+
+// Attach adds a widget to a table. The number of “cells” that a widget will
+// occupy is specified by left_attach, right_attach, top_attach and
+// bottom_attach. These each represent the leftmost, rightmost, uppermost and
+// lowest column and row numbers of the table. (Columns and rows are indexed
+// from zero).
+//
+// To make a button occupy the lower right cell of a 2x2 table, use
+//
+//    gtk_table_attach (table, button,
+//                      1, 2, // left, right attach
+//                      1, 2, // top, bottom attach
+//                      xoptions, yoptions,
+//                      xpadding, ypadding);
+//
+// If you want to make the button span the entire bottom row, use left_attach ==
+// 0 and right_attach = 2 instead.
+//
+// Deprecated: Use gtk_grid_attach() with Grid. Note that the attach arguments
+// differ between those two functions.
+//
+// The function takes the following parameters:
+//
+//    - child: widget to add.
+//    - leftAttach: column number to attach the left side of a child widget to.
+//    - rightAttach: column number to attach the right side of a child widget to.
+//    - topAttach: row number to attach the top of a child widget to.
+//    - bottomAttach: row number to attach the bottom of a child widget to.
+//    - xoptions: used to specify the properties of the child widget when the
+//      table is resized.
+//    - yoptions: same as xoptions, except this field determines behaviour of
+//      vertical resizing.
+//    - xpadding: integer value specifying the padding on the left and right of
+//      the widget being added to the table.
+//    - ypadding: amount of padding above and below the child widget.
+//
+func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32, xoptions, yoptions AttachOptions, xpadding, ypadding uint32) {
+	var _arg0 *C.GtkTable        // out
+	var _arg1 *C.GtkWidget       // out
+	var _arg2 C.guint            // out
+	var _arg3 C.guint            // out
+	var _arg4 C.guint            // out
+	var _arg5 C.guint            // out
+	var _arg6 C.GtkAttachOptions // out
+	var _arg7 C.GtkAttachOptions // out
+	var _arg8 C.guint            // out
+	var _arg9 C.guint            // out
+
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.guint(leftAttach)
+	_arg3 = C.guint(rightAttach)
+	_arg4 = C.guint(topAttach)
+	_arg5 = C.guint(bottomAttach)
+	_arg6 = C.GtkAttachOptions(xoptions)
+	_arg7 = C.GtkAttachOptions(yoptions)
+	_arg8 = C.guint(xpadding)
+	_arg9 = C.guint(ypadding)
+
+	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(leftAttach)
+	runtime.KeepAlive(rightAttach)
+	runtime.KeepAlive(topAttach)
+	runtime.KeepAlive(bottomAttach)
+	runtime.KeepAlive(xoptions)
+	runtime.KeepAlive(yoptions)
+	runtime.KeepAlive(xpadding)
+	runtime.KeepAlive(ypadding)
 }
 
 // AttachDefaults as there are many options associated with gtk_table_attach(),
@@ -223,18 +294,21 @@ func NewTable(rows, columns uint32, homogeneous bool) *Table {
 //    - bottomAttach: row number to attach the bottom of the child widget to.
 //
 func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GtkTable  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
+	var _arg4 C.guint      // out
+	var _arg5 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(leftAttach)
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(rightAttach)
-	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(topAttach)
-	*(*C.guint)(unsafe.Pointer(&_args[5])) = C.guint(bottomAttach)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.guint(leftAttach)
+	_arg3 = C.guint(rightAttach)
+	_arg4 = C.guint(topAttach)
+	_arg5 = C.guint(bottomAttach)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("attach_defaults", _args[:], nil)
-
+	C.gtk_table_attach_defaults(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(leftAttach)
@@ -257,21 +331,20 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 //    - guint: column spacing.
 //
 func (table *Table) ColSpacing(column uint32) uint32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(column)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(column)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_gret := _info.InvokeClassMethod("get_col_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -287,19 +360,17 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 //    - guint: default column spacing.
 //
 func (table *Table) DefaultColSpacing() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_gret := _info.InvokeClassMethod("get_default_col_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 	runtime.KeepAlive(table)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -315,19 +386,17 @@ func (table *Table) DefaultColSpacing() uint32 {
 //    - guint: default row spacing.
 //
 func (table *Table) DefaultRowSpacing() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_gret := _info.InvokeClassMethod("get_default_row_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 	runtime.KeepAlive(table)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -343,19 +412,17 @@ func (table *Table) DefaultRowSpacing() uint32 {
 //    - ok: TRUE if the cells are all constrained to the same size.
 //
 func (table *Table) Homogeneous() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_gret := _info.InvokeClassMethod("get_homogeneous", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_table_get_homogeneous(_arg0)
 	runtime.KeepAlive(table)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -376,21 +443,20 @@ func (table *Table) Homogeneous() bool {
 //    - guint: row spacing.
 //
 func (table *Table) RowSpacing(row uint32) uint32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(row)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(row)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_gret := _info.InvokeClassMethod("get_row_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -405,21 +471,20 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 //    - columns (optional): return location for the number of columns, or NULL.
 //
 func (table *Table) Size() (rows, columns uint32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // in
+	var _arg2 C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("get_size", _args[:], _outs[:])
-
+	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(table)
 
 	var _rows uint32    // out
 	var _columns uint32 // out
 
-	_rows = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	_columns = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
+	_rows = uint32(_arg1)
+	_columns = uint32(_arg2)
 
 	return _rows, _columns
 }
@@ -435,15 +500,15 @@ func (table *Table) Size() (rows, columns uint32) {
 //    - columns: new number of columns.
 //
 func (table *Table) Resize(rows, columns uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
+	var _arg2 C.guint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(rows)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(columns)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(rows)
+	_arg2 = C.guint(columns)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("resize", _args[:], nil)
-
+	C.gtk_table_resize(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(rows)
 	runtime.KeepAlive(columns)
@@ -462,15 +527,15 @@ func (table *Table) Resize(rows, columns uint32) {
 //    - spacing: number of pixels that the spacing should take up.
 //
 func (table *Table) SetColSpacing(column, spacing uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
+	var _arg2 C.guint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(column)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(column)
+	_arg2 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("set_col_spacing", _args[:], nil)
-
+	C.gtk_table_set_col_spacing(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(spacing)
@@ -486,14 +551,13 @@ func (table *Table) SetColSpacing(column, spacing uint32) {
 //      table.
 //
 func (table *Table) SetColSpacings(spacing uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("set_col_spacings", _args[:], nil)
-
+	C.gtk_table_set_col_spacings(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(spacing)
 }
@@ -510,16 +574,15 @@ func (table *Table) SetColSpacings(spacing uint32) {
 //      to FALSE if this is not your desired behaviour.
 //
 func (table *Table) SetHomogeneous(homogeneous bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	if homogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("set_homogeneous", _args[:], nil)
-
+	C.gtk_table_set_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(homogeneous)
 }
@@ -537,15 +600,15 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 //    - spacing: number of pixels that the spacing should take up.
 //
 func (table *Table) SetRowSpacing(row, spacing uint32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
+	var _arg2 C.guint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(row)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(row)
+	_arg2 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("set_row_spacing", _args[:], nil)
-
+	C.gtk_table_set_row_spacing(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(spacing)
@@ -561,14 +624,13 @@ func (table *Table) SetRowSpacing(row, spacing uint32) {
 //      table.
 //
 func (table *Table) SetRowSpacings(spacing uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "Table")
-	_info.InvokeClassMethod("set_row_spacings", _args[:], nil)
-
+	C.gtk_table_set_row_spacings(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(spacing)
 }
@@ -580,15 +642,14 @@ type TableChild struct {
 
 // tableChild is the struct that's finalized.
 type tableChild struct {
-	native unsafe.Pointer
+	native *C.GtkTableChild
 }
 
 func (t *TableChild) Widget() Widgetter {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("widget")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.widget
 	var v Widgetter // out
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))
+		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -608,87 +669,75 @@ func (t *TableChild) Widget() Widgetter {
 }
 
 func (t *TableChild) LeftAttach() uint16 {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("left_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.left_attach
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableChild) RightAttach() uint16 {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("right_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.right_attach
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableChild) TopAttach() uint16 {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("top_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.top_attach
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableChild) BottomAttach() uint16 {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("bottom_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.bottom_attach
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableChild) Xpadding() uint16 {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("xpadding")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.xpadding
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableChild) Ypadding() uint16 {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("ypadding")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.ypadding
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableChild) SetLeftAttach(leftAttach uint16) {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("left_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(leftAttach)
+	valptr := &t.native.left_attach
+	*valptr = C.guint16(leftAttach)
 }
 
 func (t *TableChild) SetRightAttach(rightAttach uint16) {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("right_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(rightAttach)
+	valptr := &t.native.right_attach
+	*valptr = C.guint16(rightAttach)
 }
 
 func (t *TableChild) SetTopAttach(topAttach uint16) {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("top_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(topAttach)
+	valptr := &t.native.top_attach
+	*valptr = C.guint16(topAttach)
 }
 
 func (t *TableChild) SetBottomAttach(bottomAttach uint16) {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("bottom_attach")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(bottomAttach)
+	valptr := &t.native.bottom_attach
+	*valptr = C.guint16(bottomAttach)
 }
 
 func (t *TableChild) SetXpadding(xpadding uint16) {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("xpadding")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(xpadding)
+	valptr := &t.native.xpadding
+	*valptr = C.guint16(xpadding)
 }
 
 func (t *TableChild) SetYpadding(ypadding uint16) {
-	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("ypadding")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(ypadding)
+	valptr := &t.native.ypadding
+	*valptr = C.guint16(ypadding)
 }
 
 // TableRowCol: instance of this type is always passed by reference.
@@ -698,47 +747,41 @@ type TableRowCol struct {
 
 // tableRowCol is the struct that's finalized.
 type tableRowCol struct {
-	native unsafe.Pointer
+	native *C.GtkTableRowCol
 }
 
 func (t *TableRowCol) Requisition() uint16 {
-	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("requisition")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.requisition
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableRowCol) Allocation() uint16 {
-	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("allocation")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.allocation
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableRowCol) Spacing() uint16 {
-	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("spacing")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.spacing
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
 func (t *TableRowCol) SetRequisition(requisition uint16) {
-	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("requisition")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(requisition)
+	valptr := &t.native.requisition
+	*valptr = C.guint16(requisition)
 }
 
 func (t *TableRowCol) SetAllocation(allocation uint16) {
-	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("allocation")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(allocation)
+	valptr := &t.native.allocation
+	*valptr = C.guint16(allocation)
 }
 
 func (t *TableRowCol) SetSpacing(spacing uint16) {
-	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("spacing")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(spacing)
+	valptr := &t.native.spacing
+	*valptr = C.guint16(spacing)
 }

@@ -8,13 +8,11 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 // extern void _gotk4_gdk3_Screen_ConnectCompositedChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Screen_ConnectMonitorsChanged(gpointer, guintptr);
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScreen() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Screen").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_screen_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScreen)
 	return gtype
 }
@@ -151,21 +149,19 @@ func (screen *Screen) ConnectSizeChanged(f func()) coreglib.SignalHandle {
 //    - window (optional): currently active window, or NULL.
 //
 func (screen *Screen) ActiveWindow() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_active_window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_active_window(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _window Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -190,19 +186,17 @@ func (screen *Screen) ActiveWindow() Windower {
 //    - display to which screen belongs.
 //
 func (screen *Screen) Display() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen  // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_display(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -216,20 +210,18 @@ func (screen *Screen) Display() *Display {
 //      options have been set.
 //
 func (screen *Screen) FontOptions() *cairo.FontOptions {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen            // out
+	var _cret *C.cairo_font_options_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_font_options", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_font_options(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _fontOptions *cairo.FontOptions // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _fontOptions
@@ -246,19 +238,17 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 //    - gint: height of screen in pixels.
 //
 func (screen *Screen) Height() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_height(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -276,19 +266,17 @@ func (screen *Screen) Height() int32 {
 //    - gint: heigth of screen in millimeters.
 //
 func (screen *Screen) HeightMm() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_height_mm", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_height_mm(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -309,23 +297,23 @@ func (screen *Screen) HeightMm() int32 {
 //      (x,y) if the point is not in any monitor.
 //
 func (screen *Screen) MonitorAtPoint(x, y int32) int32 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_monitor_at_point", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_monitor_at_point(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -345,21 +333,20 @@ func (screen *Screen) MonitorAtPoint(x, y int32) int32 {
 //      does not intersect any monitors, a monitor, close to window.
 //
 func (screen *Screen) MonitorAtWindow(window Windower) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 *C.GdkWindow // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_monitor_at_window", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_monitor_at_window(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(window)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -386,23 +373,20 @@ func (screen *Screen) MonitorAtWindow(window Windower) int32 {
 //    - dest (optional) to be filled with the monitor geometry.
 //
 func (screen *Screen) MonitorGeometry(monitorNum int32) *Rectangle {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(monitorNum)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_info.InvokeClassMethod("get_monitor_geometry", _args[:], _outs[:])
-
+	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _dest *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }
@@ -421,21 +405,20 @@ func (screen *Screen) MonitorGeometry(monitorNum int32) *Rectangle {
 //    - gint: height of the monitor, or -1 if not available.
 //
 func (screen *Screen) MonitorHeightMm(monitorNum int32) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.gint       // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(monitorNum)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_monitor_height_mm", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_monitor_height_mm(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -457,23 +440,22 @@ func (screen *Screen) MonitorHeightMm(monitorNum int32) int32 {
 //      monitor, or NULL if the name cannot be determined.
 //
 func (screen *Screen) MonitorPlugName(monitorNum int32) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(monitorNum)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_monitor_plug_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_monitor_plug_name(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -499,21 +481,20 @@ func (screen *Screen) MonitorPlugName(monitorNum int32) string {
 //    - gint: scale factor.
 //
 func (screen *Screen) MonitorScaleFactor(monitorNum int32) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.gint       // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(monitorNum)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_monitor_scale_factor", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_monitor_scale_factor(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -533,21 +514,20 @@ func (screen *Screen) MonitorScaleFactor(monitorNum int32) int32 {
 //    - gint: width of the monitor, or -1 if not available.
 //
 func (screen *Screen) MonitorWidthMm(monitorNum int32) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.gint       // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(monitorNum)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_monitor_width_mm", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_monitor_width_mm(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -578,23 +558,20 @@ func (screen *Screen) MonitorWidthMm(monitorNum int32) int32 {
 //    - dest (optional) to be filled with the monitor workarea.
 //
 func (screen *Screen) MonitorWorkarea(monitorNum int32) *Rectangle {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkScreen   // out
+	var _arg1 C.gint         // out
+	var _arg2 C.GdkRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gint(monitorNum)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_info.InvokeClassMethod("get_monitor_workarea", _args[:], _outs[:])
-
+	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _dest *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }
@@ -608,19 +585,17 @@ func (screen *Screen) MonitorWorkarea(monitorNum int32) *Rectangle {
 //    - gint: number of monitors which screen consists of.
 //
 func (screen *Screen) NMonitors() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_n_monitors", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_n_monitors(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -635,19 +610,17 @@ func (screen *Screen) NMonitors() int32 {
 //    - gint: index.
 //
 func (screen *Screen) Number() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_number", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_number(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -668,19 +641,17 @@ func (screen *Screen) Number() int32 {
 //    - gint: integer index for the primary monitor, or 0 if none is configured.
 //
 func (screen *Screen) PrimaryMonitor() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_primary_monitor", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_primary_monitor(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -693,19 +664,17 @@ func (screen *Screen) PrimaryMonitor() int32 {
 //    - gdouble: current resolution, or -1 if no resolution has been set.
 //
 func (screen *Screen) Resolution() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gdouble    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_resolution", _args[:], nil)
-	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_resolution(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -729,20 +698,18 @@ func (screen *Screen) Resolution() float64 {
 //      capability is not available.
 //
 func (screen *Screen) RGBAVisual() *Visual {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GdkVisual // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_rgba_visual", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_rgba_visual(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _visual *Visual // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _visual
@@ -755,20 +722,18 @@ func (screen *Screen) RGBAVisual() *Visual {
 //    - window: root window.
 //
 func (screen *Screen) RootWindow() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_root_window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_root_window(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -804,24 +769,24 @@ func (screen *Screen) RootWindow() Windower {
 //      otherwise.
 //
 func (screen *Screen) Setting(name string, value *coreglib.Value) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GValue    // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_setting", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -836,19 +801,17 @@ func (screen *Screen) Setting(name string, value *coreglib.Value) bool {
 //    - visual: system visual.
 //
 func (screen *Screen) SystemVisual() *Visual {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GdkVisual // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_system_visual", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_system_visual(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -865,24 +828,22 @@ func (screen *Screen) SystemVisual() *Visual {
 //    - list: list of toplevel windows, free with g_list_free().
 //
 func (screen *Screen) ToplevelWindows() []Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GList     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_toplevel_windows", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_toplevel_windows(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -915,19 +876,17 @@ func (screen *Screen) ToplevelWindows() []Windower {
 //    - gint: width of screen in pixels.
 //
 func (screen *Screen) Width() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_width(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -945,19 +904,17 @@ func (screen *Screen) Width() int32 {
 //    - gint: width of screen in millimeters.
 //
 func (screen *Screen) WidthMm() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_width_mm", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_width_mm(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -982,25 +939,23 @@ func (screen *Screen) WidthMm() int32 {
 //    - list (optional): a list of Windows for the current window stack, or NULL.
 //
 func (screen *Screen) WindowStack() []Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GList     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("get_window_stack", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_get_window_stack(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _list []Windower // out
 
-	if *(**C.GList)(unsafe.Pointer(&_cret)) != nil {
-		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-		gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-			src := (*C.void)(v)
+	if _cret != nil {
+		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+			src := (*C.GdkWindow)(v)
 			var dst Windower // out
 			{
-				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+				objptr := unsafe.Pointer(src)
 				if objptr == nil {
 					panic("object of type gdk.Windower is nil")
 				}
@@ -1035,19 +990,17 @@ func (screen *Screen) WindowStack() []Windower {
 //      their alpha channels drawn correctly on the screen.
 //
 func (screen *Screen) IsComposited() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("is_composited", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_is_composited(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1066,23 +1019,21 @@ func (screen *Screen) IsComposited() bool {
 //    - list: a list of visuals; the list must be freed, but not its contents.
 //
 func (screen *Screen) ListVisuals() []*Visual {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.GList     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("list_visuals", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_list_visuals(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _list []*Visual // out
 
-	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkVisual)(v)
 		var dst *Visual // out
-		dst = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapVisual(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -1099,20 +1050,18 @@ func (screen *Screen) ListVisuals() []*Visual {
 //    - utf8: newly allocated string, free with g_free().
 //
 func (screen *Screen) MakeDisplayName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.gchar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_gret := _info.InvokeClassMethod("make_display_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_screen_make_display_name(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1128,16 +1077,15 @@ func (screen *Screen) MakeDisplayName() string {
 //      options.
 //
 func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen            // out
+	var _arg1 *C.cairo_font_options_t // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	if options != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(options)))
+		_arg1 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
 	}
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_info.InvokeClassMethod("set_font_options", _args[:], nil)
-
+	C.gdk_screen_set_font_options(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(options)
 }
@@ -1153,14 +1101,13 @@ func (screen *Screen) SetFontOptions(options *cairo.FontOptions) {
 //      involved; the terminology is conventional.).
 //
 func (screen *Screen) SetResolution(dpi float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.gdouble    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(dpi)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = C.gdouble(dpi)
 
-	_info := girepository.MustFind("Gdk", "Screen")
-	_info.InvokeClassMethod("set_resolution", _args[:], nil)
-
+	C.gdk_screen_set_resolution(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(dpi)
 }
@@ -1173,14 +1120,14 @@ func (screen *Screen) SetResolution(dpi float64) {
 //    - screen (optional) or NULL if there is no default display.
 //
 func ScreenGetDefault() *Screen {
-	_info := girepository.MustFind("Gdk", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GdkScreen // in
+
+	_cret = C.gdk_screen_get_default()
 
 	var _screen *Screen // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _screen

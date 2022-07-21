@@ -7,16 +7,16 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_ShortcutsWindowClass_close(void*);
-// extern void _gotk4_gtk3_ShortcutsWindowClass_search(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
+// extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
@@ -27,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcutsWindow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutsWindow").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcuts_window_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsWindow)
 	return gtype
 }
@@ -97,21 +97,19 @@ func classInitShortcutsWindower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "ShortcutsWindowClass")
+	pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Close() }); ok {
-		o := pclass.StructFieldOffset("close")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindowClass_close)
+		pclass.close = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_close)
 	}
 
 	if _, ok := goval.(interface{ Search() }); ok {
-		o := pclass.StructFieldOffset("search")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindowClass_search)
+		pclass.search = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_search)
 	}
 }
 
 //export _gotk4_gtk3_ShortcutsWindowClass_close
-func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.void) {
+func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
@@ -119,7 +117,7 @@ func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_ShortcutsWindowClass_search
-func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.void) {
+func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.GtkShortcutsWindow) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Search() })
 

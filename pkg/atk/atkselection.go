@@ -6,23 +6,21 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_SelectionIface_add_selection(void*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_clear_selection(void*);
-// extern gboolean _gotk4_atk1_SelectionIface_is_child_selected(void*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_remove_selection(void*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_select_all_selection(void*);
-// extern gint _gotk4_atk1_SelectionIface_get_selection_count(void*);
-// extern void _gotk4_atk1_SelectionIface_selection_changed(void*);
+// extern AtkObject* _gotk4_atk1_SelectionIface_ref_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_add_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_clear_selection(AtkSelection*);
+// extern gboolean _gotk4_atk1_SelectionIface_is_child_selected(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_remove_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_select_all_selection(AtkSelection*);
+// extern gint _gotk4_atk1_SelectionIface_get_selection_count(AtkSelection*);
+// extern void _gotk4_atk1_SelectionIface_selection_changed(AtkSelection*);
 // extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
-// extern void* _gotk4_atk1_SelectionIface_ref_selection(void*, gint);
 import "C"
 
 // GTypeSelection returns the GType for the type Selection.
@@ -31,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSelection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Selection").RegisteredGType())
+	gtype := coreglib.Type(C.atk_selection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSelection)
 	return gtype
 }
@@ -184,19 +182,19 @@ type Selectioner interface {
 var _ Selectioner = (*Selection)(nil)
 
 func ifaceInitSelectioner(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "SelectionIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("add_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_add_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("clear_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_clear_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_selection_count"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_get_selection_count)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("is_child_selected"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_is_child_selected)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("ref_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_ref_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_remove_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("select_all_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_select_all_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("selection_changed"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_selection_changed)
+	iface := (*C.AtkSelectionIface)(unsafe.Pointer(gifacePtr))
+	iface.add_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_add_selection)
+	iface.clear_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_clear_selection)
+	iface.get_selection_count = (*[0]byte)(C._gotk4_atk1_SelectionIface_get_selection_count)
+	iface.is_child_selected = (*[0]byte)(C._gotk4_atk1_SelectionIface_is_child_selected)
+	iface.ref_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_ref_selection)
+	iface.remove_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_remove_selection)
+	iface.select_all_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_select_all_selection)
+	iface.selection_changed = (*[0]byte)(C._gotk4_atk1_SelectionIface_selection_changed)
 }
 
 //export _gotk4_atk1_SelectionIface_add_selection
-func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -214,7 +212,7 @@ func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.void, arg1 C.gint) (cret C
 }
 
 //export _gotk4_atk1_SelectionIface_clear_selection
-func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.void) (cret C.gboolean) {
+func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -228,7 +226,7 @@ func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.void) (cret C.gboolean) 
 }
 
 //export _gotk4_atk1_SelectionIface_get_selection_count
-func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.AtkSelection) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -240,7 +238,7 @@ func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.void) (cret C.gint) 
 }
 
 //export _gotk4_atk1_SelectionIface_is_child_selected
-func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -258,7 +256,7 @@ func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.void, arg1 C.gint) (cr
 }
 
 //export _gotk4_atk1_SelectionIface_ref_selection
-func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -269,7 +267,7 @@ func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.void, arg1 C.gint) (cret *
 	object := iface.RefSelection(_i)
 
 	if object != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
 	}
 
@@ -277,7 +275,7 @@ func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.void, arg1 C.gint) (cret *
 }
 
 //export _gotk4_atk1_SelectionIface_remove_selection
-func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -295,7 +293,7 @@ func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.void, arg1 C.gint) (cre
 }
 
 //export _gotk4_atk1_SelectionIface_select_all_selection
-func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.void) (cret C.gboolean) {
+func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -309,7 +307,7 @@ func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.void) (cret C.gbool
 }
 
 //export _gotk4_atk1_SelectionIface_selection_changed
-func _gotk4_atk1_SelectionIface_selection_changed(arg0 *C.void) {
+func _gotk4_atk1_SelectionIface_selection_changed(arg0 *C.AtkSelection) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -360,21 +358,20 @@ func (selection *Selection) ConnectSelectionChanged(f func()) coreglib.SignalHan
 //    - ok: TRUE if success, FALSE otherwise.
 //
 func (selection *Selection) AddSelection(i int32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("add_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_add_selection(_arg0, _arg1)
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -389,19 +386,17 @@ func (selection *Selection) AddSelection(i int32) bool {
 //    - ok: TRUE if success, FALSE otherwise.
 //
 func (selection *Selection) ClearSelection() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("clear_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_clear_selection(_arg0)
 	runtime.KeepAlive(selection)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -420,19 +415,17 @@ func (selection *Selection) ClearSelection() bool {
 //      not implement this interface.
 //
 func (selection *Selection) SelectionCount() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("get_selection_count", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_get_selection_count(_arg0)
 	runtime.KeepAlive(selection)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -453,21 +446,20 @@ func (selection *Selection) SelectionCount() int32 {
 //      selection does not implement this interface.
 //
 func (selection *Selection) IsChildSelected(i int32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("is_child_selected", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_is_child_selected(_arg0, _arg1)
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -491,22 +483,21 @@ func (selection *Selection) IsChildSelected(i int32) bool {
 //      selection does not implement this interface.
 //
 func (selection *Selection) RefSelection(i int32) *ObjectClass {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("ref_selection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
 
 	var _object *ObjectClass // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _object
@@ -525,21 +516,20 @@ func (selection *Selection) RefSelection(i int32) *ObjectClass {
 //    - ok: TRUE if success, FALSE otherwise.
 //
 func (selection *Selection) RemoveSelection(i int32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("remove_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_remove_selection(_arg0, _arg1)
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -554,19 +544,17 @@ func (selection *Selection) RemoveSelection(i int32) bool {
 //    - ok: TRUE if success, FALSE otherwise.
 //
 func (selection *Selection) SelectAllSelection() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
-	_info := girepository.MustFind("Atk", "Selection")
-	_gret := _info.InvokeIfaceMethod("select_all_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_selection_select_all_selection(_arg0)
 	runtime.KeepAlive(selection)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

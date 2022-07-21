@@ -8,20 +8,18 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern guint _gotk4_pango1_FontMapClass_get_serial(void*);
-// extern void _gotk4_pango1_FontMapClass_changed(void*);
-// extern void _gotk4_pango1_FontMapClass_list_families(void*, void***, int*);
-// extern void* _gotk4_pango1_FontMapClass_get_family(void*, char*);
-// extern void* _gotk4_pango1_FontMapClass_load_font(void*, void*, void*);
-// extern void* _gotk4_pango1_FontMapClass_load_fontset(void*, void*, void*, void*);
+// #include <pango/pango.h>
+// extern PangoFont* _gotk4_pango1_FontMapClass_load_font(PangoFontMap*, PangoContext*, PangoFontDescription*);
+// extern PangoFontFamily* _gotk4_pango1_FontMapClass_get_family(PangoFontMap*, char*);
+// extern PangoFontset* _gotk4_pango1_FontMapClass_load_fontset(PangoFontMap*, PangoContext*, PangoFontDescription*, PangoLanguage*);
+// extern guint _gotk4_pango1_FontMapClass_get_serial(PangoFontMap*);
+// extern void _gotk4_pango1_FontMapClass_changed(PangoFontMap*);
+// extern void _gotk4_pango1_FontMapClass_list_families(PangoFontMap*, PangoFontFamily***, int*);
 import "C"
 
 // GTypeFontMap returns the GType for the type FontMap.
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFontMap() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "FontMap").RegisteredGType())
+	gtype := coreglib.Type(C.pango_font_map_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFontMap)
 	return gtype
 }
@@ -144,47 +142,41 @@ func classInitFontMapper(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Pango", "FontMapClass")
+	pclass := (*C.PangoFontMapClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		o := pclass.StructFieldOffset("changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_changed)
+		pclass.changed = (*[0]byte)(C._gotk4_pango1_FontMapClass_changed)
 	}
 
 	if _, ok := goval.(interface {
 		Family(name string) FontFamilier
 	}); ok {
-		o := pclass.StructFieldOffset("get_family")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_get_family)
+		pclass.get_family = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_family)
 	}
 
 	if _, ok := goval.(interface{ Serial() uint32 }); ok {
-		o := pclass.StructFieldOffset("get_serial")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_get_serial)
+		pclass.get_serial = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_serial)
 	}
 
 	if _, ok := goval.(interface{ ListFamilies() []FontFamilier }); ok {
-		o := pclass.StructFieldOffset("list_families")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_list_families)
+		pclass.list_families = (*[0]byte)(C._gotk4_pango1_FontMapClass_list_families)
 	}
 
 	if _, ok := goval.(interface {
 		LoadFont(context *Context, desc *FontDescription) Fonter
 	}); ok {
-		o := pclass.StructFieldOffset("load_font")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_load_font)
+		pclass.load_font = (*[0]byte)(C._gotk4_pango1_FontMapClass_load_font)
 	}
 
 	if _, ok := goval.(interface {
 		LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
 	}); ok {
-		o := pclass.StructFieldOffset("load_fontset")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_load_fontset)
+		pclass.load_fontset = (*[0]byte)(C._gotk4_pango1_FontMapClass_load_fontset)
 	}
 }
 
 //export _gotk4_pango1_FontMapClass_changed
-func _gotk4_pango1_FontMapClass_changed(arg0 *C.void) {
+func _gotk4_pango1_FontMapClass_changed(arg0 *C.PangoFontMap) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
@@ -192,7 +184,7 @@ func _gotk4_pango1_FontMapClass_changed(arg0 *C.void) {
 }
 
 //export _gotk4_pango1_FontMapClass_get_family
-func _gotk4_pango1_FontMapClass_get_family(arg0 *C.void, arg1 *C.char) (cret *C.void) {
+func _gotk4_pango1_FontMapClass_get_family(arg0 *C.PangoFontMap, arg1 *C.char) (cret *C.PangoFontFamily) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Family(name string) FontFamilier
@@ -204,13 +196,13 @@ func _gotk4_pango1_FontMapClass_get_family(arg0 *C.void, arg1 *C.char) (cret *C.
 
 	fontFamily := iface.Family(_name)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontFamily).Native()))
+	cret = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(fontFamily).Native()))
 
 	return cret
 }
 
 //export _gotk4_pango1_FontMapClass_get_serial
-func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.void) (cret C.guint) {
+func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Serial() uint32 })
 
@@ -222,24 +214,24 @@ func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.void) (cret C.guint) {
 }
 
 //export _gotk4_pango1_FontMapClass_list_families
-func _gotk4_pango1_FontMapClass_list_families(arg0 *C.void, arg1 ***C.void, arg2 *C.int) {
+func _gotk4_pango1_FontMapClass_list_families(arg0 *C.PangoFontMap, arg1 ***C.PangoFontFamily, arg2 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ListFamilies() []FontFamilier })
 
 	families := iface.ListFamilies()
 
 	*arg2 = (C.int)(len(families))
-	*arg1 = (**C.void)(C.calloc(C.size_t(len(families)), C.size_t(unsafe.Sizeof(uint(0)))))
+	*arg1 = (**C.PangoFontFamily)(C.calloc(C.size_t(len(families)), C.size_t(unsafe.Sizeof(uint(0)))))
 	{
-		out := unsafe.Slice((**C.void)(*arg1), len(families))
+		out := unsafe.Slice((**C.PangoFontFamily)(*arg1), len(families))
 		for i := range families {
-			out[i] = (*C.void)(unsafe.Pointer(coreglib.InternObject(families[i]).Native()))
+			out[i] = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(families[i]).Native()))
 		}
 	}
 }
 
 //export _gotk4_pango1_FontMapClass_load_font
-func _gotk4_pango1_FontMapClass_load_font(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.void) {
+func _gotk4_pango1_FontMapClass_load_font(arg0 *C.PangoFontMap, arg1 *C.PangoContext, arg2 *C.PangoFontDescription) (cret *C.PangoFont) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LoadFont(context *Context, desc *FontDescription) Fonter
@@ -254,7 +246,7 @@ func _gotk4_pango1_FontMapClass_load_font(arg0 *C.void, arg1 *C.void, arg2 *C.vo
 	font := iface.LoadFont(_context, _desc)
 
 	if font != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+		cret = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(font).Native()))
 	}
 
@@ -262,7 +254,7 @@ func _gotk4_pango1_FontMapClass_load_font(arg0 *C.void, arg1 *C.void, arg2 *C.vo
 }
 
 //export _gotk4_pango1_FontMapClass_load_fontset
-func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) (cret *C.void) {
+func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.PangoFontMap, arg1 *C.PangoContext, arg2 *C.PangoFontDescription, arg3 *C.PangoLanguage) (cret *C.PangoFontset) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
@@ -279,7 +271,7 @@ func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.void, arg1 *C.void, arg2 *C
 	fontset := iface.LoadFontset(_context, _desc, _language)
 
 	if fontset != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+		cret = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(fontset).Native()))
 	}
 
@@ -312,13 +304,11 @@ func BaseFontMap(obj FontMapper) *FontMap {
 // something applications won't do. Backends should call this function if they
 // have attached extra data to the context and such data is changed.
 func (fontmap *FontMap) Changed() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoFontMap // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_info.InvokeClassMethod("changed", _args[:], nil)
-
+	C.pango_font_map_changed(_arg0)
 	runtime.KeepAlive(fontmap)
 }
 
@@ -337,19 +327,17 @@ func (fontmap *FontMap) Changed() {
 //      g_object_unref().
 //
 func (fontmap *FontMap) CreateContext() *Context {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoFontMap // out
+	var _cret *C.PangoContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_gret := _info.InvokeClassMethod("create_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_font_map_create_context(_arg0)
 	runtime.KeepAlive(fontmap)
 
 	var _context *Context // out
 
-	_context = wrapContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_context = wrapContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _context
 }
@@ -365,23 +353,22 @@ func (fontmap *FontMap) CreateContext() *Context {
 //    - fontFamily: PangoFontFamily.
 //
 func (fontmap *FontMap) Family(name string) FontFamilier {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoFontMap    // out
+	var _arg1 *C.char            // out
+	var _cret *C.PangoFontFamily // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_gret := _info.InvokeClassMethod("get_family", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_font_map_get_family(_arg0, _arg1)
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(name)
 
 	var _fontFamily FontFamilier // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type pango.FontFamilier is nil")
 		}
@@ -419,19 +406,17 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 //    - guint: current serial number of fontmap.
 //
 func (fontmap *FontMap) Serial() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoFontMap // out
+	var _cret C.guint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_gret := _info.InvokeClassMethod("get_serial", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_font_map_get_serial(_arg0)
 	runtime.KeepAlive(fontmap)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -444,25 +429,24 @@ func (fontmap *FontMap) Serial() uint32 {
 //      This array should be freed with g_free().
 //
 func (fontmap *FontMap) ListFamilies() []FontFamilier {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoFontMap     // out
+	var _arg1 **C.PangoFontFamily // in
+	var _arg2 C.int               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_info.InvokeClassMethod("list_families", _args[:], _outs[:])
-
+	C.pango_font_map_list_families(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(fontmap)
 
 	var _families []FontFamilier // out
 
-	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_outs[0]))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[1])))
-		_families = make([]FontFamilier, *(*C.int)(unsafe.Pointer(&_outs[1])))
-		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[1]))); i++ {
+		src := unsafe.Slice((**C.PangoFontFamily)(_arg1), _arg2)
+		_families = make([]FontFamilier, _arg2)
+		for i := 0; i < int(_arg2); i++ {
 			{
-				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))
+				objptr := unsafe.Pointer(src[i])
 				if objptr == nil {
 					panic("object of type pango.FontFamilier is nil")
 				}
@@ -497,25 +481,25 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 //      matched.
 //
 func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoFontMap         // out
+	var _arg1 *C.PangoContext         // out
+	var _arg2 *C.PangoFontDescription // out
+	var _cret *C.PangoFont            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_gret := _info.InvokeClassMethod("load_font", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_font_map_load_font(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desc)
 
 	var _font Fonter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -548,17 +532,18 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 //      font matched.
 //
 func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter {
-	var _args [4]girepository.Argument
+	var _arg0 *C.PangoFontMap         // out
+	var _arg1 *C.PangoContext         // out
+	var _arg2 *C.PangoFontDescription // out
+	var _arg3 *C.PangoLanguage        // out
+	var _cret *C.PangoFontset         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	_arg3 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_info := girepository.MustFind("Pango", "FontMap")
-	_gret := _info.InvokeClassMethod("load_fontset", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_font_map_load_fontset(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desc)
@@ -566,9 +551,9 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 
 	var _fontset Fontsetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

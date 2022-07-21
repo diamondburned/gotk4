@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeShortcutType returns the GType for the type ShortcutType.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcutType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcut_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutType)
 	return gtype
 }
@@ -33,7 +31,7 @@ func GTypeShortcutType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcutsShortcut() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutsShortcut").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcuts_shortcut_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsShortcut)
 	return gtype
 }
@@ -108,6 +106,10 @@ func (s ShortcutType) String() string {
 	}
 }
 
+// ShortcutsShortcutOverrider contains methods that are overridable.
+type ShortcutsShortcutOverrider interface {
+}
+
 // ShortcutsShortcut: GtkShortcutsShortcut represents a single keyboard shortcut
 // or gesture with a short text.
 //
@@ -120,6 +122,14 @@ type ShortcutsShortcut struct {
 var (
 	_ Widgetter = (*ShortcutsShortcut)(nil)
 )
+
+func classInitShortcutsShortcutter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapShortcutsShortcut(obj *coreglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{

@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeHScale returns the GType for the type HScale.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeHScale() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "HScale").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_hscale_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalHScale)
 	return gtype
 }
@@ -98,21 +98,19 @@ func marshalHScale(p uintptr) (interface{}, error) {
 //    - hScale: new HScale.
 //
 func NewHScale(adjustment *Adjustment) *HScale {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
 
 	if adjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "HScale")
-	_gret := _info.InvokeClassMethod("new_HScale", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_hscale_new(_arg1)
 	runtime.KeepAlive(adjustment)
 
 	var _hScale *HScale // out
 
-	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }
@@ -140,23 +138,23 @@ func NewHScale(adjustment *Adjustment) *HScale {
 //    - hScale: new HScale.
 //
 func NewHScaleWithRange(min, max, step float64) *HScale {
-	var _args [3]girepository.Argument
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
+	var _arg3 C.gdouble    // out
+	var _cret *C.GtkWidget // in
 
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(min)
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(max)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(step)
+	_arg1 = C.gdouble(min)
+	_arg2 = C.gdouble(max)
+	_arg3 = C.gdouble(step)
 
-	_info := girepository.MustFind("Gtk", "HScale")
-	_gret := _info.InvokeClassMethod("new_HScale_with_range", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_hscale_new_with_range(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
 	runtime.KeepAlive(step)
 
 	var _hScale *HScale // out
 
-	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
 }

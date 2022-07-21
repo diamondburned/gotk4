@@ -8,16 +8,16 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_RadioActionClass_changed(void*, void*);
-// extern void _gotk4_gtk3_RadioAction_ConnectChanged(gpointer, void*, guintptr);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_RadioActionClass_changed(GtkRadioAction*, GtkRadioAction*);
+// extern void _gotk4_gtk3_RadioAction_ConnectChanged(gpointer, GtkRadioAction*, guintptr);
 import "C"
 
 // GTypeRadioAction returns the GType for the type RadioAction.
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRadioAction() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RadioAction").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_radio_action_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRadioAction)
 	return gtype
 }
@@ -56,16 +56,15 @@ func classInitRadioActioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "RadioActionClass")
+	pclass := (*C.GtkRadioActionClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Changed(current *RadioAction) }); ok {
-		o := pclass.StructFieldOffset("changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RadioActionClass_changed)
+		pclass.changed = (*[0]byte)(C._gotk4_gtk3_RadioActionClass_changed)
 	}
 }
 
 //export _gotk4_gtk3_RadioActionClass_changed
-func _gotk4_gtk3_RadioActionClass_changed(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_RadioActionClass_changed(arg0 *C.GtkRadioAction, arg1 *C.GtkRadioAction) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed(current *RadioAction) })
 
@@ -94,7 +93,7 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_RadioAction_ConnectChanged
-func _gotk4_gtk3_RadioAction_ConnectChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_RadioAction_ConnectChanged(arg0 C.gpointer, arg1 *C.GtkRadioAction, arg2 C.guintptr) {
 	var f func(current *RadioAction)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -141,28 +140,30 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 //    - radioAction: new RadioAction.
 //
 func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAction {
-	var _args [5]girepository.Argument
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.gchar          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 *C.gchar          // out
+	var _arg5 C.gint            // out
+	var _cret *C.GtkRadioAction // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if tooltip != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
 	if stockId != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg4))
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(value)
+	_arg5 = C.gint(value)
 
-	_info := girepository.MustFind("Gtk", "RadioAction")
-	_gret := _info.InvokeClassMethod("new_RadioAction", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -171,7 +172,7 @@ func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAct
 
 	var _radioAction *RadioAction // out
 
-	_radioAction = wrapRadioAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_radioAction = wrapRadioAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _radioAction
 }
@@ -186,19 +187,17 @@ func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAct
 //    - gint: value of the currently active group member.
 //
 func (action *RadioAction) CurrentValue() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRadioAction // out
+	var _cret C.gint            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_info := girepository.MustFind("Gtk", "RadioAction")
-	_gret := _info.InvokeClassMethod("get_current_value", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_radio_action_get_current_value(_arg0)
 	runtime.KeepAlive(action)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -226,23 +225,21 @@ func (action *RadioAction) CurrentValue() int32 {
 //    - sList: list representing the radio group for this object.
 //
 func (action *RadioAction) Group() []*RadioAction {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRadioAction // out
+	var _cret *C.GSList         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_info := girepository.MustFind("Gtk", "RadioAction")
-	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_radio_action_get_group(_arg0)
 	runtime.KeepAlive(action)
 
 	var _sList []*RadioAction // out
 
-	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkRadioAction)(v)
 		var dst *RadioAction // out
-		dst = wrapRadioAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapRadioAction(coreglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -276,16 +273,15 @@ func (action *RadioAction) Group() []*RadioAction {
 //      NULL to remove the radio action from its group.
 //
 func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 *C.GtkRadioAction // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if groupSource != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
+		_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "RadioAction")
-	_info.InvokeClassMethod("join_group", _args[:], nil)
-
+	C.gtk_radio_action_join_group(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(groupSource)
 }
@@ -300,14 +296,13 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 //    - currentValue: new value.
 //
 func (action *RadioAction) SetCurrentValue(currentValue int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 C.gint            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(currentValue)
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(currentValue)
 
-	_info := girepository.MustFind("Gtk", "RadioAction")
-	_info.InvokeClassMethod("set_current_value", _args[:], nil)
-
+	C.gtk_radio_action_set_current_value(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(currentValue)
 }
@@ -321,22 +316,21 @@ func (action *RadioAction) SetCurrentValue(currentValue int32) {
 //    - group (optional): list representing a radio group, or NULL.
 //
 func (action *RadioAction) SetGroup(group []*RadioAction) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 *C.GSList         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
-			var dst *C.void // out
-			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			*(**C.GSList)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.GSList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+			var dst *C.GtkRadioAction // out
+			dst = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_args[1])
+		defer C.g_slist_free(_arg1)
 	}
 
-	_info := girepository.MustFind("Gtk", "RadioAction")
-	_info.InvokeClassMethod("set_group", _args[:], nil)
-
+	C.gtk_radio_action_set_group(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(group)
 }

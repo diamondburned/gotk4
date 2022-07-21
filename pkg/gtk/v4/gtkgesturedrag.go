@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_GestureDrag_ConnectDragBegin(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureDrag_ConnectDragEnd(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureDrag_ConnectDragUpdate(gpointer, gdouble, gdouble, guintptr);
@@ -25,9 +23,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureDrag() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureDrag").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_drag_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureDrag)
 	return gtype
+}
+
+// GestureDragOverrider contains methods that are overridable.
+type GestureDragOverrider interface {
 }
 
 // GestureDrag: GtkGestureDrag is a GtkGesture implementation for drags.
@@ -45,6 +47,14 @@ type GestureDrag struct {
 var (
 	_ Gesturer = (*GestureDrag)(nil)
 )
+
+func classInitGestureDragger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureDrag(obj *coreglib.Object) *GestureDrag {
 	return &GestureDrag{
@@ -150,13 +160,13 @@ func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) 
 //    - gestureDrag: newly created GtkGestureDrag.
 //
 func NewGestureDrag() *GestureDrag {
-	_info := girepository.MustFind("Gtk", "GestureDrag")
-	_gret := _info.InvokeClassMethod("new_GestureDrag", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkGesture // in
+
+	_cret = C.gtk_gesture_drag_new()
 
 	var _gestureDrag *GestureDrag // out
 
-	_gestureDrag = wrapGestureDrag(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureDrag = wrapGestureDrag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureDrag
 }
@@ -174,24 +184,23 @@ func NewGestureDrag() *GestureDrag {
 //    - ok: TRUE if the gesture is active.
 //
 func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkGestureDrag // out
+	var _arg1 C.double          // in
+	var _arg2 C.double          // in
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureDrag")
-	_gret := _info.InvokeClassMethod("get_offset", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(gesture)
 
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_x = float64(_arg1)
+	_y = float64(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -210,24 +219,23 @@ func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 //    - ok: TRUE if the gesture is active.
 //
 func (gesture *GestureDrag) StartPoint() (x, y float64, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkGestureDrag // out
+	var _arg1 C.double          // in
+	var _arg2 C.double          // in
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureDrag")
-	_gret := _info.InvokeClassMethod("get_start_point", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(gesture)
 
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_x = float64(_arg1)
+	_y = float64(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 

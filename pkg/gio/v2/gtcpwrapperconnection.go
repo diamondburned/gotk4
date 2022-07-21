@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTCPWrapperConnection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TcpWrapperConnection").RegisteredGType())
+	gtype := coreglib.Type(C.g_tcp_wrapper_connection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTCPWrapperConnection)
 	return gtype
 }
@@ -81,21 +79,20 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 //    - tcpWrapperConnection: new Connection.
 //
 func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrapperConnection {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GIOStream         // out
+	var _arg2 *C.GSocket           // out
+	var _cret *C.GSocketConnection // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
+	_arg2 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_info := girepository.MustFind("Gio", "TcpWrapperConnection")
-	_gret := _info.InvokeClassMethod("new_TcpWrapperConnection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(socket)
 
 	var _tcpWrapperConnection *TCPWrapperConnection // out
 
-	_tcpWrapperConnection = wrapTCPWrapperConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_tcpWrapperConnection = wrapTCPWrapperConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _tcpWrapperConnection
 }
@@ -107,20 +104,18 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 //    - ioStream conn's base OStream.
 //
 func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GTcpWrapperConnection // out
+	var _cret *C.GIOStream             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_info := girepository.MustFind("Gio", "TcpWrapperConnection")
-	_gret := _info.InvokeClassMethod("get_base_io_stream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 	runtime.KeepAlive(conn)
 
 	var _ioStream IOStreamer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gio.IOStreamer is nil")
 		}

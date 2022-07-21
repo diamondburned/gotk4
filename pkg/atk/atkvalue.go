@@ -8,25 +8,23 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern GSList* _gotk4_atk1_ValueIface_get_sub_ranges(void*);
-// extern gboolean _gotk4_atk1_ValueIface_set_current_value(void*, const GValue*);
-// extern gdouble _gotk4_atk1_ValueIface_get_increment(void*);
-// extern void _gotk4_atk1_ValueIface_get_current_value(void*, GValue*);
-// extern void _gotk4_atk1_ValueIface_get_maximum_value(void*, GValue*);
-// extern void _gotk4_atk1_ValueIface_get_minimum_increment(void*, GValue*);
-// extern void _gotk4_atk1_ValueIface_get_minimum_value(void*, GValue*);
-// extern void _gotk4_atk1_ValueIface_get_value_and_text(void*, gdouble*, gchar**);
-// extern void _gotk4_atk1_ValueIface_set_value(void*, gdouble);
+// extern AtkRange* _gotk4_atk1_ValueIface_get_range(AtkValue*);
+// extern GSList* _gotk4_atk1_ValueIface_get_sub_ranges(AtkValue*);
+// extern gboolean _gotk4_atk1_ValueIface_set_current_value(AtkValue*, GValue*);
+// extern gdouble _gotk4_atk1_ValueIface_get_increment(AtkValue*);
+// extern void _gotk4_atk1_ValueIface_get_current_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_maximum_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_increment(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_value_and_text(AtkValue*, gdouble*, gchar**);
+// extern void _gotk4_atk1_ValueIface_set_value(AtkValue*, gdouble);
 // extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
-// extern void* _gotk4_atk1_ValueIface_get_range(void*);
 import "C"
 
 // GTypeValueType returns the GType for the type ValueType.
@@ -35,7 +33,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeValueType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "ValueType").RegisteredGType())
+	gtype := coreglib.Type(C.atk_value_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalValueType)
 	return gtype
 }
@@ -46,7 +44,7 @@ func GTypeValueType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeValue() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Value").RegisteredGType())
+	gtype := coreglib.Type(C.atk_value_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalValue)
 	return gtype
 }
@@ -117,6 +115,60 @@ func (v ValueType) String() string {
 	default:
 		return fmt.Sprintf("ValueType(%d)", v)
 	}
+}
+
+// ValueTypeGetLocalizedName gets the localized description string describing
+// the ValueType value_type.
+//
+// The function takes the following parameters:
+//
+//    - valueType whose localized name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: localized string describing the ValueType.
+//
+func ValueTypeGetLocalizedName(valueType ValueType) string {
+	var _arg1 C.AtkValueType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkValueType(valueType)
+
+	_cret = C.atk_value_type_get_localized_name(_arg1)
+	runtime.KeepAlive(valueType)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ValueTypeGetName gets the description string describing the ValueType
+// value_type.
+//
+// The function takes the following parameters:
+//
+//    - valueType whose name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the ValueType.
+//
+func ValueTypeGetName(valueType ValueType) string {
+	var _arg1 C.AtkValueType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkValueType(valueType)
+
+	_cret = C.atk_value_type_get_name(_arg1)
+	runtime.KeepAlive(valueType)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // ValueOverrider contains methods that are overridable.
@@ -374,31 +426,31 @@ type Valueer interface {
 var _ Valueer = (*Value)(nil)
 
 func ifaceInitValueer(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "ValueIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_current_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_current_value)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_increment"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_increment)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_maximum_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_maximum_value)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_minimum_increment"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_minimum_increment)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_minimum_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_minimum_value)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_range"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_range)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_sub_ranges"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_sub_ranges)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_value_and_text"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_value_and_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_current_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_set_current_value)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_set_value)
+	iface := (*C.AtkValueIface)(unsafe.Pointer(gifacePtr))
+	iface.get_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_current_value)
+	iface.get_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_increment)
+	iface.get_maximum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_maximum_value)
+	iface.get_minimum_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_increment)
+	iface.get_minimum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_value)
+	iface.get_range = (*[0]byte)(C._gotk4_atk1_ValueIface_get_range)
+	iface.get_sub_ranges = (*[0]byte)(C._gotk4_atk1_ValueIface_get_sub_ranges)
+	iface.get_value_and_text = (*[0]byte)(C._gotk4_atk1_ValueIface_get_value_and_text)
+	iface.set_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_current_value)
+	iface.set_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_value)
 }
 
 //export _gotk4_atk1_ValueIface_get_current_value
-func _gotk4_atk1_ValueIface_get_current_value(arg0 *C.void, arg1 *C.GValue) {
+func _gotk4_atk1_ValueIface_get_current_value(arg0 *C.AtkValue, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.CurrentValue()
 
-	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_increment
-func _gotk4_atk1_ValueIface_get_increment(arg0 *C.void) (cret C.gdouble) {
+func _gotk4_atk1_ValueIface_get_increment(arg0 *C.AtkValue) (cret C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -410,44 +462,44 @@ func _gotk4_atk1_ValueIface_get_increment(arg0 *C.void) (cret C.gdouble) {
 }
 
 //export _gotk4_atk1_ValueIface_get_maximum_value
-func _gotk4_atk1_ValueIface_get_maximum_value(arg0 *C.void, arg1 *C.GValue) {
+func _gotk4_atk1_ValueIface_get_maximum_value(arg0 *C.AtkValue, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.MaximumValue()
 
-	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_minimum_increment
-func _gotk4_atk1_ValueIface_get_minimum_increment(arg0 *C.void, arg1 *C.GValue) {
+func _gotk4_atk1_ValueIface_get_minimum_increment(arg0 *C.AtkValue, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.MinimumIncrement()
 
-	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_minimum_value
-func _gotk4_atk1_ValueIface_get_minimum_value(arg0 *C.void, arg1 *C.GValue) {
+func _gotk4_atk1_ValueIface_get_minimum_value(arg0 *C.AtkValue, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.MinimumValue()
 
-	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_range
-func _gotk4_atk1_ValueIface_get_range(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_ValueIface_get_range(arg0 *C.AtkValue) (cret *C.AtkRange) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	_range := iface.Range()
 
 	if _range != nil {
-		cret = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
+		cret = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
 		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(_range)), nil)
 	}
 
@@ -455,7 +507,7 @@ func _gotk4_atk1_ValueIface_get_range(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_atk1_ValueIface_get_sub_ranges
-func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.void) (cret *C.GSList) {
+func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.AtkValue) (cret *C.GSList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -463,8 +515,8 @@ func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.void) (cret *C.GSList) {
 
 	for i := len(sList) - 1; i >= 0; i-- {
 		src := sList[i]
-		var dst *C.void // out
-		dst = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
+		var dst *C.AtkRange // out
+		dst = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(src)), nil)
 		cret = C.g_slist_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
@@ -473,7 +525,7 @@ func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.void) (cret *C.GSList) {
 }
 
 //export _gotk4_atk1_ValueIface_get_value_and_text
-func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.void, arg1 *C.gdouble, arg2 **C.gchar) {
+func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.AtkValue, arg1 *C.gdouble, arg2 **C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -486,7 +538,7 @@ func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.void, arg1 *C.gdouble, ar
 }
 
 //export _gotk4_atk1_ValueIface_set_current_value
-func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.void, arg1 *C.GValue) (cret C.gboolean) {
+func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.AtkValue, arg1 *C.GValue) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -504,7 +556,7 @@ func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.void, arg1 *C.GValue) (cre
 }
 
 //export _gotk4_atk1_ValueIface_set_value
-func _gotk4_atk1_ValueIface_set_value(arg0 *C.void, arg1 C.gdouble) {
+func _gotk4_atk1_ValueIface_set_value(arg0 *C.AtkValue, arg1 C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -569,19 +621,17 @@ func (obj *Value) ConnectValueChanged(f func(value float64, text string)) coregl
 //    - value representing the current accessible value.
 //
 func (obj *Value) CurrentValue() coreglib.Value {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_info.InvokeIfaceMethod("get_current_value", _args[:], _outs[:])
-
+	C.atk_value_get_current_value(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 
 	return _value
 }
@@ -596,19 +646,17 @@ func (obj *Value) CurrentValue() coreglib.Value {
 //      changed. zero if undefined.
 //
 func (obj *Value) Increment() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _cret C.gdouble   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_gret := _info.InvokeIfaceMethod("get_increment", _args[:], nil)
-	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_value_get_increment(_arg0)
 	runtime.KeepAlive(obj)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -622,19 +670,17 @@ func (obj *Value) Increment() float64 {
 //    - value representing the maximum accessible value.
 //
 func (obj *Value) MaximumValue() coreglib.Value {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_info.InvokeIfaceMethod("get_maximum_value", _args[:], _outs[:])
-
+	C.atk_value_get_maximum_value(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 
 	return _value
 }
@@ -651,19 +697,17 @@ func (obj *Value) MaximumValue() coreglib.Value {
 //      may be changed.
 //
 func (obj *Value) MinimumIncrement() coreglib.Value {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_info.InvokeIfaceMethod("get_minimum_increment", _args[:], _outs[:])
-
+	C.atk_value_get_minimum_increment(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 
 	return _value
 }
@@ -677,19 +721,17 @@ func (obj *Value) MinimumIncrement() coreglib.Value {
 //    - value representing the minimum accessible value.
 //
 func (obj *Value) MinimumValue() coreglib.Value {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_info.InvokeIfaceMethod("get_minimum_value", _args[:], _outs[:])
-
+	C.atk_value_get_minimum_value(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 
 	return _value
 }
@@ -703,28 +745,22 @@ func (obj *Value) MinimumValue() coreglib.Value {
 //      defined.
 //
 func (obj *Value) Range() *Range {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _cret *C.AtkRange // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_gret := _info.InvokeIfaceMethod("get_range", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_value_get_range(_arg0)
 	runtime.KeepAlive(obj)
 
 	var __range *Range // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(__range)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.atk_range_free((*C.AtkRange)(intern.C))
 			},
 		)
 	}
@@ -741,31 +777,25 @@ func (obj *Value) Range() *Range {
 //      the returns list with g_slist_free().
 //
 func (obj *Value) SubRanges() []*Range {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _cret *C.GSList   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_gret := _info.InvokeIfaceMethod("get_sub_ranges", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_value_get_sub_ranges(_arg0)
 	runtime.KeepAlive(obj)
 
 	var _sList []*Range // out
 
-	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.AtkRange)(v)
 		var dst *Range // out
-		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.atk_range_free((*C.AtkRange)(intern.C))
 			},
 		)
 		_sList = append(_sList, dst)
@@ -785,23 +815,22 @@ func (obj *Value) SubRanges() []*Range {
 //      alternative for value.
 //
 func (obj *Value) ValueAndText() (float64, string) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // in
+	var _arg2 *C.gchar    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_info.InvokeIfaceMethod("get_value_and_text", _args[:], _outs[:])
-
+	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(obj)
 
 	var _value float64 // out
 	var _text string   // out
 
-	_value = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
-	if *(**C.gchar)(unsafe.Pointer(&_outs[1])) != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1])))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1]))))
+	_value = float64(_arg1)
+	if _arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
 	return _value, _text
@@ -820,21 +849,20 @@ func (obj *Value) ValueAndText() (float64, string) {
 //    - ok: TRUE if new value is successfully set, FALSE otherwise.
 //
 func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 *C.GValue   // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Atk", "Value")
-	_gret := _info.InvokeIfaceMethod("set_current_value", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_value_set_current_value(_arg0, _arg1)
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -859,14 +887,13 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 //    - newValue: double which is the desired new accessible value.
 //
 func (obj *Value) SetValue(newValue float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(newValue)
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = C.gdouble(newValue)
 
-	_info := girepository.MustFind("Atk", "Value")
-	_info.InvokeIfaceMethod("set_value", _args[:], nil)
-
+	C.atk_value_set_value(_arg0, _arg1)
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(newValue)
 }

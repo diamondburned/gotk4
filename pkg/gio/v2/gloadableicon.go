@@ -10,17 +10,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void* _gotk4_gio2_LoadableIconIface_load(void*, int, char**, void*, GError**);
-// extern void* _gotk4_gio2_LoadableIconIface_load_finish(void*, void*, char**, GError**);
+// extern GInputStream* _gotk4_gio2_LoadableIconIface_load(GLoadableIcon*, int, char**, GCancellable*, GError**);
+// extern GInputStream* _gotk4_gio2_LoadableIconIface_load_finish(GLoadableIcon*, GAsyncResult*, char**, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeLoadableIcon returns the GType for the type LoadableIcon.
@@ -29,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLoadableIcon() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "LoadableIcon").RegisteredGType())
+	gtype := coreglib.Type(C.g_loadable_icon_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLoadableIcon)
 	return gtype
 }
@@ -88,21 +86,22 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 //    - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputStreamer, error) {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GLoadableIcon // out
+	var _arg3 *C.GCancellable  // out
+	var _arg1 C.int            // out
+	var _arg2 *C.char          // in
+	var _cret *C.GInputStream  // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
+	_arg1 = C.int(size)
 
-	_info := girepository.MustFind("Gio", "LoadableIcon")
-	_gret := _info.InvokeIfaceMethod("load", _args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_loadable_icon_load(_arg0, _arg1, &_arg2, _arg3, &_cerr)
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(size)
@@ -111,12 +110,12 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
-		_typ = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
+	if _arg2 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gio.InputStreamer is nil")
 		}
@@ -132,8 +131,8 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 		}
 		_inputStream = rv
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _typ, _inputStream, _goerr
@@ -150,23 +149,25 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 //    - callback (optional) to call when the request is satisfied.
 //
 func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GLoadableIcon      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
+	_arg1 = C.int(size)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "LoadableIcon")
-	_info.InvokeIfaceMethod("load_async", _args[:], nil)
-
+	C.g_loadable_icon_load_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(size)
@@ -187,16 +188,16 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback As
 //    - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GLoadableIcon // out
+	var _arg1 *C.GAsyncResult  // out
+	var _arg2 *C.char          // in
+	var _cret *C.GInputStream  // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "LoadableIcon")
-	_gret := _info.InvokeIfaceMethod("load_finish", _args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(res)
 
@@ -204,12 +205,12 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
-		_typ = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
+	if _arg2 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gio.InputStreamer is nil")
 		}
@@ -225,8 +226,8 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		}
 		_inputStream = rv
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _typ, _inputStream, _goerr

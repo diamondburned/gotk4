@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeToplevelLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ToplevelLayout").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_toplevel_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalToplevelLayout)
 	return gtype
 }
@@ -43,23 +41,23 @@ type ToplevelLayout struct {
 
 // toplevelLayout is the struct that's finalized.
 type toplevelLayout struct {
-	native unsafe.Pointer
+	native *C.GdkToplevelLayout
 }
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &ToplevelLayout{&toplevelLayout{(unsafe.Pointer)(b)}}, nil
+	return &ToplevelLayout{&toplevelLayout{(*C.GdkToplevelLayout)(b)}}, nil
 }
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
 func NewToplevelLayout() *ToplevelLayout {
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GdkToplevelLayout // in
+
+	_cret = C.gdk_toplevel_layout_new()
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -77,19 +75,17 @@ func NewToplevelLayout() *ToplevelLayout {
 //    - toplevelLayout: copy of layout.
 //
 func (layout *ToplevelLayout) Copy() *ToplevelLayout {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _cret *C.GdkToplevelLayout // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_toplevel_layout_copy(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -112,21 +108,20 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 //      FALSE.
 //
 func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _arg1 *C.GdkToplevelLayout // out
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg1 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_toplevel_layout_equal(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(other)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -143,24 +138,22 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 //    - ok: whether the layout specifies the fullscreen state for the toplevel.
 //
 func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _arg1 C.gboolean           // in
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("get_fullscreen", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_toplevel_layout_get_fullscreen(_arg0, &_arg1)
 	runtime.KeepAlive(layout)
 
 	var _fullscreen bool // out
 	var _ok bool         // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+	if _arg1 != 0 {
 		_fullscreen = true
 	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -175,20 +168,18 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 //    - monitor (optional) on which layout fullscreens.
 //
 func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _cret *C.GdkMonitor        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("get_fullscreen_monitor", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_toplevel_layout_get_fullscreen_monitor(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _monitor *Monitor // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _monitor
@@ -204,24 +195,22 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 //    - ok: whether the layout specifies the maximized state for the toplevel.
 //
 func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _arg1 C.gboolean           // in
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("get_maximized", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_toplevel_layout_get_maximized(_arg0, &_arg1)
 	runtime.KeepAlive(layout)
 
 	var _maximized bool // out
 	var _ok bool        // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+	if _arg1 != 0 {
 		_maximized = true
 	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -236,19 +225,17 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 //    - ok: TRUE if the layout is resizable.
 //
 func (layout *ToplevelLayout) Resizable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_gret := _info.InvokeRecordMethod("get_resizable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_toplevel_layout_get_resizable(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -264,19 +251,19 @@ func (layout *ToplevelLayout) Resizable() bool {
 //    - monitor (optional) to fullscreen on.
 //
 func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _arg1 C.gboolean           // out
+	var _arg2 *C.GdkMonitor        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	if fullscreen {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 	if monitor != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+		_arg2 = (*C.GdkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_info.InvokeRecordMethod("set_fullscreen", _args[:], nil)
-
+	C.gdk_toplevel_layout_set_fullscreen(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(fullscreen)
 	runtime.KeepAlive(monitor)
@@ -290,16 +277,15 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 //    - maximized: TRUE to maximize.
 //
 func (layout *ToplevelLayout) SetMaximized(maximized bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _arg1 C.gboolean           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	if maximized {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_info.InvokeRecordMethod("set_maximized", _args[:], nil)
-
+	C.gdk_toplevel_layout_set_maximized(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(maximized)
 }
@@ -312,16 +298,15 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 //    - resizable: TRUE to allow resizing.
 //
 func (layout *ToplevelLayout) SetResizable(resizable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkToplevelLayout // out
+	var _arg1 C.gboolean           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkToplevelLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 	if resizable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "ToplevelLayout")
-	_info.InvokeRecordMethod("set_resizable", _args[:], nil)
-
+	C.gdk_toplevel_layout_set_resizable(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(resizable)
 }

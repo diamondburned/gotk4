@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRGBA() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "RGBA").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_rgba_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRGBA)
 	return gtype
 }
@@ -38,78 +36,70 @@ type RGBA struct {
 
 // rgbA is the struct that's finalized.
 type rgbA struct {
-	native unsafe.Pointer
+	native *C.GdkRGBA
 }
 
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &RGBA{&rgbA{(unsafe.Pointer)(b)}}, nil
+	return &RGBA{&rgbA{(*C.GdkRGBA)(b)}}, nil
 }
 
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Red() float64 {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("red")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.red
 	var v float64 // out
-	v = float64(*(*C.gdouble)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // Green: intensity of the green channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Green() float64 {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("green")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.green
 	var v float64 // out
-	v = float64(*(*C.gdouble)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Blue() float64 {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("blue")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.blue
 	var v float64 // out
-	v = float64(*(*C.gdouble)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
 // opaque.
 func (r *RGBA) Alpha() float64 {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("alpha")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.alpha
 	var v float64 // out
-	v = float64(*(*C.gdouble)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) SetRed(red float64) {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("red")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.gdouble)(unsafe.Pointer(&*valptr)) = C.gdouble(red)
+	valptr := &r.native.red
+	*valptr = C.gdouble(red)
 }
 
 // Green: intensity of the green channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) SetGreen(green float64) {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("green")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.gdouble)(unsafe.Pointer(&*valptr)) = C.gdouble(green)
+	valptr := &r.native.green
+	*valptr = C.gdouble(green)
 }
 
 // Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) SetBlue(blue float64) {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("blue")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.gdouble)(unsafe.Pointer(&*valptr)) = C.gdouble(blue)
+	valptr := &r.native.blue
+	*valptr = C.gdouble(blue)
 }
 
 // Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
 // opaque.
 func (r *RGBA) SetAlpha(alpha float64) {
-	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("alpha")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.gdouble)(unsafe.Pointer(&*valptr)) = C.gdouble(alpha)
+	valptr := &r.native.alpha
+	*valptr = C.gdouble(alpha)
 }
 
 // Copy makes a copy of a RGBA.
@@ -121,27 +111,21 @@ func (r *RGBA) SetAlpha(alpha float64) {
 //    - rgbA: newly allocated RGBA, with the same contents as rgba.
 //
 func (rgba *RGBA) Copy() *RGBA {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkRGBA // out
+	var _cret *C.GdkRGBA // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_info := girepository.MustFind("Gdk", "RGBA")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rgba_copy(_arg0)
 	runtime.KeepAlive(rgba)
 
 	var _rgbA *RGBA // out
 
-	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_rgbA)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gdk", "RGBA").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
 		},
 	)
 
@@ -159,21 +143,20 @@ func (rgba *RGBA) Copy() *RGBA {
 //    - ok: TRUE if the two colors compare equal.
 //
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
-	var _args [2]girepository.Argument
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(gextras.StructNative(unsafe.Pointer(p1)))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = *(*C.gpointer)(gextras.StructNative(unsafe.Pointer(p2)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(p1)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(p2)))
 
-	_info := girepository.MustFind("Gdk", "RGBA")
-	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 	runtime.KeepAlive(p1)
 	runtime.KeepAlive(p2)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -187,19 +170,17 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 //    - guint: hash value for p.
 //
 func (p *RGBA) Hash() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(gextras.StructNative(unsafe.Pointer(p)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(p)))
 
-	_info := girepository.MustFind("Gdk", "RGBA")
-	_gret := _info.InvokeRecordMethod("hash", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rgba_hash(_arg0)
 	runtime.KeepAlive(p)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -233,22 +214,21 @@ func (p *RGBA) Hash() uint32 {
 //    - ok: TRUE if the parsing succeeded.
 //
 func (rgba *RGBA) Parse(spec string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkRGBA // out
+	var _arg1 *C.gchar   // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "RGBA")
-	_gret := _info.InvokeRecordMethod("parse", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rgba_parse(_arg0, _arg1)
 	runtime.KeepAlive(rgba)
 	runtime.KeepAlive(spec)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -273,20 +253,18 @@ func (rgba *RGBA) Parse(spec string) bool {
 //    - utf8: newly allocated text string.
 //
 func (rgba *RGBA) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkRGBA // out
+	var _cret *C.gchar   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_info := girepository.MustFind("Gdk", "RGBA")
-	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rgba_to_string(_arg0)
 	runtime.KeepAlive(rgba)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

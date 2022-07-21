@@ -8,17 +8,17 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(void*);
-// extern void _gotk4_gtk3_AccessibleClass_widget_set(void*);
-// extern void _gotk4_gtk3_AccessibleClass_widget_unset(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_set(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_unset(GtkAccessible*);
 import "C"
 
 // GTypeAccessible returns the GType for the type Accessible.
@@ -27,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Accessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessible)
 	return gtype
 }
@@ -68,26 +68,23 @@ func classInitAccessibler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "AccessibleClass")
+	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ConnectWidgetDestroyed() }); ok {
-		o := pclass.StructFieldOffset("connect_widget_destroyed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
+		pclass.connect_widget_destroyed = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
 	}
 
 	if _, ok := goval.(interface{ WidgetSet() }); ok {
-		o := pclass.StructFieldOffset("widget_set")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AccessibleClass_widget_set)
+		pclass.widget_set = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_set)
 	}
 
 	if _, ok := goval.(interface{ WidgetUnset() }); ok {
-		o := pclass.StructFieldOffset("widget_unset")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AccessibleClass_widget_unset)
+		pclass.widget_unset = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_unset)
 	}
 }
 
 //export _gotk4_gtk3_AccessibleClass_connect_widget_destroyed
-func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.void) {
+func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectWidgetDestroyed() })
 
@@ -95,7 +92,7 @@ func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_AccessibleClass_widget_set
-func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.void) {
+func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetSet() })
 
@@ -103,7 +100,7 @@ func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_AccessibleClass_widget_unset
-func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.void) {
+func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetUnset() })
 
@@ -127,13 +124,11 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 //
 // Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 func (accessible *Accessible) ConnectWidgetDestroyed() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAccessible // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Gtk", "Accessible")
-	_info.InvokeClassMethod("connect_widget_destroyed", _args[:], nil)
-
+	C.gtk_accessible_connect_widget_destroyed(_arg0)
 	runtime.KeepAlive(accessible)
 }
 
@@ -146,21 +141,19 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 //      or NULL.
 //
 func (accessible *Accessible) Widget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAccessible // out
+	var _cret *C.GtkWidget     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Gtk", "Accessible")
-	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_accessible_get_widget(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -189,16 +182,15 @@ func (accessible *Accessible) Widget() Widgetter {
 //    - widget (optional) or NULL to unset.
 //
 func (accessible *Accessible) SetWidget(widget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAccessible // out
+	var _arg1 *C.GtkWidget     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 	if widget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Accessible")
-	_info.InvokeClassMethod("set_widget", _args[:], nil)
-
+	C.gtk_accessible_set_widget(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(widget)
 }

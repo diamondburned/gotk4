@@ -7,25 +7,25 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern GObject* _gotk4_gtk3_BuildableIface_construct_child(void*, void*, gchar*);
-// extern GObject* _gotk4_gtk3_BuildableIface_get_internal_child(void*, void*, gchar*);
-// extern gboolean _gotk4_gtk3_BuildableIface_custom_tag_start(void*, void*, GObject*, gchar*, GMarkupParser*, gpointer*);
-// extern gchar* _gotk4_gtk3_BuildableIface_get_name(void*);
-// extern void _gotk4_gtk3_BuildableIface_add_child(void*, void*, GObject*, gchar*);
-// extern void _gotk4_gtk3_BuildableIface_custom_finished(void*, void*, GObject*, gchar*, gpointer);
-// extern void _gotk4_gtk3_BuildableIface_custom_tag_end(void*, void*, GObject*, gchar*, gpointer*);
-// extern void _gotk4_gtk3_BuildableIface_parser_finished(void*, void*);
-// extern void _gotk4_gtk3_BuildableIface_set_buildable_property(void*, void*, gchar*, const GValue*);
-// extern void _gotk4_gtk3_BuildableIface_set_name(void*, gchar*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern GObject* _gotk4_gtk3_BuildableIface_construct_child(GtkBuildable*, GtkBuilder*, gchar*);
+// extern GObject* _gotk4_gtk3_BuildableIface_get_internal_child(GtkBuildable*, GtkBuilder*, gchar*);
+// extern gboolean _gotk4_gtk3_BuildableIface_custom_tag_start(GtkBuildable*, GtkBuilder*, GObject*, gchar*, GMarkupParser*, gpointer*);
+// extern gchar* _gotk4_gtk3_BuildableIface_get_name(GtkBuildable*);
+// extern void _gotk4_gtk3_BuildableIface_add_child(GtkBuildable*, GtkBuilder*, GObject*, gchar*);
+// extern void _gotk4_gtk3_BuildableIface_custom_finished(GtkBuildable*, GtkBuilder*, GObject*, gchar*, gpointer);
+// extern void _gotk4_gtk3_BuildableIface_custom_tag_end(GtkBuildable*, GtkBuilder*, GObject*, gchar*, gpointer*);
+// extern void _gotk4_gtk3_BuildableIface_parser_finished(GtkBuildable*, GtkBuilder*);
+// extern void _gotk4_gtk3_BuildableIface_set_buildable_property(GtkBuildable*, GtkBuilder*, gchar*, GValue*);
+// extern void _gotk4_gtk3_BuildableIface_set_name(GtkBuildable*, gchar*);
 import "C"
 
 // GTypeBuildable returns the GType for the type Buildable.
@@ -34,7 +34,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBuildable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Buildable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_buildable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBuildable)
 	return gtype
 }
@@ -216,21 +216,21 @@ type Buildabler interface {
 var _ Buildabler = (*Buildable)(nil)
 
 func ifaceInitBuildabler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gtk", "BuildableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("add_child"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_add_child)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("construct_child"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_construct_child)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("custom_finished"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_custom_finished)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("custom_tag_end"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_custom_tag_end)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("custom_tag_start"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_custom_tag_start)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_internal_child"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_get_internal_child)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_name"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_get_name)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("parser_finished"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_parser_finished)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_buildable_property"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_set_buildable_property)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_name"))) = unsafe.Pointer(C._gotk4_gtk3_BuildableIface_set_name)
+	iface := (*C.GtkBuildableIface)(unsafe.Pointer(gifacePtr))
+	iface.add_child = (*[0]byte)(C._gotk4_gtk3_BuildableIface_add_child)
+	iface.construct_child = (*[0]byte)(C._gotk4_gtk3_BuildableIface_construct_child)
+	iface.custom_finished = (*[0]byte)(C._gotk4_gtk3_BuildableIface_custom_finished)
+	iface.custom_tag_end = (*[0]byte)(C._gotk4_gtk3_BuildableIface_custom_tag_end)
+	iface.custom_tag_start = (*[0]byte)(C._gotk4_gtk3_BuildableIface_custom_tag_start)
+	iface.get_internal_child = (*[0]byte)(C._gotk4_gtk3_BuildableIface_get_internal_child)
+	iface.get_name = (*[0]byte)(C._gotk4_gtk3_BuildableIface_get_name)
+	iface.parser_finished = (*[0]byte)(C._gotk4_gtk3_BuildableIface_parser_finished)
+	iface.set_buildable_property = (*[0]byte)(C._gotk4_gtk3_BuildableIface_set_buildable_property)
+	iface.set_name = (*[0]byte)(C._gotk4_gtk3_BuildableIface_set_name)
 }
 
 //export _gotk4_gtk3_BuildableIface_add_child
-func _gotk4_gtk3_BuildableIface_add_child(arg0 *C.void, arg1 *C.void, arg2 *C.GObject, arg3 *C.gchar) {
+func _gotk4_gtk3_BuildableIface_add_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -248,7 +248,7 @@ func _gotk4_gtk3_BuildableIface_add_child(arg0 *C.void, arg1 *C.void, arg2 *C.GO
 }
 
 //export _gotk4_gtk3_BuildableIface_construct_child
-func _gotk4_gtk3_BuildableIface_construct_child(arg0 *C.void, arg1 *C.void, arg2 *C.gchar) (cret *C.GObject) {
+func _gotk4_gtk3_BuildableIface_construct_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.gchar) (cret *C.GObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -267,7 +267,7 @@ func _gotk4_gtk3_BuildableIface_construct_child(arg0 *C.void, arg1 *C.void, arg2
 }
 
 //export _gotk4_gtk3_BuildableIface_custom_finished
-func _gotk4_gtk3_BuildableIface_custom_finished(arg0 *C.void, arg1 *C.void, arg2 *C.GObject, arg3 *C.gchar, arg4 C.gpointer) {
+func _gotk4_gtk3_BuildableIface_custom_finished(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar, arg4 C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -287,7 +287,7 @@ func _gotk4_gtk3_BuildableIface_custom_finished(arg0 *C.void, arg1 *C.void, arg2
 }
 
 //export _gotk4_gtk3_BuildableIface_custom_tag_end
-func _gotk4_gtk3_BuildableIface_custom_tag_end(arg0 *C.void, arg1 *C.void, arg2 *C.GObject, arg3 *C.gchar, arg4 *C.gpointer) {
+func _gotk4_gtk3_BuildableIface_custom_tag_end(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar, arg4 *C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -309,7 +309,7 @@ func _gotk4_gtk3_BuildableIface_custom_tag_end(arg0 *C.void, arg1 *C.void, arg2 
 }
 
 //export _gotk4_gtk3_BuildableIface_custom_tag_start
-func _gotk4_gtk3_BuildableIface_custom_tag_start(arg0 *C.void, arg1 *C.void, arg2 *C.GObject, arg3 *C.gchar, arg4 *C.GMarkupParser, arg5 *C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk3_BuildableIface_custom_tag_start(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.gchar, arg4 *C.GMarkupParser, arg5 *C.gpointer) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -325,8 +325,8 @@ func _gotk4_gtk3_BuildableIface_custom_tag_start(arg0 *C.void, arg1 *C.void, arg
 
 	parser, data, ok := iface.CustomTagStart(_builder, _child, _tagname)
 
-	*arg4 = (*C.GMarkupParser)(gextras.StructNative(unsafe.Pointer(parser)))
-	*arg5 = (*C.gpointer)(unsafe.Pointer(data))
+	*arg4 = *(*C.GMarkupParser)(gextras.StructNative(unsafe.Pointer(parser)))
+	*arg5 = (C.gpointer)(unsafe.Pointer(data))
 	if ok {
 		cret = C.TRUE
 	}
@@ -335,7 +335,7 @@ func _gotk4_gtk3_BuildableIface_custom_tag_start(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gtk3_BuildableIface_get_internal_child
-func _gotk4_gtk3_BuildableIface_get_internal_child(arg0 *C.void, arg1 *C.void, arg2 *C.gchar) (cret *C.GObject) {
+func _gotk4_gtk3_BuildableIface_get_internal_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.gchar) (cret *C.GObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -353,7 +353,7 @@ func _gotk4_gtk3_BuildableIface_get_internal_child(arg0 *C.void, arg1 *C.void, a
 }
 
 //export _gotk4_gtk3_BuildableIface_get_name
-func _gotk4_gtk3_BuildableIface_get_name(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gtk3_BuildableIface_get_name(arg0 *C.GtkBuildable) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -366,7 +366,7 @@ func _gotk4_gtk3_BuildableIface_get_name(arg0 *C.void) (cret *C.gchar) {
 }
 
 //export _gotk4_gtk3_BuildableIface_parser_finished
-func _gotk4_gtk3_BuildableIface_parser_finished(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_BuildableIface_parser_finished(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -378,7 +378,7 @@ func _gotk4_gtk3_BuildableIface_parser_finished(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gtk3_BuildableIface_set_buildable_property
-func _gotk4_gtk3_BuildableIface_set_buildable_property(arg0 *C.void, arg1 *C.void, arg2 *C.gchar, arg3 *C.GValue) {
+func _gotk4_gtk3_BuildableIface_set_buildable_property(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.gchar, arg3 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -394,7 +394,7 @@ func _gotk4_gtk3_BuildableIface_set_buildable_property(arg0 *C.void, arg1 *C.voi
 }
 
 //export _gotk4_gtk3_BuildableIface_set_name
-func _gotk4_gtk3_BuildableIface_set_name(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_gtk3_BuildableIface_set_name(arg0 *C.GtkBuildable, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -425,19 +425,20 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 //    - typ (optional): kind of child or NULL.
 //
 func (buildable *Buildable) AddChild(builder *Builder, child *coreglib.Object, typ string) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.GObject      // out
+	var _arg3 *C.gchar        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	*(**C.GObject)(unsafe.Pointer(&_args[2])) = (*C.GObject)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	if typ != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_info.InvokeIfaceMethod("add_child", _args[:], nil)
-
+	C.gtk_buildable_add_child(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(child)
@@ -459,24 +460,24 @@ func (buildable *Buildable) AddChild(builder *Builder, child *coreglib.Object, t
 //    - object: constructed child.
 //
 func (buildable *Buildable) ConstructChild(builder *Builder, name string) *coreglib.Object {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.gchar        // out
+	var _cret *C.GObject      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_gret := _info.InvokeIfaceMethod("construct_child", _args[:], nil)
-	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -492,20 +493,22 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *coreg
 //    - data (optional): user data created in custom_tag_start.
 //
 func (buildable *Buildable) CustomFinished(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.GObject      // out
+	var _arg3 *C.gchar        // out
+	var _arg4 C.gpointer      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if child != nil {
-		*(**C.GObject)(unsafe.Pointer(&_args[2])) = (*C.GObject)(unsafe.Pointer(child.Native()))
+		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (C.gpointer)(unsafe.Pointer(data))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (C.gpointer)(unsafe.Pointer(data))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_info.InvokeIfaceMethod("custom_finished", _args[:], nil)
-
+	C.gtk_buildable_custom_finished(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(child)
@@ -524,22 +527,24 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *coreglib.Obj
 //    - data (optional): user data that will be passed in to parser functions.
 //
 func (buildable *Buildable) CustomTagEnd(builder *Builder, child *coreglib.Object, tagname string, data *unsafe.Pointer) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.GObject      // out
+	var _arg3 *C.gchar        // out
+	var _arg4 *C.gpointer     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if child != nil {
-		*(**C.GObject)(unsafe.Pointer(&_args[2])) = (*C.GObject)(unsafe.Pointer(child.Native()))
+		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_arg3))
 	if data != nil {
-		*(**C.gpointer)(unsafe.Pointer(&_args[4])) = (*C.gpointer)(unsafe.Pointer(data))
+		_arg4 = (*C.gpointer)(unsafe.Pointer(data))
 	}
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_info.InvokeIfaceMethod("custom_tag_end", _args[:], nil)
-
+	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(child)
@@ -563,21 +568,23 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *coreglib.Objec
 //    - ok: TRUE if a object has a custom implementation, FALSE if it doesn't.
 //
 func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Object, tagname string) (*glib.MarkupParser, unsafe.Pointer, bool) {
-	var _args [4]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.GObject      // out
+	var _arg3 *C.gchar        // out
+	var _arg4 C.GMarkupParser // in
+	var _arg5 C.gpointer      // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if child != nil {
-		*(**C.GObject)(unsafe.Pointer(&_args[2])) = (*C.GObject)(unsafe.Pointer(child.Native()))
+		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_gret := _info.InvokeIfaceMethod("custom_tag_start", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_buildable_custom_tag_start(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(child)
@@ -587,11 +594,9 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Obj
 	var _data unsafe.Pointer       // out
 	var _ok bool                   // out
 
-	_parser = (*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer(*(**C.GMarkupParser)(unsafe.Pointer(&_outs[0])))))
-	if *(**C.gpointer)(unsafe.Pointer(&_outs[1])) != nil {
-		_data = (unsafe.Pointer)(unsafe.Pointer(*(**C.gpointer)(unsafe.Pointer(&_outs[1]))))
-	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_parser = (*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_data = (unsafe.Pointer)(unsafe.Pointer(_arg5))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -611,24 +616,24 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Obj
 //    - object: internal child of the buildable object.
 //
 func (buildable *Buildable) InternalChild(builder *Builder, childname string) *coreglib.Object {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.gchar        // out
+	var _cret *C.GObject      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(childname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childname)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_gret := _info.InvokeIfaceMethod("get_internal_child", _args[:], nil)
-	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(childname)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+	_object = coreglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -643,19 +648,17 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *c
 //    - utf8: name set with gtk_buildable_set_name().
 //
 func (buildable *Buildable) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_buildable_get_name(_arg0)
 	runtime.KeepAlive(buildable)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -670,14 +673,13 @@ func (buildable *Buildable) Name() string {
 //    - builder: Builder.
 //
 func (buildable *Buildable) ParserFinished(builder *Builder) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_info.InvokeIfaceMethod("parser_finished", _args[:], nil)
-
+	C.gtk_buildable_parser_finished(_arg0, _arg1)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 }
@@ -692,17 +694,18 @@ func (buildable *Buildable) ParserFinished(builder *Builder) {
 //    - value of property.
 //
 func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, value *coreglib.Value) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.GtkBuilder   // out
+	var _arg2 *C.gchar        // out
+	var _arg3 *C.GValue       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_info.InvokeIfaceMethod("set_buildable_property", _args[:], nil)
-
+	C.gtk_buildable_set_buildable_property(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
@@ -716,15 +719,14 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 //    - name to set.
 //
 func (buildable *Buildable) SetName(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBuildable // out
+	var _arg1 *C.gchar        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Buildable")
-	_info.InvokeIfaceMethod("set_name", _args[:], nil)
-
+	C.gtk_buildable_set_name(_arg0, _arg1)
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(name)
 }

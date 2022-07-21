@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeCenterBox returns the GType for the type CenterBox.
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCenterBox() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CenterBox").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_center_box_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCenterBox)
 	return gtype
+}
+
+// CenterBoxOverrider contains methods that are overridable.
+type CenterBoxOverrider interface {
 }
 
 // CenterBox: GtkCenterBox arranges three children in a row, keeping the middle
@@ -74,6 +76,14 @@ var (
 	_ coreglib.Objector = (*CenterBox)(nil)
 )
 
+func classInitCenterBoxer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapCenterBox(obj *coreglib.Object) *CenterBox {
 	return &CenterBox{
 		Widget: Widget{
@@ -109,15 +119,38 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 //    - centerBox: new GtkCenterBox.
 //
 func NewCenterBox() *CenterBox {
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_gret := _info.InvokeClassMethod("new_CenterBox", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_center_box_new()
 
 	var _centerBox *CenterBox // out
 
-	_centerBox = wrapCenterBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_centerBox = wrapCenterBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _centerBox
+}
+
+// BaselinePosition gets the value set by
+// gtk_center_box_set_baseline_position().
+//
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position.
+//
+func (self *CenterBox) BaselinePosition() BaselinePosition {
+	var _arg0 *C.GtkCenterBox       // out
+	var _cret C.GtkBaselinePosition // in
+
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_center_box_get_baseline_position(_arg0)
+	runtime.KeepAlive(self)
+
+	var _baselinePosition BaselinePosition // out
+
+	_baselinePosition = BaselinePosition(_cret)
+
+	return _baselinePosition
 }
 
 // CenterWidget gets the center widget, or NULL if there is none.
@@ -127,21 +160,19 @@ func NewCenterBox() *CenterBox {
 //    - widget (optional): center widget.
 //
 func (self *CenterBox) CenterWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCenterBox // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_gret := _info.InvokeClassMethod("get_center_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_center_box_get_center_widget(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -166,21 +197,19 @@ func (self *CenterBox) CenterWidget() Widgetter {
 //    - widget (optional): end widget.
 //
 func (self *CenterBox) EndWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCenterBox // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_gret := _info.InvokeClassMethod("get_end_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_center_box_get_end_widget(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -205,21 +234,19 @@ func (self *CenterBox) EndWidget() Widgetter {
 //    - widget (optional): start widget.
 //
 func (self *CenterBox) StartWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCenterBox // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_gret := _info.InvokeClassMethod("get_start_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_center_box_get_start_widget(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -237,6 +264,29 @@ func (self *CenterBox) StartWidget() Widgetter {
 	return _widget
 }
 
+// SetBaselinePosition sets the baseline position of a center box.
+//
+// This affects only horizontal boxes with at least one baseline aligned child.
+// If there is more vertical space available than requested, and the baseline is
+// not allocated by the parent then position is used to allocate the baseline
+// wrt. the extra space available.
+//
+// The function takes the following parameters:
+//
+//    - position: GtkBaselinePosition.
+//
+func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
+	var _arg0 *C.GtkCenterBox       // out
+	var _arg1 C.GtkBaselinePosition // out
+
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkBaselinePosition(position)
+
+	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(position)
+}
+
 // SetCenterWidget sets the center widget.
 //
 // To remove the existing center widget, pas NULL.
@@ -246,16 +296,15 @@ func (self *CenterBox) StartWidget() Widgetter {
 //    - child (optional): new center widget, or NULL.
 //
 func (self *CenterBox) SetCenterWidget(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCenterBox // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_info.InvokeClassMethod("set_center_widget", _args[:], nil)
-
+	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }
@@ -269,16 +318,15 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 //    - child (optional): new end widget, or NULL.
 //
 func (self *CenterBox) SetEndWidget(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCenterBox // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_info.InvokeClassMethod("set_end_widget", _args[:], nil)
-
+	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }
@@ -292,16 +340,15 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 //    - child (optional): new start widget, or NULL.
 //
 func (self *CenterBox) SetStartWidget(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCenterBox // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "CenterBox")
-	_info.InvokeClassMethod("set_start_widget", _args[:], nil)
-
+	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }

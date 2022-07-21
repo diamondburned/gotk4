@@ -8,28 +8,31 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_MenuShellClass_move_selected(void*, gint);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_MenuShellClass_move_selected(GtkMenuShell*, gint);
 // extern gboolean _gotk4_gtk3_MenuShell_ConnectMoveSelected(gpointer, gint, guintptr);
-// extern gint _gotk4_gtk3_MenuShellClass_get_popup_delay(void*);
-// extern void _gotk4_gtk3_MenuShellClass_activate_current(void*, gboolean);
-// extern void _gotk4_gtk3_MenuShellClass_cancel(void*);
-// extern void _gotk4_gtk3_MenuShellClass_deactivate(void*);
-// extern void _gotk4_gtk3_MenuShellClass_insert(void*, void*, gint);
-// extern void _gotk4_gtk3_MenuShellClass_select_item(void*, void*);
-// extern void _gotk4_gtk3_MenuShellClass_selection_done(void*);
+// extern gint _gotk4_gtk3_MenuShellClass_get_popup_delay(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShellClass_activate_current(GtkMenuShell*, gboolean);
+// extern void _gotk4_gtk3_MenuShellClass_cancel(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShellClass_deactivate(GtkMenuShell*);
+// extern void _gotk4_gtk3_MenuShellClass_insert(GtkMenuShell*, GtkWidget*, gint);
+// extern void _gotk4_gtk3_MenuShellClass_move_current(GtkMenuShell*, GtkMenuDirectionType);
+// extern void _gotk4_gtk3_MenuShellClass_select_item(GtkMenuShell*, GtkWidget*);
+// extern void _gotk4_gtk3_MenuShellClass_selection_done(GtkMenuShell*);
 // extern void _gotk4_gtk3_MenuShell_ConnectActivateCurrent(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk3_MenuShell_ConnectCancel(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectCycleFocus(gpointer, GtkDirectionType, guintptr);
 // extern void _gotk4_gtk3_MenuShell_ConnectDeactivate(gpointer, guintptr);
-// extern void _gotk4_gtk3_MenuShell_ConnectInsert(gpointer, void*, gint, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectInsert(gpointer, GtkWidget*, gint, guintptr);
+// extern void _gotk4_gtk3_MenuShell_ConnectMoveCurrent(gpointer, GtkMenuDirectionType, guintptr);
 // extern void _gotk4_gtk3_MenuShell_ConnectSelectionDone(gpointer, guintptr);
 import "C"
 
@@ -39,7 +42,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMenuShell() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuShell").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_menu_shell_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMenuShell)
 	return gtype
 }
@@ -68,6 +71,9 @@ type MenuShellOverrider interface {
 	//      numbered from 0 to n-1.
 	//
 	Insert(child Widgetter, position int32)
+	// The function takes the following parameters:
+	//
+	MoveCurrent(direction MenuDirectionType)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -134,53 +140,51 @@ func classInitMenuSheller(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "MenuShellClass")
+	pclass := (*C.GtkMenuShellClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ActivateCurrent(forceHide bool) }); ok {
-		o := pclass.StructFieldOffset("activate_current")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_activate_current)
+		pclass.activate_current = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_activate_current)
 	}
 
 	if _, ok := goval.(interface{ Cancel() }); ok {
-		o := pclass.StructFieldOffset("cancel")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_cancel)
+		pclass.cancel = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_cancel)
 	}
 
 	if _, ok := goval.(interface{ Deactivate() }); ok {
-		o := pclass.StructFieldOffset("deactivate")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_deactivate)
+		pclass.deactivate = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_deactivate)
 	}
 
 	if _, ok := goval.(interface{ PopupDelay() int32 }); ok {
-		o := pclass.StructFieldOffset("get_popup_delay")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_get_popup_delay)
+		pclass.get_popup_delay = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_get_popup_delay)
 	}
 
 	if _, ok := goval.(interface {
 		Insert(child Widgetter, position int32)
 	}); ok {
-		o := pclass.StructFieldOffset("insert")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_insert)
+		pclass.insert = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_insert)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCurrent(direction MenuDirectionType)
+	}); ok {
+		pclass.move_current = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_current)
 	}
 
 	if _, ok := goval.(interface{ MoveSelected(distance int32) bool }); ok {
-		o := pclass.StructFieldOffset("move_selected")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_move_selected)
+		pclass.move_selected = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_selected)
 	}
 
 	if _, ok := goval.(interface{ SelectItem(menuItem Widgetter) }); ok {
-		o := pclass.StructFieldOffset("select_item")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_select_item)
+		pclass.select_item = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_select_item)
 	}
 
 	if _, ok := goval.(interface{ SelectionDone() }); ok {
-		o := pclass.StructFieldOffset("selection_done")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_selection_done)
+		pclass.selection_done = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_selection_done)
 	}
 }
 
 //export _gotk4_gtk3_MenuShellClass_activate_current
-func _gotk4_gtk3_MenuShellClass_activate_current(arg0 *C.void, arg1 C.gboolean) {
+func _gotk4_gtk3_MenuShellClass_activate_current(arg0 *C.GtkMenuShell, arg1 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateCurrent(forceHide bool) })
 
@@ -194,7 +198,7 @@ func _gotk4_gtk3_MenuShellClass_activate_current(arg0 *C.void, arg1 C.gboolean) 
 }
 
 //export _gotk4_gtk3_MenuShellClass_cancel
-func _gotk4_gtk3_MenuShellClass_cancel(arg0 *C.void) {
+func _gotk4_gtk3_MenuShellClass_cancel(arg0 *C.GtkMenuShell) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancel() })
 
@@ -202,7 +206,7 @@ func _gotk4_gtk3_MenuShellClass_cancel(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_MenuShellClass_deactivate
-func _gotk4_gtk3_MenuShellClass_deactivate(arg0 *C.void) {
+func _gotk4_gtk3_MenuShellClass_deactivate(arg0 *C.GtkMenuShell) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Deactivate() })
 
@@ -210,7 +214,7 @@ func _gotk4_gtk3_MenuShellClass_deactivate(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_MenuShellClass_get_popup_delay
-func _gotk4_gtk3_MenuShellClass_get_popup_delay(arg0 *C.void) (cret C.gint) {
+func _gotk4_gtk3_MenuShellClass_get_popup_delay(arg0 *C.GtkMenuShell) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PopupDelay() int32 })
 
@@ -222,7 +226,7 @@ func _gotk4_gtk3_MenuShellClass_get_popup_delay(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_gtk3_MenuShellClass_insert
-func _gotk4_gtk3_MenuShellClass_insert(arg0 *C.void, arg1 *C.void, arg2 C.gint) {
+func _gotk4_gtk3_MenuShellClass_insert(arg0 *C.GtkMenuShell, arg1 *C.GtkWidget, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Insert(child Widgetter, position int32)
@@ -253,8 +257,22 @@ func _gotk4_gtk3_MenuShellClass_insert(arg0 *C.void, arg1 *C.void, arg2 C.gint) 
 	iface.Insert(_child, _position)
 }
 
+//export _gotk4_gtk3_MenuShellClass_move_current
+func _gotk4_gtk3_MenuShellClass_move_current(arg0 *C.GtkMenuShell, arg1 C.GtkMenuDirectionType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCurrent(direction MenuDirectionType)
+	})
+
+	var _direction MenuDirectionType // out
+
+	_direction = MenuDirectionType(arg1)
+
+	iface.MoveCurrent(_direction)
+}
+
 //export _gotk4_gtk3_MenuShellClass_move_selected
-func _gotk4_gtk3_MenuShellClass_move_selected(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_gtk3_MenuShellClass_move_selected(arg0 *C.GtkMenuShell, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MoveSelected(distance int32) bool })
 
@@ -272,7 +290,7 @@ func _gotk4_gtk3_MenuShellClass_move_selected(arg0 *C.void, arg1 C.gint) (cret C
 }
 
 //export _gotk4_gtk3_MenuShellClass_select_item
-func _gotk4_gtk3_MenuShellClass_select_item(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_MenuShellClass_select_item(arg0 *C.GtkMenuShell, arg1 *C.GtkWidget) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectItem(menuItem Widgetter) })
 
@@ -300,7 +318,7 @@ func _gotk4_gtk3_MenuShellClass_select_item(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gtk3_MenuShellClass_selection_done
-func _gotk4_gtk3_MenuShellClass_selection_done(arg0 *C.void) {
+func _gotk4_gtk3_MenuShellClass_selection_done(arg0 *C.GtkMenuShell) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectionDone() })
 
@@ -389,6 +407,32 @@ func (menuShell *MenuShell) ConnectCancel(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuShell, "cancel", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectCancel), f)
 }
 
+//export _gotk4_gtk3_MenuShell_ConnectCycleFocus
+func _gotk4_gtk3_MenuShell_ConnectCycleFocus(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
+	var f func(direction DirectionType)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction DirectionType))
+	}
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	f(_direction)
+}
+
+// ConnectCycleFocus: keybinding signal which moves the focus in the given
+// direction.
+func (menuShell *MenuShell) ConnectCycleFocus(f func(direction DirectionType)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(menuShell, "cycle-focus", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectCycleFocus), f)
+}
+
 //export _gotk4_gtk3_MenuShell_ConnectDeactivate
 func _gotk4_gtk3_MenuShell_ConnectDeactivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
@@ -411,7 +455,7 @@ func (menuShell *MenuShell) ConnectDeactivate(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_MenuShell_ConnectInsert
-func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.void, arg2 C.gint, arg3 C.guintptr) {
+func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.gint, arg3 C.guintptr) {
 	var f func(child Widgetter, position int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -455,6 +499,32 @@ func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.void, arg2 C.g
 // The inverse of this signal is the GtkContainer::removed signal.
 func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int32)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuShell, "insert", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectInsert), f)
+}
+
+//export _gotk4_gtk3_MenuShell_ConnectMoveCurrent
+func _gotk4_gtk3_MenuShell_ConnectMoveCurrent(arg0 C.gpointer, arg1 C.GtkMenuDirectionType, arg2 C.guintptr) {
+	var f func(direction MenuDirectionType)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(direction MenuDirectionType))
+	}
+
+	var _direction MenuDirectionType // out
+
+	_direction = MenuDirectionType(arg1)
+
+	f(_direction)
+}
+
+// ConnectMoveCurrent: keybinding signal which moves the current menu item in
+// the direction specified by direction.
+func (menuShell *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionType)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(menuShell, "move-current", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectMoveCurrent), f)
 }
 
 //export _gotk4_gtk3_MenuShell_ConnectMoveSelected
@@ -519,17 +589,17 @@ func (menuShell *MenuShell) ConnectSelectionDone(f func()) coreglib.SignalHandle
 //      the menu item is activated.
 //
 func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if forceDeactivate {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("activate_item", _args[:], nil)
-
+	C.gtk_menu_shell_activate_item(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(forceDeactivate)
@@ -542,14 +612,13 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 //    - child to add.
 //
 func (menuShell *MenuShell) Append(child *MenuItem) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("append", _args[:], nil)
-
+	C.gtk_menu_shell_append(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(child)
 }
@@ -591,23 +660,24 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 //      between them.
 //
 func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 *C.GMenuModel   // out
+	var _arg2 *C.gchar        // out
+	var _arg3 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 	if actionNamespace != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if withSeparators {
-		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
+		_arg3 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("bind_model", _args[:], nil)
-
+	C.gtk_menu_shell_bind_model(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(actionNamespace)
@@ -616,13 +686,11 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 
 // Cancel cancels the selection within the menu shell.
 func (menuShell *MenuShell) Cancel() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("cancel", _args[:], nil)
-
+	C.gtk_menu_shell_cancel(_arg0)
 	runtime.KeepAlive(menuShell)
 }
 
@@ -630,25 +698,21 @@ func (menuShell *MenuShell) Cancel() {
 //
 // Typically this results in the menu shell being erased from the screen.
 func (menuShell *MenuShell) Deactivate() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("deactivate", _args[:], nil)
-
+	C.gtk_menu_shell_deactivate(_arg0)
 	runtime.KeepAlive(menuShell)
 }
 
 // Deselect deselects the currently selected item from the menu shell, if any.
 func (menuShell *MenuShell) Deselect() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("deselect", _args[:], nil)
-
+	C.gtk_menu_shell_deselect(_arg0)
 	runtime.KeepAlive(menuShell)
 }
 
@@ -662,20 +726,18 @@ func (menuShell *MenuShell) Deselect() {
 //    - widget: parent MenuShell.
 //
 func (menuShell *MenuShell) ParentShell() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_gret := _info.InvokeClassMethod("get_parent_shell", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_menu_shell_get_parent_shell(_arg0)
 	runtime.KeepAlive(menuShell)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -702,20 +764,18 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 //    - widget: currently selected item.
 //
 func (menuShell *MenuShell) SelectedItem() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_gret := _info.InvokeClassMethod("get_selected_item", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_menu_shell_get_selected_item(_arg0)
 	runtime.KeepAlive(menuShell)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -743,19 +803,17 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 //    - ok: TRUE if the menu shell will take the keyboard focus on popup.
 //
 func (menuShell *MenuShell) TakeFocus() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_gret := _info.InvokeClassMethod("get_take_focus", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_menu_shell_get_take_focus(_arg0)
 	runtime.KeepAlive(menuShell)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -772,15 +830,15 @@ func (menuShell *MenuShell) TakeFocus() bool {
 //      from 0 to n-1.
 //
 func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 C.gint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.gint(position)
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("insert", _args[:], nil)
-
+	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(position)
@@ -793,14 +851,13 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
 //    - child to add.
 //
 func (menuShell *MenuShell) Prepend(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("prepend", _args[:], nil)
-
+	C.gtk_menu_shell_prepend(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(child)
 }
@@ -815,16 +872,15 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 //      be FALSE if the menu is being popped up initially.
 //
 func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	if searchSensitive {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("select_first", _args[:], nil)
-
+	C.gtk_menu_shell_select_first(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(searchSensitive)
 }
@@ -836,14 +892,13 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 //    - menuItem to select.
 //
 func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("select_item", _args[:], nil)
-
+	C.gtk_menu_shell_select_item(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(menuItem)
 }
@@ -879,16 +934,15 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 //      popup.
 //
 func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuShell // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	if takeFocus {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "MenuShell")
-	_info.InvokeClassMethod("set_take_focus", _args[:], nil)
-
+	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(takeFocus)
 }

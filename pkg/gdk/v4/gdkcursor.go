@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCursor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Cursor").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_cursor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCursor)
 	return gtype
 }
@@ -116,25 +114,24 @@ func marshalCursor(p uintptr) (interface{}, error) {
 //      given name.
 //
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
-	var _args [2]girepository.Argument
+	var _arg1 *C.char      // out
+	var _arg2 *C.GdkCursor // out
+	var _cret *C.GdkCursor // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if fallback != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
+		_arg2 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("new_Cursor_from_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(fallback)
 
 	var _cursor *Cursor // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _cursor
@@ -155,19 +152,20 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 //    - cursor: new GdkCursor.
 //
 func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *Cursor) *Cursor {
-	var _args [4]girepository.Argument
+	var _arg1 *C.GdkTexture // out
+	var _arg2 C.int         // out
+	var _arg3 C.int         // out
+	var _arg4 *C.GdkCursor  // out
+	var _cret *C.GdkCursor  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(hotspotX)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotspotY)
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg2 = C.int(hotspotX)
+	_arg3 = C.int(hotspotY)
 	if fallback != nil {
-		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
+		_arg4 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("new_Cursor_from_texture", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_new_from_texture(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(texture)
 	runtime.KeepAlive(hotspotX)
 	runtime.KeepAlive(hotspotY)
@@ -175,7 +173,7 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cursor
 }
@@ -194,20 +192,18 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 //      as fallback.
 //
 func (cursor *Cursor) Fallback() *Cursor {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkCursor // out
+	var _cret *C.GdkCursor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("get_fallback", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_get_fallback(_arg0)
 	runtime.KeepAlive(cursor)
 
 	var _ret *Cursor // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = wrapCursor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_ret = wrapCursor(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _ret
@@ -226,19 +222,17 @@ func (cursor *Cursor) Fallback() *Cursor {
 //    - gint: horizontal offset of the hotspot or 0 for named cursors.
 //
 func (cursor *Cursor) HotspotX() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkCursor // out
+	var _cret C.int        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("get_hotspot_x", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_get_hotspot_x(_arg0)
 	runtime.KeepAlive(cursor)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -256,19 +250,17 @@ func (cursor *Cursor) HotspotX() int32 {
 //    - gint: vertical offset of the hotspot or 0 for named cursors.
 //
 func (cursor *Cursor) HotspotY() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkCursor // out
+	var _cret C.int        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("get_hotspot_y", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_get_hotspot_y(_arg0)
 	runtime.KeepAlive(cursor)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -282,20 +274,18 @@ func (cursor *Cursor) HotspotY() int32 {
 //    - utf8 (optional): name of the cursor or NULL if it is not a named cursor.
 //
 func (cursor *Cursor) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkCursor // out
+	var _cret *C.char      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_get_name(_arg0)
 	runtime.KeepAlive(cursor)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -310,21 +300,19 @@ func (cursor *Cursor) Name() string {
 //    - texture (optional) for cursor or NULL if it is a named cursor.
 //
 func (cursor *Cursor) Texture() Texturer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkCursor  // out
+	var _cret *C.GdkTexture // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_info := girepository.MustFind("Gdk", "Cursor")
-	_gret := _info.InvokeClassMethod("get_texture", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cursor_get_texture(_arg0)
 	runtime.KeepAlive(cursor)
 
 	var _texture Texturer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

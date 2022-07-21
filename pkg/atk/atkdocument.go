@@ -6,18 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(void*);
-// extern gint _gotk4_atk1_DocumentIface_get_current_page_number(void*);
-// extern gint _gotk4_atk1_DocumentIface_get_page_count(void*);
-// extern gpointer _gotk4_atk1_DocumentIface_get_document(void*);
+// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(AtkDocument*);
+// extern gint _gotk4_atk1_DocumentIface_get_current_page_number(AtkDocument*);
+// extern gint _gotk4_atk1_DocumentIface_get_page_count(AtkDocument*);
+// extern gpointer _gotk4_atk1_DocumentIface_get_document(AtkDocument*);
 // extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDocument() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Document").RegisteredGType())
+	gtype := coreglib.Type(C.atk_document_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDocument)
 	return gtype
 }
@@ -219,23 +217,22 @@ func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
 //      specified for this document.
 //
 func (document *Document) AttributeValue(attributeName string) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _cret *C.gchar       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("get_attribute_value", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
 	runtime.KeepAlive(document)
 	runtime.KeepAlive(attributeName)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -249,19 +246,17 @@ func (document *Document) AttributeValue(attributeName string) string {
 //      know by the implementor, or irrelevant.
 //
 func (document *Document) CurrentPageNumber() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("get_current_page_number", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_get_current_page_number(_arg0)
 	runtime.KeepAlive(document)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -278,19 +273,17 @@ func (document *Document) CurrentPageNumber() int32 {
 //    - gpointer (optional) that points to an instance of the DOM.
 //
 func (document *Document) Document() unsafe.Pointer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gpointer     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("get_document", _args[:], nil)
-	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_get_document(_arg0)
 	runtime.KeepAlive(document)
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
 
 	return _gpointer
 }
@@ -305,19 +298,17 @@ func (document *Document) Document() unsafe.Pointer {
 //    - utf8: string indicating the document type.
 //
 func (document *Document) DocumentType() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _cret *C.gchar       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("get_document_type", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_get_document_type(_arg0)
 	runtime.KeepAlive(document)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -336,19 +327,17 @@ func (document *Document) DocumentType() string {
 //      specify a locale.
 //
 func (document *Document) Locale() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _cret *C.gchar       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("get_locale", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_get_locale(_arg0)
 	runtime.KeepAlive(document)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -361,19 +350,17 @@ func (document *Document) Locale() string {
 //      the implementor or irrelevant.
 //
 func (document *Document) PageCount() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("get_page_count", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_get_page_count(_arg0)
 	runtime.KeepAlive(document)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -394,25 +381,25 @@ func (document *Document) PageCount() int32 {
 //      allow the attribute to be modified.
 //
 func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.gchar       // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Atk", "Document")
-	_gret := _info.InvokeIfaceMethod("set_attribute_value", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(document)
 	runtime.KeepAlive(attributeName)
 	runtime.KeepAlive(attributeValue)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeVScale returns the GType for the type VScale.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeVScale() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "VScale").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_vscale_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalVScale)
 	return gtype
 }
@@ -98,19 +98,17 @@ func marshalVScale(p uintptr) (interface{}, error) {
 //    - vScale: new VScale.
 //
 func NewVScale(adjustment *Adjustment) *VScale {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_info := girepository.MustFind("Gtk", "VScale")
-	_gret := _info.InvokeClassMethod("new_VScale", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_vscale_new(_arg1)
 	runtime.KeepAlive(adjustment)
 
 	var _vScale *VScale // out
 
-	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
 }
@@ -138,23 +136,23 @@ func NewVScale(adjustment *Adjustment) *VScale {
 //    - vScale: new VScale.
 //
 func NewVScaleWithRange(min, max, step float64) *VScale {
-	var _args [3]girepository.Argument
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
+	var _arg3 C.gdouble    // out
+	var _cret *C.GtkWidget // in
 
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(min)
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(max)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(step)
+	_arg1 = C.gdouble(min)
+	_arg2 = C.gdouble(max)
+	_arg3 = C.gdouble(step)
 
-	_info := girepository.MustFind("Gtk", "VScale")
-	_gret := _info.InvokeClassMethod("new_VScale_with_range", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_vscale_new_with_range(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
 	runtime.KeepAlive(step)
 
 	var _vScale *VScale // out
 
-	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
 }

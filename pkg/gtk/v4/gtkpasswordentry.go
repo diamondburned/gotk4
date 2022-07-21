@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_PasswordEntry_ConnectActivate(gpointer, guintptr);
 import "C"
 
@@ -24,9 +22,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePasswordEntry() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PasswordEntry").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_password_entry_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPasswordEntry)
 	return gtype
+}
+
+// PasswordEntryOverrider contains methods that are overridable.
+type PasswordEntryOverrider interface {
 }
 
 // PasswordEntry: GtkPasswordEntry is an entry that has been tailored for
@@ -74,6 +76,14 @@ var (
 	_ Widgetter         = (*PasswordEntry)(nil)
 	_ coreglib.Objector = (*PasswordEntry)(nil)
 )
+
+func classInitPasswordEntrier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapPasswordEntry(obj *coreglib.Object) *PasswordEntry {
 	return &PasswordEntry{
@@ -147,13 +157,13 @@ func (entry *PasswordEntry) ConnectActivate(f func()) coreglib.SignalHandle {
 //    - passwordEntry: new GtkPasswordEntry.
 //
 func NewPasswordEntry() *PasswordEntry {
-	_info := girepository.MustFind("Gtk", "PasswordEntry")
-	_gret := _info.InvokeClassMethod("new_PasswordEntry", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_password_entry_new()
 
 	var _passwordEntry *PasswordEntry // out
 
-	_passwordEntry = wrapPasswordEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_passwordEntry = wrapPasswordEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _passwordEntry
 }
@@ -165,20 +175,18 @@ func NewPasswordEntry() *PasswordEntry {
 //    - menuModel: (nullable): the menu model.
 //
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPasswordEntry // out
+	var _cret *C.GMenuModel       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "PasswordEntry")
-	_gret := _info.InvokeClassMethod("get_extra_menu", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_password_entry_get_extra_menu(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _menuModel gio.MenuModeller // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gio.MenuModeller is nil")
 		}
@@ -206,19 +214,17 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 //    - ok: TRUE if an icon is shown.
 //
 func (entry *PasswordEntry) ShowPeekIcon() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPasswordEntry // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "PasswordEntry")
-	_gret := _info.InvokeClassMethod("get_show_peek_icon", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -233,16 +239,15 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 //    - model (optional): GMenuModel.
 //
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPasswordEntry // out
+	var _arg1 *C.GMenuModel       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "PasswordEntry")
-	_info.InvokeClassMethod("set_extra_menu", _args[:], nil)
-
+	C.gtk_password_entry_set_extra_menu(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(model)
 }
@@ -257,16 +262,15 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 //    - showPeekIcon: whether to show the peek icon.
 //
 func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPasswordEntry // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if showPeekIcon {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "PasswordEntry")
-	_info.InvokeClassMethod("set_show_peek_icon", _args[:], nil)
-
+	C.gtk_password_entry_set_show_peek_icon(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(showPeekIcon)
 }

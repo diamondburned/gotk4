@@ -9,14 +9,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeShapeFlags returns the GType for the type ShapeFlags.
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShapeFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "ShapeFlags").RegisteredGType())
+	gtype := coreglib.Type(C.pango_shape_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShapeFlags)
 	return gtype
 }
@@ -36,7 +34,7 @@ func GTypeShapeFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGlyphString() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "GlyphString").RegisteredGType())
+	gtype := coreglib.Type(C.pango_glyph_string_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGlyphString)
 	return gtype
 }
@@ -119,37 +117,31 @@ func (s ShapeFlags) Has(other ShapeFlags) bool {
 //      that reason.).
 //
 func ReorderItems(logicalItems []*Item) []*Item {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GList // out
+	var _cret *C.GList // in
 
 	for i := len(logicalItems) - 1; i >= 0; i-- {
 		src := logicalItems[i]
-		var dst *C.void // out
-		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-		*(**C.GList)(unsafe.Pointer(&_args[0])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
+		var dst *C.PangoItem // out
+		dst = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(src)))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
-	defer C.g_list_free(_args[0])
+	defer C.g_list_free(_arg1)
 
-	_info := girepository.MustFind("Pango", "reorder_items")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_reorder_items(_arg1)
 	runtime.KeepAlive(logicalItems)
 
 	var _list []*Item // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.PangoItem)(v)
 		var dst *Item // out
-		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.pango_item_free((*C.PangoItem)(intern.C))
 			},
 		)
 		_list = append(_list, dst)
@@ -179,17 +171,18 @@ func ReorderItems(logicalItems []*Item) []*Item {
 //    - glyphs: glyph string in which to store results.
 //
 func Shape(text string, length int32, analysis *Analysis, glyphs *GlyphString) {
-	var _args [4]girepository.Argument
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 *C.PangoGlyphString // out
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	_arg4 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	_info := girepository.MustFind("Pango", "shape")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.pango_shape(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(analysis)
@@ -225,28 +218,88 @@ func Shape(text string, length int32, analysis *Analysis, glyphs *GlyphString) {
 //    - glyphs: glyph string in which to store results.
 //
 func ShapeFull(itemText string, itemLength int32, paragraphText string, paragraphLength int32, analysis *Analysis, glyphs *GlyphString) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.char             // out
+	var _arg4 C.int               // out
+	var _arg5 *C.PangoAnalysis    // out
+	var _arg6 *C.PangoGlyphString // out
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(itemText)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(itemLength)
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(itemLength)
 	if paragraphText != "" {
-		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(paragraphLength)
-	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
-	*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg4 = C.int(paragraphLength)
+	_arg5 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	_info := girepository.MustFind("Pango", "shape_full")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.pango_shape_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(itemText)
 	runtime.KeepAlive(itemLength)
 	runtime.KeepAlive(paragraphText)
 	runtime.KeepAlive(paragraphLength)
 	runtime.KeepAlive(analysis)
 	runtime.KeepAlive(glyphs)
+}
+
+// ShapeWithFlags: convert the characters in text into glyphs.
+//
+// Given a segment of text and the corresponding PangoAnalysis structure
+// returned from itemize, convert the characters into glyphs. You may also pass
+// in only a substring of the item from itemize.
+//
+// This is similar to shape_full, except it also takes flags that can influence
+// the shaping process.
+//
+// Note that the extra attributes in the analyis that is returned from itemize
+// have indices that are relative to the entire paragraph, so you do not pass
+// the full paragraph text as paragraph_text, you need to subtract the item
+// offset from their indices before calling shape_with_flags.
+//
+// The function takes the following parameters:
+//
+//    - itemText: valid UTF-8 text to shape.
+//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
+//    - paragraphText (optional): text of the paragraph (see details). May be
+//      NULL.
+//    - paragraphLength: length (in bytes) of paragraph_text. -1 means
+//      nul-terminated text.
+//    - analysis: PangoAnalysis structure from itemize.
+//    - glyphs: glyph string in which to store results.
+//    - flags influencing the shaping process.
+//
+func ShapeWithFlags(itemText string, itemLength int32, paragraphText string, paragraphLength int32, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.char             // out
+	var _arg4 C.int               // out
+	var _arg5 *C.PangoAnalysis    // out
+	var _arg6 *C.PangoGlyphString // out
+	var _arg7 C.PangoShapeFlags   // out
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(itemText)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(itemLength)
+	if paragraphText != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(paragraphText)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	_arg4 = C.int(paragraphLength)
+	_arg5 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	_arg6 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg7 = C.PangoShapeFlags(flags)
+
+	C.pango_shape_with_flags(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(itemText)
+	runtime.KeepAlive(itemLength)
+	runtime.KeepAlive(paragraphText)
+	runtime.KeepAlive(paragraphLength)
+	runtime.KeepAlive(analysis)
+	runtime.KeepAlive(glyphs)
+	runtime.KeepAlive(flags)
 }
 
 // GlyphGeometry: PangoGlyphGeometry structure contains width and positioning
@@ -259,33 +312,30 @@ type GlyphGeometry struct {
 
 // glyphGeometry is the struct that's finalized.
 type glyphGeometry struct {
-	native unsafe.Pointer
+	native *C.PangoGlyphGeometry
 }
 
 // Width: logical width to use for the the character.
 func (g *GlyphGeometry) Width() GlyphUnit {
-	offset := girepository.MustFind("Pango", "GlyphGeometry").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	valptr := &g.native.width
 	var v GlyphUnit // out
-	v = int32(*(*C.gint32)(unsafe.Pointer(&*(*C.gint32)(unsafe.Pointer(&*valptr)))))
+	v = int32(*valptr)
 	return v
 }
 
 // XOffset: horizontal offset from nominal character position.
 func (g *GlyphGeometry) XOffset() GlyphUnit {
-	offset := girepository.MustFind("Pango", "GlyphGeometry").StructFieldOffset("x_offset")
-	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	valptr := &g.native.x_offset
 	var v GlyphUnit // out
-	v = int32(*(*C.gint32)(unsafe.Pointer(&*(*C.gint32)(unsafe.Pointer(&*valptr)))))
+	v = int32(*valptr)
 	return v
 }
 
 // YOffset: vertical offset from nominal character position.
 func (g *GlyphGeometry) YOffset() GlyphUnit {
-	offset := girepository.MustFind("Pango", "GlyphGeometry").StructFieldOffset("y_offset")
-	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	valptr := &g.native.y_offset
 	var v GlyphUnit // out
-	v = int32(*(*C.gint32)(unsafe.Pointer(&*(*C.gint32)(unsafe.Pointer(&*valptr)))))
+	v = int32(*valptr)
 	return v
 }
 
@@ -299,7 +349,31 @@ type GlyphInfo struct {
 
 // glyphInfo is the struct that's finalized.
 type glyphInfo struct {
-	native unsafe.Pointer
+	native *C.PangoGlyphInfo
+}
+
+// Glyph: glyph itself.
+func (g *GlyphInfo) Glyph() Glyph {
+	valptr := &g.native.glyph
+	var v Glyph // out
+	v = uint32(*valptr)
+	return v
+}
+
+// Geometry: positional information about the glyph.
+func (g *GlyphInfo) Geometry() *GlyphGeometry {
+	valptr := &g.native.geometry
+	var v *GlyphGeometry // out
+	v = (*GlyphGeometry)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// Attr: visual attributes of the glyph.
+func (g *GlyphInfo) Attr() *GlyphVisAttr {
+	valptr := &g.native.attr
+	var v *GlyphVisAttr // out
+	v = (*GlyphVisAttr)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }
 
 // GlyphString: PangoGlyphString is used to store strings of glyphs with
@@ -315,31 +389,27 @@ type GlyphString struct {
 
 // glyphString is the struct that's finalized.
 type glyphString struct {
-	native unsafe.Pointer
+	native *C.PangoGlyphString
 }
 
 func marshalGlyphString(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &GlyphString{&glyphString{(unsafe.Pointer)(b)}}, nil
+	return &GlyphString{&glyphString{(*C.PangoGlyphString)(b)}}, nil
 }
 
 // NewGlyphString constructs a struct GlyphString.
 func NewGlyphString() *GlyphString {
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.PangoGlyphString // in
+
+	_cret = C.pango_glyph_string_new()
 
 	var _glyphString *GlyphString // out
 
-	_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_glyphString)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Pango", "GlyphString").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
 		},
 	)
 
@@ -354,30 +424,24 @@ func NewGlyphString() *GlyphString {
 //      freed with pango.GlyphString.Free(), or NULL if string was NULL.
 //
 func (str *GlyphString) Copy() *GlyphString {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _cret *C.PangoGlyphString // in
 
 	if str != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(str)))
+		_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(str)))
 	}
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_glyph_string_copy(_arg0)
 	runtime.KeepAlive(str)
 
 	var _glyphString *GlyphString // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphString)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Pango", "GlyphString").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
 			},
 		)
 	}
@@ -406,27 +470,23 @@ func (str *GlyphString) Copy() *GlyphString {
 //      the glyph string or NULL to indicate that the result is not needed.
 //
 func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.PangoFont        // out
+	var _arg2 C.PangoRectangle    // in
+	var _arg3 C.PangoRectangle    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_info.InvokeRecordMethod("extents", _args[:], _outs[:])
-
+	C.pango_glyph_string_extents(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(font)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _inkRect, _logicalRect
 }
@@ -452,17 +512,19 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 //      the glyph string range or NULL to indicate that the result is not needed.
 //
 func (glyphs *GlyphString) ExtentsRange(start int32, end int32, font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [4]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 C.int               // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoFont        // out
+	var _arg4 C.PangoRectangle    // in
+	var _arg5 C.PangoRectangle    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(start)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(end)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg1 = C.int(start)
+	_arg2 = C.int(end)
+	_arg3 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_info.InvokeRecordMethod("extents_range", _args[:], _outs[:])
-
+	C.pango_glyph_string_extents_range(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -471,12 +533,8 @@ func (glyphs *GlyphString) ExtentsRange(start int32, end int32, font Fonter) (in
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
 
 	return _inkRect, _logicalRect
 }
@@ -493,19 +551,17 @@ func (glyphs *GlyphString) ExtentsRange(start int32, end int32, font Fonter) (in
 //    - gint: logical width of the glyph string.
 //
 func (glyphs *GlyphString) Width() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _cret C.int               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_gret := _info.InvokeRecordMethod("get_width", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_glyph_string_get_width(_arg0)
 	runtime.KeepAlive(glyphs)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -529,22 +585,25 @@ func (glyphs *GlyphString) Width() int32 {
 //    - xPos: location to store result.
 //
 func (glyphs *GlyphString) IndexToX(text string, length int32, analysis *Analysis, index_ int32, trailing bool) int32 {
-	var _args [6]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 C.int               // out
+	var _arg5 C.gboolean          // out
+	var _arg6 C.int               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(index_)
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	_arg4 = C.int(index_)
 	if trailing {
-		*(*C.gboolean)(unsafe.Pointer(&_args[5])) = C.TRUE
+		_arg5 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_info.InvokeRecordMethod("index_to_x", _args[:], _outs[:])
-
+	C.pango_glyph_string_index_to_x(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -554,7 +613,7 @@ func (glyphs *GlyphString) IndexToX(text string, length int32, analysis *Analysi
 
 	var _xPos int32 // out
 
-	_xPos = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_xPos = int32(_arg6)
 
 	return _xPos
 }
@@ -566,14 +625,13 @@ func (glyphs *GlyphString) IndexToX(text string, length int32, analysis *Analysi
 //    - newLen: new length of the string.
 //
 func (str *GlyphString) SetSize(newLen int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 C.gint              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(str)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(newLen)
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(str)))
+	_arg1 = C.gint(newLen)
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_info.InvokeRecordMethod("set_size", _args[:], nil)
-
+	C.pango_glyph_string_set_size(_arg0, _arg1)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(newLen)
 }
@@ -600,19 +658,22 @@ func (str *GlyphString) SetSize(newLen int32) {
 //      on the leading or trailing edge of the character.
 //
 func (glyphs *GlyphString) XToIndex(text string, length int32, analysis *Analysis, xPos int32) (index_ int32, trailing int32) {
-	var _args [5]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 C.int               // out
+	var _arg5 C.int               // in
+	var _arg6 C.int               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(xPos)
+	_arg0 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+	_arg4 = C.int(xPos)
 
-	_info := girepository.MustFind("Pango", "GlyphString")
-	_info.InvokeRecordMethod("x_to_index", _args[:], _outs[:])
-
+	C.pango_glyph_string_x_to_index(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -622,8 +683,8 @@ func (glyphs *GlyphString) XToIndex(text string, length int32, analysis *Analysi
 	var _index_ int32   // out
 	var _trailing int32 // out
 
-	_index_ = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_trailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_index_ = int32(_arg5)
+	_trailing = int32(_arg6)
 
 	return _index_, _trailing
 }
@@ -641,5 +702,5 @@ type GlyphVisAttr struct {
 
 // glyphVisAttr is the struct that's finalized.
 type glyphVisAttr struct {
-	native unsafe.Pointer
+	native *C.PangoGlyphVisAttr
 }

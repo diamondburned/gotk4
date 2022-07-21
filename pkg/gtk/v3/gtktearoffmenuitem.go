@@ -6,14 +6,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeTearoffMenuItem returns the GType for the type TearoffMenuItem.
@@ -22,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTearoffMenuItem() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TearoffMenuItem").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tearoff_menu_item_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTearoffMenuItem)
 	return gtype
 }
@@ -118,13 +118,13 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 //    - tearoffMenuItem: new TearoffMenuItem.
 //
 func NewTearoffMenuItem() *TearoffMenuItem {
-	_info := girepository.MustFind("Gtk", "TearoffMenuItem")
-	_gret := _info.InvokeClassMethod("new_TearoffMenuItem", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tearoff_menu_item_new()
 
 	var _tearoffMenuItem *TearoffMenuItem // out
 
-	_tearoffMenuItem = wrapTearoffMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_tearoffMenuItem = wrapTearoffMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _tearoffMenuItem
 }

@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeColorChooserWidget returns the GType for the type ColorChooserWidget.
@@ -21,7 +19,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColorChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColorChooserWidget").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_color_chooser_widget_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColorChooserWidget)
 	return gtype
 }
@@ -99,13 +97,13 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 //    - colorChooserWidget: new GtkColorChooserWidget.
 //
 func NewColorChooserWidget() *ColorChooserWidget {
-	_info := girepository.MustFind("Gtk", "ColorChooserWidget")
-	_gret := _info.InvokeClassMethod("new_ColorChooserWidget", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_color_chooser_widget_new()
 
 	var _colorChooserWidget *ColorChooserWidget // out
 
-	_colorChooserWidget = wrapColorChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_colorChooserWidget = wrapColorChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
 }

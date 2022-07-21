@@ -8,14 +8,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeRevealerTransitionType returns the GType for the type RevealerTransitionType.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRevealerTransitionType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RevealerTransitionType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_revealer_transition_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRevealerTransitionType)
 	return gtype
 }
@@ -35,7 +35,7 @@ func GTypeRevealerTransitionType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRevealer() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Revealer").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_revealer_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRevealer)
 	return gtype
 }
@@ -150,13 +150,13 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 //    - revealer: newly created Revealer.
 //
 func NewRevealer() *Revealer {
-	_info := girepository.MustFind("Gtk", "Revealer")
-	_gret := _info.InvokeClassMethod("new_Revealer", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_revealer_new()
 
 	var _revealer *Revealer // out
 
-	_revealer = wrapRevealer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_revealer = wrapRevealer(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _revealer
 }
@@ -169,19 +169,17 @@ func NewRevealer() *Revealer {
 //    - ok: TRUE if the child is fully revealed.
 //
 func (revealer *Revealer) ChildRevealed() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRevealer // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Revealer")
-	_gret := _info.InvokeClassMethod("get_child_revealed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_revealer_get_child_revealed(_arg0)
 	runtime.KeepAlive(revealer)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -200,19 +198,17 @@ func (revealer *Revealer) ChildRevealed() bool {
 //    - ok: TRUE if the child is revealed.
 //
 func (revealer *Revealer) RevealChild() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRevealer // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Revealer")
-	_gret := _info.InvokeClassMethod("get_reveal_child", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 	runtime.KeepAlive(revealer)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -227,21 +223,42 @@ func (revealer *Revealer) RevealChild() bool {
 //    - guint: transition duration.
 //
 func (revealer *Revealer) TransitionDuration() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRevealer // out
+	var _cret C.guint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Revealer")
-	_gret := _info.InvokeClassMethod("get_transition_duration", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 	runtime.KeepAlive(revealer)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// TransitionType gets the type of animation that will be used for transitions
+// in revealer.
+//
+// The function returns the following values:
+//
+//    - revealerTransitionType: current transition type of revealer.
+//
+func (revealer *Revealer) TransitionType() RevealerTransitionType {
+	var _arg0 *C.GtkRevealer              // out
+	var _cret C.GtkRevealerTransitionType // in
+
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+
+	_cret = C.gtk_revealer_get_transition_type(_arg0)
+	runtime.KeepAlive(revealer)
+
+	var _revealerTransitionType RevealerTransitionType // out
+
+	_revealerTransitionType = RevealerTransitionType(_cret)
+
+	return _revealerTransitionType
 }
 
 // SetRevealChild tells the Revealer to reveal or conceal its child.
@@ -253,16 +270,15 @@ func (revealer *Revealer) TransitionDuration() uint32 {
 //    - revealChild: TRUE to reveal the child.
 //
 func (revealer *Revealer) SetRevealChild(revealChild bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRevealer // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 	if revealChild {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Revealer")
-	_info.InvokeClassMethod("set_reveal_child", _args[:], nil)
-
+	C.gtk_revealer_set_reveal_child(_arg0, _arg1)
 	runtime.KeepAlive(revealer)
 	runtime.KeepAlive(revealChild)
 }
@@ -274,14 +290,33 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 //    - duration: new duration, in milliseconds.
 //
 func (revealer *Revealer) SetTransitionDuration(duration uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRevealer // out
+	var _arg1 C.guint        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(duration)
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	_arg1 = C.guint(duration)
 
-	_info := girepository.MustFind("Gtk", "Revealer")
-	_info.InvokeClassMethod("set_transition_duration", _args[:], nil)
-
+	C.gtk_revealer_set_transition_duration(_arg0, _arg1)
 	runtime.KeepAlive(revealer)
 	runtime.KeepAlive(duration)
+}
+
+// SetTransitionType sets the type of animation that will be used for
+// transitions in revealer. Available types include various kinds of fades and
+// slides.
+//
+// The function takes the following parameters:
+//
+//    - transition: new transition type.
+//
+func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
+	var _arg0 *C.GtkRevealer              // out
+	var _arg1 C.GtkRevealerTransitionType // out
+
+	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	_arg1 = C.GtkRevealerTransitionType(transition)
+
+	C.gtk_revealer_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(revealer)
+	runtime.KeepAlive(transition)
 }

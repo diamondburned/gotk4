@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gsk/gsk.h>
 import "C"
 
 // GTypeBlendMode returns the GType for the type BlendMode.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBlendMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "BlendMode").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_blend_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBlendMode)
 	return gtype
 }
@@ -33,7 +31,7 @@ func GTypeBlendMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCorner() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "Corner").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_corner_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCorner)
 	return gtype
 }
@@ -44,7 +42,7 @@ func GTypeCorner() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGLUniformType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "GLUniformType").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_gl_uniform_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGLUniformType)
 	return gtype
 }
@@ -55,7 +53,7 @@ func GTypeGLUniformType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRenderNodeType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "RenderNodeType").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_render_node_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRenderNodeType)
 	return gtype
 }
@@ -66,7 +64,7 @@ func GTypeRenderNodeType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScalingFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "ScalingFilter").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_scaling_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScalingFilter)
 	return gtype
 }
@@ -77,7 +75,7 @@ func GTypeScalingFilter() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSerializationError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "SerializationError").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_serialization_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSerializationError)
 	return gtype
 }
@@ -88,7 +86,7 @@ func GTypeSerializationError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTransformCategory() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "TransformCategory").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_transform_category_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTransformCategory)
 	return gtype
 }

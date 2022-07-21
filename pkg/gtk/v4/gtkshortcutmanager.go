@@ -5,16 +5,14 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(void*, void*);
-// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(void*, void*);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(GtkShortcutManager*, GtkShortcutController*);
+// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
 import "C"
 
 // GTypeShortcutManager returns the GType for the type ShortcutManager.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcutManager() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutManager").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcut_manager_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutManager)
 	return gtype
 }
@@ -72,13 +70,13 @@ type ShortcutManagerer interface {
 var _ ShortcutManagerer = (*ShortcutManager)(nil)
 
 func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gtk", "ShortcutManagerInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("add_controller"))) = unsafe.Pointer(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_controller"))) = unsafe.Pointer(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
+	iface := (*C.GtkShortcutManagerInterface)(unsafe.Pointer(gifacePtr))
+	iface.add_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
+	iface.remove_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
 }
 
 //export _gotk4_gtk4_ShortcutManagerInterface_add_controller
-func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 
@@ -90,7 +88,7 @@ func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.void, arg1 *C.v
 }
 
 //export _gotk4_gtk4_ShortcutManagerInterface_remove_controller
-func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 

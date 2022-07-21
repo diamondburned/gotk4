@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeAccelLabel returns the GType for the type AccelLabel.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccelLabel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccelLabel").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accel_label_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccelLabel)
 	return gtype
 }
@@ -118,20 +118,18 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 //    - accelLabel: new AccelLabel.
 //
 func NewAccelLabel(str string) *AccelLabel {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_gret := _info.InvokeClassMethod("new_AccelLabel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_accel_label_new(_arg1)
 	runtime.KeepAlive(str)
 
 	var _accelLabel *AccelLabel // out
 
-	_accelLabel = wrapAccelLabel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_accelLabel = wrapAccelLabel(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelLabel
 }
@@ -144,21 +142,20 @@ func NewAccelLabel(str string) *AccelLabel {
 //    - acceleratorMods: return location for the modifier mask.
 //
 func (accelLabel *AccelLabel) Accel() (uint32, gdk.ModifierType) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkAccelLabel  // out
+	var _arg1 C.guint           // in
+	var _arg2 C.GdkModifierType // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_info.InvokeClassMethod("get_accel", _args[:], _outs[:])
-
+	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(accelLabel)
 
 	var _acceleratorKey uint32            // out
 	var _acceleratorMods gdk.ModifierType // out
 
-	_acceleratorKey = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
+	_acceleratorKey = uint32(_arg1)
+	_acceleratorMods = gdk.ModifierType(_arg2)
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -171,21 +168,19 @@ func (accelLabel *AccelLabel) Accel() (uint32, gdk.ModifierType) {
 //    - widget (optional): object monitored by the accelerator label, or NULL.
 //
 func (accelLabel *AccelLabel) AccelWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAccelLabel // out
+	var _cret *C.GtkWidget     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_gret := _info.InvokeClassMethod("get_accel_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_accel_label_get_accel_widget(_arg0)
 	runtime.KeepAlive(accelLabel)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -212,19 +207,17 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 //    - guint: width needed to display the accelerator key(s).
 //
 func (accelLabel *AccelLabel) AccelWidth() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAccelLabel // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_gret := _info.InvokeClassMethod("get_accel_width", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 	runtime.KeepAlive(accelLabel)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -238,23 +231,49 @@ func (accelLabel *AccelLabel) AccelWidth() uint32 {
 //    - ok always returns FALSE.
 //
 func (accelLabel *AccelLabel) Refetch() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAccelLabel // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_gret := _info.InvokeClassMethod("refetch", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_accel_label_refetch(_arg0)
 	runtime.KeepAlive(accelLabel)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// SetAccel: manually sets a keyval and modifier mask as the accelerator
+// rendered by accel_label.
+//
+// If a keyval and modifier are explicitly set then these values are used
+// regardless of any associated accel closure or widget.
+//
+// Providing an accelerator_key of 0 removes the manual setting.
+//
+// The function takes the following parameters:
+//
+//    - acceleratorKey: keyval, or 0.
+//    - acceleratorMods: modifier mask for the accel.
+//
+func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint32, acceleratorMods gdk.ModifierType) {
+	var _arg0 *C.GtkAccelLabel  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg1 = C.guint(acceleratorKey)
+	_arg2 = C.GdkModifierType(acceleratorMods)
+
+	C.gtk_accel_label_set_accel(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(accelLabel)
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(acceleratorMods)
 }
 
 // SetAccelClosure sets the closure to be monitored by this accelerator label.
@@ -268,14 +287,13 @@ func (accelLabel *AccelLabel) Refetch() bool {
 //      NULL.
 //
 func (accelLabel *AccelLabel) SetAccelClosure(accelClosure coreglib.AnyClosure) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAccelLabel // out
+	var _arg1 *C.GClosure      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
-	*(**C.GClosure)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelLabel), accelClosure))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg1 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelLabel), accelClosure))
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_info.InvokeClassMethod("set_accel_closure", _args[:], nil)
-
+	C.gtk_accel_label_set_accel_closure(_arg0, _arg1)
 	runtime.KeepAlive(accelLabel)
 	runtime.KeepAlive(accelClosure)
 }
@@ -289,16 +307,15 @@ func (accelLabel *AccelLabel) SetAccelClosure(accelClosure coreglib.AnyClosure) 
 //    - accelWidget (optional): widget to be monitored, or NULL.
 //
 func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAccelLabel // out
+	var _arg1 *C.GtkWidget     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 	if accelWidget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelWidget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(accelWidget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "AccelLabel")
-	_info.InvokeClassMethod("set_accel_widget", _args[:], nil)
-
+	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 	runtime.KeepAlive(accelLabel)
 	runtime.KeepAlive(accelWidget)
 }

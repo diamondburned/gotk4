@@ -7,17 +7,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeTooltip returns the GType for the type Tooltip.
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTooltip() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Tooltip").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tooltip_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTooltip)
 	return gtype
 }
@@ -95,16 +95,15 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 //    - customWidget (optional) or NULL to unset the old custom widget.
 //
 func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GtkWidget  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if customWidget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(customWidget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(customWidget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_custom", _args[:], nil)
-
+	C.gtk_tooltip_set_custom(_arg0, _arg1)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(customWidget)
 }
@@ -117,16 +116,15 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 //    - pixbuf (optional) or NULL.
 //
 func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GdkPixbuf  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if pixbuf != nil {
-		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_icon", _args[:], nil)
-
+	C.gtk_tooltip_set_icon(_arg0, _arg1)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(pixbuf)
 }
@@ -141,17 +139,17 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 //    - size: stock icon size (IconSize).
 //
 func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if gicon != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
+		_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
 	}
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+	_arg2 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_icon_from_gicon", _args[:], nil)
-
+	C.gtk_tooltip_set_icon_from_gicon(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(gicon)
 	runtime.KeepAlive(size)
@@ -167,18 +165,18 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int32) {
 //    - size: stock icon size (IconSize).
 //
 func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if iconName != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+	_arg2 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_icon_from_icon_name", _args[:], nil)
-
+	C.gtk_tooltip_set_icon_from_icon_name(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(iconName)
 	runtime.KeepAlive(size)
@@ -196,18 +194,18 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int32) {
 //    - size: stock icon size (IconSize).
 //
 func (tooltip *Tooltip) SetIconFromStock(stockId string, size int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if stockId != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+	_arg2 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_icon_from_stock", _args[:], nil)
-
+	C.gtk_tooltip_set_icon_from_stock(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(size)
@@ -223,17 +221,16 @@ func (tooltip *Tooltip) SetIconFromStock(stockId string, size int32) {
 //      or NULL.
 //
 func (tooltip *Tooltip) SetMarkup(markup string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if markup != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_markup", _args[:], nil)
-
+	C.gtk_tooltip_set_markup(_arg0, _arg1)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(markup)
 }
@@ -246,17 +243,16 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 //    - text (optional) string or NULL.
 //
 func (tooltip *Tooltip) SetText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if text != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_text", _args[:], nil)
-
+	C.gtk_tooltip_set_text(_arg0, _arg1)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(text)
 }
@@ -274,14 +270,13 @@ func (tooltip *Tooltip) SetText(text string) {
 //    - rect: Rectangle.
 //
 func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTooltip   // out
+	var _arg1 *C.GdkRectangle // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 
-	_info := girepository.MustFind("Gtk", "Tooltip")
-	_info.InvokeClassMethod("set_tip_area", _args[:], nil)
-
+	C.gtk_tooltip_set_tip_area(_arg0, _arg1)
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(rect)
 }
@@ -296,12 +291,10 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 //    - display: Display.
 //
 func TooltipTriggerTooltipQuery(display *gdk.Display) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkDisplay // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gtk", "trigger_tooltip_query")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_tooltip_trigger_tooltip_query(_arg1)
 	runtime.KeepAlive(display)
 }

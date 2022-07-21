@@ -9,22 +9,23 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_pango1_RendererClass_begin(void*);
-// extern void _gotk4_pango1_RendererClass_draw_error_underline(void*, int, int, int, int);
-// extern void _gotk4_pango1_RendererClass_draw_glyph(void*, void*, guint32, double, double);
-// extern void _gotk4_pango1_RendererClass_draw_glyph_item(void*, char*, void*, int, int);
-// extern void _gotk4_pango1_RendererClass_draw_glyphs(void*, void*, void*, int, int);
-// extern void _gotk4_pango1_RendererClass_draw_shape(void*, void*, int, int);
-// extern void _gotk4_pango1_RendererClass_end(void*);
-// extern void _gotk4_pango1_RendererClass_prepare_run(void*, void*);
+// #include <pango/pango.h>
+// extern void _gotk4_pango1_RendererClass_begin(PangoRenderer*);
+// extern void _gotk4_pango1_RendererClass_draw_error_underline(PangoRenderer*, int, int, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_glyph(PangoRenderer*, PangoFont*, PangoGlyph, double, double);
+// extern void _gotk4_pango1_RendererClass_draw_glyph_item(PangoRenderer*, char*, PangoGlyphItem*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_glyphs(PangoRenderer*, PangoFont*, PangoGlyphString*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_rectangle(PangoRenderer*, PangoRenderPart, int, int, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_shape(PangoRenderer*, PangoAttrShape*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_trapezoid(PangoRenderer*, PangoRenderPart, double, double, double, double, double, double);
+// extern void _gotk4_pango1_RendererClass_end(PangoRenderer*);
+// extern void _gotk4_pango1_RendererClass_part_changed(PangoRenderer*, PangoRenderPart);
+// extern void _gotk4_pango1_RendererClass_prepare_run(PangoRenderer*, PangoLayoutRun*);
 import "C"
 
 // GTypeRenderPart returns the GType for the type RenderPart.
@@ -33,7 +34,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRenderPart() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "RenderPart").RegisteredGType())
+	gtype := coreglib.Type(C.pango_render_part_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRenderPart)
 	return gtype
 }
@@ -44,7 +45,7 @@ func GTypeRenderPart() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRenderer() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Renderer").RegisteredGType())
+	gtype := coreglib.Type(C.pango_renderer_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRenderer)
 	return gtype
 }
@@ -158,6 +159,23 @@ type RendererOverrider interface {
 	//      Pango units.
 	//
 	DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
+	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
+	// with the specified PangoRenderer.
+	//
+	// This should be called while renderer is already active. Use
+	// pango.Renderer.Activate() to activate a renderer.
+	//
+	// The function takes the following parameters:
+	//
+	//    - part: type of object this rectangle is part of.
+	//    - x: x position at which to draw rectangle, in user space coordinates
+	//      in Pango units.
+	//    - y: y position at which to draw rectangle, in user space coordinates
+	//      in Pango units.
+	//    - width of rectangle in Pango units.
+	//    - height of rectangle in Pango units.
+	//
+	DrawRectangle(part RenderPart, x, y, width, height int32)
 	// The function takes the following parameters:
 	//
 	//    - attr
@@ -165,7 +183,41 @@ type RendererOverrider interface {
 	//    - y
 	//
 	DrawShape(attr *AttrShape, x, y int32)
+	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
+	// X axis using the given PangoRenderer; coordinates are in device space.
+	//
+	// The function takes the following parameters:
+	//
+	//    - part: type of object this trapezoid is part of.
+	//    - y1: y coordinate of top of trapezoid.
+	//    - x11: x coordinate of left end of top of trapezoid.
+	//    - x21: x coordinate of right end of top of trapezoid.
+	//    - y2: y coordinate of bottom of trapezoid.
+	//    - x12: x coordinate of left end of bottom of trapezoid.
+	//    - x22: x coordinate of right end of bottom of trapezoid.
+	//
+	DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	End()
+	// PartChanged informs Pango that the way that the rendering is done for
+	// part has changed.
+	//
+	// This should be called if the rendering changes in a way that would
+	// prevent multiple pieces being joined together into one drawing call. For
+	// instance, if a subclass of PangoRenderer was to add a stipple option for
+	// drawing underlines, it needs to call
+	//
+	//    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
+	//
+	//
+	// When the stipple changes or underlines with different stipples might be
+	// joined together. Pango automatically calls this for changes to colors.
+	// (See pango.Renderer.SetColor()).
+	//
+	// The function takes the following parameters:
+	//
+	//    - part for which rendering has changed.
+	//
+	PartChanged(part RenderPart)
 	// The function takes the following parameters:
 	//
 	PrepareRun(run *LayoutRun)
@@ -204,61 +256,69 @@ func classInitRendererer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Pango", "RendererClass")
+	pclass := (*C.PangoRendererClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Begin() }); ok {
-		o := pclass.StructFieldOffset("begin")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_begin)
+		pclass.begin = (*[0]byte)(C._gotk4_pango1_RendererClass_begin)
 	}
 
 	if _, ok := goval.(interface {
 		DrawErrorUnderline(x, y, width, height int32)
 	}); ok {
-		o := pclass.StructFieldOffset("draw_error_underline")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_error_underline)
+		pclass.draw_error_underline = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_error_underline)
 	}
 
 	if _, ok := goval.(interface {
 		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	}); ok {
-		o := pclass.StructFieldOffset("draw_glyph")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_glyph)
+		pclass.draw_glyph = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph)
 	}
 
 	if _, ok := goval.(interface {
 		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
 	}); ok {
-		o := pclass.StructFieldOffset("draw_glyph_item")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_glyph_item)
+		pclass.draw_glyph_item = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph_item)
 	}
 
 	if _, ok := goval.(interface {
 		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
 	}); ok {
-		o := pclass.StructFieldOffset("draw_glyphs")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_glyphs)
+		pclass.draw_glyphs = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyphs)
+	}
+
+	if _, ok := goval.(interface {
+		DrawRectangle(part RenderPart, x, y, width, height int32)
+	}); ok {
+		pclass.draw_rectangle = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_rectangle)
 	}
 
 	if _, ok := goval.(interface {
 		DrawShape(attr *AttrShape, x, y int32)
 	}); ok {
-		o := pclass.StructFieldOffset("draw_shape")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_shape)
+		pclass.draw_shape = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_shape)
+	}
+
+	if _, ok := goval.(interface {
+		DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
+	}); ok {
+		pclass.draw_trapezoid = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_trapezoid)
 	}
 
 	if _, ok := goval.(interface{ End() }); ok {
-		o := pclass.StructFieldOffset("end")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_end)
+		pclass.end = (*[0]byte)(C._gotk4_pango1_RendererClass_end)
+	}
+
+	if _, ok := goval.(interface{ PartChanged(part RenderPart) }); ok {
+		pclass.part_changed = (*[0]byte)(C._gotk4_pango1_RendererClass_part_changed)
 	}
 
 	if _, ok := goval.(interface{ PrepareRun(run *LayoutRun) }); ok {
-		o := pclass.StructFieldOffset("prepare_run")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_prepare_run)
+		pclass.prepare_run = (*[0]byte)(C._gotk4_pango1_RendererClass_prepare_run)
 	}
 }
 
 //export _gotk4_pango1_RendererClass_begin
-func _gotk4_pango1_RendererClass_begin(arg0 *C.void) {
+func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Begin() })
 
@@ -266,7 +326,7 @@ func _gotk4_pango1_RendererClass_begin(arg0 *C.void) {
 }
 
 //export _gotk4_pango1_RendererClass_draw_error_underline
-func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.void, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
+func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawErrorUnderline(x, y, width, height int32)
@@ -286,7 +346,7 @@ func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.void, arg1 C.int, 
 }
 
 //export _gotk4_pango1_RendererClass_draw_glyph
-func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.void, arg1 *C.void, arg2 C.guint32, arg3 C.double, arg4 C.double) {
+func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 C.PangoGlyph, arg3 C.double, arg4 C.double) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
@@ -322,7 +382,7 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.void, arg1 *C.void, arg2 C.g
 }
 
 //export _gotk4_pango1_RendererClass_draw_glyph_item
-func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.void, arg1 *C.char, arg2 *C.void, arg3 C.int, arg4 C.int) {
+func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.char, arg2 *C.PangoGlyphItem, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
@@ -344,7 +404,7 @@ func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.void, arg1 *C.char, arg
 }
 
 //export _gotk4_pango1_RendererClass_draw_glyphs
-func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 C.int) {
+func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 *C.PangoGlyphString, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
@@ -379,8 +439,30 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.void, arg1 *C.void, arg2 *C
 	iface.DrawGlyphs(_font, _glyphs, _x, _y)
 }
 
+//export _gotk4_pango1_RendererClass_draw_rectangle
+func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawRectangle(part RenderPart, x, y, width, height int32)
+	})
+
+	var _part RenderPart // out
+	var _x int32         // out
+	var _y int32         // out
+	var _width int32     // out
+	var _height int32    // out
+
+	_part = RenderPart(arg1)
+	_x = int32(arg2)
+	_y = int32(arg3)
+	_width = int32(arg4)
+	_height = int32(arg5)
+
+	iface.DrawRectangle(_part, _x, _y, _width, _height)
+}
+
 //export _gotk4_pango1_RendererClass_draw_shape
-func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 C.int) {
+func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.PangoAttrShape, arg2 C.int, arg3 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawShape(attr *AttrShape, x, y int32)
@@ -397,16 +479,54 @@ func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.void, arg1 *C.void, arg2 C.i
 	iface.DrawShape(_attr, _x, _y)
 }
 
+//export _gotk4_pango1_RendererClass_draw_trapezoid
+func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.double, arg3 C.double, arg4 C.double, arg5 C.double, arg6 C.double, arg7 C.double) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
+	})
+
+	var _part RenderPart // out
+	var _y1 float64      // out
+	var _x11 float64     // out
+	var _x21 float64     // out
+	var _y2 float64      // out
+	var _x12 float64     // out
+	var _x22 float64     // out
+
+	_part = RenderPart(arg1)
+	_y1 = float64(arg2)
+	_x11 = float64(arg3)
+	_x21 = float64(arg4)
+	_y2 = float64(arg5)
+	_x12 = float64(arg6)
+	_x22 = float64(arg7)
+
+	iface.DrawTrapezoid(_part, _y1, _x11, _x21, _y2, _x12, _x22)
+}
+
 //export _gotk4_pango1_RendererClass_end
-func _gotk4_pango1_RendererClass_end(arg0 *C.void) {
+func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ End() })
 
 	iface.End()
 }
 
+//export _gotk4_pango1_RendererClass_part_changed
+func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ PartChanged(part RenderPart) })
+
+	var _part RenderPart // out
+
+	_part = RenderPart(arg1)
+
+	iface.PartChanged(_part)
+}
+
 //export _gotk4_pango1_RendererClass_prepare_run
-func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.void, arg1 *C.void) {
+func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.PangoRenderer, arg1 *C.PangoLayoutRun) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrepareRun(run *LayoutRun) })
 
@@ -443,13 +563,11 @@ func BaseRenderer(obj Rendererer) *Renderer {
 // on it. Calls to pango_renderer_activate() and pango_renderer_deactivate() can
 // be nested and the renderer will only be initialized and deinitialized once.
 func (renderer *Renderer) Activate() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("activate", _args[:], nil)
-
+	C.pango_renderer_activate(_arg0)
 	runtime.KeepAlive(renderer)
 }
 
@@ -457,13 +575,11 @@ func (renderer *Renderer) Activate() {
 //
 // See docs for pango.Renderer.Activate().
 func (renderer *Renderer) Deactivate() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("deactivate", _args[:], nil)
-
+	C.pango_renderer_deactivate(_arg0)
 	runtime.KeepAlive(renderer)
 }
 
@@ -484,17 +600,19 @@ func (renderer *Renderer) Deactivate() {
 //    - height of underline, in Pango units in user coordinate system.
 //
 func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
+	var _arg1 C.int            // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
+	var _arg4 C.int            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(height)
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	_arg3 = C.int(width)
+	_arg4 = C.int(height)
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("draw_error_underline", _args[:], nil)
-
+	C.pango_renderer_draw_error_underline(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -512,17 +630,19 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int32) {
 //    - y: y coordinate of left edge of baseline of glyph.
 //
 func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
+	var _arg1 *C.PangoFont     // out
+	var _arg2 C.PangoGlyph     // out
+	var _arg3 C.double         // out
+	var _arg4 C.double         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(glyph)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(y)
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	_arg2 = C.guint32(glyph)
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("draw_glyph", _args[:], nil)
-
+	C.pango_renderer_draw_glyph(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(glyph)
@@ -554,20 +674,22 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //      Pango units.
 //
 func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.PangoGlyphItem // out
+	var _arg3 C.int             // out
+	var _arg4 C.int             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if text != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(y)
+	_arg2 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
+	_arg3 = C.int(x)
+	_arg4 = C.int(y)
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("draw_glyph_item", _args[:], nil)
-
+	C.pango_renderer_draw_glyph_item(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(glyphItem)
@@ -587,17 +709,19 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //      Pango units.
 //
 func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.PangoRenderer    // out
+	var _arg1 *C.PangoFont        // out
+	var _arg2 *C.PangoGlyphString // out
+	var _arg3 C.int               // out
+	var _arg4 C.int               // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(y)
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	_arg2 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	_arg3 = C.int(x)
+	_arg4 = C.int(y)
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("draw_glyphs", _args[:], nil)
-
+	C.pango_renderer_draw_glyphs(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(glyphs)
@@ -616,16 +740,17 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int3
 //      Pango units.
 //
 func (renderer *Renderer) DrawLayout(layout *Layout, x, y int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
+	var _arg1 *C.PangoLayout   // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(y)
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("draw_layout", _args[:], nil)
-
+	C.pango_renderer_draw_layout(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(x)
@@ -643,20 +768,166 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int32) {
 //      Pango units.
 //
 func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.PangoRenderer   // out
+	var _arg1 *C.PangoLayoutLine // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(y)
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("draw_layout_line", _args[:], nil)
-
+	C.pango_renderer_draw_layout_line(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
+}
+
+// DrawRectangle draws an axis-aligned rectangle in user space coordinates with
+// the specified PangoRenderer.
+//
+// This should be called while renderer is already active. Use
+// pango.Renderer.Activate() to activate a renderer.
+//
+// The function takes the following parameters:
+//
+//    - part: type of object this rectangle is part of.
+//    - x: x position at which to draw rectangle, in user space coordinates in
+//      Pango units.
+//    - y: y position at which to draw rectangle, in user space coordinates in
+//      Pango units.
+//    - width of rectangle in Pango units.
+//    - height of rectangle in Pango units.
+//
+func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int32) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 C.int             // out
+	var _arg3 C.int             // out
+	var _arg4 C.int             // out
+	var _arg5 C.int             // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.int(x)
+	_arg3 = C.int(y)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
+
+	C.pango_renderer_draw_rectangle(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the X
+// axis using the given PangoRenderer; coordinates are in device space.
+//
+// The function takes the following parameters:
+//
+//    - part: type of object this trapezoid is part of.
+//    - y1: y coordinate of top of trapezoid.
+//    - x11: x coordinate of left end of top of trapezoid.
+//    - x21: x coordinate of right end of top of trapezoid.
+//    - y2: y coordinate of bottom of trapezoid.
+//    - x12: x coordinate of left end of bottom of trapezoid.
+//    - x22: x coordinate of right end of bottom of trapezoid.
+//
+func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 C.double          // out
+	var _arg3 C.double          // out
+	var _arg4 C.double          // out
+	var _arg5 C.double          // out
+	var _arg6 C.double          // out
+	var _arg7 C.double          // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.double(y1)
+	_arg3 = C.double(x11)
+	_arg4 = C.double(x21)
+	_arg5 = C.double(y2)
+	_arg6 = C.double(x12)
+	_arg7 = C.double(x22)
+
+	C.pango_renderer_draw_trapezoid(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x11)
+	runtime.KeepAlive(x21)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(x12)
+	runtime.KeepAlive(x22)
+}
+
+// Alpha gets the current alpha for the specified part.
+//
+// The function takes the following parameters:
+//
+//    - part to get the alpha for.
+//
+// The function returns the following values:
+//
+//    - guint16: alpha for the specified part, or 0 if it hasn't been set and
+//      should be inherited from the environment.
+//
+func (renderer *Renderer) Alpha(part RenderPart) uint16 {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _cret C.guint16         // in
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+
+	_cret = C.pango_renderer_get_alpha(_arg0, _arg1)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+
+	var _guint16 uint16 // out
+
+	_guint16 = uint16(_cret)
+
+	return _guint16
+}
+
+// Color gets the current rendering color for the specified part.
+//
+// The function takes the following parameters:
+//
+//    - part to get the color for.
+//
+// The function returns the following values:
+//
+//    - color (optional) for the specified part, or NULL if it hasn't been set
+//      and should be inherited from the environment.
+//
+func (renderer *Renderer) Color(part RenderPart) *Color {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _cret *C.PangoColor     // in
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+
+	_cret = C.pango_renderer_get_color(_arg0, _arg1)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+
+	var _color *Color // out
+
+	if _cret != nil {
+		_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _color
 }
 
 // Layout gets the layout currently being rendered using renderer.
@@ -672,20 +943,18 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int32) {
 //      renderer at this time.
 //
 func (renderer *Renderer) Layout() *Layout {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
+	var _cret *C.PangoLayout   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_gret := _info.InvokeClassMethod("get_layout", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_renderer_get_layout(_arg0)
 	runtime.KeepAlive(renderer)
 
 	var _layout *Layout // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layout = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _layout
@@ -704,21 +973,19 @@ func (renderer *Renderer) Layout() *Layout {
 //      rendered using renderer at this time.
 //
 func (renderer *Renderer) LayoutLine() *LayoutLine {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoRenderer   // out
+	var _cret *C.PangoLayoutLine // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_gret := _info.InvokeClassMethod("get_layout_line", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_renderer_get_layout_line(_arg0)
 	runtime.KeepAlive(renderer)
 
 	var _layoutLine *LayoutLine // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_layout_line_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -741,23 +1008,103 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 //      and must not be modified or freed.
 //
 func (renderer *Renderer) Matrix() *Matrix {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
+	var _cret *C.PangoMatrix   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_gret := _info.InvokeClassMethod("get_matrix", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_renderer_get_matrix(_arg0)
 	runtime.KeepAlive(renderer)
 
 	var _matrix *Matrix // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _matrix
+}
+
+// PartChanged informs Pango that the way that the rendering is done for part
+// has changed.
+//
+// This should be called if the rendering changes in a way that would prevent
+// multiple pieces being joined together into one drawing call. For instance, if
+// a subclass of PangoRenderer was to add a stipple option for drawing
+// underlines, it needs to call
+//
+//    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
+//
+//
+// When the stipple changes or underlines with different stipples might be
+// joined together. Pango automatically calls this for changes to colors. (See
+// pango.Renderer.SetColor()).
+//
+// The function takes the following parameters:
+//
+//    - part for which rendering has changed.
+//
+func (renderer *Renderer) PartChanged(part RenderPart) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+
+	C.pango_renderer_part_changed(_arg0, _arg1)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+}
+
+// SetAlpha sets the alpha for part of the rendering.
+//
+// Note that the alpha may only be used if a color is specified for part as
+// well.
+//
+// The function takes the following parameters:
+//
+//    - part to set the alpha for.
+//    - alpha value between 1 and 65536, or 0 to unset the alpha.
+//
+func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 C.guint16         // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+	_arg2 = C.guint16(alpha)
+
+	C.pango_renderer_set_alpha(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(alpha)
+}
+
+// SetColor sets the color for part of the rendering.
+//
+// Also see pango.Renderer.SetAlpha().
+//
+// The function takes the following parameters:
+//
+//    - part to change the color of.
+//    - color (optional): new color or NULL to unset the current color.
+//
+func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
+	var _arg0 *C.PangoRenderer  // out
+	var _arg1 C.PangoRenderPart // out
+	var _arg2 *C.PangoColor     // out
+
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = C.PangoRenderPart(part)
+	if color != nil {
+		_arg2 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+	}
+
+	C.pango_renderer_set_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(part)
+	runtime.KeepAlive(color)
 }
 
 // SetMatrix sets the transformation matrix that will be applied when rendering.
@@ -768,16 +1115,15 @@ func (renderer *Renderer) Matrix() *Matrix {
 //      matrix set is the same as setting the identity matrix.).
 //
 func (renderer *Renderer) SetMatrix(matrix *Matrix) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoRenderer // out
+	var _arg1 *C.PangoMatrix   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if matrix != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+		_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	_info := girepository.MustFind("Pango", "Renderer")
-	_info.InvokeClassMethod("set_matrix", _args[:], nil)
-
+	C.pango_renderer_set_matrix(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(matrix)
 }

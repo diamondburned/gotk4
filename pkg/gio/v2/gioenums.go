@@ -7,13 +7,11 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBusType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "BusType").RegisteredGType())
+	gtype := coreglib.Type(C.g_bus_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBusType)
 	return gtype
 }
@@ -34,7 +32,7 @@ func GTypeBusType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConverterResult() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ConverterResult").RegisteredGType())
+	gtype := coreglib.Type(C.g_converter_result_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConverterResult)
 	return gtype
 }
@@ -45,7 +43,7 @@ func GTypeConverterResult() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCredentialsType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "CredentialsType").RegisteredGType())
+	gtype := coreglib.Type(C.g_credentials_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCredentialsType)
 	return gtype
 }
@@ -56,7 +54,7 @@ func GTypeCredentialsType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusError").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusError)
 	return gtype
 }
@@ -67,7 +65,7 @@ func GTypeDBusError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMessageByteOrder() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageByteOrder").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_message_byte_order_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageByteOrder)
 	return gtype
 }
@@ -78,7 +76,7 @@ func GTypeDBusMessageByteOrder() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMessageHeaderField() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageHeaderField").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_message_header_field_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageHeaderField)
 	return gtype
 }
@@ -89,7 +87,7 @@ func GTypeDBusMessageHeaderField() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMessageType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageType").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_message_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageType)
 	return gtype
 }
@@ -100,7 +98,7 @@ func GTypeDBusMessageType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDataStreamByteOrder() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DataStreamByteOrder").RegisteredGType())
+	gtype := coreglib.Type(C.g_data_stream_byte_order_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDataStreamByteOrder)
 	return gtype
 }
@@ -111,7 +109,7 @@ func GTypeDataStreamByteOrder() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDataStreamNewlineType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DataStreamNewlineType").RegisteredGType())
+	gtype := coreglib.Type(C.g_data_stream_newline_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDataStreamNewlineType)
 	return gtype
 }
@@ -122,7 +120,7 @@ func GTypeDataStreamNewlineType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDriveStartStopType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DriveStartStopType").RegisteredGType())
+	gtype := coreglib.Type(C.g_drive_start_stop_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDriveStartStopType)
 	return gtype
 }
@@ -133,7 +131,7 @@ func GTypeDriveStartStopType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEmblemOrigin() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "EmblemOrigin").RegisteredGType())
+	gtype := coreglib.Type(C.g_emblem_origin_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEmblemOrigin)
 	return gtype
 }
@@ -144,7 +142,7 @@ func GTypeEmblemOrigin() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileAttributeStatus() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeStatus").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_attribute_status_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeStatus)
 	return gtype
 }
@@ -155,7 +153,7 @@ func GTypeFileAttributeStatus() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileAttributeType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeType").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_attribute_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeType)
 	return gtype
 }
@@ -166,7 +164,7 @@ func GTypeFileAttributeType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileMonitorEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMonitorEvent").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_monitor_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileMonitorEvent)
 	return gtype
 }
@@ -177,7 +175,7 @@ func GTypeFileMonitorEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileType").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileType)
 	return gtype
 }
@@ -188,7 +186,7 @@ func GTypeFileType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFilesystemPreviewType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FilesystemPreviewType").RegisteredGType())
+	gtype := coreglib.Type(C.g_filesystem_preview_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFilesystemPreviewType)
 	return gtype
 }
@@ -199,7 +197,7 @@ func GTypeFilesystemPreviewType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIOErrorEnum() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "IOErrorEnum").RegisteredGType())
+	gtype := coreglib.Type(C.g_io_error_enum_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIOErrorEnum)
 	return gtype
 }
@@ -210,7 +208,7 @@ func GTypeIOErrorEnum() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIOModuleScopeFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "IOModuleScopeFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_io_module_scope_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIOModuleScopeFlags)
 	return gtype
 }
@@ -221,7 +219,7 @@ func GTypeIOModuleScopeFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMemoryMonitorWarningLevel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "MemoryMonitorWarningLevel").RegisteredGType())
+	gtype := coreglib.Type(C.g_memory_monitor_warning_level_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryMonitorWarningLevel)
 	return gtype
 }
@@ -232,7 +230,7 @@ func GTypeMemoryMonitorWarningLevel() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMountOperationResult() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "MountOperationResult").RegisteredGType())
+	gtype := coreglib.Type(C.g_mount_operation_result_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMountOperationResult)
 	return gtype
 }
@@ -243,7 +241,7 @@ func GTypeMountOperationResult() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNetworkConnectivity() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "NetworkConnectivity").RegisteredGType())
+	gtype := coreglib.Type(C.g_network_connectivity_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkConnectivity)
 	return gtype
 }
@@ -254,7 +252,7 @@ func GTypeNetworkConnectivity() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNotificationPriority() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "NotificationPriority").RegisteredGType())
+	gtype := coreglib.Type(C.g_notification_priority_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNotificationPriority)
 	return gtype
 }
@@ -265,7 +263,7 @@ func GTypeNotificationPriority() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePasswordSave() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "PasswordSave").RegisteredGType())
+	gtype := coreglib.Type(C.g_password_save_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPasswordSave)
 	return gtype
 }
@@ -276,7 +274,7 @@ func GTypePasswordSave() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePollableReturn() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "PollableReturn").RegisteredGType())
+	gtype := coreglib.Type(C.g_pollable_return_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPollableReturn)
 	return gtype
 }
@@ -287,7 +285,7 @@ func GTypePollableReturn() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeResolverError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ResolverError").RegisteredGType())
+	gtype := coreglib.Type(C.g_resolver_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalResolverError)
 	return gtype
 }
@@ -298,7 +296,7 @@ func GTypeResolverError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeResolverRecordType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ResolverRecordType").RegisteredGType())
+	gtype := coreglib.Type(C.g_resolver_record_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalResolverRecordType)
 	return gtype
 }
@@ -309,7 +307,7 @@ func GTypeResolverRecordType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeResourceError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ResourceError").RegisteredGType())
+	gtype := coreglib.Type(C.g_resource_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalResourceError)
 	return gtype
 }
@@ -320,7 +318,7 @@ func GTypeResourceError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketClientEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketClientEvent").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_client_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketClientEvent)
 	return gtype
 }
@@ -331,7 +329,7 @@ func GTypeSocketClientEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketFamily() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketFamily").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_family_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketFamily)
 	return gtype
 }
@@ -342,7 +340,7 @@ func GTypeSocketFamily() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketListenerEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketListenerEvent").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_listener_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketListenerEvent)
 	return gtype
 }
@@ -353,7 +351,7 @@ func GTypeSocketListenerEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketProtocol() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketProtocol").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_protocol_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketProtocol)
 	return gtype
 }
@@ -364,7 +362,7 @@ func GTypeSocketProtocol() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketType").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketType)
 	return gtype
 }
@@ -375,7 +373,7 @@ func GTypeSocketType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSAuthenticationMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsAuthenticationMode").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_authentication_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSAuthenticationMode)
 	return gtype
 }
@@ -386,7 +384,7 @@ func GTypeTLSAuthenticationMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSCertificateRequestFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsCertificateRequestFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_certificate_request_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSCertificateRequestFlags)
 	return gtype
 }
@@ -397,7 +395,7 @@ func GTypeTLSCertificateRequestFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSChannelBindingError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsChannelBindingError").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_channel_binding_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSChannelBindingError)
 	return gtype
 }
@@ -408,7 +406,7 @@ func GTypeTLSChannelBindingError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSChannelBindingType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsChannelBindingType").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_channel_binding_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSChannelBindingType)
 	return gtype
 }
@@ -419,7 +417,7 @@ func GTypeTLSChannelBindingType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSDatabaseLookupFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsDatabaseLookupFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_database_lookup_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSDatabaseLookupFlags)
 	return gtype
 }
@@ -430,7 +428,7 @@ func GTypeTLSDatabaseLookupFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsError").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSError)
 	return gtype
 }
@@ -441,7 +439,7 @@ func GTypeTLSError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSInteractionResult() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsInteractionResult").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_interaction_result_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSInteractionResult)
 	return gtype
 }
@@ -452,7 +450,7 @@ func GTypeTLSInteractionResult() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSRehandshakeMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsRehandshakeMode").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_rehandshake_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSRehandshakeMode)
 	return gtype
 }
@@ -463,7 +461,7 @@ func GTypeTLSRehandshakeMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeZlibCompressorFormat() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ZlibCompressorFormat").RegisteredGType())
+	gtype := coreglib.Type(C.g_zlib_compressor_format_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalZlibCompressorFormat)
 	return gtype
 }
@@ -474,7 +472,7 @@ func GTypeZlibCompressorFormat() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAppInfoCreateFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "AppInfoCreateFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_app_info_create_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAppInfoCreateFlags)
 	return gtype
 }
@@ -485,7 +483,7 @@ func GTypeAppInfoCreateFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeApplicationFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ApplicationFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_application_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalApplicationFlags)
 	return gtype
 }
@@ -496,7 +494,7 @@ func GTypeApplicationFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAskPasswordFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "AskPasswordFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_ask_password_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAskPasswordFlags)
 	return gtype
 }
@@ -507,7 +505,7 @@ func GTypeAskPasswordFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBusNameOwnerFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "BusNameOwnerFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_bus_name_owner_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBusNameOwnerFlags)
 	return gtype
 }
@@ -518,7 +516,7 @@ func GTypeBusNameOwnerFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBusNameWatcherFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "BusNameWatcherFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_bus_name_watcher_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBusNameWatcherFlags)
 	return gtype
 }
@@ -529,7 +527,7 @@ func GTypeBusNameWatcherFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConverterFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ConverterFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_converter_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConverterFlags)
 	return gtype
 }
@@ -540,7 +538,7 @@ func GTypeConverterFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusCallFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusCallFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_call_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusCallFlags)
 	return gtype
 }
@@ -551,7 +549,7 @@ func GTypeDBusCallFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusCapabilityFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusCapabilityFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_capability_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusCapabilityFlags)
 	return gtype
 }
@@ -562,7 +560,7 @@ func GTypeDBusCapabilityFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusConnectionFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusConnectionFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_connection_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusConnectionFlags)
 	return gtype
 }
@@ -573,7 +571,7 @@ func GTypeDBusConnectionFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusInterfaceSkeletonFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusInterfaceSkeletonFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_interface_skeleton_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusInterfaceSkeletonFlags)
 	return gtype
 }
@@ -584,7 +582,7 @@ func GTypeDBusInterfaceSkeletonFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMessageFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_message_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageFlags)
 	return gtype
 }
@@ -595,7 +593,7 @@ func GTypeDBusMessageFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusObjectManagerClientFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManagerClientFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_object_manager_client_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManagerClientFlags)
 	return gtype
 }
@@ -606,7 +604,7 @@ func GTypeDBusObjectManagerClientFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusPropertyInfoFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusPropertyInfoFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_property_info_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusPropertyInfoFlags)
 	return gtype
 }
@@ -617,7 +615,7 @@ func GTypeDBusPropertyInfoFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusProxyFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusProxyFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_proxy_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusProxyFlags)
 	return gtype
 }
@@ -628,7 +626,7 @@ func GTypeDBusProxyFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusSendMessageFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSendMessageFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_send_message_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSendMessageFlags)
 	return gtype
 }
@@ -639,7 +637,7 @@ func GTypeDBusSendMessageFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusServerFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusServerFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_server_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusServerFlags)
 	return gtype
 }
@@ -650,7 +648,7 @@ func GTypeDBusServerFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusSignalFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSignalFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_signal_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSignalFlags)
 	return gtype
 }
@@ -661,7 +659,7 @@ func GTypeDBusSignalFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusSubtreeFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSubtreeFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_subtree_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSubtreeFlags)
 	return gtype
 }
@@ -672,7 +670,7 @@ func GTypeDBusSubtreeFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDriveStartFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DriveStartFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_drive_start_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDriveStartFlags)
 	return gtype
 }
@@ -683,7 +681,7 @@ func GTypeDriveStartFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileAttributeInfoFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeInfoFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_attribute_info_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeInfoFlags)
 	return gtype
 }
@@ -694,7 +692,7 @@ func GTypeFileAttributeInfoFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileCopyFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileCopyFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_copy_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileCopyFlags)
 	return gtype
 }
@@ -705,7 +703,7 @@ func GTypeFileCopyFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileCreateFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileCreateFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_create_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileCreateFlags)
 	return gtype
 }
@@ -716,7 +714,7 @@ func GTypeFileCreateFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileMeasureFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMeasureFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_measure_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileMeasureFlags)
 	return gtype
 }
@@ -727,7 +725,7 @@ func GTypeFileMeasureFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileMonitorFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMonitorFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_monitor_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileMonitorFlags)
 	return gtype
 }
@@ -738,7 +736,7 @@ func GTypeFileMonitorFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileQueryInfoFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileQueryInfoFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_query_info_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileQueryInfoFlags)
 	return gtype
 }
@@ -749,7 +747,7 @@ func GTypeFileQueryInfoFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIOStreamSpliceFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "IOStreamSpliceFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_io_stream_splice_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIOStreamSpliceFlags)
 	return gtype
 }
@@ -760,7 +758,7 @@ func GTypeIOStreamSpliceFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMountMountFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "MountMountFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_mount_mount_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMountMountFlags)
 	return gtype
 }
@@ -771,7 +769,7 @@ func GTypeMountMountFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMountUnmountFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "MountUnmountFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_mount_unmount_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMountUnmountFlags)
 	return gtype
 }
@@ -782,7 +780,7 @@ func GTypeMountUnmountFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOutputStreamSpliceFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "OutputStreamSpliceFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_output_stream_splice_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOutputStreamSpliceFlags)
 	return gtype
 }
@@ -793,7 +791,7 @@ func GTypeOutputStreamSpliceFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeResourceFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ResourceFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_resource_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalResourceFlags)
 	return gtype
 }
@@ -804,7 +802,7 @@ func GTypeResourceFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeResourceLookupFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ResourceLookupFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_resource_lookup_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalResourceLookupFlags)
 	return gtype
 }
@@ -815,7 +813,7 @@ func GTypeResourceLookupFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketMsgFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketMsgFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_msg_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketMsgFlags)
 	return gtype
 }
@@ -826,7 +824,7 @@ func GTypeSocketMsgFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSubprocessFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SubprocessFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_subprocess_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSubprocessFlags)
 	return gtype
 }
@@ -837,7 +835,7 @@ func GTypeSubprocessFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTestDBusFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TestDBusFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_test_dbus_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTestDBusFlags)
 	return gtype
 }
@@ -848,7 +846,7 @@ func GTypeTestDBusFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSCertificateFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsCertificateFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_certificate_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSCertificateFlags)
 	return gtype
 }
@@ -859,7 +857,7 @@ func GTypeTLSCertificateFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSDatabaseVerifyFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsDatabaseVerifyFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_database_verify_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSDatabaseVerifyFlags)
 	return gtype
 }
@@ -870,7 +868,7 @@ func GTypeTLSDatabaseVerifyFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSPasswordFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsPasswordFlags").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_password_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSPasswordFlags)
 	return gtype
 }

@@ -8,16 +8,17 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_TextTagClass_event(void*, GObject*, void*, void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_TextTagClass_event(GtkTextTag*, GObject*, GdkEvent*, GtkTextIter*);
+// extern gboolean _gotk4_gtk3_TextTag_ConnectEvent(gpointer, GObject, GdkEvent, GtkTextIter*, guintptr);
 import "C"
 
 // GTypeTextTag returns the GType for the type TextTag.
@@ -26,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextTag() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextTag").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_text_tag_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextTag)
 	return gtype
 }
@@ -78,18 +79,17 @@ func classInitTextTagger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "TextTagClass")
+	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
 	}); ok {
-		o := pclass.StructFieldOffset("event")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextTagClass_event)
+		pclass.event = (*[0]byte)(C._gotk4_gtk3_TextTagClass_event)
 	}
 }
 
 //export _gotk4_gtk3_TextTagClass_event
-func _gotk4_gtk3_TextTagClass_event(arg0 *C.void, arg1 *C.GObject, arg2 *C.void, arg3 *C.void) (cret C.gboolean) {
+func _gotk4_gtk3_TextTagClass_event(arg0 *C.GtkTextTag, arg1 *C.GObject, arg2 *C.GdkEvent, arg3 *C.GtkTextIter) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
@@ -126,6 +126,46 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return wrapTextTag(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk3_TextTag_ConnectEvent
+func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 C.GObject, arg2 C.GdkEvent, arg3 *C.GtkTextIter, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(object *coreglib.Object, event *gdk.Event, iter *TextIter) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(object *coreglib.Object, event *gdk.Event, iter *TextIter) (ok bool))
+	}
+
+	var _object *coreglib.Object // out
+	var _event *gdk.Event        // out
+	var _iter *TextIter          // out
+
+	_object = coreglib.Take(unsafe.Pointer(&arg1))
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg2))))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+
+	ok := f(_object, _event, _iter)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectEvent signal is emitted when an event occurs on a region of the buffer
+// marked with this tag.
+func (tag *TextTag) ConnectEvent(f func(object *coreglib.Object, event *gdk.Event, iter *TextIter) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(tag, "event", false, unsafe.Pointer(C._gotk4_gtk3_TextTag_ConnectEvent), f)
+}
+
 // NewTextTag creates a TextTag. Configure the tag using object arguments, i.e.
 // using g_object_set().
 //
@@ -138,22 +178,20 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 //    - textTag: new TextTag.
 //
 func NewTextTag(name string) *TextTag {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _cret *C.GtkTextTag // in
 
 	if name != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_gret := _info.InvokeClassMethod("new_TextTag", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_tag_new(_arg1)
 	runtime.KeepAlive(name)
 
 	var _textTag *TextTag // out
 
-	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
 }
@@ -169,16 +207,15 @@ func NewTextTag(name string) *TextTag {
 //    - sizeChanged: whether the change affects the TextView layout.
 //
 func (tag *TextTag) Changed(sizeChanged bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	if sizeChanged {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_info.InvokeClassMethod("changed", _args[:], nil)
-
+	C.gtk_text_tag_changed(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(sizeChanged)
 }
@@ -196,17 +233,18 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //    - ok: result of signal emission (whether the event was handled).
 //
 func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkTextTag  // out
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GdkEvent    // out
+	var _arg3 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(eventObject.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(eventObject.Native()))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_gret := _info.InvokeClassMethod("event", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_tag_event(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(eventObject)
 	runtime.KeepAlive(event)
@@ -214,7 +252,7 @@ func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -228,19 +266,17 @@ func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *
 //    - gint tag’s priority.
 //
 func (tag *TextTag) Priority() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTextTag // out
+	var _cret C.gint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_gret := _info.InvokeClassMethod("get_priority", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_tag_get_priority(_arg0)
 	runtime.KeepAlive(tag)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -261,14 +297,13 @@ func (tag *TextTag) Priority() int32 {
 //    - priority: new priority.
 //
 func (tag *TextTag) SetPriority(priority int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.gint        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(priority)
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg1 = C.gint(priority)
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_info.InvokeClassMethod("set_priority", _args[:], nil)
-
+	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
 }

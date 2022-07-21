@@ -7,15 +7,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CellAccessibleClass_update_cache(void*, gboolean);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellAccessibleClass_update_cache(GtkCellAccessible*, gboolean);
 import "C"
 
 // GTypeCellAccessible returns the GType for the type CellAccessible.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellAccessible)
 	return gtype
 }
@@ -58,16 +58,15 @@ func classInitCellAccessibler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "CellAccessibleClass")
+	pclass := (*C.GtkCellAccessibleClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ UpdateCache(emitSignal bool) }); ok {
-		o := pclass.StructFieldOffset("update_cache")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleClass_update_cache)
+		pclass.update_cache = (*[0]byte)(C._gotk4_gtk3_CellAccessibleClass_update_cache)
 	}
 }
 
 //export _gotk4_gtk3_CellAccessibleClass_update_cache
-func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.void, arg1 C.gboolean) {
+func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg1 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UpdateCache(emitSignal bool) })
 

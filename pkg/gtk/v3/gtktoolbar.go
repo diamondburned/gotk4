@@ -9,17 +9,21 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_ToolbarClass_popup_context_menu(void*, gint, gint, gint);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_ToolbarClass_popup_context_menu(GtkToolbar*, gint, gint, gint);
 // extern gboolean _gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(gpointer, gint, gint, gint, guintptr);
+// extern void _gotk4_gtk3_ToolbarClass_orientation_changed(GtkToolbar*, GtkOrientation);
+// extern void _gotk4_gtk3_ToolbarClass_style_changed(GtkToolbar*, GtkToolbarStyle);
+// extern void _gotk4_gtk3_Toolbar_ConnectOrientationChanged(gpointer, GtkOrientation, guintptr);
+// extern void _gotk4_gtk3_Toolbar_ConnectStyleChanged(gpointer, GtkToolbarStyle, guintptr);
 import "C"
 
 // GTypeToolbarSpaceStyle returns the GType for the type ToolbarSpaceStyle.
@@ -28,7 +32,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeToolbarSpaceStyle() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToolbarSpaceStyle").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_toolbar_space_style_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalToolbarSpaceStyle)
 	return gtype
 }
@@ -39,7 +43,7 @@ func GTypeToolbarSpaceStyle() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeToolbar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Toolbar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_toolbar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalToolbar)
 	return gtype
 }
@@ -76,6 +80,9 @@ func (t ToolbarSpaceStyle) String() string {
 type ToolbarOverrider interface {
 	// The function takes the following parameters:
 	//
+	OrientationChanged(orientation Orientation)
+	// The function takes the following parameters:
+	//
 	//    - x
 	//    - y
 	//    - buttonNumber
@@ -83,6 +90,9 @@ type ToolbarOverrider interface {
 	// The function returns the following values:
 	//
 	PopupContextMenu(x, y, buttonNumber int32) bool
+	// The function takes the following parameters:
+	//
+	StyleChanged(style ToolbarStyle)
 }
 
 // Toolbar: toolbar is created with a call to gtk_toolbar_new().
@@ -135,18 +145,37 @@ func classInitToolbarrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "ToolbarClass")
+	pclass := (*C.GtkToolbarClass)(unsafe.Pointer(gclassPtr))
+
+	if _, ok := goval.(interface{ OrientationChanged(orientation Orientation) }); ok {
+		pclass.orientation_changed = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_orientation_changed)
+	}
 
 	if _, ok := goval.(interface {
 		PopupContextMenu(x, y, buttonNumber int32) bool
 	}); ok {
-		o := pclass.StructFieldOffset("popup_context_menu")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ToolbarClass_popup_context_menu)
+		pclass.popup_context_menu = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_popup_context_menu)
+	}
+
+	if _, ok := goval.(interface{ StyleChanged(style ToolbarStyle) }); ok {
+		pclass.style_changed = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_style_changed)
 	}
 }
 
+//export _gotk4_gtk3_ToolbarClass_orientation_changed
+func _gotk4_gtk3_ToolbarClass_orientation_changed(arg0 *C.GtkToolbar, arg1 C.GtkOrientation) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ OrientationChanged(orientation Orientation) })
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(arg1)
+
+	iface.OrientationChanged(_orientation)
+}
+
 //export _gotk4_gtk3_ToolbarClass_popup_context_menu
-func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.void, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.GtkToolbar, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PopupContextMenu(x, y, buttonNumber int32) bool
@@ -167,6 +196,18 @@ func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.void, arg1 C.gint, arg2
 	}
 
 	return cret
+}
+
+//export _gotk4_gtk3_ToolbarClass_style_changed
+func _gotk4_gtk3_ToolbarClass_style_changed(arg0 *C.GtkToolbar, arg1 C.GtkToolbarStyle) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ StyleChanged(style ToolbarStyle) })
+
+	var _style ToolbarStyle // out
+
+	_style = ToolbarStyle(arg1)
+
+	iface.StyleChanged(_style)
 }
 
 func wrapToolbar(obj *coreglib.Object) *Toolbar {
@@ -265,6 +306,32 @@ func (toolbar *Toolbar) ConnectFocusHomeOrEnd(f func(focusHome bool) (ok bool)) 
 	return coreglib.ConnectGeneratedClosure(toolbar, "focus-home-or-end", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd), f)
 }
 
+//export _gotk4_gtk3_Toolbar_ConnectOrientationChanged
+func _gotk4_gtk3_Toolbar_ConnectOrientationChanged(arg0 C.gpointer, arg1 C.GtkOrientation, arg2 C.guintptr) {
+	var f func(orientation Orientation)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(orientation Orientation))
+	}
+
+	var _orientation Orientation // out
+
+	_orientation = Orientation(arg1)
+
+	f(_orientation)
+}
+
+// ConnectOrientationChanged is emitted when the orientation of the toolbar
+// changes.
+func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(toolbar, "orientation-changed", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectOrientationChanged), f)
+}
+
 //export _gotk4_gtk3_Toolbar_ConnectPopupContextMenu
 func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.guintptr) (cret C.gboolean) {
 	var f func(x, y, button int32) (ok bool)
@@ -306,6 +373,31 @@ func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int32) (ok b
 	return coreglib.ConnectGeneratedClosure(toolbar, "popup-context-menu", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectPopupContextMenu), f)
 }
 
+//export _gotk4_gtk3_Toolbar_ConnectStyleChanged
+func _gotk4_gtk3_Toolbar_ConnectStyleChanged(arg0 C.gpointer, arg1 C.GtkToolbarStyle, arg2 C.guintptr) {
+	var f func(style ToolbarStyle)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(style ToolbarStyle))
+	}
+
+	var _style ToolbarStyle // out
+
+	_style = ToolbarStyle(arg1)
+
+	f(_style)
+}
+
+// ConnectStyleChanged is emitted when the style of the toolbar changes.
+func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(toolbar, "style-changed", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectStyleChanged), f)
+}
+
 // NewToolbar creates a new toolbar.
 //
 // The function returns the following values:
@@ -313,13 +405,13 @@ func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int32) (ok b
 //    - toolbar: newly-created toolbar.
 //
 func NewToolbar() *Toolbar {
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_gret := _info.InvokeClassMethod("new_Toolbar", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_toolbar_new()
 
 	var _toolbar *Toolbar // out
 
-	_toolbar = wrapToolbar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_toolbar = wrapToolbar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _toolbar
 }
@@ -340,25 +432,48 @@ func NewToolbar() *Toolbar {
 //    - gint: position corresponding to the point (x, y) on the toolbar.
 //
 func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.gint        // out
+	var _arg2 C.gint        // out
+	var _cret C.gint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_gret := _info.InvokeClassMethod("get_drop_index", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toolbar_get_drop_index(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// IconSize retrieves the icon size for the toolbar. See
+// gtk_toolbar_set_icon_size().
+//
+// The function returns the following values:
+//
+//    - iconSize: current icon size for the icons on the toolbar.
+//
+func (toolbar *Toolbar) IconSize() IconSize {
+	var _arg0 *C.GtkToolbar // out
+	var _cret C.GtkIconSize // in
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+
+	_cret = C.gtk_toolbar_get_icon_size(_arg0)
+	runtime.KeepAlive(toolbar)
+
+	var _iconSize IconSize // out
+
+	_iconSize = IconSize(_cret)
+
+	return _iconSize
 }
 
 // ItemIndex returns the position of item on the toolbar, starting from 0. It is
@@ -373,21 +488,20 @@ func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 //    - gint: position of item on the toolbar.
 //
 func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 *C.GtkToolItem // out
+	var _cret C.gint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_gret := _info.InvokeClassMethod("get_item_index", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -399,19 +513,17 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 //    - gint: number of items on the toolbar.
 //
 func (toolbar *Toolbar) NItems() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkToolbar // out
+	var _cret C.gint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_gret := _info.InvokeClassMethod("get_n_items", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toolbar_get_n_items(_arg0)
 	runtime.KeepAlive(toolbar)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -429,25 +541,47 @@ func (toolbar *Toolbar) NItems() int32 {
 //      n'th item.
 //
 func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 C.gint         // out
+	var _cret *C.GtkToolItem // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(n)
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg1 = C.gint(n)
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_gret := _info.InvokeClassMethod("get_nth_item", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toolbar_get_nth_item(_arg0, _arg1)
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(n)
 
 	var _toolItem *ToolItem // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _toolItem
+}
+
+// ReliefStyle returns the relief style of buttons on toolbar. See
+// gtk_button_set_relief().
+//
+// The function returns the following values:
+//
+//    - reliefStyle: relief style of buttons on toolbar.
+//
+func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
+	var _arg0 *C.GtkToolbar    // out
+	var _cret C.GtkReliefStyle // in
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+
+	_cret = C.gtk_toolbar_get_relief_style(_arg0)
+	runtime.KeepAlive(toolbar)
+
+	var _reliefStyle ReliefStyle // out
+
+	_reliefStyle = ReliefStyle(_cret)
+
+	return _reliefStyle
 }
 
 // ShowArrow returns whether the toolbar has an overflow menu. See
@@ -458,23 +592,44 @@ func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 //    - ok: TRUE if the toolbar has an overflow menu.
 //
 func (toolbar *Toolbar) ShowArrow() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkToolbar // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_gret := _info.InvokeClassMethod("get_show_arrow", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
 	runtime.KeepAlive(toolbar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Style retrieves whether the toolbar has text, icons, or both . See
+// gtk_toolbar_set_style().
+//
+// The function returns the following values:
+//
+//    - toolbarStyle: current style of toolbar.
+//
+func (toolbar *Toolbar) Style() ToolbarStyle {
+	var _arg0 *C.GtkToolbar     // out
+	var _cret C.GtkToolbarStyle // in
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+
+	_cret = C.gtk_toolbar_get_style(_arg0)
+	runtime.KeepAlive(toolbar)
+
+	var _toolbarStyle ToolbarStyle // out
+
+	_toolbarStyle = ToolbarStyle(_cret)
+
+	return _toolbarStyle
 }
 
 // Insert a ToolItem into the toolbar at position pos. If pos is 0 the item is
@@ -487,15 +642,15 @@ func (toolbar *Toolbar) ShowArrow() bool {
 //    - pos: position of the new item.
 //
 func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 *C.GtkToolItem // out
+	var _arg2 C.gint         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(pos)
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg2 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_info.InvokeClassMethod("insert", _args[:], nil)
-
+	C.gtk_toolbar_insert(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(pos)
@@ -515,20 +670,43 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 //    - index_: position on toolbar.
 //
 func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 *C.GtkToolItem // out
+	var _arg2 C.gint         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 	if toolItem != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+		_arg1 = (*C.GtkToolItem)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(index_)
+	_arg2 = C.gint(index_)
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_info.InvokeClassMethod("set_drop_highlight_item", _args[:], nil)
-
+	C.gtk_toolbar_set_drop_highlight_item(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(toolItem)
 	runtime.KeepAlive(index_)
+}
+
+// SetIconSize: this function sets the size of stock icons in the toolbar. You
+// can call it both before you add the icons and after they’ve been added. The
+// size you set will override user preferences for the default icon size.
+//
+// This should only be used for special-purpose toolbars, normal application
+// toolbars should respect the user preferences for the size of icons.
+//
+// The function takes the following parameters:
+//
+//    - iconSize that stock icons in the toolbar shall have.
+//
+func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg1 = C.GtkIconSize(iconSize)
+
+	C.gtk_toolbar_set_icon_size(_arg0, _arg1)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(iconSize)
 }
 
 // SetShowArrow sets whether to show an overflow menu when toolbar isn’t
@@ -544,42 +722,56 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
 //    - showArrow: whether to show an overflow menu.
 //
 func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 	if showArrow {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_info.InvokeClassMethod("set_show_arrow", _args[:], nil)
-
+	C.gtk_toolbar_set_show_arrow(_arg0, _arg1)
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(showArrow)
+}
+
+// SetStyle alters the view of toolbar to display either icons only, text only,
+// or both.
+//
+// The function takes the following parameters:
+//
+//    - style: new style for toolbar.
+//
+func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
+	var _arg0 *C.GtkToolbar     // out
+	var _arg1 C.GtkToolbarStyle // out
+
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg1 = C.GtkToolbarStyle(style)
+
+	C.gtk_toolbar_set_style(_arg0, _arg1)
+	runtime.KeepAlive(toolbar)
+	runtime.KeepAlive(style)
 }
 
 // UnsetIconSize unsets toolbar icon size set with gtk_toolbar_set_icon_size(),
 // so that user preferences will be used to determine the icon size.
 func (toolbar *Toolbar) UnsetIconSize() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkToolbar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_info.InvokeClassMethod("unset_icon_size", _args[:], nil)
-
+	C.gtk_toolbar_unset_icon_size(_arg0)
 	runtime.KeepAlive(toolbar)
 }
 
 // UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so that
 // user preferences will be used to determine the toolbar style.
 func (toolbar *Toolbar) UnsetStyle() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkToolbar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "Toolbar")
-	_info.InvokeClassMethod("unset_style", _args[:], nil)
-
+	C.gtk_toolbar_unset_style(_arg0)
 	runtime.KeepAlive(toolbar)
 }

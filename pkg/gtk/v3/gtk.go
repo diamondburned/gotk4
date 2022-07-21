@@ -9,15 +9,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: gtk+-3.0
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeMovementStep returns the GType for the type MovementStep.
@@ -26,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMovementStep() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MovementStep").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_movement_step_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMovementStep)
 	return gtype
 }
@@ -37,7 +39,7 @@ func GTypeMovementStep() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNotebookTab() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "NotebookTab").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_notebook_tab_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNotebookTab)
 	return gtype
 }
@@ -48,7 +50,7 @@ func GTypeNotebookTab() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeResizeMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ResizeMode").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_resize_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalResizeMode)
 	return gtype
 }
@@ -59,7 +61,7 @@ func GTypeResizeMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollStep() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrollStep").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scroll_step_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollStep)
 	return gtype
 }
@@ -70,7 +72,7 @@ func GTypeScrollStep() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDebugFlag() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DebugFlag").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_debug_flag_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDebugFlag)
 	return gtype
 }
@@ -81,25 +83,21 @@ func GTypeDebugFlag() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEntryIconAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EntryIconAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_entry_icon_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEntryIconAccessible)
 	return gtype
-}
-
-func init() {
-	girepository.Require("Gtk", "3.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func BuilderErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_builder_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -107,13 +105,13 @@ func BuilderErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func CSSProviderErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_css_provider_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -121,13 +119,13 @@ func CSSProviderErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func IconThemeErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_icon_theme_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -215,13 +213,13 @@ func (n NotebookTab) String() string {
 // The function returns the following values:
 //
 func RecentChooserErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_recent_chooser_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -229,13 +227,13 @@ func RecentChooserErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func RecentManagerErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_recent_manager_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }

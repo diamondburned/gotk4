@@ -7,14 +7,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeStackTransitionType returns the GType for the type StackTransitionType.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStackTransitionType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "StackTransitionType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_stack_transition_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStackTransitionType)
 	return gtype
 }
@@ -34,7 +32,7 @@ func GTypeStackTransitionType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStack() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Stack").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_stack_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStack)
 	return gtype
 }
@@ -45,7 +43,7 @@ func GTypeStack() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStackPage() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "StackPage").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_stack_page_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStackPage)
 	return gtype
 }
@@ -261,13 +259,13 @@ func marshalStack(p uintptr) (interface{}, error) {
 //    - stack: new GtkStack.
 //
 func NewStack() *Stack {
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("new_Stack", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_stack_new()
 
 	var _stack *Stack // out
 
-	_stack = wrapStack(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stack = wrapStack(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stack
 }
@@ -283,21 +281,20 @@ func NewStack() *Stack {
 //    - stackPage: GtkStackPage for child.
 //
 func (stack *Stack) AddChild(child Widgetter) *StackPage {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GtkStackPage // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("add_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_add_child(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
 
 	var _stackPage *StackPage // out
 
-	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackPage
 }
@@ -316,26 +313,26 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 //    - stackPage: GtkStackPage for child.
 //
 func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.char         // out
+	var _cret *C.GtkStackPage // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("add_named", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_add_named(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(name)
 
 	var _stackPage *StackPage // out
 
-	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackPage
 }
@@ -356,21 +353,22 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 //    - stackPage: GtkStackPage for child.
 //
 func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.char         // out
+	var _arg3 *C.char         // out
+	var _cret *C.GtkStackPage // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[3])) = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[3]))))
+	_arg3 = (*C.char)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("add_titled", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(name)
@@ -378,7 +376,7 @@ func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
 
 	var _stackPage *StackPage // out
 
-	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackPage
 }
@@ -396,24 +394,23 @@ func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
 //    - widget (optional): requested child of the GtkStack.
 //
 func (stack *Stack) ChildByName(name string) Widgetter {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack  // out
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_child_by_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(name)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -438,19 +435,17 @@ func (stack *Stack) ChildByName(name string) Widgetter {
 //    - ok: whether stack is horizontally homogeneous.
 //
 func (stack *Stack) Hhomogeneous() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_hhomogeneous", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -465,19 +460,17 @@ func (stack *Stack) Hhomogeneous() bool {
 //    - ok: TRUE if child sizes are interpolated.
 //
 func (stack *Stack) InterpolateSize() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_interpolate_size", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_interpolate_size(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -495,21 +488,20 @@ func (stack *Stack) InterpolateSize() bool {
 //    - stackPage: GtkStackPage for child.
 //
 func (stack *Stack) Page(child Widgetter) *StackPage {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack     // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GtkStackPage // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_page", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_page(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
 
 	var _stackPage *StackPage // out
 
-	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stackPage = wrapStackPage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _stackPage
 }
@@ -524,19 +516,17 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 //    - selectionModel: GtkSelectionModel for the stack's children.
 //
 func (stack *Stack) Pages() *SelectionModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack          // out
+	var _cret *C.GtkSelectionModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_pages", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_pages(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _selectionModel *SelectionModel // out
 
-	_selectionModel = wrapSelectionModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_selectionModel = wrapSelectionModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _selectionModel
 }
@@ -549,19 +539,17 @@ func (stack *Stack) Pages() *SelectionModel {
 //    - guint: transition duration.
 //
 func (stack *Stack) TransitionDuration() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_transition_duration", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_transition_duration(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -574,23 +562,44 @@ func (stack *Stack) TransitionDuration() uint32 {
 //    - ok: TRUE if the transition is currently running, FALSE otherwise.
 //
 func (stack *Stack) TransitionRunning() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_transition_running", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_transition_running(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// TransitionType gets the type of animation that will be used for transitions
+// between pages in stack.
+//
+// The function returns the following values:
+//
+//    - stackTransitionType: current transition type of stack.
+//
+func (stack *Stack) TransitionType() StackTransitionType {
+	var _arg0 *C.GtkStack              // out
+	var _cret C.GtkStackTransitionType // in
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+
+	_cret = C.gtk_stack_get_transition_type(_arg0)
+	runtime.KeepAlive(stack)
+
+	var _stackTransitionType StackTransitionType // out
+
+	_stackTransitionType = StackTransitionType(_cret)
+
+	return _stackTransitionType
 }
 
 // Vhomogeneous gets whether stack is vertically homogeneous.
@@ -600,19 +609,17 @@ func (stack *Stack) TransitionRunning() bool {
 //    - ok: whether stack is vertically homogeneous.
 //
 func (stack *Stack) Vhomogeneous() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_vhomogeneous", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -628,21 +635,19 @@ func (stack *Stack) Vhomogeneous() bool {
 //    - widget (optional): visible child of the GtkStack.
 //
 func (stack *Stack) VisibleChild() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack  // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_visible_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_visible_child(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -669,20 +674,18 @@ func (stack *Stack) VisibleChild() Widgetter {
 //    - utf8 (optional): name of the visible child of the GtkStack.
 //
 func (stack *Stack) VisibleChildName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _cret *C.char     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_gret := _info.InvokeClassMethod("get_visible_child_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_get_visible_child_name(_arg0)
 	runtime.KeepAlive(stack)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -695,14 +698,13 @@ func (stack *Stack) VisibleChildName() string {
 //    - child to remove.
 //
 func (stack *Stack) Remove(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack  // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.gtk_stack_remove(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
 }
@@ -718,16 +720,15 @@ func (stack *Stack) Remove(child Widgetter) {
 //    - hhomogeneous: TRUE to make stack horizontally homogeneous.
 //
 func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	if hhomogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("set_hhomogeneous", _args[:], nil)
-
+	C.gtk_stack_set_hhomogeneous(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(hhomogeneous)
 }
@@ -744,16 +745,15 @@ func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 //    - interpolateSize: new value.
 //
 func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	if interpolateSize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("set_interpolate_size", _args[:], nil)
-
+	C.gtk_stack_set_interpolate_size(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(interpolateSize)
 }
@@ -766,16 +766,40 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 //    - duration: new duration, in milliseconds.
 //
 func (stack *Stack) SetTransitionDuration(duration uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _arg1 C.guint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(duration)
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = C.guint(duration)
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("set_transition_duration", _args[:], nil)
-
+	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(duration)
+}
+
+// SetTransitionType sets the type of animation that will be used for
+// transitions between pages in stack.
+//
+// Available types include various kinds of fades and slides.
+//
+// The transition type can be changed without problems at runtime, so it is
+// possible to change the animation based on the page that is about to become
+// current.
+//
+// The function takes the following parameters:
+//
+//    - transition: new transition type.
+//
+func (stack *Stack) SetTransitionType(transition StackTransitionType) {
+	var _arg0 *C.GtkStack              // out
+	var _arg1 C.GtkStackTransitionType // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = C.GtkStackTransitionType(transition)
+
+	C.gtk_stack_set_transition_type(_arg0, _arg1)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(transition)
 }
 
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not.
@@ -789,16 +813,15 @@ func (stack *Stack) SetTransitionDuration(duration uint32) {
 //    - vhomogeneous: TRUE to make stack vertically homogeneous.
 //
 func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	if vhomogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("set_vhomogeneous", _args[:], nil)
-
+	C.gtk_stack_set_vhomogeneous(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(vhomogeneous)
 }
@@ -816,16 +839,41 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 //    - child of stack.
 //
 func (stack *Stack) SetVisibleChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack  // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("set_visible_child", _args[:], nil)
-
+	C.gtk_stack_set_visible_child(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
+}
+
+// SetVisibleChildFull makes the child with the given name visible.
+//
+// Note that the child widget has to be visible itself (see gtk.Widget.Show())
+// in order to become the visible child of stack.
+//
+// The function takes the following parameters:
+//
+//    - name of the child to make visible.
+//    - transition type to use.
+//
+func (stack *Stack) SetVisibleChildFull(name string, transition StackTransitionType) {
+	var _arg0 *C.GtkStack              // out
+	var _arg1 *C.char                  // out
+	var _arg2 C.GtkStackTransitionType // out
+
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStackTransitionType(transition)
+
+	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(stack)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(transition)
 }
 
 // SetVisibleChildName makes the child with the given name visible.
@@ -841,15 +889,14 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 //    - name of the child to make visible.
 //
 func (stack *Stack) SetVisibleChildName(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStack // out
+	var _arg1 *C.char     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Stack")
-	_info.InvokeClassMethod("set_visible_child_name", _args[:], nil)
-
+	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(name)
 }
@@ -886,20 +933,18 @@ func marshalStackPage(p uintptr) (interface{}, error) {
 //    - widget: child to which self belongs.
 //
 func (self *StackPage) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_child(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -926,20 +971,18 @@ func (self *StackPage) Child() Widgetter {
 //    - utf8 (optional): value of the gtk.StackPage:icon-name property.
 //
 func (self *StackPage) IconName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret *C.char         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -952,20 +995,18 @@ func (self *StackPage) IconName() string {
 //    - utf8 (optional): value of the gtk.StackPage:name property.
 //
 func (self *StackPage) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret *C.char         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_name(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -978,19 +1019,17 @@ func (self *StackPage) Name() string {
 //    - ok: value of the gtk.StackPage:needs-attention property.
 //
 func (self *StackPage) NeedsAttention() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_needs_attention", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_needs_attention(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1004,20 +1043,18 @@ func (self *StackPage) NeedsAttention() bool {
 //    - utf8 (optional): value of the gtk.StackPage:title property.
 //
 func (self *StackPage) Title() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret *C.char         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_title(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -1030,19 +1067,17 @@ func (self *StackPage) Title() string {
 //    - ok: value of the gtk.StackPage:use-underline property.
 //
 func (self *StackPage) UseUnderline() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_use_underline", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_use_underline(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1058,19 +1093,17 @@ func (self *StackPage) UseUnderline() bool {
 //    - ok: TRUE if page is visible.
 //
 func (self *StackPage) Visible() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stack_page_get_visible(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1084,15 +1117,14 @@ func (self *StackPage) Visible() bool {
 //    - setting: new value to set.
 //
 func (self *StackPage) SetIconName(setting string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(setting)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(setting)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
-
+	C.gtk_stack_page_set_icon_name(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -1104,15 +1136,14 @@ func (self *StackPage) SetIconName(setting string) {
 //    - setting: new value to set.
 //
 func (self *StackPage) SetName(setting string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(setting)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(setting)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_info.InvokeClassMethod("set_name", _args[:], nil)
-
+	C.gtk_stack_page_set_name(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -1124,16 +1155,15 @@ func (self *StackPage) SetName(setting string) {
 //    - setting: new value to set.
 //
 func (self *StackPage) SetNeedsAttention(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_info.InvokeClassMethod("set_needs_attention", _args[:], nil)
-
+	C.gtk_stack_page_set_needs_attention(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -1145,15 +1175,14 @@ func (self *StackPage) SetNeedsAttention(setting bool) {
 //    - setting: new value to set.
 //
 func (self *StackPage) SetTitle(setting string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(setting)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(setting)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_info.InvokeClassMethod("set_title", _args[:], nil)
-
+	C.gtk_stack_page_set_title(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -1165,16 +1194,15 @@ func (self *StackPage) SetTitle(setting string) {
 //    - setting: new value to set.
 //
 func (self *StackPage) SetUseUnderline(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_info.InvokeClassMethod("set_use_underline", _args[:], nil)
-
+	C.gtk_stack_page_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
 }
@@ -1186,16 +1214,15 @@ func (self *StackPage) SetUseUnderline(setting bool) {
 //    - visible: new property value.
 //
 func (self *StackPage) SetVisible(visible bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStackPage // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if visible {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "StackPage")
-	_info.InvokeClassMethod("set_visible", _args[:], nil)
-
+	C.gtk_stack_page_set_visible(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(visible)
 }

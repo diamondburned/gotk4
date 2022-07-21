@@ -7,16 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gdk/gdk.h>
 import "C"
 
 // PixbufGetFromSurface transfers image data from a cairo_surface_t and converts
@@ -41,18 +38,20 @@ import "C"
 //      NULL on error.
 //
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
-	var _args [5]girepository.Argument
+	var _arg1 *C.cairo_surface_t // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _arg4 C.int              // out
+	var _arg5 C.int              // out
+	var _cret *C.GdkPixbuf       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(surface.Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(srcX)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(srcY)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(height)
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg2 = C.int(srcX)
+	_arg3 = C.int(srcY)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
 
-	_info := girepository.MustFind("Gdk", "pixbuf_get_from_surface")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -61,9 +60,9 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -92,21 +91,19 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 //    - pixbuf (optional): new Pixbuf or NULL in case of an error.
 //
 func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkTexture // out
+	var _cret *C.GdkPixbuf  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
-	_info := girepository.MustFind("Gdk", "pixbuf_get_from_texture")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pixbuf_get_from_texture(_arg1)
 	runtime.KeepAlive(texture)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{

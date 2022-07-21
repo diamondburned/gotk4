@@ -8,13 +8,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCrossingMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "CrossingMode").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_crossing_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCrossingMode)
 	return gtype
 }
@@ -35,7 +33,7 @@ func GTypeCrossingMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "EventType").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_event_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventType)
 	return gtype
 }
@@ -46,7 +44,7 @@ func GTypeEventType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeKeyMatch() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "KeyMatch").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_key_match_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalKeyMatch)
 	return gtype
 }
@@ -57,7 +55,7 @@ func GTypeKeyMatch() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNotifyType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "NotifyType").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_notify_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNotifyType)
 	return gtype
 }
@@ -68,7 +66,7 @@ func GTypeNotifyType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollDirection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ScrollDirection").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_scroll_direction_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollDirection)
 	return gtype
 }
@@ -79,7 +77,7 @@ func GTypeScrollDirection() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTouchpadGesturePhase() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "TouchpadGesturePhase").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_touchpad_gesture_phase_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTouchpadGesturePhase)
 	return gtype
 }
@@ -90,7 +88,7 @@ func GTypeTouchpadGesturePhase() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeButtonEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ButtonEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_button_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalButtonEvent)
 	return gtype
 }
@@ -101,7 +99,7 @@ func GTypeButtonEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCrossingEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "CrossingEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_crossing_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCrossingEvent)
 	return gtype
 }
@@ -112,7 +110,7 @@ func GTypeCrossingEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDNDEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DNDEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_dnd_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDNDEvent)
 	return gtype
 }
@@ -123,7 +121,7 @@ func GTypeDNDEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDeleteEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DeleteEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_delete_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDeleteEvent)
 	return gtype
 }
@@ -134,7 +132,7 @@ func GTypeDeleteEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Event").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEvent)
 	return gtype
 }
@@ -145,7 +143,7 @@ func GTypeEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFocusEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "FocusEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_focus_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFocusEvent)
 	return gtype
 }
@@ -156,7 +154,7 @@ func GTypeFocusEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGrabBrokenEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "GrabBrokenEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_grab_broken_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGrabBrokenEvent)
 	return gtype
 }
@@ -167,7 +165,7 @@ func GTypeGrabBrokenEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeKeyEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "KeyEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_key_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalKeyEvent)
 	return gtype
 }
@@ -178,7 +176,7 @@ func GTypeKeyEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMotionEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "MotionEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_motion_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMotionEvent)
 	return gtype
 }
@@ -189,7 +187,7 @@ func GTypeMotionEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePadEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "PadEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_pad_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPadEvent)
 	return gtype
 }
@@ -200,7 +198,7 @@ func GTypePadEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeProximityEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ProximityEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_proximity_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalProximityEvent)
 	return gtype
 }
@@ -211,7 +209,7 @@ func GTypeProximityEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ScrollEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_scroll_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollEvent)
 	return gtype
 }
@@ -222,7 +220,7 @@ func GTypeScrollEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTouchEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "TouchEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_touch_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTouchEvent)
 	return gtype
 }
@@ -233,7 +231,7 @@ func GTypeTouchEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTouchpadEvent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "TouchpadEvent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_touchpad_event_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTouchpadEvent)
 	return gtype
 }
@@ -244,7 +242,7 @@ func GTypeTouchpadEvent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventSequence() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "EventSequence").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_event_sequence_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventSequence)
 	return gtype
 }
@@ -666,24 +664,23 @@ func (t TouchpadGesturePhase) String() string {
 //    - ok: TRUE if the angle could be calculated.
 //
 func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
+	var _arg3 C.double    // in
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
 
-	_info := girepository.MustFind("Gdk", "events_get_angle")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(event1)
 	runtime.KeepAlive(event2)
 
 	var _angle float64 // out
 	var _ok bool       // out
 
-	_angle = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_angle = float64(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -707,16 +704,16 @@ func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 //    - ok: TRUE if the center could be calculated.
 //
 func EventsGetCenter(event1, event2 Eventer) (x, y float64, ok bool) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
+	var _arg3 C.double    // in
+	var _arg4 C.double    // in
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
 
-	_info := girepository.MustFind("Gdk", "events_get_center")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(event1)
 	runtime.KeepAlive(event2)
 
@@ -724,9 +721,9 @@ func EventsGetCenter(event1, event2 Eventer) (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_x = float64(_arg3)
+	_y = float64(_arg4)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -749,24 +746,23 @@ func EventsGetCenter(event1, event2 Eventer) (x, y float64, ok bool) {
 //    - ok: TRUE if the distance could be calculated.
 //
 func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
+	var _arg3 C.double    // in
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event1).Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
 
-	_info := girepository.MustFind("Gdk", "events_get_distance")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(event1)
 	runtime.KeepAlive(event2)
 
 	var _distance float64 // out
 	var _ok bool          // out
 
-	_distance = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_distance = float64(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -802,19 +798,17 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 //    - guint: button of event.
 //
 func (event *ButtonEvent) Button() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "ButtonEvent")
-	_gret := _info.InvokeClassMethod("get_button", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_button_event_get_button(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -841,6 +835,28 @@ func marshalCrossingEvent(p uintptr) (interface{}, error) {
 	return wrapCrossingEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// Detail extracts the notify detail from a crossing event.
+//
+// The function returns the following values:
+//
+//    - notifyType: notify detail of event.
+//
+func (event *CrossingEvent) Detail() NotifyType {
+	var _arg0 *C.GdkEvent     // out
+	var _cret C.GdkNotifyType // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_crossing_event_get_detail(_arg0)
+	runtime.KeepAlive(event)
+
+	var _notifyType NotifyType // out
+
+	_notifyType = NotifyType(_cret)
+
+	return _notifyType
+}
+
 // Focus checks if the event surface is the focus surface.
 //
 // The function returns the following values:
@@ -848,23 +864,43 @@ func marshalCrossingEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE if the surface is the focus surface.
 //
 func (event *CrossingEvent) Focus() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "CrossingEvent")
-	_gret := _info.InvokeClassMethod("get_focus", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_crossing_event_get_focus(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Mode extracts the crossing mode from a crossing event.
+//
+// The function returns the following values:
+//
+//    - crossingMode: mode of event.
+//
+func (event *CrossingEvent) Mode() CrossingMode {
+	var _arg0 *C.GdkEvent       // out
+	var _cret C.GdkCrossingMode // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_crossing_event_get_mode(_arg0)
+	runtime.KeepAlive(event)
+
+	var _crossingMode CrossingMode // out
+
+	_crossingMode = CrossingMode(_cret)
+
+	return _crossingMode
 }
 
 // DNDEvent: event related to drag and drop operations.
@@ -896,21 +932,19 @@ func marshalDNDEvent(p uintptr) (interface{}, error) {
 //    - drop (optional): drop.
 //
 func (event *DNDEvent) Drop() Dropper {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret *C.GdkDrop  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "DNDEvent")
-	_gret := _info.InvokeClassMethod("get_drop", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_dnd_event_get_drop(_arg0)
 	runtime.KeepAlive(event)
 
 	var _drop Dropper // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1003,27 +1037,62 @@ func BaseEvent(obj Eventer) *Event {
 //    - ok: TRUE on success, otherwise FALSE.
 //
 func (event *Event) Axes() ([]float64, bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _arg1 *C.double   // in
+	var _arg2 C.guint     // in
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_axes", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_axes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _axes []float64 // out
 	var _ok bool        // out
 
-	_axes = make([]float64, *(*C.guint)(unsafe.Pointer(&_outs[1])))
-	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(*(**C.double)(unsafe.Pointer(&_outs[0])))), *(*C.guint)(unsafe.Pointer(&_outs[1]))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_axes = make([]float64, _arg2)
+	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(_arg1)), _arg2))
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _axes, _ok
+}
+
+// Axis: extract the axis value for a particular axis use from an event
+// structure.
+//
+// The function takes the following parameters:
+//
+//    - axisUse axis use to look for.
+//
+// The function returns the following values:
+//
+//    - value: location to store the value found.
+//    - ok: TRUE if the specified axis was found, otherwise FALSE.
+//
+func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
+	var _arg0 *C.GdkEvent  // out
+	var _arg1 C.GdkAxisUse // out
+	var _arg2 C.double     // in
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg1 = C.GdkAxisUse(axisUse)
+
+	_cret = C.gdk_event_get_axis(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(axisUse)
+
+	var _value float64 // out
+	var _ok bool       // out
+
+	_value = float64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
 }
 
 // Device returns the device of an event.
@@ -1033,21 +1102,19 @@ func (event *Event) Axes() ([]float64, bool) {
 //    - device (optional): Device.
 //
 func (event *Event) Device() Devicer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent  // out
+	var _cret *C.GdkDevice // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_device", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_device(_arg0)
 	runtime.KeepAlive(event)
 
 	var _device Devicer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1080,20 +1147,18 @@ func (event *Event) Device() Devicer {
 //    - deviceTool (optional): current device tool, or NULL.
 //
 func (event *Event) DeviceTool() *DeviceTool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent      // out
+	var _cret *C.GdkDeviceTool // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_device_tool", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_device_tool(_arg0)
 	runtime.KeepAlive(event)
 
 	var _deviceTool *DeviceTool // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _deviceTool
@@ -1106,20 +1171,18 @@ func (event *Event) DeviceTool() *DeviceTool {
 //    - display (optional): Display.
 //
 func (event *Event) Display() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent   // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_display(_arg0)
 	runtime.KeepAlive(event)
 
 	var _display *Display // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display
@@ -1135,21 +1198,102 @@ func (event *Event) Display() *Display {
 //    - eventSequence: event sequence that the event belongs to.
 //
 func (event *Event) EventSequence() *EventSequence {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent         // out
+	var _cret *C.GdkEventSequence // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_event_sequence", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_event_sequence(_arg0)
 	runtime.KeepAlive(event)
 
 	var _eventSequence *EventSequence // out
 
-	_eventSequence = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_eventSequence = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _eventSequence
+}
+
+// EventType retrieves the type of the event.
+//
+// The function returns the following values:
+//
+//    - eventType: GdkEventType.
+//
+func (event *Event) EventType() EventType {
+	var _arg0 *C.GdkEvent    // out
+	var _cret C.GdkEventType // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_event_get_event_type(_arg0)
+	runtime.KeepAlive(event)
+
+	var _eventType EventType // out
+
+	_eventType = EventType(_cret)
+
+	return _eventType
+}
+
+// History retrieves the history of the device that event is for, as a list of
+// time and coordinates.
+//
+// The history includes positions that are not delivered as separate events to
+// the application because they occurred in the same frame as event.
+//
+// Note that only motion and scroll events record history, and motion events do
+// it only if one of the mouse buttons is down.
+//
+// The function returns the following values:
+//
+//    - timeCoords (optional): an array of time and coordinates.
+//
+func (event *Event) History() []TimeCoord {
+	var _arg0 *C.GdkEvent     // out
+	var _cret *C.GdkTimeCoord // in
+	var _arg1 C.guint         // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_event_get_history(_arg0, &_arg1)
+	runtime.KeepAlive(event)
+
+	var _timeCoords []TimeCoord // out
+
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			src := unsafe.Slice((*C.GdkTimeCoord)(_cret), _arg1)
+			_timeCoords = make([]TimeCoord, _arg1)
+			for i := 0; i < int(_arg1); i++ {
+				_timeCoords[i] = *(*TimeCoord)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			}
+		}
+	}
+
+	return _timeCoords
+}
+
+// ModifierState returns the modifier state field of an event.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifier state of event.
+//
+func (event *Event) ModifierState() ModifierType {
+	var _arg0 *C.GdkEvent       // out
+	var _cret C.GdkModifierType // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_event_get_modifier_state(_arg0)
+	runtime.KeepAlive(event)
+
+	var _modifierType ModifierType // out
+
+	_modifierType = ModifierType(_cret)
+
+	return _modifierType
 }
 
 // PointerEmulated returns whether this event is an 'emulated' pointer event.
@@ -1161,19 +1305,17 @@ func (event *Event) EventSequence() *EventSequence {
 //    - ok: TRUE if this event is emulated.
 //
 func (event *Event) PointerEmulated() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_pointer_emulated", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_pointer_emulated(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1189,24 +1331,23 @@ func (event *Event) PointerEmulated() bool {
 //    - ok
 //
 func (event *Event) Position() (x, y float64, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _arg1 C.double    // in
+	var _arg2 C.double    // in
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_position", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_x = float64(_arg1)
+	_y = float64(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1220,21 +1361,19 @@ func (event *Event) Position() (x, y float64, ok bool) {
 //    - seat (optional): Seat.
 //
 func (event *Event) Seat() Seater {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret *C.GdkSeat  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_seat", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_seat(_arg0)
 	runtime.KeepAlive(event)
 
 	var _seat Seater // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1259,20 +1398,18 @@ func (event *Event) Seat() Seater {
 //    - surface associated with the event.
 //
 func (event *Event) Surface() Surfacer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent   // out
+	var _cret *C.GdkSurface // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_surface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_surface(_arg0)
 	runtime.KeepAlive(event)
 
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -1302,19 +1439,17 @@ func (event *Event) Surface() Surfacer {
 //    - guint32: timestamp field from event.
 //
 func (event *Event) Time() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint32   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("get_time", _args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_get_time(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -1332,19 +1467,17 @@ func (event *Event) Time() uint32 {
 //    - ok: TRUE if the event should trigger a context menu.
 //
 func (event *Event) TriggersContextMenu() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Event")
-	_gret := _info.InvokeClassMethod("triggers_context_menu", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_event_triggers_context_menu(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1381,19 +1514,17 @@ func marshalFocusEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE of the focus is entering.
 //
 func (event *FocusEvent) In() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "FocusEvent")
-	_gret := _info.InvokeClassMethod("get_in", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_focus_event_get_in(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1429,20 +1560,18 @@ func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 //    - surface: grab surface of event.
 //
 func (event *GrabBrokenEvent) GrabSurface() Surfacer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent   // out
+	var _cret *C.GdkSurface // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "GrabBrokenEvent")
-	_gret := _info.InvokeClassMethod("get_grab_surface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_grab_broken_event_get_grab_surface(_arg0)
 	runtime.KeepAlive(event)
 
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -1469,19 +1598,17 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 //    - ok: TRUE if the an implicit grab was broken.
 //
 func (event *GrabBrokenEvent) Implicit() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "GrabBrokenEvent")
-	_gret := _info.InvokeClassMethod("get_implicit", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_grab_broken_event_get_implicit(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1510,6 +1637,28 @@ func marshalKeyEvent(p uintptr) (interface{}, error) {
 	return wrapKeyEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConsumedModifiers extracts the consumed modifiers from a key event.
+//
+// The function returns the following values:
+//
+//    - modifierType: consumed modifiers or event.
+//
+func (event *KeyEvent) ConsumedModifiers() ModifierType {
+	var _arg0 *C.GdkEvent       // out
+	var _cret C.GdkModifierType // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_key_event_get_consumed_modifiers(_arg0)
+	runtime.KeepAlive(event)
+
+	var _modifierType ModifierType // out
+
+	_modifierType = ModifierType(_cret)
+
+	return _modifierType
+}
+
 // Keycode extracts the keycode from a key event.
 //
 // The function returns the following values:
@@ -1517,19 +1666,17 @@ func marshalKeyEvent(p uintptr) (interface{}, error) {
 //    - guint: keycode of event.
 //
 func (event *KeyEvent) Keycode() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "KeyEvent")
-	_gret := _info.InvokeClassMethod("get_keycode", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_key_event_get_keycode(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1541,19 +1688,17 @@ func (event *KeyEvent) Keycode() uint32 {
 //    - guint: keyval of event.
 //
 func (event *KeyEvent) Keyval() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "KeyEvent")
-	_gret := _info.InvokeClassMethod("get_keyval", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_key_event_get_keyval(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1565,19 +1710,17 @@ func (event *KeyEvent) Keyval() uint32 {
 //    - guint: layout of event.
 //
 func (event *KeyEvent) Layout() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "KeyEvent")
-	_gret := _info.InvokeClassMethod("get_layout", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_key_event_get_layout(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1589,19 +1732,17 @@ func (event *KeyEvent) Layout() uint32 {
 //    - guint: shift level of event.
 //
 func (event *KeyEvent) Level() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "KeyEvent")
-	_gret := _info.InvokeClassMethod("get_level", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_key_event_get_level(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1617,24 +1758,23 @@ func (event *KeyEvent) Level() uint32 {
 //    - ok: TRUE on success.
 //
 func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent       // out
+	var _arg1 C.guint           // in
+	var _arg2 C.GdkModifierType // in
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "KeyEvent")
-	_gret := _info.InvokeClassMethod("get_match", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_key_event_get_match(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _keyval uint32          // out
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	_modifiers = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_keyval = uint32(_arg1)
+	_modifiers = ModifierType(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1648,23 +1788,61 @@ func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
 //    - ok: TRUE if the event is for a modifier key.
 //
 func (event *KeyEvent) IsModifier() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "KeyEvent")
-	_gret := _info.InvokeClassMethod("is_modifier", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_key_event_is_modifier(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Matches a key event against a keyval and modifiers.
+//
+// This is typically used to trigger keyboard shortcuts such as Ctrl-C.
+//
+// Partial matches are possible where the combination matches if the currently
+// active group is ignored.
+//
+// Note that we ignore Caps Lock for matching.
+//
+// The function takes the following parameters:
+//
+//    - keyval to match.
+//    - modifiers to match.
+//
+// The function returns the following values:
+//
+//    - keyMatch: GdkKeyMatch value describing whether event matches.
+//
+func (event *KeyEvent) Matches(keyval uint32, modifiers ModifierType) KeyMatch {
+	var _arg0 *C.GdkEvent       // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _cret C.GdkKeyMatch     // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
+
+	_cret = C.gdk_key_event_matches(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+
+	var _keyMatch KeyMatch // out
+
+	_keyMatch = KeyMatch(_cret)
+
+	return _keyMatch
 }
 
 // MotionEvent: event related to a pointer or touch device motion.
@@ -1719,21 +1897,20 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 //    - value: return location for the axis value.
 //
 func (event *PadEvent) AxisValue() (uint32, float64) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _arg1 C.guint     // in
+	var _arg2 C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "PadEvent")
-	_info.InvokeClassMethod("get_axis_value", _args[:], _outs[:])
-
+	C.gdk_pad_event_get_axis_value(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _index uint32  // out
 	var _value float64 // out
 
-	_index = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	_value = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
+	_index = uint32(_arg1)
+	_value = float64(_arg2)
 
 	return _index, _value
 }
@@ -1745,19 +1922,17 @@ func (event *PadEvent) AxisValue() (uint32, float64) {
 //    - guint: button of event.
 //
 func (event *PadEvent) Button() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "PadEvent")
-	_gret := _info.InvokeClassMethod("get_button", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pad_event_get_button(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1770,21 +1945,20 @@ func (event *PadEvent) Button() uint32 {
 //    - mode: return location for the mode.
 //
 func (event *PadEvent) GroupMode() (group, mode uint32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _arg1 C.guint     // in
+	var _arg2 C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "PadEvent")
-	_info.InvokeClassMethod("get_group_mode", _args[:], _outs[:])
-
+	C.gdk_pad_event_get_group_mode(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _group uint32 // out
 	var _mode uint32  // out
 
-	_group = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
-	_mode = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
+	_group = uint32(_arg1)
+	_mode = uint32(_arg2)
 
 	return _group, _mode
 }
@@ -1843,23 +2017,44 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 //    - deltaY: return location for y scroll delta.
 //
 func (event *ScrollEvent) Deltas() (deltaX, deltaY float64) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _arg1 C.double    // in
+	var _arg2 C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "ScrollEvent")
-	_info.InvokeClassMethod("get_deltas", _args[:], _outs[:])
-
+	C.gdk_scroll_event_get_deltas(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _deltaX float64 // out
 	var _deltaY float64 // out
 
-	_deltaX = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_deltaY = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
+	_deltaX = float64(_arg1)
+	_deltaY = float64(_arg2)
 
 	return _deltaX, _deltaY
+}
+
+// Direction extracts the direction of a scroll event.
+//
+// The function returns the following values:
+//
+//    - scrollDirection: scroll direction of event.
+//
+func (event *ScrollEvent) Direction() ScrollDirection {
+	var _arg0 *C.GdkEvent          // out
+	var _cret C.GdkScrollDirection // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_scroll_event_get_direction(_arg0)
+	runtime.KeepAlive(event)
+
+	var _scrollDirection ScrollDirection // out
+
+	_scrollDirection = ScrollDirection(_cret)
+
+	return _scrollDirection
 }
 
 // IsStop: check whether a scroll event is a stop scroll event.
@@ -1876,19 +2071,17 @@ func (event *ScrollEvent) Deltas() (deltaX, deltaY float64) {
 //    - ok: TRUE if the event is a scroll stop event.
 //
 func (event *ScrollEvent) IsStop() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "ScrollEvent")
-	_gret := _info.InvokeClassMethod("is_stop", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_scroll_event_is_stop(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1924,19 +2117,17 @@ func marshalTouchEvent(p uintptr) (interface{}, error) {
 //    - ok: TRUE if event is emulating.
 //
 func (event *TouchEvent) EmulatingPointer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "TouchEvent")
-	_gret := _info.InvokeClassMethod("get_emulating_pointer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_touch_event_get_emulating_pointer(_arg0)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1978,23 +2169,44 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 //    - dy: return location for y.
 //
 func (event *TouchpadEvent) Deltas() (dx, dy float64) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _arg1 C.double    // in
+	var _arg2 C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "TouchpadEvent")
-	_info.InvokeClassMethod("get_deltas", _args[:], _outs[:])
-
+	C.gdk_touchpad_event_get_deltas(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
 	var _dx float64 // out
 	var _dy float64 // out
 
-	_dx = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_dy = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
+	_dx = float64(_arg1)
+	_dy = float64(_arg2)
 
 	return _dx, _dy
+}
+
+// GesturePhase extracts the touchpad gesture phase from a touchpad event.
+//
+// The function returns the following values:
+//
+//    - touchpadGesturePhase: gesture phase of event.
+//
+func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
+	var _arg0 *C.GdkEvent               // out
+	var _cret C.GdkTouchpadGesturePhase // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_touchpad_event_get_gesture_phase(_arg0)
+	runtime.KeepAlive(event)
+
+	var _touchpadGesturePhase TouchpadGesturePhase // out
+
+	_touchpadGesturePhase = TouchpadGesturePhase(_cret)
+
+	return _touchpadGesturePhase
 }
 
 // NFingers extracts the number of fingers from a touchpad event.
@@ -2004,19 +2216,17 @@ func (event *TouchpadEvent) Deltas() (dx, dy float64) {
 //    - guint: number of fingers for event.
 //
 func (event *TouchpadEvent) NFingers() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.guint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "TouchpadEvent")
-	_gret := _info.InvokeClassMethod("get_n_fingers", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_touchpad_event_get_n_fingers(_arg0)
 	runtime.KeepAlive(event)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -2028,19 +2238,17 @@ func (event *TouchpadEvent) NFingers() uint32 {
 //    - gdouble: angle delta of event.
 //
 func (event *TouchpadEvent) PinchAngleDelta() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "TouchpadEvent")
-	_gret := _info.InvokeClassMethod("get_pinch_angle_delta", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_touchpad_event_get_pinch_angle_delta(_arg0)
 	runtime.KeepAlive(event)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -2052,19 +2260,17 @@ func (event *TouchpadEvent) PinchAngleDelta() float64 {
 //    - gdouble: scale of event.
 //
 func (event *TouchpadEvent) PinchScale() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkEvent // out
+	var _cret C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "TouchpadEvent")
-	_gret := _info.InvokeClassMethod("get_pinch_scale", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_touchpad_event_get_pinch_scale(_arg0)
 	runtime.KeepAlive(event)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -2079,10 +2285,10 @@ type EventSequence struct {
 
 // eventSequence is the struct that's finalized.
 type eventSequence struct {
-	native unsafe.Pointer
+	native *C.GdkEventSequence
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &EventSequence{&eventSequence{(unsafe.Pointer)(b)}}, nil
+	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(b)}}, nil
 }

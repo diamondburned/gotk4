@@ -7,15 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // ShowURI: convenience function for launching the default application to show
@@ -35,26 +34,27 @@ import "C"
 //    - timestamp to prevent focus stealing.
 //
 func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GdkScreen // out
+	var _arg2 *C.gchar     // out
+	var _arg3 C.guint32    // out
+	var _cerr *C.GError    // in
 
 	if screen != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+		_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("Gtk", "show_uri")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_show_uri(_arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(timestamp)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -85,26 +85,27 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 //    - timestamp to prevent focus stealing.
 //
 func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GtkWindow // out
+	var _arg2 *C.char      // out
+	var _arg3 C.guint32    // out
+	var _cerr *C.GError    // in
 
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("Gtk", "show_uri_on_window")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_show_uri_on_window(_arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(timestamp)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

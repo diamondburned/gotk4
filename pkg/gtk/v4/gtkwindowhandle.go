@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeWindowHandle returns the GType for the type WindowHandle.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowHandle() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "WindowHandle").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_window_handle_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowHandle)
 	return gtype
 }
@@ -93,13 +91,13 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 //    - windowHandle: new GtkWindowHandle.
 //
 func NewWindowHandle() *WindowHandle {
-	_info := girepository.MustFind("Gtk", "WindowHandle")
-	_gret := _info.InvokeClassMethod("new_WindowHandle", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_window_handle_new()
 
 	var _windowHandle *WindowHandle // out
 
-	_windowHandle = wrapWindowHandle(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_windowHandle = wrapWindowHandle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowHandle
 }
@@ -111,21 +109,19 @@ func NewWindowHandle() *WindowHandle {
 //    - widget (optional): child widget of self.
 //
 func (self *WindowHandle) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWindowHandle // out
+	var _cret *C.GtkWidget       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "WindowHandle")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_window_handle_get_child(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -150,16 +146,15 @@ func (self *WindowHandle) Child() Widgetter {
 //    - child (optional) widget.
 //
 func (self *WindowHandle) SetChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWindowHandle // out
+	var _arg1 *C.GtkWidget       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "WindowHandle")
-	_info.InvokeClassMethod("set_child", _args[:], nil)
-
+	C.gtk_window_handle_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }

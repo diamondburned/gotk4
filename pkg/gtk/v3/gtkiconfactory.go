@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeIconFactory returns the GType for the type IconFactory.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconFactory() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconFactory").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_factory_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconFactory)
 	return gtype
 }
@@ -41,20 +41,18 @@ func GTypeIconFactory() coreglib.Type {
 //    - gint: icon size (IconSize).
 //
 func IconSizeFromName(name string) int32 {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _cret C.GtkIconSize // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "from_name")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_size_from_name(_arg1)
 	runtime.KeepAlive(name)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -73,19 +71,17 @@ func IconSizeFromName(name string) int32 {
 //    - utf8: name of the given icon size.
 //
 func IconSizeGetName(size int32) string {
-	var _args [1]girepository.Argument
+	var _arg1 C.GtkIconSize // out
+	var _cret *C.gchar      // in
 
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[0])) = C.GtkIconSize(size)
+	_arg1 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "get_name")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_size_get_name(_arg1)
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -109,24 +105,23 @@ func IconSizeGetName(size int32) string {
 //    - ok: TRUE if size was a valid size.
 //
 func IconSizeLookup(size int32) (width, height int32, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg1 C.GtkIconSize // out
+	var _arg2 C.gint        // in
+	var _arg3 C.gint        // in
+	var _cret C.gboolean    // in
 
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[0])) = C.GtkIconSize(size)
+	_arg1 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "lookup")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_size_lookup(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(size)
 
 	var _width int32  // out
 	var _height int32 // out
 	var _ok bool      // out
 
-	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_width = int32(_arg2)
+	_height = int32(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -156,16 +151,16 @@ func IconSizeLookup(size int32) (width, height int32, ok bool) {
 //    - ok: TRUE if size was a valid size.
 //
 func IconSizeLookupForSettings(settings *Settings, size int32) (width, height int32, ok bool) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg1 *C.GtkSettings // out
+	var _arg2 C.GtkIconSize  // out
+	var _arg3 C.gint         // in
+	var _arg4 C.gint         // in
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(size)
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg2 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "lookup_for_settings")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_size_lookup_for_settings(_arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(size)
 
@@ -173,9 +168,9 @@ func IconSizeLookupForSettings(settings *Settings, size int32) (width, height in
 	var _height int32 // out
 	var _ok bool      // out
 
-	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_width = int32(_arg3)
+	_height = int32(_arg4)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -198,24 +193,24 @@ func IconSizeLookupForSettings(settings *Settings, size int32) (width, height in
 //    - gint: integer value representing the size (IconSize).
 //
 func IconSizeRegister(name string, width, height int32) int32 {
-	var _args [3]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gint        // out
+	var _arg3 C.gint        // out
+	var _cret C.GtkIconSize // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(width)
+	_arg3 = C.gint(height)
 
-	_info := girepository.MustFind("Gtk", "register")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_size_register(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -231,15 +226,14 @@ func IconSizeRegister(name string, width, height int32) int32 {
 //    - target: existing icon size (IconSize).
 //
 func IconSizeRegisterAlias(alias string, target int32) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(alias)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(target)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(alias)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkIconSize(target)
 
-	_info := girepository.MustFind("Gtk", "register_alias")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_icon_size_register_alias(_arg1, _arg2)
 	runtime.KeepAlive(alias)
 	runtime.KeepAlive(target)
 }
@@ -367,13 +361,13 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 //    - iconFactory: new IconFactory.
 //
 func NewIconFactory() *IconFactory {
-	_info := girepository.MustFind("Gtk", "IconFactory")
-	_gret := _info.InvokeClassMethod("new_IconFactory", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkIconFactory // in
+
+	_cret = C.gtk_icon_factory_new()
 
 	var _iconFactory *IconFactory // out
 
-	_iconFactory = wrapIconFactory(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconFactory = wrapIconFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconFactory
 }
@@ -395,16 +389,16 @@ func NewIconFactory() *IconFactory {
 //    - iconSet: icon set.
 //
 func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkIconFactory // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GtkIconSet     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
-	_info := girepository.MustFind("Gtk", "IconFactory")
-	_info.InvokeClassMethod("add", _args[:], nil)
-
+	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(iconSet)
@@ -418,13 +412,11 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) AddDefault() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconFactory // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconFactory")
-	_info.InvokeClassMethod("add_default", _args[:], nil)
-
+	C.gtk_icon_factory_add_default(_arg0)
 	runtime.KeepAlive(factory)
 }
 
@@ -445,23 +437,22 @@ func (factory *IconFactory) AddDefault() {
 //    - iconSet: icon set of stock_id.
 //
 func (factory *IconFactory) Lookup(stockId string) *IconSet {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconFactory // out
+	var _arg1 *C.gchar          // out
+	var _cret *C.GtkIconSet     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IconFactory")
-	_gret := _info.InvokeClassMethod("lookup", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.gtk_icon_set_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -478,13 +469,11 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 //
 // Deprecated: Use IconTheme instead.
 func (factory *IconFactory) RemoveDefault() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconFactory // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconFactory")
-	_info.InvokeClassMethod("remove_default", _args[:], nil)
-
+	C.gtk_icon_factory_remove_default(_arg0)
 	runtime.KeepAlive(factory)
 }
 
@@ -505,21 +494,19 @@ func (factory *IconFactory) RemoveDefault() {
 //    - iconSet or NULL.
 //
 func IconFactoryLookupDefault(stockId string) *IconSet {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _cret *C.GtkIconSet // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "lookup_default")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_factory_lookup_default(_arg1)
 	runtime.KeepAlive(stockId)
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.gtk_icon_set_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_icon_set_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {

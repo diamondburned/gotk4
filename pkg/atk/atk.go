@@ -4,16 +4,10 @@ package atk
 
 import (
 	_ "runtime/cgo"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: atk
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <atk/atk.h>
 import "C"
-
-func init() {
-	girepository.Require("Atk", "1.0", girepository.LoadFlagLazy)
-}

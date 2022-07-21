@@ -3,16 +3,15 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeAccessible returns the GType for the type Accessible.
@@ -21,9 +20,64 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Accessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessible)
 	return gtype
+}
+
+// The function takes the following parameters:
+//
+//    - property
+//    - value
+//
+func AccessiblePropertyInitValue(property AccessibleProperty, value *coreglib.Value) {
+	var _arg1 C.GtkAccessibleProperty // out
+	var _arg2 *C.GValue               // out
+
+	_arg1 = C.GtkAccessibleProperty(property)
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gtk_accessible_property_init_value(_arg1, _arg2)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(value)
+}
+
+// The function takes the following parameters:
+//
+//    - relation
+//    - value
+//
+func AccessibleRelationInitValue(relation AccessibleRelation, value *coreglib.Value) {
+	var _arg1 C.GtkAccessibleRelation // out
+	var _arg2 *C.GValue               // out
+
+	_arg1 = C.GtkAccessibleRelation(relation)
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gtk_accessible_relation_init_value(_arg1, _arg2)
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(value)
+}
+
+// The function takes the following parameters:
+//
+//    - state
+//    - value
+//
+func AccessibleStateInitValue(state AccessibleState, value *coreglib.Value) {
+	var _arg1 C.GtkAccessibleState // out
+	var _arg2 *C.GValue            // out
+
+	_arg1 = C.GtkAccessibleState(state)
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gtk_accessible_state_init_value(_arg1, _arg2)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(value)
+}
+
+// AccessibleOverrider contains methods that are overridable.
+type AccessibleOverrider interface {
 }
 
 // Accessible: GtkAccessible is an interface for describing UI elements for
@@ -59,10 +113,27 @@ var (
 type Accessibler interface {
 	coreglib.Objector
 
-	baseAccessible() *Accessible
+	// AccessibleRole retrieves the GtkAccessibleRole for the given
+	// GtkAccessible.
+	AccessibleRole() AccessibleRole
+	// ResetProperty resets the accessible property to its default value.
+	ResetProperty(property AccessibleProperty)
+	// ResetRelation resets the accessible relation to its default value.
+	ResetRelation(relation AccessibleRelation)
+	// ResetState resets the accessible state to its default value.
+	ResetState(state AccessibleState)
+	// UpdateProperty updates an array of accessible properties.
+	UpdateProperty(properties []AccessibleProperty, values []coreglib.Value)
+	// UpdateRelation updates an array of accessible relations.
+	UpdateRelation(relations []AccessibleRelation, values []coreglib.Value)
+	// UpdateState updates an array of accessible states.
+	UpdateState(states []AccessibleState, values []coreglib.Value)
 }
 
 var _ Accessibler = (*Accessible)(nil)
+
+func ifaceInitAccessibler(gifacePtr, data C.gpointer) {
+}
 
 func wrapAccessible(obj *coreglib.Object) *Accessible {
 	return &Accessible{
@@ -74,11 +145,195 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 	return wrapAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (v *Accessible) baseAccessible() *Accessible {
-	return v
+// AccessibleRole retrieves the GtkAccessibleRole for the given GtkAccessible.
+//
+// The function returns the following values:
+//
+//    - accessibleRole: GtkAccessibleRole.
+//
+func (self *Accessible) AccessibleRole() AccessibleRole {
+	var _arg0 *C.GtkAccessible    // out
+	var _cret C.GtkAccessibleRole // in
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_accessible_get_accessible_role(_arg0)
+	runtime.KeepAlive(self)
+
+	var _accessibleRole AccessibleRole // out
+
+	_accessibleRole = AccessibleRole(_cret)
+
+	return _accessibleRole
 }
 
-// BaseAccessible returns the underlying base object.
-func BaseAccessible(obj Accessibler) *Accessible {
-	return obj.baseAccessible()
+// ResetProperty resets the accessible property to its default value.
+//
+// The function takes the following parameters:
+//
+//    - property: GtkAccessibleProperty.
+//
+func (self *Accessible) ResetProperty(property AccessibleProperty) {
+	var _arg0 *C.GtkAccessible        // out
+	var _arg1 C.GtkAccessibleProperty // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkAccessibleProperty(property)
+
+	C.gtk_accessible_reset_property(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(property)
+}
+
+// ResetRelation resets the accessible relation to its default value.
+//
+// The function takes the following parameters:
+//
+//    - relation: GtkAccessibleRelation.
+//
+func (self *Accessible) ResetRelation(relation AccessibleRelation) {
+	var _arg0 *C.GtkAccessible        // out
+	var _arg1 C.GtkAccessibleRelation // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkAccessibleRelation(relation)
+
+	C.gtk_accessible_reset_relation(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(relation)
+}
+
+// ResetState resets the accessible state to its default value.
+//
+// The function takes the following parameters:
+//
+//    - state: GtkAccessibleState.
+//
+func (self *Accessible) ResetState(state AccessibleState) {
+	var _arg0 *C.GtkAccessible     // out
+	var _arg1 C.GtkAccessibleState // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkAccessibleState(state)
+
+	C.gtk_accessible_reset_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(state)
+}
+
+// UpdateProperty updates an array of accessible properties.
+//
+// This function should be called by GtkWidget types whenever an accessible
+// property change must be communicated to assistive technologies.
+//
+// This function is meant to be used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - properties: array of GtkAccessibleProperty.
+//    - values: array of GValues, one for each property.
+//
+func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values []coreglib.Value) {
+	var _arg0 *C.GtkAccessible         // out
+	var _arg2 *C.GtkAccessibleProperty // out
+	var _arg1 C.int
+	var _arg3 *C.GValue // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (C.int)(len(properties))
+	if len(properties) > 0 {
+		_arg2 = (*C.GtkAccessibleProperty)(unsafe.Pointer(&properties[0]))
+	}
+	_arg1 = (C.int)(len(values))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
+		for i := range values {
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	C.gtk_accessible_update_property_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(properties)
+	runtime.KeepAlive(values)
+}
+
+// UpdateRelation updates an array of accessible relations.
+//
+// This function should be called by GtkWidget types whenever an accessible
+// relation change must be communicated to assistive technologies.
+//
+// This function is meant to be used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - relations: array of GtkAccessibleRelation.
+//    - values: array of GValues, one for each relation.
+//
+func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []coreglib.Value) {
+	var _arg0 *C.GtkAccessible         // out
+	var _arg2 *C.GtkAccessibleRelation // out
+	var _arg1 C.int
+	var _arg3 *C.GValue // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (C.int)(len(relations))
+	if len(relations) > 0 {
+		_arg2 = (*C.GtkAccessibleRelation)(unsafe.Pointer(&relations[0]))
+	}
+	_arg1 = (C.int)(len(values))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
+		for i := range values {
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	C.gtk_accessible_update_relation_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(relations)
+	runtime.KeepAlive(values)
+}
+
+// UpdateState updates an array of accessible states.
+//
+// This function should be called by GtkWidget types whenever an accessible
+// state change must be communicated to assistive technologies.
+//
+// This function is meant to be used by language bindings.
+//
+// The function takes the following parameters:
+//
+//    - states: array of GtkAccessibleState.
+//    - values: array of GValues, one for each state.
+//
+func (self *Accessible) UpdateState(states []AccessibleState, values []coreglib.Value) {
+	var _arg0 *C.GtkAccessible      // out
+	var _arg2 *C.GtkAccessibleState // out
+	var _arg1 C.int
+	var _arg3 *C.GValue // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (C.int)(len(states))
+	if len(states) > 0 {
+		_arg2 = (*C.GtkAccessibleState)(unsafe.Pointer(&states[0]))
+	}
+	_arg1 = (C.int)(len(values))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
+		for i := range values {
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	C.gtk_accessible_update_state_value(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(states)
+	runtime.KeepAlive(values)
 }

@@ -6,16 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
+// extern GTlsCertificateFlags _gotk4_gio2_TlsCertificateClass_verify(GTlsCertificate*, GSocketConnectable*, GTlsCertificate*);
 import "C"
 
 // GTypeTLSCertificate returns the GType for the type TLSCertificate.
@@ -24,13 +24,41 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSCertificate() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsCertificate").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_certificate_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSCertificate)
 	return gtype
 }
 
 // TLSCertificateOverrider contains methods that are overridable.
 type TLSCertificateOverrider interface {
+	// Verify: this verifies cert and returns a set of CertificateFlags
+	// indicating any problems found with it. This can be used to verify a
+	// certificate outside the context of making a connection, or to check a
+	// certificate against a CA that is not part of the system CA database.
+	//
+	// If identity is not NULL, cert's name(s) will be compared against it, and
+	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does
+	// not match. If identity is NULL, that bit will never be set in the return
+	// value.
+	//
+	// If trusted_ca is not NULL, then cert (or one of the certificates in its
+	// chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be
+	// set in the return value. If trusted_ca is NULL, that bit will never be
+	// set in the return value.
+	//
+	// (All other CertificateFlags values will always be set or unset as
+	// appropriate.).
+	//
+	// The function takes the following parameters:
+	//
+	//    - identity (optional): expected peer identity.
+	//    - trustedCa (optional): certificate of a trusted authority.
+	//
+	// The function returns the following values:
+	//
+	//    - tlsCertificateFlags: appropriate CertificateFlags.
+	//
+	Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
 // TLSCertificate: certificate used for TLS authentication and encryption. This
@@ -63,6 +91,64 @@ func classInitTLSCertificater(gclassPtr, data C.gpointer) {
 	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GTlsCertificateClass)(unsafe.Pointer(gclassPtr))
+
+	if _, ok := goval.(interface {
+		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
+	}); ok {
+		pclass.verify = (*[0]byte)(C._gotk4_gio2_TlsCertificateClass_verify)
+	}
+}
+
+//export _gotk4_gio2_TlsCertificateClass_verify
+func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSocketConnectable, arg2 *C.GTlsCertificate) (cret C.GTlsCertificateFlags) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
+	})
+
+	var _identity SocketConnectabler // out
+	var _trustedCa TLSCertificater   // out
+
+	if arg1 != nil {
+		{
+			objptr := unsafe.Pointer(arg1)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(SocketConnectabler)
+				return ok
+			})
+			rv, ok := casted.(SocketConnectabler)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+			}
+			_identity = rv
+		}
+	}
+	if arg2 != nil {
+		{
+			objptr := unsafe.Pointer(arg2)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(TLSCertificater)
+				return ok
+			})
+			rv, ok := casted.(TLSCertificater)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.TLSCertificater")
+			}
+			_trustedCa = rv
+		}
+	}
+
+	tlsCertificateFlags := iface.Verify(_identity, _trustedCa)
+
+	cret = C.GTlsCertificateFlags(tlsCertificateFlags)
+
+	return cret
 }
 
 func wrapTLSCertificate(obj *coreglib.Object) *TLSCertificate {
@@ -105,23 +191,22 @@ func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
 //    - tlsCertificate: new certificate, or NULL on error.
 //
 func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar           // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(file)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "TlsCertificate")
-	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_file", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_new_from_file(_arg1, &_cerr)
 	runtime.KeepAlive(file)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _tlsCertificate, _goerr
@@ -149,26 +234,26 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 //    - tlsCertificate: new certificate, or NULL on error.
 //
 func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, error) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gchar           // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(certFile)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(keyFile)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(certFile)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(keyFile)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "TlsCertificate")
-	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_files", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_new_from_files(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(certFile)
 	runtime.KeepAlive(keyFile)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _tlsCertificate, _goerr
@@ -198,25 +283,25 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 //    - tlsCertificate: new certificate, or NULL if data is invalid.
 //
 func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar           // out
+	var _arg2 C.gssize           // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(data)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(length)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(data)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
 
-	_info := girepository.MustFind("Gio", "TlsCertificate")
-	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_pem", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_new_from_pem(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(data)
 	runtime.KeepAlive(length)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _tlsCertificate, _goerr
@@ -258,28 +343,28 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 //    - tlsCertificate: new certificate, or NULL on error.
 //
 func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gchar           // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if privateKeyPkcs11Uri != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gio", "TlsCertificate")
-	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_pkcs11_uris", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(pkcs11Uri)
 	runtime.KeepAlive(privateKeyPkcs11Uri)
 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _tlsCertificate, _goerr
@@ -293,21 +378,19 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 //      is self-signed or signed with an unknown certificate.
 //
 func (cert *TLSCertificate) Issuer() TLSCertificater {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GTlsCertificate // out
+	var _cret *C.GTlsCertificate // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cert).Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(cert).Native()))
 
-	_info := girepository.MustFind("Gio", "TlsCertificate")
-	_gret := _info.InvokeClassMethod("get_issuer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_get_issuer(_arg0)
 	runtime.KeepAlive(cert)
 
 	var _tlsCertificate TLSCertificater // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -340,25 +423,76 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 //    - ok: whether the same or not.
 //
 func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GTlsCertificate // out
+	var _arg1 *C.GTlsCertificate // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certOne).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certTwo).Native()))
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certOne).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certTwo).Native()))
 
-	_info := girepository.MustFind("Gio", "TlsCertificate")
-	_gret := _info.InvokeClassMethod("is_same", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
 	runtime.KeepAlive(certOne)
 	runtime.KeepAlive(certTwo)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Verify: this verifies cert and returns a set of CertificateFlags indicating
+// any problems found with it. This can be used to verify a certificate outside
+// the context of making a connection, or to check a certificate against a CA
+// that is not part of the system CA database.
+//
+// If identity is not NULL, cert's name(s) will be compared against it, and
+// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value if it does not
+// match. If identity is NULL, that bit will never be set in the return value.
+//
+// If trusted_ca is not NULL, then cert (or one of the certificates in its
+// chain) must be signed by it, or else G_TLS_CERTIFICATE_UNKNOWN_CA will be set
+// in the return value. If trusted_ca is NULL, that bit will never be set in the
+// return value.
+//
+// (All other CertificateFlags values will always be set or unset as
+// appropriate.).
+//
+// The function takes the following parameters:
+//
+//    - identity (optional): expected peer identity.
+//    - trustedCa (optional): certificate of a trusted authority.
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags: appropriate CertificateFlags.
+//
+func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
+	var _arg0 *C.GTlsCertificate     // out
+	var _arg1 *C.GSocketConnectable  // out
+	var _arg2 *C.GTlsCertificate     // out
+	var _cret C.GTlsCertificateFlags // in
+
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(cert).Native()))
+	if identity != nil {
+		_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
+	}
+	if trustedCa != nil {
+		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(trustedCa).Native()))
+	}
+
+	_cret = C.g_tls_certificate_verify(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cert)
+	runtime.KeepAlive(identity)
+	runtime.KeepAlive(trustedCa)
+
+	var _tlsCertificateFlags TLSCertificateFlags // out
+
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+
+	return _tlsCertificateFlags
 }
 
 // TLSCertificateListNewFromFile creates one or more Certificates from the
@@ -376,26 +510,25 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 //      its contents when you are done with it.
 //
 func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar  // out
+	var _cret *C.GList  // in
+	var _cerr *C.GError // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(file)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "list_new_from_file")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_certificate_list_new_from_file(_arg1, &_cerr)
 	runtime.KeepAlive(file)
 
 	var _list []TLSCertificater // out
 	var _goerr error            // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GTlsCertificate)(v)
 		var dst TLSCertificater // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gio.TLSCertificater is nil")
 			}
@@ -413,8 +546,8 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 		}
 		_list = append(_list, dst)
 	})
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _list, _goerr

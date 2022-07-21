@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(gpointer, guintptr);
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStyleProvider() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "StyleProvider").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_style_provider_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStyleProvider)
 	return gtype
 }

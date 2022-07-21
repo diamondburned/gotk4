@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
 import "C"
 
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEmojiChooser() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EmojiChooser").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_emoji_chooser_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEmojiChooser)
 	return gtype
+}
+
+// EmojiChooserOverrider contains methods that are overridable.
+type EmojiChooserOverrider interface {
 }
 
 // EmojiChooser: GtkEmojiChooser is used by text widgets such as GtkEntry or
@@ -61,6 +63,14 @@ var (
 	_ Widgetter         = (*EmojiChooser)(nil)
 	_ coreglib.Objector = (*EmojiChooser)(nil)
 )
+
+func classInitEmojiChooserer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEmojiChooser(obj *coreglib.Object) *EmojiChooser {
 	return &EmojiChooser{
@@ -141,13 +151,13 @@ func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) coreglib.SignalHa
 //    - emojiChooser: new GtkEmojiChooser.
 //
 func NewEmojiChooser() *EmojiChooser {
-	_info := girepository.MustFind("Gtk", "EmojiChooser")
-	_gret := _info.InvokeClassMethod("new_EmojiChooser", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_emoji_chooser_new()
 
 	var _emojiChooser *EmojiChooser // out
 
-	_emojiChooser = wrapEmojiChooser(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_emojiChooser = wrapEmojiChooser(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _emojiChooser
 }

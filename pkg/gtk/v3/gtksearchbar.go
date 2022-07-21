@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeSearchBar returns the GType for the type SearchBar.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSearchBar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SearchBar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_search_bar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSearchBar)
 	return gtype
 }
@@ -108,13 +108,13 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 //    - searchBar: new SearchBar.
 //
 func NewSearchBar() *SearchBar {
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_gret := _info.InvokeClassMethod("new_SearchBar", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_bar_new()
 
 	var _searchBar *SearchBar // out
 
-	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchBar
 }
@@ -129,14 +129,13 @@ func NewSearchBar() *SearchBar {
 //    - entry: Entry.
 //
 func (bar *SearchBar) ConnectEntry(entry *Entry) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSearchBar // out
+	var _arg1 *C.GtkEntry     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_info.InvokeClassMethod("connect_entry", _args[:], nil)
-
+	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(entry)
 }
@@ -148,19 +147,17 @@ func (bar *SearchBar) ConnectEntry(entry *Entry) {
 //    - ok: whether search mode is toggled on.
 //
 func (bar *SearchBar) SearchMode() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSearchBar // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_gret := _info.InvokeClassMethod("get_search_mode", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -174,19 +171,17 @@ func (bar *SearchBar) SearchMode() bool {
 //    - ok: whether the close button is shown.
 //
 func (bar *SearchBar) ShowCloseButton() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSearchBar // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_gret := _info.InvokeClassMethod("get_show_close_button", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -240,21 +235,20 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //      GDK_EVENT_PROPAGATE otherwise.
 //
 func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSearchBar // out
+	var _arg1 *C.GdkEvent     // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_gret := _info.InvokeClassMethod("handle_event", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_search_bar_handle_event(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -268,16 +262,15 @@ func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
 //    - searchMode: new state of the search mode.
 //
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSearchBar // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if searchMode {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_info.InvokeClassMethod("set_search_mode", _args[:], nil)
-
+	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(searchMode)
 }
@@ -291,16 +284,15 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 //    - visible: whether the close button will be shown or not.
 //
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSearchBar // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if visible {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "SearchBar")
-	_info.InvokeClassMethod("set_show_close_button", _args[:], nil)
-
+	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(visible)
 }

@@ -10,15 +10,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_SocketClientClass_event(GSocketClient*, GSocketClientEvent, GSocketConnectable*, GIOStream*);
+// extern void _gotk4_gio2_SocketClient_ConnectEvent(gpointer, GSocketClientEvent, GSocketConnectable*, GIOStream*, guintptr);
 import "C"
 
 // GTypeSocketClient returns the GType for the type SocketClient.
@@ -27,13 +27,20 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketClient() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketClient").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_client_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketClient)
 	return gtype
 }
 
 // SocketClientOverrider contains methods that are overridable.
 type SocketClientOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - event
+	//    - connectable
+	//    - connection
+	//
+	Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
 }
 
 // SocketClient is a lightweight high-level utility class for connecting to a
@@ -63,6 +70,64 @@ func classInitSocketClienter(gclassPtr, data C.gpointer) {
 	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
+	goval := gbox.Get(uintptr(data))
+	pclass := (*C.GSocketClientClass)(unsafe.Pointer(gclassPtr))
+
+	if _, ok := goval.(interface {
+		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketClientClass_event)
+	}
+}
+
+//export _gotk4_gio2_SocketClientClass_event
+func _gotk4_gio2_SocketClientClass_event(arg0 *C.GSocketClient, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	})
+
+	var _event SocketClientEvent        // out
+	var _connectable SocketConnectabler // out
+	var _connection IOStreamer          // out
+
+	_event = SocketClientEvent(arg1)
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.SocketConnectabler is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(SocketConnectabler)
+			return ok
+		})
+		rv, ok := casted.(SocketConnectabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+		}
+		_connectable = rv
+	}
+	{
+		objptr := unsafe.Pointer(arg3)
+		if objptr == nil {
+			panic("object of type gio.IOStreamer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(IOStreamer)
+			return ok
+		})
+		rv, ok := casted.(IOStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
+		}
+		_connection = rv
+	}
+
+	iface.Event(_event, _connectable, _connection)
 }
 
 func wrapSocketClient(obj *coreglib.Object) *SocketClient {
@@ -75,6 +140,112 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 	return wrapSocketClient(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gio2_SocketClient_ConnectEvent
+func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream, arg4 C.guintptr) {
+	var f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer))
+	}
+
+	var _event SocketClientEvent        // out
+	var _connectable SocketConnectabler // out
+	var _connection IOStreamer          // out
+
+	_event = SocketClientEvent(arg1)
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.SocketConnectabler is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(SocketConnectabler)
+			return ok
+		})
+		rv, ok := casted.(SocketConnectabler)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketConnectabler")
+		}
+		_connectable = rv
+	}
+	if arg3 != nil {
+		{
+			objptr := unsafe.Pointer(arg3)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(IOStreamer)
+				return ok
+			})
+			rv, ok := casted.(IOStreamer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
+			}
+			_connection = rv
+		}
+	}
+
+	f(_event, _connectable, _connection)
+}
+
+// ConnectEvent is emitted when client's activity on connectable changes state.
+// Among other things, this can be used to provide progress information about a
+// network connection in the UI. The meanings of the different event values are
+// as follows:
+//
+// - G_SOCKET_CLIENT_RESOLVING: client is about to look up connectable in DNS.
+// connection will be NULL.
+//
+// - G_SOCKET_CLIENT_RESOLVED: client has successfully resolved connectable in
+// DNS. connection will be NULL.
+//
+// - G_SOCKET_CLIENT_CONNECTING: client is about to make a connection to a
+// remote host; either a proxy server or the destination server itself.
+// connection is the Connection, which is not yet connected. Since GLib 2.40,
+// you can access the remote address via
+// g_socket_connection_get_remote_address().
+//
+// - G_SOCKET_CLIENT_CONNECTED: client has successfully connected to a remote
+// host. connection is the connected Connection.
+//
+// - G_SOCKET_CLIENT_PROXY_NEGOTIATING: client is about to negotiate with a
+// proxy to get it to connect to connectable. connection is the Connection to
+// the proxy server.
+//
+// - G_SOCKET_CLIENT_PROXY_NEGOTIATED: client has negotiated a connection to
+// connectable through a proxy server. connection is the stream returned from
+// g_proxy_connect(), which may or may not be a Connection.
+//
+// - G_SOCKET_CLIENT_TLS_HANDSHAKING: client is about to begin a TLS handshake.
+// connection is a ClientConnection.
+//
+// - G_SOCKET_CLIENT_TLS_HANDSHAKED: client has successfully completed the TLS
+// handshake. connection is a ClientConnection.
+//
+// - G_SOCKET_CLIENT_COMPLETE: client has either successfully connected to
+// connectable (in which case connection is the Connection that it will be
+// returning to the caller) or has failed (in which case connection is NULL and
+// the client is about to return an error).
+//
+// Each event except G_SOCKET_CLIENT_COMPLETE may be emitted multiple times (or
+// not at all) for a given connectable (in particular, if client ends up
+// attempting to connect to more than one address). However, if client emits the
+// Client::event signal at all for a given connectable, then it will always emit
+// it with G_SOCKET_CLIENT_COMPLETE when it is done.
+//
+// Note that there may be additional ClientEvent values in the future;
+// unrecognized event values should be ignored.
+func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(client, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketClient_ConnectEvent), f)
+}
+
 // NewSocketClient creates a new Client with the default options.
 //
 // The function returns the following values:
@@ -82,13 +253,13 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 //    - socketClient: Client. Free the returned object with g_object_unref().
 //
 func NewSocketClient() *SocketClient {
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("new_SocketClient", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GSocketClient // in
+
+	_cret = C.g_socket_client_new()
 
 	var _socketClient *SocketClient // out
 
-	_socketClient = wrapSocketClient(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_socketClient = wrapSocketClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketClient
 }
@@ -116,15 +287,14 @@ func NewSocketClient() *SocketClient {
 //    - protocol: proxy protocol.
 //
 func (client *SocketClient) AddApplicationProxy(protocol string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("add_application_proxy", _args[:], nil)
-
+	C.g_socket_client_add_application_proxy(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(protocol)
 }
@@ -159,20 +329,21 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GSocketClient      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _cret *C.GSocketConnection  // in
+	var _cerr *C.GError             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connectable)
@@ -180,9 +351,9 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -208,23 +379,25 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 //    - callback (optional): ReadyCallback.
 //
 func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GSocketClient      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("connect_async", _args[:], nil)
-
+	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connectable)
@@ -243,24 +416,24 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnection, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -307,22 +480,24 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort string, defaultPort uint16) (*SocketConnection, error) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.guint16            // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_to_host", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_to_host(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(hostAndPort)
@@ -331,9 +506,9 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -353,25 +528,28 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 //    - callback (optional): ReadyCallback.
 //
 func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort string, defaultPort uint16, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("connect_to_host_async", _args[:], nil)
-
+	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(hostAndPort)
@@ -391,24 +569,24 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_to_host_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_to_host_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -439,23 +617,25 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 //    - socketConnection if successful, or NULL on error.
 //
 func (client *SocketClient) ConnectToService(ctx context.Context, domain, service string) (*SocketConnection, error) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
+	var _arg1 *C.gchar             // out
+	var _arg2 *C.gchar             // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_to_service", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(domain)
@@ -464,9 +644,9 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -483,26 +663,29 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 //    - callback (optional): ReadyCallback.
 //
 func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, service string, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg2))
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("connect_to_service_async", _args[:], nil)
-
+	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(domain)
@@ -522,24 +705,24 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, s
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_to_service_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_to_service_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -576,22 +759,24 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaultPort uint16) (*SocketConnection, error) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.guint16            // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_to_uri", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -600,9 +785,9 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -622,25 +807,28 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 //    - callback (optional): ReadyCallback.
 //
 func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, defaultPort uint16, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("connect_to_uri_async", _args[:], nil)
-
+	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -660,24 +848,24 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 //    - socketConnection on success, NULL on error.
 //
 func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient     // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("connect_to_uri_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
 
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _socketConnection, _goerr
@@ -691,23 +879,45 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 //    - ok: whether proxying is enabled.
 //
 func (client *SocketClient) EnableProxy() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("get_enable_proxy", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_get_enable_proxy(_arg0)
 	runtime.KeepAlive(client)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Family gets the socket family of the socket client.
+//
+// See g_socket_client_set_family() for details.
+//
+// The function returns the following values:
+//
+//    - socketFamily: Family.
+//
+func (client *SocketClient) Family() SocketFamily {
+	var _arg0 *C.GSocketClient // out
+	var _cret C.GSocketFamily  // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_family(_arg0)
+	runtime.KeepAlive(client)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
 }
 
 // LocalAddress gets the local address of the socket client.
@@ -719,21 +929,19 @@ func (client *SocketClient) EnableProxy() bool {
 //    - socketAddress (optional) or NULL. Do not free.
 //
 func (client *SocketClient) LocalAddress() SocketAddresser {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSocketClient  // out
+	var _cret *C.GSocketAddress // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("get_local_address", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_get_local_address(_arg0)
 	runtime.KeepAlive(client)
 
 	var _socketAddress SocketAddresser // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -751,6 +959,30 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 	return _socketAddress
 }
 
+// Protocol gets the protocol name type of the socket client.
+//
+// See g_socket_client_set_protocol() for details.
+//
+// The function returns the following values:
+//
+//    - socketProtocol: Protocol.
+//
+func (client *SocketClient) Protocol() SocketProtocol {
+	var _arg0 *C.GSocketClient  // out
+	var _cret C.GSocketProtocol // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_protocol(_arg0)
+	runtime.KeepAlive(client)
+
+	var _socketProtocol SocketProtocol // out
+
+	_socketProtocol = SocketProtocol(_cret)
+
+	return _socketProtocol
+}
+
 // ProxyResolver gets the Resolver being used by client. Normally, this will be
 // the resolver returned by g_proxy_resolver_get_default(), but you can override
 // it with g_socket_client_set_proxy_resolver().
@@ -760,21 +992,43 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 //    - proxyResolver being used by client.
 //
 func (client *SocketClient) ProxyResolver() *ProxyResolver {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSocketClient  // out
+	var _cret *C.GProxyResolver // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("get_proxy_resolver", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
 	runtime.KeepAlive(client)
 
 	var _proxyResolver *ProxyResolver // out
 
-	_proxyResolver = wrapProxyResolver(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_proxyResolver = wrapProxyResolver(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
+}
+
+// SocketType gets the socket type of the socket client.
+//
+// See g_socket_client_set_socket_type() for details.
+//
+// The function returns the following values:
+//
+//    - socketType: Family.
+//
+func (client *SocketClient) SocketType() SocketType {
+	var _arg0 *C.GSocketClient // out
+	var _cret C.GSocketType    // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_socket_type(_arg0)
+	runtime.KeepAlive(client)
+
+	var _socketType SocketType // out
+
+	_socketType = SocketType(_cret)
+
+	return _socketType
 }
 
 // Timeout gets the I/O timeout time for sockets created by client.
@@ -786,19 +1040,17 @@ func (client *SocketClient) ProxyResolver() *ProxyResolver {
 //    - guint: timeout in seconds.
 //
 func (client *SocketClient) Timeout() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("get_timeout", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_get_timeout(_arg0)
 	runtime.KeepAlive(client)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -811,23 +1063,44 @@ func (client *SocketClient) Timeout() uint32 {
 //    - ok: whether client uses TLS.
 //
 func (client *SocketClient) TLS() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_gret := _info.InvokeClassMethod("get_tls", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_client_get_tls(_arg0)
 	runtime.KeepAlive(client)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// TLSValidationFlags gets the TLS validation flags used creating TLS
+// connections via client.
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags: TLS validation flags.
+//
+func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
+	var _arg0 *C.GSocketClient       // out
+	var _cret C.GTlsCertificateFlags // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_tls_validation_flags(_arg0)
+	runtime.KeepAlive(client)
+
+	var _tlsCertificateFlags TLSCertificateFlags // out
+
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+
+	return _tlsCertificateFlags
 }
 
 // SetEnableProxy sets whether or not client attempts to make connections via a
@@ -842,18 +1115,41 @@ func (client *SocketClient) TLS() bool {
 //    - enable: whether to enable proxies.
 //
 func (client *SocketClient) SetEnableProxy(enable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if enable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("set_enable_proxy", _args[:], nil)
-
+	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(enable)
+}
+
+// SetFamily sets the socket family of the socket client. If this is set to
+// something other than G_SOCKET_FAMILY_INVALID then the sockets created by this
+// object will be of the specified family.
+//
+// This might be useful for instance if you want to force the local connection
+// to be an ipv4 socket, even though the address might be an ipv6 mapped to ipv4
+// address.
+//
+// The function takes the following parameters:
+//
+//    - family: Family.
+//
+func (client *SocketClient) SetFamily(family SocketFamily) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.GSocketFamily  // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.GSocketFamily(family)
+
+	C.g_socket_client_set_family(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(family)
 }
 
 // SetLocalAddress sets the local address of the socket client. The sockets
@@ -868,18 +1164,39 @@ func (client *SocketClient) SetEnableProxy(enable bool) {
 //    - address (optional) or NULL.
 //
 func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 *C.GSocketAddress // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if address != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("set_local_address", _args[:], nil)
-
+	C.g_socket_client_set_local_address(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(address)
+}
+
+// SetProtocol sets the protocol of the socket client. The sockets created by
+// this object will use of the specified protocol.
+//
+// If protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
+// protocol for the socket family and type.
+//
+// The function takes the following parameters:
+//
+//    - protocol: Protocol.
+//
+func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 C.GSocketProtocol // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.GSocketProtocol(protocol)
+
+	C.g_socket_client_set_protocol(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(protocol)
 }
 
 // SetProxyResolver overrides the Resolver used by client. You can call this if
@@ -895,18 +1212,39 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 //    - proxyResolver (optional) or NULL for the default.
 //
 func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 *C.GProxyResolver // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if proxyResolver != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyResolver).Native()))
+		_arg1 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(proxyResolver).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("set_proxy_resolver", _args[:], nil)
-
+	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(proxyResolver)
+}
+
+// SetSocketType sets the socket type of the socket client. The sockets created
+// by this object will be of the specified type.
+//
+// It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
+// GSocketClient is used for connection oriented services.
+//
+// The function takes the following parameters:
+//
+//    - typ: Type.
+//
+func (client *SocketClient) SetSocketType(typ SocketType) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.GSocketType    // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.GSocketType(typ)
+
+	C.g_socket_client_set_socket_type(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(typ)
 }
 
 // SetTimeout sets the I/O timeout for sockets created by client. timeout is a
@@ -921,14 +1259,13 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 //    - timeout: timeout.
 //
 func (client *SocketClient) SetTimeout(timeout uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.guint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(timeout)
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.guint(timeout)
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("set_timeout", _args[:], nil)
-
+	C.g_socket_client_set_timeout(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(timeout)
 }
@@ -955,16 +1292,34 @@ func (client *SocketClient) SetTimeout(timeout uint32) {
 //    - tls: whether to use TLS.
 //
 func (client *SocketClient) SetTLS(tls bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if tls {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "SocketClient")
-	_info.InvokeClassMethod("set_tls", _args[:], nil)
-
+	C.g_socket_client_set_tls(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(tls)
+}
+
+// SetTLSValidationFlags sets the TLS validation flags used when creating TLS
+// connections via client. The default value is G_TLS_CERTIFICATE_VALIDATE_ALL.
+//
+// The function takes the following parameters:
+//
+//    - flags: validation flags.
+//
+func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
+	var _arg0 *C.GSocketClient       // out
+	var _arg1 C.GTlsCertificateFlags // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.GTlsCertificateFlags(flags)
+
+	C.g_socket_client_set_tls_validation_flags(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(flags)
 }

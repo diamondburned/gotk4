@@ -7,15 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
-// extern void _gotk4_gdkwayland4_WaylandToplevelExported(void*, char*, gpointer);
+// #include <gdk/wayland/gdkwayland.h>
+// extern void _gotk4_gdkwayland4_WaylandToplevelExported(GdkToplevel*, char*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -29,7 +26,7 @@ import "C"
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string)
 
 //export _gotk4_gdkwayland4_WaylandToplevelExported
-func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.void, arg2 *C.char, arg3 C.gpointer) {
+func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.GdkToplevel, arg2 *C.char, arg3 C.gpointer) {
 	var fn WaylandToplevelExported
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -75,23 +72,24 @@ func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.void, arg2 *C.char, arg3
 //    - ok: TRUE if the handle has been requested, FALSE if an error occurred.
 //
 func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkToplevel               // out
+	var _arg1 C.GdkWaylandToplevelExported // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gdkwayland4_WaylandToplevelExported)
-	_args[2] = C.gpointer(gbox.Assign(callback))
-	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gdkwayland4_WaylandToplevelExported)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
-	_gret := _info.InvokeClassMethod("export_handle", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_wayland_toplevel_export_handle(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(callback)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -105,15 +103,14 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 //    - applicationId: application id for the toplevel.
 //
 func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkToplevel // out
+	var _arg1 *C.char        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
-	_info.InvokeClassMethod("set_application_id", _args[:], nil)
-
+	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(applicationId)
 }
@@ -137,22 +134,21 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 //      occurred.
 //
 func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkToplevel // out
+	var _arg1 *C.char        // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(parentHandleStr)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parentHandleStr)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
-	_gret := _info.InvokeClassMethod("set_transient_for_exported", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_wayland_toplevel_set_transient_for_exported(_arg0, _arg1)
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(parentHandleStr)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -168,12 +164,10 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
 func (toplevel *WaylandToplevel) UnexportHandle() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkToplevel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
-	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
-	_info.InvokeClassMethod("unexport_handle", _args[:], nil)
-
+	C.gdk_wayland_toplevel_unexport_handle(_arg0)
 	runtime.KeepAlive(toplevel)
 }

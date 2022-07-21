@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeStringSorter returns the GType for the type StringSorter.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStringSorter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "StringSorter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_string_sorter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStringSorter)
 	return gtype
 }
@@ -82,22 +80,20 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 //    - stringSorter: new GtkStringSorter.
 //
 func NewStringSorter(expression Expressioner) *StringSorter {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkExpression   // out
+	var _cret *C.GtkStringSorter // in
 
 	if expression != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "StringSorter")
-	_gret := _info.InvokeClassMethod("new_StringSorter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_string_sorter_new(_arg1)
 	runtime.KeepAlive(expression)
 
 	var _stringSorter *StringSorter // out
 
-	_stringSorter = wrapStringSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stringSorter = wrapStringSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stringSorter
 }
@@ -110,21 +106,19 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 //    - expression (optional): GtkExpression, or NULL.
 //
 func (self *StringSorter) Expression() Expressioner {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStringSorter // out
+	var _cret *C.GtkExpression   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StringSorter")
-	_gret := _info.InvokeClassMethod("get_expression", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_string_sorter_get_expression(_arg0)
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -149,19 +143,17 @@ func (self *StringSorter) Expression() Expressioner {
 //    - ok: TRUE if self is ignoring case differences.
 //
 func (self *StringSorter) IgnoreCase() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStringSorter // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "StringSorter")
-	_gret := _info.InvokeClassMethod("get_ignore_case", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -178,16 +170,15 @@ func (self *StringSorter) IgnoreCase() bool {
 //    - expression (optional): GtkExpression, or NULL.
 //
 func (self *StringSorter) SetExpression(expression Expressioner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStringSorter // out
+	var _arg1 *C.GtkExpression   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expression != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "StringSorter")
-	_info.InvokeClassMethod("set_expression", _args[:], nil)
-
+	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
 }
@@ -199,16 +190,15 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 //    - ignoreCase: TRUE to ignore case differences.
 //
 func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStringSorter // out
+	var _arg1 C.gboolean         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if ignoreCase {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "StringSorter")
-	_info.InvokeClassMethod("set_ignore_case", _args[:], nil)
-
+	C.gtk_string_sorter_set_ignore_case(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ignoreCase)
 }

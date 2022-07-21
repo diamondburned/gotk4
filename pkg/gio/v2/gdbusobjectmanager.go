@@ -7,26 +7,24 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gio2_DBusObjectManagerIface_get_objects(void*);
-// extern gchar* _gotk4_gio2_DBusObjectManagerIface_get_object_path(void*);
-// extern void _gotk4_gio2_DBusObjectManagerIface_interface_added(void*, void*, void*);
-// extern void _gotk4_gio2_DBusObjectManagerIface_interface_removed(void*, void*, void*);
-// extern void _gotk4_gio2_DBusObjectManagerIface_object_added(void*, void*);
-// extern void _gotk4_gio2_DBusObjectManagerIface_object_removed(void*, void*);
-// extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(gpointer, void*, void*, guintptr);
-// extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(gpointer, void*, void*, guintptr);
-// extern void _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(gpointer, void*, guintptr);
-// extern void _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(gpointer, void*, guintptr);
-// extern void* _gotk4_gio2_DBusObjectManagerIface_get_interface(void*, gchar*, gchar*);
-// extern void* _gotk4_gio2_DBusObjectManagerIface_get_object(void*, gchar*);
+// extern GDBusInterface* _gotk4_gio2_DBusObjectManagerIface_get_interface(GDBusObjectManager*, gchar*, gchar*);
+// extern GDBusObject* _gotk4_gio2_DBusObjectManagerIface_get_object(GDBusObjectManager*, gchar*);
+// extern GList* _gotk4_gio2_DBusObjectManagerIface_get_objects(GDBusObjectManager*);
+// extern gchar* _gotk4_gio2_DBusObjectManagerIface_get_object_path(GDBusObjectManager*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_interface_added(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_interface_removed(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_object_added(GDBusObjectManager*, GDBusObject*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_object_removed(GDBusObjectManager*, GDBusObject*);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(gpointer, GDBusObject*, GDBusInterface*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(gpointer, GDBusObject*, GDBusInterface*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(gpointer, GDBusObject*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(gpointer, GDBusObject*, guintptr);
 import "C"
 
 // GTypeDBusObjectManager returns the GType for the type DBusObjectManager.
@@ -35,7 +33,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusObjectManager() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManager").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_object_manager_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManager)
 	return gtype
 }
@@ -148,19 +146,19 @@ type DBusObjectManagerer interface {
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
 
 func ifaceInitDBusObjectManagerer(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gio", "DBusObjectManagerIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_interface"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_interface)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_object)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_object_path"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_object_path)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_objects"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_objects)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("interface_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_interface_added)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("interface_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_interface_removed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("object_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_object_added)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("object_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_object_removed)
+	iface := (*C.GDBusObjectManagerIface)(unsafe.Pointer(gifacePtr))
+	iface.get_interface = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_interface)
+	iface.get_object = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_object)
+	iface.get_object_path = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_object_path)
+	iface.get_objects = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_objects)
+	iface.interface_added = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_interface_added)
+	iface.interface_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_interface_removed)
+	iface.object_added = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_object_added)
+	iface.object_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_object_removed)
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_interface
-func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.void, arg1 *C.gchar, arg2 *C.gchar) (cret *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager, arg1 *C.gchar, arg2 *C.gchar) (cret *C.GDBusInterface) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -172,14 +170,14 @@ func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.void, arg1 *C.gcha
 
 	dBusInterface := iface.Interface(_objectPath, _interfaceName)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(dBusInterface).Native()))
+	cret = (*C.GDBusInterface)(unsafe.Pointer(coreglib.InternObject(dBusInterface).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(dBusInterface).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object
-func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, arg1 *C.gchar) (cret *C.GDBusObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -189,14 +187,14 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.void, arg1 *C.gchar) 
 
 	dBusObject := iface.GetObject(_objectPath)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(dBusObject).Native()))
+	cret = (*C.GDBusObject)(unsafe.Pointer(coreglib.InternObject(dBusObject).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(dBusObject).Native()))
 
 	return cret
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object_path
-func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.GDBusObjectManager) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -209,7 +207,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.void) (cret *C.g
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_objects
-func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.void) (cret *C.GList) {
+func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -217,8 +215,8 @@ func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.void) (cret *C.GList
 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
-		var dst *C.void // out
-		dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		var dst *C.GDBusObject // out
+		dst = (*C.GDBusObject)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
@@ -227,7 +225,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.void) (cret *C.GList
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_interface_added
-func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -273,7 +271,7 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.void, arg1 *C.vo
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_interface_removed
-func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -319,7 +317,7 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.void, arg1 *C.
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_object_added
-func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -347,7 +345,7 @@ func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.void, arg1 *C.void)
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_object_removed
-func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -385,7 +383,7 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded
-func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
 	var f func(object DBusObjector, iface DBusInterfacer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -447,7 +445,7 @@ func (manager *DBusObjectManager) ConnectInterfaceAdded(f func(object DBusObject
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved
-func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 *C.GDBusInterface, arg3 C.guintptr) {
 	var f func(object DBusObjector, iface DBusInterfacer)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -510,7 +508,7 @@ func (manager *DBusObjectManager) ConnectInterfaceRemoved(f func(object DBusObje
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectObjectAdded
-func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
 	var f func(object DBusObjector)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -551,7 +549,7 @@ func (manager *DBusObjectManager) ConnectObjectAdded(f func(object DBusObjector)
 }
 
 //export _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved
-func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(arg0 C.gpointer, arg1 *C.GDBusObject, arg2 C.guintptr) {
 	var f func(object DBusObjector)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -603,25 +601,25 @@ func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjecto
 //    - dBusInterface instance or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *DBusInterface {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GDBusObjectManager // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _cret *C.GDBusInterface     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManager")
-	_gret := _info.InvokeIfaceMethod("get_interface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(interfaceName)
 
 	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusInterface
 }
@@ -637,22 +635,21 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *D
 //    - dBusObject or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusObjectManager // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusObject        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManager")
-	_gret := _info.InvokeIfaceMethod("get_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObject *DBusObject // out
 
-	_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObject
 }
@@ -664,19 +661,17 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 //    - utf8: string owned by manager. Do not free.
 //
 func (manager *DBusObjectManager) ObjectPath() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectManager // out
+	var _cret *C.gchar              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManager")
-	_gret := _info.InvokeIfaceMethod("get_object_path", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -689,23 +684,21 @@ func (manager *DBusObjectManager) ObjectPath() string {
 //      g_list_free() after each element has been freed with g_object_unref().
 //
 func (manager *DBusObjectManager) Objects() []*DBusObject {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectManager // out
+	var _cret *C.GList              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectManager")
-	_gret := _info.InvokeIfaceMethod("get_objects", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_manager_get_objects(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _list []*DBusObject // out
 
-	_list = make([]*DBusObject, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*DBusObject, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDBusObject)(v)
 		var dst *DBusObject // out
-		dst = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

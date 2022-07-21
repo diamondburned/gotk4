@@ -8,15 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeConstraintLayout returns the GType for the type ConstraintLayout.
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintLayout").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintLayout)
 	return gtype
 }
@@ -36,7 +34,7 @@ func GTypeConstraintLayout() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintLayoutChild() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintLayoutChild").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_layout_child_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintLayoutChild)
 	return gtype
 }
@@ -247,13 +245,13 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 //    - constraintLayout: newly created GtkConstraintLayout.
 //
 func NewConstraintLayout() *ConstraintLayout {
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_gret := _info.InvokeClassMethod("new_ConstraintLayout", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkLayoutManager // in
+
+	_cret = C.gtk_constraint_layout_new()
 
 	var _constraintLayout *ConstraintLayout // out
 
-	_constraintLayout = wrapConstraintLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_constraintLayout = wrapConstraintLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintLayout
 }
@@ -276,15 +274,14 @@ func NewConstraintLayout() *ConstraintLayout {
 //    - constraint: gtk.Constraint.
 //
 func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(constraint).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_info.InvokeClassMethod("add_constraint", _args[:], nil)
-
+	C.gtk_constraint_layout_add_constraint(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(constraint)
 }
@@ -381,36 +378,40 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //    - list of gtk.Constraint instances that were added to the layout.
 //
 func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int32, views map[string]ConstraintTargetter) ([]*Constraint, error) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 **C.char               // out
+	var _arg2 C.gsize
+	var _arg3 C.int         // out
+	var _arg4 C.int         // out
+	var _arg5 *C.GHashTable // out
+	var _cret *C.GList      // in
+	var _cerr *C.GError     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(lines))
-	*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg2 = (C.gsize)(len(lines))
+	_arg1 = (**C.char)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_args[1]))), len(lines))
+		out := unsafe.Slice((**C.char)(_arg1), len(lines))
 		for i := range lines {
-			*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(lines[i])))
-			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
+			out[i] = (*C.char)(unsafe.Pointer(C.CString(lines[i])))
+			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hspacing)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(vspacing)
-	*(**C.GHashTable)(unsafe.Pointer(&_args[5])) = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
+	_arg3 = C.int(hspacing)
+	_arg4 = C.int(vspacing)
+	_arg5 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range views {
-		var kdst *C.gchar // out
-		var vdst *C.void  // out
-		*(**C.gchar)(unsafe.Pointer(&kdst)) = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&kdst))))
-		*(**C.void)(unsafe.Pointer(&vdst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vsrc).Native()))
-		C.g_hash_table_insert(*(**C.GHashTable)(unsafe.Pointer(&_args[5])), C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
+		var kdst *C.gchar               // out
+		var vdst *C.GtkConstraintTarget // out
+		kdst = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
+		defer C.free(unsafe.Pointer(kdst))
+		vdst = (*C.GtkConstraintTarget)(unsafe.Pointer(coreglib.InternObject(vsrc).Native()))
+		C.g_hash_table_insert(_arg5, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
-	defer C.g_hash_table_unref(*(**C.GHashTable)(unsafe.Pointer(&_args[5])))
+	defer C.g_hash_table_unref(_arg5)
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_gret := _info.InvokeClassMethod("add_constraints_from_descriptionv", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_constraint_layout_add_constraints_from_descriptionv(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(lines)
 	runtime.KeepAlive(hspacing)
@@ -420,15 +421,15 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	var _list []*Constraint // out
 	var _goerr error        // out
 
-	_list = make([]*Constraint, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*Constraint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkConstraint)(v)
 		var dst *Constraint // out
-		dst = wrapConstraint(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapConstraint(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _list, _goerr
@@ -446,15 +447,14 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 //    - guide: gtk.ConstraintGuide object.
 //
 func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraintGuide  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(guide).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_info.InvokeClassMethod("add_guide", _args[:], nil)
-
+	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(guide)
 }
@@ -474,20 +474,18 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //    - listModel: a GListModel tracking the layout's constraints.
 //
 func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _cret *C.GListModel          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_gret := _info.InvokeClassMethod("observe_constraints", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_constraint_layout_observe_constraints(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -511,20 +509,18 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 //    - listModel: a GListModel tracking the layout's guides.
 //
 func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _cret *C.GListModel          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_gret := _info.InvokeClassMethod("observe_guides", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_constraint_layout_observe_guides(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -535,13 +531,11 @@ func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 
 // RemoveAllConstraints removes all constraints from the layout manager.
 func (layout *ConstraintLayout) RemoveAllConstraints() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_info.InvokeClassMethod("remove_all_constraints", _args[:], nil)
-
+	C.gtk_constraint_layout_remove_all_constraints(_arg0)
 	runtime.KeepAlive(layout)
 }
 
@@ -553,14 +547,13 @@ func (layout *ConstraintLayout) RemoveAllConstraints() {
 //    - constraint: gtk.Constraint.
 //
 func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_info.InvokeClassMethod("remove_constraint", _args[:], nil)
-
+	C.gtk_constraint_layout_remove_constraint(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(constraint)
 }
@@ -573,14 +566,13 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 //    - guide: gtk.ConstraintGuide object.
 //
 func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraintGuide  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintLayout")
-	_info.InvokeClassMethod("remove_guide", _args[:], nil)
-
+	C.gtk_constraint_layout_remove_guide(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(guide)
 }

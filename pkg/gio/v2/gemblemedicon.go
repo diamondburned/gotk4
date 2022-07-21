@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEmblemedIcon() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "EmblemedIcon").RegisteredGType())
+	gtype := coreglib.Type(C.g_emblemed_icon_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEmblemedIcon)
 	return gtype
 }
@@ -82,23 +80,22 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 //    - emblemedIcon: new #GIcon.
 //
 func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GIcon   // out
+	var _arg2 *C.GEmblem // out
+	var _cret *C.GIcon   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	if emblem != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
+		_arg2 = (*C.GEmblem)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "EmblemedIcon")
-	_gret := _info.InvokeClassMethod("new_EmblemedIcon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(emblem)
 
 	var _emblemedIcon *EmblemedIcon // out
 
-	_emblemedIcon = wrapEmblemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_emblemedIcon = wrapEmblemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _emblemedIcon
 }
@@ -110,27 +107,24 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 //    - emblem: #GEmblem.
 //
 func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GEmblemedIcon // out
+	var _arg1 *C.GEmblem       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
+	_arg1 = (*C.GEmblem)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 
-	_info := girepository.MustFind("Gio", "EmblemedIcon")
-	_info.InvokeClassMethod("add_emblem", _args[:], nil)
-
+	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 	runtime.KeepAlive(emblemed)
 	runtime.KeepAlive(emblem)
 }
 
 // ClearEmblems removes all the emblems from icon.
 func (emblemed *EmblemedIcon) ClearEmblems() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GEmblemedIcon // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
-	_info := girepository.MustFind("Gio", "EmblemedIcon")
-	_info.InvokeClassMethod("clear_emblems", _args[:], nil)
-
+	C.g_emblemed_icon_clear_emblems(_arg0)
 	runtime.KeepAlive(emblemed)
 }
 
@@ -141,23 +135,21 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 //    - list of #GEmblems that is owned by emblemed.
 //
 func (emblemed *EmblemedIcon) Emblems() []*Emblem {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GEmblemedIcon // out
+	var _cret *C.GList         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
-	_info := girepository.MustFind("Gio", "EmblemedIcon")
-	_gret := _info.InvokeClassMethod("get_emblems", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_emblemed_icon_get_emblems(_arg0)
 	runtime.KeepAlive(emblemed)
 
 	var _list []*Emblem // out
 
-	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GEmblem)(v)
 		var dst *Emblem // out
-		dst = wrapEmblem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapEmblem(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -171,19 +163,17 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 //    - icon that is owned by emblemed.
 //
 func (emblemed *EmblemedIcon) GetIcon() *Icon {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GEmblemedIcon // out
+	var _cret *C.GIcon         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
-	_info := girepository.MustFind("Gio", "EmblemedIcon")
-	_gret := _info.InvokeClassMethod("get_icon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_emblemed_icon_get_icon(_arg0)
 	runtime.KeepAlive(emblemed)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
 }

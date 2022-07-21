@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeGridLayout returns the GType for the type GridLayout.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGridLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GridLayout").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_grid_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGridLayout)
 	return gtype
 }
@@ -33,7 +31,7 @@ func GTypeGridLayout() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGridLayoutChild() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GridLayoutChild").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_grid_layout_child_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGridLayoutChild)
 	return gtype
 }
@@ -92,13 +90,13 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 //    - gridLayout: newly created GtkGridLayout.
 //
 func NewGridLayout() *GridLayout {
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_gret := _info.InvokeClassMethod("new_GridLayout", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkLayoutManager // in
+
+	_cret = C.gtk_grid_layout_new()
 
 	var _gridLayout *GridLayout // out
 
-	_gridLayout = wrapGridLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gridLayout = wrapGridLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gridLayout
 }
@@ -110,19 +108,17 @@ func NewGridLayout() *GridLayout {
 //    - gint: global baseline row.
 //
 func (grid *GridLayout) BaselineRow() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _cret C.int            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_gret := _info.InvokeClassMethod("get_baseline_row", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_get_baseline_row(_arg0)
 	runtime.KeepAlive(grid)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -135,19 +131,17 @@ func (grid *GridLayout) BaselineRow() int32 {
 //    - ok: TRUE if the columns are homogeneous, and FALSE otherwise.
 //
 func (grid *GridLayout) ColumnHomogeneous() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_gret := _info.InvokeClassMethod("get_column_homogeneous", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_get_column_homogeneous(_arg0)
 	runtime.KeepAlive(grid)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -162,21 +156,51 @@ func (grid *GridLayout) ColumnHomogeneous() bool {
 //    - guint: spacing between consecutive columns.
 //
 func (grid *GridLayout) ColumnSpacing() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_gret := _info.InvokeClassMethod("get_column_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_get_column_spacing(_arg0)
 	runtime.KeepAlive(grid)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// RowBaselinePosition returns the baseline position of row.
+//
+// If no value has been set with gtk.GridLayout.SetRowBaselinePosition(), the
+// default value of GTK_BASELINE_POSITION_CENTER is returned.
+//
+// The function takes the following parameters:
+//
+//    - row index.
+//
+// The function returns the following values:
+//
+//    - baselinePosition: baseline position of row.
+//
+func (grid *GridLayout) RowBaselinePosition(row int32) BaselinePosition {
+	var _arg0 *C.GtkGridLayout      // out
+	var _arg1 C.int                 // out
+	var _cret C.GtkBaselinePosition // in
+
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(row)
+
+	_cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
+
+	var _baselinePosition BaselinePosition // out
+
+	_baselinePosition = BaselinePosition(_cret)
+
+	return _baselinePosition
 }
 
 // RowHomogeneous checks whether all rows of grid should have the same height.
@@ -186,19 +210,17 @@ func (grid *GridLayout) ColumnSpacing() uint32 {
 //    - ok: TRUE if the rows are homogeneous, and FALSE otherwise.
 //
 func (grid *GridLayout) RowHomogeneous() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_gret := _info.InvokeClassMethod("get_row_homogeneous", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_get_row_homogeneous(_arg0)
 	runtime.KeepAlive(grid)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -212,19 +234,17 @@ func (grid *GridLayout) RowHomogeneous() bool {
 //    - guint: spacing between consecutive rows.
 //
 func (grid *GridLayout) RowSpacing() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_gret := _info.InvokeClassMethod("get_row_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_get_row_spacing(_arg0)
 	runtime.KeepAlive(grid)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -240,14 +260,13 @@ func (grid *GridLayout) RowSpacing() uint32 {
 //    - row index.
 //
 func (grid *GridLayout) SetBaselineRow(row int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _arg1 C.int            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(row)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(row)
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_info.InvokeClassMethod("set_baseline_row", _args[:], nil)
-
+	C.gtk_grid_layout_set_baseline_row(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(row)
 }
@@ -260,16 +279,15 @@ func (grid *GridLayout) SetBaselineRow(row int32) {
 //    - homogeneous: TRUE to make columns homogeneous.
 //
 func (grid *GridLayout) SetColumnHomogeneous(homogeneous bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	if homogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_info.InvokeClassMethod("set_column_homogeneous", _args[:], nil)
-
+	C.gtk_grid_layout_set_column_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(homogeneous)
 }
@@ -282,16 +300,38 @@ func (grid *GridLayout) SetColumnHomogeneous(homogeneous bool) {
 //    - spacing: amount of space between columns, in pixels.
 //
 func (grid *GridLayout) SetColumnSpacing(spacing uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _arg1 C.guint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_info.InvokeClassMethod("set_column_spacing", _args[:], nil)
-
+	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(spacing)
+}
+
+// SetRowBaselinePosition sets how the baseline should be positioned on row of
+// the grid, in case that row is assigned more space than is requested.
+//
+// The function takes the following parameters:
+//
+//    - row index.
+//    - pos: GtkBaselinePosition.
+//
+func (grid *GridLayout) SetRowBaselinePosition(row int32, pos BaselinePosition) {
+	var _arg0 *C.GtkGridLayout      // out
+	var _arg1 C.int                 // out
+	var _arg2 C.GtkBaselinePosition // out
+
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.int(row)
+	_arg2 = C.GtkBaselinePosition(pos)
+
+	C.gtk_grid_layout_set_row_baseline_position(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(grid)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(pos)
 }
 
 // SetRowHomogeneous sets whether all rows of grid should have the same height.
@@ -301,16 +341,15 @@ func (grid *GridLayout) SetColumnSpacing(spacing uint32) {
 //    - homogeneous: TRUE to make rows homogeneous.
 //
 func (grid *GridLayout) SetRowHomogeneous(homogeneous bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
 	if homogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_info.InvokeClassMethod("set_row_homogeneous", _args[:], nil)
-
+	C.gtk_grid_layout_set_row_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(homogeneous)
 }
@@ -322,14 +361,13 @@ func (grid *GridLayout) SetRowHomogeneous(homogeneous bool) {
 //    - spacing: amount of space between rows, in pixels.
 //
 func (grid *GridLayout) SetRowSpacing(spacing uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayout // out
+	var _arg1 C.guint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
+	_arg1 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "GridLayout")
-	_info.InvokeClassMethod("set_row_spacing", _args[:], nil)
-
+	C.gtk_grid_layout_set_row_spacing(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(spacing)
 }
@@ -375,19 +413,17 @@ func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 //    - gint: column number.
 //
 func (child *GridLayoutChild) Column() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _cret C.int                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_gret := _info.InvokeClassMethod("get_column", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_child_get_column(_arg0)
 	runtime.KeepAlive(child)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -399,19 +435,17 @@ func (child *GridLayoutChild) Column() int32 {
 //    - gint: number of columns.
 //
 func (child *GridLayoutChild) ColumnSpan() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _cret C.int                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_gret := _info.InvokeClassMethod("get_column_span", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_child_get_column_span(_arg0)
 	runtime.KeepAlive(child)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -423,19 +457,17 @@ func (child *GridLayoutChild) ColumnSpan() int32 {
 //    - gint: row number.
 //
 func (child *GridLayoutChild) Row() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _cret C.int                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_gret := _info.InvokeClassMethod("get_row", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_child_get_row(_arg0)
 	runtime.KeepAlive(child)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -447,19 +479,17 @@ func (child *GridLayoutChild) Row() int32 {
 //    - gint: number of row.
 //
 func (child *GridLayoutChild) RowSpan() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _cret C.int                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_gret := _info.InvokeClassMethod("get_row_span", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_layout_child_get_row_span(_arg0)
 	runtime.KeepAlive(child)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -471,14 +501,13 @@ func (child *GridLayoutChild) RowSpan() int32 {
 //    - column: attach point for child.
 //
 func (child *GridLayoutChild) SetColumn(column int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _arg1 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(column)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(column)
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_info.InvokeClassMethod("set_column", _args[:], nil)
-
+	C.gtk_grid_layout_child_set_column(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(column)
 }
@@ -490,14 +519,13 @@ func (child *GridLayoutChild) SetColumn(column int32) {
 //    - span of child.
 //
 func (child *GridLayoutChild) SetColumnSpan(span int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _arg1 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(span)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(span)
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_info.InvokeClassMethod("set_column_span", _args[:], nil)
-
+	C.gtk_grid_layout_child_set_column_span(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(span)
 }
@@ -509,14 +537,13 @@ func (child *GridLayoutChild) SetColumnSpan(span int32) {
 //    - row for child.
 //
 func (child *GridLayoutChild) SetRow(row int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _arg1 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(row)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(row)
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_info.InvokeClassMethod("set_row", _args[:], nil)
-
+	C.gtk_grid_layout_child_set_row(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(row)
 }
@@ -528,14 +555,13 @@ func (child *GridLayoutChild) SetRow(row int32) {
 //    - span of child.
 //
 func (child *GridLayoutChild) SetRowSpan(span int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridLayoutChild // out
+	var _arg1 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(span)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = C.int(span)
 
-	_info := girepository.MustFind("Gtk", "GridLayoutChild")
-	_info.InvokeClassMethod("set_row_span", _args[:], nil)
-
+	C.gtk_grid_layout_child_set_row_span(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(span)
 }

@@ -10,18 +10,16 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void* _gotk4_gio2_ProxyInterface_connect(void*, void*, void*, void*, GError**);
-// extern void* _gotk4_gio2_ProxyInterface_connect_finish(void*, void*, GError**);
+// extern GIOStream* _gotk4_gio2_ProxyInterface_connect(GProxy*, GIOStream*, GProxyAddress*, GCancellable*, GError**);
+// extern GIOStream* _gotk4_gio2_ProxyInterface_connect_finish(GProxy*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(GProxy*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeProxy returns the GType for the type Proxy.
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeProxy() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Proxy").RegisteredGType())
+	gtype := coreglib.Type(C.g_proxy_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalProxy)
 	return gtype
 }
@@ -103,21 +101,23 @@ func marshalProxy(p uintptr) (interface{}, error) {
 //      connection, in which case a reference will be added.
 //
 func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GProxy        // out
+	var _arg3 *C.GCancellable  // out
+	var _arg1 *C.GIOStream     // out
+	var _arg2 *C.GProxyAddress // out
+	var _cret *C.GIOStream     // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
 
-	_info := girepository.MustFind("Gio", "Proxy")
-	_gret := _info.InvokeIfaceMethod("connect", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
@@ -127,7 +127,7 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	var _goerr error         // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gio.IOStreamer is nil")
 		}
@@ -143,8 +143,8 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 		}
 		_ioStream = rv
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _ioStream, _goerr
@@ -160,24 +160,27 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 //    - callback (optional): ReadyCallback.
 //
 func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GProxy             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GIOStream          // out
+	var _arg2 *C.GProxyAddress      // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "Proxy")
-	_info.InvokeIfaceMethod("connect_async", _args[:], nil)
-
+	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
@@ -196,15 +199,15 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 //    - ioStream: OStream.
 //
 func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GProxy       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GIOStream    // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Proxy")
-	_gret := _info.InvokeIfaceMethod("connect_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_connect_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(result)
 
@@ -212,7 +215,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _goerr error         // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gio.IOStreamer is nil")
 		}
@@ -228,8 +231,8 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 		}
 		_ioStream = rv
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _ioStream, _goerr
@@ -247,19 +250,17 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 //    - ok: TRUE if hostname resolution is supported.
 //
 func (proxy *Proxy) SupportsHostname() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxy  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "Proxy")
-	_gret := _info.InvokeIfaceMethod("supports_hostname", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_supports_hostname(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -278,21 +279,19 @@ func (proxy *Proxy) SupportsHostname() bool {
 //    - proxy (optional): return a #GProxy or NULL if protocol is not supported.
 //
 func ProxyGetDefaultForProtocol(protocol string) *Proxy {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar  // out
+	var _cret *C.GProxy // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "get_default_for_protocol")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_get_default_for_protocol(_arg1)
 	runtime.KeepAlive(protocol)
 
 	var _proxy *Proxy // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_proxy = wrapProxy(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_proxy = wrapProxy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _proxy

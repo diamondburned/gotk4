@@ -9,13 +9,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAxisUse() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "AxisUse").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_axis_use_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAxisUse)
 	return gtype
 }
@@ -36,7 +34,7 @@ func GTypeAxisUse() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeByteOrder() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ByteOrder").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_byte_order_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalByteOrder)
 	return gtype
 }
@@ -47,7 +45,7 @@ func GTypeByteOrder() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGLError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "GLError").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_gl_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGLError)
 	return gtype
 }
@@ -58,7 +56,7 @@ func GTypeGLError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGrabOwnership() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "GrabOwnership").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_grab_ownership_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGrabOwnership)
 	return gtype
 }
@@ -69,7 +67,7 @@ func GTypeGrabOwnership() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGrabStatus() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "GrabStatus").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_grab_status_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGrabStatus)
 	return gtype
 }
@@ -80,7 +78,7 @@ func GTypeGrabStatus() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeModifierIntent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ModifierIntent").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_modifier_intent_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalModifierIntent)
 	return gtype
 }
@@ -91,7 +89,7 @@ func GTypeModifierIntent() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowTypeHint() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowTypeHint").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_type_hint_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowTypeHint)
 	return gtype
 }
@@ -102,7 +100,7 @@ func GTypeWindowTypeHint() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAxisFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "AxisFlags").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_axis_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAxisFlags)
 	return gtype
 }
@@ -113,7 +111,7 @@ func GTypeAxisFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventMask() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "EventMask").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_event_mask_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventMask)
 	return gtype
 }
@@ -124,7 +122,7 @@ func GTypeEventMask() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeModifierType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "ModifierType").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_modifier_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalModifierType)
 	return gtype
 }
@@ -135,7 +133,7 @@ func GTypeModifierType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRectangle() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Rectangle").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_rectangle_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRectangle)
 	return gtype
 }
@@ -950,39 +948,35 @@ type Point struct {
 
 // point is the struct that's finalized.
 type point struct {
-	native unsafe.Pointer
+	native *C.GdkPoint
 }
 
 // X: x coordinate of the point.
 func (p *Point) X() int32 {
-	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	valptr := &p.native.x
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Y: y coordinate of the point.
 func (p *Point) Y() int32 {
-	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	valptr := &p.native.y
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // X: x coordinate of the point.
 func (p *Point) SetX(x int32) {
-	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(p.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+	valptr := &p.native.x
+	*valptr = C.gint(x)
 }
 
 // Y: y coordinate of the point.
 func (p *Point) SetY(y int32) {
-	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(p.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
+	valptr := &p.native.y
+	*valptr = C.gint(y)
 }
 
 // Rectangle defines the position and size of a rectangle. It is identical to
@@ -995,68 +989,60 @@ type Rectangle struct {
 
 // rectangle is the struct that's finalized.
 type rectangle struct {
-	native unsafe.Pointer
+	native *C.GdkRectangle
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Rectangle{&rectangle{(unsafe.Pointer)(b)}}, nil
+	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
 }
 
 func (r *Rectangle) X() int32 {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.x
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 func (r *Rectangle) Y() int32 {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.y
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 func (r *Rectangle) Width() int32 {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.width
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 func (r *Rectangle) Height() int32 {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("height")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.height
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 func (r *Rectangle) SetX(x int32) {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(x)
+	valptr := &r.native.x
+	*valptr = C.int(x)
 }
 
 func (r *Rectangle) SetY(y int32) {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(y)
+	valptr := &r.native.y
+	*valptr = C.int(y)
 }
 
 func (r *Rectangle) SetWidth(width int32) {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(width)
+	valptr := &r.native.width
+	*valptr = C.int(width)
 }
 
 func (r *Rectangle) SetHeight(height int32) {
-	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("height")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(height)
+	valptr := &r.native.height
+	*valptr = C.int(height)
 }
 
 // Equal checks if the two given rectangles are equal.
@@ -1070,21 +1056,20 @@ func (r *Rectangle) SetHeight(height int32) {
 //    - ok: TRUE if the rectangles are equal.
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect1)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect2)))
 
-	_info := girepository.MustFind("Gdk", "Rectangle")
-	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 	runtime.KeepAlive(rect1)
 	runtime.KeepAlive(rect2)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1108,26 +1093,23 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 //    - ok: TRUE if the rectangles intersect.
 //
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.GdkRectangle  // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src1)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
-	_info := girepository.MustFind("Gdk", "Rectangle")
-	_gret := _info.InvokeRecordMethod("intersect", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
 	var _dest *Rectangle // out
 	var _ok bool         // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1150,21 +1132,20 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 //    - dest: return location for the union of src1 and src2.
 //
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.GdkRectangle  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
+	_arg0 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src1)))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(src2)))
 
-	_info := girepository.MustFind("Gdk", "Rectangle")
-	_info.InvokeRecordMethod("union", _args[:], _outs[:])
-
+	C.gdk_rectangle_union(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
 	var _dest *Rectangle // out
 
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _dest
 }

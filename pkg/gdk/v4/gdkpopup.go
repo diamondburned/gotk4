@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePopup() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Popup").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_popup_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPopup)
 	return gtype
+}
+
+// PopupOverrider contains methods that are overridable.
+type PopupOverrider interface {
 }
 
 // Popup: GdkPopup is a surface that is attached to another surface.
@@ -58,11 +60,18 @@ type Popupper interface {
 	PositionX() int32
 	// PositionY obtains the position of the popup relative to its parent.
 	PositionY() int32
+	// RectAnchor gets the current popup rectangle anchor.
+	RectAnchor() Gravity
+	// SurfaceAnchor gets the current popup surface anchor.
+	SurfaceAnchor() Gravity
 	// Present popup after having processed the PopupLayout rules.
 	Present(width, height int32, layout *PopupLayout) bool
 }
 
 var _ Popupper = (*Popup)(nil)
+
+func ifaceInitPopupper(gifacePtr, data C.gpointer) {
+}
 
 func wrapPopup(obj *coreglib.Object) *Popup {
 	return &Popup{
@@ -83,19 +92,17 @@ func marshalPopup(p uintptr) (interface{}, error) {
 //    - ok: TRUE if popup will autohide.
 //
 func (popup *Popup) Autohide() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkPopup // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_info := girepository.MustFind("Gdk", "Popup")
-	_gret := _info.InvokeIfaceMethod("get_autohide", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_popup_get_autohide(_arg0)
 	runtime.KeepAlive(popup)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -109,20 +116,18 @@ func (popup *Popup) Autohide() bool {
 //    - surface: parent surface.
 //
 func (popup *Popup) Parent() Surfacer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkPopup   // out
+	var _cret *C.GdkSurface // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_info := girepository.MustFind("Gdk", "Popup")
-	_gret := _info.InvokeIfaceMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_popup_get_parent(_arg0)
 	runtime.KeepAlive(popup)
 
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -149,19 +154,17 @@ func (popup *Popup) Parent() Surfacer {
 //    - gint: x coordinate of popup position.
 //
 func (popup *Popup) PositionX() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkPopup // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_info := girepository.MustFind("Gdk", "Popup")
-	_gret := _info.InvokeIfaceMethod("get_position_x", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_popup_get_position_x(_arg0)
 	runtime.KeepAlive(popup)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -173,21 +176,69 @@ func (popup *Popup) PositionX() int32 {
 //    - gint: y coordinate of popup position.
 //
 func (popup *Popup) PositionY() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkPopup // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_info := girepository.MustFind("Gdk", "Popup")
-	_gret := _info.InvokeIfaceMethod("get_position_y", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_popup_get_position_y(_arg0)
 	runtime.KeepAlive(popup)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// RectAnchor gets the current popup rectangle anchor.
+//
+// The value returned may change after calling gdk.Popup.Present(), or after the
+// gdk.Surface::layout signal is emitted.
+//
+// The function returns the following values:
+//
+//    - gravity: current rectangle anchor value of popup.
+//
+func (popup *Popup) RectAnchor() Gravity {
+	var _arg0 *C.GdkPopup  // out
+	var _cret C.GdkGravity // in
+
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+
+	_cret = C.gdk_popup_get_rect_anchor(_arg0)
+	runtime.KeepAlive(popup)
+
+	var _gravity Gravity // out
+
+	_gravity = Gravity(_cret)
+
+	return _gravity
+}
+
+// SurfaceAnchor gets the current popup surface anchor.
+//
+// The value returned may change after calling gdk.Popup.Present(), or after the
+// gdk.Surface::layout signal is emitted.
+//
+// The function returns the following values:
+//
+//    - gravity: current surface anchor value of popup.
+//
+func (popup *Popup) SurfaceAnchor() Gravity {
+	var _arg0 *C.GdkPopup  // out
+	var _cret C.GdkGravity // in
+
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+
+	_cret = C.gdk_popup_get_surface_anchor(_arg0)
+	runtime.KeepAlive(popup)
+
+	var _gravity Gravity // out
+
+	_gravity = Gravity(_cret)
+
+	return _gravity
 }
 
 // Present popup after having processed the PopupLayout rules.
@@ -217,17 +268,18 @@ func (popup *Popup) PositionY() int32 {
 //    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkPopup       // out
+	var _arg1 C.int             // out
+	var _arg2 C.int             // out
+	var _arg3 *C.GdkPopupLayout // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	_arg0 = (*C.GdkPopup)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = (*C.GdkPopupLayout)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_info := girepository.MustFind("Gdk", "Popup")
-	_gret := _info.InvokeIfaceMethod("present", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_popup_present(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(popup)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -235,7 +287,7 @@ func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

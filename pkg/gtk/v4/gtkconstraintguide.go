@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeConstraintGuide returns the GType for the type ConstraintGuide.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintGuide() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintGuide").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_guide_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintGuide)
 	return gtype
 }
@@ -81,13 +79,13 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 //    - constraintGuide: new GtkConstraintGuide object.
 //
 func NewConstraintGuide() *ConstraintGuide {
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_gret := _info.InvokeClassMethod("new_ConstraintGuide", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkConstraintGuide // in
+
+	_cret = C.gtk_constraint_guide_new()
 
 	var _constraintGuide *ConstraintGuide // out
 
-	_constraintGuide = wrapConstraintGuide(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_constraintGuide = wrapConstraintGuide(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _constraintGuide
 }
@@ -100,19 +98,19 @@ func NewConstraintGuide() *ConstraintGuide {
 //    - height (optional): return location for the maximum height, or NULL.
 //
 func (guide *ConstraintGuide) MaxSize(width, height *int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 *C.int                // out
+	var _arg2 *C.int                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(unsafe.Pointer(width))
+		_arg1 = (*C.int)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(unsafe.Pointer(height))
+		_arg2 = (*C.int)(unsafe.Pointer(height))
 	}
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("get_max_size", _args[:], nil)
-
+	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -126,19 +124,19 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 //    - height (optional): return location for the minimum height, or NULL.
 //
 func (guide *ConstraintGuide) MinSize(width, height *int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 *C.int                // out
+	var _arg2 *C.int                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(unsafe.Pointer(width))
+		_arg1 = (*C.int)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(unsafe.Pointer(height))
+		_arg2 = (*C.int)(unsafe.Pointer(height))
 	}
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("get_min_size", _args[:], nil)
-
+	C.gtk_constraint_guide_get_min_size(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -151,20 +149,18 @@ func (guide *ConstraintGuide) MinSize(width, height *int32) {
 //    - utf8 (optional): name of the guide.
 //
 func (guide *ConstraintGuide) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _cret *C.char               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_constraint_guide_get_name(_arg0)
 	runtime.KeepAlive(guide)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -178,22 +174,45 @@ func (guide *ConstraintGuide) Name() string {
 //    - height (optional): return location for the natural height, or NULL.
 //
 func (guide *ConstraintGuide) NatSize(width, height *int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 *C.int                // out
+	var _arg2 *C.int                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(unsafe.Pointer(width))
+		_arg1 = (*C.int)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(unsafe.Pointer(height))
+		_arg2 = (*C.int)(unsafe.Pointer(height))
 	}
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("get_nat_size", _args[:], nil)
-
+	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
+}
+
+// Strength retrieves the strength set using
+// gtk_constraint_guide_set_strength().
+//
+// The function returns the following values:
+//
+//    - constraintStrength: strength of the constraint on the natural size.
+//
+func (guide *ConstraintGuide) Strength() ConstraintStrength {
+	var _arg0 *C.GtkConstraintGuide   // out
+	var _cret C.GtkConstraintStrength // in
+
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+
+	_cret = C.gtk_constraint_guide_get_strength(_arg0)
+	runtime.KeepAlive(guide)
+
+	var _constraintStrength ConstraintStrength // out
+
+	_constraintStrength = ConstraintStrength(_cret)
+
+	return _constraintStrength
 }
 
 // SetMaxSize sets the maximum size of guide.
@@ -207,15 +226,15 @@ func (guide *ConstraintGuide) NatSize(width, height *int32) {
 //    - height: new maximum height, or -1 to not change it.
 //
 func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("set_max_size", _args[:], nil)
-
+	C.gtk_constraint_guide_set_max_size(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -232,15 +251,15 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 //    - height: new minimum height, or -1 to not change it.
 //
 func (guide *ConstraintGuide) SetMinSize(width, height int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("set_min_size", _args[:], nil)
-
+	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -255,17 +274,16 @@ func (guide *ConstraintGuide) SetMinSize(width, height int32) {
 //    - name (optional) for the guide.
 //
 func (guide *ConstraintGuide) SetName(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 *C.char               // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("set_name", _args[:], nil)
-
+	C.gtk_constraint_guide_set_name(_arg0, _arg1)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(name)
 }
@@ -281,16 +299,35 @@ func (guide *ConstraintGuide) SetName(name string) {
 //    - height: new natural height, or -1 to not change it.
 //
 func (guide *ConstraintGuide) SetNatSize(width, height int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkConstraintGuide // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	_info := girepository.MustFind("Gtk", "ConstraintGuide")
-	_info.InvokeClassMethod("set_nat_size", _args[:], nil)
-
+	C.gtk_constraint_guide_set_nat_size(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
+}
+
+// SetStrength sets the strength of the constraint on the natural size of the
+// given GtkConstraintGuide.
+//
+// The function takes the following parameters:
+//
+//    - strength of the constraint.
+//
+func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
+	var _arg0 *C.GtkConstraintGuide   // out
+	var _arg1 C.GtkConstraintStrength // out
+
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	_arg1 = C.GtkConstraintStrength(strength)
+
+	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
+	runtime.KeepAlive(guide)
+	runtime.KeepAlive(strength)
 }

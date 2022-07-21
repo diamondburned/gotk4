@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -25,9 +23,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTexture() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Texture").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_texture_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTexture)
 	return gtype
+}
+
+// TextureOverrider contains methods that are overridable.
+type TextureOverrider interface {
 }
 
 // Texture: GdkTexture is the basic element used to refer to pixel data.
@@ -65,6 +67,14 @@ type Texturer interface {
 
 var _ Texturer = (*Texture)(nil)
 
+func classInitTexturer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapTexture(obj *coreglib.Object) *Texture {
 	return &Texture{
 		Object: obj,
@@ -98,19 +108,17 @@ func BaseTexture(obj Texturer) *Texture {
 //    - texture: new GdkTexture.
 //
 func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkPixbuf  // out
+	var _cret *C.GdkTexture // in
 
-	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_info := girepository.MustFind("Gdk", "Texture")
-	_gret := _info.InvokeClassMethod("new_Texture_for_pixbuf", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_texture_new_for_pixbuf(_arg1)
 	runtime.KeepAlive(pixbuf)
 
 	var _texture *Texture // out
 
-	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
@@ -131,22 +139,21 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 //    - texture: newly-created GdkTexture or NULL if an error occurred.
 //
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GFile      // out
+	var _cret *C.GdkTexture // in
+	var _cerr *C.GError     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gdk", "Texture")
-	_gret := _info.InvokeClassMethod("new_Texture_from_file", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_texture_new_from_file(_arg1, &_cerr)
 	runtime.KeepAlive(file)
 
 	var _texture *Texture // out
 	var _goerr error      // out
 
-	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _texture, _goerr
@@ -171,20 +178,18 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 //    - texture: newly-created GdkTexture.
 //
 func NewTextureFromResource(resourcePath string) *Texture {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char       // out
+	var _cret *C.GdkTexture // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Texture")
-	_gret := _info.InvokeClassMethod("new_Texture_from_resource", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_texture_new_from_resource(_arg1)
 	runtime.KeepAlive(resourcePath)
 
 	var _texture *Texture // out
 
-	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
 }
@@ -196,19 +201,17 @@ func NewTextureFromResource(resourcePath string) *Texture {
 //    - gint: height of the GdkTexture.
 //
 func (texture *Texture) Height() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkTexture // out
+	var _cret C.int         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
-	_info := girepository.MustFind("Gdk", "Texture")
-	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_texture_get_height(_arg0)
 	runtime.KeepAlive(texture)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -220,19 +223,17 @@ func (texture *Texture) Height() int32 {
 //    - gint: width of the GdkTexture.
 //
 func (texture *Texture) Width() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkTexture // out
+	var _cret C.int         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
-	_info := girepository.MustFind("Gdk", "Texture")
-	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_texture_get_width(_arg0)
 	runtime.KeepAlive(texture)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -252,22 +253,21 @@ func (texture *Texture) Width() int32 {
 //    - ok: TRUE if saving succeeded, FALSE on failure.
 //
 func (texture *Texture) SaveToPNG(filename string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkTexture // out
+	var _arg1 *C.char       // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Texture")
-	_gret := _info.InvokeClassMethod("save_to_png", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)
 	runtime.KeepAlive(texture)
 	runtime.KeepAlive(filename)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

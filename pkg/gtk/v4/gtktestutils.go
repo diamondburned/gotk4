@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // TestListAllTypes: return the type ids that have been registered after calling
@@ -24,19 +22,18 @@ import "C"
 //    - gTypes: 0-terminated array of type ids.
 //
 func TestListAllTypes() []coreglib.Type {
-	var _outs [1]girepository.Argument
+	var _cret *C.GType // in
+	var _arg1 C.guint  // in
 
-	_info := girepository.MustFind("Gtk", "test_list_all_types")
-	_gret := _info.InvokeFunction(nil, _outs[:])
-	_cret := *(**C.GType)(unsafe.Pointer(&_gret))
+	_cret = C.gtk_test_list_all_types(&_arg1)
 
 	var _gTypes []coreglib.Type // out
 
 	{
-		src := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_cret))), *(*C.guint)(unsafe.Pointer(&_outs[0])))
-		_gTypes = make([]coreglib.Type, *(*C.guint)(unsafe.Pointer(&_outs[0])))
-		for i := 0; i < int(*(*C.guint)(unsafe.Pointer(&_outs[0]))); i++ {
-			_gTypes[i] = coreglib.Type(*(*C.GType)(unsafe.Pointer(&src[i])))
+		src := unsafe.Slice((*C.GType)(_cret), _arg1)
+		_gTypes = make([]coreglib.Type, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_gTypes[i] = coreglib.Type(src[i])
 		}
 	}
 
@@ -48,8 +45,7 @@ func TestListAllTypes() []coreglib.Type {
 // This allowes to refer to any of those object types via g_type_from_name()
 // after calling this function.
 func TestRegisterAllTypes() {
-	_info := girepository.MustFind("Gtk", "test_register_all_types")
-	_info.InvokeFunction(nil, nil)
+	C.gtk_test_register_all_types()
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for widget to be
@@ -66,12 +62,10 @@ func TestRegisterAllTypes() {
 //    - widget to wait for.
 //
 func TestWidgetWaitForDraw(widget Widgetter) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "test_widget_wait_for_draw")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_test_widget_wait_for_draw(_arg1)
 	runtime.KeepAlive(widget)
 }

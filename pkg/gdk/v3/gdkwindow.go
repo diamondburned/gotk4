@@ -12,22 +12,20 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gdk3_WindowChildFunc(void*, gpointer);
-// extern void _gotk4_gdk3_WindowClass_from_embedder(void*, gdouble, gdouble, gdouble*, gdouble*);
-// extern void _gotk4_gdk3_WindowClass_to_embedder(void*, gdouble, gdouble, gdouble*, gdouble*);
+// extern GdkWindow* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
+// extern cairo_surface_t* _gotk4_gdk3_WindowClass_create_surface(GdkWindow*, gint, gint);
+// extern cairo_surface_t* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
+// extern gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
+// extern void _gotk4_gdk3_WindowClass_from_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
+// extern void _gotk4_gdk3_WindowClass_to_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
-// extern void* _gotk4_gdk3_WindowClass_create_surface(void*, gint, gint);
-// extern void* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
-// extern void* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GTypeFullscreenMode returns the GType for the type FullscreenMode.
@@ -36,7 +34,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFullscreenMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "FullscreenMode").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_fullscreen_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFullscreenMode)
 	return gtype
 }
@@ -47,7 +45,7 @@ func GTypeFullscreenMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGravity() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Gravity").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_gravity_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGravity)
 	return gtype
 }
@@ -58,7 +56,7 @@ func GTypeGravity() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowEdge() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowEdge").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_edge_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowEdge)
 	return gtype
 }
@@ -69,7 +67,7 @@ func GTypeWindowEdge() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowType").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowType)
 	return gtype
 }
@@ -80,7 +78,7 @@ func GTypeWindowType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowWindowClass() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowWindowClass").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_window_class_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowWindowClass)
 	return gtype
 }
@@ -91,7 +89,7 @@ func GTypeWindowWindowClass() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAnchorHints() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "AnchorHints").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_anchor_hints_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAnchorHints)
 	return gtype
 }
@@ -102,7 +100,7 @@ func GTypeAnchorHints() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWMDecoration() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WMDecoration").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wm_decoration_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWMDecoration)
 	return gtype
 }
@@ -113,7 +111,7 @@ func GTypeWMDecoration() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWMFunction() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WMFunction").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wm_function_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWMFunction)
 	return gtype
 }
@@ -124,7 +122,7 @@ func GTypeWMFunction() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowAttributesType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowAttributesType").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_attributes_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowAttributesType)
 	return gtype
 }
@@ -135,7 +133,7 @@ func GTypeWindowAttributesType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowHints() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowHints").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_hints_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowHints)
 	return gtype
 }
@@ -146,7 +144,7 @@ func GTypeWindowHints() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Window").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_window_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindow)
 	return gtype
 }
@@ -760,7 +758,7 @@ func (w WindowHints) Has(other WindowHints) bool {
 type WindowChildFunc func(window Windower) (ok bool)
 
 //export _gotk4_gdk3_WindowChildFunc
-func _gotk4_gdk3_WindowChildFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gdk3_WindowChildFunc(arg1 *C.GdkWindow, arg2 C.gpointer) (cret C.gboolean) {
 	var fn WindowChildFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -807,14 +805,14 @@ func _gotk4_gdk3_WindowChildFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean
 //    - window: default root window.
 //
 func GetDefaultRootWindow() Windower {
-	_info := girepository.MustFind("Gdk", "get_default_root_window")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GdkWindow // in
+
+	_cret = C.gdk_get_default_root_window()
 
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -846,21 +844,19 @@ func GetDefaultRootWindow() Windower {
 //      offscreen window.
 //
 func OffscreenWindowGetEmbedder(window Windower) Windower {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "offscreen_window_get_embedder")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_offscreen_window_get_embedder(_arg1)
 	runtime.KeepAlive(window)
 
 	var _ret Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -891,23 +887,21 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 //    - surface (optional): offscreen surface, or NULL if not offscreen.
 //
 func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkWindow       // out
+	var _cret *C.cairo_surface_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "offscreen_window_get_surface")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_offscreen_window_get_surface(_arg1)
 	runtime.KeepAlive(window)
 
 	var _surface *cairo.Surface // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.cairo_surface_reference(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
+			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 		})
 	}
 
@@ -927,14 +921,13 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 //    - embedder that window gets embedded in.
 //
 func OffscreenWindowSetEmbedder(window, embedder Windower) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GdkWindow // out
+	var _arg2 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(embedder).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(embedder).Native()))
 
-	_info := girepository.MustFind("Gdk", "offscreen_window_set_embedder")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gdk_offscreen_window_set_embedder(_arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(embedder)
 }
@@ -994,32 +987,29 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gdk", "WindowClass")
+	pclass := (*C.GdkWindowClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		CreateSurface(width, height int32) *cairo.Surface
 	}); ok {
-		o := pclass.StructFieldOffset("create_surface")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk3_WindowClass_create_surface)
+		pclass.create_surface = (*[0]byte)(C._gotk4_gdk3_WindowClass_create_surface)
 	}
 
 	if _, ok := goval.(interface {
 		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
 	}); ok {
-		o := pclass.StructFieldOffset("from_embedder")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk3_WindowClass_from_embedder)
+		pclass.from_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_from_embedder)
 	}
 
 	if _, ok := goval.(interface {
 		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 	}); ok {
-		o := pclass.StructFieldOffset("to_embedder")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk3_WindowClass_to_embedder)
+		pclass.to_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_to_embedder)
 	}
 }
 
 //export _gotk4_gdk3_WindowClass_create_surface
-func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.void) {
+func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateSurface(width, height int32) *cairo.Surface
@@ -1033,13 +1023,13 @@ func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.void, arg1 C.gint, arg2 C.gi
 
 	surface := iface.CreateSurface(_width, _height)
 
-	cret = (*C.void)(unsafe.Pointer(surface.Native()))
+	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	return cret
 }
 
 //export _gotk4_gdk3_WindowClass_from_embedder
-func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
+func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
@@ -1059,7 +1049,7 @@ func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.
 }
 
 //export _gotk4_gdk3_WindowClass_to_embedder
-func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
+func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
@@ -1098,7 +1088,7 @@ func BaseWindow(obj Windower) *Window {
 }
 
 //export _gotk4_gdk3_Window_ConnectCreateSurface
-func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret *C.void) {
+func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret *C.cairo_surface_t) {
 	var f func(width, height int32) (surface *cairo.Surface)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1118,7 +1108,7 @@ func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 
 
 	surface := f(_width, _height)
 
-	cret = (*C.void)(unsafe.Pointer(surface.Native()))
+	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
 	return cret
 }
@@ -1182,7 +1172,7 @@ func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect unsafe.Po
 }
 
 //export _gotk4_gdk3_Window_ConnectPickEmbeddedChild
-func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.void) {
+func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkWindow) {
 	var f func(x, y float64) (window Windower)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1203,7 +1193,7 @@ func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble
 	window := f(_x, _y)
 
 	if window != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+		cret = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	}
 
 	return cret
@@ -1231,25 +1221,25 @@ func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) (window Wind
 //    - window: new Window.
 //
 func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GdkWindow     // out
+	var _arg2 *C.GdkWindowAttr // out
+	var _arg3 C.gint           // out
+	var _cret *C.GdkWindow     // in
 
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attributes)))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(attributesMask)
+	_arg2 = (*C.GdkWindowAttr)(gextras.StructNative(unsafe.Pointer(attributes)))
+	_arg3 = C.gint(attributesMask)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("new_Window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(attributes)
 	runtime.KeepAlive(attributesMask)
 
 	var _window *Window // out
 
-	_window = wrapWindow(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_window = wrapWindow(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -1258,13 +1248,11 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 // supported. Otherwise, emits a short beep on the display just as
 // gdk_display_beep().
 func (window *Window) Beep() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("beep", _args[:], nil)
-
+	C.gdk_window_beep(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1304,21 +1292,20 @@ func (window *Window) Beep() {
 //      window; the returned context is owned by GDK.
 //
 func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.cairo_region_t    // out
+	var _cret *C.GdkDrawingContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("begin_draw_frame", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
 
 	var _drawingContext *DrawingContext // out
 
-	_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingContext
 }
@@ -1337,17 +1324,19 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 //    - timestamp of mouse click that began the drag.
 //
 func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.guint32    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(button)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(rootX)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(rootY)
-	*(*C.guint32)(unsafe.Pointer(&_args[4])) = C.guint32(timestamp)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(button)
+	_arg2 = C.gint(rootX)
+	_arg3 = C.gint(rootY)
+	_arg4 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("begin_move_drag", _args[:], nil)
-
+	C.gdk_window_begin_move_drag(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(rootX)
@@ -1370,18 +1359,21 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32
 //    - timestamp of mouse click that began the drag.
 //
 func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, rootY int32, timestamp uint32) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
+	var _arg5 C.guint32    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(button)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(rootX)
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(rootY)
-	*(*C.guint32)(unsafe.Pointer(&_args[5])) = C.guint32(timestamp)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = C.gint(button)
+	_arg3 = C.gint(rootX)
+	_arg4 = C.gint(rootY)
+	_arg5 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("begin_move_drag_for_device", _args[:], nil)
-
+	C.gdk_window_begin_move_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
 	runtime.KeepAlive(button)
@@ -1401,14 +1393,13 @@ func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, root
 //    - rectangle you intend to draw to.
 //
 func (window *Window) BeginPaintRect(rectangle *Rectangle) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 *C.GdkRectangle // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("begin_paint_rect", _args[:], nil)
-
+	C.gdk_window_begin_paint_rect(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(rectangle)
 }
@@ -1455,29 +1446,107 @@ func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 //    - region you intend to draw to.
 //
 func (window *Window) BeginPaintRegion(region *cairo.Region) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("begin_paint_region", _args[:], nil)
-
+	C.gdk_window_begin_paint_region(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
+}
+
+// BeginResizeDrag begins a window resize operation (for a toplevel window).
+//
+// This function assumes that the drag is controlled by the client pointer
+// device, use gdk_window_begin_resize_drag_for_device() to begin a drag with a
+// different device.
+//
+// The function takes the following parameters:
+//
+//    - edge or corner from which the drag is started.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - rootX: root window X coordinate of mouse click that began the drag.
+//    - rootY: root window Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
+//
+func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int32, timestamp uint32) {
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWindowEdge // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.guint32       // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkWindowEdge(edge)
+	_arg2 = C.gint(button)
+	_arg3 = C.gint(rootX)
+	_arg4 = C.gint(rootY)
+	_arg5 = C.guint32(timestamp)
+
+	C.gdk_window_begin_resize_drag(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
+}
+
+// BeginResizeDragForDevice begins a window resize operation (for a toplevel
+// window). You might use this function to implement a “window resize grip,” for
+// example; in fact Statusbar uses it. The function works best with window
+// managers that support the Extended Window Manager Hints
+// (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
+// implementation for other window managers.
+//
+// The function takes the following parameters:
+//
+//    - edge or corner from which the drag is started.
+//    - device used for the operation.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - rootX: root window X coordinate of mouse click that began the drag.
+//    - rootY: root window Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
+//
+func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, button, rootX, rootY int32, timestamp uint32) {
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWindowEdge // out
+	var _arg2 *C.GdkDevice    // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.gint          // out
+	var _arg6 C.guint32       // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkWindowEdge(edge)
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg3 = C.gint(button)
+	_arg4 = C.gint(rootX)
+	_arg5 = C.gint(rootY)
+	_arg6 = C.guint32(timestamp)
+
+	C.gdk_window_begin_resize_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
 }
 
 // ConfigureFinished does nothing, present only for compatiblity.
 //
 // Deprecated: this function is no longer needed.
 func (window *Window) ConfigureFinished() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("configure_finished", _args[:], nil)
-
+	C.gdk_window_configure_finished(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1510,16 +1579,17 @@ func (window *Window) ConfigureFinished() {
 //      system.
 //
 func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
+	var _arg3 C.gdouble    // in
+	var _arg4 C.gdouble    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(parentX)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(parentY)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gdouble(parentX)
+	_arg2 = C.gdouble(parentY)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("coords_from_parent", _args[:], _outs[:])
-
+	C.gdk_window_coords_from_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(parentX)
 	runtime.KeepAlive(parentY)
@@ -1527,8 +1597,8 @@ func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) 
 	var _x float64 // out
 	var _y float64 // out
 
-	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
+	_x = float64(_arg3)
+	_y = float64(_arg4)
 
 	return _x, _y
 }
@@ -1561,16 +1631,17 @@ func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) 
 //      coordinate system, or NULL.
 //
 func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
+	var _arg3 C.gdouble    // in
+	var _arg4 C.gdouble    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(x)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(y)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gdouble(x)
+	_arg2 = C.gdouble(y)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("coords_to_parent", _args[:], _outs[:])
-
+	C.gdk_window_coords_to_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -1578,8 +1649,8 @@ func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
 	var _parentX float64 // out
 	var _parentY float64 // out
 
-	_parentX = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
-	_parentY = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
+	_parentX = float64(_arg3)
+	_parentY = float64(_arg4)
 
 	return _parentX, _parentY
 }
@@ -1598,21 +1669,20 @@ func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
 //    - glContext: newly created GLContext, or NULL on error.
 //
 func (window *Window) CreateGLContext() (GLContexter, error) {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow    // out
+	var _cret *C.GdkGLContext // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("create_gl_context", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_create_gl_context(_arg0, &_cerr)
 	runtime.KeepAlive(window)
 
 	var _glContext GLContexter // out
 	var _goerr error           // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.GLContexter is nil")
 		}
@@ -1628,11 +1698,138 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 		}
 		_glContext = rv
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _glContext, _goerr
+}
+
+// CreateSimilarImageSurface: create a new image surface that is efficient to
+// draw on the given window.
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.)
+//
+// The width and height of the new surface are not affected by the scaling
+// factor of the window, or by the scale argument; they are the size of the
+// surface in device pixels. If you wish to create an image surface capable of
+// holding the contents of window you can use:
+//
+//      int scale = gdk_window_get_scale_factor (window);
+//      int width = gdk_window_get_width (window) * scale;
+//      int height = gdk_window_get_height (window) * scale;
+//
+//      // format is set elsewhere
+//      cairo_surface_t *surface =
+//        gdk_window_create_similar_image_surface (window,
+//                                                 format,
+//                                                 width, height,
+//                                                 scale);
+//
+// Note that unlike cairo_surface_create_similar_image(), the new surface's
+// device scale is set to scale, or to the scale factor of window if scale is 0.
+//
+// The function takes the following parameters:
+//
+//    - format for the new surface.
+//    - width of the new surface.
+//    - height of the new surface.
+//    - scale of the new surface, or 0 to use same as window.
+//
+// The function returns the following values:
+//
+//    - surface: pointer to the newly allocated surface. The caller owns the
+//      surface and should call cairo_surface_destroy() when done with it.
+//
+//      This function always returns a valid pointer, but it will return a
+//      pointer to a “nil” surface if other is already in an error state or any
+//      other error occurs.
+//
+func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, height, scale int32) *cairo.Surface {
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 C.cairo_format_t   // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _arg4 C.int              // out
+	var _cret *C.cairo_surface_t // in
+
+	if window != nil {
+		_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	}
+	_arg1 = C.cairo_format_t(format)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(scale)
+
+	_cret = C.gdk_window_create_similar_image_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(format)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(scale)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+	})
+
+	return _surface
+}
+
+// CreateSimilarSurface: create a new surface that is as compatible as possible
+// with the given window. For example the new surface will have the same
+// fallback resolution and font options as window. Generally, the new surface
+// will also use the same backend as window, unless that is not possible for
+// some reason. The type of the returned surface may be examined with
+// cairo_surface_get_type().
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.).
+//
+// The function takes the following parameters:
+//
+//    - content for the new surface.
+//    - width of the new surface.
+//    - height of the new surface.
+//
+// The function returns the following values:
+//
+//    - surface: pointer to the newly allocated surface. The caller owns the
+//      surface and should call cairo_surface_destroy() when done with it.
+//
+//      This function always returns a valid pointer, but it will return a
+//      pointer to a “nil” surface if other is already in an error state or any
+//      other error occurs.
+//
+func (window *Window) CreateSimilarSurface(content cairo.Content, width, height int32) *cairo.Surface {
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 C.cairo_content_t  // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _cret *C.cairo_surface_t // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.cairo_content_t(content)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+
+	_cret = C.gdk_window_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(content)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+	})
+
+	return _surface
 }
 
 // Deiconify: attempt to deiconify (unminimize) window. On X11 the window
@@ -1641,13 +1838,11 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 // probably want to use gtk_window_present_with_time(), which raises the window,
 // focuses it, unminimizes it, and puts it on the current desktop.
 func (window *Window) Deiconify() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("deiconify", _args[:], nil)
-
+	C.gdk_window_deiconify(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1659,13 +1854,11 @@ func (window *Window) Deiconify() {
 // Note that a window will not be destroyed automatically when its reference
 // count reaches zero. You must call this function yourself before that happens.
 func (window *Window) Destroy() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("destroy", _args[:], nil)
-
+	C.gdk_window_destroy(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1673,13 +1866,11 @@ func (window *Window) Destroy() {
 //
 // Deprecated: this function is no longer needed.
 func (window *Window) EnableSynchronizedConfigure() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("enable_synchronized_configure", _args[:], nil)
-
+	C.gdk_window_enable_synchronized_configure(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1696,14 +1887,13 @@ func (window *Window) EnableSynchronizedConfigure() {
 //    - context created by gdk_window_begin_draw_frame().
 //
 func (window *Window) EndDrawFrame(context *DrawingContext) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.GdkDrawingContext // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("end_draw_frame", _args[:], nil)
-
+	C.gdk_window_end_draw_frame(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(context)
 }
@@ -1716,13 +1906,11 @@ func (window *Window) EndDrawFrame(context *DrawingContext) {
 // It is an error to call this function without a matching
 // gdk_window_begin_paint_region() first.
 func (window *Window) EndPaint() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("end_paint", _args[:], nil)
-
+	C.gdk_window_end_paint(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1738,19 +1926,17 @@ func (window *Window) EndPaint() {
 //    - ok: TRUE if the window has a native window, FALSE otherwise.
 //
 func (window *Window) EnsureNative() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("ensure_native", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_ensure_native(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1761,13 +1947,11 @@ func (window *Window) EnsureNative() bool {
 //
 // Deprecated: since version 3.14.
 func (window *Window) Flush() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("flush", _args[:], nil)
-
+	C.gdk_window_flush(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1780,14 +1964,13 @@ func (window *Window) Flush() {
 //    - timestamp of the event triggering the window focus.
 //
 func (window *Window) Focus(timestamp uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.guint32    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("focus", _args[:], nil)
-
+	C.gdk_window_focus(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(timestamp)
 }
@@ -1804,13 +1987,11 @@ func (window *Window) Focus(timestamp uint32) {
 //
 // Deprecated: This symbol was never meant to be used outside of GTK+.
 func (window *Window) FreezeToplevelUpdatesLibgtkOnly() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("freeze_toplevel_updates_libgtk_only", _args[:], nil)
-
+	C.gdk_window_freeze_toplevel_updates_libgtk_only(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1820,13 +2001,11 @@ func (window *Window) FreezeToplevelUpdatesLibgtkOnly() {
 // called more than once, gdk_window_thaw_updates() must be called an equal
 // number of times to begin processing exposes.
 func (window *Window) FreezeUpdates() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("freeze_updates", _args[:], nil)
-
+	C.gdk_window_freeze_updates(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1842,13 +2021,11 @@ func (window *Window) FreezeUpdates() {
 // happen with most standard window managers, and GDK makes a best effort to get
 // it to happen.
 func (window *Window) Fullscreen() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("fullscreen", _args[:], nil)
-
+	C.gdk_window_fullscreen(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1863,14 +2040,13 @@ func (window *Window) Fullscreen() {
 //    - monitor: which monitor to display fullscreen on.
 //
 func (window *Window) FullscreenOnMonitor(monitor int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitor)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(monitor)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("fullscreen_on_monitor", _args[:], nil)
-
+	C.gdk_window_fullscreen_on_monitor(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(monitor)
 }
@@ -1879,13 +2055,11 @@ func (window *Window) FullscreenOnMonitor(monitor int32) {
 // offscreen window has changed. This is necessary for GDK to keep track of
 // which offscreen window the pointer is in.
 func (window *Window) GeometryChanged() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("geometry_changed", _args[:], nil)
-
+	C.gdk_window_geometry_changed(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1897,19 +2071,17 @@ func (window *Window) GeometryChanged() {
 //    - ok: whether or not the window should receive input focus.
 //
 func (window *Window) AcceptFocus() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_accept_focus", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_accept_focus(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1926,26 +2098,24 @@ func (window *Window) AcceptFocus() bool {
 //      background.
 //
 func (window *Window) BackgroundPattern() *cairo.Pattern {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow       // out
+	var _cret *C.cairo_pattern_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_background_pattern", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_background_pattern(_arg0)
 	runtime.KeepAlive(window)
 
 	var _pattern *cairo.Pattern // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 			_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 		}
-		C.cairo_pattern_reference(*(**C.void)(unsafe.Pointer(&_cret)))
+		C.cairo_pattern_reference(_cret)
 		runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-			C.cairo_pattern_destroy((*C.void)(unsafe.Pointer(v.Native())))
+			C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 		})
 	}
 
@@ -1963,24 +2133,22 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 //    - list: list of child windows inside window.
 //
 func (window *Window) Children() []Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GList     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_children(_arg0)
 	runtime.KeepAlive(window)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -2019,26 +2187,25 @@ func (window *Window) Children() []Windower {
 //    - list: list of child windows inside window.
 //
 func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // out
+	var _cret *C.GList     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(userData))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_children_with_user_data", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_children_with_user_data(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(userData)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -2070,24 +2237,22 @@ func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
 //    - region This must be freed with cairo_region_destroy() when you are done.
 //
 func (window *Window) ClipRegion() *cairo.Region {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _cret *C.cairo_region_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_clip_region", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_clip_region(_arg0)
 	runtime.KeepAlive(window)
 
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region
@@ -2105,19 +2270,17 @@ func (window *Window) ClipRegion() *cairo.Region {
 //    - ok: TRUE if the window is composited.
 //
 func (window *Window) Composited() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_composited", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_composited(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2136,21 +2299,19 @@ func (window *Window) Composited() bool {
 //      the cursor of the window.
 //
 func (window *Window) Cursor() Cursorrer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkCursor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_cursor", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_cursor(_arg0)
 	runtime.KeepAlive(window)
 
 	var _cursor Cursorrer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2177,22 +2338,20 @@ func (window *Window) Cursor() Cursorrer {
 //    - ok: TRUE if the window has decorations set, FALSE otherwise.
 //
 func (window *Window) Decorations() (WMDecoration, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.GdkWMDecoration // in
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_decorations", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_decorations(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
 	var _decorations WMDecoration // out
 	var _ok bool                  // out
 
-	_decorations = *(*WMDecoration)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_decorations = WMDecoration(_arg1)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2215,23 +2374,22 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 //      the cursor of the window.
 //
 func (window *Window) DeviceCursor(device Devicer) Cursorrer {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _cret *C.GdkCursor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_device_cursor", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
 
 	var _cursor Cursorrer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2247,6 +2405,36 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	}
 
 	return _cursor
+}
+
+// DeviceEvents returns the event mask for window corresponding to an specific
+// device.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+// The function returns the following values:
+//
+//    - eventMask: device event mask for window.
+//
+func (window *Window) DeviceEvents(device Devicer) EventMask {
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 *C.GdkDevice   // out
+	var _cret C.GdkEventMask // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_window_get_device_events(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
+	var _eventMask EventMask // out
+
+	_eventMask = EventMask(_cret)
+
+	return _eventMask
 }
 
 // DevicePosition obtains the current device position and modifier state. The
@@ -2268,16 +2456,17 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 //      to GDK.
 //
 func (window *Window) DevicePosition(device Devicer) (x, y int32, mask ModifierType, ret Windower) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.gint            // in
+	var _arg3 C.gint            // in
+	var _arg4 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_device_position", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
 
@@ -2286,14 +2475,12 @@ func (window *Window) DevicePosition(device Devicer) (x, y int32, mask ModifierT
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	_x = int32(_arg2)
+	_y = int32(_arg3)
+	_mask = ModifierType(_arg4)
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2329,16 +2516,17 @@ func (window *Window) DevicePosition(device Devicer) (x, y int32, mask ModifierT
 //      to GDK.
 //
 func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask ModifierType, ret Windower) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.gdouble         // in
+	var _arg3 C.gdouble         // in
+	var _arg4 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_device_position_double", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_device_position_double(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
 
@@ -2347,14 +2535,12 @@ func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask M
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	_x = float64(_arg2)
+	_y = float64(_arg3)
+	_mask = ModifierType(_arg4)
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2379,21 +2565,62 @@ func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask M
 //    - display associated with window.
 //
 func (window *Window) Display() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow  // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_display(_arg0)
 	runtime.KeepAlive(window)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
+}
+
+// DragProtocol finds out the DND protocol supported by a window.
+//
+// The function returns the following values:
+//
+//    - target (optional): location of the window where the drop should happen.
+//      This may be window or a proxy window, or NULL if window does not support
+//      Drag and Drop.
+//    - dragProtocol: supported DND protocol.
+//
+func (window *Window) DragProtocol() (Windower, DragProtocol) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkWindow      // in
+	var _cret C.GdkDragProtocol // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
+	runtime.KeepAlive(window)
+
+	var _target Windower           // out
+	var _dragProtocol DragProtocol // out
+
+	if _arg1 != nil {
+		{
+			objptr := unsafe.Pointer(_arg1)
+
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_target = rv
+		}
+	}
+	_dragProtocol = DragProtocol(_cret)
+
+	return _target, _dragProtocol
 }
 
 // EffectiveParent obtains the parent of window, as known to GDK. Works like
@@ -2407,20 +2634,18 @@ func (window *Window) Display() *Display {
 //    - ret: effective parent of window.
 //
 func (window *Window) EffectiveParent() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_effective_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_effective_parent(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2452,20 +2677,18 @@ func (window *Window) EffectiveParent() Windower {
 //    - ret: effective toplevel window containing window.
 //
 func (window *Window) EffectiveToplevel() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_effective_toplevel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_effective_toplevel(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2492,23 +2715,44 @@ func (window *Window) EffectiveToplevel() Windower {
 //    - ok: TRUE if motion events will be compressed.
 //
 func (window *Window) EventCompression() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_event_compression", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_event_compression(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Events gets the event mask for window for all master input devices. See
+// gdk_window_set_events().
+//
+// The function returns the following values:
+//
+//    - eventMask: event mask for window.
+//
+func (window *Window) Events() EventMask {
+	var _arg0 *C.GdkWindow   // out
+	var _cret C.GdkEventMask // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_events(_arg0)
+	runtime.KeepAlive(window)
+
+	var _eventMask EventMask // out
+
+	_eventMask = EventMask(_cret)
+
+	return _eventMask
 }
 
 // FocusOnMap determines whether or not the desktop environment should be hinted
@@ -2520,19 +2764,17 @@ func (window *Window) EventCompression() bool {
 //      mapped.
 //
 func (window *Window) FocusOnMap() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_focus_on_map", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_focus_on_map(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2547,20 +2789,18 @@ func (window *Window) FocusOnMap() bool {
 //    - frameClock: frame clock.
 //
 func (window *Window) FrameClock() FrameClocker {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow     // out
+	var _cret *C.GdkFrameClock // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_frame_clock", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_frame_clock(_arg0)
 	runtime.KeepAlive(window)
 
 	var _frameClock FrameClocker // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.FrameClocker is nil")
 		}
@@ -2590,21 +2830,41 @@ func (window *Window) FrameClock() FrameClocker {
 //    - rect: rectangle to fill with bounding box of the window frame.
 //
 func (window *Window) FrameExtents() *Rectangle {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 C.GdkRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("get_frame_extents", _args[:], _outs[:])
-
+	C.gdk_window_get_frame_extents(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
 	var _rect *Rectangle // out
 
-	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rect
+}
+
+// FullscreenMode obtains the FullscreenMode of the window.
+//
+// The function returns the following values:
+//
+//    - fullscreenMode applied to the window when fullscreen.
+//
+func (window *Window) FullscreenMode() FullscreenMode {
+	var _arg0 *C.GdkWindow        // out
+	var _cret C.GdkFullscreenMode // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_fullscreen_mode(_arg0)
+	runtime.KeepAlive(window)
+
+	var _fullscreenMode FullscreenMode // out
+
+	_fullscreenMode = FullscreenMode(_cret)
+
+	return _fullscreenMode
 }
 
 // Geometry: any of the return location arguments to this function may be NULL,
@@ -2637,14 +2897,15 @@ func (window *Window) FrameExtents() *Rectangle {
 //    - height (optional): return location for height of window.
 //
 func (window *Window) Geometry() (x, y, width, height int32) {
-	var _args [1]girepository.Argument
-	var _outs [4]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("get_geometry", _args[:], _outs[:])
-
+	C.gdk_window_get_geometry(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 
 	var _x int32      // out
@@ -2652,10 +2913,10 @@ func (window *Window) Geometry() (x, y, width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
-	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[3])))
+	_x = int32(_arg1)
+	_y = int32(_arg2)
+	_width = int32(_arg3)
+	_height = int32(_arg4)
 
 	return _x, _y, _width, _height
 }
@@ -2667,20 +2928,18 @@ func (window *Window) Geometry() (x, y, width, height int32) {
 //    - ret: group leader window for window.
 //
 func (window *Window) Group() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_group(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2711,19 +2970,17 @@ func (window *Window) Group() Windower {
 //    - gint: height of window.
 //
 func (window *Window) Height() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.int        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_height(_arg0)
 	runtime.KeepAlive(window)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2736,19 +2993,17 @@ func (window *Window) Height() int32 {
 //    - ok: whether or not the window has the modal hint set.
 //
 func (window *Window) ModalHint() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_modal_hint", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_modal_hint(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2766,24 +3021,23 @@ func (window *Window) ModalHint() bool {
 //    - gint: not meaningful, ignore.
 //
 func (window *Window) Origin() (x, y, gint int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_origin", _args[:], _outs[:])
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_origin(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
 	var _x int32    // out
 	var _y int32    // out
 	var _gint int32 // out
 
-	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_x = int32(_arg1)
+	_y = int32(_arg2)
+	_gint = int32(_cret)
 
 	return _x, _y, _gint
 }
@@ -2804,20 +3058,18 @@ func (window *Window) Origin() (x, y, gint int32) {
 //    - ret: parent of window.
 //
 func (window *Window) Parent() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_parent(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2845,19 +3097,17 @@ func (window *Window) Parent() Windower {
 // The function returns the following values:
 //
 func (window *Window) PassThrough() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_pass_through", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_pass_through(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2882,15 +3132,15 @@ func (window *Window) PassThrough() bool {
 //      isn’t known to GDK.
 //
 func (window *Window) Pointer() (x, y int32, mask ModifierType, ret Windower) {
-	var _args [1]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.gint            // in
+	var _arg2 C.gint            // in
+	var _arg3 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_pointer", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_pointer(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(window)
 
 	var _x int32           // out
@@ -2898,14 +3148,12 @@ func (window *Window) Pointer() (x, y int32, mask ModifierType, ret Windower) {
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	_x = int32(_arg1)
+	_y = int32(_arg2)
+	_mask = ModifierType(_arg3)
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2936,21 +3184,20 @@ func (window *Window) Pointer() (x, y int32, mask ModifierType, ret Windower) {
 //    - y (optional): y coordinate of window.
 //
 func (window *Window) Position() (x, y int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("get_position", _args[:], _outs[:])
-
+	C.gdk_window_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
 	var _x int32 // out
 	var _y int32 // out
 
-	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
 }
@@ -2970,16 +3217,17 @@ func (window *Window) Position() (x, y int32) {
 //    - rootY: return location for Y coordinate.
 //
 func (window *Window) RootCoords(x, y int32) (rootX, rootY int32) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("get_root_coords", _args[:], _outs[:])
-
+	C.gdk_window_get_root_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -2987,8 +3235,8 @@ func (window *Window) RootCoords(x, y int32) (rootX, rootY int32) {
 	var _rootX int32 // out
 	var _rootY int32 // out
 
-	_rootX = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_rootY = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_rootX = int32(_arg3)
+	_rootY = int32(_arg4)
 
 	return _rootX, _rootY
 }
@@ -3002,21 +3250,20 @@ func (window *Window) RootCoords(x, y int32) (rootX, rootY int32) {
 //    - y: return location for Y position of window frame.
 //
 func (window *Window) RootOrigin() (x, y int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("get_root_origin", _args[:], _outs[:])
-
+	C.gdk_window_get_root_origin(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
 	var _x int32 // out
 	var _y int32 // out
 
-	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
 }
@@ -3038,19 +3285,17 @@ func (window *Window) RootOrigin() (x, y int32) {
 //    - gint: scale factor.
 //
 func (window *Window) ScaleFactor() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_scale_factor", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_scale_factor(_arg0)
 	runtime.KeepAlive(window)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -3062,21 +3307,72 @@ func (window *Window) ScaleFactor() int32 {
 //    - screen associated with window.
 //
 func (window *Window) Screen() *Screen {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkScreen // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_screen(_arg0)
 	runtime.KeepAlive(window)
 
 	var _screen *Screen // out
 
-	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _screen
+}
+
+// SourceEvents returns the event mask for window corresponding to the device
+// class specified by source.
+//
+// The function takes the following parameters:
+//
+//    - source to define the source class.
+//
+// The function returns the following values:
+//
+//    - eventMask: source event mask for window.
+//
+func (window *Window) SourceEvents(source InputSource) EventMask {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 C.GdkInputSource // out
+	var _cret C.GdkEventMask   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkInputSource(source)
+
+	_cret = C.gdk_window_get_source_events(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+
+	var _eventMask EventMask // out
+
+	_eventMask = EventMask(_cret)
+
+	return _eventMask
+}
+
+// State gets the bitwise OR of the currently active window state flags, from
+// the WindowState enumeration.
+//
+// The function returns the following values:
+//
+//    - windowState: window state bitfield.
+//
+func (window *Window) State() WindowState {
+	var _arg0 *C.GdkWindow     // out
+	var _cret C.GdkWindowState // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_state(_arg0)
+	runtime.KeepAlive(window)
+
+	var _windowState WindowState // out
+
+	_windowState = WindowState(_cret)
+
+	return _windowState
 }
 
 // SupportMultidevice returns TRUE if the window is aware of the existence of
@@ -3087,19 +3383,17 @@ func (window *Window) Screen() *Screen {
 //    - ok: TRUE if the window handles multidevice features.
 //
 func (window *Window) SupportMultidevice() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_support_multidevice", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_support_multidevice(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3121,20 +3415,18 @@ func (window *Window) SupportMultidevice() bool {
 //    - ret: toplevel window containing window.
 //
 func (window *Window) Toplevel() Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_toplevel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_toplevel(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -3154,6 +3446,28 @@ func (window *Window) Toplevel() Windower {
 	return _ret
 }
 
+// TypeHint: this function returns the type hint set for a window.
+//
+// The function returns the following values:
+//
+//    - windowTypeHint: type hint set for window.
+//
+func (window *Window) TypeHint() WindowTypeHint {
+	var _arg0 *C.GdkWindow        // out
+	var _cret C.GdkWindowTypeHint // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_type_hint(_arg0)
+	runtime.KeepAlive(window)
+
+	var _windowTypeHint WindowTypeHint // out
+
+	_windowTypeHint = WindowTypeHint(_cret)
+
+	return _windowTypeHint
+}
+
 // UpdateArea transfers ownership of the update area from window to the caller
 // of the function. That is, after calling this function, window will no longer
 // have an invalid/dirty region; the update area is removed from window and
@@ -3166,24 +3480,22 @@ func (window *Window) Toplevel() Windower {
 //    - region: update area for window.
 //
 func (window *Window) UpdateArea() *cairo.Region {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _cret *C.cairo_region_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_update_area", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_update_area(_arg0)
 	runtime.KeepAlive(window)
 
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region
@@ -3197,21 +3509,17 @@ func (window *Window) UpdateArea() *cairo.Region {
 //    - data (optional): return location for user data.
 //
 func (window *Window) UserData() unsafe.Pointer {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("get_user_data", _args[:], _outs[:])
-
+	C.gdk_window_get_user_data(_arg0, &_arg1)
 	runtime.KeepAlive(window)
 
 	var _data unsafe.Pointer // out
 
-	if *(**C.gpointer)(unsafe.Pointer(&_outs[0])) != nil {
-		_data = (unsafe.Pointer)(unsafe.Pointer(*(**C.gpointer)(unsafe.Pointer(&_outs[0]))))
-	}
+	_data = (unsafe.Pointer)(unsafe.Pointer(_arg1))
 
 	return _data
 }
@@ -3225,24 +3533,22 @@ func (window *Window) UserData() unsafe.Pointer {
 //    - region This must be freed with cairo_region_destroy() when you are done.
 //
 func (window *Window) VisibleRegion() *cairo.Region {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _cret *C.cairo_region_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_visible_region", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_visible_region(_arg0)
 	runtime.KeepAlive(window)
 
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _region
@@ -3255,19 +3561,17 @@ func (window *Window) VisibleRegion() *cairo.Region {
 //    - visual: Visual.
 //
 func (window *Window) Visual() *Visual {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkVisual // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_visual", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_visual(_arg0)
 	runtime.KeepAlive(window)
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _visual
 }
@@ -3283,21 +3587,41 @@ func (window *Window) Visual() *Visual {
 //    - gint: width of window.
 //
 func (window *Window) Width() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.int        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_get_width(_arg0)
 	runtime.KeepAlive(window)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// WindowType gets the type of the window. See WindowType.
+//
+// The function returns the following values:
+//
+//    - windowType: type of window.
+//
+func (window *Window) WindowType() WindowType {
+	var _arg0 *C.GdkWindow    // out
+	var _cret C.GdkWindowType // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_window_type(_arg0)
+	runtime.KeepAlive(window)
+
+	var _windowType WindowType // out
+
+	_windowType = WindowType(_cret)
+
+	return _windowType
 }
 
 // HasNative checks whether the window has a native window or not. Note that you
@@ -3308,19 +3632,17 @@ func (window *Window) Width() int32 {
 //    - ok: TRUE if the window has a native window, FALSE otherwise.
 //
 func (window *Window) HasNative() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("has_native", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_has_native(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3331,13 +3653,11 @@ func (window *Window) HasNative() bool {
 // to the window manager; for all windows, unmaps them, so they won’t be
 // displayed. Normally done automatically as part of gtk_widget_hide().
 func (window *Window) Hide() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("hide", _args[:], nil)
-
+	C.gdk_window_hide(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3347,13 +3667,11 @@ func (window *Window) Hide() {
 //
 // This function only makes sense when window is a toplevel window.
 func (window *Window) Iconify() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("iconify", _args[:], nil)
-
+	C.gdk_window_iconify(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3378,16 +3696,17 @@ func (window *Window) Iconify() {
 //    - offsetY: y position of shape_region in window coordinates.
 //
 func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(shapeRegion.Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(offsetX)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(offsetY)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("input_shape_combine_region", _args[:], nil)
-
+	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(shapeRegion)
 	runtime.KeepAlive(offsetX)
@@ -3416,19 +3735,20 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 //      NULL means never recurse.
 //
 func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.cairo_region_t    // out
+	var _arg2 C.GdkWindowChildFunc // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	if childFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gdk3_WindowChildFunc)
-		_args[3] = C.gpointer(gbox.Assign(childFunc))
-		defer gbox.Delete(uintptr(_args[3]))
+		_arg2 = (*[0]byte)(C._gotk4_gdk3_WindowChildFunc)
+		_arg3 = C.gpointer(gbox.Assign(childFunc))
+		defer gbox.Delete(uintptr(_arg3))
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("invalidate_maybe_recurse", _args[:], nil)
-
+	C.gdk_window_invalidate_maybe_recurse(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
 	runtime.KeepAlive(childFunc)
@@ -3445,19 +3765,19 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 //    - invalidateChildren: whether to also invalidate child windows.
 //
 func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if rect != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+		_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	}
 	if invalidateChildren {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("invalidate_rect", _args[:], nil)
-
+	C.gdk_window_invalidate_rect(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(rect)
 	runtime.KeepAlive(invalidateChildren)
@@ -3486,17 +3806,17 @@ func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 //    - invalidateChildren: TRUE to also invalidate child windows.
 //
 func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gboolean        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	if invalidateChildren {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("invalidate_region", _args[:], nil)
-
+	C.gdk_window_invalidate_region(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
 	runtime.KeepAlive(invalidateChildren)
@@ -3509,19 +3829,17 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 //    - ok: TRUE if the window is destroyed.
 //
 func (window *Window) IsDestroyed() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("is_destroyed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_is_destroyed(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3535,19 +3853,17 @@ func (window *Window) IsDestroyed() bool {
 //    - ok: TRUE if window is input only.
 //
 func (window *Window) IsInputOnly() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("is_input_only", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_is_input_only(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3561,19 +3877,17 @@ func (window *Window) IsInputOnly() bool {
 //    - ok: TRUE if window is shaped.
 //
 func (window *Window) IsShaped() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("is_shaped", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_is_shaped(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3589,19 +3903,17 @@ func (window *Window) IsShaped() bool {
 //    - ok: TRUE if the window is viewable.
 //
 func (window *Window) IsViewable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("is_viewable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_is_viewable(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3616,19 +3928,17 @@ func (window *Window) IsViewable() bool {
 //    - ok: TRUE if the window is mapped.
 //
 func (window *Window) IsVisible() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("is_visible", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_is_visible(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3646,13 +3956,11 @@ func (window *Window) IsVisible() bool {
 // Note that gdk_window_show() raises the window again, so don’t call this
 // function before gdk_window_show(). (Try gdk_window_show_unraised().).
 func (window *Window) Lower() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("lower", _args[:], nil)
-
+	C.gdk_window_lower(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3671,14 +3979,13 @@ func (window *Window) Lower() {
 //    - cr: #cairo_t.
 //
 func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.cairo_t   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("mark_paint_from_clip", _args[:], nil)
-
+	C.gdk_window_mark_paint_from_clip(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(cr)
 }
@@ -3694,13 +4001,11 @@ func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
 //
 // On Windows, reliably maximizes the window.
 func (window *Window) Maximize() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("maximize", _args[:], nil)
-
+	C.gdk_window_maximize(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3712,13 +4017,11 @@ func (window *Window) Maximize() {
 // This function is distinct from gdk_window_set_child_input_shapes() because it
 // includes window’s input shape mask in the set of shapes to be merged.
 func (window *Window) MergeChildInputShapes() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("merge_child_input_shapes", _args[:], nil)
-
+	C.gdk_window_merge_child_input_shapes(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3729,13 +4032,11 @@ func (window *Window) MergeChildInputShapes() {
 // This function is distinct from gdk_window_set_child_shapes() because it
 // includes window’s shape mask in the set of shapes to be merged.
 func (window *Window) MergeChildShapes() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("merge_child_shapes", _args[:], nil)
-
+	C.gdk_window_merge_child_shapes(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3753,15 +4054,15 @@ func (window *Window) MergeChildShapes() {
 //    - y: y coordinate relative to window’s parent.
 //
 func (window *Window) Move(x, y int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("move", _args[:], nil)
-
+	C.gdk_window_move(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -3780,16 +4081,17 @@ func (window *Window) Move(x, y int32) {
 //    - dy: amount to move in the Y direction.
 //
 func (window *Window) MoveRegion(region *cairo.Region, dx, dy int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(dx)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(dy)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg2 = C.gint(dx)
+	_arg3 = C.gint(dy)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("move_region", _args[:], nil)
-
+	C.gdk_window_move_region(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
 	runtime.KeepAlive(dx)
@@ -3809,22 +4111,77 @@ func (window *Window) MoveRegion(region *cairo.Region, dx, dy int32) {
 //    - height: new height.
 //
 func (window *Window) MoveResize(x, y, width, height int32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(height)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("move_resize", _args[:], nil)
-
+	C.gdk_window_move_resize(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
+}
+
+// MoveToRect moves window to rect, aligning their anchor points.
+//
+// rect is relative to the top-left corner of the window that window is
+// transient for. rect_anchor and window_anchor determine anchor points on rect
+// and window to pin together. rect's anchor point can optionally be offset by
+// rect_anchor_dx and rect_anchor_dy, which is equivalent to offsetting the
+// position of window.
+//
+// anchor_hints determines how window will be moved if the anchor points cause
+// it to move off-screen. For example, GDK_ANCHOR_FLIP_X will replace
+// GDK_GRAVITY_NORTH_WEST with GDK_GRAVITY_NORTH_EAST and vice versa if window
+// extends beyond the left or right edges of the monitor.
+//
+// Connect to the Window::moved-to-rect signal to find out how it was actually
+// positioned.
+//
+// The function takes the following parameters:
+//
+//    - rect: destination Rectangle to align window with.
+//    - rectAnchor: point on rect to align with window's anchor point.
+//    - windowAnchor: point on window to align with rect's anchor point.
+//    - anchorHints: positioning hints to use when limited on space.
+//    - rectAnchorDx: horizontal offset to shift window, i.e. rect's anchor
+//      point.
+//    - rectAnchorDy: vertical offset to shift window, i.e. rect's anchor point.
+//
+func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx, rectAnchorDy int32) {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 *C.GdkRectangle  // out
+	var _arg2 C.GdkGravity     // out
+	var _arg3 C.GdkGravity     // out
+	var _arg4 C.GdkAnchorHints // out
+	var _arg5 C.gint           // out
+	var _arg6 C.gint           // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg2 = C.GdkGravity(rectAnchor)
+	_arg3 = C.GdkGravity(windowAnchor)
+	_arg4 = C.GdkAnchorHints(anchorHints)
+	_arg5 = C.gint(rectAnchorDx)
+	_arg6 = C.gint(rectAnchorDy)
+
+	C.gdk_window_move_to_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(rectAnchor)
+	runtime.KeepAlive(windowAnchor)
+	runtime.KeepAlive(anchorHints)
+	runtime.KeepAlive(rectAnchorDx)
+	runtime.KeepAlive(rectAnchorDy)
 }
 
 // PeekChildren: like gdk_window_get_children(), but does not copy the list of
@@ -3835,24 +4192,22 @@ func (window *Window) MoveResize(x, y, width, height int32) {
 //    - list: a reference to the list of child windows in window.
 //
 func (window *Window) PeekChildren() []Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GList     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("peek_children", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_peek_children(_arg0)
 	runtime.KeepAlive(window)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -3890,16 +4245,15 @@ func (window *Window) PeekChildren() []Windower {
 //    - updateChildren: whether to also process updates for child windows.
 //
 func (window *Window) ProcessUpdates(updateChildren bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if updateChildren {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("process_updates", _args[:], nil)
-
+	C.gdk_window_process_updates(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(updateChildren)
 }
@@ -3912,25 +4266,21 @@ func (window *Window) ProcessUpdates(updateChildren bool) {
 // move the window in the Z-order, gdk_window_raise() only requests the restack,
 // does not guarantee it.
 func (window *Window) Raise() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("raise", _args[:], nil)
-
+	C.gdk_window_raise(_arg0)
 	runtime.KeepAlive(window)
 }
 
 // RegisterDND registers a window as a potential drop destination.
 func (window *Window) RegisterDND() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("register_dnd", _args[:], nil)
-
+	C.gdk_window_register_dnd(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -3944,16 +4294,17 @@ func (window *Window) RegisterDND() {
 //    - y: y location inside the new parent.
 //
 func (window *Window) Reparent(newParent Windower, x, y int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(newParent).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(newParent).Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("reparent", _args[:], nil)
-
+	C.gdk_window_reparent(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(newParent)
 	runtime.KeepAlive(x)
@@ -3975,15 +4326,15 @@ func (window *Window) Reparent(newParent Windower, x, y int32) {
 //    - height: new height of the window.
 //
 func (window *Window) Resize(width, height int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("resize", _args[:], nil)
-
+	C.gdk_window_resize(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -4006,19 +4357,19 @@ func (window *Window) Resize(width, height int32) {
 //    - above: boolean.
 //
 func (window *Window) Restack(sibling Windower, above bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if sibling != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 	}
 	if above {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("restack", _args[:], nil)
-
+	C.gdk_window_restack(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(sibling)
 	runtime.KeepAlive(above)
@@ -4040,15 +4391,15 @@ func (window *Window) Restack(sibling Windower, above bool) {
 //    - dy: amount to scroll in the Y direction.
 //
 func (window *Window) Scroll(dx, dy int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(dx)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(dy)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(dx)
+	_arg2 = C.gint(dy)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("scroll", _args[:], nil)
-
+	C.gdk_window_scroll(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(dx)
 	runtime.KeepAlive(dy)
@@ -4065,16 +4416,15 @@ func (window *Window) Scroll(dx, dy int32) {
 //    - acceptFocus: TRUE if the window should receive input focus.
 //
 func (window *Window) SetAcceptFocus(acceptFocus bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if acceptFocus {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_accept_focus", _args[:], nil)
-
+	C.gdk_window_set_accept_focus(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(acceptFocus)
 }
@@ -4092,14 +4442,13 @@ func (window *Window) SetAcceptFocus(acceptFocus bool) {
 //    - color: Color.
 //
 func (window *Window) SetBackground(color *Color) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkColor  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_background", _args[:], nil)
-
+	C.gdk_window_set_background(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(color)
 }
@@ -4120,16 +4469,15 @@ func (window *Window) SetBackground(color *Color) {
 //    - pattern (optional) to use, or NULL.
 //
 func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 *C.cairo_pattern_t // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if pattern != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(pattern.Native()))
+		_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(pattern.Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_background_pattern", _args[:], nil)
-
+	C.gdk_window_set_background_pattern(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(pattern)
 }
@@ -4145,14 +4493,13 @@ func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 //    - rgba: RGBA color.
 //
 func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkRGBA   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_background_rgba", _args[:], nil)
-
+	C.gdk_window_set_background_rgba(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(rgba)
 }
@@ -4162,13 +4509,11 @@ func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 // window itself. Contrast with gdk_window_merge_child_input_shapes() which
 // includes the input shape mask of window in the masks to be merged.
 func (window *Window) SetChildInputShapes() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_child_input_shapes", _args[:], nil)
-
+	C.gdk_window_set_child_input_shapes(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -4177,13 +4522,11 @@ func (window *Window) SetChildInputShapes() {
 // with gdk_window_merge_child_shapes() which includes the shape mask of window
 // in the masks to be merged.
 func (window *Window) SetChildShapes() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_child_shapes", _args[:], nil)
-
+	C.gdk_window_set_child_shapes(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -4214,16 +4557,15 @@ func (window *Window) SetChildShapes() {
 //    - composited: TRUE to set the window as composited.
 //
 func (window *Window) SetComposited(composited bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if composited {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_composited", _args[:], nil)
-
+	C.gdk_window_set_composited(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(composited)
 }
@@ -4242,18 +4584,47 @@ func (window *Window) SetComposited(composited bool) {
 //    - cursor (optional): cursor.
 //
 func (window *Window) SetCursor(cursor Cursorrer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkCursor // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if cursor != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+		_arg1 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_cursor", _args[:], nil)
-
+	C.gdk_window_set_cursor(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(cursor)
+}
+
+// SetDecorations: “Decorations” are the features the window manager adds to a
+// toplevel Window. This function sets the traditional Motif window manager
+// hints that tell the window manager which decorations you would like your
+// window to have. Usually you should use gtk_window_set_decorated() on a Window
+// instead of using the GDK function directly.
+//
+// The decorations argument is the logical OR of the fields in the WMDecoration
+// enumeration. If K_DECOR_ALL is included in the mask, the other bits indicate
+// which decorations should be turned off. If K_DECOR_ALL is not included, then
+// the other bits indicate which decorations should be turned on.
+//
+// Most window managers honor a decorations hint of 0 to disable all
+// decorations, but very few honor all possible combinations of bits.
+//
+// The function takes the following parameters:
+//
+//    - decorations: decoration hint mask.
+//
+func (window *Window) SetDecorations(decorations WMDecoration) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.GdkWMDecoration // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkWMDecoration(decorations)
+
+	C.gdk_window_set_decorations(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(decorations)
 }
 
 // SetDeviceCursor sets a specific Cursor for a given device when it gets inside
@@ -4269,18 +4640,46 @@ func (window *Window) SetCursor(cursor Cursorrer) {
 //    - cursor: Cursor.
 //
 func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 *C.GdkCursor // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_device_cursor", _args[:], nil)
-
+	C.gdk_window_set_device_cursor(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
 	runtime.KeepAlive(cursor)
+}
+
+// SetDeviceEvents sets the event mask for a given device (Normally a floating
+// device, not attached to any visible pointer) to window. For example, an event
+// mask including K_BUTTON_PRESS_MASK means the window should report button
+// press events. The event mask is the bitwise OR of values from the EventMask
+// enumeration.
+//
+// See the [input handling overview][event-masks] for details.
+//
+// The function takes the following parameters:
+//
+//    - device to enable events for.
+//    - eventMask: event mask for window.
+//
+func (window *Window) SetDeviceEvents(device Devicer, eventMask EventMask) {
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = C.GdkEventMask(eventMask)
+
+	C.gdk_window_set_device_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(eventMask)
 }
 
 // SetEventCompression determines whether or not extra unprocessed motion events
@@ -4297,18 +4696,41 @@ func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 //    - eventCompression: TRUE if motion events should be compressed.
 //
 func (window *Window) SetEventCompression(eventCompression bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if eventCompression {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_event_compression", _args[:], nil)
-
+	C.gdk_window_set_event_compression(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(eventCompression)
+}
+
+// SetEvents: event mask for a window determines which events will be reported
+// for that window from all master input devices. For example, an event mask
+// including K_BUTTON_PRESS_MASK means the window should report button press
+// events. The event mask is the bitwise OR of values from the EventMask
+// enumeration.
+//
+// See the [input handling overview][event-masks] for details.
+//
+// The function takes the following parameters:
+//
+//    - eventMask: event mask for window.
+//
+func (window *Window) SetEvents(eventMask EventMask) {
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 C.GdkEventMask // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkEventMask(eventMask)
+
+	C.gdk_window_set_events(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(eventMask)
 }
 
 // SetFocusOnMap: setting focus_on_map to FALSE hints the desktop environment
@@ -4325,18 +4747,118 @@ func (window *Window) SetEventCompression(eventCompression bool) {
 //    - focusOnMap: TRUE if the window should receive input focus when mapped.
 //
 func (window *Window) SetFocusOnMap(focusOnMap bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if focusOnMap {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_focus_on_map", _args[:], nil)
-
+	C.gdk_window_set_focus_on_map(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(focusOnMap)
+}
+
+// SetFullscreenMode specifies whether the window should span over all monitors
+// (in a multi-head setup) or only the current monitor when in fullscreen mode.
+//
+// The mode argument is from the FullscreenMode enumeration. If
+// K_FULLSCREEN_ON_ALL_MONITORS is specified, the fullscreen window will span
+// over all monitors from the Screen.
+//
+// On X11, searches through the list of monitors from the Screen the ones which
+// delimit the 4 edges of the entire Screen and will ask the window manager to
+// span the window over these monitors.
+//
+// If the XINERAMA extension is not available or not usable, this function has
+// no effect.
+//
+// Not all window managers support this, so you can’t rely on the fullscreen
+// window to span over the multiple monitors when K_FULLSCREEN_ON_ALL_MONITORS
+// is specified.
+//
+// The function takes the following parameters:
+//
+//    - mode: fullscreen mode.
+//
+func (window *Window) SetFullscreenMode(mode FullscreenMode) {
+	var _arg0 *C.GdkWindow        // out
+	var _arg1 C.GdkFullscreenMode // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkFullscreenMode(mode)
+
+	C.gdk_window_set_fullscreen_mode(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(mode)
+}
+
+// SetFunctions sets hints about the window management functions to make
+// available via buttons on the window frame.
+//
+// On the X backend, this function sets the traditional Motif window manager
+// hint for this purpose. However, few window managers do anything reliable or
+// interesting with this hint. Many ignore it entirely.
+//
+// The functions argument is the logical OR of values from the WMFunction
+// enumeration. If the bitmask includes K_FUNC_ALL, then the other bits indicate
+// which functions to disable; if it doesn’t include K_FUNC_ALL, it indicates
+// which functions to enable.
+//
+// The function takes the following parameters:
+//
+//    - functions: bitmask of operations to allow on window.
+//
+func (window *Window) SetFunctions(functions WMFunction) {
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWMFunction // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkWMFunction(functions)
+
+	C.gdk_window_set_functions(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(functions)
+}
+
+// SetGeometryHints sets the geometry hints for window. Hints flagged in
+// geom_mask are set, hints not flagged in geom_mask are unset. To unset all
+// hints, use a geom_mask of 0 and a geometry of NULL.
+//
+// This function provides hints to the windowing system about acceptable sizes
+// for a toplevel window. The purpose of this is to constrain user resizing, but
+// the windowing system will typically (but is not required to) also constrain
+// the current size of the window to the provided values and constrain
+// programatic resizing via gdk_window_resize() or gdk_window_move_resize().
+//
+// Note that on X11, this effect has no effect on windows of type
+// GDK_WINDOW_TEMP or windows where override redirect has been turned on via
+// gdk_window_set_override_redirect() since these windows are not resizable by
+// the user.
+//
+// Since you can’t count on the windowing system doing the constraints for
+// programmatic resizes, you should generally call gdk_window_constrain_size()
+// yourself to determine appropriate sizes.
+//
+// The function takes the following parameters:
+//
+//    - geometry hints.
+//    - geomMask: bitmask indicating fields of geometry to pay attention to.
+//
+func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints) {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 *C.GdkGeometry   // out
+	var _arg2 C.GdkWindowHints // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkGeometry)(gextras.StructNative(unsafe.Pointer(geometry)))
+	_arg2 = C.GdkWindowHints(geomMask)
+
+	C.gdk_window_set_geometry_hints(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(geometry)
+	runtime.KeepAlive(geomMask)
 }
 
 // SetGroup sets the group leader window for window. By default, GDK sets the
@@ -4355,16 +4877,15 @@ func (window *Window) SetFocusOnMap(focusOnMap bool) {
 //      group leader window.
 //
 func (window *Window) SetGroup(leader Windower) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if leader != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_group", _args[:], nil)
-
+	C.gdk_window_set_group(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(leader)
 }
@@ -4383,20 +4904,19 @@ func (window *Window) SetGroup(leader Windower) {
 //    - pixbufs: A list of pixbufs, of different sizes.
 //
 func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GList     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	for i := len(pixbufs) - 1; i >= 0; i-- {
 		src := pixbufs[i]
 		var dst *C.GdkPixbuf // out
-		*(**C.GdkPixbuf)(unsafe.Pointer(&dst)) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		*(**C.GList)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+		dst = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
 	}
-	defer C.g_list_free(_args[1])
+	defer C.g_list_free(_arg1)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_icon_list", _args[:], nil)
-
+	C.gdk_window_set_icon_list(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(pixbufs)
 }
@@ -4419,17 +4939,16 @@ func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
 //    - name (optional) of window while iconified (minimized).
 //
 func (window *Window) SetIconName(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if name != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
-
+	C.gdk_window_set_icon_name(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(name)
 }
@@ -4448,16 +4967,15 @@ func (window *Window) SetIconName(name string) {
 //    - setting: whether to keep window above other windows.
 //
 func (window *Window) SetKeepAbove(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_keep_above", _args[:], nil)
-
+	C.gdk_window_set_keep_above(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -4476,16 +4994,15 @@ func (window *Window) SetKeepAbove(setting bool) {
 //    - setting: whether to keep window below other windows.
 //
 func (window *Window) SetKeepBelow(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_keep_below", _args[:], nil)
-
+	C.gdk_window_set_keep_below(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
 }
@@ -4502,16 +5019,15 @@ func (window *Window) SetKeepBelow(setting bool) {
 //    - modal: TRUE if the window is modal, FALSE otherwise.
 //
 func (window *Window) SetModalHint(modal bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if modal {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_modal_hint", _args[:], nil)
-
+	C.gdk_window_set_modal_hint(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(modal)
 }
@@ -4540,14 +5056,13 @@ func (window *Window) SetModalHint(modal bool) {
 //    - opacity: opacity.
 //
 func (window *Window) SetOpacity(opacity float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(opacity)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gdouble(opacity)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_opacity", _args[:], nil)
-
+	C.gdk_window_set_opacity(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(opacity)
 }
@@ -4570,16 +5085,15 @@ func (window *Window) SetOpacity(opacity float64) {
 //    - region (optional): region, or NULL.
 //
 func (window *Window) SetOpaqueRegion(region *cairo.Region) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if region != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_opaque_region", _args[:], nil)
-
+	C.gdk_window_set_opaque_region(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
 }
@@ -4598,16 +5112,15 @@ func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 //    - overrideRedirect: TRUE if window should be override redirect.
 //
 func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if overrideRedirect {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_override_redirect", _args[:], nil)
-
+	C.gdk_window_set_override_redirect(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(overrideRedirect)
 }
@@ -4635,16 +5148,15 @@ func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
 //    - passThrough: boolean.
 //
 func (window *Window) SetPassThrough(passThrough bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if passThrough {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_pass_through", _args[:], nil)
-
+	C.gdk_window_set_pass_through(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(passThrough)
 }
@@ -4666,15 +5178,14 @@ func (window *Window) SetPassThrough(passThrough bool) {
 //    - role: string indicating its role.
 //
 func (window *Window) SetRole(role string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(role)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(role)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_role", _args[:], nil)
-
+	C.gdk_window_set_role(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(role)
 }
@@ -4697,17 +5208,19 @@ func (window *Window) SetRole(role string) {
 //    - bottom extent.
 //
 func (window *Window) SetShadowWidth(left, right, top, bottom int32) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(left)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(right)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(top)
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(bottom)
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(left)
+	_arg2 = C.gint(right)
+	_arg3 = C.gint(top)
+	_arg4 = C.gint(bottom)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_shadow_width", _args[:], nil)
-
+	C.gdk_window_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(left)
 	runtime.KeepAlive(right)
@@ -4727,16 +5240,15 @@ func (window *Window) SetShadowWidth(left, right, top, bottom int32) {
 //    - skipsPager: TRUE to skip the pager.
 //
 func (window *Window) SetSkipPagerHint(skipsPager bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if skipsPager {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_skip_pager_hint", _args[:], nil)
-
+	C.gdk_window_set_skip_pager_hint(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(skipsPager)
 }
@@ -4752,18 +5264,42 @@ func (window *Window) SetSkipPagerHint(skipsPager bool) {
 //    - skipsTaskbar: TRUE to skip the taskbar.
 //
 func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if skipsTaskbar {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_skip_taskbar_hint", _args[:], nil)
-
+	C.gdk_window_set_skip_taskbar_hint(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(skipsTaskbar)
+}
+
+// SetSourceEvents sets the event mask for any floating device (i.e. not
+// attached to any visible pointer) that has the source defined as source. This
+// event mask will be applied both to currently existing, newly added devices
+// after this call, and devices being attached/detached.
+//
+// The function takes the following parameters:
+//
+//    - source to define the source class.
+//    - eventMask: event mask for window.
+//
+func (window *Window) SetSourceEvents(source InputSource, eventMask EventMask) {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 C.GdkInputSource // out
+	var _arg2 C.GdkEventMask   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkInputSource(source)
+	_arg2 = C.GdkEventMask(eventMask)
+
+	C.gdk_window_set_source_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(eventMask)
 }
 
 // SetStartupID: when using GTK+, typically you should use
@@ -4774,15 +5310,14 @@ func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
 //    - startupId: string with startup-notification identifier.
 //
 func (window *Window) SetStartupID(startupId string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_startup_id", _args[:], nil)
-
+	C.gdk_window_set_startup_id(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(startupId)
 }
@@ -4804,23 +5339,22 @@ func (window *Window) SetStartupID(startupId string) {
 //    - ok: FALSE.
 //
 func (window *Window) SetStaticGravities(useStatic bool) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if useStatic {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("set_static_gravities", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_set_static_gravities(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(useStatic)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -4838,16 +5372,15 @@ func (window *Window) SetStaticGravities(useStatic bool) bool {
 //    - supportMultidevice: TRUE to enable multidevice support in window.
 //
 func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if supportMultidevice {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_support_multidevice", _args[:], nil)
-
+	C.gdk_window_set_support_multidevice(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(supportMultidevice)
 }
@@ -4863,15 +5396,14 @@ func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
 //    - title of window.
 //
 func (window *Window) SetTitle(title string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_title", _args[:], nil)
-
+	C.gdk_window_set_title(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(title)
 }
@@ -4888,16 +5420,37 @@ func (window *Window) SetTitle(title string) {
 //    - parent: another toplevel Window.
 //
 func (window *Window) SetTransientFor(parent Windower) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_transient_for", _args[:], nil)
-
+	C.gdk_window_set_transient_for(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(parent)
+}
+
+// SetTypeHint: application can use this call to provide a hint to the window
+// manager about the functionality of a window. The window manager can use this
+// information when determining the decoration and behaviour of the window.
+//
+// The hint must be set before the window is mapped.
+//
+// The function takes the following parameters:
+//
+//    - hint of the function this window will have.
+//
+func (window *Window) SetTypeHint(hint WindowTypeHint) {
+	var _arg0 *C.GdkWindow        // out
+	var _arg1 C.GdkWindowTypeHint // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkWindowTypeHint(hint)
+
+	C.gdk_window_set_type_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(hint)
 }
 
 // SetUrgencyHint toggles whether a window needs the user's urgent attention.
@@ -4907,16 +5460,15 @@ func (window *Window) SetTransientFor(parent Windower) {
 //    - urgent: TRUE if the window is urgent.
 //
 func (window *Window) SetUrgencyHint(urgent bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if urgent {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_urgency_hint", _args[:], nil)
-
+	C.gdk_window_set_urgency_hint(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(urgent)
 }
@@ -4933,14 +5485,13 @@ func (window *Window) SetUrgencyHint(urgent bool) {
 //    - userData (optional): user data.
 //
 func (window *Window) SetUserData(userData *coreglib.Object) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(userData.Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(userData.Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("set_user_data", _args[:], nil)
-
+	C.gdk_window_set_user_data(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(userData)
 }
@@ -4965,18 +5516,19 @@ func (window *Window) SetUserData(userData *coreglib.Object) {
 //    - offsetY: y position of shape_region in window coordinates.
 //
 func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if shapeRegion != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(shapeRegion.Native()))
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(offsetX)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(offsetY)
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("shape_combine_region", _args[:], nil)
-
+	C.gdk_window_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(shapeRegion)
 	runtime.KeepAlive(offsetX)
@@ -4992,13 +5544,11 @@ func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, off
 // When implementing a Widget, you should call this function on the widget's
 // Window as part of the “map” method.
 func (window *Window) Show() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("show", _args[:], nil)
-
+	C.gdk_window_show(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5010,13 +5560,11 @@ func (window *Window) Show() {
 // updates some internal GDK state, which means that you can’t really use
 // XMapWindow() directly on a GDK window).
 func (window *Window) ShowUnraised() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("show_unraised", _args[:], nil)
-
+	C.gdk_window_show_unraised(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5035,21 +5583,20 @@ func (window *Window) ShowUnraised() {
 //    - ok: TRUE if the window menu was shown and FALSE otherwise.
 //
 func (window *Window) ShowWindowMenu(event *Event) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_gret := _info.InvokeClassMethod("show_window_menu", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_window_show_window_menu(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -5066,13 +5613,11 @@ func (window *Window) ShowWindowMenu(event *Event) bool {
 // that don’t support this operation, there’s nothing you can do to force it to
 // happen.
 func (window *Window) Stick() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("stick", _args[:], nil)
-
+	C.gdk_window_stick(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5083,25 +5628,21 @@ func (window *Window) Stick() {
 //
 // Deprecated: This symbol was never meant to be used outside of GTK+.
 func (window *Window) ThawToplevelUpdatesLibgtkOnly() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("thaw_toplevel_updates_libgtk_only", _args[:], nil)
-
+	C.gdk_window_thaw_toplevel_updates_libgtk_only(_arg0)
 	runtime.KeepAlive(window)
 }
 
 // ThawUpdates thaws a window frozen with gdk_window_freeze_updates().
 func (window *Window) ThawUpdates() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("thaw_updates", _args[:], nil)
-
+	C.gdk_window_thaw_updates(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5115,13 +5656,11 @@ func (window *Window) ThawUpdates() {
 // happening. But it will happen with most standard window managers, and GDK
 // makes a best effort to get it to happen.
 func (window *Window) Unfullscreen() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("unfullscreen", _args[:], nil)
-
+	C.gdk_window_unfullscreen(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5136,26 +5675,22 @@ func (window *Window) Unfullscreen() {
 //
 // On Windows, reliably unmaximizes the window.
 func (window *Window) Unmaximize() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("unmaximize", _args[:], nil)
-
+	C.gdk_window_unmaximize(_arg0)
 	runtime.KeepAlive(window)
 }
 
 // Unstick: reverse operation for gdk_window_stick(); see gdk_window_stick(),
 // and gtk_window_unstick().
 func (window *Window) Unstick() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("unstick", _args[:], nil)
-
+	C.gdk_window_unstick(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5163,13 +5698,11 @@ func (window *Window) Unstick() {
 // about it). This function is not really useful as gdk_window_hide()
 // automatically withdraws toplevel windows before hiding them.
 func (window *Window) Withdraw() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkWindow // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gdk", "Window")
-	_info.InvokeClassMethod("withdraw", _args[:], nil)
-
+	C.gdk_window_withdraw(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -5193,20 +5726,20 @@ func (window *Window) Withdraw() {
 //    - window under the mouse pointer.
 //
 func WindowAtPointer() (winX, winY int32, window Windower) {
-	var _outs [2]girepository.Argument
+	var _arg1 C.gint       // in
+	var _arg2 C.gint       // in
+	var _cret *C.GdkWindow // in
 
-	_info := girepository.MustFind("Gdk", "at_pointer")
-	_gret := _info.InvokeFunction(nil, _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret = C.gdk_window_at_pointer(&_arg1, &_arg2)
 
 	var _winX int32      // out
 	var _winY int32      // out
 	var _window Windower // out
 
-	_winX = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_winY = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_winX = int32(_arg1)
+	_winY = int32(_arg2)
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -5226,13 +5759,55 @@ func WindowAtPointer() (winX, winY int32, window Windower) {
 	return _winX, _winY, _window
 }
 
+// WindowConstrainSize constrains a desired width and height according to a set
+// of geometry hints (such as minimum and maximum size).
+//
+// The function takes the following parameters:
+//
+//    - geometry: Geometry structure.
+//    - flags: mask indicating what portions of geometry are set.
+//    - width: desired width of window.
+//    - height: desired height of the window.
+//
+// The function returns the following values:
+//
+//    - newWidth: location to store resulting width.
+//    - newHeight: location to store resulting height.
+//
+func WindowConstrainSize(geometry *Geometry, flags WindowHints, width, height int32) (newWidth, newHeight int32) {
+	var _arg1 *C.GdkGeometry   // out
+	var _arg2 C.GdkWindowHints // out
+	var _arg3 C.gint           // out
+	var _arg4 C.gint           // out
+	var _arg5 C.gint           // in
+	var _arg6 C.gint           // in
+
+	_arg1 = (*C.GdkGeometry)(gextras.StructNative(unsafe.Pointer(geometry)))
+	_arg2 = C.GdkWindowHints(flags)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+
+	C.gdk_window_constrain_size(_arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(geometry)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _newWidth int32  // out
+	var _newHeight int32 // out
+
+	_newWidth = int32(_arg5)
+	_newHeight = int32(_arg6)
+
+	return _newWidth, _newHeight
+}
+
 // WindowProcessAllUpdates calls gdk_window_process_updates() for all windows
 // (see Window) in the application.
 //
 // Deprecated: since version 3.22.
 func WindowProcessAllUpdates() {
-	_info := girepository.MustFind("Gdk", "process_all_updates")
-	_info.InvokeFunction(nil, nil)
+	C.gdk_window_process_all_updates()
 }
 
 // WindowSetDebugUpdates: with update debugging enabled, calls to
@@ -5260,15 +5835,13 @@ func WindowProcessAllUpdates() {
 //    - setting: TRUE to turn on update debugging.
 //
 func WindowSetDebugUpdates(setting bool) {
-	var _args [1]girepository.Argument
+	var _arg1 C.gboolean // out
 
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gdk", "set_debug_updates")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gdk_window_set_debug_updates(_arg1)
 	runtime.KeepAlive(setting)
 }
 
@@ -5332,7 +5905,167 @@ type Geometry struct {
 
 // geometry is the struct that's finalized.
 type geometry struct {
-	native unsafe.Pointer
+	native *C.GdkGeometry
+}
+
+// MinWidth: minimum width of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) MinWidth() int32 {
+	valptr := &g.native.min_width
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// MinHeight: minimum height of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) MinHeight() int32 {
+	valptr := &g.native.min_height
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// MaxWidth: maximum width of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) MaxWidth() int32 {
+	valptr := &g.native.max_width
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// MaxHeight: maximum height of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) MaxHeight() int32 {
+	valptr := &g.native.max_height
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// BaseWidth: allowed window widths are base_width + width_inc * N where N is
+// any integer (-1 allowed with Window).
+func (g *Geometry) BaseWidth() int32 {
+	valptr := &g.native.base_width
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// BaseHeight: allowed window widths are base_height + height_inc * N where N is
+// any integer (-1 allowed with Window).
+func (g *Geometry) BaseHeight() int32 {
+	valptr := &g.native.base_height
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// WidthInc: width resize increment.
+func (g *Geometry) WidthInc() int32 {
+	valptr := &g.native.width_inc
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// HeightInc: height resize increment.
+func (g *Geometry) HeightInc() int32 {
+	valptr := &g.native.height_inc
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// MinAspect: minimum width/height ratio.
+func (g *Geometry) MinAspect() float64 {
+	valptr := &g.native.min_aspect
+	var v float64 // out
+	v = float64(*valptr)
+	return v
+}
+
+// MaxAspect: maximum width/height ratio.
+func (g *Geometry) MaxAspect() float64 {
+	valptr := &g.native.max_aspect
+	var v float64 // out
+	v = float64(*valptr)
+	return v
+}
+
+// WinGravity: window gravity, see gtk_window_set_gravity().
+func (g *Geometry) WinGravity() Gravity {
+	valptr := &g.native.win_gravity
+	var v Gravity // out
+	v = Gravity(*valptr)
+	return v
+}
+
+// MinWidth: minimum width of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) SetMinWidth(minWidth int32) {
+	valptr := &g.native.min_width
+	*valptr = C.gint(minWidth)
+}
+
+// MinHeight: minimum height of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) SetMinHeight(minHeight int32) {
+	valptr := &g.native.min_height
+	*valptr = C.gint(minHeight)
+}
+
+// MaxWidth: maximum width of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) SetMaxWidth(maxWidth int32) {
+	valptr := &g.native.max_width
+	*valptr = C.gint(maxWidth)
+}
+
+// MaxHeight: maximum height of window (or -1 to use requisition, with Window
+// only).
+func (g *Geometry) SetMaxHeight(maxHeight int32) {
+	valptr := &g.native.max_height
+	*valptr = C.gint(maxHeight)
+}
+
+// BaseWidth: allowed window widths are base_width + width_inc * N where N is
+// any integer (-1 allowed with Window).
+func (g *Geometry) SetBaseWidth(baseWidth int32) {
+	valptr := &g.native.base_width
+	*valptr = C.gint(baseWidth)
+}
+
+// BaseHeight: allowed window widths are base_height + height_inc * N where N is
+// any integer (-1 allowed with Window).
+func (g *Geometry) SetBaseHeight(baseHeight int32) {
+	valptr := &g.native.base_height
+	*valptr = C.gint(baseHeight)
+}
+
+// WidthInc: width resize increment.
+func (g *Geometry) SetWidthInc(widthInc int32) {
+	valptr := &g.native.width_inc
+	*valptr = C.gint(widthInc)
+}
+
+// HeightInc: height resize increment.
+func (g *Geometry) SetHeightInc(heightInc int32) {
+	valptr := &g.native.height_inc
+	*valptr = C.gint(heightInc)
+}
+
+// MinAspect: minimum width/height ratio.
+func (g *Geometry) SetMinAspect(minAspect float64) {
+	valptr := &g.native.min_aspect
+	*valptr = C.gdouble(minAspect)
+}
+
+// MaxAspect: maximum width/height ratio.
+func (g *Geometry) SetMaxAspect(maxAspect float64) {
+	valptr := &g.native.max_aspect
+	*valptr = C.gdouble(maxAspect)
 }
 
 // WindowAttr attributes to use for a newly-created window.
@@ -5344,5 +6077,174 @@ type WindowAttr struct {
 
 // windowAttr is the struct that's finalized.
 type windowAttr struct {
-	native unsafe.Pointer
+	native *C.GdkWindowAttr
+}
+
+// Title: title of the window (for toplevel windows).
+func (w *WindowAttr) Title() string {
+	valptr := &w.native.title
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// EventMask: event mask (see gdk_window_set_events()).
+func (w *WindowAttr) EventMask() int32 {
+	valptr := &w.native.event_mask
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// X coordinate relative to parent window (see gdk_window_move()).
+func (w *WindowAttr) X() int32 {
+	valptr := &w.native.x
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Y coordinate relative to parent window (see gdk_window_move()).
+func (w *WindowAttr) Y() int32 {
+	valptr := &w.native.y
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Width: width of window.
+func (w *WindowAttr) Width() int32 {
+	valptr := &w.native.width
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Height: height of window.
+func (w *WindowAttr) Height() int32 {
+	valptr := &w.native.height
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Wclass (normal window) or K_INPUT_ONLY (invisible window that receives
+// events).
+func (w *WindowAttr) Wclass() WindowWindowClass {
+	valptr := &w.native.wclass
+	var v WindowWindowClass // out
+	v = WindowWindowClass(*valptr)
+	return v
+}
+
+// Visual for window.
+func (w *WindowAttr) Visual() *Visual {
+	valptr := &w.native.visual
+	var v *Visual // out
+	v = wrapVisual(coreglib.Take(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// WindowType: type of window.
+func (w *WindowAttr) WindowType() WindowType {
+	valptr := &w.native.window_type
+	var v WindowType // out
+	v = WindowType(*valptr)
+	return v
+}
+
+// Cursor: cursor for the window (see gdk_window_set_cursor()).
+func (w *WindowAttr) Cursor() Cursorrer {
+	valptr := &w.native.cursor
+	var v Cursorrer // out
+	{
+		objptr := unsafe.Pointer(*valptr)
+		if objptr == nil {
+			panic("object of type gdk.Cursorrer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Cursorrer)
+			return ok
+		})
+		rv, ok := casted.(Cursorrer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Cursorrer")
+		}
+		v = rv
+	}
+	return v
+}
+
+// WmclassName: don’t use (see gtk_window_set_wmclass()).
+func (w *WindowAttr) WmclassName() string {
+	valptr := &w.native.wmclass_name
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// WmclassClass: don’t use (see gtk_window_set_wmclass()).
+func (w *WindowAttr) WmclassClass() string {
+	valptr := &w.native.wmclass_class
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// OverrideRedirect: TRUE to bypass the window manager.
+func (w *WindowAttr) OverrideRedirect() bool {
+	valptr := &w.native.override_redirect
+	var v bool // out
+	if *valptr != 0 {
+		v = true
+	}
+	return v
+}
+
+// TypeHint: hint of the function of the window.
+func (w *WindowAttr) TypeHint() WindowTypeHint {
+	valptr := &w.native.type_hint
+	var v WindowTypeHint // out
+	v = WindowTypeHint(*valptr)
+	return v
+}
+
+// EventMask: event mask (see gdk_window_set_events()).
+func (w *WindowAttr) SetEventMask(eventMask int32) {
+	valptr := &w.native.event_mask
+	*valptr = C.gint(eventMask)
+}
+
+// X coordinate relative to parent window (see gdk_window_move()).
+func (w *WindowAttr) SetX(x int32) {
+	valptr := &w.native.x
+	*valptr = C.gint(x)
+}
+
+// Y coordinate relative to parent window (see gdk_window_move()).
+func (w *WindowAttr) SetY(y int32) {
+	valptr := &w.native.y
+	*valptr = C.gint(y)
+}
+
+// Width: width of window.
+func (w *WindowAttr) SetWidth(width int32) {
+	valptr := &w.native.width
+	*valptr = C.gint(width)
+}
+
+// Height: height of window.
+func (w *WindowAttr) SetHeight(height int32) {
+	valptr := &w.native.height
+	*valptr = C.gint(height)
+}
+
+// OverrideRedirect: TRUE to bypass the window manager.
+func (w *WindowAttr) SetOverrideRedirect(overrideRedirect bool) {
+	valptr := &w.native.override_redirect
+	if overrideRedirect {
+		*valptr = C.TRUE
+	}
 }

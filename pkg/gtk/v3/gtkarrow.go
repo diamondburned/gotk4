@@ -3,17 +3,18 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeArrow returns the GType for the type Arrow.
@@ -22,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeArrow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Arrow").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_arrow_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalArrow)
 	return gtype
 }
@@ -87,4 +88,60 @@ func wrapArrow(obj *coreglib.Object) *Arrow {
 
 func marshalArrow(p uintptr) (interface{}, error) {
 	return wrapArrow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewArrow creates a new Arrow widget.
+//
+// Deprecated: Use a Image with a suitable icon.
+//
+// The function takes the following parameters:
+//
+//    - arrowType: valid ArrowType.
+//    - shadowType: valid ShadowType.
+//
+// The function returns the following values:
+//
+//    - arrow: new Arrow widget.
+//
+func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
+	var _arg1 C.GtkArrowType  // out
+	var _arg2 C.GtkShadowType // out
+	var _cret *C.GtkWidget    // in
+
+	_arg1 = C.GtkArrowType(arrowType)
+	_arg2 = C.GtkShadowType(shadowType)
+
+	_cret = C.gtk_arrow_new(_arg1, _arg2)
+	runtime.KeepAlive(arrowType)
+	runtime.KeepAlive(shadowType)
+
+	var _arrow *Arrow // out
+
+	_arrow = wrapArrow(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _arrow
+}
+
+// Set sets the direction and style of the Arrow, arrow.
+//
+// Deprecated: Use a Image with a suitable icon.
+//
+// The function takes the following parameters:
+//
+//    - arrowType: valid ArrowType.
+//    - shadowType: valid ShadowType.
+//
+func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
+	var _arg0 *C.GtkArrow     // out
+	var _arg1 C.GtkArrowType  // out
+	var _arg2 C.GtkShadowType // out
+
+	_arg0 = (*C.GtkArrow)(unsafe.Pointer(coreglib.InternObject(arrow).Native()))
+	_arg1 = C.GtkArrowType(arrowType)
+	_arg2 = C.GtkShadowType(shadowType)
+
+	C.gtk_arrow_set(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(arrow)
+	runtime.KeepAlive(arrowType)
+	runtime.KeepAlive(shadowType)
 }

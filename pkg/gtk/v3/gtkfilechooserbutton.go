@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_FileChooserButtonClass_file_set(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_FileChooserButtonClass_file_set(GtkFileChooserButton*);
 // extern void _gotk4_gtk3_FileChooserButton_ConnectFileSet(gpointer, guintptr);
 import "C"
 
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileChooserButton() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserButton").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_file_chooser_button_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserButton)
 	return gtype
 }
@@ -87,16 +87,15 @@ func classInitFileChooserButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "FileChooserButtonClass")
+	pclass := (*C.GtkFileChooserButtonClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ FileSet() }); ok {
-		o := pclass.StructFieldOffset("file_set")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FileChooserButtonClass_file_set)
+		pclass.file_set = (*[0]byte)(C._gotk4_gtk3_FileChooserButtonClass_file_set)
 	}
 }
 
 //export _gotk4_gtk3_FileChooserButtonClass_file_set
-func _gotk4_gtk3_FileChooserButtonClass_file_set(arg0 *C.void) {
+func _gotk4_gtk3_FileChooserButtonClass_file_set(arg0 *C.GtkFileChooserButton) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FileSet() })
 
@@ -159,6 +158,37 @@ func (button *FileChooserButton) ConnectFileSet(f func()) coreglib.SignalHandle 
 	return coreglib.ConnectGeneratedClosure(button, "file-set", false, unsafe.Pointer(C._gotk4_gtk3_FileChooserButton_ConnectFileSet), f)
 }
 
+// NewFileChooserButton creates a new file-selecting button widget.
+//
+// The function takes the following parameters:
+//
+//    - title of the browse dialog.
+//    - action: open mode for the widget.
+//
+// The function returns the following values:
+//
+//    - fileChooserButton: new button widget.
+//
+func NewFileChooserButton(title string, action FileChooserAction) *FileChooserButton {
+	var _arg1 *C.gchar               // out
+	var _arg2 C.GtkFileChooserAction // out
+	var _cret *C.GtkWidget           // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkFileChooserAction(action)
+
+	_cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(action)
+
+	var _fileChooserButton *FileChooserButton // out
+
+	_fileChooserButton = wrapFileChooserButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _fileChooserButton
+}
+
 // NewFileChooserButtonWithDialog creates a FileChooserButton widget which uses
 // dialog as its file-picking window.
 //
@@ -178,19 +208,17 @@ func (button *FileChooserButton) ConnectFileSet(f func()) coreglib.SignalHandle 
 //    - fileChooserButton: new button widget.
 //
 func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkWidget // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_gret := _info.InvokeClassMethod("new_FileChooserButton_with_dialog", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
 	runtime.KeepAlive(dialog)
 
 	var _fileChooserButton *FileChooserButton // out
 
-	_fileChooserButton = wrapFileChooserButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fileChooserButton = wrapFileChooserButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserButton
 }
@@ -205,19 +233,17 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 //    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
 //
 func (button *FileChooserButton) FocusOnClick() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFileChooserButton // out
+	var _cret C.gboolean              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_gret := _info.InvokeClassMethod("get_focus_on_click", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
 	runtime.KeepAlive(button)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -232,19 +258,17 @@ func (button *FileChooserButton) FocusOnClick() bool {
 //    - utf8: pointer to the browse dialog’s title.
 //
 func (button *FileChooserButton) Title() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFileChooserButton // out
+	var _cret *C.gchar                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_file_chooser_button_get_title(_arg0)
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -258,19 +282,17 @@ func (button *FileChooserButton) Title() string {
 //      itself.
 //
 func (button *FileChooserButton) WidthChars() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFileChooserButton // out
+	var _cret C.gint                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_gret := _info.InvokeClassMethod("get_width_chars", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
 	runtime.KeepAlive(button)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -287,16 +309,15 @@ func (button *FileChooserButton) WidthChars() int32 {
 //    - focusOnClick: whether the button grabs focus when clicked with the mouse.
 //
 func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFileChooserButton // out
+	var _arg1 C.gboolean              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if focusOnClick {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_info.InvokeClassMethod("set_focus_on_click", _args[:], nil)
-
+	C.gtk_file_chooser_button_set_focus_on_click(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(focusOnClick)
 }
@@ -308,15 +329,14 @@ func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 //    - title: new browse dialog title.
 //
 func (button *FileChooserButton) SetTitle(title string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFileChooserButton // out
+	var _arg1 *C.gchar                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_info.InvokeClassMethod("set_title", _args[:], nil)
-
+	C.gtk_file_chooser_button_set_title(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)
 }
@@ -328,14 +348,13 @@ func (button *FileChooserButton) SetTitle(title string) {
 //    - nChars: new width, in characters.
 //
 func (button *FileChooserButton) SetWidthChars(nChars int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFileChooserButton // out
+	var _arg1 C.gint                  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(nChars)
+	_arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = C.gint(nChars)
 
-	_info := girepository.MustFind("Gtk", "FileChooserButton")
-	_info.InvokeClassMethod("set_width_chars", _args[:], nil)
-
+	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(nChars)
 }

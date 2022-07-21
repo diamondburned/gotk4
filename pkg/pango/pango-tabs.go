@@ -8,14 +8,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeTabAlign returns the GType for the type TabAlign.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTabAlign() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "TabAlign").RegisteredGType())
+	gtype := coreglib.Type(C.pango_tab_align_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTabAlign)
 	return gtype
 }
@@ -35,7 +33,7 @@ func GTypeTabAlign() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTabArray() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "TabArray").RegisteredGType())
+	gtype := coreglib.Type(C.pango_tab_array_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTabArray)
 	return gtype
 }
@@ -75,41 +73,36 @@ type TabArray struct {
 
 // tabArray is the struct that's finalized.
 type tabArray struct {
-	native unsafe.Pointer
+	native *C.PangoTabArray
 }
 
 func marshalTabArray(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TabArray{&tabArray{(unsafe.Pointer)(b)}}, nil
+	return &TabArray{&tabArray{(*C.PangoTabArray)(b)}}, nil
 }
 
 // NewTabArray constructs a struct TabArray.
 func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
-	var _args [2]girepository.Argument
+	var _arg1 C.gint           // out
+	var _arg2 C.gboolean       // out
+	var _cret *C.PangoTabArray // in
 
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(initialSize)
+	_arg1 = C.gint(initialSize)
 	if positionsInPixels {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "TabArray")
-	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_tab_array_new(_arg1, _arg2)
 	runtime.KeepAlive(initialSize)
 	runtime.KeepAlive(positionsInPixels)
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
 		},
 	)
 
@@ -124,27 +117,21 @@ func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
 //      pango.TabArray.Free().
 //
 func (src *TabArray) Copy() *TabArray {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoTabArray // out
+	var _cret *C.PangoTabArray // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_info := girepository.MustFind("Pango", "TabArray")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_tab_array_copy(_arg0)
 	runtime.KeepAlive(src)
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
 		},
 	)
 
@@ -159,19 +146,17 @@ func (src *TabArray) Copy() *TabArray {
 //    - ok: whether positions are in pixels.
 //
 func (tabArray *TabArray) PositionsInPixels() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoTabArray // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
-	_info := girepository.MustFind("Pango", "TabArray")
-	_gret := _info.InvokeRecordMethod("get_positions_in_pixels", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 	runtime.KeepAlive(tabArray)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -185,19 +170,17 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 //    - gint: number of tab stops in the array.
 //
 func (tabArray *TabArray) Size() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoTabArray // out
+	var _cret C.gint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
-	_info := girepository.MustFind("Pango", "TabArray")
-	_gret := _info.InvokeRecordMethod("get_size", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_tab_array_get_size(_arg0)
 	runtime.KeepAlive(tabArray)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -214,25 +197,23 @@ func (tabArray *TabArray) Size() int32 {
 //    - location (optional) to store tab position, or NULL.
 //
 func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
+	var _arg2 C.PangoTabAlign  // in
+	var _arg3 C.gint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(tabIndex)
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	_arg1 = C.gint(tabIndex)
 
-	_info := girepository.MustFind("Pango", "TabArray")
-	_info.InvokeRecordMethod("get_tab", _args[:], _outs[:])
-
+	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(tabArray)
 	runtime.KeepAlive(tabIndex)
 
 	var _alignment TabAlign // out
 	var _location int32     // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_alignment = *(*TabAlign)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
-	}
-	_location = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_alignment = TabAlign(_arg2)
+	_location = int32(_arg3)
 
 	return _alignment, _location
 }
@@ -247,14 +228,41 @@ func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
 //    - newSize: new size of the array.
 //
 func (tabArray *TabArray) Resize(newSize int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(newSize)
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	_arg1 = C.gint(newSize)
 
-	_info := girepository.MustFind("Pango", "TabArray")
-	_info.InvokeRecordMethod("resize", _args[:], nil)
-
+	C.pango_tab_array_resize(_arg0, _arg1)
 	runtime.KeepAlive(tabArray)
 	runtime.KeepAlive(newSize)
+}
+
+// SetTab sets the alignment and location of a tab stop.
+//
+// alignment must always be PANGO_TAB_LEFT in the current implementation.
+//
+// The function takes the following parameters:
+//
+//    - tabIndex: index of a tab stop.
+//    - alignment: tab alignment.
+//    - location: tab location in Pango units.
+//
+func (tabArray *TabArray) SetTab(tabIndex int32, alignment TabAlign, location int32) {
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
+	var _arg2 C.PangoTabAlign  // out
+	var _arg3 C.gint           // out
+
+	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	_arg1 = C.gint(tabIndex)
+	_arg2 = C.PangoTabAlign(alignment)
+	_arg3 = C.gint(location)
+
+	C.pango_tab_array_set_tab(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(tabArray)
+	runtime.KeepAlive(tabIndex)
+	runtime.KeepAlive(alignment)
+	runtime.KeepAlive(location)
 }

@@ -7,22 +7,22 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_Text_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectBackspace(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectCutClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectInsertEmoji(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectPasteClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectToggleOverwrite(gpointer, guintptr);
@@ -34,7 +34,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeText() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Text").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_text_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalText)
 	return gtype
 }
@@ -257,6 +257,41 @@ func (self *Text) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "cut-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectCutClipboard), f)
 }
 
+//export _gotk4_gtk4_Text_ConnectDeleteFromCursor
+func _gotk4_gtk4_Text_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
+	var f func(typ DeleteType, count int32)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(typ DeleteType, count int32))
+	}
+
+	var _typ DeleteType // out
+	var _count int32    // out
+
+	_typ = DeleteType(arg1)
+	_count = int32(arg2)
+
+	f(_typ, _count)
+}
+
+// ConnectDeleteFromCursor is emitted when the user initiates a text deletion.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// If the type is GTK_DELETE_CHARS, GTK deletes the selection if there is one,
+// otherwise it deletes the requested number of characters.
+//
+// The default bindings for this signal are <kbd>Delete</kbd> for deleting a
+// character and <kbd>Ctrl</kbd>-<kbd>Delete</kbd> for deleting a word.
+func (self *Text) ConnectDeleteFromCursor(f func(typ DeleteType, count int32)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectDeleteFromCursor), f)
+}
+
 //export _gotk4_gtk4_Text_ConnectInsertAtCursor
 func _gotk4_gtk4_Text_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(str string)
@@ -311,6 +346,56 @@ func _gotk4_gtk4_Text_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
 // <kbd>Ctrl</kbd>-<kbd>;</kbd>.
 func (self *Text) ConnectInsertEmoji(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "insert-emoji", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectInsertEmoji), f)
+}
+
+//export _gotk4_gtk4_Text_ConnectMoveCursor
+func _gotk4_gtk4_Text_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
+	var f func(step MovementStep, count int32, extend bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, count int32, extend bool))
+	}
+
+	var _step MovementStep // out
+	var _count int32       // out
+	var _extend bool       // out
+
+	_step = MovementStep(arg1)
+	_count = int32(arg2)
+	if arg3 != 0 {
+		_extend = true
+	}
+
+	f(_step, _count, _extend)
+}
+
+// ConnectMoveCursor is emitted when the user initiates a cursor movement.
+//
+// If the cursor is not visible in self, this signal causes the viewport to be
+// moved instead.
+//
+// This is a keybinding signal (class.SignalAction.html).
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the <kbd>Shift</kbd> modifier extends the selection, the variant without it
+// does not. There are too many key combinations to list them all here.
+//
+// - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
+// characters/lines
+//
+// - <kbd>Ctrl</kbd>-<kbd>→</kbd>, etc. move by words/paragraphs
+//
+// - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the buffer.
+func (self *Text) ConnectMoveCursor(f func(step MovementStep, count int32, extend bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectMoveCursor), f)
 }
 
 //export _gotk4_gtk4_Text_ConnectPasteClipboard
@@ -400,13 +485,13 @@ func (self *Text) ConnectToggleOverwrite(f func()) coreglib.SignalHandle {
 //    - text: new GtkText.
 //
 func NewText() *Text {
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("new_Text", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_text_new()
 
 	var _text *Text // out
 
-	_text = wrapText(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_text = wrapText(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -422,19 +507,17 @@ func NewText() *Text {
 //    - text: new GtkText.
 //
 func NewTextWithBuffer(buffer *EntryBuffer) *Text {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkEntryBuffer // out
+	var _cret *C.GtkWidget      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("new_Text_with_buffer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_new_with_buffer(_arg1)
 	runtime.KeepAlive(buffer)
 
 	var _text *Text // out
 
-	_text = wrapText(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_text = wrapText(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _text
 }
@@ -446,19 +529,17 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 //    - ok: TRUE if the GtkText will activate the default widget.
 //
 func (self *Text) ActivatesDefault() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_activates_default", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_activates_default(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -473,21 +554,19 @@ func (self *Text) ActivatesDefault() bool {
 //    - attrList (optional): attribute list, or NULL if none was set.
 //
 func (self *Text) Attributes() *pango.AttrList {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText       // out
+	var _cret *C.PangoAttrList // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_attributes(_arg0)
 	runtime.KeepAlive(self)
 
 	var _attrList *pango.AttrList // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -506,19 +585,17 @@ func (self *Text) Attributes() *pango.AttrList {
 //    - entryBuffer: GtkEntryBuffer object.
 //
 func (self *Text) Buffer() *EntryBuffer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText        // out
+	var _cret *C.GtkEntryBuffer // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_buffer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_buffer(_arg0)
 	runtime.KeepAlive(self)
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }
@@ -531,19 +608,17 @@ func (self *Text) Buffer() *EntryBuffer {
 //    - ok: TRUE if Emoji completion is enabled.
 //
 func (self *Text) EnableEmojiCompletion() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_enable_emoji_completion", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_enable_emoji_completion(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -557,21 +632,19 @@ func (self *Text) EnableEmojiCompletion() bool {
 //    - menuModel (optional): menu model.
 //
 func (self *Text) ExtraMenu() gio.MenuModeller {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText    // out
+	var _cret *C.GMenuModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_extra_menu", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_extra_menu(_arg0)
 	runtime.KeepAlive(self)
 
 	var _menuModel gio.MenuModeller // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -589,6 +662,46 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 	return _menuModel
 }
 
+// InputHints gets the input hints of the GtkText.
+//
+// The function returns the following values:
+//
+func (self *Text) InputHints() InputHints {
+	var _arg0 *C.GtkText      // out
+	var _cret C.GtkInputHints // in
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_text_get_input_hints(_arg0)
+	runtime.KeepAlive(self)
+
+	var _inputHints InputHints // out
+
+	_inputHints = InputHints(_cret)
+
+	return _inputHints
+}
+
+// InputPurpose gets the input purpose of the GtkText.
+//
+// The function returns the following values:
+//
+func (self *Text) InputPurpose() InputPurpose {
+	var _arg0 *C.GtkText        // out
+	var _cret C.GtkInputPurpose // in
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_text_get_input_purpose(_arg0)
+	runtime.KeepAlive(self)
+
+	var _inputPurpose InputPurpose // out
+
+	_inputPurpose = InputPurpose(_cret)
+
+	return _inputPurpose
+}
+
 // InvisibleChar retrieves the character displayed in place of the real
 // characters for entries with visibility set to false.
 //
@@ -602,19 +715,17 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 //      text at all.
 //
 func (self *Text) InvisibleChar() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gunichar // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_invisible_char", _args[:], nil)
-	_cret := *(*C.gunichar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_invisible_char(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gunichar uint32 // out
 
-	_gunichar = uint32(*(*C.gunichar)(unsafe.Pointer(&_cret)))
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -632,19 +743,17 @@ func (self *Text) InvisibleChar() uint32 {
 //      no maximum.
 //
 func (self *Text) MaxLength() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.int      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_max_length", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_max_length(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -656,19 +765,17 @@ func (self *Text) MaxLength() int32 {
 //    - ok: whether the text is overwritten when typing.
 //
 func (self *Text) OverwriteMode() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_overwrite_mode", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_overwrite_mode(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -686,20 +793,18 @@ func (self *Text) OverwriteMode() bool {
 //      be returned.
 //
 func (self *Text) PlaceholderText() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret *C.char    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_placeholder_text", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_placeholder_text(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -713,19 +818,17 @@ func (self *Text) PlaceholderText() string {
 //    - ok: TRUE if self will propagate the text width.
 //
 func (self *Text) PropagateTextWidth() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_propagate_text_width", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_propagate_text_width(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -740,20 +843,18 @@ func (self *Text) PropagateTextWidth() bool {
 //    - tabArray (optional): tabstops, or NULL if none was set.
 //
 func (self *Text) Tabs() *pango.TabArray {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText       // out
+	var _cret *C.PangoTabArray // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_tabs", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_tabs(_arg0)
 	runtime.KeepAlive(self)
 
 	var _tabArray *pango.TabArray // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _tabArray
@@ -769,19 +870,17 @@ func (self *Text) Tabs() *pango.TabArray {
 //    - guint16: current number of characters in GtkText, or 0 if there are none.
 //
 func (self *Text) TextLength() uint16 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.guint16  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_text_length", _args[:], nil)
-	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_text_length(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -794,19 +893,17 @@ func (self *Text) TextLength() uint16 {
 //    - ok: TRUE if self will truncate multi-line text.
 //
 func (self *Text) TruncateMultiline() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_truncate_multiline", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_truncate_multiline(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -820,19 +917,17 @@ func (self *Text) TruncateMultiline() bool {
 //    - ok: TRUE if the text is currently visible.
 //
 func (self *Text) Visibility() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("get_visibility", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_get_visibility(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -851,19 +946,17 @@ func (self *Text) Visibility() bool {
 //    - ok: TRUE if focus is now inside self.
 //
 func (self *Text) GrabFocusWithoutSelecting() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_gret := _info.InvokeClassMethod("grab_focus_without_selecting", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_grab_focus_without_selecting(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -881,16 +974,15 @@ func (self *Text) GrabFocusWithoutSelecting() bool {
 //    - activates: TRUE to activate window’s default widget on Enter keypress.
 //
 func (self *Text) SetActivatesDefault(activates bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gboolean // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if activates {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_activates_default", _args[:], nil)
-
+	C.gtk_text_set_activates_default(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activates)
 }
@@ -902,16 +994,15 @@ func (self *Text) SetActivatesDefault(activates bool) {
 //    - attrs (optional): PangoAttrList or NULL to unset.
 //
 func (self *Text) SetAttributes(attrs *pango.AttrList) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText       // out
+	var _arg1 *C.PangoAttrList // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if attrs != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
+		_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_attributes", _args[:], nil)
-
+	C.gtk_text_set_attributes(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(attrs)
 }
@@ -924,14 +1015,13 @@ func (self *Text) SetAttributes(attrs *pango.AttrList) {
 //    - buffer: GtkEntryBuffer.
 //
 func (self *Text) SetBuffer(buffer *EntryBuffer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText        // out
+	var _arg1 *C.GtkEntryBuffer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_buffer", _args[:], nil)
-
+	C.gtk_text_set_buffer(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(buffer)
 }
@@ -946,16 +1036,15 @@ func (self *Text) SetBuffer(buffer *EntryBuffer) {
 //    - enableEmojiCompletion: TRUE to enable Emoji completion.
 //
 func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gboolean // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if enableEmojiCompletion {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_enable_emoji_completion", _args[:], nil)
-
+	C.gtk_text_set_enable_emoji_completion(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(enableEmojiCompletion)
 }
@@ -968,18 +1057,57 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 //    - model (optional): GMenuModel.
 //
 func (self *Text) SetExtraMenu(model gio.MenuModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText    // out
+	var _arg1 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_extra_menu", _args[:], nil)
-
+	C.gtk_text_set_extra_menu(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// SetInputHints sets input hints that allow input methods to fine-tune their
+// behaviour.
+//
+// The function takes the following parameters:
+//
+//    - hints: hints.
+//
+func (self *Text) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkText      // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_text_set_input_hints(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(hints)
+}
+
+// SetInputPurpose sets the input purpose of the GtkText.
+//
+// This can be used by on-screen keyboards and other input methods to adjust
+// their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - purpose: purpose.
+//
+func (self *Text) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkText        // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_text_set_input_purpose(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(purpose)
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text when
@@ -994,14 +1122,13 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 //    - ch: unicode character.
 //
 func (self *Text) SetInvisibleChar(ch uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gunichar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.gunichar)(unsafe.Pointer(&_args[1])) = C.gunichar(ch)
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gunichar(ch)
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_invisible_char", _args[:], nil)
-
+	C.gtk_text_set_invisible_char(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ch)
 }
@@ -1021,14 +1148,13 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 //      the range 0-65536.
 //
 func (self *Text) SetMaxLength(length int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.int      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(length)
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_max_length", _args[:], nil)
-
+	C.gtk_text_set_max_length(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(length)
 }
@@ -1041,16 +1167,15 @@ func (self *Text) SetMaxLength(length int32) {
 //    - overwrite: new value.
 //
 func (self *Text) SetOverwriteMode(overwrite bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gboolean // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if overwrite {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_overwrite_mode", _args[:], nil)
-
+	C.gtk_text_set_overwrite_mode(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(overwrite)
 }
@@ -1066,17 +1191,16 @@ func (self *Text) SetOverwriteMode(overwrite bool) {
 //      or NULL.
 //
 func (self *Text) SetPlaceholderText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 *C.char    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if text != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_placeholder_text", _args[:], nil)
-
+	C.gtk_text_set_placeholder_text(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(text)
 }
@@ -1089,16 +1213,15 @@ func (self *Text) SetPlaceholderText(text string) {
 //    - propagateTextWidth: TRUE to propagate the text width.
 //
 func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gboolean // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if propagateTextWidth {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_propagate_text_width", _args[:], nil)
-
+	C.gtk_text_set_propagate_text_width(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(propagateTextWidth)
 }
@@ -1110,16 +1233,15 @@ func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 //    - tabs (optional): PangoTabArray.
 //
 func (self *Text) SetTabs(tabs *pango.TabArray) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText       // out
+	var _arg1 *C.PangoTabArray // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if tabs != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
+		_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_tabs", _args[:], nil)
-
+	C.gtk_text_set_tabs(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(tabs)
 }
@@ -1132,16 +1254,15 @@ func (self *Text) SetTabs(tabs *pango.TabArray) {
 //    - truncateMultiline: TRUE to truncate multi-line text.
 //
 func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gboolean // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if truncateMultiline {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_truncate_multiline", _args[:], nil)
-
+	C.gtk_text_set_truncate_multiline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(truncateMultiline)
 }
@@ -1164,16 +1285,15 @@ func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 //    - visible: TRUE if the contents of the GtkText are displayed as plaintext.
 //
 func (self *Text) SetVisibility(visible bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkText // out
+	var _arg1 C.gboolean // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if visible {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("set_visibility", _args[:], nil)
-
+	C.gtk_text_set_visibility(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(visible)
 }
@@ -1182,12 +1302,10 @@ func (self *Text) SetVisibility(visible bool) {
 //
 // After calling this, the default invisible char is used again.
 func (self *Text) UnsetInvisibleChar() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkText // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Text")
-	_info.InvokeClassMethod("unset_invisible_char", _args[:], nil)
-
+	C.gtk_text_unset_invisible_char(_arg0)
 	runtime.KeepAlive(self)
 }

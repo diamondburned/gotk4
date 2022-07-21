@@ -7,14 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeMatrix returns the GType for the type Matrix.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMatrix() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Matrix").RegisteredGType())
+	gtype := coreglib.Type(C.pango_matrix_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMatrix)
 	return gtype
 }
@@ -44,108 +42,96 @@ type Matrix struct {
 
 // matrix is the struct that's finalized.
 type matrix struct {
-	native unsafe.Pointer
+	native *C.PangoMatrix
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Matrix{&matrix{(unsafe.Pointer)(b)}}, nil
+	return &Matrix{&matrix{(*C.PangoMatrix)(b)}}, nil
 }
 
 // XX: 1st component of the transformation matrix.
 func (m *Matrix) XX() float64 {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xx")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	valptr := &m.native.xx
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // XY: 2nd component of the transformation matrix.
 func (m *Matrix) XY() float64 {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xy")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	valptr := &m.native.xy
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // YX: 3rd component of the transformation matrix.
 func (m *Matrix) YX() float64 {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yx")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	valptr := &m.native.yx
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // YY: 4th component of the transformation matrix.
 func (m *Matrix) YY() float64 {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yy")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	valptr := &m.native.yy
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // X0: x translation.
 func (m *Matrix) X0() float64 {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("x0")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	valptr := &m.native.x0
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // Y0: y translation.
 func (m *Matrix) Y0() float64 {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("y0")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	valptr := &m.native.y0
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
+	v = float64(*valptr)
 	return v
 }
 
 // XX: 1st component of the transformation matrix.
 func (m *Matrix) SetXX(xx float64) {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xx")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
-	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(xx)
+	valptr := &m.native.xx
+	*valptr = C.double(xx)
 }
 
 // XY: 2nd component of the transformation matrix.
 func (m *Matrix) SetXY(xy float64) {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xy")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
-	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(xy)
+	valptr := &m.native.xy
+	*valptr = C.double(xy)
 }
 
 // YX: 3rd component of the transformation matrix.
 func (m *Matrix) SetYX(yx float64) {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yx")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
-	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(yx)
+	valptr := &m.native.yx
+	*valptr = C.double(yx)
 }
 
 // YY: 4th component of the transformation matrix.
 func (m *Matrix) SetYY(yy float64) {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yy")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
-	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(yy)
+	valptr := &m.native.yy
+	*valptr = C.double(yy)
 }
 
 // X0: x translation.
 func (m *Matrix) SetX0(x0 float64) {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("x0")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
-	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(x0)
+	valptr := &m.native.x0
+	*valptr = C.double(x0)
 }
 
 // Y0: y translation.
 func (m *Matrix) SetY0(y0 float64) {
-	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("y0")
-	valptr := (*uintptr)(unsafe.Add(m.native, offset))
-	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(y0)
+	valptr := &m.native.y0
+	*valptr = C.double(y0)
 }
 
 // Concat changes the transformation represented by matrix to be the
@@ -157,14 +143,13 @@ func (m *Matrix) SetY0(y0 float64) {
 //    - newMatrix: PangoMatrix.
 //
 func (matrix *Matrix) Concat(newMatrix *Matrix) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 *C.PangoMatrix // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(newMatrix)))
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(newMatrix)))
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_info.InvokeRecordMethod("concat", _args[:], nil)
-
+	C.pango_matrix_concat(_arg0, _arg1)
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(newMatrix)
 }
@@ -177,30 +162,24 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 //      pango.Matrix.Free(), or NULL if matrix was NULL.
 //
 func (matrix *Matrix) Copy() *Matrix {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _cret *C.PangoMatrix // in
 
 	if matrix != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+		_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_matrix_copy(_arg0)
 	runtime.KeepAlive(matrix)
 
 	var _ret *Matrix // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Pango", "Matrix").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.pango_matrix_free((*C.PangoMatrix)(intern.C))
 			},
 		)
 	}
@@ -221,21 +200,19 @@ func (matrix *Matrix) Copy() *Matrix {
 //      matrix is NULL.
 //
 func (matrix *Matrix) FontScaleFactor() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _cret C.double       // in
 
 	if matrix != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+		_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_gret := _info.InvokeRecordMethod("get_font_scale_factor", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 	runtime.KeepAlive(matrix)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -256,23 +233,22 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 //      or NULL.
 //
 func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // in
+	var _arg2 C.double       // in
 
 	if matrix != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+		_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_info.InvokeRecordMethod("get_font_scale_factors", _args[:], _outs[:])
-
+	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(matrix)
 
 	var _xscale float64 // out
 	var _yscale float64 // out
 
-	_xscale = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_yscale = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
+	_xscale = float64(_arg1)
+	_yscale = float64(_arg2)
 
 	return _xscale, _yscale
 }
@@ -286,14 +262,13 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 //    - degrees to rotate counter-clockwise.
 //
 func (matrix *Matrix) Rotate(degrees float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(degrees)
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = C.double(degrees)
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_info.InvokeRecordMethod("rotate", _args[:], nil)
-
+	C.pango_matrix_rotate(_arg0, _arg1)
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(degrees)
 }
@@ -308,15 +283,15 @@ func (matrix *Matrix) Rotate(degrees float64) {
 //    - scaleY: amount to scale by in Y direction.
 //
 func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // out
+	var _arg2 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(scaleX)
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(scaleY)
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = C.double(scaleX)
+	_arg2 = C.double(scaleY)
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_info.InvokeRecordMethod("scale", _args[:], nil)
-
+	C.pango_matrix_scale(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(scaleX)
 	runtime.KeepAlive(scaleY)
@@ -332,15 +307,15 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 //    - ty: amount to translate in the Y direction.
 //
 func (matrix *Matrix) Translate(tx float64, ty float64) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // out
+	var _arg2 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(tx)
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(ty)
+	_arg0 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = C.double(tx)
+	_arg2 = C.double(ty)
 
-	_info := girepository.MustFind("Pango", "Matrix")
-	_info.InvokeRecordMethod("translate", _args[:], nil)
-
+	C.pango_matrix_translate(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(tx)
 	runtime.KeepAlive(ty)

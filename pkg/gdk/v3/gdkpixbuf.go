@@ -7,16 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gdk/gdk.h>
 import "C"
 
 // PixbufGetFromSurface transfers image data from a #cairo_surface_t and
@@ -41,18 +38,20 @@ import "C"
 //      NULL on error.
 //
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
-	var _args [5]girepository.Argument
+	var _arg1 *C.cairo_surface_t // out
+	var _arg2 C.gint             // out
+	var _arg3 C.gint             // out
+	var _arg4 C.gint             // out
+	var _arg5 C.gint             // out
+	var _cret *C.GdkPixbuf       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(surface.Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(srcX)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(srcY)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(height)
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+	_arg4 = C.gint(width)
+	_arg5 = C.gint(height)
 
-	_info := girepository.MustFind("Gdk", "pixbuf_get_from_surface")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -61,9 +60,9 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -118,18 +117,20 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 //      NULL on error.
 //
 func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
-	var _args [5]girepository.Argument
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
+	var _arg5 C.gint       // out
+	var _cret *C.GdkPixbuf // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(srcX)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(srcY)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(height)
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+	_arg4 = C.gint(width)
+	_arg5 = C.gint(height)
 
-	_info := girepository.MustFind("Gdk", "pixbuf_get_from_window")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pixbuf_get_from_window(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
@@ -138,9 +139,9 @@ func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int32) *gdkp
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{

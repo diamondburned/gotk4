@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDragSurface() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DragSurface").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_drag_surface_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDragSurface)
 	return gtype
+}
+
+// DragSurfaceOverrider contains methods that are overridable.
+type DragSurfaceOverrider interface {
 }
 
 // DragSurface is an interface for surfaces used during DND.
@@ -50,6 +52,9 @@ type DragSurfacer interface {
 
 var _ DragSurfacer = (*DragSurface)(nil)
 
+func ifaceInitDragSurfacer(gifacePtr, data C.gpointer) {
+}
+
 func wrapDragSurface(obj *coreglib.Object) *DragSurface {
 	return &DragSurface{
 		Surface: Surface{
@@ -74,23 +79,23 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 //    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (dragSurface *DragSurface) Present(width, height int32) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkDragSurface // out
+	var _arg1 C.int             // out
+	var _arg2 C.int             // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSurface).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
+	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(coreglib.InternObject(dragSurface).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	_info := girepository.MustFind("Gdk", "DragSurface")
-	_gret := _info.InvokeIfaceMethod("present", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(dragSurface)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

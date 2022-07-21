@@ -6,19 +6,17 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gint _gotk4_atk1_HypertextIface_get_link_index(void*, gint);
-// extern gint _gotk4_atk1_HypertextIface_get_n_links(void*);
-// extern void _gotk4_atk1_HypertextIface_link_selected(void*, gint);
+// extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(AtkHypertext*, gint);
+// extern gint _gotk4_atk1_HypertextIface_get_link_index(AtkHypertext*, gint);
+// extern gint _gotk4_atk1_HypertextIface_get_n_links(AtkHypertext*);
+// extern void _gotk4_atk1_HypertextIface_link_selected(AtkHypertext*, gint);
 // extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
-// extern void* _gotk4_atk1_HypertextIface_get_link(void*, gint);
 import "C"
 
 // GTypeHypertext returns the GType for the type Hypertext.
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeHypertext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Hypertext").RegisteredGType())
+	gtype := coreglib.Type(C.atk_hypertext_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalHypertext)
 	return gtype
 }
@@ -109,15 +107,15 @@ type Hypertexter interface {
 var _ Hypertexter = (*Hypertext)(nil)
 
 func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "HypertextIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_link"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_get_link)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_link_index"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_get_link_index)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_n_links"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_get_n_links)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("link_selected"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_link_selected)
+	iface := (*C.AtkHypertextIface)(unsafe.Pointer(gifacePtr))
+	iface.get_link = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link)
+	iface.get_link_index = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link_index)
+	iface.get_n_links = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_n_links)
+	iface.link_selected = (*[0]byte)(C._gotk4_atk1_HypertextIface_link_selected)
 }
 
 //export _gotk4_atk1_HypertextIface_get_link
-func _gotk4_atk1_HypertextIface_get_link(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cret *C.AtkHyperlink) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -127,13 +125,13 @@ func _gotk4_atk1_HypertextIface_get_link(arg0 *C.void, arg1 C.gint) (cret *C.voi
 
 	hyperlink := iface.Link(_linkIndex)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
 
 	return cret
 }
 
 //export _gotk4_atk1_HypertextIface_get_link_index
-func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.void, arg1 C.gint) (cret C.gint) {
+func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -149,7 +147,7 @@ func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.void, arg1 C.gint) (cret 
 }
 
 //export _gotk4_atk1_HypertextIface_get_n_links
-func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -161,7 +159,7 @@ func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_HypertextIface_link_selected
-func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.void, arg1 C.gint) {
+func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -219,21 +217,20 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int32)) coreglib.Sig
 //    - hyperlink: link in this hypertext document at index link_index.
 //
 func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkHyperlink // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(linkIndex)
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(linkIndex)
 
-	_info := girepository.MustFind("Atk", "Hypertext")
-	_gret := _info.InvokeIfaceMethod("get_link", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(linkIndex)
 
 	var _hyperlink *Hyperlink // out
 
-	_hyperlink = wrapHyperlink(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_hyperlink = wrapHyperlink(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hyperlink
 }
@@ -251,21 +248,20 @@ func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 //      no hyperlink associated with this character.
 //
 func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charIndex)
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(charIndex)
 
-	_info := girepository.MustFind("Atk", "Hypertext")
-	_gret := _info.InvokeIfaceMethod("get_link_index", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(charIndex)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -277,19 +273,17 @@ func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 //    - gint: number of links within this hypertext document.
 //
 func (hypertext *Hypertext) NLinks() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkHypertext // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 
-	_info := girepository.MustFind("Atk", "Hypertext")
-	_gret := _info.InvokeIfaceMethod("get_n_links", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_hypertext_get_n_links(_arg0)
 	runtime.KeepAlive(hypertext)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }

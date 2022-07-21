@@ -6,14 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gdk/x11/gdkx.h>
 import "C"
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
@@ -29,22 +26,21 @@ import "C"
 //      doesn’t currently represent a device.
 //
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerXI2, deviceId int32) *X11DeviceXI2 {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GdkX11DeviceManagerXI2 // out
+	var _arg2 C.int                     // out
+	var _cret *C.GdkDevice              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(deviceId)
+	_arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
+	_arg2 = C.int(deviceId)
 
-	_info := girepository.MustFind("GdkX11", "x11_device_manager_lookup")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
 	runtime.KeepAlive(deviceManager)
 	runtime.KeepAlive(deviceId)
 
 	var _x11DeviceXI2 *X11DeviceXI2 // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_x11DeviceXI2 = wrapX11DeviceXI2(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_x11DeviceXI2 = wrapX11DeviceXI2(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _x11DeviceXI2

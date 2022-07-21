@@ -10,24 +10,22 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern char* _gotk4_gio2_FileIOStreamClass_get_etag(void*);
-// extern gboolean _gotk4_gio2_FileIOStreamClass_can_seek(void*);
-// extern gboolean _gotk4_gio2_FileIOStreamClass_can_truncate(void*);
-// extern gboolean _gotk4_gio2_FileIOStreamClass_seek(void*, goffset, GSeekType, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIOStreamClass_truncate_fn(void*, goffset, void*, GError**);
-// extern goffset _gotk4_gio2_FileIOStreamClass_tell(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void* _gotk4_gio2_FileIOStreamClass_query_info(void*, char*, void*, GError**);
-// extern void* _gotk4_gio2_FileIOStreamClass_query_info_finish(void*, void*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIOStreamClass_query_info(GFileIOStream*, char*, GCancellable*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIOStreamClass_query_info_finish(GFileIOStream*, GAsyncResult*, GError**);
+// extern char* _gotk4_gio2_FileIOStreamClass_get_etag(GFileIOStream*);
+// extern gboolean _gotk4_gio2_FileIOStreamClass_can_seek(GFileIOStream*);
+// extern gboolean _gotk4_gio2_FileIOStreamClass_can_truncate(GFileIOStream*);
+// extern gboolean _gotk4_gio2_FileIOStreamClass_seek(GFileIOStream*, goffset, GSeekType, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIOStreamClass_truncate_fn(GFileIOStream*, goffset, GCancellable*, GError**);
+// extern goffset _gotk4_gio2_FileIOStreamClass_tell(GFileIOStream*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeFileIOStream returns the GType for the type FileIOStream.
@@ -36,7 +34,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileIOStream() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileIOStream").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_io_stream_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileIOStream)
 	return gtype
 }
@@ -152,59 +150,51 @@ func classInitFileIOStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "FileIOStreamClass")
+	pclass := (*C.GFileIOStreamClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ CanSeek() bool }); ok {
-		o := pclass.StructFieldOffset("can_seek")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_can_seek)
+		pclass.can_seek = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_can_seek)
 	}
 
 	if _, ok := goval.(interface{ CanTruncate() bool }); ok {
-		o := pclass.StructFieldOffset("can_truncate")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_can_truncate)
+		pclass.can_truncate = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_can_truncate)
 	}
 
 	if _, ok := goval.(interface{ ETag() string }); ok {
-		o := pclass.StructFieldOffset("get_etag")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_get_etag)
+		pclass.get_etag = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_get_etag)
 	}
 
 	if _, ok := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	}); ok {
-		o := pclass.StructFieldOffset("query_info")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_query_info)
+		pclass.query_info = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_query_info)
 	}
 
 	if _, ok := goval.(interface {
 		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 	}); ok {
-		o := pclass.StructFieldOffset("query_info_finish")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_query_info_finish)
+		pclass.query_info_finish = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_query_info_finish)
 	}
 
 	if _, ok := goval.(interface {
 		Seek(ctx context.Context, offset int64, typ glib.SeekType) error
 	}); ok {
-		o := pclass.StructFieldOffset("seek")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_seek)
+		pclass.seek = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_seek)
 	}
 
 	if _, ok := goval.(interface{ Tell() int64 }); ok {
-		o := pclass.StructFieldOffset("tell")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_tell)
+		pclass.tell = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_tell)
 	}
 
 	if _, ok := goval.(interface {
 		TruncateFn(ctx context.Context, size int64) error
 	}); ok {
-		o := pclass.StructFieldOffset("truncate_fn")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileIOStreamClass_truncate_fn)
+		pclass.truncate_fn = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_truncate_fn)
 	}
 }
 
 //export _gotk4_gio2_FileIOStreamClass_can_seek
-func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.void) (cret C.gboolean) {
+func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.GFileIOStream) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CanSeek() bool })
 
@@ -218,7 +208,7 @@ func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.void) (cret C.gboolean) {
 }
 
 //export _gotk4_gio2_FileIOStreamClass_can_truncate
-func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.void) (cret C.gboolean) {
+func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.GFileIOStream) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CanTruncate() bool })
 
@@ -232,7 +222,7 @@ func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.void) (cret C.gboolean) 
 }
 
 //export _gotk4_gio2_FileIOStreamClass_get_etag
-func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.void) (cret *C.char) {
+func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.GFileIOStream) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ETag() string })
 
@@ -246,7 +236,7 @@ func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.void) (cret *C.char) {
 }
 
 //export _gotk4_gio2_FileIOStreamClass_query_info
-func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.void, arg1 *C.char, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.GFileIOStream, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
@@ -262,7 +252,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.void, arg1 *C.char, arg2 *
 
 	fileInfo, _goerr := iface.QueryInfo(_cancellable, _attributes)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
+	cret = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(fileInfo).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
@@ -272,7 +262,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.void, arg1 *C.char, arg2 *
 }
 
 //export _gotk4_gio2_FileIOStreamClass_query_info_finish
-func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.GFileIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
@@ -300,7 +290,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.void, arg1 *C.void,
 
 	fileInfo, _goerr := iface.QueryInfoFinish(_result)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
+	cret = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(fileInfo).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
@@ -310,7 +300,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.void, arg1 *C.void,
 }
 
 //export _gotk4_gio2_FileIOStreamClass_seek
-func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.void, arg1 C.goffset, arg2 C.GSeekType, arg3 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.GFileIOStream, arg1 C.goffset, arg2 C.GSeekType, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Seek(ctx context.Context, offset int64, typ glib.SeekType) error
@@ -336,7 +326,7 @@ func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.void, arg1 C.goffset, arg2 C.GSe
 }
 
 //export _gotk4_gio2_FileIOStreamClass_tell
-func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.void) (cret C.goffset) {
+func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.GFileIOStream) (cret C.goffset) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Tell() int64 })
 
@@ -348,7 +338,7 @@ func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.void) (cret C.goffset) {
 }
 
 //export _gotk4_gio2_FileIOStreamClass_truncate_fn
-func _gotk4_gio2_FileIOStreamClass_truncate_fn(arg0 *C.void, arg1 C.goffset, arg2 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_FileIOStreamClass_truncate_fn(arg0 *C.GFileIOStream, arg1 C.goffset, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TruncateFn(ctx context.Context, size int64) error
@@ -396,21 +386,19 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 //    - utf8 (optional): entity tag for the stream.
 //
 func (stream *FileIOStream) ETag() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFileIOStream // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_info := girepository.MustFind("Gio", "FileIOStream")
-	_gret := _info.InvokeClassMethod("get_etag", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_io_stream_get_etag(_arg0)
 	runtime.KeepAlive(stream)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -442,21 +430,22 @@ func (stream *FileIOStream) ETag() string {
 //    - fileInfo for the stream, or NULL on error.
 //
 func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GFileIOStream // out
+	var _arg2 *C.GCancellable  // out
+	var _arg1 *C.char          // out
+	var _cret *C.GFileInfo     // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "FileIOStream")
-	_gret := _info.InvokeClassMethod("query_info", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -464,9 +453,9 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInfo, _goerr
@@ -487,25 +476,28 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 //    - callback (optional) to call when the request is satisfied.
 //
 func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GFileIOStream      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "FileIOStream")
-	_info.InvokeClassMethod("query_info_async", _args[:], nil)
-
+	C.g_file_io_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -525,24 +517,24 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 //    - fileInfo for the finished query.
 //
 func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileIOStream // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileInfo     // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "FileIOStream")
-	_gret := _info.InvokeClassMethod("query_info_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInfo, _goerr

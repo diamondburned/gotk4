@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_ScrollableInterface_get_border(void*, void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_ScrollableInterface_get_border(GtkScrollable*, GtkBorder*);
 import "C"
 
 // GTypeScrollable returns the GType for the type Scrollable.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Scrollable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scrollable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollable)
 	return gtype
 }
@@ -90,29 +90,41 @@ type Scrollabler interface {
 	Border() (*Border, bool)
 	// HAdjustment retrieves the Adjustment used for horizontal scrolling.
 	HAdjustment() *Adjustment
+	// HScrollPolicy gets the horizontal ScrollablePolicy.
+	HScrollPolicy() ScrollablePolicy
 	// VAdjustment retrieves the Adjustment used for vertical scrolling.
 	VAdjustment() *Adjustment
+	// VScrollPolicy gets the vertical ScrollablePolicy.
+	VScrollPolicy() ScrollablePolicy
 	// SetHAdjustment sets the horizontal adjustment of the Scrollable.
 	SetHAdjustment(hadjustment *Adjustment)
+	// SetHScrollPolicy sets the ScrollablePolicy to determine whether
+	// horizontal scrolling should start below the minimum width or below the
+	// natural width.
+	SetHScrollPolicy(policy ScrollablePolicy)
 	// SetVAdjustment sets the vertical adjustment of the Scrollable.
 	SetVAdjustment(vadjustment *Adjustment)
+	// SetVScrollPolicy sets the ScrollablePolicy to determine whether vertical
+	// scrolling should start below the minimum height or below the natural
+	// height.
+	SetVScrollPolicy(policy ScrollablePolicy)
 }
 
 var _ Scrollabler = (*Scrollable)(nil)
 
 func ifaceInitScrollabler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gtk", "ScrollableInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_border"))) = unsafe.Pointer(C._gotk4_gtk3_ScrollableInterface_get_border)
+	iface := (*C.GtkScrollableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_border = (*[0]byte)(C._gotk4_gtk3_ScrollableInterface_get_border)
 }
 
 //export _gotk4_gtk3_ScrollableInterface_get_border
-func _gotk4_gtk3_ScrollableInterface_get_border(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
+func _gotk4_gtk3_ScrollableInterface_get_border(arg0 *C.GtkScrollable, arg1 *C.GtkBorder) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ScrollableOverrider)
 
 	border, ok := iface.Border()
 
-	*arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(border)))
+	*arg1 = *(*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
 	if ok {
 		cret = C.TRUE
 	}
@@ -141,22 +153,20 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 //    - ok: TRUE if border has been set.
 //
 func (scrollable *Scrollable) Border() (*Border, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkScrollable // out
+	var _arg1 C.GtkBorder      // in
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scrollable")
-	_gret := _info.InvokeIfaceMethod("get_border", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scrollable_get_border(_arg0, &_arg1)
 	runtime.KeepAlive(scrollable)
 
 	var _border *Border // out
 	var _ok bool        // out
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -170,21 +180,41 @@ func (scrollable *Scrollable) Border() (*Border, bool) {
 //    - adjustment: horizontal Adjustment.
 //
 func (scrollable *Scrollable) HAdjustment() *Adjustment {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScrollable // out
+	var _cret *C.GtkAdjustment // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scrollable")
-	_gret := _info.InvokeIfaceMethod("get_hadjustment", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scrollable_get_hadjustment(_arg0)
 	runtime.KeepAlive(scrollable)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
+}
+
+// HScrollPolicy gets the horizontal ScrollablePolicy.
+//
+// The function returns the following values:
+//
+//    - scrollablePolicy: horizontal ScrollablePolicy.
+//
+func (scrollable *Scrollable) HScrollPolicy() ScrollablePolicy {
+	var _arg0 *C.GtkScrollable      // out
+	var _cret C.GtkScrollablePolicy // in
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+
+	_cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
+	runtime.KeepAlive(scrollable)
+
+	var _scrollablePolicy ScrollablePolicy // out
+
+	_scrollablePolicy = ScrollablePolicy(_cret)
+
+	return _scrollablePolicy
 }
 
 // VAdjustment retrieves the Adjustment used for vertical scrolling.
@@ -194,21 +224,41 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 //    - adjustment: vertical Adjustment.
 //
 func (scrollable *Scrollable) VAdjustment() *Adjustment {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScrollable // out
+	var _cret *C.GtkAdjustment // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scrollable")
-	_gret := _info.InvokeIfaceMethod("get_vadjustment", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scrollable_get_vadjustment(_arg0)
 	runtime.KeepAlive(scrollable)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
+}
+
+// VScrollPolicy gets the vertical ScrollablePolicy.
+//
+// The function returns the following values:
+//
+//    - scrollablePolicy: vertical ScrollablePolicy.
+//
+func (scrollable *Scrollable) VScrollPolicy() ScrollablePolicy {
+	var _arg0 *C.GtkScrollable      // out
+	var _cret C.GtkScrollablePolicy // in
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+
+	_cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
+	runtime.KeepAlive(scrollable)
+
+	var _scrollablePolicy ScrollablePolicy // out
+
+	_scrollablePolicy = ScrollablePolicy(_cret)
+
+	return _scrollablePolicy
 }
 
 // SetHAdjustment sets the horizontal adjustment of the Scrollable.
@@ -218,18 +268,36 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 //    - hadjustment (optional): Adjustment.
 //
 func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkScrollable // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 	if hadjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Scrollable")
-	_info.InvokeIfaceMethod("set_hadjustment", _args[:], nil)
-
+	C.gtk_scrollable_set_hadjustment(_arg0, _arg1)
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(hadjustment)
+}
+
+// SetHScrollPolicy sets the ScrollablePolicy to determine whether horizontal
+// scrolling should start below the minimum width or below the natural width.
+//
+// The function takes the following parameters:
+//
+//    - policy: horizontal ScrollablePolicy.
+//
+func (scrollable *Scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
+	var _arg0 *C.GtkScrollable      // out
+	var _arg1 C.GtkScrollablePolicy // out
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg1 = C.GtkScrollablePolicy(policy)
+
+	C.gtk_scrollable_set_hscroll_policy(_arg0, _arg1)
+	runtime.KeepAlive(scrollable)
+	runtime.KeepAlive(policy)
 }
 
 // SetVAdjustment sets the vertical adjustment of the Scrollable.
@@ -239,16 +307,34 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 //    - vadjustment (optional): Adjustment.
 //
 func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkScrollable // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 	if vadjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Scrollable")
-	_info.InvokeIfaceMethod("set_vadjustment", _args[:], nil)
-
+	C.gtk_scrollable_set_vadjustment(_arg0, _arg1)
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(vadjustment)
+}
+
+// SetVScrollPolicy sets the ScrollablePolicy to determine whether vertical
+// scrolling should start below the minimum height or below the natural height.
+//
+// The function takes the following parameters:
+//
+//    - policy: vertical ScrollablePolicy.
+//
+func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
+	var _arg0 *C.GtkScrollable      // out
+	var _arg1 C.GtkScrollablePolicy // out
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	_arg1 = C.GtkScrollablePolicy(policy)
+
+	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
+	runtime.KeepAlive(scrollable)
+	runtime.KeepAlive(policy)
 }

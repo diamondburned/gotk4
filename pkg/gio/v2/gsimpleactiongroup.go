@@ -6,13 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSimpleActionGroup() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SimpleActionGroup").RegisteredGType())
+	gtype := coreglib.Type(C.g_simple_action_group_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleActionGroup)
 	return gtype
 }
@@ -76,15 +75,49 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 //    - simpleActionGroup: new ActionGroup.
 //
 func NewSimpleActionGroup() *SimpleActionGroup {
-	_info := girepository.MustFind("Gio", "SimpleActionGroup")
-	_gret := _info.InvokeClassMethod("new_SimpleActionGroup", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GSimpleActionGroup // in
+
+	_cret = C.g_simple_action_group_new()
 
 	var _simpleActionGroup *SimpleActionGroup // out
 
-	_simpleActionGroup = wrapSimpleActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_simpleActionGroup = wrapSimpleActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleActionGroup
+}
+
+// AddEntries: convenience function for creating multiple Action instances and
+// adding them to the action group.
+//
+// Deprecated: Use g_action_map_add_action_entries().
+//
+// The function takes the following parameters:
+//
+//    - entries: pointer to the first item in an array of Entry structs.
+//    - userData (optional): user data for signal connections.
+//
+func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData unsafe.Pointer) {
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.GActionEntry       // out
+	var _arg2 C.gint
+	var _arg3 C.gpointer // out
+
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg2 = (C.gint)(len(entries))
+	_arg1 = (*C.GActionEntry)(C.calloc(C.size_t(len(entries)), C.size_t(C.sizeof_GActionEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GActionEntry)(_arg1), len(entries))
+		for i := range entries {
+			out[i] = *(*C.GActionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
+		}
+	}
+	_arg3 = (C.gpointer)(unsafe.Pointer(userData))
+
+	C.g_simple_action_group_add_entries(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(simple)
+	runtime.KeepAlive(entries)
+	runtime.KeepAlive(userData)
 }
 
 // Insert adds an action to the action group.
@@ -101,14 +134,13 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 //    - action: #GAction.
 //
 func (simple *SimpleActionGroup) Insert(action Actioner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.GAction            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_info := girepository.MustFind("Gio", "SimpleActionGroup")
-	_info.InvokeClassMethod("insert", _args[:], nil)
-
+	C.g_simple_action_group_insert(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(action)
 }
@@ -128,22 +160,21 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 //    - action or NULL.
 //
 func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GAction            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "SimpleActionGroup")
-	_gret := _info.InvokeClassMethod("lookup", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_simple_action_group_lookup(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)
 
 	var _action *Action // out
 
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _action
 }
@@ -159,15 +190,14 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 //    - actionName: name of the action.
 //
 func (simple *SimpleActionGroup) Remove(actionName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.gchar              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "SimpleActionGroup")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.g_simple_action_group_remove(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)
 }

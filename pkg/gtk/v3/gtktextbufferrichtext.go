@@ -8,14 +8,13 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // TextBufferDeserializeFunc: function that is called to deserialize rich text
@@ -24,7 +23,7 @@ import "C"
 type TextBufferDeserializeFunc func(registerBuffer, contentBuffer *TextBuffer, iter *TextIter, data []byte, createTags bool) (_goerr error)
 
 //export _gotk4_gtk3_TextBufferDeserializeFunc
-func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.guint8, arg5 C.gsize, arg6 C.gboolean, arg7 C.gpointer, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTextBuffer, arg3 *C.GtkTextIter, arg4 *C.guint8, arg5 C.gsize, arg6 C.gboolean, arg7 C.gpointer, _cerr **C.GError) (cret C.gboolean) {
 	var fn TextBufferDeserializeFunc
 	{
 		v := gbox.Get(uintptr(arg7))
@@ -63,7 +62,7 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.v
 type TextBufferSerializeFunc func(registerBuffer, contentBuffer *TextBuffer, start, end *TextIter) (length uint, guint8 *byte)
 
 //export _gotk4_gtk3_TextBufferSerializeFunc
-func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.gsize, arg6 C.gpointer) (cret *C.guint8) {
+func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTextBuffer, arg3 *C.GtkTextIter, arg4 *C.GtkTextIter, arg5 *C.gsize, arg6 C.gpointer) (cret *C.guint8) {
 	var fn TextBufferSerializeFunc
 	{
 		v := gbox.Get(uintptr(arg6))

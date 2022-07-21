@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCharsetConverter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "CharsetConverter").RegisteredGType())
+	gtype := coreglib.Type(C.g_charset_converter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCharsetConverter)
 	return gtype
 }
@@ -81,26 +79,26 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 //    - charsetConverter: new Converter or NULL on error.
 //
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar             // out
+	var _arg2 *C.gchar             // out
+	var _cret *C.GCharsetConverter // in
+	var _cerr *C.GError            // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(toCharset)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(fromCharset)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(toCharset)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(fromCharset)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "CharsetConverter")
-	_gret := _info.InvokeClassMethod("new_CharsetConverter", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_charset_converter_new(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(toCharset)
 	runtime.KeepAlive(fromCharset)
 
 	var _charsetConverter *CharsetConverter // out
 	var _goerr error                        // out
 
-	_charsetConverter = wrapCharsetConverter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_charsetConverter = wrapCharsetConverter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _charsetConverter, _goerr
@@ -113,19 +111,17 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 //    - guint: number of fallbacks that converter has applied.
 //
 func (converter *CharsetConverter) NumFallbacks() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GCharsetConverter // out
+	var _cret C.guint              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
-	_info := girepository.MustFind("Gio", "CharsetConverter")
-	_gret := _info.InvokeClassMethod("get_num_fallbacks", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 	runtime.KeepAlive(converter)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -137,19 +133,17 @@ func (converter *CharsetConverter) NumFallbacks() uint32 {
 //    - ok: TRUE if fallbacks are used by converter.
 //
 func (converter *CharsetConverter) UseFallback() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GCharsetConverter // out
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
-	_info := girepository.MustFind("Gio", "CharsetConverter")
-	_gret := _info.InvokeClassMethod("get_use_fallback", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_charset_converter_get_use_fallback(_arg0)
 	runtime.KeepAlive(converter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -163,16 +157,15 @@ func (converter *CharsetConverter) UseFallback() bool {
 //    - useFallback: TRUE to use fallbacks.
 //
 func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GCharsetConverter // out
+	var _arg1 C.gboolean           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
+	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 	if useFallback {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "CharsetConverter")
-	_info.InvokeClassMethod("set_use_fallback", _args[:], nil)
-
+	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
 	runtime.KeepAlive(converter)
 	runtime.KeepAlive(useFallback)
 }

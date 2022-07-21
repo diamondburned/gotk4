@@ -7,15 +7,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_AccelMap_ConnectChanged(gpointer, gchar*, guint, GdkModifierType, guintptr);
 import "C"
 
 // GTypeAccelMap returns the GType for the type AccelMap.
@@ -24,9 +26,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccelMap() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccelMap").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accel_map_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccelMap)
 	return gtype
+}
+
+// AccelMapOverrider contains methods that are overridable.
+type AccelMapOverrider interface {
 }
 
 // AccelMap: accelerator maps are used to define runtime configurable
@@ -93,6 +99,14 @@ var (
 	_ coreglib.Objector = (*AccelMap)(nil)
 )
 
+func classInitAccelMapper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapAccelMap(obj *coreglib.Object) *AccelMap {
 	return &AccelMap{
 		Object: obj,
@@ -101,6 +115,70 @@ func wrapAccelMap(obj *coreglib.Object) *AccelMap {
 
 func marshalAccelMap(p uintptr) (interface{}, error) {
 	return wrapAccelMap(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gtk3_AccelMap_ConnectChanged
+func _gotk4_gtk3_AccelMap_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) {
+	var f func(accelPath string, accelKey uint32, accelMods gdk.ModifierType)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(accelPath string, accelKey uint32, accelMods gdk.ModifierType))
+	}
+
+	var _accelPath string           // out
+	var _accelKey uint32            // out
+	var _accelMods gdk.ModifierType // out
+
+	_accelPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_accelKey = uint32(arg2)
+	_accelMods = gdk.ModifierType(arg3)
+
+	f(_accelPath, _accelKey, _accelMods)
+}
+
+// ConnectChanged notifies of a change in the global accelerator map. The path
+// is also used as the detail for the signal, so it is possible to connect to
+// changed::accel_path.
+func (v *AccelMap) ConnectChanged(f func(accelPath string, accelKey uint32, accelMods gdk.ModifierType)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gtk3_AccelMap_ConnectChanged), f)
+}
+
+// AccelMapAddEntry registers a new accelerator with the global accelerator map.
+// This function should only be called once per accel_path with the canonical
+// accel_key and accel_mods for this path. To change the accelerator during
+// runtime programatically, use gtk_accel_map_change_entry().
+//
+// Set accel_key and accel_mods to 0 to request a removal of the accelerator.
+//
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+//
+// The function takes the following parameters:
+//
+//    - accelPath: valid accelerator path.
+//    - accelKey: accelerator key.
+//    - accelMods: accelerator modifiers.
+//
+func AccelMapAddEntry(accelPath string, accelKey uint32, accelMods gdk.ModifierType) {
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(accelKey)
+	_arg3 = C.GdkModifierType(accelMods)
+
+	C.gtk_accel_map_add_entry(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(accelPath)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
 }
 
 // AccelMapAddFilter adds a filter to the global list of accel path filters.
@@ -116,15 +194,65 @@ func marshalAccelMap(p uintptr) (interface{}, error) {
 //    - filterPattern: pattern (see Spec).
 //
 func AccelMapAddFilter(filterPattern string) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar // out
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(filterPattern)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filterPattern)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "add_filter")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_add_filter(_arg1)
 	runtime.KeepAlive(filterPattern)
+}
+
+// AccelMapChangeEntry changes the accel_key and accel_mods currently associated
+// with accel_path. Due to conflicts with other accelerators, a change may not
+// always be possible, replace indicates whether other accelerators may be
+// deleted to resolve such conflicts. A change will only occur if all conflicts
+// could be resolved (which might not be the case if conflicting accelerators
+// are locked). Successful changes are indicated by a TRUE return value.
+//
+// Note that accel_path string will be stored in a #GQuark. Therefore, if you
+// pass a static string, you can save some memory by interning it first with
+// g_intern_static_string().
+//
+// The function takes the following parameters:
+//
+//    - accelPath: valid accelerator path.
+//    - accelKey: new accelerator key.
+//    - accelMods: new accelerator modifiers.
+//    - replace: TRUE if other accelerators may be deleted upon conflicts.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the accelerator could be changed, FALSE otherwise.
+//
+func AccelMapChangeEntry(accelPath string, accelKey uint32, accelMods gdk.ModifierType, replace bool) bool {
+	var _arg1 *C.gchar          // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _arg4 C.gboolean        // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(accelKey)
+	_arg3 = C.GdkModifierType(accelMods)
+	if replace {
+		_arg4 = C.TRUE
+	}
+
+	_cret = C.gtk_accel_map_change_entry(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(accelPath)
+	runtime.KeepAlive(accelKey)
+	runtime.KeepAlive(accelMods)
+	runtime.KeepAlive(replace)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // AccelMapGet gets the singleton global AccelMap object. This object is useful
@@ -136,13 +264,13 @@ func AccelMapAddFilter(filterPattern string) {
 //    - accelMap: global AccelMap object.
 //
 func AccelMapGet() *AccelMap {
-	_info := girepository.MustFind("Gtk", "get")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkAccelMap // in
+
+	_cret = C.gtk_accel_map_get()
 
 	var _accelMap *AccelMap // out
 
-	_accelMap = wrapAccelMap(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_accelMap = wrapAccelMap(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelMap
 }
@@ -156,14 +284,12 @@ func AccelMapGet() *AccelMap {
 //      name encoding.
 //
 func AccelMapLoad(fileName string) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar // out
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "load")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_load(_arg1)
 	runtime.KeepAlive(fileName)
 }
 
@@ -176,13 +302,11 @@ func AccelMapLoad(fileName string) {
 //    - fd: valid readable file descriptor.
 //
 func AccelMapLoadFd(fd int32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.gint // out
 
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(fd)
+	_arg1 = C.gint(fd)
 
-	_info := girepository.MustFind("Gtk", "load_fd")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_load_fd(_arg1)
 	runtime.KeepAlive(fd)
 }
 
@@ -193,13 +317,11 @@ func AccelMapLoadFd(fd int32) {
 //    - scanner which has already been provided with an input file.
 //
 func AccelMapLoadScanner(scanner *glib.Scanner) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GScanner // out
 
-	*(**C.GScanner)(unsafe.Pointer(&_args[0])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
-	_info := girepository.MustFind("Gtk", "load_scanner")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_load_scanner(_arg1)
 	runtime.KeepAlive(scanner)
 }
 
@@ -223,14 +345,12 @@ func AccelMapLoadScanner(scanner *glib.Scanner) {
 //    - accelPath: valid accelerator path.
 //
 func AccelMapLockPath(accelPath string) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar // out
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "lock_path")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_lock_path(_arg1)
 	runtime.KeepAlive(accelPath)
 }
 
@@ -247,25 +367,21 @@ func AccelMapLockPath(accelPath string) {
 //    - ok: TRUE if accel_path is known, FALSE otherwise.
 //
 func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkAccelKey // in
+	var _cret C.gboolean    // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "lookup_entry")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_accel_map_lookup_entry(_arg1, &_arg2)
 	runtime.KeepAlive(accelPath)
 
 	var _key *AccelKey // out
 	var _ok bool       // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_key = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_key = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -282,14 +398,12 @@ func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 //      GLib file name encoding.
 //
 func AccelMapSave(fileName string) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar // out
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "save")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_save(_arg1)
 	runtime.KeepAlive(fileName)
 }
 
@@ -302,13 +416,11 @@ func AccelMapSave(fileName string) {
 //    - fd: valid writable file descriptor.
 //
 func AccelMapSaveFd(fd int32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.gint // out
 
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(fd)
+	_arg1 = C.gint(fd)
 
-	_info := girepository.MustFind("Gtk", "save_fd")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_save_fd(_arg1)
 	runtime.KeepAlive(fd)
 }
 
@@ -321,13 +433,11 @@ func AccelMapSaveFd(fd int32) {
 //    - accelPath: valid accelerator path.
 //
 func AccelMapUnlockPath(accelPath string) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar // out
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "unlock_path")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_accel_map_unlock_path(_arg1)
 	runtime.KeepAlive(accelPath)
 }

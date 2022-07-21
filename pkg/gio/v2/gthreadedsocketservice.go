@@ -7,16 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(void*, void*, GObject*);
-// extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, void*, GObject, guintptr);
+// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(GThreadedSocketService*, GSocketConnection*, GObject*);
+// extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
 // GTypeThreadedSocketService returns the GType for the type ThreadedSocketService.
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeThreadedSocketService() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ThreadedSocketService").RegisteredGType())
+	gtype := coreglib.Type(C.g_threaded_socket_service_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalThreadedSocketService)
 	return gtype
 }
@@ -71,18 +69,17 @@ func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "ThreadedSocketServiceClass")
+	pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	}); ok {
-		o := pclass.StructFieldOffset("run")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ThreadedSocketServiceClass_run)
+		pclass.run = (*[0]byte)(C._gotk4_gio2_ThreadedSocketServiceClass_run)
 	}
 }
 
 //export _gotk4_gio2_ThreadedSocketServiceClass_run
-func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.void, arg1 *C.void, arg2 *C.GObject) (cret C.gboolean) {
+func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.GThreadedSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
@@ -118,7 +115,7 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_ThreadedSocketService_ConnectRun
-func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.void, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -166,19 +163,17 @@ func (service *ThreadedSocketService) ConnectRun(f func(connection *SocketConnec
 //    - threadedSocketService: new Service.
 //
 func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
-	var _args [1]girepository.Argument
+	var _arg1 C.int             // out
+	var _cret *C.GSocketService // in
 
-	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(maxThreads)
+	_arg1 = C.int(maxThreads)
 
-	_info := girepository.MustFind("Gio", "ThreadedSocketService")
-	_gret := _info.InvokeClassMethod("new_ThreadedSocketService", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_threaded_socket_service_new(_arg1)
 	runtime.KeepAlive(maxThreads)
 
 	var _threadedSocketService *ThreadedSocketService // out
 
-	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
 }

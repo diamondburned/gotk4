@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectStopped(gpointer, guintptr);
@@ -27,9 +27,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureMultiPress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureMultiPress").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_multi_press_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureMultiPress)
 	return gtype
+}
+
+// GestureMultiPressOverrider contains methods that are overridable.
+type GestureMultiPressOverrider interface {
 }
 
 // GestureMultiPress is a Gesture implementation able to recognize multiple
@@ -49,6 +53,14 @@ type GestureMultiPress struct {
 var (
 	_ Gesturer = (*GestureMultiPress)(nil)
 )
+
+func classInitGestureMultiPresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureMultiPress(obj *coreglib.Object) *GestureMultiPress {
 	return &GestureMultiPress{
@@ -162,19 +174,17 @@ func (gesture *GestureMultiPress) ConnectStopped(f func()) coreglib.SignalHandle
 //    - gestureMultiPress: newly created GestureMultiPress.
 //
 func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkWidget  // out
+	var _cret *C.GtkGesture // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureMultiPress")
-	_gret := _info.InvokeClassMethod("new_GestureMultiPress", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_multi_press_new(_arg1)
 	runtime.KeepAlive(widget)
 
 	var _gestureMultiPress *GestureMultiPress // out
 
-	_gestureMultiPress = wrapGestureMultiPress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureMultiPress = wrapGestureMultiPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureMultiPress
 }
@@ -190,22 +200,20 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 //    - ok: TRUE if rect was filled with the press area.
 //
 func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkGestureMultiPress // out
+	var _arg1 C.GdkRectangle          // in
+	var _cret C.gboolean              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureMultiPress")
-	_gret := _info.InvokeClassMethod("get_area", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_multi_press_get_area(_arg0, &_arg1)
 	runtime.KeepAlive(gesture)
 
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -225,16 +233,15 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 //    - rect (optional): rectangle to receive coordinates on.
 //
 func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGestureMultiPress // out
+	var _arg1 *C.GdkRectangle         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	if rect != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+		_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
 	}
 
-	_info := girepository.MustFind("Gtk", "GestureMultiPress")
-	_info.InvokeClassMethod("set_area", _args[:], nil)
-
+	C.gtk_gesture_multi_press_set_area(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(rect)
 }

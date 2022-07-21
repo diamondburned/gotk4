@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeAnyFilter returns the GType for the type AnyFilter.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAnyFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AnyFilter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_any_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAnyFilter)
 	return gtype
 }
@@ -34,7 +32,7 @@ func GTypeAnyFilter() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEveryFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EveryFilter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_every_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEveryFilter)
 	return gtype
 }
@@ -45,9 +43,13 @@ func GTypeEveryFilter() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMultiFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MultiFilter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_multi_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMultiFilter)
 	return gtype
+}
+
+// AnyFilterOverrider contains methods that are overridable.
+type AnyFilterOverrider interface {
 }
 
 // AnyFilter: GtkAnyFilter matches an item when at least one of its filters
@@ -62,6 +64,14 @@ type AnyFilter struct {
 var (
 	_ MultiFilterer = (*AnyFilter)(nil)
 )
+
+func classInitAnyFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAnyFilter(obj *coreglib.Object) *AnyFilter {
 	return &AnyFilter{
@@ -97,15 +107,19 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 //    - anyFilter: new GtkAnyFilter.
 //
 func NewAnyFilter() *AnyFilter {
-	_info := girepository.MustFind("Gtk", "AnyFilter")
-	_gret := _info.InvokeClassMethod("new_AnyFilter", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkAnyFilter // in
+
+	_cret = C.gtk_any_filter_new()
 
 	var _anyFilter *AnyFilter // out
 
-	_anyFilter = wrapAnyFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_anyFilter = wrapAnyFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _anyFilter
+}
+
+// EveryFilterOverrider contains methods that are overridable.
+type EveryFilterOverrider interface {
 }
 
 // EveryFilter: GtkEveryFilter matches an item when each of its filters matches.
@@ -119,6 +133,14 @@ type EveryFilter struct {
 var (
 	_ MultiFilterer = (*EveryFilter)(nil)
 )
+
+func classInitEveryFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEveryFilter(obj *coreglib.Object) *EveryFilter {
 	return &EveryFilter{
@@ -154,15 +176,19 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 //    - everyFilter: new GtkEveryFilter.
 //
 func NewEveryFilter() *EveryFilter {
-	_info := girepository.MustFind("Gtk", "EveryFilter")
-	_gret := _info.InvokeClassMethod("new_EveryFilter", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkEveryFilter // in
+
+	_cret = C.gtk_every_filter_new()
 
 	var _everyFilter *EveryFilter // out
 
-	_everyFilter = wrapEveryFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_everyFilter = wrapEveryFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _everyFilter
+}
+
+// MultiFilterOverrider contains methods that are overridable.
+type MultiFilterOverrider interface {
 }
 
 // MultiFilter: GtkMultiFilter is the base class for filters that combine
@@ -190,6 +216,14 @@ type MultiFilterer interface {
 }
 
 var _ MultiFilterer = (*MultiFilter)(nil)
+
+func classInitMultiFilterer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMultiFilter(obj *coreglib.Object) *MultiFilter {
 	return &MultiFilter{
@@ -226,15 +260,14 @@ func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
 //    - filter: new filter to use.
 //
 func (self *MultiFilter) Append(filter *Filter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMultiFilter // out
+	var _arg1 *C.GtkFilter      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
 
-	_info := girepository.MustFind("Gtk", "MultiFilter")
-	_info.InvokeClassMethod("append", _args[:], nil)
-
+	C.gtk_multi_filter_append(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filter)
 }
@@ -250,14 +283,13 @@ func (self *MultiFilter) Append(filter *Filter) {
 //    - position of filter to remove.
 //
 func (self *MultiFilter) Remove(position uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMultiFilter // out
+	var _arg1 C.guint           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(position)
 
-	_info := girepository.MustFind("Gtk", "MultiFilter")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.gtk_multi_filter_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 }

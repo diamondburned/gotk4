@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdkx.h>
 // #include <glib-object.h>
 // extern void _gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged(gpointer, guintptr);
 import "C"
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeX11Screen() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11Screen").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_x11_screen_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalX11Screen)
 	return gtype
 }
@@ -38,15 +36,19 @@ func GTypeX11Screen() coreglib.Type {
 //      XOpenDisplay().
 //
 func X11GetDefaultScreen() int32 {
-	_info := girepository.MustFind("GdkX11", "x11_get_default_screen")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
+	var _cret C.gint // in
+
+	_cret = C.gdk_x11_get_default_screen()
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// X11ScreenOverrider contains methods that are overridable.
+type X11ScreenOverrider interface {
 }
 
 type X11Screen struct {
@@ -57,6 +59,14 @@ type X11Screen struct {
 var (
 	_ coreglib.Objector = (*X11Screen)(nil)
 )
+
+func classInitX11Screener(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Screen(obj *coreglib.Object) *X11Screen {
 	return &X11Screen{
@@ -100,19 +110,17 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 //    - guint32: current workspace, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) CurrentDesktop() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.guint32    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_current_desktop", _args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -127,19 +135,17 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 //    - guint32: number of workspaces, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) NumberOfDesktops() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.guint32    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_number_of_desktops", _args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -151,19 +157,17 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 //    - gint: position of screen among the screens of its display.
 //
 func (screen *X11Screen) ScreenNumber() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret C.int        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_screen_number", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -177,19 +181,17 @@ func (screen *X11Screen) ScreenNumber() int32 {
 //      freed.
 //
 func (screen *X11Screen) WindowManagerName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkScreen // out
+	var _cret *C.char      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_window_manager_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }

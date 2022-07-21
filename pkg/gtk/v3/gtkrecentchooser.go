@@ -10,27 +10,27 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gtk3_RecentChooserIface_get_items(void*);
-// extern GSList* _gotk4_gtk3_RecentChooserIface_list_filters(void*);
-// extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(void*, gchar*, GError**);
-// extern gboolean _gotk4_gtk3_RecentChooserIface_set_current_uri(void*, gchar*, GError**);
-// extern gchar* _gotk4_gtk3_RecentChooserIface_get_current_uri(void*);
-// extern gint _gotk4_gtk3_RecentSortFunc(void*, void*, gpointer);
-// extern void _gotk4_gtk3_RecentChooserIface_add_filter(void*, void*);
-// extern void _gotk4_gtk3_RecentChooserIface_item_activated(void*);
-// extern void _gotk4_gtk3_RecentChooserIface_remove_filter(void*, void*);
-// extern void _gotk4_gtk3_RecentChooserIface_select_all(void*);
-// extern void _gotk4_gtk3_RecentChooserIface_selection_changed(void*);
-// extern void _gotk4_gtk3_RecentChooserIface_unselect_all(void*);
-// extern void _gotk4_gtk3_RecentChooserIface_unselect_uri(void*, gchar*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern GList* _gotk4_gtk3_RecentChooserIface_get_items(GtkRecentChooser*);
+// extern GSList* _gotk4_gtk3_RecentChooserIface_list_filters(GtkRecentChooser*);
+// extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(GtkRecentChooser*, gchar*, GError**);
+// extern gboolean _gotk4_gtk3_RecentChooserIface_set_current_uri(GtkRecentChooser*, gchar*, GError**);
+// extern gchar* _gotk4_gtk3_RecentChooserIface_get_current_uri(GtkRecentChooser*);
+// extern gint _gotk4_gtk3_RecentSortFunc(GtkRecentInfo*, GtkRecentInfo*, gpointer);
+// extern void _gotk4_gtk3_RecentChooserIface_add_filter(GtkRecentChooser*, GtkRecentFilter*);
+// extern void _gotk4_gtk3_RecentChooserIface_item_activated(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_remove_filter(GtkRecentChooser*, GtkRecentFilter*);
+// extern void _gotk4_gtk3_RecentChooserIface_select_all(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_selection_changed(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_unselect_all(GtkRecentChooser*);
+// extern void _gotk4_gtk3_RecentChooserIface_unselect_uri(GtkRecentChooser*, gchar*);
 // extern void _gotk4_gtk3_RecentChooser_ConnectItemActivated(gpointer, guintptr);
 // extern void _gotk4_gtk3_RecentChooser_ConnectSelectionChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
@@ -42,7 +42,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentChooserError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooserError").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_chooser_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserError)
 	return gtype
 }
@@ -53,7 +53,7 @@ func GTypeRecentChooserError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentSortType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentSortType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_sort_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentSortType)
 	return gtype
 }
@@ -64,7 +64,7 @@ func GTypeRecentSortType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentChooser() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooser").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_chooser_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooser)
 	return gtype
 }
@@ -137,7 +137,7 @@ func (r RecentSortType) String() string {
 type RecentSortFunc func(a, b *RecentInfo) (gint int32)
 
 //export _gotk4_gtk3_RecentSortFunc
-func _gotk4_gtk3_RecentSortFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gint) {
+func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, arg3 C.gpointer) (cret C.gint) {
 	var fn RecentSortFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -229,6 +229,8 @@ type RecentChooserer interface {
 	// ShowTips gets whether chooser should display tooltips containing the full
 	// path of a recently user resource.
 	ShowTips() bool
+	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
+	SortType() RecentSortType
 	// URIs gets the URI of the recently used resources.
 	URIs() []string
 	// ListFilters gets the RecentFilter objects held by chooser.
@@ -270,6 +272,9 @@ type RecentChooserer interface {
 	// SetSortFunc sets the comparison function used when sorting to be
 	// sort_func.
 	SetSortFunc(sortFunc RecentSortFunc)
+	// SetSortType changes the sorting order of the recently used resources list
+	// displayed by chooser.
+	SetSortType(sortType RecentSortType)
 	// UnselectAll unselects all the items inside chooser.
 	UnselectAll()
 	// UnselectURI unselects uri inside chooser.
@@ -352,14 +357,13 @@ func (chooser *RecentChooser) ConnectSelectionChanged(f func()) coreglib.SignalH
 //    - filter: RecentFilter.
 //
 func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("add_filter", _args[:], nil)
-
+	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -372,19 +376,17 @@ func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
 //      finished using it.
 //
 func (chooser *RecentChooser) CurrentItem() *RecentInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GtkRecentInfo    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_current_item", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -402,20 +404,18 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 //    - utf8: newly allocated string holding a URI.
 //
 func (chooser *RecentChooser) CurrentURI() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.gchar            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_current_uri", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -428,19 +428,17 @@ func (chooser *RecentChooser) CurrentURI() string {
 //    - recentFilter: RecentFilter object.
 //
 func (chooser *RecentChooser) Filter() *RecentFilter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GtkRecentFilter  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_filter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_filter(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _recentFilter *RecentFilter // out
 
-	_recentFilter = wrapRecentFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentFilter = wrapRecentFilter(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentFilter
 }
@@ -457,23 +455,21 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 //      itself using g_list_free().
 //
 func (chooser *RecentChooser) Items() []*RecentInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GList            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_items", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_items(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _list []*RecentInfo // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
-		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -494,19 +490,17 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 //    - gint: positive integer, or -1 meaning that all items are returned.
 //
 func (chooser *RecentChooser) Limit() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gint              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_limit", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_limit(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -519,19 +513,17 @@ func (chooser *RecentChooser) Limit() int32 {
 //    - ok: TRUE if only local resources should be shown.
 //
 func (chooser *RecentChooser) LocalOnly() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_local_only", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -545,19 +537,17 @@ func (chooser *RecentChooser) LocalOnly() bool {
 //    - ok: TRUE if chooser can select more than one item.
 //
 func (chooser *RecentChooser) SelectMultiple() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_select_multiple", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -571,19 +561,17 @@ func (chooser *RecentChooser) SelectMultiple() bool {
 //    - ok: TRUE if the icons should be displayed, FALSE otherwise.
 //
 func (chooser *RecentChooser) ShowIcons() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_show_icons", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -599,19 +587,17 @@ func (chooser *RecentChooser) ShowIcons() bool {
 //      otheriwse.
 //
 func (chooser *RecentChooser) ShowNotFound() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_show_not_found", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -627,19 +613,17 @@ func (chooser *RecentChooser) ShowNotFound() bool {
 //      otherwise.
 //
 func (chooser *RecentChooser) ShowPrivate() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_show_private", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -654,23 +638,43 @@ func (chooser *RecentChooser) ShowPrivate() bool {
 //    - ok: TRUE if the recent chooser should show tooltips, FALSE otherwise.
 //
 func (chooser *RecentChooser) ShowTips() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_show_tips", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// SortType gets the value set by gtk_recent_chooser_set_sort_type().
+//
+// The function returns the following values:
+//
+//    - recentSortType: sorting order of the chooser.
+//
+func (chooser *RecentChooser) SortType() RecentSortType {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.GtkRecentSortType // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_sort_type(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _recentSortType RecentSortType // out
+
+	_recentSortType = RecentSortType(_cret)
+
+	return _recentSortType
 }
 
 // URIs gets the URI of the recently used resources.
@@ -686,26 +690,24 @@ func (chooser *RecentChooser) ShowTips() bool {
 //      g_strfreev() to free it.
 //
 func (chooser *RecentChooser) URIs() []string {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret **C.gchar           // in
+	var _arg1 C.gsize             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("get_uris", _args[:], _outs[:])
-	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_get_uris(_arg0, &_arg1)
 	runtime.KeepAlive(chooser)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.gchar)(*(***C.gchar)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-		_utf8s = make([]string, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-		for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -720,23 +722,21 @@ func (chooser *RecentChooser) URIs() []string {
 //      the returned list using g_slist_free().
 //
 func (chooser *RecentChooser) ListFilters() []*RecentFilter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GSList           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_gret := _info.InvokeIfaceMethod("list_filters", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_list_filters(_arg0)
 	runtime.KeepAlive(chooser)
 
 	var _sList []*RecentFilter // out
 
-	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentFilter)(v)
 		var dst *RecentFilter // out
-		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -751,14 +751,13 @@ func (chooser *RecentChooser) ListFilters() []*RecentFilter {
 //    - filter: RecentFilter.
 //
 func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("remove_filter", _args[:], nil)
-
+	C.gtk_recent_chooser_remove_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -766,13 +765,11 @@ func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
 // SelectAll selects all the items inside chooser, if the chooser supports
 // multiple selection.
 func (chooser *RecentChooser) SelectAll() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("select_all", _args[:], nil)
-
+	C.gtk_recent_chooser_select_all(_arg0)
 	runtime.KeepAlive(chooser)
 }
 
@@ -783,22 +780,22 @@ func (chooser *RecentChooser) SelectAll() {
 //    - uri: URI.
 //
 func (chooser *RecentChooser) SelectURI(uri string) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("select_uri", _args[:], nil)
-
+	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -811,22 +808,22 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 //    - uri: URI.
 //
 func (chooser *RecentChooser) SetCurrentURI(uri string) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_current_uri", _args[:], nil)
-
+	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -840,16 +837,15 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 //    - filter (optional): RecentFilter.
 //
 func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if filter != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+		_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_filter", _args[:], nil)
-
+	C.gtk_recent_chooser_set_filter(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -862,14 +858,13 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 //    - limit: positive integer, or -1 for all items.
 //
 func (chooser *RecentChooser) SetLimit(limit int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gint              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(limit)
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = C.gint(limit)
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_limit", _args[:], nil)
-
+	C.gtk_recent_chooser_set_limit(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(limit)
 }
@@ -884,16 +879,15 @@ func (chooser *RecentChooser) SetLimit(limit int32) {
 //    - localOnly: TRUE if only local files can be shown.
 //
 func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if localOnly {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_local_only", _args[:], nil)
-
+	C.gtk_recent_chooser_set_local_only(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(localOnly)
 }
@@ -905,16 +899,15 @@ func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 //    - selectMultiple: TRUE if chooser can select more than one item.
 //
 func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if selectMultiple {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_select_multiple", _args[:], nil)
-
+	C.gtk_recent_chooser_set_select_multiple(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(selectMultiple)
 }
@@ -927,16 +920,15 @@ func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 //    - showIcons: whether to show an icon near the resource.
 //
 func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showIcons {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_show_icons", _args[:], nil)
-
+	C.gtk_recent_chooser_set_show_icons(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showIcons)
 }
@@ -949,16 +941,15 @@ func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 //    - showNotFound: whether to show the local items we didn’t find.
 //
 func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showNotFound {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_show_not_found", _args[:], nil)
-
+	C.gtk_recent_chooser_set_show_not_found(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showNotFound)
 }
@@ -971,16 +962,15 @@ func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 //    - showPrivate: TRUE to show private items, FALSE otherwise.
 //
 func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showPrivate {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_show_private", _args[:], nil)
-
+	C.gtk_recent_chooser_set_show_private(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showPrivate)
 }
@@ -993,16 +983,15 @@ func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 //    - showTips: TRUE if tooltips should be shown.
 //
 func (chooser *RecentChooser) SetShowTips(showTips bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showTips {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_show_tips", _args[:], nil)
-
+	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showTips)
 }
@@ -1021,29 +1010,47 @@ func (chooser *RecentChooser) SetShowTips(showTips bool) {
 //    - sortFunc: comparison function.
 //
 func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
-	_args[2] = C.gpointer(gbox.Assign(sortFunc))
-	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
+	_arg2 = C.gpointer(gbox.Assign(sortFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("set_sort_func", _args[:], nil)
-
+	C.gtk_recent_chooser_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(sortFunc)
 }
 
+// SetSortType changes the sorting order of the recently used resources list
+// displayed by chooser.
+//
+// The function takes the following parameters:
+//
+//    - sortType: sort order that the chooser should use.
+//
+func (chooser *RecentChooser) SetSortType(sortType RecentSortType) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortType // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = C.GtkRecentSortType(sortType)
+
+	C.gtk_recent_chooser_set_sort_type(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(sortType)
+}
+
 // UnselectAll unselects all the items inside chooser.
 func (chooser *RecentChooser) UnselectAll() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("unselect_all", _args[:], nil)
-
+	C.gtk_recent_chooser_unselect_all(_arg0)
 	runtime.KeepAlive(chooser)
 }
 
@@ -1054,15 +1061,14 @@ func (chooser *RecentChooser) UnselectAll() {
 //    - uri: URI.
 //
 func (chooser *RecentChooser) UnselectURI(uri string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentChooser")
-	_info.InvokeIfaceMethod("unselect_uri", _args[:], nil)
-
+	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 }

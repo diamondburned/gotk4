@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSimpleProxyResolver() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SimpleProxyResolver").RegisteredGType())
+	gtype := coreglib.Type(C.g_simple_proxy_resolver_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleProxyResolver)
 	return gtype
 }
@@ -82,15 +80,14 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //    - defaultProxy: default proxy to use.
 //
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleProxyResolver // out
+	var _arg1 *C.gchar                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(defaultProxy)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(defaultProxy)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "SimpleProxyResolver")
-	_info.InvokeClassMethod("set_default_proxy", _args[:], nil)
-
+	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(defaultProxy)
 }
@@ -109,17 +106,17 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 //    - proxy to use for uri_scheme.
 //
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GSimpleProxyResolver // out
+	var _arg1 *C.gchar                // out
+	var _arg2 *C.gchar                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uriScheme)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(proxy)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(proxy)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "SimpleProxyResolver")
-	_info.InvokeClassMethod("set_uri_proxy", _args[:], nil)
-
+	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(uriScheme)
 	runtime.KeepAlive(proxy)

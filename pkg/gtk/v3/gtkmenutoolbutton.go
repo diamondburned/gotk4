@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_MenuToolButtonClass_show_menu(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_MenuToolButtonClass_show_menu(GtkMenuToolButton*);
 // extern void _gotk4_gtk3_MenuToolButton_ConnectShowMenu(gpointer, guintptr);
 import "C"
 
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMenuToolButton() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuToolButton").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_menu_tool_button_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMenuToolButton)
 	return gtype
 }
@@ -72,16 +72,15 @@ func classInitMenuToolButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "MenuToolButtonClass")
+	pclass := (*C.GtkMenuToolButtonClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ShowMenu() }); ok {
-		o := pclass.StructFieldOffset("show_menu")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuToolButtonClass_show_menu)
+		pclass.show_menu = (*[0]byte)(C._gotk4_gtk3_MenuToolButtonClass_show_menu)
 	}
 }
 
 //export _gotk4_gtk3_MenuToolButtonClass_show_menu
-func _gotk4_gtk3_MenuToolButtonClass_show_menu(arg0 *C.void) {
+func _gotk4_gtk3_MenuToolButtonClass_show_menu(arg0 *C.GtkMenuToolButton) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ShowMenu() })
 
@@ -177,26 +176,25 @@ func (button *MenuToolButton) ConnectShowMenu(f func()) coreglib.SignalHandle {
 //    - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkWidget   // out
+	var _arg2 *C.gchar       // out
+	var _cret *C.GtkToolItem // in
 
 	if iconWidget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconWidget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(iconWidget).Native()))
 	}
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gtk", "MenuToolButton")
-	_gret := _info.InvokeClassMethod("new_MenuToolButton", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
 	runtime.KeepAlive(iconWidget)
 	runtime.KeepAlive(label)
 
 	var _menuToolButton *MenuToolButton // out
 
-	_menuToolButton = wrapMenuToolButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menuToolButton = wrapMenuToolButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -216,20 +214,18 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 //    - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar       // out
+	var _cret *C.GtkToolItem // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MenuToolButton")
-	_gret := _info.InvokeClassMethod("new_MenuToolButton_from_stock", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
 	runtime.KeepAlive(stockId)
 
 	var _menuToolButton *MenuToolButton // out
 
-	_menuToolButton = wrapMenuToolButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menuToolButton = wrapMenuToolButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _menuToolButton
 }
@@ -241,20 +237,18 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 //    - widget associated with MenuToolButton.
 //
 func (button *MenuToolButton) Menu() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMenuToolButton // out
+	var _cret *C.GtkWidget         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuToolButton")
-	_gret := _info.InvokeClassMethod("get_menu", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_menu_tool_button_get_menu(_arg0)
 	runtime.KeepAlive(button)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -283,15 +277,14 @@ func (button *MenuToolButton) Menu() Widgetter {
 //    - markup text to be used as tooltip text for button’s arrow button.
 //
 func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuToolButton // out
+	var _arg1 *C.gchar             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MenuToolButton")
-	_info.InvokeClassMethod("set_arrow_tooltip_markup", _args[:], nil)
-
+	C.gtk_menu_tool_button_set_arrow_tooltip_markup(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(markup)
 }
@@ -305,15 +298,14 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 //    - text to be used as tooltip text for button’s arrow button.
 //
 func (button *MenuToolButton) SetArrowTooltipText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuToolButton // out
+	var _arg1 *C.gchar             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MenuToolButton")
-	_info.InvokeClassMethod("set_arrow_tooltip_text", _args[:], nil)
-
+	C.gtk_menu_tool_button_set_arrow_tooltip_text(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(text)
 }
@@ -326,14 +318,13 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 //    - menu associated with MenuToolButton.
 //
 func (button *MenuToolButton) SetMenu(menu Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMenuToolButton // out
+	var _arg1 *C.GtkWidget         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_info := girepository.MustFind("Gtk", "MenuToolButton")
-	_info.InvokeClassMethod("set_menu", _args[:], nil)
-
+	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(menu)
 }

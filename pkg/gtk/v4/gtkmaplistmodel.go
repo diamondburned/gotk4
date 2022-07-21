@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMapListModel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MapListModel").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_map_list_model_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMapListModel)
 	return gtype
 }
@@ -138,28 +136,29 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 //    - mapListModel: new GtkMapListModel.
 //
 func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapListModel {
-	var _args [4]girepository.Argument
+	var _arg1 *C.GListModel            // out
+	var _arg2 C.GtkMapListModelMapFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+	var _cret *C.GtkMapListModel // in
 
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 	if mapFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
-		_args[2] = C.gpointer(gbox.Assign(mapFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg2 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
+		_arg3 = C.gpointer(gbox.Assign(mapFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "MapListModel")
-	_gret := _info.InvokeClassMethod("new_MapListModel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_map_list_model_new(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(mapFunc)
 
 	var _mapListModel *MapListModel // out
 
-	_mapListModel = wrapMapListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mapListModel = wrapMapListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mapListModel
 }
@@ -171,21 +170,19 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 //    - listModel (optional): model that gets mapped.
 //
 func (self *MapListModel) Model() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMapListModel // out
+	var _cret *C.GListModel      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MapListModel")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_map_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}
@@ -202,19 +199,17 @@ func (self *MapListModel) Model() *gio.ListModel {
 //    - ok: TRUE if a map function is set.
 //
 func (self *MapListModel) HasMap() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMapListModel // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MapListModel")
-	_gret := _info.InvokeClassMethod("has_map", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_map_list_model_has_map(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -238,18 +233,19 @@ func (self *MapListModel) HasMap() bool {
 //    - mapFunc (optional): map function or NULL to not map items.
 //
 func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkMapListModel       // out
+	var _arg1 C.GtkMapListModelMapFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if mapFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
-		_args[2] = C.gpointer(gbox.Assign(mapFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_MapListModelMapFunc)
+		_arg2 = C.gpointer(gbox.Assign(mapFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "MapListModel")
-	_info.InvokeClassMethod("set_map_func", _args[:], nil)
-
+	C.gtk_map_list_model_set_map_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(mapFunc)
 }
@@ -265,16 +261,15 @@ func (self *MapListModel) SetMapFunc(mapFunc MapListModelMapFunc) {
 //    - model (optional) to be mapped.
 //
 func (self *MapListModel) SetModel(model gio.ListModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMapListModel // out
+	var _arg1 *C.GListModel      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MapListModel")
-	_info.InvokeClassMethod("set_model", _args[:], nil)
-
+	C.gtk_map_list_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }

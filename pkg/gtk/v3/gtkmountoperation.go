@@ -6,16 +6,16 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeMountOperation returns the GType for the type MountOperation.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMountOperation() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MountOperation").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_mount_operation_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMountOperation)
 	return gtype
 }
@@ -75,21 +75,19 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 //    - mountOperation: new MountOperation.
 //
 func NewMountOperation(parent *Window) *MountOperation {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkWindow       // out
+	var _cret *C.GMountOperation // in
 
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MountOperation")
-	_gret := _info.InvokeClassMethod("new_MountOperation", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_mount_operation_new(_arg1)
 	runtime.KeepAlive(parent)
 
 	var _mountOperation *MountOperation // out
 
-	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mountOperation
 }
@@ -101,19 +99,17 @@ func NewMountOperation(parent *Window) *MountOperation {
 //    - window: transient parent for windows shown by op.
 //
 func (op *MountOperation) Parent() *Window {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMountOperation // out
+	var _cret *C.GtkWindow         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_info := girepository.MustFind("Gtk", "MountOperation")
-	_gret := _info.InvokeClassMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_mount_operation_get_parent(_arg0)
 	runtime.KeepAlive(op)
 
 	var _window *Window // out
 
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _window
 }
@@ -125,20 +121,18 @@ func (op *MountOperation) Parent() *Window {
 //    - screen on which windows of op are shown.
 //
 func (op *MountOperation) Screen() *gdk.Screen {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMountOperation // out
+	var _cret *C.GdkScreen         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_info := girepository.MustFind("Gtk", "MountOperation")
-	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_mount_operation_get_screen(_arg0)
 	runtime.KeepAlive(op)
 
 	var _screen *gdk.Screen // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_screen = &gdk.Screen{
 			Object: obj,
 		}
@@ -155,19 +149,17 @@ func (op *MountOperation) Screen() *gdk.Screen {
 //    - ok: TRUE if op is currently displaying a window.
 //
 func (op *MountOperation) IsShowing() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMountOperation // out
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_info := girepository.MustFind("Gtk", "MountOperation")
-	_gret := _info.InvokeClassMethod("is_showing", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_mount_operation_is_showing(_arg0)
 	runtime.KeepAlive(op)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -181,16 +173,15 @@ func (op *MountOperation) IsShowing() bool {
 //    - parent (optional): transient parent of the window, or NULL.
 //
 func (op *MountOperation) SetParent(parent *Window) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMountOperation // out
+	var _arg1 *C.GtkWindow         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MountOperation")
-	_info.InvokeClassMethod("set_parent", _args[:], nil)
-
+	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(parent)
 }
@@ -202,14 +193,13 @@ func (op *MountOperation) SetParent(parent *Window) {
 //    - screen: Screen.
 //
 func (op *MountOperation) SetScreen(screen *gdk.Screen) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMountOperation // out
+	var _arg1 *C.GdkScreen         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gtk", "MountOperation")
-	_info.InvokeClassMethod("set_screen", _args[:], nil)
-
+	C.gtk_mount_operation_set_screen(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(screen)
 }

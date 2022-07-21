@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeCellRendererProgress returns the GType for the type CellRendererProgress.
@@ -21,7 +19,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellRendererProgress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererProgress").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_renderer_progress_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererProgress)
 	return gtype
 }
@@ -65,13 +63,13 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 //    - cellRendererProgress: new cell renderer.
 //
 func NewCellRendererProgress() *CellRendererProgress {
-	_info := girepository.MustFind("Gtk", "CellRendererProgress")
-	_gret := _info.InvokeClassMethod("new_CellRendererProgress", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_progress_new()
 
 	var _cellRendererProgress *CellRendererProgress // out
 
-	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
 }

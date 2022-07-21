@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeColorChooserDialog returns the GType for the type ColorChooserDialog.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColorChooserDialog() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColorChooserDialog").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_color_chooser_dialog_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColorChooserDialog)
 	return gtype
 }
@@ -100,26 +100,25 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 //    - colorChooserDialog: new ColorChooserDialog.
 //
 func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GtkWindow // out
+	var _cret *C.GtkWidget // in
 
 	if title != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColorChooserDialog")
-	_gret := _info.InvokeClassMethod("new_ColorChooserDialog", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(parent)
 
 	var _colorChooserDialog *ColorChooserDialog // out
 
-	_colorChooserDialog = wrapColorChooserDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_colorChooserDialog = wrapColorChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserDialog
 }

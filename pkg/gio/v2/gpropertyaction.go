@@ -6,14 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // NewPropertyAction creates a #GAction corresponding to the value of property
@@ -36,25 +33,25 @@ import "C"
 //    - propertyAction: new Action.
 //
 func NewPropertyAction(name string, object *coreglib.Object, propertyName string) *PropertyAction {
-	var _args [3]girepository.Argument
+	var _arg1 *C.gchar           // out
+	var _arg2 C.gpointer         // out
+	var _arg3 *C.gchar           // out
+	var _cret *C.GPropertyAction // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(object.Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	_info := girepository.MustFind("Gio", "PropertyAction")
-	_gret := _info.InvokeClassMethod("new_PropertyAction", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_property_action_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(propertyName)
 
 	var _propertyAction *PropertyAction // out
 
-	_propertyAction = wrapPropertyAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_propertyAction = wrapPropertyAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _propertyAction
 }

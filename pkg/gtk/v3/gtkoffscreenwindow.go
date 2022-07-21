@@ -8,16 +8,16 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeOffscreenWindow returns the GType for the type OffscreenWindow.
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOffscreenWindow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "OffscreenWindow").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_offscreen_window_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOffscreenWindow)
 	return gtype
 }
@@ -102,13 +102,13 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 //    - offscreenWindow: pointer to a Widget.
 //
 func NewOffscreenWindow() *OffscreenWindow {
-	_info := girepository.MustFind("Gtk", "OffscreenWindow")
-	_gret := _info.InvokeClassMethod("new_OffscreenWindow", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_offscreen_window_new()
 
 	var _offscreenWindow *OffscreenWindow // out
 
-	_offscreenWindow = wrapOffscreenWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_offscreenWindow = wrapOffscreenWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _offscreenWindow
 }
@@ -122,21 +122,19 @@ func NewOffscreenWindow() *OffscreenWindow {
 //    - pixbuf (optional) pointer, or NULL.
 //
 func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkOffscreenWindow // out
+	var _cret *C.GdkPixbuf          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
 
-	_info := girepository.MustFind("Gtk", "OffscreenWindow")
-	_gret := _info.InvokeClassMethod("get_pixbuf", _args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 	runtime.KeepAlive(offscreen)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -160,23 +158,21 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 //    - surface (optional) pointer to the offscreen surface, or NULL.
 //
 func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkOffscreenWindow // out
+	var _cret *C.cairo_surface_t    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
 
-	_info := girepository.MustFind("Gtk", "OffscreenWindow")
-	_gret := _info.InvokeClassMethod("get_surface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_offscreen_window_get_surface(_arg0)
 	runtime.KeepAlive(offscreen)
 
 	var _surface *cairo.Surface // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.cairo_surface_reference(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
+			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 		})
 	}
 

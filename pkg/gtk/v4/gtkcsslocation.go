@@ -2,16 +2,8 @@
 
 package gtk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
-)
-
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // CSSLocation represents a location in a file or other source of data parsed by
@@ -33,87 +25,77 @@ type CSSLocation struct {
 
 // cssLocation is the struct that's finalized.
 type cssLocation struct {
-	native unsafe.Pointer
+	native *C.GtkCssLocation
 }
 
 // Bytes: number of bytes parsed since the beginning.
 func (c *CSSLocation) Bytes() uint {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("bytes")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	valptr := &c.native.bytes
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
+	v = uint(*valptr)
 	return v
 }
 
 // Chars: number of characters parsed since the beginning.
 func (c *CSSLocation) Chars() uint {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("chars")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	valptr := &c.native.chars
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
+	v = uint(*valptr)
 	return v
 }
 
 // Lines: number of full lines that have been parsed If you want to display this
 // as a line number, you need to add 1 to this.
 func (c *CSSLocation) Lines() uint {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("lines")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	valptr := &c.native.lines
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
+	v = uint(*valptr)
 	return v
 }
 
 // LineBytes: number of bytes parsed since the last line break.
 func (c *CSSLocation) LineBytes() uint {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_bytes")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	valptr := &c.native.line_bytes
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
+	v = uint(*valptr)
 	return v
 }
 
 // LineChars: number of characters parsed since the last line break.
 func (c *CSSLocation) LineChars() uint {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_chars")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	valptr := &c.native.line_chars
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
+	v = uint(*valptr)
 	return v
 }
 
 // Bytes: number of bytes parsed since the beginning.
 func (c *CSSLocation) SetBytes(bytes uint) {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("bytes")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
-	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(bytes)
+	valptr := &c.native.bytes
+	*valptr = C.gsize(bytes)
 }
 
 // Chars: number of characters parsed since the beginning.
 func (c *CSSLocation) SetChars(chars uint) {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("chars")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
-	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(chars)
+	valptr := &c.native.chars
+	*valptr = C.gsize(chars)
 }
 
 // Lines: number of full lines that have been parsed If you want to display this
 // as a line number, you need to add 1 to this.
 func (c *CSSLocation) SetLines(lines uint) {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("lines")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
-	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lines)
+	valptr := &c.native.lines
+	*valptr = C.gsize(lines)
 }
 
 // LineBytes: number of bytes parsed since the last line break.
 func (c *CSSLocation) SetLineBytes(lineBytes uint) {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_bytes")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
-	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lineBytes)
+	valptr := &c.native.line_bytes
+	*valptr = C.gsize(lineBytes)
 }
 
 // LineChars: number of characters parsed since the last line break.
 func (c *CSSLocation) SetLineChars(lineChars uint) {
-	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_chars")
-	valptr := (*uintptr)(unsafe.Add(c.native, offset))
-	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lineChars)
+	valptr := &c.native.line_chars
+	*valptr = C.gsize(lineChars)
 }

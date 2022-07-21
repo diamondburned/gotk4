@@ -5,14 +5,12 @@ package gdkwayland
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWaylandMonitor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandMonitor").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wayland_monitor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandMonitor)
 	return gtype
+}
+
+// WaylandMonitorOverrider contains methods that are overridable.
+type WaylandMonitorOverrider interface {
 }
 
 // WaylandMonitor: wayland implementation of GdkMonitor.
@@ -39,6 +41,14 @@ type WaylandMonitor struct {
 var (
 	_ coreglib.Objector = (*WaylandMonitor)(nil)
 )
+
+func classInitWaylandMonitorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapWaylandMonitor(obj *coreglib.Object) *WaylandMonitor {
 	return &WaylandMonitor{

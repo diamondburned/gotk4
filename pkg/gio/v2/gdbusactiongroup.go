@@ -6,14 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // DBusActionGroupGet obtains a BusActionGroup for the action group which is
@@ -42,27 +39,27 @@ import "C"
 //    - dBusActionGroup: BusActionGroup.
 //
 func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) *DBusActionGroup {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GDBusConnection  // out
+	var _arg2 *C.gchar            // out
+	var _arg3 *C.gchar            // out
+	var _cret *C.GDBusActionGroup // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if busName != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	_info := girepository.MustFind("Gio", "get")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_action_group_get(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(busName)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusActionGroup *DBusActionGroup // out
 
-	_dBusActionGroup = wrapDBusActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusActionGroup = wrapDBusActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusActionGroup
 }

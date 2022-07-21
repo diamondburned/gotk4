@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_FontButtonClass_font_set(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_FontButtonClass_font_set(GtkFontButton*);
 // extern void _gotk4_gtk3_FontButton_ConnectFontSet(gpointer, guintptr);
 import "C"
 
@@ -26,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFontButton() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontButton").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_font_button_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFontButton)
 	return gtype
 }
@@ -64,16 +64,15 @@ func classInitFontButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "FontButtonClass")
+	pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ FontSet() }); ok {
-		o := pclass.StructFieldOffset("font_set")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FontButtonClass_font_set)
+		pclass.font_set = (*[0]byte)(C._gotk4_gtk3_FontButtonClass_font_set)
 	}
 }
 
 //export _gotk4_gtk3_FontButtonClass_font_set
-func _gotk4_gtk3_FontButtonClass_font_set(arg0 *C.void) {
+func _gotk4_gtk3_FontButtonClass_font_set(arg0 *C.GtkFontButton) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FontSet() })
 
@@ -163,13 +162,13 @@ func (fontButton *FontButton) ConnectFontSet(f func()) coreglib.SignalHandle {
 //    - fontButton: new font picker widget.
 //
 func NewFontButton() *FontButton {
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("new_FontButton", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_font_button_new()
 
 	var _fontButton *FontButton // out
 
-	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
 }
@@ -185,20 +184,18 @@ func NewFontButton() *FontButton {
 //    - fontButton: new font picker widget.
 //
 func NewFontButtonWithFont(fontname string) *FontButton {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("new_FontButton_with_font", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_new_with_font(_arg1)
 	runtime.KeepAlive(fontname)
 
 	var _fontButton *FontButton // out
 
-	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontButton
 }
@@ -216,19 +213,17 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 //    - utf8: internal copy of the font name which must not be freed.
 //
 func (fontButton *FontButton) FontName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("get_font_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_get_font_name(_arg0)
 	runtime.KeepAlive(fontButton)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -240,19 +235,17 @@ func (fontButton *FontButton) FontName() string {
 //    - ok: whether the font size will be shown in the label.
 //
 func (fontButton *FontButton) ShowSize() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("get_show_size", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_get_show_size(_arg0)
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -267,19 +260,17 @@ func (fontButton *FontButton) ShowSize() bool {
 //    - ok: whether the font style will be shown in the label.
 //
 func (fontButton *FontButton) ShowStyle() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("get_show_style", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_get_show_style(_arg0)
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -293,19 +284,17 @@ func (fontButton *FontButton) ShowStyle() bool {
 //    - utf8: internal copy of the title string which must not be freed.
 //
 func (fontButton *FontButton) Title() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_get_title(_arg0)
 	runtime.KeepAlive(fontButton)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -317,19 +306,17 @@ func (fontButton *FontButton) Title() string {
 //    - ok: whether the selected font is used in the label.
 //
 func (fontButton *FontButton) UseFont() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("get_use_font", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_get_use_font(_arg0)
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -343,19 +330,17 @@ func (fontButton *FontButton) UseFont() bool {
 //    - ok: whether the selected size is used in the label.
 //
 func (fontButton *FontButton) UseSize() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("get_use_size", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_get_use_size(_arg0)
 	runtime.KeepAlive(fontButton)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -376,22 +361,21 @@ func (fontButton *FontButton) UseSize() bool {
 //    - ok: TRUE.
 //
 func (fontButton *FontButton) SetFontName(fontname string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _arg1 *C.gchar         // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_gret := _info.InvokeClassMethod("set_font_name", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(fontname)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -406,16 +390,15 @@ func (fontButton *FontButton) SetFontName(fontname string) bool {
 //    - showSize: TRUE if font size should be displayed in dialog.
 //
 func (fontButton *FontButton) SetShowSize(showSize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 	if showSize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_info.InvokeClassMethod("set_show_size", _args[:], nil)
-
+	C.gtk_font_button_set_show_size(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(showSize)
 }
@@ -428,16 +411,15 @@ func (fontButton *FontButton) SetShowSize(showSize bool) {
 //    - showStyle: TRUE if font style should be displayed in label.
 //
 func (fontButton *FontButton) SetShowStyle(showStyle bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 	if showStyle {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_info.InvokeClassMethod("set_show_style", _args[:], nil)
-
+	C.gtk_font_button_set_show_style(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(showStyle)
 }
@@ -449,15 +431,14 @@ func (fontButton *FontButton) SetShowStyle(showStyle bool) {
 //    - title: string containing the font chooser dialog title.
 //
 func (fontButton *FontButton) SetTitle(title string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _arg1 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_info.InvokeClassMethod("set_title", _args[:], nil)
-
+	C.gtk_font_button_set_title(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(title)
 }
@@ -470,16 +451,15 @@ func (fontButton *FontButton) SetTitle(title string) {
 //    - useFont: if TRUE, font name will be written using font chosen.
 //
 func (fontButton *FontButton) SetUseFont(useFont bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 	if useFont {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_info.InvokeClassMethod("set_use_font", _args[:], nil)
-
+	C.gtk_font_button_set_use_font(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(useFont)
 }
@@ -492,16 +472,15 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 //    - useSize: if TRUE, font name will be written using the selected size.
 //
 func (fontButton *FontButton) SetUseSize(useSize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontButton // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
 	if useSize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FontButton")
-	_info.InvokeClassMethod("set_use_size", _args[:], nil)
-
+	C.gtk_font_button_set_use_size(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(useSize)
 }

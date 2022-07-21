@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeHeaderBar returns the GType for the type HeaderBar.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeHeaderBar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "HeaderBar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_header_bar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalHeaderBar)
 	return gtype
 }
@@ -137,13 +135,13 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 //    - headerBar: new GtkHeaderBar.
 //
 func NewHeaderBar() *HeaderBar {
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_gret := _info.InvokeClassMethod("new_HeaderBar", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_header_bar_new()
 
 	var _headerBar *HeaderBar // out
 
-	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _headerBar
 }
@@ -155,20 +153,18 @@ func NewHeaderBar() *HeaderBar {
 //    - utf8 (optional): decoration layout.
 //
 func (bar *HeaderBar) DecorationLayout() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.char         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_gret := _info.InvokeClassMethod("get_decoration_layout", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 	runtime.KeepAlive(bar)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -182,19 +178,17 @@ func (bar *HeaderBar) DecorationLayout() string {
 //    - ok: TRUE if title buttons are shown.
 //
 func (bar *HeaderBar) ShowTitleButtons() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_gret := _info.InvokeClassMethod("get_show_title_buttons", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
 	runtime.KeepAlive(bar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -211,21 +205,19 @@ func (bar *HeaderBar) ShowTitleButtons() bool {
 //      set explicitly.
 //
 func (bar *HeaderBar) TitleWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_gret := _info.InvokeClassMethod("get_title_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_header_bar_get_title_widget(_arg0)
 	runtime.KeepAlive(bar)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -250,14 +242,13 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 //    - child to be added to bar.
 //
 func (bar *HeaderBar) PackEnd(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_info.InvokeClassMethod("pack_end", _args[:], nil)
-
+	C.gtk_header_bar_pack_end(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
 }
@@ -269,14 +260,13 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 //    - child to be added to bar.
 //
 func (bar *HeaderBar) PackStart(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_info.InvokeClassMethod("pack_start", _args[:], nil)
-
+	C.gtk_header_bar_pack_start(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
 }
@@ -291,14 +281,13 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //    - child to remove.
 //
 func (bar *HeaderBar) Remove(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.gtk_header_bar_remove(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(child)
 }
@@ -325,17 +314,16 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 //    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if layout != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(layout)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_info.InvokeClassMethod("set_decoration_layout", _args[:], nil)
-
+	C.gtk_header_bar_set_decoration_layout(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(layout)
 }
@@ -348,16 +336,15 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 //    - setting: TRUE to show standard title buttons.
 //
 func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_info.InvokeClassMethod("set_show_title_buttons", _args[:], nil)
-
+	C.gtk_header_bar_set_show_title_buttons(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(setting)
 }
@@ -378,16 +365,15 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 //    - titleWidget (optional): widget to use for a title.
 //
 func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if titleWidget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(titleWidget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(titleWidget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "HeaderBar")
-	_info.InvokeClassMethod("set_title_widget", _args[:], nil)
-
+	C.gtk_header_bar_set_title_widget(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(titleWidget)
 }

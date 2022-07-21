@@ -7,15 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // NewMenu creates a new #GMenu.
@@ -27,13 +24,13 @@ import "C"
 //    - menu: new #GMenu.
 //
 func NewMenu() *Menu {
-	_info := girepository.MustFind("Gio", "Menu")
-	_gret := _info.InvokeClassMethod("new_Menu", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GMenu // in
+
+	_cret = C.g_menu_new()
 
 	var _menu *Menu // out
 
-	_menu = wrapMenu(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menu = wrapMenu(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menu
 }
@@ -48,21 +45,21 @@ func NewMenu() *Menu {
 //    - detailedAction (optional): detailed action string, or NULL.
 //
 func (menu *Menu) Append(label, detailedAction string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu // out
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if detailedAction != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("append", _args[:], nil)
-
+	C.g_menu_append(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(detailedAction)
@@ -77,14 +74,13 @@ func (menu *Menu) Append(label, detailedAction string) {
 //    - item to append.
 //
 func (menu *Menu) AppendItem(item *MenuItem) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenu     // out
+	var _arg1 *C.GMenuItem // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("append_item", _args[:], nil)
-
+	C.g_menu_append_item(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(item)
 }
@@ -99,18 +95,18 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 //    - section with the items of the section.
 //
 func (menu *Menu) AppendSection(label string, section MenuModeller) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu      // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(section).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(section).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("append_section", _args[:], nil)
-
+	C.g_menu_append_section(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(section)
@@ -126,18 +122,18 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 //    - submenu with the items of the submenu.
 //
 func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu      // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("append_submenu", _args[:], nil)
-
+	C.g_menu_append_submenu(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(submenu)
@@ -151,13 +147,11 @@ func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 // This function causes g_menu_model_is_mutable() to begin returning FALSE,
 // which has some positive performance implications.
 func (menu *Menu) Freeze() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GMenu // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("freeze", _args[:], nil)
-
+	C.g_menu_freeze(_arg0)
 	runtime.KeepAlive(menu)
 }
 
@@ -172,22 +166,23 @@ func (menu *Menu) Freeze() {
 //    - detailedAction (optional): detailed action string, or NULL.
 //
 func (menu *Menu) Insert(position int32, label, detailedAction string) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GMenu // out
+	var _arg1 C.gint   // out
+	var _arg2 *C.gchar // out
+	var _arg3 *C.gchar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = C.gint(position)
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if detailedAction != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("insert", _args[:], nil)
-
+	C.g_menu_insert(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(label)
@@ -217,15 +212,15 @@ func (menu *Menu) Insert(position int32, label, detailedAction string) {
 //    - item to insert.
 //
 func (menu *Menu) InsertItem(position int32, item *MenuItem) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu     // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.GMenuItem // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = C.gint(position)
+	_arg2 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("insert_item", _args[:], nil)
-
+	C.g_menu_insert_item(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(item)
@@ -242,19 +237,20 @@ func (menu *Menu) InsertItem(position int32, item *MenuItem) {
 //    - section with the items of the section.
 //
 func (menu *Menu) InsertSection(position int32, label string, section MenuModeller) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GMenu      // out
+	var _arg1 C.gint        // out
+	var _arg2 *C.gchar      // out
+	var _arg3 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = C.gint(position)
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(section).Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(section).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("insert_section", _args[:], nil)
-
+	C.g_menu_insert_section(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(label)
@@ -272,19 +268,20 @@ func (menu *Menu) InsertSection(position int32, label string, section MenuModell
 //    - submenu with the items of the submenu.
 //
 func (menu *Menu) InsertSubmenu(position int32, label string, submenu MenuModeller) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GMenu      // out
+	var _arg1 C.gint        // out
+	var _arg2 *C.gchar      // out
+	var _arg3 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = C.gint(position)
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
+	_arg3 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("insert_submenu", _args[:], nil)
-
+	C.g_menu_insert_submenu(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(label)
@@ -301,21 +298,21 @@ func (menu *Menu) InsertSubmenu(position int32, label string, submenu MenuModell
 //    - detailedAction (optional): detailed action string, or NULL.
 //
 func (menu *Menu) Prepend(label, detailedAction string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu // out
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if detailedAction != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("prepend", _args[:], nil)
-
+	C.g_menu_prepend(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(detailedAction)
@@ -330,14 +327,13 @@ func (menu *Menu) Prepend(label, detailedAction string) {
 //    - item to prepend.
 //
 func (menu *Menu) PrependItem(item *MenuItem) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenu     // out
+	var _arg1 *C.GMenuItem // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("prepend_item", _args[:], nil)
-
+	C.g_menu_prepend_item(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(item)
 }
@@ -352,18 +348,18 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 //    - section with the items of the section.
 //
 func (menu *Menu) PrependSection(label string, section MenuModeller) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu      // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(section).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(section).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("prepend_section", _args[:], nil)
-
+	C.g_menu_prepend_section(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(section)
@@ -379,18 +375,18 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 //    - submenu with the items of the submenu.
 //
 func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenu      // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("prepend_submenu", _args[:], nil)
-
+	C.g_menu_prepend_submenu(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(submenu)
@@ -412,27 +408,24 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 //    - position of the item to remove.
 //
 func (menu *Menu) Remove(position int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenu // out
+	var _arg1 C.gint   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg1 = C.gint(position)
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.g_menu_remove(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(position)
 }
 
 // RemoveAll removes all items in the menu.
 func (menu *Menu) RemoveAll() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GMenu // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_info := girepository.MustFind("Gio", "Menu")
-	_info.InvokeClassMethod("remove_all", _args[:], nil)
-
+	C.g_menu_remove_all(_arg0)
 	runtime.KeepAlive(menu)
 }
 
@@ -454,27 +447,26 @@ func (menu *Menu) RemoveAll() {
 //    - menuItem: new Item.
 //
 func NewMenuItem(label, detailedAction string) *MenuItem {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.gchar     // out
+	var _cret *C.GMenuItem // in
 
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if detailedAction != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_gret := _info.InvokeClassMethod("new_MenuItem", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_menu_item_new(_arg1, _arg2)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(detailedAction)
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -495,21 +487,20 @@ func NewMenuItem(label, detailedAction string) *MenuItem {
 //    - menuItem: new Item.
 //
 func NewMenuItemFromModel(model MenuModeller, itemIndex int32) *MenuItem {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GMenuModel // out
+	var _arg2 C.gint        // out
+	var _cret *C.GMenuItem  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(itemIndex)
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg2 = C.gint(itemIndex)
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_gret := _info.InvokeClassMethod("new_MenuItem_from_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_menu_item_new_from_model(_arg1, _arg2)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(itemIndex)
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -582,24 +573,23 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int32) *MenuItem {
 //    - menuItem: new Item.
 //
 func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
+	var _cret *C.GMenuItem  // in
 
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(section).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(section).Native()))
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_gret := _info.InvokeClassMethod("new_MenuItem_section", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_menu_item_new_section(_arg1, _arg2)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(section)
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -619,24 +609,23 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 //    - menuItem: new Item.
 //
 func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
+	var _cret *C.GMenuItem  // in
 
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
+	_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_gret := _info.InvokeClassMethod("new_MenuItem_submenu", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_menu_item_new_submenu(_arg1, _arg2)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(submenu)
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_menuItem = wrapMenuItem(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _menuItem
 }
@@ -656,27 +645,27 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 //    - variant (optional): attribute value, or NULL.
 //
 func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenuItem    // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariantType // out
+	var _cret *C.GVariant     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if expectedType != nil {
-		*(**C.GVariantType)(unsafe.Pointer(&_args[2])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+		_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_gret := _info.InvokeClassMethod("get_attribute_value", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_menu_item_get_attribute_value(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(expectedType)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -699,24 +688,23 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 //    - menuModel (optional): link, or NULL.
 //
 func (menuItem *MenuItem) Link(link string) MenuModeller {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenuItem  // out
+	var _arg1 *C.gchar      // out
+	var _cret *C.GMenuModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(link)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_gret := _info.InvokeClassMethod("get_link", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_menu_item_get_link(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(link)
 
 	var _menuModel MenuModeller // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -776,20 +764,20 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 //    - targetValue (optional) to use as the action target.
 //
 func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if action != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if targetValue != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_action_and_target_value", _args[:], nil)
-
+	C.g_menu_item_set_action_and_target_value(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(targetValue)
@@ -819,18 +807,18 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 //    - value (optional) to use as the value, or NULL.
 //
 func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Variant) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if value != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_attribute_value", _args[:], nil)
-
+	C.g_menu_item_set_attribute_value(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(value)
@@ -854,15 +842,14 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 //    - detailedAction: "detailed" action string.
 //
 func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedAction)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_detailed_action", _args[:], nil)
-
+	C.g_menu_item_set_detailed_action(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(detailedAction)
 }
@@ -883,14 +870,13 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 //    - icon or NULL.
 //
 func (menuItem *MenuItem) SetIcon(icon Iconner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.GIcon     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_icon", _args[:], nil)
-
+	C.g_menu_item_set_icon(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(icon)
 }
@@ -905,17 +891,16 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 //    - label (optional) to set, or NULL to unset.
 //
 func (menuItem *MenuItem) SetLabel(label string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenuItem // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_label", _args[:], nil)
-
+	C.g_menu_item_set_label(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(label)
 }
@@ -937,18 +922,18 @@ func (menuItem *MenuItem) SetLabel(label string) {
 //    - model (optional) to link to (or NULL to unset).
 //
 func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GMenuItem  // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(link)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(link)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg2 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_link", _args[:], nil)
-
+	C.g_menu_item_set_link(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(link)
 	runtime.KeepAlive(model)
@@ -966,16 +951,15 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 //    - section (optional) or NULL.
 //
 func (menuItem *MenuItem) SetSection(section MenuModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenuItem  // out
+	var _arg1 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if section != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(section).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(section).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_section", _args[:], nil)
-
+	C.g_menu_item_set_section(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(section)
 }
@@ -993,16 +977,15 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 //    - submenu (optional) or NULL.
 //
 func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GMenuItem  // out
+	var _arg1 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg0 = (*C.GMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if submenu != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "MenuItem")
-	_info.InvokeClassMethod("set_submenu", _args[:], nil)
-
+	C.g_menu_item_set_submenu(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(submenu)
 }

@@ -11,65 +11,74 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern char* _gotk4_gio2_FileIface_get_basename(void*);
-// extern char* _gotk4_gio2_FileIface_get_parse_name(void*);
-// extern char* _gotk4_gio2_FileIface_get_path(void*);
-// extern char* _gotk4_gio2_FileIface_get_relative_path(void*, void*);
-// extern char* _gotk4_gio2_FileIface_get_uri(void*);
-// extern char* _gotk4_gio2_FileIface_get_uri_scheme(void*);
-// extern gboolean _gotk4_gio2_FileIface_copy_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_eject_mountable_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_eject_mountable_with_operation_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_equal(void*, void*);
-// extern gboolean _gotk4_gio2_FileIface_has_uri_scheme(void*, char*);
-// extern gboolean _gotk4_gio2_FileIface_is_native(void*);
-// extern gboolean _gotk4_gio2_FileIface_make_directory(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_make_directory_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_make_symbolic_link(void*, char*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_measure_disk_usage_finish(void*, void*, guint64*, guint64*, guint64*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_mount_enclosing_volume_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_poll_mountable_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_set_attributes_finish(void*, void*, void**, GError**);
-// extern gboolean _gotk4_gio2_FileIface_start_mountable_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_stop_mountable_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_trash(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_trash_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_unmount_mountable_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish(void*, void*, GError**);
-// extern guint _gotk4_gio2_FileIface_hash(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void* _gotk4_gio2_FileIface_append_to_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_create_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_create_readwrite_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_dup(void*);
-// extern void* _gotk4_gio2_FileIface_enumerate_children_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_find_enclosing_mount(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_find_enclosing_mount_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_get_child_for_display_name(void*, char*, GError**);
-// extern void* _gotk4_gio2_FileIface_get_parent(void*);
-// extern void* _gotk4_gio2_FileIface_mount_mountable_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_open_readwrite(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_open_readwrite_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_query_filesystem_info(void*, char*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_query_filesystem_info_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_query_info_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_query_settable_attributes(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_query_writable_namespaces(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_read_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_replace_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_replace_readwrite_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_resolve_relative_path(void*, char*);
-// extern void* _gotk4_gio2_FileIface_set_display_name(void*, char*, void*, GError**);
-// extern void* _gotk4_gio2_FileIface_set_display_name_finish(void*, void*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_dup(GFile*);
+// extern GFile* _gotk4_gio2_FileIface_get_child_for_display_name(GFile*, char*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_get_parent(GFile*);
+// extern GFile* _gotk4_gio2_FileIface_mount_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_resolve_relative_path(GFile*, char*);
+// extern GFile* _gotk4_gio2_FileIface_set_display_name(GFile*, char*, GCancellable*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_set_display_name_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileAttributeInfoList* _gotk4_gio2_FileIface_query_settable_attributes(GFile*, GCancellable*, GError**);
+// extern GFileAttributeInfoList* _gotk4_gio2_FileIface_query_writable_namespaces(GFile*, GCancellable*, GError**);
+// extern GFileEnumerator* _gotk4_gio2_FileIface_enumerate_children(GFile*, char*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern GFileEnumerator* _gotk4_gio2_FileIface_enumerate_children_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_create_readwrite(GFile*, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_create_readwrite_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_open_readwrite(GFile*, GCancellable*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_open_readwrite_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_replace_readwrite(GFile*, char*, gboolean, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_replace_readwrite_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_filesystem_info(GFile*, char*, GCancellable*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_filesystem_info_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_info(GFile*, char*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_info_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileInputStream* _gotk4_gio2_FileIface_read_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileMonitor* _gotk4_gio2_FileIface_monitor_file(GFile*, GFileMonitorFlags, GCancellable*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_append_to(GFile*, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_append_to_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_create(GFile*, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_create_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_replace(GFile*, char*, gboolean, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_replace_finish(GFile*, GAsyncResult*, GError**);
+// extern GMount* _gotk4_gio2_FileIface_find_enclosing_mount(GFile*, GCancellable*, GError**);
+// extern GMount* _gotk4_gio2_FileIface_find_enclosing_mount_finish(GFile*, GAsyncResult*, GError**);
+// extern char* _gotk4_gio2_FileIface_get_basename(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_parse_name(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_path(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_relative_path(GFile*, GFile*);
+// extern char* _gotk4_gio2_FileIface_get_uri(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_uri_scheme(GFile*);
+// extern gboolean _gotk4_gio2_FileIface_copy_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_eject_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_eject_mountable_with_operation_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_equal(GFile*, GFile*);
+// extern gboolean _gotk4_gio2_FileIface_has_uri_scheme(GFile*, char*);
+// extern gboolean _gotk4_gio2_FileIface_is_native(GFile*);
+// extern gboolean _gotk4_gio2_FileIface_make_directory(GFile*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_make_directory_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_make_symbolic_link(GFile*, char*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_measure_disk_usage_finish(GFile*, GAsyncResult*, guint64*, guint64*, guint64*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_mount_enclosing_volume_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_poll_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_set_attribute(GFile*, char*, GFileAttributeType, gpointer, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_set_attributes_finish(GFile*, GAsyncResult*, GFileInfo**, GError**);
+// extern gboolean _gotk4_gio2_FileIface_set_attributes_from_info(GFile*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_start_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_stop_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_trash(GFile*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_trash_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_unmount_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish(GFile*, GAsyncResult*, GError**);
+// extern guint _gotk4_gio2_FileIface_hash(GFile*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_FileProgressCallback(goffset, goffset, gpointer);
 import "C"
 
 // GTypeFile returns the GType for the type File.
@@ -78,7 +87,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFile() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "File").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFile)
 	return gtype
 }
@@ -187,14 +196,36 @@ var (
 type Filer interface {
 	coreglib.Objector
 
+	// AppendTo gets an output stream for appending data to the file.
+	AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
+	// AppendToAsync: asynchronously opens file for appending.
+	AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
 	// AppendToFinish finishes an asynchronous file append operation started
 	// with g_file_append_to_async().
 	AppendToFinish(res AsyncResulter) (*FileOutputStream, error)
+	// BuildAttributeListForCopy prepares the file attribute query string for
+	// copying to file.
+	BuildAttributeListForCopy(ctx context.Context, flags FileCopyFlags) (string, error)
+	// Copy copies the file source to the location specified by destination.
+	Copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error
+	// CopyAttributes copies the file attributes from source to destination.
+	CopyAttributes(ctx context.Context, destination Filer, flags FileCopyFlags) error
 	// CopyFinish finishes copying the file started with g_file_copy_async().
 	CopyFinish(res AsyncResulter) error
+	// Create creates a new file and returns an output stream for writing to it.
+	Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
+	// CreateAsync: asynchronously creates a new file and returns an output
+	// stream for writing to it.
+	CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
 	// CreateFinish finishes an asynchronous file create operation started with
 	// g_file_create_async().
 	CreateFinish(res AsyncResulter) (*FileOutputStream, error)
+	// CreateReadwrite creates a new file and returns a stream for reading and
+	// writing to it.
+	CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error)
+	// CreateReadwriteAsync: asynchronously creates a new file and returns a
+	// stream for reading and writing to it.
+	CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
 	// CreateReadwriteFinish finishes an asynchronous file create operation
 	// started with g_file_create_readwrite_async().
 	CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
@@ -206,12 +237,22 @@ type Filer interface {
 	DeleteFinish(result AsyncResulter) error
 	// Dup duplicates a #GFile handle.
 	Dup() *File
+	// EjectMountable starts an asynchronous eject on a mountable.
+	EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectMountableFinish finishes an asynchronous eject operation started by
 	// g_file_eject_mountable().
 	EjectMountableFinish(result AsyncResulter) error
+	// EjectMountableWithOperation starts an asynchronous eject on a mountable.
+	EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectMountableWithOperationFinish finishes an asynchronous eject
 	// operation started by g_file_eject_mountable_with_operation().
 	EjectMountableWithOperationFinish(result AsyncResulter) error
+	// EnumerateChildren gets the requested information about the files in a
+	// directory.
+	EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error)
+	// EnumerateChildrenAsync: asynchronously gets the requested information
+	// about the files in a directory.
+	EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback)
 	// EnumerateChildrenFinish finishes an async enumerate children operation.
 	EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error)
 	// Equal checks if the two given #GFiles refer to the same file.
@@ -283,11 +324,26 @@ type Filer interface {
 	// MeasureDiskUsageFinish collects the results from an earlier call to
 	// g_file_measure_disk_usage_async().
 	MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDirs, numFiles uint64, goerr error)
+	// Monitor obtains a file or directory monitor for the given file, depending
+	// on the type of the file.
+	Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
+	// MonitorDirectory obtains a directory monitor for the given file.
+	MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
+	// MonitorFile obtains a file monitor for the given file.
+	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
+	// MountEnclosingVolume starts a mount_operation, mounting the volume that
+	// contains the file location.
+	MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountEnclosingVolumeFinish finishes a mount operation started by
 	// g_file_mount_enclosing_volume().
 	MountEnclosingVolumeFinish(result AsyncResulter) error
+	// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE.
+	MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountMountableFinish finishes a mount operation.
 	MountMountableFinish(result AsyncResulter) (*File, error)
+	// Move tries to move the file or directory source to the location specified
+	// by destination.
+	Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error
 	// OpenReadwrite opens an existing file for reading and writing.
 	OpenReadwrite(ctx context.Context) (*FileIOStream, error)
 	// OpenReadwriteAsync: asynchronously opens file for reading and writing.
@@ -313,6 +369,8 @@ type Filer interface {
 	QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error)
 	// QueryExists: utility function to check if a particular file exists.
 	QueryExists(ctx context.Context) bool
+	// QueryFileType: utility function to inspect the Type of a file.
+	QueryFileType(ctx context.Context, flags FileQueryInfoFlags) FileType
 	// QueryFilesystemInfo: similar to g_file_query_info(), but obtains
 	// information about the filesystem the file is on, rather than the file
 	// itself.
@@ -322,6 +380,11 @@ type Filer interface {
 	QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback)
 	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 	QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error)
+	// QueryInfo gets the requested information about specified file.
+	QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error)
+	// QueryInfoAsync: asynchronously gets the requested information about
+	// specified file.
+	QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous file info query.
 	QueryInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QuerySettableAttributes: obtain the list of settable attributes for the
@@ -337,20 +400,68 @@ type Filer interface {
 	// ReadFinish finishes an asynchronous file read operation started with
 	// g_file_read_async().
 	ReadFinish(res AsyncResulter) (*FileInputStream, error)
+	// Replace returns an output stream for overwriting the file, possibly
+	// creating a backup copy of the file first.
+	Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error)
+	// ReplaceAsync: asynchronously overwrites the file, replacing the contents,
+	// possibly creating a backup copy of the file first.
+	ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
+	// ReplaceContents replaces the contents of file with contents of length
+	// bytes.
+	ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error)
+	// ReplaceContentsAsync starts an asynchronous replacement of file with the
+	// given contents of length bytes.
+	ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
+	// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
+	// takes a #GBytes input instead.
+	ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsFinish finishes an asynchronous replace of the given file.
 	ReplaceContentsFinish(res AsyncResulter) (string, error)
 	// ReplaceFinish finishes an asynchronous file replace operation started
 	// with g_file_replace_async().
 	ReplaceFinish(res AsyncResulter) (*FileOutputStream, error)
+	// ReplaceReadwrite returns an output stream for overwriting the file in
+	// readwrite mode, possibly creating a backup copy of the file first.
+	ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error)
+	// ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
+	// mode, replacing the contents, possibly creating a backup copy of the file
+	// first.
+	ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
 	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
 	// started with g_file_replace_readwrite_async().
 	ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// ResolveRelativePath resolves a relative path for file to an absolute
 	// path.
 	ResolveRelativePath(relativePath string) *File
+	// SetAttribute sets an attribute in the file with attribute name attribute
+	// to value_p.
+	SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP unsafe.Pointer, flags FileQueryInfoFlags) error
+	// SetAttributeByteString sets attribute of type
+	// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to value.
+	SetAttributeByteString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error
+	// SetAttributeInt32 sets attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
+	// value.
+	SetAttributeInt32(ctx context.Context, attribute string, value int32, flags FileQueryInfoFlags) error
+	// SetAttributeInt64 sets attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
+	// value.
+	SetAttributeInt64(ctx context.Context, attribute string, value int64, flags FileQueryInfoFlags) error
+	// SetAttributeString sets attribute of type G_FILE_ATTRIBUTE_TYPE_STRING to
+	// value.
+	SetAttributeString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error
+	// SetAttributeUint32 sets attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32 to
+	// value.
+	SetAttributeUint32(ctx context.Context, attribute string, value uint32, flags FileQueryInfoFlags) error
+	// SetAttributeUint64 sets attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64 to
+	// value.
+	SetAttributeUint64(ctx context.Context, attribute string, value uint64, flags FileQueryInfoFlags) error
+	// SetAttributesAsync: asynchronously sets the attributes of file with info.
+	SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback)
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
 	SetAttributesFinish(result AsyncResulter) (*FileInfo, error)
+	// SetAttributesFromInfo tries to set all attributes in the Info on the
+	// target values, not stopping on the first error.
+	SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error
 	// SetDisplayName renames file to the specified display name.
 	SetDisplayName(ctx context.Context, displayName string) (*File, error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
@@ -359,8 +470,12 @@ type Filer interface {
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
 	SetDisplayNameFinish(res AsyncResulter) (*File, error)
+	// StartMountable starts a file of type FILE_TYPE_MOUNTABLE.
+	StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback)
 	// StartMountableFinish finishes a start operation.
 	StartMountableFinish(result AsyncResulter) error
+	// StopMountable stops a file of type FILE_TYPE_MOUNTABLE.
+	StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopMountableFinish finishes a stop operation, see
 	// g_file_stop_mountable() for details.
 	StopMountableFinish(result AsyncResulter) error
@@ -374,9 +489,14 @@ type Filer interface {
 	// TrashFinish finishes an asynchronous file trashing operation, started
 	// with g_file_trash_async().
 	TrashFinish(result AsyncResulter) error
+	// UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+	UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// UnmountMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable() for details.
 	UnmountMountableFinish(result AsyncResulter) error
+	// UnmountMountableWithOperation unmounts a file of type
+	// FILE_TYPE_MOUNTABLE.
+	UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// UnmountMountableWithOperationFinish finishes an unmount operation, see
 	// g_file_unmount_mountable_with_operation() for details.
 	UnmountMountableWithOperationFinish(result AsyncResulter) error
@@ -394,6 +514,107 @@ func marshalFile(p uintptr) (interface{}, error) {
 	return wrapFile(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// AppendTo gets an output stream for appending data to the file. If the file
+// doesn't already exist it is created.
+//
+// By default files created are generally readable by everyone, but if you pass
+// FILE_CREATE_PRIVATE in flags the file will be made readable only to the
+// current user, to the level that is supported on the target filesystem.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// Some file systems don't allow all file names, and may return an
+// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
+// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
+// too, and depend on what kind of filesystem the file is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//
+// The function returns the following values:
+//
+//    - fileOutputStream or NULL on error. Free the returned object with
+//      g_object_unref().
+//
+func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
+	var _arg0 *C.GFile             // out
+	var _arg2 *C.GCancellable      // out
+	var _arg1 C.GFileCreateFlags   // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+
+	_cret = C.g_file_append_to(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileOutputStream *FileOutputStream // out
+	var _goerr error                        // out
+
+	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileOutputStream, _goerr
+}
+
+// AppendToAsync: asynchronously opens file for appending.
+//
+// For more details, see g_file_append_to() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_append_to_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_append_to_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // AppendToFinish finishes an asynchronous file append operation started with
 // g_file_append_to_async().
 //
@@ -407,27 +628,212 @@ func marshalFile(p uintptr) (interface{}, error) {
 //      object with g_object_unref().
 //
 func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("append_to_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_append_to_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileOutputStream, _goerr
+}
+
+// BuildAttributeListForCopy prepares the file attribute query string for
+// copying to file.
+//
+// This function prepares an attribute query string to be passed to
+// g_file_query_info() to get a list of attributes normally copied with the file
+// (see g_file_copy_attributes() for the detailed description). This function is
+// used by the implementation of g_file_copy_attributes() and is useful when one
+// needs to query and set the attributes in two stages (e.g., for recursive move
+// of a directory).
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CopyFlags.
+//
+// The function returns the following values:
+//
+//    - utf8: attribute query string for g_file_query_info(), or NULL if an error
+//      occurs.
+//
+func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyFlags) (string, error) {
+	var _arg0 *C.GFile         // out
+	var _arg2 *C.GCancellable  // out
+	var _arg1 C.GFileCopyFlags // out
+	var _cret *C.char          // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCopyFlags(flags)
+
+	_cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _utf8 string // out
+	var _goerr error // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _utf8, _goerr
+}
+
+// Copy copies the file source to the location specified by destination. Can not
+// handle recursive copies of directories.
+//
+// If the flag FILE_COPY_OVERWRITE is specified an already existing destination
+// file is overwritten.
+//
+// If the flag FILE_COPY_NOFOLLOW_SYMLINKS is specified then symlinks will be
+// copied as symlinks, otherwise the target of the source symlink will be
+// copied.
+//
+// If the flag FILE_COPY_ALL_METADATA is specified then all the metadata that is
+// possible to copy is copied, not just the default subset (which, for instance,
+// does not include the owner, see Info).
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If progress_callback is not NULL, then the operation can be monitored by
+// setting this to a ProgressCallback function. progress_callback_data will be
+// passed to this function. It is guaranteed that this callback will be called
+// after all data has been transferred with the total number of bytes copied
+// during the operation.
+//
+// If the source file does not exist, then the G_IO_ERROR_NOT_FOUND error is
+// returned, independent on the status of the destination.
+//
+// If FILE_COPY_OVERWRITE is not specified and the target exists, then the error
+// G_IO_ERROR_EXISTS is returned.
+//
+// If trying to overwrite a file over a directory, the G_IO_ERROR_IS_DIRECTORY
+// error is returned. If trying to overwrite a directory with a directory the
+// G_IO_ERROR_WOULD_MERGE error is returned.
+//
+// If the source is a directory and the target does not exist, or
+// FILE_COPY_OVERWRITE is specified and the target is a file, then the
+// G_IO_ERROR_WOULD_RECURSE error is returned.
+//
+// If you are interested in copying the #GFile object itself (not the on-disk
+// file), see g_file_dup().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - destination #GFile.
+//    - flags: set of CopyFlags.
+//    - progressCallback (optional): function to callback with progress
+//      information, or NULL if progress information is not needed.
+//
+func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
+	var _arg0 *C.GFile                // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 *C.GFile                // out
+	var _arg2 C.GFileCopyFlags        // out
+	var _arg4 C.GFileProgressCallback // out
+	var _arg5 C.gpointer
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(destination).Native()))
+	_arg2 = C.GFileCopyFlags(flags)
+	if progressCallback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
+		_arg5 = C.gpointer(gbox.Assign(progressCallback))
+		defer gbox.Delete(uintptr(_arg5))
+	}
+
+	C.g_file_copy(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(destination)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(progressCallback)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// CopyAttributes copies the file attributes from source to destination.
+//
+// Normally only a subset of the file attributes are copied, those that are
+// copies in a normal file copy operation (which for instance does not include
+// e.g. owner). However if FILE_COPY_ALL_METADATA is specified in flags, then
+// all the metadata that is possible to copy is copied. This is useful when
+// implementing move by copy + delete source.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - destination to copy attributes to.
+//    - flags: set of CopyFlags.
+//
+func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags FileCopyFlags) error {
+	var _arg0 *C.GFile         // out
+	var _arg3 *C.GCancellable  // out
+	var _arg1 *C.GFile         // out
+	var _arg2 C.GFileCopyFlags // out
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(destination).Native()))
+	_arg2 = C.GFileCopyFlags(flags)
+
+	C.g_file_copy_attributes(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(destination)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // CopyFinish finishes copying the file started with g_file_copy_async().
@@ -437,24 +843,127 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 //    - res: Result.
 //
 func (file *File) CopyFinish(res AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("copy_finish", _args[:], nil)
-
+	C.g_file_copy_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// Create creates a new file and returns an output stream for writing to it. The
+// file must not already exist.
+//
+// By default files created are generally readable by everyone, but if you pass
+// FILE_CREATE_PRIVATE in flags the file will be made readable only to the
+// current user, to the level that is supported on the target filesystem.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If a file or directory with this name already exists the G_IO_ERROR_EXISTS
+// error will be returned. Some file systems don't allow all file names, and may
+// return an G_IO_ERROR_INVALID_FILENAME error, and if the name is to long
+// G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are possible too,
+// and depend on what kind of filesystem the file is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//
+// The function returns the following values:
+//
+//    - fileOutputStream for the newly created file, or NULL on error. Free the
+//      returned object with g_object_unref().
+//
+func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
+	var _arg0 *C.GFile             // out
+	var _arg2 *C.GCancellable      // out
+	var _arg1 C.GFileCreateFlags   // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+
+	_cret = C.g_file_create(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileOutputStream *FileOutputStream // out
+	var _goerr error                        // out
+
+	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileOutputStream, _goerr
+}
+
+// CreateAsync: asynchronously creates a new file and returns an output stream
+// for writing to it. The file must not already exist.
+//
+// For more details, see g_file_create() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_create_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_create_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CreateFinish finishes an asynchronous file create operation started with
@@ -470,27 +979,134 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 //      g_object_unref().
 //
 func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("create_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_create_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileOutputStream, _goerr
+}
+
+// CreateReadwrite creates a new file and returns a stream for reading and
+// writing to it. The file must not already exist.
+//
+// By default files created are generally readable by everyone, but if you pass
+// FILE_CREATE_PRIVATE in flags the file will be made readable only to the
+// current user, to the level that is supported on the target filesystem.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If a file or directory with this name already exists, the G_IO_ERROR_EXISTS
+// error will be returned. Some file systems don't allow all file names, and may
+// return an G_IO_ERROR_INVALID_FILENAME error, and if the name is too long,
+// G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are possible too,
+// and depend on what kind of filesystem the file is on.
+//
+// Note that in many non-local file cases read and write streams are not
+// supported, so make sure you really need to do read and write streaming,
+// rather than just opening for reading or writing.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//
+// The function returns the following values:
+//
+//    - fileIOStream for the newly created file, or NULL on error. Free the
+//      returned object with g_object_unref().
+//
+func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg2 *C.GCancellable    // out
+	var _arg1 C.GFileCreateFlags // out
+	var _cret *C.GFileIOStream   // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+
+	_cret = C.g_file_create_readwrite(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileIOStream *FileIOStream // out
+	var _goerr error                // out
+
+	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileIOStream, _goerr
+}
+
+// CreateReadwriteAsync: asynchronously creates a new file and returns a stream
+// for reading and writing to it. The file must not already exist.
+//
+// For more details, see g_file_create_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_create_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_create_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CreateReadwriteFinish finishes an asynchronous file create operation started
@@ -506,24 +1122,24 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 //      g_object_unref().
 //
 func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("create_readwrite_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_create_readwrite_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileIOStream, _goerr
@@ -555,25 +1171,25 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (file *File) Delete(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("delete", _args[:], nil)
-
+	C.g_file_delete(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -590,23 +1206,25 @@ func (file *File) Delete(ctx context.Context) error {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) DeleteAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("delete_async", _args[:], nil)
-
+	C.g_file_delete_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -620,21 +1238,21 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int32, callback As
 //    - result: Result.
 //
 func (file *File) DeleteFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("delete_finish", _args[:], nil)
-
+	C.g_file_delete_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -656,21 +1274,61 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 //    - ret: new #GFile that is a duplicate of the given #GFile.
 //
 func (file *File) Dup() *File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.GFile // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("dup", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_dup(_arg0)
 	runtime.KeepAlive(file)
 
 	var _ret *File // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
+}
+
+// EjectMountable starts an asynchronous eject on a mountable. When this
+// operation has completed, callback will be called with user_user data, and the
+// operation can be finalized with g_file_eject_mountable_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// Deprecated: Use g_file_eject_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_eject_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // EjectMountableFinish finishes an asynchronous eject operation started by
@@ -683,24 +1341,71 @@ func (file *File) Dup() *File {
 //    - result: Result.
 //
 func (file *File) EjectMountableFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("eject_mountable_finish", _args[:], nil)
-
+	C.g_file_eject_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// EjectMountableWithOperation starts an asynchronous eject on a mountable. When
+// this operation has completed, callback will be called with user_user data,
+// and the operation can be finalized with
+// g_file_eject_mountable_with_operation_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_eject_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectMountableWithOperationFinish finishes an asynchronous eject operation
@@ -711,24 +1416,142 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("eject_mountable_with_operation_finish", _args[:], nil)
-
+	C.g_file_eject_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// EnumerateChildren gets the requested information about the files in a
+// directory. The result is a Enumerator object that will give out Info objects
+// for all the files in the directory.
+//
+// The attributes value is a string that specifies the file attributes that
+// should be gathered. It is not an error if it's not possible to read a
+// particular requested attribute from a file - it just won't be set. attributes
+// should be a comma-separated list of attributes or attribute wildcards. The
+// wildcard "*" means all attributes, and a wildcard like "standard::*" means
+// all attributes in the standard namespace. An example attribute query be
+// "standard::*,owner::user". The standard attributes are available as defines,
+// like FILE_ATTRIBUTE_STANDARD_NAME.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
+// If the file is not a directory, the G_IO_ERROR_NOT_DIRECTORY error will be
+// returned. Other errors are possible too.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//
+// The function returns the following values:
+//
+//    - fileEnumerator if successful, NULL on error. Free the returned object
+//      with g_object_unref().
+//
+func (file *File) EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _cret *C.GFileEnumerator    // in
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+
+	_cret = C.g_file_enumerate_children(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+
+	var _fileEnumerator *FileEnumerator // out
+	var _goerr error                    // out
+
+	_fileEnumerator = wrapFileEnumerator(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileEnumerator, _goerr
+}
+
+// EnumerateChildrenAsync: asynchronously gets the requested information about
+// the files in a directory. The result is a Enumerator object that will give
+// out Info objects for all the files in the directory.
+//
+// For more details, see g_file_enumerate_children() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_enumerate_children_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_enumerate_children_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // EnumerateChildrenFinish finishes an async enumerate children operation. See
@@ -744,24 +1567,24 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 //      with g_object_unref().
 //
 func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile           // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GFileEnumerator // in
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("enumerate_children_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerate_children_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileEnumerator *FileEnumerator // out
 	var _goerr error                    // out
 
-	_fileEnumerator = wrapFileEnumerator(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileEnumerator = wrapFileEnumerator(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileEnumerator, _goerr
@@ -783,21 +1606,20 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 //    - ok: TRUE if file1 and file2 are equal.
 //
 func (file1 *File) Equal(file2 Filer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.GFile   // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file1).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file2).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file1).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file2).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_equal(_arg0, _arg1)
 	runtime.KeepAlive(file1)
 	runtime.KeepAlive(file2)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -824,28 +1646,28 @@ func (file1 *File) Equal(file2 Filer) bool {
 //      object with g_object_unref().
 //
 func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cret *C.GMount       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("find_enclosing_mount", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_find_enclosing_mount(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _mount *Mount // out
 	var _goerr error  // out
 
-	_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _mount, _goerr
@@ -866,23 +1688,25 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("find_enclosing_mount_async", _args[:], nil)
-
+	C.g_file_find_enclosing_mount_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -902,24 +1726,24 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int32,
 //      g_object_unref().
 //
 func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GMount       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("find_enclosing_mount_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_find_enclosing_mount_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _mount *Mount // out
 	var _goerr error  // out
 
-	_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _mount, _goerr
@@ -947,21 +1771,19 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 //      g_free() when no longer needed.
 //
 func (file *File) Basename() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_basename", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_basename(_arg0)
 	runtime.KeepAlive(file)
 
 	var _filename string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -985,22 +1807,21 @@ func (file *File) Basename() string {
 //      g_object_unref().
 //
 func (file *File) Child(name string) *File {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_child(_arg0, _arg1)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(name)
 
 	var _ret *File // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
 }
@@ -1023,25 +1844,25 @@ func (file *File) Child(name string) *File {
 //      converted. Free the returned object with g_object_unref().
 //
 func (file *File) ChildForDisplayName(displayName string) (*File, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile  // out
+	var _arg1 *C.char   // out
+	var _cret *C.GFile  // in
+	var _cerr *C.GError // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_child_for_display_name", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_child_for_display_name(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(displayName)
 
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _ret, _goerr
@@ -1058,20 +1879,18 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 //      there is no parent. Free the returned object with g_object_unref().
 //
 func (file *File) Parent() *File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.GFile // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_parent(_arg0)
 	runtime.KeepAlive(file)
 
 	var _ret *File // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _ret
@@ -1096,20 +1915,18 @@ func (file *File) Parent() *File {
 //      should be freed with g_free() when no longer needed.
 //
 func (file *File) ParseName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_parse_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_parse_name(_arg0)
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1126,21 +1943,19 @@ func (file *File) ParseName() string {
 //      no longer needed.
 //
 func (file *File) Path() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_path", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_path(_arg0)
 	runtime.KeepAlive(file)
 
 	var _filename string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -1161,23 +1976,22 @@ func (file *File) Path() string {
 //      string should be freed with g_free() when no longer needed.
 //
 func (parent *File) RelativePath(descendant Filer) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _arg1 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(descendant).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(descendant).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_relative_path", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_relative_path(_arg0, _arg1)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(descendant)
 
 	var _filename string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _filename
@@ -1194,20 +2008,18 @@ func (parent *File) RelativePath(descendant Filer) string {
 //      should be freed with g_free() when no longer needed.
 //
 func (file *File) URI() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_uri", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_uri(_arg0)
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1231,21 +2043,19 @@ func (file *File) URI() string {
 //      string should be freed with g_free() when no longer needed.
 //
 func (file *File) URIScheme() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("get_uri_scheme", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_get_uri_scheme(_arg0)
 	runtime.KeepAlive(file)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1267,23 +2077,22 @@ func (file *File) URIScheme() string {
 //      case that parent is NULL).
 //
 func (file *File) HasParent(parent Filer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.GFile   // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("has_parent", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_has_parent(_arg0, _arg1)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(parent)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1313,21 +2122,20 @@ func (file *File) HasParent(parent Filer) bool {
 //      otherwise.
 //
 func (file *File) HasPrefix(prefix Filer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.GFile   // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(prefix).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(prefix).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("has_prefix", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_has_prefix(_arg0, _arg1)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(prefix)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1348,22 +2156,21 @@ func (file *File) HasPrefix(prefix Filer) bool {
 //      scheme is NULL, not supported, or #GFile is invalid.
 //
 func (file *File) HasURIScheme(uriScheme string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile   // out
+	var _arg1 *C.char    // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("has_uri_scheme", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_has_uri_scheme(_arg0, _arg1)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(uriScheme)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1381,19 +2188,17 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 //      hashing a #GFile to add to a Table or similar data structure.
 //
 func (file *File) Hash() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("hash", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_hash(_arg0)
 	runtime.KeepAlive(file)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1415,19 +2220,17 @@ func (file *File) Hash() uint32 {
 //    - ok: TRUE if file is native.
 //
 func (file *File) IsNative() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile   // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("is_native", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_is_native(_arg0)
 	runtime.KeepAlive(file)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1457,20 +2260,20 @@ func (file *File) IsNative() bool {
 //    - bytes or NULL and error is set.
 //
 func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _arg2 *C.gchar        // in
+	var _cret *C.GBytes       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("load_bytes", _args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_load_bytes(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -1478,19 +2281,19 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	var _bytes *glib.Bytes // out
 	var _goerr error       // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_outs[0])) != nil {
-		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0]))))
+	if _arg2 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _etagOut, _bytes, _goerr
@@ -1513,22 +2316,23 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("load_bytes_async", _args[:], nil)
-
+	C.g_file_load_bytes_async(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -1556,16 +2360,16 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 //    - bytes or NULL and error is set.
 //
 func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.gchar        // in
+	var _cret *C.GBytes       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("load_bytes_finish", _args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_load_bytes_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -1573,19 +2377,19 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 	var _bytes *glib.Bytes // out
 	var _goerr error       // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_outs[0])) != nil {
-		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0]))))
+	if _arg2 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _etagOut, _bytes, _goerr
@@ -1610,19 +2414,21 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 //      file, or NULL if the entity tag is not needed.
 //
 func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _arg2 *C.char         // in
+	var _arg3 C.gsize         // in
+	var _arg4 *C.char         // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("load_contents", _args[:], _outs[:])
-
+	C.g_file_load_contents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -1630,15 +2436,15 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	var _etagOut string  // out
 	var _goerr error     // out
 
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
-	_contents = make([]byte, *(*C.gsize)(unsafe.Pointer(&_outs[1])))
-	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))), *(*C.gsize)(unsafe.Pointer(&_outs[1]))))
-	if *(**C.char)(unsafe.Pointer(&_outs[2])) != nil {
-		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2])))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2]))))
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
+	if _arg4 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+		defer C.free(unsafe.Pointer(_arg4))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _contents, _etagOut, _goerr
@@ -1663,22 +2469,23 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("load_contents_async", _args[:], nil)
-
+	C.g_file_load_contents_async(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -1701,15 +2508,17 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 //      file, or NULL if the entity tag is not needed.
 //
 func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _arg3 C.gsize         // in
+	var _arg4 *C.char         // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("load_contents_finish", _args[:], _outs[:])
-
+	C.g_file_load_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -1717,15 +2526,15 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 	var _etagOut string  // out
 	var _goerr error     // out
 
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
-	_contents = make([]byte, *(*C.gsize)(unsafe.Pointer(&_outs[1])))
-	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))), *(*C.gsize)(unsafe.Pointer(&_outs[1]))))
-	if *(**C.char)(unsafe.Pointer(&_outs[2])) != nil {
-		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2])))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2]))))
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
+	if _arg4 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+		defer C.free(unsafe.Pointer(_arg4))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _contents, _etagOut, _goerr
@@ -1747,15 +2556,17 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 //      file, or NULL if the entity tag is not needed.
 //
 func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _arg3 C.gsize         // in
+	var _arg4 *C.char         // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("load_partial_contents_finish", _args[:], _outs[:])
-
+	C.g_file_load_partial_contents_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -1763,15 +2574,15 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 	var _etagOut string  // out
 	var _goerr error     // out
 
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
-	_contents = make([]byte, *(*C.gsize)(unsafe.Pointer(&_outs[1])))
-	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))), *(*C.gsize)(unsafe.Pointer(&_outs[1]))))
-	if *(**C.char)(unsafe.Pointer(&_outs[2])) != nil {
-		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2])))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2]))))
+	defer C.free(unsafe.Pointer(_arg2))
+	_contents = make([]byte, _arg3)
+	copy(_contents, unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), _arg3))
+	if _arg4 != nil {
+		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
+		defer C.free(unsafe.Pointer(_arg4))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _contents, _etagOut, _goerr
@@ -1797,25 +2608,25 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (file *File) MakeDirectory(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("make_directory", _args[:], nil)
-
+	C.g_file_make_directory(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -1830,23 +2641,25 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("make_directory_async", _args[:], nil)
-
+	C.g_file_make_directory_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -1861,21 +2674,21 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int32, call
 //    - result: Result.
 //
 func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("make_directory_finish", _args[:], nil)
-
+	C.g_file_make_directory_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -1900,25 +2713,25 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("make_directory_with_parents", _args[:], nil)
-
+	C.g_file_make_directory_with_parents(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -1937,28 +2750,29 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 //    - symlinkValue: string with the path for the target of the new symlink.
 //
 func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) error {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg2 *C.GCancellable // out
+	var _arg1 *C.char         // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("make_symbolic_link", _args[:], nil)
-
+	C.g_file_make_symbolic_link(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(symlinkValue)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -1979,15 +2793,17 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 //    - numFiles (optional): number of non-directories encountered.
 //
 func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDirs, numFiles uint64, goerr error) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 C.guint64       // in
+	var _arg3 C.guint64       // in
+	var _arg4 C.guint64       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("measure_disk_usage_finish", _args[:], _outs[:])
-
+	C.g_file_measure_disk_usage_finish(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -1996,14 +2812,268 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDi
 	var _numFiles uint64  // out
 	var _goerr error      // out
 
-	_diskUsage = uint64(*(*C.guint64)(unsafe.Pointer(&_outs[0])))
-	_numDirs = uint64(*(*C.guint64)(unsafe.Pointer(&_outs[1])))
-	_numFiles = uint64(*(*C.guint64)(unsafe.Pointer(&_outs[2])))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_diskUsage = uint64(_arg2)
+	_numDirs = uint64(_arg3)
+	_numFiles = uint64(_arg4)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _diskUsage, _numDirs, _numFiles, _goerr
+}
+
+// Monitor obtains a file or directory monitor for the given file, depending on
+// the type of the file.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of MonitorFlags.
+//
+// The function returns the following values:
+//
+//    - fileMonitor for the given file, or NULL on error. Free the returned
+//      object with g_object_unref().
+//
+func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
+	var _arg0 *C.GFile            // out
+	var _arg2 *C.GCancellable     // out
+	var _arg1 C.GFileMonitorFlags // out
+	var _cret *C.GFileMonitor     // in
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileMonitorFlags(flags)
+
+	_cret = C.g_file_monitor(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileMonitor FileMonitorrer // out
+	var _goerr error                // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.FileMonitorrer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FileMonitorrer)
+			return ok
+		})
+		rv, ok := casted.(FileMonitorrer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.FileMonitorrer")
+		}
+		_fileMonitor = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileMonitor, _goerr
+}
+
+// MonitorDirectory obtains a directory monitor for the given file. This may
+// fail if directory monitoring is not supported.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// It does not make sense for flags to contain G_FILE_MONITOR_WATCH_HARD_LINKS,
+// since hard links can not be made to directories. It is not possible to
+// monitor all the files in a directory for changes made via hard links; if you
+// want to do this then you must register individual watches with
+// g_file_monitor().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of MonitorFlags.
+//
+// The function returns the following values:
+//
+//    - fileMonitor for the given file, or NULL on error. Free the returned
+//      object with g_object_unref().
+//
+func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
+	var _arg0 *C.GFile            // out
+	var _arg2 *C.GCancellable     // out
+	var _arg1 C.GFileMonitorFlags // out
+	var _cret *C.GFileMonitor     // in
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileMonitorFlags(flags)
+
+	_cret = C.g_file_monitor_directory(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileMonitor FileMonitorrer // out
+	var _goerr error                // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.FileMonitorrer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FileMonitorrer)
+			return ok
+		})
+		rv, ok := casted.(FileMonitorrer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.FileMonitorrer")
+		}
+		_fileMonitor = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileMonitor, _goerr
+}
+
+// MonitorFile obtains a file monitor for the given file. If no file
+// notification mechanism exists, then regular polling of the file is used.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will also
+// attempt to report changes made to the file via another filename (ie, a hard
+// link). Without this flag, you can only rely on changes made through the
+// filename contained in file to be reported. Using this flag may result in an
+// increase in resource usage, and may not have any effect depending on the
+// Monitor backend and/or filesystem type.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of MonitorFlags.
+//
+// The function returns the following values:
+//
+//    - fileMonitor for the given file, or NULL on error. Free the returned
+//      object with g_object_unref().
+//
+func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
+	var _arg0 *C.GFile            // out
+	var _arg2 *C.GCancellable     // out
+	var _arg1 C.GFileMonitorFlags // out
+	var _cret *C.GFileMonitor     // in
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileMonitorFlags(flags)
+
+	_cret = C.g_file_monitor_file(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileMonitor FileMonitorrer // out
+	var _goerr error                // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.FileMonitorrer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FileMonitorrer)
+			return ok
+		})
+		rv, ok := casted.(FileMonitorrer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.FileMonitorrer")
+		}
+		_fileMonitor = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileMonitor, _goerr
+}
+
+// MountEnclosingVolume starts a mount_operation, mounting the volume that
+// contains the file location.
+//
+// When this operation has completed, callback will be called with user_user
+// data, and the operation can be finalized with
+// g_file_mount_enclosing_volume_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional): Operation or NULL to avoid user interaction.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(location).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_mount_enclosing_volume(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountEnclosingVolumeFinish finishes a mount operation started by
@@ -2014,24 +3084,73 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDi
 //    - result: Result.
 //
 func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(location).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(location).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("mount_enclosing_volume_finish", _args[:], nil)
-
+	C.g_file_mount_enclosing_volume_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(location)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE. Using
+// mount_operation, you can request callbacks when, for instance, passwords are
+// needed during authentication.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_mount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountMountableFinish finishes a mount operation. See g_file_mount_mountable()
@@ -2049,27 +3168,107 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 //    - ret or NULL on error. Free the returned object with g_object_unref().
 //
 func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFile        // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("mount_mountable_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_mount_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _ret, _goerr
+}
+
+// Move tries to move the file or directory source to the location specified by
+// destination. If native move operations are supported then this is used,
+// otherwise a copy + delete fallback is used. The native implementation may
+// support moving directories (for instance on moves inside the same
+// filesystem), but the fallback code does not.
+//
+// If the flag FILE_COPY_OVERWRITE is specified an already existing destination
+// file is overwritten.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If progress_callback is not NULL, then the operation can be monitored by
+// setting this to a ProgressCallback function. progress_callback_data will be
+// passed to this function. It is guaranteed that this callback will be called
+// after all data has been transferred with the total number of bytes copied
+// during the operation.
+//
+// If the source file does not exist, then the G_IO_ERROR_NOT_FOUND error is
+// returned, independent on the status of the destination.
+//
+// If FILE_COPY_OVERWRITE is not specified and the target exists, then the error
+// G_IO_ERROR_EXISTS is returned.
+//
+// If trying to overwrite a file over a directory, the G_IO_ERROR_IS_DIRECTORY
+// error is returned. If trying to overwrite a directory with a directory the
+// G_IO_ERROR_WOULD_MERGE error is returned.
+//
+// If the source is a directory and the target does not exist, or
+// FILE_COPY_OVERWRITE is specified and the target is a file, then the
+// G_IO_ERROR_WOULD_RECURSE error may be returned (if the native move operation
+// isn't available).
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - destination pointing to the destination location.
+//    - flags: set of CopyFlags.
+//    - progressCallback (optional): ProgressCallback function for updates.
+//
+func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
+	var _arg0 *C.GFile                // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 *C.GFile                // out
+	var _arg2 C.GFileCopyFlags        // out
+	var _arg4 C.GFileProgressCallback // out
+	var _arg5 C.gpointer
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(destination).Native()))
+	_arg2 = C.GFileCopyFlags(flags)
+	if progressCallback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_FileProgressCallback)
+		_arg5 = C.gpointer(gbox.Assign(progressCallback))
+		defer gbox.Delete(uintptr(_arg5))
+	}
+
+	C.g_file_move(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(destination)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(progressCallback)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // OpenReadwrite opens an existing file for reading and writing. The result is a
@@ -2096,28 +3295,28 @@ func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 //      g_object_unref().
 //
 func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GCancellable  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("open_readwrite", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_open_readwrite(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileIOStream, _goerr
@@ -2138,23 +3337,25 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("open_readwrite_async", _args[:], nil)
-
+	C.g_file_open_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -2174,24 +3375,24 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int32, call
 //      g_object_unref().
 //
 func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("open_readwrite_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_open_readwrite_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileIOStream, _goerr
@@ -2210,20 +3411,18 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 //      such path exists. The returned string is owned by file.
 //
 func (file *File) PeekPath() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _cret *C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("peek_path", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_peek_path(_arg0)
 	runtime.KeepAlive(file)
 
 	var _filename string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _filename
@@ -2244,22 +3443,23 @@ func (file *File) PeekPath() string {
 //    - callback (optional) to call when the request is satisfied, or NULL.
 //
 func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("poll_mountable", _args[:], nil)
-
+	C.g_file_poll_mountable(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -2276,21 +3476,21 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 //    - result: Result.
 //
 func (file *File) PollMountableFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("poll_mountable_finish", _args[:], nil)
-
+	C.g_file_poll_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -2313,28 +3513,28 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 //      done with it, release it with g_object_unref().
 //
 func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cret *C.GAppInfo     // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_default_handler", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_default_handler(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _appInfo, _goerr
@@ -2349,23 +3549,25 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 //    - callback (optional) to call when the request is done.
 //
 func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("query_default_handler_async", _args[:], nil)
-
+	C.g_file_query_default_handler_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -2385,24 +3587,24 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int32
 //      done with it, release it with g_object_unref().
 //
 func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GAppInfo     // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_default_handler_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_default_handler_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _appInfo *AppInfo // out
 	var _goerr error      // out
 
-	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _appInfo, _goerr
@@ -2442,29 +3644,69 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, err
 //      otherwise (or if cancelled).
 //
 func (file *File) QueryExists(ctx context.Context) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_exists", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_exists(_arg0, _arg1)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// QueryFileType: utility function to inspect the Type of a file. This is
+// implemented using g_file_query_info() and as such does blocking I/O.
+//
+// The primary use case of this method is to check if a file is a regular file,
+// directory, or symlink.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags: set of QueryInfoFlags passed to g_file_query_info().
+//
+// The function returns the following values:
+//
+//    - fileType of the file and FILE_TYPE_UNKNOWN if the file does not exist.
+//
+func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) FileType {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GFileQueryInfoFlags // out
+	var _cret C.GFileType           // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileQueryInfoFlags(flags)
+
+	_cret = C.g_file_query_file_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+
+	var _fileType FileType // out
+
+	_fileType = FileType(_cret)
+
+	return _fileType
 }
 
 // QueryFilesystemInfo: similar to g_file_query_info(), but obtains information
@@ -2501,21 +3743,22 @@ func (file *File) QueryExists(ctx context.Context) bool {
 //      g_object_unref().
 //
 func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg2 *C.GCancellable // out
+	var _arg1 *C.char         // out
+	var _cret *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_filesystem_info", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_filesystem_info(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -2523,9 +3766,9 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInfo, _goerr
@@ -2549,25 +3792,28 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("query_filesystem_info_async", _args[:], nil)
-
+	C.g_file_query_filesystem_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -2588,27 +3834,151 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 //      g_object_unref().
 //
 func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_filesystem_info_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_filesystem_info_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInfo, _goerr
+}
+
+// QueryInfo gets the requested information about specified file. The result is
+// a Info object that contains key-value attributes (such as the type or size of
+// the file).
+//
+// The attributes value is a string that specifies the file attributes that
+// should be gathered. It is not an error if it's not possible to read a
+// particular requested attribute from a file - it just won't be set. attributes
+// should be a comma-separated list of attributes or attribute wildcards. The
+// wildcard "*" means all attributes, and a wildcard like "standard::*" means
+// all attributes in the standard namespace. An example attribute query be
+// "standard::*,owner::user". The standard attributes are available as defines,
+// like FILE_ATTRIBUTE_STANDARD_NAME.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// For symlinks, normally the information about the target of the symlink is
+// returned, rather than information about the symlink itself. However if you
+// pass FILE_QUERY_INFO_NOFOLLOW_SYMLINKS in flags the information about the
+// symlink itself will be returned. Also, for symlinks that point to
+// non-existing files the information about the symlink itself will be returned.
+//
+// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
+// Other errors are possible too, and depend on what kind of filesystem the file
+// is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//
+// The function returns the following values:
+//
+//    - fileInfo for the given file, or NULL on error. Free the returned object
+//      with g_object_unref().
+//
+func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _cret *C.GFileInfo          // in
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+
+	_cret = C.g_file_query_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+
+	var _fileInfo *FileInfo // out
+	var _goerr error        // out
+
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileInfo, _goerr
+}
+
+// QueryInfoAsync: asynchronously gets the requested information about specified
+// file. The result is a Info object that contains key-value attributes (such as
+// type or size for the file).
+//
+// For more details, see g_file_query_info() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attributes: attribute query string.
+//    - flags: set of QueryInfoFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryInfoFinish finishes an asynchronous file info query. See
@@ -2624,24 +3994,24 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 //      g_object_unref().
 //
 func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_info_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_info_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInfo, _goerr
@@ -2668,34 +4038,34 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 //      done with it, release it with g_file_attribute_info_list_unref().
 //
 func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeInfoList, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile                  // out
+	var _arg1 *C.GCancellable           // out
+	var _cret *C.GFileAttributeInfoList // in
+	var _cerr *C.GError                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_settable_attributes", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_settable_attributes(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 	var _goerr error                                  // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileAttributeInfoList, _goerr
@@ -2719,34 +4089,34 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 //      done with it, release it with g_file_attribute_info_list_unref().
 //
 func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeInfoList, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile                  // out
+	var _arg1 *C.GCancellable           // out
+	var _cret *C.GFileAttributeInfoList // in
+	var _cerr *C.GError                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("query_writable_namespaces", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_query_writable_namespaces(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 	var _goerr error                                  // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileAttributeInfoList, _goerr
@@ -2774,28 +4144,28 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 //      g_object_unref().
 //
 func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile            // out
+	var _arg1 *C.GCancellable     // out
+	var _cret *C.GFileInputStream // in
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("read", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_read(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _fileInputStream *FileInputStream // out
 	var _goerr error                      // out
 
-	_fileInputStream = wrapFileInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInputStream = wrapFileInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInputStream, _goerr
@@ -2816,23 +4186,25 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) ReadAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("read_async", _args[:], nil)
-
+	C.g_file_read_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -2852,27 +4224,392 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int32, callback Asyn
 //      g_object_unref().
 //
 func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile            // out
+	var _arg1 *C.GAsyncResult     // out
+	var _cret *C.GFileInputStream // in
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("read_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_read_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileInputStream *FileInputStream // out
 	var _goerr error                      // out
 
-	_fileInputStream = wrapFileInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileInputStream = wrapFileInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInputStream, _goerr
+}
+
+// Replace returns an output stream for overwriting the file, possibly creating
+// a backup copy of the file first. If the file doesn't exist, it will be
+// created.
+//
+// This will try to replace the file in the safest way possible so that any
+// errors during the writing will not affect an already existing copy of the
+// file. For instance, for local files it may write to a temporary file and then
+// atomically rename over the destination when the stream is closed.
+//
+// By default files created are generally readable by everyone, but if you pass
+// FILE_CREATE_PRIVATE in flags the file will be made readable only to the
+// current user, to the level that is supported on the target filesystem.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If you pass in a non-NULL etag value and file already exists, then this value
+// is compared to the current entity tag of the file, and if they differ an
+// G_IO_ERROR_WRONG_ETAG error is returned. This generally means that the file
+// has been changed since you last read it. You can get the new etag from
+// g_file_output_stream_get_etag() after you've finished writing and closed the
+// OutputStream. When you load a new file you can use
+// g_file_input_stream_query_info() to get the etag of the file.
+//
+// If make_backup is TRUE, this function will attempt to make a backup of the
+// current file before overwriting it. If this fails a
+// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to replace
+// anyway, try again with make_backup set to FALSE.
+//
+// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
+// returned, and if the file is some other form of non-regular file then a
+// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems don't
+// allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME error,
+// and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+// Other errors are possible too, and depend on what kind of filesystem the file
+// is on.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - etag (optional): optional [entity tag][gfile-etag] for the current
+//      #GFile, or LL to ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//
+// The function returns the following values:
+//
+//    - fileOutputStream or NULL on error. Free the returned object with
+//      g_object_unref().
+//
+func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error) {
+	var _arg0 *C.GFile             // out
+	var _arg4 *C.GCancellable      // out
+	var _arg1 *C.char              // out
+	var _arg2 C.gboolean           // out
+	var _arg3 C.GFileCreateFlags   // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+
+	_cret = C.g_file_replace(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+
+	var _fileOutputStream *FileOutputStream // out
+	var _goerr error                        // out
+
+	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileOutputStream, _goerr
+}
+
+// ReplaceAsync: asynchronously overwrites the file, replacing the contents,
+// possibly creating a backup copy of the file first.
+//
+// For more details, see g_file_replace() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_replace_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - etag (optional): [entity tag][gfile-etag] for the current #GFile, or NULL
+//      to ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// ReplaceContents replaces the contents of file with contents of length bytes.
+//
+// If etag is specified (not NULL), any existing file must have that etag, or
+// the error G_IO_ERROR_WRONG_ETAG will be returned.
+//
+// If make_backup is TRUE, this function will attempt to make a backup of file.
+// Internally, it uses g_file_replace(), so will try to replace the file
+// contents in the safest way possible. For example, atomic renames are used
+// when replacing local files’ contents.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The returned new_etag can be used to verify that the file hasn't changed the
+// next time it is saved over.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - contents: string containing the new contents for file.
+//    - etag (optional): old [entity-tag][gfile-etag] for the document, or NULL.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//
+// The function returns the following values:
+//
+//    - newEtag (optional): location to a new [entity tag][gfile-etag] for the
+//      document. This should be freed with g_free() when no longer needed, or
+//      NULL.
+//
+func (file *File) ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error) {
+	var _arg0 *C.GFile        // out
+	var _arg7 *C.GCancellable // out
+	var _arg1 *C.char         // out
+	var _arg2 C.gsize
+	var _arg3 *C.char            // out
+	var _arg4 C.gboolean         // out
+	var _arg5 C.GFileCreateFlags // out
+	var _arg6 *C.char            // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(contents))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(contents)), contents)
+	defer C.free(unsafe.Pointer(_arg1))
+	if etag != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	if makeBackup {
+		_arg4 = C.TRUE
+	}
+	_arg5 = C.GFileCreateFlags(flags)
+
+	C.g_file_replace_contents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, _arg7, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+
+	var _newEtag string // out
+	var _goerr error    // out
+
+	if _arg6 != nil {
+		_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(_arg6)))
+		defer C.free(unsafe.Pointer(_arg6))
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _newEtag, _goerr
+}
+
+// ReplaceContentsAsync starts an asynchronous replacement of file with the
+// given contents of length bytes. etag will replace the document's current
+// entity tag.
+//
+// When this operation has completed, callback will be called with user_user
+// data, and the operation can be finalized with
+// g_file_replace_contents_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If make_backup is TRUE, this function will attempt to make a backup of file.
+//
+// Note that no copy of contents will be made, so it must stay valid until
+// callback is called. See g_file_replace_contents_bytes_async() for a #GBytes
+// version that will automatically hold a reference to the contents (without
+// copying) for the duration of the call.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - contents: string of contents to replace the file with.
+//    - etag (optional): new [entity tag][gfile-etag] for the file, or NULL.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile        // out
+	var _arg6 *C.GCancellable // out
+	var _arg1 *C.char         // out
+	var _arg2 C.gsize
+	var _arg3 *C.char               // out
+	var _arg4 C.gboolean            // out
+	var _arg5 C.GFileCreateFlags    // out
+	var _arg7 C.GAsyncReadyCallback // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(contents))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(contents)), contents)
+	defer C.free(unsafe.Pointer(_arg1))
+	if etag != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	if makeBackup {
+		_arg4 = C.TRUE
+	}
+	_arg5 = C.GFileCreateFlags(flags)
+	if callback != nil {
+		_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg8 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_contents_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
+// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but takes
+// a #GBytes input instead. This function will keep a ref on contents until the
+// operation is done. Unlike g_file_replace_contents_async() this allows
+// forgetting about the content without waiting for the callback.
+//
+// When this operation has completed, callback will be called with user_user
+// data, and the operation can be finalized with
+// g_file_replace_contents_finish().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - contents: #GBytes.
+//    - etag (optional): new [entity tag][gfile-etag] for the file, or NULL.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.GBytes             // out
+	var _arg2 *C.char               // out
+	var _arg3 C.gboolean            // out
+	var _arg4 C.GFileCreateFlags    // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(contents)))
+	if etag != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if makeBackup {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.GFileCreateFlags(flags)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_contents_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceContentsFinish finishes an asynchronous replace of the given file. See
@@ -2890,27 +4627,27 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 //      or NULL.
 //
 func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("replace_contents_finish", _args[:], _outs[:])
-
+	C.g_file_replace_contents_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _newEtag string // out
 	var _goerr error    // out
 
-	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
-		_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
+	if _arg2 != nil {
+		_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _newEtag, _goerr
@@ -2929,27 +4666,152 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 //      g_object_unref().
 //
 func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile             // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GFileOutputStream // in
+	var _cerr *C.GError            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("replace_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_replace_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileOutputStream *FileOutputStream // out
 	var _goerr error                        // out
 
-	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileOutputStream, _goerr
+}
+
+// ReplaceReadwrite returns an output stream for overwriting the file in
+// readwrite mode, possibly creating a backup copy of the file first. If the
+// file doesn't exist, it will be created.
+//
+// For details about the behaviour, see g_file_replace() which does the same
+// thing but returns an output stream only.
+//
+// Note that in many non-local file cases read and write streams are not
+// supported, so make sure you really need to do read and write streaming,
+// rather than just opening for reading or writing.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - etag (optional): optional [entity tag][gfile-etag] for the current
+//      #GFile, or LL to ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//
+// The function returns the following values:
+//
+//    - fileIOStream or NULL on error. Free the returned object with
+//      g_object_unref().
+//
+func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error) {
+	var _arg0 *C.GFile           // out
+	var _arg4 *C.GCancellable    // out
+	var _arg1 *C.char            // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.GFileCreateFlags // out
+	var _cret *C.GFileIOStream   // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+
+	_cret = C.g_file_replace_readwrite(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+
+	var _fileIOStream *FileIOStream // out
+	var _goerr error                // out
+
+	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _fileIOStream, _goerr
+}
+
+// ReplaceReadwriteAsync: asynchronously overwrites the file in read-write mode,
+// replacing the contents, possibly creating a backup copy of the file first.
+//
+// For more details, see g_file_replace_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_replace_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - etag (optional): [entity tag][gfile-etag] for the current #GFile, or NULL
+//      to ignore.
+//    - makeBackup: TRUE if a backup should be created.
+//    - flags: set of CreateFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
@@ -2965,24 +4827,24 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 //      g_object_unref().
 //
 func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile         // out
+	var _arg1 *C.GAsyncResult  // out
+	var _cret *C.GFileIOStream // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("replace_readwrite_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_replace_readwrite_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _fileIOStream *FileIOStream // out
 	var _goerr error                // out
 
-	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileIOStream, _goerr
@@ -3002,24 +4864,425 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 //      invalid. Free the returned object with g_object_unref().
 //
 func (file *File) ResolveRelativePath(relativePath string) *File {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile // out
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(relativePath)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(relativePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("resolve_relative_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_resolve_relative_path(_arg0, _arg1)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(relativePath)
 
 	var _ret *File // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
+}
+
+// SetAttribute sets an attribute in the file with attribute name attribute to
+// value_p.
+//
+// Some attributes can be unset by setting type to G_FILE_ATTRIBUTE_TYPE_INVALID
+// and value_p to NULL.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - typ: type of the attribute.
+//    - valueP (optional): pointer to the value (or the pointer itself if the
+//      type is a pointer type).
+//    - flags: set of QueryInfoFlags.
+//
+func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP unsafe.Pointer, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileAttributeType  // out
+	var _arg3 C.gpointer            // out
+	var _arg4 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeType(typ)
+	_arg3 = (C.gpointer)(unsafe.Pointer(valueP))
+	_arg4 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(valueP)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributeByteString sets attribute of type
+// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to value. If attribute is of a different
+// type, this operation will fail, returning FALSE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value: string containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributeByteString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute_byte_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributeInt32 sets attribute of type G_FILE_ATTRIBUTE_TYPE_INT32 to
+// value. If attribute is of a different type, this operation will fail.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value int32, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gint32              // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint32(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute_int32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributeInt64 sets attribute of type G_FILE_ATTRIBUTE_TYPE_INT64 to
+// value. If attribute is of a different type, this operation will fail.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value int64, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gint64              // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint64(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute_int64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributeString sets attribute of type G_FILE_ATTRIBUTE_TYPE_STRING to
+// value. If attribute is of a different type, this operation will fail.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value: string containing the attribute's value.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributeString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute_string(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributeUint32 sets attribute of type G_FILE_ATTRIBUTE_TYPE_UINT32 to
+// value. If attribute is of a different type, this operation will fail.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributeUint32(ctx context.Context, attribute string, value uint32, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.guint32             // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint32(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute_uint32(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributeUint64 sets attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64 to
+// value. If attribute is of a different type, this operation will fail.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - attribute: string containing the attribute's name.
+//    - value containing the attribute's new value.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributeUint64(ctx context.Context, attribute string, value uint64, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.guint64             // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint64(value)
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attribute_uint64(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetAttributesAsync: asynchronously sets the attributes of file with info.
+//
+// For more details, see g_file_set_attributes_from_info(), which is the
+// synchronous version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_set_attributes_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - info: Info.
+//    - flags: QueryInfoFlags.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional): ReadyCallback.
+//
+func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.GFileInfo          // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_set_attributes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // SetAttributesFinish finishes setting an attribute started in
@@ -3034,27 +5297,76 @@ func (file *File) ResolveRelativePath(relativePath string) *File {
 //    - info: Info.
 //
 func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.GFileInfo    // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("set_attributes_finish", _args[:], _outs[:])
-
+	C.g_file_set_attributes_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _info *FileInfo // out
 	var _goerr error    // out
 
-	_info = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_info = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_arg2)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _info, _goerr
+}
+
+// SetAttributesFromInfo tries to set all attributes in the Info on the target
+// values, not stopping on the first error.
+//
+// If there is any error during this operation then error will be set to the
+// first error. Error on particular fields are flagged by setting the "status"
+// field in the attribute value to G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which
+// means you can also detect further errors.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - info: Info.
+//    - flags: QueryInfoFlags.
+//
+func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GFileInfo          // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+
+	C.g_file_set_attributes_from_info(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // SetDisplayName renames file to the specified display name.
@@ -3084,21 +5396,22 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 //      Free the returned object with g_object_unref().
 //
 func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg2 *C.GCancellable // out
+	var _arg1 *C.char         // out
+	var _cret *C.GFile        // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("set_display_name", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_set_display_name(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(displayName)
@@ -3106,9 +5419,9 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _ret, _goerr
@@ -3130,25 +5443,28 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("set_display_name_async", _args[:], nil)
-
+	C.g_file_set_display_name_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(displayName)
@@ -3168,27 +5484,76 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 //    - ret or NULL on error. Free the returned object with g_object_unref().
 //
 func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GFile        // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("set_display_name_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_set_display_name_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
 	var _ret *File   // out
 	var _goerr error // out
 
-	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _ret, _goerr
+}
+
+// StartMountable starts a file of type FILE_TYPE_MOUNTABLE. Using
+// start_operation, you can request callbacks when, for instance, passwords are
+// needed during authentication.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - startOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if startOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(startOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_start_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(startOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StartMountableFinish finishes a start operation. See g_file_start_mountable()
@@ -3202,24 +5567,71 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 //    - result: Result.
 //
 func (file *File) StartMountableFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("start_mountable_finish", _args[:], nil)
-
+	C.g_file_start_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// StopMountable stops a file of type FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_stop_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_stop_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StopMountableFinish finishes a stop operation, see g_file_stop_mountable()
@@ -3233,21 +5645,21 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (file *File) StopMountableFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("stop_mountable_finish", _args[:], nil)
-
+	C.g_file_stop_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -3263,19 +5675,17 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 //    - ok: whether or not file supports thread-default contexts.
 //
 func (file *File) SupportsThreadContexts() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFile   // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_gret := _info.InvokeIfaceMethod("supports_thread_contexts", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_supports_thread_contexts(_arg0)
 	runtime.KeepAlive(file)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -3298,25 +5708,25 @@ func (file *File) SupportsThreadContexts() bool {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (file *File) Trash(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("trash", _args[:], nil)
-
+	C.g_file_trash(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -3331,23 +5741,25 @@ func (file *File) Trash(ctx context.Context) error {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (file *File) TrashAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("trash_async", _args[:], nil)
-
+	C.g_file_trash_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -3362,24 +5774,67 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int32, callback Asy
 //    - result: Result.
 //
 func (file *File) TrashFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("trash_finish", _args[:], nil)
-
+	C.g_file_trash_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// Deprecated: Use g_file_unmount_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_unmount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountMountableFinish finishes an unmount operation, see
@@ -3395,24 +5850,71 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (file *File) UnmountMountableFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("unmount_mountable_finish", _args[:], nil)
-
+	C.g_file_unmount_mountable_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// UnmountMountableWithOperation unmounts a file of type FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//    - callback (optional) to call when the request is satisfied, or NULL.
+//
+func (file *File) UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_unmount_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountMountableWithOperationFinish finishes an unmount operation, see
@@ -3426,21 +5928,21 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFile        // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "File")
-	_info.InvokeIfaceMethod("unmount_mountable_with_operation_finish", _args[:], nil)
-
+	C.g_file_unmount_mountable_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -3469,20 +5971,18 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 //    - file: new #GFile. Free the returned object with g_object_unref().
 //
 func NewFileForCommandlineArg(arg string) *File {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(arg)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(arg)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "new_for_commandline_arg")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_new_for_commandline_arg(_arg1)
 	runtime.KeepAlive(arg)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -3509,23 +6009,22 @@ func NewFileForCommandlineArg(arg string) *File {
 //    - file: new #GFile.
 //
 func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
+	var _cret *C.GFile // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(cwd)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(cwd)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "new_for_commandline_arg_and_cwd")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_new_for_commandline_arg_and_cwd(_arg1, _arg2)
 	runtime.KeepAlive(arg)
 	runtime.KeepAlive(cwd)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -3545,20 +6044,18 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
 //      g_object_unref().
 //
 func NewFileForPath(path string) *File {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "new_for_path")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_new_for_path(_arg1)
 	runtime.KeepAlive(path)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -3577,20 +6074,18 @@ func NewFileForPath(path string) *File {
 //      g_object_unref().
 //
 func NewFileForURI(uri string) *File {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "new_for_uri")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_new_for_uri(_arg1)
 	runtime.KeepAlive(uri)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -3617,28 +6112,27 @@ func NewFileForURI(uri string) *File {
 //    - file: new #GFile. Free the returned object with g_object_unref().
 //
 func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg1 *C.char          // out
+	var _arg2 *C.GFileIOStream // in
+	var _cret *C.GFile         // in
+	var _cerr *C.GError        // in
 
 	if tmpl != "" {
-		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(tmpl)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(tmpl)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gio", "new_tmp")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_new_tmp(_arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(tmpl)
 
 	var _iostream *FileIOStream // out
 	var _file *File             // out
 	var _goerr error            // out
 
-	_iostream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_iostream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_arg2)))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _iostream, _file, _goerr
@@ -3658,20 +6152,18 @@ func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 //    - file: new #GFile.
 //
 func FileParseName(parseName string) *File {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(parseName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "parse_name")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_parse_name(_arg1)
 	runtime.KeepAlive(parseName)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }

@@ -10,17 +10,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill(void*, gssize, void*, GError**);
-// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill(GBufferedInputStream*, gssize, GCancellable*, GError**);
+// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill_finish(GBufferedInputStream*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeBufferedInputStream returns the GType for the type BufferedInputStream.
@@ -29,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBufferedInputStream() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "BufferedInputStream").RegisteredGType())
+	gtype := coreglib.Type(C.g_buffered_input_stream_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBufferedInputStream)
 	return gtype
 }
@@ -117,25 +115,23 @@ func classInitBufferedInputStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "BufferedInputStreamClass")
+	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		Fill(ctx context.Context, count int) (int, error)
 	}); ok {
-		o := pclass.StructFieldOffset("fill")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_BufferedInputStreamClass_fill)
+		pclass.fill = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill)
 	}
 
 	if _, ok := goval.(interface {
 		FillFinish(result AsyncResulter) (int, error)
 	}); ok {
-		o := pclass.StructFieldOffset("fill_finish")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
+		pclass.fill_finish = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
 	}
 }
 
 //export _gotk4_gio2_BufferedInputStreamClass_fill
-func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.void, arg1 C.gssize, arg2 *C.void, _cerr **C.GError) (cret C.gssize) {
+func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg1 C.gssize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Fill(ctx context.Context, count int) (int, error)
@@ -160,7 +156,7 @@ func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.void, arg1 C.gssize, arg2
 }
 
 //export _gotk4_gio2_BufferedInputStreamClass_fill_finish
-func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gssize) {
+func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FillFinish(result AsyncResulter) (int, error)
@@ -225,19 +221,17 @@ func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 //    - bufferedInputStream for the given base_stream.
 //
 func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GInputStream // out
+	var _cret *C.GInputStream // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("new_BufferedInputStream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_new(_arg1)
 	runtime.KeepAlive(baseStream)
 
 	var _bufferedInputStream *BufferedInputStream // out
 
-	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
@@ -255,21 +249,20 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 //    - bufferedInputStream: Stream.
 //
 func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedInputStream {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GInputStream // out
+	var _arg2 C.gsize         // out
+	var _cret *C.GInputStream // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(size)
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
+	_arg2 = C.gsize(size)
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("new_BufferedInputStream_sized", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_new_sized(_arg1, _arg2)
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(size)
 
 	var _bufferedInputStream *BufferedInputStream // out
 
-	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _bufferedInputStream
 }
@@ -310,20 +303,21 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 //      error.
 //
 func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg2 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
+	var _cret C.gssize                // in
+	var _cerr *C.GError               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(count)
+	_arg1 = C.gssize(count)
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("fill", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_fill(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(count)
@@ -331,9 +325,9 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _gssize, _goerr
@@ -354,24 +348,27 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //    - callback (optional): ReadyCallback.
 //
 func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
+	var _arg2 C.int                   // out
+	var _arg4 C.GAsyncReadyCallback   // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(count)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = C.gssize(count)
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_info.InvokeClassMethod("fill_async", _args[:], nil)
-
+	C.g_buffered_input_stream_fill_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(count)
@@ -390,24 +387,24 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioP
 //    - gssize of the read stream, or -1 on an error.
 //
 func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg1 *C.GAsyncResult         // out
+	var _cret C.gssize                // in
+	var _cerr *C.GError               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("fill_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_fill_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
 
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _gssize, _goerr
@@ -420,19 +417,17 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 //    - gsize: size of the available stream.
 //
 func (stream *BufferedInputStream) Available() uint {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _cret C.gsize                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("get_available", _args[:], nil)
-	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_get_available(_arg0)
 	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
 
-	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -444,19 +439,17 @@ func (stream *BufferedInputStream) Available() uint {
 //    - gsize: current buffer size.
 //
 func (stream *BufferedInputStream) BufferSize() uint {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _cret C.gsize                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("get_buffer_size", _args[:], nil)
-	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_get_buffer_size(_arg0)
 	runtime.KeepAlive(stream)
 
 	var _gsize uint // out
 
-	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -474,26 +467,27 @@ func (stream *BufferedInputStream) BufferSize() uint {
 //    - gsize of the number of bytes peeked, or -1 on error.
 //
 func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg1 *C.void                 // out
+	var _arg3 C.gsize
+	var _arg2 C.gsize // out
+	var _cret C.gsize // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[3])) = (C.gsize)(len(buffer))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(offset)
+	_arg2 = C.gsize(offset)
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("peek", _args[:], nil)
-	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_peek(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(offset)
 
 	var _gsize uint // out
 
-	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -507,21 +501,19 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 //    - guint8s: read-only buffer.
 //
 func (stream *BufferedInputStream) PeekBuffer() []byte {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _cret unsafe.Pointer          // in
+	var _arg1 C.gsize                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("peek_buffer", _args[:], _outs[:])
-	_cret := *(*unsafe.Pointer)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_peek_buffer(_arg0, &_arg1)
 	runtime.KeepAlive(stream)
 
 	var _guint8s []byte // out
 
-	_guint8s = make([]byte, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))), *(*C.gsize)(unsafe.Pointer(&_outs[0]))))
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
 
 	return _guint8s
 }
@@ -549,28 +541,28 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 //    - gint: byte read from the stream, or -1 on end of stream or error.
 //
 func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg1 *C.GCancellable         // out
+	var _cret C.int                   // in
+	var _cerr *C.GError               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_gret := _info.InvokeClassMethod("read_byte", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_buffered_input_stream_read_byte(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
 	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_gint = int32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _gint, _goerr
@@ -585,14 +577,13 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) 
 //    - size: #gsize.
 //
 func (stream *BufferedInputStream) SetBufferSize(size uint) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg1 C.gsize                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(size)
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = C.gsize(size)
 
-	_info := girepository.MustFind("Gio", "BufferedInputStream")
-	_info.InvokeClassMethod("set_buffer_size", _args[:], nil)
-
+	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)
 }

@@ -7,16 +7,14 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(void*, void*, char*);
-// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(void*, void*, char*);
+// #include <gtk/gtk.h>
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(GtkBuilderScope*, GtkBuilder*, char*);
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
 import "C"
 
 // GTypeBuilderClosureFlags returns the GType for the type BuilderClosureFlags.
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBuilderClosureFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderClosureFlags").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_builder_closure_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderClosureFlags)
 	return gtype
 }
@@ -36,7 +34,7 @@ func GTypeBuilderClosureFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBuilderScope() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderScope").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_builder_scope_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderScope)
 	return gtype
 }
@@ -47,7 +45,7 @@ func GTypeBuilderScope() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBuilderCScope() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderCScope").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_builder_cscope_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderCScope)
 	return gtype
 }
@@ -158,13 +156,13 @@ type BuilderScoper interface {
 var _ BuilderScoper = (*BuilderScope)(nil)
 
 func ifaceInitBuilderScoper(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gtk", "BuilderScopeInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_type_from_function"))) = unsafe.Pointer(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_type_from_name"))) = unsafe.Pointer(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
+	iface := (*C.GtkBuilderScopeInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_type_from_function = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
+	iface.get_type_from_name = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
 }
 
 //export _gotk4_gtk4_BuilderScopeInterface_get_type_from_function
-func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.void, arg1 *C.void, arg2 *C.char) (cret C.GType) {
+func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuilderScopeOverrider)
 
@@ -182,7 +180,7 @@ func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.void, arg1
 }
 
 //export _gotk4_gtk4_BuilderScopeInterface_get_type_from_name
-func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.void, arg1 *C.void, arg2 *C.char) (cret C.GType) {
+func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuilderScopeOverrider)
 
@@ -279,13 +277,13 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 //    - builderCScope: new GtkBuilderCScope.
 //
 func NewBuilderCScope() *BuilderCScope {
-	_info := girepository.MustFind("Gtk", "BuilderCScope")
-	_gret := _info.InvokeClassMethod("new_BuilderCScope", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkBuilderScope // in
+
+	_cret = C.gtk_builder_cscope_new()
 
 	var _builderCScope *BuilderCScope // out
 
-	_builderCScope = wrapBuilderCScope(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_builderCScope = wrapBuilderCScope(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderCScope
 }

@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeMultiSorter returns the GType for the type MultiSorter.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMultiSorter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MultiSorter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_multi_sorter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMultiSorter)
 	return gtype
 }
@@ -87,13 +85,13 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 //    - multiSorter: new GtkMultiSorter.
 //
 func NewMultiSorter() *MultiSorter {
-	_info := girepository.MustFind("Gtk", "MultiSorter")
-	_gret := _info.InvokeClassMethod("new_MultiSorter", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkMultiSorter // in
+
+	_cret = C.gtk_multi_sorter_new()
 
 	var _multiSorter *MultiSorter // out
 
-	_multiSorter = wrapMultiSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_multiSorter = wrapMultiSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSorter
 }
@@ -108,15 +106,14 @@ func NewMultiSorter() *MultiSorter {
 //    - sorter to add.
 //
 func (self *MultiSorter) Append(sorter *Sorter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMultiSorter // out
+	var _arg1 *C.GtkSorter      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
 
-	_info := girepository.MustFind("Gtk", "MultiSorter")
-	_info.InvokeClassMethod("append", _args[:], nil)
-
+	C.gtk_multi_sorter_append(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
 }
@@ -131,14 +128,13 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 //    - position of sorter to remove.
 //
 func (self *MultiSorter) Remove(position uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMultiSorter // out
+	var _arg1 C.guint           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(position)
 
-	_info := girepository.MustFind("Gtk", "MultiSorter")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.gtk_multi_sorter_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 }

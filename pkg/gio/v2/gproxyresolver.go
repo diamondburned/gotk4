@@ -10,18 +10,16 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_ProxyResolverInterface_is_supported(void*);
-// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup(void*, gchar*, void*, GError**);
-// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern gboolean _gotk4_gio2_ProxyResolverInterface_is_supported(GProxyResolver*);
+// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup(GProxyResolver*, gchar*, GCancellable*, GError**);
+// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup_finish(GProxyResolver*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeProxyResolver returns the GType for the type ProxyResolver.
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeProxyResolver() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ProxyResolver").RegisteredGType())
+	gtype := coreglib.Type(C.g_proxy_resolver_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalProxyResolver)
 	return gtype
 }
@@ -95,19 +93,17 @@ func marshalProxyResolver(p uintptr) (interface{}, error) {
 //    - ok: TRUE if resolver is supported.
 //
 func (resolver *ProxyResolver) IsSupported() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GProxyResolver // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyResolver")
-	_gret := _info.InvokeIfaceMethod("is_supported", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_resolver_is_supported(_arg0)
 	runtime.KeepAlive(resolver)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -138,21 +134,22 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //      g_strfreev().
 //
 func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GProxyResolver // out
+	var _arg2 *C.GCancellable   // out
+	var _arg1 *C.gchar          // out
+	var _cret **C.gchar         // in
+	var _cerr *C.GError         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ProxyResolver")
-	_gret := _info.InvokeIfaceMethod("lookup", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -160,23 +157,23 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	var _utf8s []string // out
 	var _goerr error    // out
 
-	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
-		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _utf8s, _goerr
@@ -192,24 +189,26 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 //    - callback (optional) to call after resolution completes.
 //
 func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GProxyResolver     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "ProxyResolver")
-	_info.InvokeIfaceMethod("lookup_async", _args[:], nil)
-
+	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -230,38 +229,38 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 //      g_strfreev().
 //
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GProxyResolver // out
+	var _arg1 *C.GAsyncResult   // out
+	var _cret **C.gchar         // in
+	var _cerr *C.GError         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "ProxyResolver")
-	_gret := _info.InvokeIfaceMethod("lookup_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
 
 	var _utf8s []string // out
 	var _goerr error    // out
 
-	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
-		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _utf8s, _goerr
@@ -275,13 +274,13 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 //      resolver is available.
 //
 func ProxyResolverGetDefault() *ProxyResolver {
-	_info := girepository.MustFind("Gio", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GProxyResolver // in
+
+	_cret = C.g_proxy_resolver_get_default()
 
 	var _proxyResolver *ProxyResolver // out
 
-	_proxyResolver = wrapProxyResolver(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_proxyResolver = wrapProxyResolver(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _proxyResolver
 }

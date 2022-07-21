@@ -3,17 +3,18 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeSeparator returns the GType for the type Separator.
@@ -22,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSeparator() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Separator").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_separator_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSeparator)
 	return gtype
 }
@@ -85,4 +86,30 @@ func wrapSeparator(obj *coreglib.Object) *Separator {
 
 func marshalSeparator(p uintptr) (interface{}, error) {
 	return wrapSeparator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewSeparator creates a new Separator with the given orientation.
+//
+// The function takes the following parameters:
+//
+//    - orientation separator’s orientation.
+//
+// The function returns the following values:
+//
+//    - separator: new Separator.
+//
+func NewSeparator(orientation Orientation) *Separator {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_separator_new(_arg1)
+	runtime.KeepAlive(orientation)
+
+	var _separator *Separator // out
+
+	_separator = wrapSeparator(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _separator
 }

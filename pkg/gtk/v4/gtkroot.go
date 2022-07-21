@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeRoot returns the GType for the type Root.
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRoot() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Root").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_root_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRoot)
 	return gtype
+}
+
+// RootOverrider contains methods that are overridable.
+type RootOverrider interface {
 }
 
 // Root: GtkRoot is the interface implemented by all widgets that can act as a
@@ -66,6 +68,9 @@ type Rooter interface {
 
 var _ Rooter = (*Root)(nil)
 
+func ifaceInitRooter(gifacePtr, data C.gpointer) {
+}
+
 func wrapRoot(obj *coreglib.Object) *Root {
 	return &Root{
 		NativeSurface: NativeSurface{
@@ -99,20 +104,18 @@ func marshalRoot(p uintptr) (interface{}, error) {
 //    - display of root.
 //
 func (self *Root) Display() *gdk.Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRoot    // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Root")
-	_gret := _info.InvokeIfaceMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_root_get_display(_arg0)
 	runtime.KeepAlive(self)
 
 	var _display *gdk.Display // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_display = &gdk.Display{
 			Object: obj,
 		}
@@ -132,21 +135,19 @@ func (self *Root) Display() *gdk.Display {
 //    - widget (optional): currently focused widget, or NULL if there is none.
 //
 func (self *Root) Focus() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRoot   // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Root")
-	_gret := _info.InvokeIfaceMethod("get_focus", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_root_get_focus(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -178,16 +179,15 @@ func (self *Root) Focus() Widgetter {
 //      focus widget.
 //
 func (self *Root) SetFocus(focus Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRoot   // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if focus != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Root")
-	_info.InvokeIfaceMethod("set_focus", _args[:], nil)
-
+	C.gtk_root_set_focus(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(focus)
 }

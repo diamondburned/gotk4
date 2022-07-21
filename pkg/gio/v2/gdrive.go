@@ -11,45 +11,44 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gio2_DriveIface_get_volumes(void*);
-// extern char* _gotk4_gio2_DriveIface_get_identifier(void*, char*);
-// extern char* _gotk4_gio2_DriveIface_get_name(void*);
-// extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(void*);
-// extern gboolean _gotk4_gio2_DriveIface_can_eject(void*);
-// extern gboolean _gotk4_gio2_DriveIface_can_poll_for_media(void*);
-// extern gboolean _gotk4_gio2_DriveIface_can_start(void*);
-// extern gboolean _gotk4_gio2_DriveIface_can_start_degraded(void*);
-// extern gboolean _gotk4_gio2_DriveIface_can_stop(void*);
-// extern gboolean _gotk4_gio2_DriveIface_eject_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_DriveIface_eject_with_operation_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_DriveIface_has_media(void*);
-// extern gboolean _gotk4_gio2_DriveIface_has_volumes(void*);
-// extern gboolean _gotk4_gio2_DriveIface_is_media_check_automatic(void*);
-// extern gboolean _gotk4_gio2_DriveIface_is_media_removable(void*);
-// extern gboolean _gotk4_gio2_DriveIface_is_removable(void*);
-// extern gboolean _gotk4_gio2_DriveIface_poll_for_media_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_DriveIface_start_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_DriveIface_stop_finish(void*, void*, GError**);
-// extern gchar* _gotk4_gio2_DriveIface_get_sort_key(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void _gotk4_gio2_DriveIface_changed(void*);
-// extern void _gotk4_gio2_DriveIface_disconnected(void*);
-// extern void _gotk4_gio2_DriveIface_eject_button(void*);
-// extern void _gotk4_gio2_DriveIface_stop_button(void*);
+// extern GDriveStartStopType _gotk4_gio2_DriveIface_get_start_stop_type(GDrive*);
+// extern GIcon* _gotk4_gio2_DriveIface_get_icon(GDrive*);
+// extern GIcon* _gotk4_gio2_DriveIface_get_symbolic_icon(GDrive*);
+// extern GList* _gotk4_gio2_DriveIface_get_volumes(GDrive*);
+// extern char* _gotk4_gio2_DriveIface_get_identifier(GDrive*, char*);
+// extern char* _gotk4_gio2_DriveIface_get_name(GDrive*);
+// extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_eject(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_poll_for_media(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_start(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_start_degraded(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_stop(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_eject_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_eject_with_operation_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_has_media(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_has_volumes(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_media_check_automatic(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_media_removable(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_removable(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_poll_for_media_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_start_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_stop_finish(GDrive*, GAsyncResult*, GError**);
+// extern gchar* _gotk4_gio2_DriveIface_get_sort_key(GDrive*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_DriveIface_changed(GDrive*);
+// extern void _gotk4_gio2_DriveIface_disconnected(GDrive*);
+// extern void _gotk4_gio2_DriveIface_eject_button(GDrive*);
+// extern void _gotk4_gio2_DriveIface_stop_button(GDrive*);
 // extern void _gotk4_gio2_Drive_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectDisconnected(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectEjectButton(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
-// extern void* _gotk4_gio2_DriveIface_get_icon(void*);
-// extern void* _gotk4_gio2_DriveIface_get_symbolic_icon(void*);
 import "C"
 
 // GTypeDrive returns the GType for the type Drive.
@@ -58,7 +57,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDrive() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Drive").RegisteredGType())
+	gtype := coreglib.Type(C.g_drive_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDrive)
 	return gtype
 }
@@ -117,8 +116,12 @@ type Driver interface {
 	CanStartDegraded() bool
 	// CanStop checks if a drive can be stopped.
 	CanStop() bool
+	// Eject: asynchronously ejects a drive.
+	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a drive.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperation ejects a drive.
+	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a drive.
 	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of identifiers that drive has.
@@ -131,6 +134,8 @@ type Driver interface {
 	Name() string
 	// SortKey gets the sort key for drive, if any.
 	SortKey() string
+	// StartStopType gets a hint about how a drive can be started/stopped.
+	StartStopType() DriveStartStopType
 	// SymbolicIcon gets the icon for drive.
 	SymbolicIcon() *Icon
 	// Volumes: get a list of mountable volumes for drive.
@@ -153,8 +158,12 @@ type Driver interface {
 	// PollForMediaFinish finishes an operation started with
 	// g_drive_poll_for_media() on a drive.
 	PollForMediaFinish(result AsyncResulter) error
+	// Start: asynchronously starts a drive.
+	Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StartFinish finishes starting a drive.
 	StartFinish(result AsyncResulter) error
+	// Stop: asynchronously stops a drive.
+	Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
 
@@ -278,19 +287,17 @@ func (drive *Drive) ConnectStopButton(f func()) coreglib.SignalHandle {
 //    - ok: TRUE if the drive can be ejected, FALSE otherwise.
 //
 func (drive *Drive) CanEject() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("can_eject", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_can_eject(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -304,19 +311,17 @@ func (drive *Drive) CanEject() bool {
 //    - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
 //
 func (drive *Drive) CanPollForMedia() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("can_poll_for_media", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_can_poll_for_media(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -330,19 +335,17 @@ func (drive *Drive) CanPollForMedia() bool {
 //    - ok: TRUE if the drive can be started, FALSE otherwise.
 //
 func (drive *Drive) CanStart() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("can_start", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_can_start(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -356,19 +359,17 @@ func (drive *Drive) CanStart() bool {
 //    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
 //
 func (drive *Drive) CanStartDegraded() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("can_start_degraded", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_can_start_degraded(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -382,23 +383,60 @@ func (drive *Drive) CanStartDegraded() bool {
 //    - ok: TRUE if the drive can be stopped, FALSE otherwise.
 //
 func (drive *Drive) CanStop() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("can_stop", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_can_stop(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Eject: asynchronously ejects a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_eject_finish() to obtain the result of the operation.
+//
+// Deprecated: Use g_drive_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // EjectFinish finishes ejecting a drive.
@@ -410,24 +448,66 @@ func (drive *Drive) CanStop() bool {
 //    - result: Result.
 //
 func (drive *Drive) EjectFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_info.InvokeIfaceMethod("eject_finish", _args[:], nil)
-
+	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// EjectWithOperation ejects a drive. This is an asynchronous operation, and is
+// finished by calling g_drive_eject_with_operation_finish() with the drive and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
@@ -439,21 +519,21 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_info.InvokeIfaceMethod("eject_with_operation_finish", _args[:], nil)
-
+	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -468,31 +548,29 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 //      Use g_strfreev() to free.
 //
 func (drive *Drive) EnumerateIdentifiers() []string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _cret **C.char  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("enumerate_identifiers", _args[:], nil)
-	_cret := *(***C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_enumerate_identifiers(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.char
-		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -506,19 +584,17 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 //    - icon for the drive. Free the returned object with g_object_unref().
 //
 func (drive *Drive) Icon() *Icon {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _cret *C.GIcon  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("get_icon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_get_icon(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -536,24 +612,23 @@ func (drive *Drive) Icon() *Icon {
 //      identifier, or NULL if the #GDrive doesn't have this kind of identifier.
 //
 func (drive *Drive) Identifier(kind string) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _arg1 *C.char   // out
+	var _cret *C.char   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(kind)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("get_identifier", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_get_identifier(_arg0, _arg1)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(kind)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -567,20 +642,18 @@ func (drive *Drive) Identifier(kind string) string {
 //      when no longer needed.
 //
 func (drive *Drive) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _cret *C.char   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_get_name(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -593,23 +666,43 @@ func (drive *Drive) Name() string {
 //      available.
 //
 func (drive *Drive) SortKey() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _cret *C.gchar  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("get_sort_key", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_get_sort_key(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
+}
+
+// StartStopType gets a hint about how a drive can be started/stopped.
+//
+// The function returns the following values:
+//
+//    - driveStartStopType: value from the StartStopType enumeration.
+//
+func (drive *Drive) StartStopType() DriveStartStopType {
+	var _arg0 *C.GDrive             // out
+	var _cret C.GDriveStartStopType // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_get_start_stop_type(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _driveStartStopType DriveStartStopType // out
+
+	_driveStartStopType = DriveStartStopType(_cret)
+
+	return _driveStartStopType
 }
 
 // SymbolicIcon gets the icon for drive.
@@ -620,19 +713,17 @@ func (drive *Drive) SortKey() string {
 //      g_object_unref().
 //
 func (drive *Drive) SymbolicIcon() *Icon {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _cret *C.GIcon  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("get_symbolic_icon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_get_symbolic_icon(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _icon
 }
@@ -647,23 +738,21 @@ func (drive *Drive) SymbolicIcon() *Icon {
 //    - list containing any #GVolume objects on the given drive.
 //
 func (drive *Drive) Volumes() []*Volume {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive // out
+	var _cret *C.GList  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("get_volumes", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_get_volumes(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _list []*Volume // out
 
-	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GVolume)(v)
 		var dst *Volume // out
-		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -679,19 +768,17 @@ func (drive *Drive) Volumes() []*Volume {
 //    - ok: TRUE if drive has media, FALSE otherwise.
 //
 func (drive *Drive) HasMedia() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("has_media", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_has_media(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -705,19 +792,17 @@ func (drive *Drive) HasMedia() bool {
 //    - ok: TRUE if the drive contains volumes, FALSE otherwise.
 //
 func (drive *Drive) HasVolumes() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("has_volumes", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_has_volumes(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -733,19 +818,17 @@ func (drive *Drive) HasVolumes() bool {
 //      changes, FALSE otherwise.
 //
 func (drive *Drive) IsMediaCheckAutomatic() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("is_media_check_automatic", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_is_media_check_automatic(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -759,19 +842,17 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 //    - ok: TRUE if drive supports removable media, FALSE otherwise.
 //
 func (drive *Drive) IsMediaRemovable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("is_media_removable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_is_media_removable(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -787,19 +868,17 @@ func (drive *Drive) IsMediaRemovable() bool {
 //      otherwise.
 //
 func (drive *Drive) IsRemovable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_gret := _info.InvokeIfaceMethod("is_removable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_drive_is_removable(_arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -818,22 +897,23 @@ func (drive *Drive) IsRemovable() bool {
 //    - callback (optional) or NULL.
 //
 func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GDrive             // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_info.InvokeIfaceMethod("poll_for_media", _args[:], nil)
-
+	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -847,24 +927,67 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 //    - result: Result.
 //
 func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_info.InvokeIfaceMethod("poll_for_media_finish", _args[:], nil)
-
+	C.g_drive_poll_for_media_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// Start: asynchronously starts a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_start_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the start operation.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StartFinish finishes starting a drive.
@@ -874,24 +997,67 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (drive *Drive) StartFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_info.InvokeIfaceMethod("start_finish", _args[:], nil)
-
+	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// Stop: asynchronously stops a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_stop_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for stopping.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StopFinish finishes stopping a drive.
@@ -901,21 +1067,21 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 //    - result: Result.
 //
 func (drive *Drive) StopFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Drive")
-	_info.InvokeIfaceMethod("stop_finish", _args[:], nil)
-
+	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

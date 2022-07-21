@@ -9,16 +9,16 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(void*, void*);
-// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(GtkCheckMenuItem*, cairo_t*);
+// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(GtkCheckMenuItem*);
 // extern void _gotk4_gtk3_CheckMenuItem_ConnectToggled(gpointer, guintptr);
 import "C"
 
@@ -28,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCheckMenuItem() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CheckMenuItem").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_check_menu_item_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCheckMenuItem)
 	return gtype
 }
@@ -73,21 +73,19 @@ func classInitCheckMenuItemmer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "CheckMenuItemClass")
+	pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
-		o := pclass.StructFieldOffset("draw_indicator")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CheckMenuItemClass_draw_indicator)
+		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_draw_indicator)
 	}
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
-		o := pclass.StructFieldOffset("toggled")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CheckMenuItemClass_toggled)
+		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_toggled)
 	}
 }
 
 //export _gotk4_gtk3_CheckMenuItemClass_draw_indicator
-func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.GtkCheckMenuItem, arg1 *C.cairo_t) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
 
@@ -96,14 +94,14 @@ func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.void, arg1 *C.void) {
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
 	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 
 	iface.DrawIndicator(_cr)
 }
 
 //export _gotk4_gtk3_CheckMenuItemClass_toggled
-func _gotk4_gtk3_CheckMenuItemClass_toggled(arg0 *C.void) {
+func _gotk4_gtk3_CheckMenuItemClass_toggled(arg0 *C.GtkCheckMenuItem) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
@@ -187,13 +185,13 @@ func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) coreglib.SignalHand
 //    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItem() *CheckMenuItem {
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_gret := _info.InvokeClassMethod("new_CheckMenuItem", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_check_menu_item_new()
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -209,20 +207,18 @@ func NewCheckMenuItem() *CheckMenuItem {
 //    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_gret := _info.InvokeClassMethod("new_CheckMenuItem_with_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_menu_item_new_with_label(_arg1)
 	runtime.KeepAlive(label)
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -240,20 +236,18 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 //    - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_gret := _info.InvokeClassMethod("new_CheckMenuItem_with_mnemonic", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 	runtime.KeepAlive(label)
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkMenuItem
 }
@@ -266,19 +260,17 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 //    - ok: TRUE if the menu item is checked.
 //
 func (checkMenuItem *CheckMenuItem) Active() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_menu_item_get_active(_arg0)
 	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -292,19 +284,17 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 //    - ok: whether check_menu_item looks like a RadioMenuItem.
 //
 func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_gret := _info.InvokeClassMethod("get_draw_as_radio", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -319,19 +309,17 @@ func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 //    - ok: TRUE if inconsistent.
 //
 func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_gret := _info.InvokeClassMethod("get_inconsistent", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
 	runtime.KeepAlive(checkMenuItem)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -345,16 +333,15 @@ func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 //    - isActive: boolean value indicating whether the check box is active.
 //
 func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 	if isActive {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_info.InvokeClassMethod("set_active", _args[:], nil)
-
+	C.gtk_check_menu_item_set_active(_arg0, _arg1)
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(isActive)
 }
@@ -366,16 +353,15 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 //    - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
 //
 func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 	if drawAsRadio {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_info.InvokeClassMethod("set_draw_as_radio", _args[:], nil)
-
+	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(drawAsRadio)
 }
@@ -394,28 +380,25 @@ func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 //    - setting: TRUE to display an “inconsistent” third state check.
 //
 func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_info.InvokeClassMethod("set_inconsistent", _args[:], nil)
-
+	C.gtk_check_menu_item_set_inconsistent(_arg0, _arg1)
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(setting)
 }
 
 // Toggled emits the CheckMenuItem::toggled signal.
 func (checkMenuItem *CheckMenuItem) Toggled() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCheckMenuItem // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 
-	_info := girepository.MustFind("Gtk", "CheckMenuItem")
-	_info.InvokeClassMethod("toggled", _args[:], nil)
-
+	C.gtk_check_menu_item_toggled(_arg0)
 	runtime.KeepAlive(checkMenuItem)
 }

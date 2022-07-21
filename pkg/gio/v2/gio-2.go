@@ -8,18 +8,16 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(gpointer, gchar*, guintptr);
-// extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, void*, void*, guintptr);
-// extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, void*, guintptr);
+// extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, GIOStream*, GCredentials*, guintptr);
+// extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, GDBusConnection*, guintptr);
 // extern void _gotk4_gio2_AppInfoMonitor_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_DBusConnection_ConnectClosed(gpointer, gboolean, GError*, guintptr);
 // extern void _gotk4_gio2_SimpleAction_ConnectActivate(gpointer, GVariant*, guintptr);
@@ -32,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAppInfoMonitor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "AppInfoMonitor").RegisteredGType())
+	gtype := coreglib.Type(C.g_app_info_monitor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAppInfoMonitor)
 	return gtype
 }
@@ -43,7 +41,7 @@ func GTypeAppInfoMonitor() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBytesIcon() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "BytesIcon").RegisteredGType())
+	gtype := coreglib.Type(C.g_bytes_icon_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBytesIcon)
 	return gtype
 }
@@ -54,7 +52,7 @@ func GTypeBytesIcon() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusActionGroup() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusActionGroup").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_action_group_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusActionGroup)
 	return gtype
 }
@@ -65,7 +63,7 @@ func GTypeDBusActionGroup() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusAuthObserver() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusAuthObserver").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_auth_observer_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusAuthObserver)
 	return gtype
 }
@@ -76,7 +74,7 @@ func GTypeDBusAuthObserver() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusConnection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusConnection").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_connection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusConnection)
 	return gtype
 }
@@ -87,7 +85,7 @@ func GTypeDBusConnection() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMenuModel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMenuModel").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_menu_model_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMenuModel)
 	return gtype
 }
@@ -98,7 +96,7 @@ func GTypeDBusMenuModel() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMessage() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessage").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_message_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessage)
 	return gtype
 }
@@ -109,7 +107,7 @@ func GTypeDBusMessage() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMethodInvocation() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMethodInvocation").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_method_invocation_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMethodInvocation)
 	return gtype
 }
@@ -120,7 +118,7 @@ func GTypeDBusMethodInvocation() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusServer() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusServer").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_server_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusServer)
 	return gtype
 }
@@ -131,7 +129,7 @@ func GTypeDBusServer() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMenu() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Menu").RegisteredGType())
+	gtype := coreglib.Type(C.g_menu_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMenu)
 	return gtype
 }
@@ -142,7 +140,7 @@ func GTypeMenu() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMenuItem() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "MenuItem").RegisteredGType())
+	gtype := coreglib.Type(C.g_menu_item_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMenuItem)
 	return gtype
 }
@@ -153,7 +151,7 @@ func GTypeMenuItem() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNotification() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Notification").RegisteredGType())
+	gtype := coreglib.Type(C.g_notification_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNotification)
 	return gtype
 }
@@ -164,7 +162,7 @@ func GTypeNotification() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePropertyAction() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "PropertyAction").RegisteredGType())
+	gtype := coreglib.Type(C.g_property_action_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPropertyAction)
 	return gtype
 }
@@ -175,7 +173,7 @@ func GTypePropertyAction() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSimpleAction() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SimpleAction").RegisteredGType())
+	gtype := coreglib.Type(C.g_simple_action_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleAction)
 	return gtype
 }
@@ -186,7 +184,7 @@ func GTypeSimpleAction() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSimpleIOStream() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SimpleIOStream").RegisteredGType())
+	gtype := coreglib.Type(C.g_simple_io_stream_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleIOStream)
 	return gtype
 }
@@ -197,7 +195,7 @@ func GTypeSimpleIOStream() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSimplePermission() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SimplePermission").RegisteredGType())
+	gtype := coreglib.Type(C.g_simple_permission_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSimplePermission)
 	return gtype
 }
@@ -208,7 +206,7 @@ func GTypeSimplePermission() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTestDBus() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TestDBus").RegisteredGType())
+	gtype := coreglib.Type(C.g_test_dbus_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTestDBus)
 	return gtype
 }
@@ -220,13 +218,13 @@ func GTypeTestDBus() coreglib.Type {
 //    - quark: #GQuark.
 //
 func ResolverErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.g_resolver_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -238,13 +236,13 @@ func ResolverErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func ResourceErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.g_resource_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -256,13 +254,13 @@ func ResourceErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func TLSChannelBindingErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.g_tls_channel_binding_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -274,13 +272,13 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func TLSErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.g_tls_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -292,13 +290,13 @@ func TLSErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func IOErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gio", "io_error_quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.g_io_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -501,7 +499,7 @@ func (observer *DBusAuthObserver) ConnectAllowMechanism(f func(mechanism string)
 }
 
 //export _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer
-func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpointer, arg1 *C.GIOStream, arg2 *C.GCredentials, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(stream IOStreamer, credentials *Credentials) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -792,7 +790,7 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusServer_ConnectNewConnection
-func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusConnection, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(connection *DBusConnection) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

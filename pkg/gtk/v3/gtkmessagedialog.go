@@ -8,14 +8,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // GtkWidget* _gotk4_gtk_message_dialog_new2(GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons) {
 // 	return gtk_message_dialog_new_with_markup(parent, flags, type, buttons, NULL);
 // }
@@ -27,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeButtonsType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ButtonsType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_buttons_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalButtonsType)
 	return gtype
 }
@@ -38,7 +38,7 @@ func GTypeButtonsType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMessageDialog() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MessageDialog").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_message_dialog_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMessageDialog)
 	return gtype
 }
@@ -186,20 +186,18 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 //    - widget dialog’s image.
 //
 func (dialog *MessageDialog) Image() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMessageDialog // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 
-	_info := girepository.MustFind("Gtk", "MessageDialog")
-	_gret := _info.InvokeClassMethod("get_image", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_message_dialog_get_image(_arg0)
 	runtime.KeepAlive(dialog)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -230,20 +228,18 @@ func (dialog *MessageDialog) Image() Widgetter {
 //    - widget corresponding to the “message area” in the message_dialog.
 //
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMessageDialog // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
 
-	_info := girepository.MustFind("Gtk", "MessageDialog")
-	_gret := _info.InvokeClassMethod("get_message_area", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 	runtime.KeepAlive(messageDialog)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -272,14 +268,13 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 //    - image: image.
 //
 func (dialog *MessageDialog) SetImage(image Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.GtkWidget        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Gtk", "MessageDialog")
-	_info.InvokeClassMethod("set_image", _args[:], nil)
-
+	C.gtk_message_dialog_set_image(_arg0, _arg1)
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(image)
 }
@@ -292,15 +287,14 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 //    - str: markup string (see [Pango markup format][PangoMarkupFormat]).
 //
 func (messageDialog *MessageDialog) SetMarkup(str string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.gchar            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MessageDialog")
-	_info.InvokeClassMethod("set_markup", _args[:], nil)
-
+	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 	runtime.KeepAlive(messageDialog)
 	runtime.KeepAlive(str)
 }

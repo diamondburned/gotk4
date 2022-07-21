@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gsk/gsk.h>
 import "C"
 
 // GTypeTransform returns the GType for the type Transform.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTransform() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "Transform").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_transform_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTransform)
 	return gtype
 }
@@ -46,23 +44,23 @@ type Transform struct {
 
 // transform is the struct that's finalized.
 type transform struct {
-	native unsafe.Pointer
+	native *C.GskTransform
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Transform{&transform{(unsafe.Pointer)(b)}}, nil
+	return &Transform{&transform{(*C.GskTransform)(b)}}, nil
 }
 
 // NewTransform constructs a struct Transform.
 func NewTransform() *Transform {
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GskTransform // in
+
+	_cret = C.gsk_transform_new()
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -84,29 +82,52 @@ func NewTransform() *Transform {
 //    - ok: TRUE if the two transforms perform the same operation.
 //
 func (first *Transform) Equal(second *Transform) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 *C.GskTransform // out
+	var _cret C.gboolean      // in
 
 	if first != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(first)))
 	}
 	if second != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
+		_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(second)))
 	}
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_equal(_arg0, _arg1)
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Category returns the category this transform belongs to.
+//
+// The function returns the following values:
+//
+//    - transformCategory: category of the transform.
+//
+func (self *Transform) Category() TransformCategory {
+	var _arg0 *C.GskTransform        // out
+	var _cret C.GskTransformCategory // in
+
+	if self != nil {
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+	}
+
+	_cret = C.gsk_transform_get_category(_arg0)
+	runtime.KeepAlive(self)
+
+	var _transformCategory TransformCategory // out
+
+	_transformCategory = TransformCategory(_cret)
+
+	return _transformCategory
 }
 
 // Invert inverts the given transform.
@@ -122,22 +143,20 @@ func (first *Transform) Equal(second *Transform) bool {
 //      be inverted.
 //
 func (self *Transform) Invert() *Transform {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _cret *C.GskTransform // in
 
 	if self != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 	}
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("invert", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_invert(_arg0)
 	runtime.KeepAlive(self)
 
 	var _transform *Transform // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -160,23 +179,22 @@ func (self *Transform) Invert() *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform      // out
+	var _arg1 *C.graphene_matrix_t // out
+	var _cret *C.GskTransform      // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(**C.graphene_matrix_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
+	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("matrix", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_matrix(_arg0, _arg1)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(matrix)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -203,23 +221,22 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Perspective(depth float32) *Transform {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _cret *C.GskTransform // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(depth)
+	_arg1 = C.float(depth)
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("perspective", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_perspective(_arg0, _arg1)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(depth)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -241,23 +258,22 @@ func (next *Transform) Perspective(depth float32) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Rotate(angle float32) *Transform {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _cret *C.GskTransform // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
+	_arg1 = C.float(angle)
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("rotate", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_rotate(_arg0, _arg1)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(angle)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -282,25 +298,25 @@ func (next *Transform) Rotate(angle float32) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GskTransform    // out
+	var _arg1 C.float            // out
+	var _arg2 *C.graphene_vec3_t // out
+	var _cret *C.GskTransform    // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
-	*(**C.graphene_vec3_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
+	_arg1 = C.float(angle)
+	_arg2 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("rotate_3d", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_rotate_3d(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(angle)
 	runtime.KeepAlive(axis)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -325,25 +341,25 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _arg2 C.float         // out
+	var _cret *C.GskTransform // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
-	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("scale", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_scale(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(factorX)
 	runtime.KeepAlive(factorY)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -367,19 +383,20 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _arg2 C.float         // out
+	var _arg3 C.float         // out
+	var _cret *C.GskTransform // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
-	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
-	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(factorZ)
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("scale_3d", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_scale_3d(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(factorX)
 	runtime.KeepAlive(factorY)
@@ -387,7 +404,7 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -423,14 +440,17 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 //    - outDy: return location for the y0 member.
 //
 func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
-	var _args [1]girepository.Argument
-	var _outs [6]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
+	var _arg3 C.float         // in
+	var _arg4 C.float         // in
+	var _arg5 C.float         // in
+	var _arg6 C.float         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_info.InvokeRecordMethod("to_2d", _args[:], _outs[:])
-
+	C.gsk_transform_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 	runtime.KeepAlive(self)
 
 	var _outXx float32 // out
@@ -440,12 +460,12 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 	var _outDx float32 // out
 	var _outDy float32 // out
 
-	_outXx = float32(*(*C.float)(unsafe.Pointer(&_outs[0])))
-	_outYx = float32(*(*C.float)(unsafe.Pointer(&_outs[1])))
-	_outXy = float32(*(*C.float)(unsafe.Pointer(&_outs[2])))
-	_outYy = float32(*(*C.float)(unsafe.Pointer(&_outs[3])))
-	_outDx = float32(*(*C.float)(unsafe.Pointer(&_outs[4])))
-	_outDy = float32(*(*C.float)(unsafe.Pointer(&_outs[5])))
+	_outXx = float32(_arg1)
+	_outYx = float32(_arg2)
+	_outXy = float32(_arg3)
+	_outYy = float32(_arg4)
+	_outDx = float32(_arg5)
+	_outDy = float32(_arg6)
 
 	return _outXx, _outYx, _outXy, _outYy, _outDx, _outDy
 }
@@ -463,14 +483,15 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 //    - outDy: return location for the translation in the y direction.
 //
 func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
-	var _args [1]girepository.Argument
-	var _outs [4]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
+	var _arg3 C.float         // in
+	var _arg4 C.float         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_info.InvokeRecordMethod("to_affine", _args[:], _outs[:])
-
+	C.gsk_transform_to_affine(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(self)
 
 	var _outScaleX float32 // out
@@ -478,10 +499,10 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 	var _outDx float32     // out
 	var _outDy float32     // out
 
-	_outScaleX = float32(*(*C.float)(unsafe.Pointer(&_outs[0])))
-	_outScaleY = float32(*(*C.float)(unsafe.Pointer(&_outs[1])))
-	_outDx = float32(*(*C.float)(unsafe.Pointer(&_outs[2])))
-	_outDy = float32(*(*C.float)(unsafe.Pointer(&_outs[3])))
+	_outScaleX = float32(_arg1)
+	_outScaleY = float32(_arg2)
+	_outDx = float32(_arg3)
+	_outDy = float32(_arg4)
 
 	return _outScaleX, _outScaleY, _outDx, _outDy
 }
@@ -495,21 +516,19 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 //    - outMatrix: matrix to set.
 //
 func (self *Transform) ToMatrix() *graphene.Matrix {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GskTransform     // out
+	var _arg1 C.graphene_matrix_t // in
 
 	if self != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 	}
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_info.InvokeRecordMethod("to_matrix", _args[:], _outs[:])
-
+	C.gsk_transform_to_matrix(_arg0, &_arg1)
 	runtime.KeepAlive(self)
 
 	var _outMatrix *graphene.Matrix // out
 
-	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_matrix_t)(unsafe.Pointer(&_outs[0])))))
+	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _outMatrix
 }
@@ -525,22 +544,20 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 //    - utf8: new string for self.
 //
 func (self *Transform) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _cret *C.char         // in
 
 	if self != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 	}
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_to_string(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -556,21 +573,20 @@ func (self *Transform) String() string {
 //    - outDy: return location for the translation in the y direction.
 //
 func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_info.InvokeRecordMethod("to_translate", _args[:], _outs[:])
-
+	C.gsk_transform_to_translate(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(self)
 
 	var _outDx float32 // out
 	var _outDy float32 // out
 
-	_outDx = float32(*(*C.float)(unsafe.Pointer(&_outs[0])))
-	_outDy = float32(*(*C.float)(unsafe.Pointer(&_outs[1])))
+	_outDx = float32(_arg1)
+	_outDy = float32(_arg2)
 
 	return _outDx, _outDy
 }
@@ -586,25 +602,24 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 //    - transform: new transform.
 //
 func (next *Transform) Transform(other *Transform) *Transform {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform // out
+	var _arg1 *C.GskTransform // out
+	var _cret *C.GskTransform // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	if other != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+		_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(other)))
 	}
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("transform", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_transform(_arg0, _arg1)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(other)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -628,21 +643,20 @@ func (next *Transform) Transform(other *Transform) *Transform {
 //    - outRect: return location for the bounds of the transformed rectangle.
 //
 func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GskTransform    // out
+	var _arg1 *C.graphene_rect_t // out
+	var _arg2 C.graphene_rect_t  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_info.InvokeRecordMethod("transform_bounds", _args[:], _outs[:])
-
+	C.gsk_transform_transform_bounds(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(rect)
 
 	var _outRect *graphene.Rect // out
 
-	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_rect_t)(unsafe.Pointer(&_outs[0])))))
+	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _outRect
 }
@@ -658,21 +672,20 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 //    - outPoint: return location for the transformed point.
 //
 func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GskTransform     // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.graphene_point_t  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.graphene_point_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_info.InvokeRecordMethod("transform_point", _args[:], _outs[:])
-
+	C.gsk_transform_transform_point(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(point)
 
 	var _outPoint *graphene.Point // out
 
-	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_outs[0])))))
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _outPoint
 }
@@ -688,23 +701,22 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 //    - transform: new transform.
 //
 func (next *Transform) Translate(point *graphene.Point) *Transform {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform     // out
+	var _arg1 *C.graphene_point_t // out
+	var _cret *C.GskTransform     // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(**C.graphene_point_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("translate", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_translate(_arg0, _arg1)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(point)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -726,23 +738,22 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 //    - transform: new transform.
 //
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GskTransform       // out
+	var _arg1 *C.graphene_point3d_t // out
+	var _cret *C.GskTransform       // in
 
 	if next != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(**C.graphene_point3d_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_info := girepository.MustFind("Gsk", "Transform")
-	_gret := _info.InvokeRecordMethod("translate_3d", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_translate_3d(_arg0, _arg1)
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(point)
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {

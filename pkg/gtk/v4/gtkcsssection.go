@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeCSSSection returns the GType for the type CSSSection.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCSSSection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CssSection").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_css_section_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCSSSection)
 	return gtype
 }
@@ -41,35 +39,35 @@ type CSSSection struct {
 
 // cssSection is the struct that's finalized.
 type cssSection struct {
-	native unsafe.Pointer
+	native *C.GtkCssSection
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &CSSSection{&cssSection{(unsafe.Pointer)(b)}}, nil
+	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
 }
 
 // NewCSSSection constructs a struct CSSSection.
 func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSection {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GFile          // out
+	var _arg2 *C.GtkCssLocation // out
+	var _arg3 *C.GtkCssLocation // out
+	var _cret *C.GtkCssSection  // in
 
 	if file != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
+	_arg2 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(end)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_cssSection)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -87,19 +85,17 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 //    - cssLocation: end location of this section.
 //
 func (section *CSSSection) EndLocation() *CSSLocation {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection  // out
+	var _cret *C.GtkCssLocation // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_end_location", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_end_location(_arg0)
 	runtime.KeepAlive(section)
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _cssLocation
 }
@@ -114,20 +110,18 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //    - file: GFile from which the section was parsed.
 //
 func (section *CSSSection) File() *gio.File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.GFile         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_file(_arg0)
 	runtime.KeepAlive(section)
 
 	var _file *gio.File // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -149,21 +143,19 @@ func (section *CSSSection) File() *gio.File {
 //    - cssSection (optional): parent section.
 //
 func (section *CSSSection) Parent() *CSSSection {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.GtkCssSection // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_parent(_arg0)
 	runtime.KeepAlive(section)
 
 	var _cssSection *CSSSection // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.gtk_css_section_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_css_section_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -183,19 +175,17 @@ func (section *CSSSection) Parent() *CSSSection {
 //    - cssLocation: start location of this section.
 //
 func (section *CSSSection) StartLocation() *CSSLocation {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection  // out
+	var _cret *C.GtkCssLocation // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_start_location", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_start_location(_arg0)
 	runtime.KeepAlive(section)
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _cssLocation
 }
@@ -208,20 +198,18 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 //    - utf8: new string.
 //
 func (section *CSSSection) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_to_string(_arg0)
 	runtime.KeepAlive(section)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

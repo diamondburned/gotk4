@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeMediaControls returns the GType for the type MediaControls.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMediaControls() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MediaControls").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_media_controls_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMediaControls)
 	return gtype
 }
@@ -89,21 +87,19 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 //    - mediaControls: new GtkMediaControls.
 //
 func NewMediaControls(stream MediaStreamer) *MediaControls {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkMediaStream // out
+	var _cret *C.GtkWidget      // in
 
 	if stream != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MediaControls")
-	_gret := _info.InvokeClassMethod("new_MediaControls", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_controls_new(_arg1)
 	runtime.KeepAlive(stream)
 
 	var _mediaControls *MediaControls // out
 
-	_mediaControls = wrapMediaControls(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mediaControls = wrapMediaControls(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _mediaControls
 }
@@ -115,21 +111,19 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 //    - mediaStream (optional): media stream managed by controls.
 //
 func (controls *MediaControls) MediaStream() MediaStreamer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMediaControls // out
+	var _cret *C.GtkMediaStream   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controls).Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(coreglib.InternObject(controls).Native()))
 
-	_info := girepository.MustFind("Gtk", "MediaControls")
-	_gret := _info.InvokeClassMethod("get_media_stream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_controls_get_media_stream(_arg0)
 	runtime.KeepAlive(controls)
 
 	var _mediaStream MediaStreamer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -154,16 +148,15 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 //    - stream (optional): GtkMediaStream, or NULL.
 //
 func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMediaControls // out
+	var _arg1 *C.GtkMediaStream   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controls).Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(coreglib.InternObject(controls).Native()))
 	if stream != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+		_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MediaControls")
-	_info.InvokeClassMethod("set_media_stream", _args[:], nil)
-
+	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
 	runtime.KeepAlive(controls)
 	runtime.KeepAlive(stream)
 }

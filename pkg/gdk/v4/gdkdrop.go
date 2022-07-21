@@ -11,17 +11,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeDrop returns the GType for the type Drop.
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDrop() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Drop").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_drop_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDrop)
 	return gtype
 }
@@ -88,6 +86,61 @@ func BaseDrop(obj Dropper) *Drop {
 	return obj.baseDrop()
 }
 
+// Finish ends the drag operation after a drop.
+//
+// The action must be a single action selected from the actions available via
+// gdk.Drop.GetActions().
+//
+// The function takes the following parameters:
+//
+//    - action performed by the destination or 0 if the drop failed.
+//
+func (self *Drop) Finish(action DragAction) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 C.GdkDragAction // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkDragAction(action)
+
+	C.gdk_drop_finish(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(action)
+}
+
+// Actions returns the possible actions for this GdkDrop.
+//
+// If this value contains multiple actions - i.e. gdk.DragAction().IsUnique
+// returns FALSE for the result - gdk.Drop.Finish() must choose the action to
+// use when accepting the drop. This will only happen if you passed
+// GDK_ACTION_ASK as one of the possible actions in gdk.Drop.Status().
+// GDK_ACTION_ASK itself will not be included in the actions returned by this
+// function.
+//
+// This value may change over the lifetime of the gdk.Drop both as a response to
+// source side actions as well as to calls to gdk.Drop.Status() or
+// gdk.Drop.Finish(). The source side will not change this value anymore once a
+// drop has started.
+//
+// The function returns the following values:
+//
+//    - dragAction: possible GdkDragActions.
+//
+func (self *Drop) Actions() DragAction {
+	var _arg0 *C.GdkDrop      // out
+	var _cret C.GdkDragAction // in
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_drop_get_actions(_arg0)
+	runtime.KeepAlive(self)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
 // Device returns the GdkDevice performing the drop.
 //
 // The function returns the following values:
@@ -95,20 +148,18 @@ func BaseDrop(obj Dropper) *Drop {
 //    - device: GdkDevice performing the drop.
 //
 func (self *Drop) Device() Devicer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDrop   // out
+	var _cret *C.GdkDevice // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("get_device", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_get_device(_arg0)
 	runtime.KeepAlive(self)
 
 	var _device Devicer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Devicer is nil")
 		}
@@ -135,19 +186,17 @@ func (self *Drop) Device() Devicer {
 //    - display: GdkDisplay.
 //
 func (self *Drop) Display() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDrop    // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_get_display(_arg0)
 	runtime.KeepAlive(self)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -162,21 +211,19 @@ func (self *Drop) Display() *Display {
 //    - drag (optional): corresponding GdkDrag.
 //
 func (self *Drop) Drag() Dragger {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDrop // out
+	var _cret *C.GdkDrag // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("get_drag", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_get_drag(_arg0)
 	runtime.KeepAlive(self)
 
 	var _drag Dragger // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -202,20 +249,18 @@ func (self *Drop) Drag() Dragger {
 //    - contentFormats: possible GdkContentFormats.
 //
 func (self *Drop) Formats() *ContentFormats {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDrop           // out
+	var _cret *C.GdkContentFormats // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_get_formats(_arg0)
 	runtime.KeepAlive(self)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.gdk_content_formats_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -233,20 +278,18 @@ func (self *Drop) Formats() *ContentFormats {
 //    - surface: GdkSurface performing the drop.
 //
 func (self *Drop) Surface() Surfacer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDrop    // out
+	var _cret *C.GdkSurface // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("get_surface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_get_surface(_arg0)
 	runtime.KeepAlive(self)
 
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -278,36 +321,39 @@ func (self *Drop) Surface() Surfacer {
 //      satisfied.
 //
 func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GdkDrop            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 **C.char              // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	{
-		*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
-			out := unsafe.Slice(_args[1], len(mimeTypes)+1)
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
 			var zero *C.char
 			out[len(mimeTypes)] = zero
 			for i := range mimeTypes {
-				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
-				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_info.InvokeClassMethod("read_async", _args[:], nil)
-
+	C.gdk_drop_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(mimeTypes)
@@ -334,16 +380,16 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 //    - inputStream (optional): GInputStream, or NULL.
 //
 func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _cret *C.GInputStream // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("read_finish", _args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
@@ -351,11 +397,11 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	var _inputStream gio.InputStreamer // out
 	var _goerr error                   // out
 
-	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -369,8 +415,8 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 			_inputStream = rv
 		}
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _outMimeType, _inputStream, _goerr
@@ -394,24 +440,27 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 //    - callback (optional) to call when the request is satisfied.
 //
 func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GdkDrop            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GType               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = C.GType(typ)
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_info.InvokeClassMethod("read_value_async", _args[:], nil)
-
+	C.gdk_drop_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(typ)
@@ -432,25 +481,61 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPrior
 //    - value: GValue containing the result.
 //
 func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GValue       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Drop")
-	_gret := _info.InvokeClassMethod("read_value_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_drop_read_value_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
 
 	var _value *coreglib.Value // out
 	var _goerr error           // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _value, _goerr
+}
+
+// Status selects all actions that are potentially supported by the destination.
+//
+// When calling this function, do not restrict the passed in actions to the ones
+// provided by gdk.Drop.GetActions(). Those actions may change in the future,
+// even depending on the actions you provide here.
+//
+// The preferred action is a hint to the drag'n'drop mechanism about which
+// action to use when multiple actions are possible.
+//
+// This function should be called by drag destinations in response to
+// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
+// know the exact actions it supports, it should set any possible actions first
+// and then later call this function again.
+//
+// The function takes the following parameters:
+//
+//    - actions: supported actions of the destination, or 0 to indicate that a
+//      drop will not be accepted.
+//    - preferred: unique action that's a member of actions indicating the
+//      preferred action.
+//
+func (self *Drop) Status(actions, preferred DragAction) {
+	var _arg0 *C.GdkDrop      // out
+	var _arg1 C.GdkDragAction // out
+	var _arg2 C.GdkDragAction // out
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkDragAction(actions)
+	_arg2 = C.GdkDragAction(preferred)
+
+	C.gdk_drop_status(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(actions)
+	runtime.KeepAlive(preferred)
 }

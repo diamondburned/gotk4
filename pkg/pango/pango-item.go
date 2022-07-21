@@ -7,14 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeItem returns the GType for the type Item.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeItem() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Item").RegisteredGType())
+	gtype := coreglib.Type(C.pango_item_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalItem)
 	return gtype
 }
@@ -51,34 +49,31 @@ type Analysis struct {
 
 // analysis is the struct that's finalized.
 type analysis struct {
-	native unsafe.Pointer
+	native *C.PangoAnalysis
 }
 
 // ShapeEngine: unused.
 func (a *Analysis) ShapeEngine() unsafe.Pointer {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("shape_engine")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.shape_engine
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // LangEngine: unused.
 func (a *Analysis) LangEngine() unsafe.Pointer {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("lang_engine")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.lang_engine
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Font: font for this segment.
 func (a *Analysis) Font() Fonter {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("font")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.font
 	var v Fonter // out
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))
+		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -99,75 +94,66 @@ func (a *Analysis) Font() Fonter {
 
 // Level: bidirectional level for this segment.
 func (a *Analysis) Level() byte {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("level")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.level
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
+	v = byte(*valptr)
 	return v
 }
 
 // Gravity: glyph orientation for this segment (A PangoGravity).
 func (a *Analysis) Gravity() byte {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("gravity")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.gravity
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
+	v = byte(*valptr)
 	return v
 }
 
 // Flags: boolean flags for this segment (Since: 1.16).
 func (a *Analysis) Flags() byte {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("flags")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.flags
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
+	v = byte(*valptr)
 	return v
 }
 
 // Script: detected script for this segment (A PangoScript) (Since: 1.18).
 func (a *Analysis) Script() byte {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("script")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.script
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
+	v = byte(*valptr)
 	return v
 }
 
 // Language: detected language for this segment.
 func (a *Analysis) Language() *Language {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("language")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.language
 	var v *Language // out
-	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
+	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Level: bidirectional level for this segment.
 func (a *Analysis) SetLevel(level byte) {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("level")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
-	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(level)
+	valptr := &a.native.level
+	*valptr = C.guint8(level)
 }
 
 // Gravity: glyph orientation for this segment (A PangoGravity).
 func (a *Analysis) SetGravity(gravity byte) {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("gravity")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
-	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(gravity)
+	valptr := &a.native.gravity
+	*valptr = C.guint8(gravity)
 }
 
 // Flags: boolean flags for this segment (Since: 1.16).
 func (a *Analysis) SetFlags(flags byte) {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("flags")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
-	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(flags)
+	valptr := &a.native.flags
+	*valptr = C.guint8(flags)
 }
 
 // Script: detected script for this segment (A PangoScript) (Since: 1.18).
 func (a *Analysis) SetScript(script byte) {
-	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("script")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
-	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(script)
+	valptr := &a.native.script
+	*valptr = C.guint8(script)
 }
 
 // Item: PangoItem structure stores information about a segment of text.
@@ -181,35 +167,81 @@ type Item struct {
 
 // item is the struct that's finalized.
 type item struct {
-	native unsafe.Pointer
+	native *C.PangoItem
 }
 
 func marshalItem(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Item{&item{(unsafe.Pointer)(b)}}, nil
+	return &Item{&item{(*C.PangoItem)(b)}}, nil
 }
 
 // NewItem constructs a struct Item.
 func NewItem() *Item {
-	_info := girepository.MustFind("Pango", "Item")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.PangoItem // in
+
+	_cret = C.pango_item_new()
 
 	var _item *Item // out
 
-	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_item)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.pango_item_free((*C.PangoItem)(intern.C))
 		},
 	)
 
 	return _item
+}
+
+// Offset: byte offset of the start of this item in text.
+func (i *Item) Offset() int32 {
+	valptr := &i.native.offset
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Length: length of this item in bytes.
+func (i *Item) Length() int32 {
+	valptr := &i.native.length
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// NumChars: number of Unicode characters in the item.
+func (i *Item) NumChars() int32 {
+	valptr := &i.native.num_chars
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Analysis analysis results for the item.
+func (i *Item) Analysis() *Analysis {
+	valptr := &i.native.analysis
+	var v *Analysis // out
+	v = (*Analysis)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// Offset: byte offset of the start of this item in text.
+func (i *Item) SetOffset(offset int32) {
+	valptr := &i.native.offset
+	*valptr = C.gint(offset)
+}
+
+// Length: length of this item in bytes.
+func (i *Item) SetLength(length int32) {
+	valptr := &i.native.length
+	*valptr = C.gint(length)
+}
+
+// NumChars: number of Unicode characters in the item.
+func (i *Item) SetNumChars(numChars int32) {
+	valptr := &i.native.num_chars
+	*valptr = C.gint(numChars)
 }
 
 // ApplyAttrs: add attributes to a PangoItem.
@@ -228,14 +260,13 @@ func NewItem() *Item {
 //    - iter: PangoAttrIterator.
 //
 func (item *Item) ApplyAttrs(iter *AttrIterator) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoItem         // out
+	var _arg1 *C.PangoAttrIterator // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(item)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
+	_arg1 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "Item")
-	_info.InvokeRecordMethod("apply_attrs", _args[:], nil)
-
+	C.pango_item_apply_attrs(_arg0, _arg1)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(iter)
 }
@@ -248,30 +279,24 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 //      pango.Item.Free(), or NULL if item was NULL.
 //
 func (item *Item) Copy() *Item {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoItem // out
+	var _cret *C.PangoItem // in
 
 	if item != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(item)))
+		_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
 	}
 
-	_info := girepository.MustFind("Pango", "Item")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_item_copy(_arg0)
 	runtime.KeepAlive(item)
 
 	var _ret *Item // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.pango_item_free((*C.PangoItem)(intern.C))
 			},
 		)
 	}
@@ -302,31 +327,27 @@ func (item *Item) Copy() *Item {
 //      freed with pango.Item.Free().
 //
 func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoItem // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _cret *C.PangoItem // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(splitIndex)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(splitOffset)
+	_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(orig)))
+	_arg1 = C.int(splitIndex)
+	_arg2 = C.int(splitOffset)
 
-	_info := girepository.MustFind("Pango", "Item")
-	_gret := _info.InvokeRecordMethod("split", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_item_split(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(orig)
 	runtime.KeepAlive(splitIndex)
 	runtime.KeepAlive(splitOffset)
 
 	var _item *Item // out
 
-	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_item)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.pango_item_free((*C.PangoItem)(intern.C))
 		},
 	)
 

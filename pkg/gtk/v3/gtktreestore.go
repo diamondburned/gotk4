@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeTreeStore returns the GType for the type TreeStore.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTreeStore() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeStore").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tree_store_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTreeStore)
 	return gtype
 }
@@ -113,27 +113,26 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 //    - treeStore: new TreeStore.
 //
 func NewTreeStore(types []coreglib.Type) *TreeStore {
-	var _args [2]girepository.Argument
+	var _arg2 *C.GType // out
+	var _arg1 C.gint
+	var _cret *C.GtkTreeStore // in
 
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = (C.gint)(len(types))
-	*(**C.GType)(unsafe.Pointer(&_args[1])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
-	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (C.gint)(len(types))
+	_arg2 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
-		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[1]))), len(types))
+		out := unsafe.Slice((*C.GType)(_arg2), len(types))
 		for i := range types {
-			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+			out[i] = C.GType(types[i])
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_gret := _info.InvokeClassMethod("new_TreeStore", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_store_newv(_arg1, _arg2)
 	runtime.KeepAlive(types)
 
 	var _treeStore *TreeStore // out
 
-	_treeStore = wrapTreeStore(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_treeStore = wrapTreeStore(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _treeStore
 }
@@ -153,36 +152,33 @@ func NewTreeStore(types []coreglib.Type) *TreeStore {
 //    - iter: unset TreeIter to set to the appended row.
 //
 func (treeStore *TreeStore) Append(parent *TreeIter) *TreeIter {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("append", _args[:], _outs[:])
-
+	C.gtk_tree_store_append(_arg0, &_arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
 
 // Clear removes all rows from tree_store.
 func (treeStore *TreeStore) Clear() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("clear", _args[:], nil)
-
+	C.gtk_tree_store_clear(_arg0)
 	runtime.KeepAlive(treeStore)
 }
 
@@ -204,25 +200,25 @@ func (treeStore *TreeStore) Clear() {
 //    - iter: unset TreeIter to set to the new row.
 //
 func (treeStore *TreeStore) Insert(parent *TreeIter, position int32) *TreeIter {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.gint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
+	_arg3 = C.gint(position)
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("insert", _args[:], _outs[:])
-
+	C.gtk_tree_store_insert(_arg0, &_arg1, _arg2, _arg3)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(position)
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -247,27 +243,27 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int32) *TreeIter {
 //    - iter: unset TreeIter to set to the new row.
 //
 func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) *TreeIter {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
 	if sibling != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
+		_arg3 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(sibling)))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("insert_after", _args[:], _outs[:])
-
+	C.gtk_tree_store_insert_after(_arg0, &_arg1, _arg2, _arg3)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(sibling)
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -292,27 +288,27 @@ func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) *TreeIter {
 //    - iter: unset TreeIter to set to the new row.
 //
 func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) *TreeIter {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
 	if sibling != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
+		_arg3 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(sibling)))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("insert_before", _args[:], _outs[:])
-
+	C.gtk_tree_store_insert_before(_arg0, &_arg1, _arg2, _arg3)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(sibling)
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -333,36 +329,39 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) *TreeIter {
 //    - iter (optional): unset TreeIter to set the new row, or NULL.
 //
 func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, columns []int32, values []coreglib.Value) *TreeIter {
-	var _args [6]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.gint          // out
+	var _arg4 *C.gint         // out
+	var _arg6 C.gint
+	var _arg5 *C.GValue // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
-	*(*C.gint)(unsafe.Pointer(&_args[5])) = (C.gint)(len(columns))
-	*(**C.gint)(unsafe.Pointer(&_args[3])) = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(*(**C.gint)(unsafe.Pointer(&_args[3]))))
+	_arg3 = C.gint(position)
+	_arg6 = (C.gint)(len(columns))
+	_arg4 = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg4))
 	{
-		out := unsafe.Slice((*C.gint)(*(**C.gint)(unsafe.Pointer(&_args[3]))), len(columns))
+		out := unsafe.Slice((*C.gint)(_arg4), len(columns))
 		for i := range columns {
-			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(columns[i])
+			out[i] = C.gint(columns[i])
 		}
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[5])) = (C.gint)(len(values))
-	*(**C.GValue)(unsafe.Pointer(&_args[4])) = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_args[4]))))
+	_arg6 = (C.gint)(len(values))
+	_arg5 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(_arg5))
 	{
-		out := unsafe.Slice((*C.GValue)(*(**C.GValue)(unsafe.Pointer(&_args[4]))), len(values))
+		out := unsafe.Slice((*C.GValue)(_arg5), len(values))
 		for i := range values {
-			*(*C.GValue)(unsafe.Pointer(&out[i])) = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("insert_with_valuesv", _args[:], _outs[:])
-
+	C.gtk_tree_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(position)
@@ -371,9 +370,7 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, c
 
 	var _iter *TreeIter // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -391,23 +388,23 @@ func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, c
 //    - ok: TRUE, if iter is an ancestor of descendant.
 //
 func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(descendant)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(descendant)))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_gret := _info.InvokeClassMethod("is_ancestor", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(descendant)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -426,21 +423,20 @@ func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
 //    - gint: depth of iter.
 //
 func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_gret := _info.InvokeClassMethod("iter_depth", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -459,21 +455,20 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
 //    - ok: TRUE if the iter is valid, FALSE if the iter is invalid.
 //
 func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_gret := _info.InvokeClassMethod("iter_is_valid", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -491,17 +486,17 @@ func (treeStore *TreeStore) IterIsValid(iter *TreeIter) bool {
 //    - position (optional): TreeIter.
 //
 func (treeStore *TreeStore) MoveAfter(iter, position *TreeIter) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if position != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(position)))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("move_after", _args[:], nil)
-
+	C.gtk_tree_store_move_after(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(position)
@@ -518,17 +513,17 @@ func (treeStore *TreeStore) MoveAfter(iter, position *TreeIter) {
 //    - position (optional) or NULL.
 //
 func (treeStore *TreeStore) MoveBefore(iter, position *TreeIter) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if position != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(position)))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("move_before", _args[:], nil)
-
+	C.gtk_tree_store_move_before(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(position)
@@ -549,23 +544,22 @@ func (treeStore *TreeStore) MoveBefore(iter, position *TreeIter) {
 //    - iter: unset TreeIter to set to the prepended row.
 //
 func (treeStore *TreeStore) Prepend(parent *TreeIter) *TreeIter {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 C.GtkTreeIter   // in
+	var _arg2 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("prepend", _args[:], _outs[:])
-
+	C.gtk_tree_store_prepend(_arg0, &_arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(parent)
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
 }
@@ -583,21 +577,20 @@ func (treeStore *TreeStore) Prepend(parent *TreeIter) *TreeIter {
 //    - ok: TRUE if iter is still valid, FALSE if not.
 //
 func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_gret := _info.InvokeClassMethod("remove", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_store_remove(_arg0, _arg1)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -614,22 +607,22 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 //    - types: array of #GType types, one for each column.
 //
 func (treeStore *TreeStore) SetColumnTypes(types []coreglib.Type) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg2 *C.GType        // out
+	var _arg1 C.gint
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = (C.gint)(len(types))
-	*(**C.GType)(unsafe.Pointer(&_args[2])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
-	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (C.gint)(len(types))
+	_arg2 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
-		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[2]))), len(types))
+		out := unsafe.Slice((*C.GType)(_arg2), len(types))
 		for i := range types {
-			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+			out[i] = C.GType(types[i])
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("set_column_types", _args[:], nil)
-
+	C.gtk_tree_store_set_column_types(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(types)
 }
@@ -644,16 +637,17 @@ func (treeStore *TreeStore) SetColumnTypes(types []coreglib.Type) {
 //    - value: new value for the cell.
 //
 func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 C.gint          // out
+	var _arg3 *C.GValue       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
-	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = C.gint(column)
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("set_value", _args[:], nil)
-
+	C.gtk_tree_store_set_value(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(column)
@@ -672,32 +666,34 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coregl
 //    - values: array of GValues.
 //
 func (treeStore *TreeStore) Set(iter *TreeIter, columns []int32, values []coreglib.Value) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 *C.gint         // out
+	var _arg4 C.gint
+	var _arg3 *C.GValue // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(columns))
-	*(**C.gint)(unsafe.Pointer(&_args[2])) = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(*(**C.gint)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg4 = (C.gint)(len(columns))
+	_arg2 = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
-		out := unsafe.Slice((*C.gint)(*(**C.gint)(unsafe.Pointer(&_args[2]))), len(columns))
+		out := unsafe.Slice((*C.gint)(_arg2), len(columns))
 		for i := range columns {
-			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(columns[i])
+			out[i] = C.gint(columns[i])
 		}
 	}
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(values))
-	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_args[3]))))
+	_arg4 = (C.gint)(len(values))
+	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(_arg3))
 	{
-		out := unsafe.Slice((*C.GValue)(*(**C.GValue)(unsafe.Pointer(&_args[3]))), len(values))
+		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
 		for i := range values {
-			*(*C.GValue)(unsafe.Pointer(&out[i])) = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("set_valuesv", _args[:], nil)
-
+	C.gtk_tree_store_set_valuesv(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(columns)
@@ -713,15 +709,15 @@ func (treeStore *TreeStore) Set(iter *TreeIter, columns []int32, values []coregl
 //    - b: another TreeIter.
 //
 func (treeStore *TreeStore) Swap(a, b *TreeIter) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkTreeStore // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _arg2 *C.GtkTreeIter  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(a)))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(b)))
 
-	_info := girepository.MustFind("Gtk", "TreeStore")
-	_info.InvokeClassMethod("swap", _args[:], nil)
-
+	C.gtk_tree_store_swap(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)

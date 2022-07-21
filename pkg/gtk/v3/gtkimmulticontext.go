@@ -6,14 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeIMMulticontext returns the GType for the type IMMulticontext.
@@ -22,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIMMulticontext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IMMulticontext").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_im_multicontext_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIMMulticontext)
 	return gtype
 }
@@ -67,13 +67,13 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 //    - imMulticontext: new IMMulticontext.
 //
 func NewIMMulticontext() *IMMulticontext {
-	_info := girepository.MustFind("Gtk", "IMMulticontext")
-	_gret := _info.InvokeClassMethod("new_IMMulticontext", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkIMContext // in
+
+	_cret = C.gtk_im_multicontext_new()
 
 	var _imMulticontext *IMMulticontext // out
 
-	_imMulticontext = wrapIMMulticontext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_imMulticontext = wrapIMMulticontext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _imMulticontext
 }
@@ -91,14 +91,13 @@ func NewIMMulticontext() *IMMulticontext {
 //    - menushell: MenuShell.
 //
 func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIMMulticontext // out
+	var _arg1 *C.GtkMenuShell      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menushell).Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer(coreglib.InternObject(menushell).Native()))
 
-	_info := girepository.MustFind("Gtk", "IMMulticontext")
-	_info.InvokeClassMethod("append_menuitems", _args[:], nil)
-
+	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(menushell)
 }
@@ -110,19 +109,17 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 //    - utf8: id of the currently active slave.
 //
 func (context *IMMulticontext) ContextID() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIMMulticontext // out
+	var _cret *C.char              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "IMMulticontext")
-	_gret := _info.InvokeClassMethod("get_context_id", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 	runtime.KeepAlive(context)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -137,15 +134,14 @@ func (context *IMMulticontext) ContextID() string {
 //    - contextId: id to use.
 //
 func (context *IMMulticontext) SetContextID(contextId string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIMMulticontext // out
+	var _arg1 *C.char              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(contextId)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IMMulticontext")
-	_info.InvokeClassMethod("set_context_id", _args[:], nil)
-
+	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(contextId)
 }

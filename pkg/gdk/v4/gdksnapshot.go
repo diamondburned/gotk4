@@ -5,13 +5,11 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -21,9 +19,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSnapshot() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Snapshot").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_snapshot_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSnapshot)
 	return gtype
+}
+
+// SnapshotOverrider contains methods that are overridable.
+type SnapshotOverrider interface {
 }
 
 // Snapshot: base type for snapshot operations.
@@ -48,6 +50,14 @@ type Snapshotter interface {
 }
 
 var _ Snapshotter = (*Snapshot)(nil)
+
+func classInitSnapshotter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapSnapshot(obj *coreglib.Object) *Snapshot {
 	return &Snapshot{

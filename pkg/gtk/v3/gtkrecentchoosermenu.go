@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeRecentChooserMenu returns the GType for the type RecentChooserMenu.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentChooserMenu() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooserMenu").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_chooser_menu_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserMenu)
 	return gtype
 }
@@ -123,13 +123,13 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 //    - recentChooserMenu: new RecentChooserMenu.
 //
 func NewRecentChooserMenu() *RecentChooserMenu {
-	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
-	_gret := _info.InvokeClassMethod("new_RecentChooserMenu", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_recent_chooser_menu_new()
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = wrapRecentChooserMenu(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentChooserMenu = wrapRecentChooserMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }
@@ -150,19 +150,17 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 //    - recentChooserMenu: new RecentChooserMenu, bound to manager.
 //
 func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkRecentManager // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
-	_gret := _info.InvokeClassMethod("new_RecentChooserMenu_for_manager", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 	runtime.KeepAlive(manager)
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
-	_recentChooserMenu = wrapRecentChooserMenu(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentChooserMenu = wrapRecentChooserMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserMenu
 }
@@ -175,19 +173,17 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 //    - ok: TRUE if numbers should be shown.
 //
 func (menu *RecentChooserMenu) ShowNumbers() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentChooserMenu // out
+	var _cret C.gboolean              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
-	_gret := _info.InvokeClassMethod("get_show_numbers", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 	runtime.KeepAlive(menu)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -204,16 +200,15 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 //    - showNumbers: whether to show numbers.
 //
 func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentChooserMenu // out
+	var _arg1 C.gboolean              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if showNumbers {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
-	_info.InvokeClassMethod("set_show_numbers", _args[:], nil)
-
+	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(showNumbers)
 }

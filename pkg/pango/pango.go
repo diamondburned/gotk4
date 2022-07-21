@@ -4,16 +4,10 @@ package pango
 
 import (
 	_ "runtime/cgo"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: pango
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
-
-func init() {
-	girepository.Require("Pango", "1.0", girepository.LoadFlagLazy)
-}

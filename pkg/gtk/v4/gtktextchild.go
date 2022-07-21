@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeTextChildAnchor returns the GType for the type TextChildAnchor.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextChildAnchor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextChildAnchor").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_text_child_anchor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextChildAnchor)
 	return gtype
 }
@@ -73,13 +71,13 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 //    - textChildAnchor: new GtkTextChildAnchor.
 //
 func NewTextChildAnchor() *TextChildAnchor {
-	_info := girepository.MustFind("Gtk", "TextChildAnchor")
-	_gret := _info.InvokeClassMethod("new_TextChildAnchor", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkTextChildAnchor // in
+
+	_cret = C.gtk_text_child_anchor_new()
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = wrapTextChildAnchor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_textChildAnchor = wrapTextChildAnchor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textChildAnchor
 }
@@ -96,19 +94,17 @@ func NewTextChildAnchor() *TextChildAnchor {
 //    - ok: TRUE if the child anchor has been deleted from its buffer.
 //
 func (anchor *TextChildAnchor) Deleted() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTextChildAnchor // out
+	var _cret C.gboolean            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
-	_info := girepository.MustFind("Gtk", "TextChildAnchor")
-	_gret := _info.InvokeClassMethod("get_deleted", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 	runtime.KeepAlive(anchor)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -124,26 +120,24 @@ func (anchor *TextChildAnchor) Deleted() bool {
 //    - widgets: an array of widgets anchored at anchor.
 //
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkTextChildAnchor // out
+	var _cret **C.GtkWidget         // in
+	var _arg1 C.guint               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
-	_info := girepository.MustFind("Gtk", "TextChildAnchor")
-	_gret := _info.InvokeClassMethod("get_widgets", _args[:], _outs[:])
-	_cret := *(***C.GtkWidget)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_child_anchor_get_widgets(_arg0, &_arg1)
 	runtime.KeepAlive(anchor)
 
 	var _widgets []Widgetter // out
 
-	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_cret))), *(*C.guint)(unsafe.Pointer(&_outs[0])))
-		_widgets = make([]Widgetter, *(*C.guint)(unsafe.Pointer(&_outs[0])))
-		for i := 0; i < int(*(*C.guint)(unsafe.Pointer(&_outs[0]))); i++ {
+		src := unsafe.Slice((**C.GtkWidget)(_cret), _arg1)
+		_widgets = make([]Widgetter, _arg1)
+		for i := 0; i < int(_arg1); i++ {
 			{
-				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))
+				objptr := unsafe.Pointer(src[i])
 				if objptr == nil {
 					panic("object of type gtk.Widgetter is nil")
 				}

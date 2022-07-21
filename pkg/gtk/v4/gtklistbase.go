@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeListBase returns the GType for the type ListBase.
@@ -21,9 +19,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeListBase() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListBase").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_list_base_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalListBase)
 	return gtype
+}
+
+// ListBaseOverrider contains methods that are overridable.
+type ListBaseOverrider interface {
 }
 
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.
@@ -51,6 +53,14 @@ type ListBaser interface {
 }
 
 var _ ListBaser = (*ListBase)(nil)
+
+func classInitListBaser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapListBase(obj *coreglib.Object) *ListBase {
 	return &ListBase{

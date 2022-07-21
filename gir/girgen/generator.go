@@ -38,6 +38,10 @@ func init() {
 	}
 }
 
+// DefaultLinkMode is the default link mode to be used for all constructed
+// Generators.
+var DefaultLinkMode = types.RuntimeLinkMode
+
 // Generator is a big generator that manages multiple repositories.
 type Generator struct {
 	Logger *log.Logger
@@ -69,7 +73,7 @@ func NewGeneratorOpts(repos gir.Repositories, modPath types.ModulePathFunc, opts
 			"GLib-2":    types.DynamicLinkMode,
 			"GObject-2": types.DynamicLinkMode,
 		},
-		defaultMode: types.RuntimeLinkMode,
+		defaultMode: DefaultLinkMode,
 		modPath:     modPath,
 		postmap:     make(map[string][]Postprocessor),
 		filters:     append([]types.FilterMatcher(nil), types.BuiltinHandledTypes...),

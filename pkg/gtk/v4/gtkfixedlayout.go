@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeFixedLayout returns the GType for the type FixedLayout.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFixedLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FixedLayout").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_fixed_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFixedLayout)
 	return gtype
 }
@@ -35,7 +33,7 @@ func GTypeFixedLayout() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFixedLayoutChild() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FixedLayoutChild").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_fixed_layout_child_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFixedLayoutChild)
 	return gtype
 }
@@ -109,13 +107,13 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 //    - fixedLayout: newly created GtkFixedLayout.
 //
 func NewFixedLayout() *FixedLayout {
-	_info := girepository.MustFind("Gtk", "FixedLayout")
-	_gret := _info.InvokeClassMethod("new_FixedLayout", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkLayoutManager // in
+
+	_cret = C.gtk_fixed_layout_new()
 
 	var _fixedLayout *FixedLayout // out
 
-	_fixedLayout = wrapFixedLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fixedLayout = wrapFixedLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fixedLayout
 }
@@ -161,21 +159,19 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 //    - transform (optional): GskTransform.
 //
 func (child *FixedLayoutChild) Transform() *gsk.Transform {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFixedLayoutChild // out
+	var _cret *C.GskTransform        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "FixedLayoutChild")
-	_gret := _info.InvokeClassMethod("get_transform", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_fixed_layout_child_get_transform(_arg0)
 	runtime.KeepAlive(child)
 
 	var _transform *gsk.Transform // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.gsk_transform_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gsk_transform_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -194,14 +190,13 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 //    - transform: GskTransform.
 //
 func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFixedLayoutChild // out
+	var _arg1 *C.GskTransform        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(transform)))
 
-	_info := girepository.MustFind("Gtk", "FixedLayoutChild")
-	_info.InvokeClassMethod("set_transform", _args[:], nil)
-
+	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(transform)
 }

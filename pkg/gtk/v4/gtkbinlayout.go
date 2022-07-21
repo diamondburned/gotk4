@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeBinLayout returns the GType for the type BinLayout.
@@ -21,7 +19,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBinLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BinLayout").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_bin_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBinLayout)
 	return gtype
 }
@@ -73,13 +71,13 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 //    - binLayout: newly created GtkBinLayout.
 //
 func NewBinLayout() *BinLayout {
-	_info := girepository.MustFind("Gtk", "BinLayout")
-	_gret := _info.InvokeClassMethod("new_BinLayout", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkLayoutManager // in
+
+	_cret = C.gtk_bin_layout_new()
 
 	var _binLayout *BinLayout // out
 
-	_binLayout = wrapBinLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_binLayout = wrapBinLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _binLayout
 }

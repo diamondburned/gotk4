@@ -6,14 +6,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeVButtonBox returns the GType for the type VButtonBox.
@@ -22,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeVButtonBox() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "VButtonBox").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_vbutton_box_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalVButtonBox)
 	return gtype
 }
@@ -89,13 +89,13 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 //    - vButtonBox: new button box Widget.
 //
 func NewVButtonBox() *VButtonBox {
-	_info := girepository.MustFind("Gtk", "VButtonBox")
-	_gret := _info.InvokeClassMethod("new_VButtonBox", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_vbutton_box_new()
 
 	var _vButtonBox *VButtonBox // out
 
-	_vButtonBox = wrapVButtonBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_vButtonBox = wrapVButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vButtonBox
 }

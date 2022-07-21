@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeFontSelection returns the GType for the type FontSelection.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFontSelection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontSelection").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_font_selection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFontSelection)
 	return gtype
 }
@@ -35,7 +35,7 @@ func GTypeFontSelection() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFontSelectionDialog() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontSelectionDialog").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_font_selection_dialog_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFontSelectionDialog)
 	return gtype
 }
@@ -100,13 +100,13 @@ func marshalFontSelection(p uintptr) (interface{}, error) {
 //    - fontSelection: new FontSelection.
 //
 func NewFontSelection() *FontSelection {
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("new_FontSelection", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_font_selection_new()
 
 	var _fontSelection *FontSelection // out
 
-	_fontSelection = wrapFontSelection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fontSelection = wrapFontSelection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelection
 }
@@ -122,20 +122,18 @@ func NewFontSelection() *FontSelection {
 //      object is owned by fontsel and must not be modified or freed.
 //
 func (fontsel *FontSelection) Face() pango.FontFacer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.PangoFontFace    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_face", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_face(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _fontFace pango.FontFacer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type pango.FontFacer is nil")
 		}
@@ -165,20 +163,18 @@ func (fontsel *FontSelection) Face() pango.FontFacer {
 //    - widget that is part of fontsel.
 //
 func (fontsel *FontSelection) FaceList() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_face_list", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_face_list(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -209,20 +205,18 @@ func (fontsel *FontSelection) FaceList() Widgetter {
 //      must not be modified or freed.
 //
 func (fontsel *FontSelection) Family() pango.FontFamilier {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.PangoFontFamily  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_family", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_family(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _fontFamily pango.FontFamilier // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type pango.FontFamilier is nil")
 		}
@@ -252,20 +246,18 @@ func (fontsel *FontSelection) Family() pango.FontFamilier {
 //    - widget that is part of fontsel.
 //
 func (fontsel *FontSelection) FamilyList() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_family_list", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_family_list(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -302,20 +294,18 @@ func (fontsel *FontSelection) FamilyList() Widgetter {
 //      selected. You must free this string with g_free().
 //
 func (fontsel *FontSelection) FontName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.gchar            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_font_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_font_name(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -329,20 +319,18 @@ func (fontsel *FontSelection) FontName() string {
 //    - widget that is part of fontsel.
 //
 func (fontsel *FontSelection) PreviewEntry() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_preview_entry", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_preview_entry(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -372,19 +360,17 @@ func (fontsel *FontSelection) PreviewEntry() Widgetter {
 //      widget and should not be modified or freed.
 //
 func (fontsel *FontSelection) PreviewText() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.gchar            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_preview_text", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_preview_text(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -399,19 +385,17 @@ func (fontsel *FontSelection) PreviewText() string {
 //      size is selected.
 //
 func (fontsel *FontSelection) Size() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret C.gint              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_size", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_size(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -426,20 +410,18 @@ func (fontsel *FontSelection) Size() int32 {
 //    - widget that is part of fontsel.
 //
 func (fontsel *FontSelection) SizeEntry() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_size_entry", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_size_entry(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -468,20 +450,18 @@ func (fontsel *FontSelection) SizeEntry() Widgetter {
 //    - widget that is part of fontsel.
 //
 func (fontsel *FontSelection) SizeList() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("get_size_list", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_get_size_list(_arg0)
 	runtime.KeepAlive(fontsel)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -519,22 +499,21 @@ func (fontsel *FontSelection) SizeList() Widgetter {
 //      exists or if the fontsel doesn’t belong to a particular screen yet.
 //
 func (fontsel *FontSelection) SetFontName(fontname string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _arg1 *C.gchar            // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_gret := _info.InvokeClassMethod("set_font_name", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_set_font_name(_arg0, _arg1)
 	runtime.KeepAlive(fontsel)
 	runtime.KeepAlive(fontname)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -551,15 +530,14 @@ func (fontsel *FontSelection) SetFontName(fontname string) bool {
 //    - text to display in the preview area.
 //
 func (fontsel *FontSelection) SetPreviewText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontSelection // out
+	var _arg1 *C.gchar            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontSelection")
-	_info.InvokeClassMethod("set_preview_text", _args[:], nil)
-
+	C.gtk_font_selection_set_preview_text(_arg0, _arg1)
 	runtime.KeepAlive(fontsel)
 	runtime.KeepAlive(text)
 }
@@ -627,20 +605,18 @@ func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
 //    - fontSelectionDialog: new FontSelectionDialog.
 //
 func NewFontSelectionDialog(title string) *FontSelectionDialog {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("new_FontSelectionDialog", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_new(_arg1)
 	runtime.KeepAlive(title)
 
 	var _fontSelectionDialog *FontSelectionDialog // out
 
-	_fontSelectionDialog = wrapFontSelectionDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fontSelectionDialog = wrapFontSelectionDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontSelectionDialog
 }
@@ -654,20 +630,18 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 //    - widget used in the dialog for the “Cancel” button.
 //
 func (fsd *FontSelectionDialog) CancelButton() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.GtkWidget              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("get_cancel_button", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_get_cancel_button(_arg0)
 	runtime.KeepAlive(fsd)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -704,20 +678,18 @@ func (fsd *FontSelectionDialog) CancelButton() Widgetter {
 //      selected. You must free this string with g_free().
 //
 func (fsd *FontSelectionDialog) FontName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.gchar                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("get_font_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_get_font_name(_arg0)
 	runtime.KeepAlive(fsd)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -731,20 +703,18 @@ func (fsd *FontSelectionDialog) FontName() string {
 //    - widget: embedded FontSelection.
 //
 func (fsd *FontSelectionDialog) FontSelection() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.GtkWidget              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("get_font_selection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_get_font_selection(_arg0)
 	runtime.KeepAlive(fsd)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -773,20 +743,18 @@ func (fsd *FontSelectionDialog) FontSelection() Widgetter {
 //    - widget used in the dialog for the “OK” button.
 //
 func (fsd *FontSelectionDialog) OKButton() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.GtkWidget              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("get_ok_button", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_get_ok_button(_arg0)
 	runtime.KeepAlive(fsd)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -816,19 +784,17 @@ func (fsd *FontSelectionDialog) OKButton() Widgetter {
 //      widget and should not be modified or freed.
 //
 func (fsd *FontSelectionDialog) PreviewText() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.gchar                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("get_preview_text", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_get_preview_text(_arg0)
 	runtime.KeepAlive(fsd)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -847,22 +813,21 @@ func (fsd *FontSelectionDialog) PreviewText() string {
 //      otherwise.
 //
 func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _arg1 *C.gchar                  // out
+	var _cret C.gboolean                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_gret := _info.InvokeClassMethod("set_font_name", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_font_selection_dialog_set_font_name(_arg0, _arg1)
 	runtime.KeepAlive(fsd)
 	runtime.KeepAlive(fontname)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -878,15 +843,14 @@ func (fsd *FontSelectionDialog) SetFontName(fontname string) bool {
 //    - text to display in the preview area.
 //
 func (fsd *FontSelectionDialog) SetPreviewText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _arg1 *C.gchar                  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "FontSelectionDialog")
-	_info.InvokeClassMethod("set_preview_text", _args[:], nil)
-
+	C.gtk_font_selection_dialog_set_preview_text(_arg0, _arg1)
 	runtime.KeepAlive(fsd)
 	runtime.KeepAlive(text)
 }

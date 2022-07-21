@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeX11Surface() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11Surface").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_x11_surface_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalX11Surface)
 	return gtype
 }
@@ -40,21 +38,23 @@ func GTypeX11Surface() coreglib.Type {
 //    - guint32: time stamp.
 //
 func X11GetServerTime(surface *X11Surface) uint32 {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkSurface // out
+	var _cret C.guint32     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_info := girepository.MustFind("GdkX11", "x11_get_server_time")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_get_server_time(_arg1)
 	runtime.KeepAlive(surface)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
+}
+
+// X11SurfaceOverrider contains methods that are overridable.
+type X11SurfaceOverrider interface {
 }
 
 type X11Surface struct {
@@ -65,6 +65,14 @@ type X11Surface struct {
 var (
 	_ gdk.Surfacer = (*X11Surface)(nil)
 )
+
+func classInitX11Surfacer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Surface(obj *coreglib.Object) *X11Surface {
 	return &X11Surface{
@@ -85,19 +93,17 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 //    - guint32: current workspace of surface.
 //
 func (surface *X11Surface) Desktop() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _cret C.guint32     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_gret := _info.InvokeClassMethod("get_desktop", _args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 	runtime.KeepAlive(surface)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -109,20 +115,18 @@ func (surface *X11Surface) Desktop() uint32 {
 //    - ret: group of this surface;.
 //
 func (surface *X11Surface) Group() gdk.Surfacer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _cret *C.GdkSurface // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_surface_get_group(_arg0)
 	runtime.KeepAlive(surface)
 
 	var _ret gdk.Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -148,13 +152,11 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 // specification. Will not do anything if the surface is already on all
 // workspaces.
 func (surface *X11Surface) MoveToCurrentDesktop() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkSurface // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("move_to_current_desktop", _args[:], nil)
-
+	C.gdk_x11_surface_move_to_current_desktop(_arg0)
 	runtime.KeepAlive(surface)
 }
 
@@ -168,14 +170,13 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 //    - desktop: number of the workspace to move the surface to.
 //
 func (surface *X11Surface) MoveToDesktop(desktop uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.guint32     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(desktop)
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg1 = C.guint32(desktop)
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("move_to_desktop", _args[:], nil)
-
+	C.gdk_x11_surface_move_to_desktop(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(desktop)
 }
@@ -192,16 +193,15 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 //    - frameSyncEnabled: whether frame-synchronization should be enabled.
 //
 func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if frameSyncEnabled {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_frame_sync_enabled", _args[:], nil)
-
+	C.gdk_x11_surface_set_frame_sync_enabled(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(frameSyncEnabled)
 }
@@ -214,14 +214,13 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 //    - leader: Surface.
 //
 func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.GdkSurface // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_group", _args[:], nil)
-
+	C.gdk_x11_surface_set_group(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(leader)
 }
@@ -234,16 +233,15 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 //    - skipsPager: TRUE to skip pagers.
 //
 func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if skipsPager {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_skip_pager_hint", _args[:], nil)
-
+	C.gdk_x11_surface_set_skip_pager_hint(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(skipsPager)
 }
@@ -256,16 +254,15 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 //    - skipsTaskbar: TRUE to skip taskbars.
 //
 func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if skipsTaskbar {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_skip_taskbar_hint", _args[:], nil)
-
+	C.gdk_x11_surface_set_skip_taskbar_hint(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(skipsTaskbar)
 }
@@ -284,15 +281,14 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 //    - variant: theme variant to export.
 //
 func (surface *X11Surface) SetThemeVariant(variant string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.char       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(variant)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variant)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_theme_variant", _args[:], nil)
-
+	C.gdk_x11_surface_set_theme_variant(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(variant)
 }
@@ -305,16 +301,15 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 //    - urgent: TRUE to indicate urgenct attention needed.
 //
 func (surface *X11Surface) SetUrgencyHint(urgent bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if urgent {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_urgency_hint", _args[:], nil)
-
+	C.gdk_x11_surface_set_urgency_hint(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(urgent)
 }
@@ -335,14 +330,13 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 //    - timestamp: XServer timestamp to which the property should be set.
 //
 func (surface *X11Surface) SetUserTime(timestamp uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.guint32     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg1 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_user_time", _args[:], nil)
-
+	C.gdk_x11_surface_set_user_time(_arg0, _arg1)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(timestamp)
 }
@@ -357,19 +351,19 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 //    - value (optional): property value, or NULL to delete.
 //
 func (surface *X11Surface) SetUTF8Property(name, value string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.char       // out
+	var _arg2 *C.char       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if value != "" {
-		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(value)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("GdkX11", "X11Surface")
-	_info.InvokeClassMethod("set_utf8_property", _args[:], nil)
-
+	C.gdk_x11_surface_set_utf8_property(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)

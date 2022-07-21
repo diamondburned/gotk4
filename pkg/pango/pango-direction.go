@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeDirection returns the GType for the type Direction.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDirection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Direction").RegisteredGType())
+	gtype := coreglib.Type(C.pango_direction_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDirection)
 	return gtype
 }

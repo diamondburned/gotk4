@@ -9,19 +9,19 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_SearchEntryClass_next_match(void*);
-// extern void _gotk4_gtk3_SearchEntryClass_previous_match(void*);
-// extern void _gotk4_gtk3_SearchEntryClass_search_changed(void*);
-// extern void _gotk4_gtk3_SearchEntryClass_stop_search(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_SearchEntryClass_next_match(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_previous_match(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_search_changed(GtkSearchEntry*);
+// extern void _gotk4_gtk3_SearchEntryClass_stop_search(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntry_ConnectNextMatch(gpointer, guintptr);
 // extern void _gotk4_gtk3_SearchEntry_ConnectPreviousMatch(gpointer, guintptr);
 // extern void _gotk4_gtk3_SearchEntry_ConnectSearchChanged(gpointer, guintptr);
@@ -34,7 +34,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSearchEntry() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SearchEntry").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_search_entry_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSearchEntry)
 	return gtype
 }
@@ -87,31 +87,27 @@ func classInitSearchEntrier(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "SearchEntryClass")
+	pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ NextMatch() }); ok {
-		o := pclass.StructFieldOffset("next_match")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_next_match)
+		pclass.next_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_next_match)
 	}
 
 	if _, ok := goval.(interface{ PreviousMatch() }); ok {
-		o := pclass.StructFieldOffset("previous_match")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_previous_match)
+		pclass.previous_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_previous_match)
 	}
 
 	if _, ok := goval.(interface{ SearchChanged() }); ok {
-		o := pclass.StructFieldOffset("search_changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_search_changed)
+		pclass.search_changed = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_search_changed)
 	}
 
 	if _, ok := goval.(interface{ StopSearch() }); ok {
-		o := pclass.StructFieldOffset("stop_search")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_stop_search)
+		pclass.stop_search = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_stop_search)
 	}
 }
 
 //export _gotk4_gtk3_SearchEntryClass_next_match
-func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.void) {
+func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NextMatch() })
 
@@ -119,7 +115,7 @@ func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_previous_match
-func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.void) {
+func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreviousMatch() })
 
@@ -127,7 +123,7 @@ func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_search_changed
-func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.void) {
+func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SearchChanged() })
 
@@ -135,7 +131,7 @@ func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_SearchEntryClass_stop_search
-func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.void) {
+func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.GtkSearchEntry) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StopSearch() })
 
@@ -294,13 +290,13 @@ func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
 //    - searchEntry: new SearchEntry.
 //
 func NewSearchEntry() *SearchEntry {
-	_info := girepository.MustFind("Gtk", "SearchEntry")
-	_gret := _info.InvokeClassMethod("new_SearchEntry", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_entry_new()
 
 	var _searchEntry *SearchEntry // out
 
-	_searchEntry = wrapSearchEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_searchEntry = wrapSearchEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
@@ -325,21 +321,20 @@ func NewSearchEntry() *SearchEntry {
 //      or continuing, GDK_EVENT_PROPAGATE otherwise.
 //
 func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSearchEntry // out
+	var _arg1 *C.GdkEvent       // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_info := girepository.MustFind("Gtk", "SearchEntry")
-	_gret := _info.InvokeClassMethod("handle_event", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

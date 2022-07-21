@@ -7,13 +7,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDevicePadFeature() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DevicePadFeature").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_device_pad_feature_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDevicePadFeature)
 	return gtype
 }
@@ -34,7 +32,7 @@ func GTypeDevicePadFeature() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDevicePad() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DevicePad").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_device_pad_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDevicePad)
 	return gtype
 }
@@ -69,6 +67,10 @@ func (d DevicePadFeature) String() string {
 	}
 }
 
+// DevicePadOverrider contains methods that are overridable.
+type DevicePadOverrider interface {
+}
+
 // DevicePad is an interface implemented by devices of type
 // GDK_SOURCE_TABLET_PAD, it allows querying the features provided by the pad
 // device.
@@ -101,13 +103,21 @@ var (
 type DevicePadder interface {
 	coreglib.Objector
 
+	// FeatureGroup returns the group the given feature and idx belong to, or -1
+	// if feature/index do not exist in pad.
+	FeatureGroup(feature DevicePadFeature, featureIdx int32) int32
 	// GroupNModes returns the number of modes that group may have.
 	GroupNModes(groupIdx int32) int32
+	// NFeatures returns the number of features a tablet pad has.
+	NFeatures(feature DevicePadFeature) int32
 	// NGroups returns the number of groups this pad device has.
 	NGroups() int32
 }
 
 var _ DevicePadder = (*DevicePad)(nil)
+
+func ifaceInitDevicePadder(gifacePtr, data C.gpointer) {
+}
 
 func wrapDevicePad(obj *coreglib.Object) *DevicePad {
 	return &DevicePad{
@@ -121,6 +131,40 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 	return wrapDevicePad(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// FeatureGroup returns the group the given feature and idx belong to, or -1 if
+// feature/index do not exist in pad.
+//
+// The function takes the following parameters:
+//
+//    - feature type to get the group from.
+//    - featureIdx: index of the feature to get the group from.
+//
+// The function returns the following values:
+//
+//    - gint: group number of the queried pad feature.
+//
+func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int32) int32 {
+	var _arg0 *C.GdkDevicePad       // out
+	var _arg1 C.GdkDevicePadFeature // out
+	var _arg2 C.gint                // out
+	var _cret C.gint                // in
+
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	_arg1 = C.GdkDevicePadFeature(feature)
+	_arg2 = C.gint(featureIdx)
+
+	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(pad)
+	runtime.KeepAlive(feature)
+	runtime.KeepAlive(featureIdx)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
 // GroupNModes returns the number of modes that group may have.
 //
 // The function takes the following parameters:
@@ -132,21 +176,49 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 //    - gint: number of modes available in group.
 //
 func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDevicePad // out
+	var _arg1 C.gint          // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(groupIdx)
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	_arg1 = C.gint(groupIdx)
 
-	_info := girepository.MustFind("Gdk", "DevicePad")
-	_gret := _info.InvokeIfaceMethod("get_group_n_modes", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
 	runtime.KeepAlive(pad)
 	runtime.KeepAlive(groupIdx)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// NFeatures returns the number of features a tablet pad has.
+//
+// The function takes the following parameters:
+//
+//    - feature: pad feature.
+//
+// The function returns the following values:
+//
+//    - gint: amount of elements of type feature that this pad has.
+//
+func (pad *DevicePad) NFeatures(feature DevicePadFeature) int32 {
+	var _arg0 *C.GdkDevicePad       // out
+	var _arg1 C.GdkDevicePadFeature // out
+	var _cret C.gint                // in
+
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	_arg1 = C.GdkDevicePadFeature(feature)
+
+	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
+	runtime.KeepAlive(pad)
+	runtime.KeepAlive(feature)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -160,19 +232,17 @@ func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 //    - gint: number of button/ring/strip groups in the pad.
 //
 func (pad *DevicePad) NGroups() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDevicePad // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 
-	_info := girepository.MustFind("Gdk", "DevicePad")
-	_gret := _info.InvokeIfaceMethod("get_n_groups", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 	runtime.KeepAlive(pad)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }

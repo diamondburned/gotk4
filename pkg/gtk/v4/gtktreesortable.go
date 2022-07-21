@@ -8,18 +8,17 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_TreeSortableIface_get_sort_column_id(void*, int*, void*);
-// extern gboolean _gotk4_gtk4_TreeSortableIface_has_default_sort_func(void*);
-// extern int _gotk4_gtk4_TreeIterCompareFunc(void*, void*, void*, gpointer);
-// extern void _gotk4_gtk4_TreeSortableIface_sort_column_changed(void*);
+// #include <gtk/gtk.h>
+// extern gboolean _gotk4_gtk4_TreeSortableIface_get_sort_column_id(GtkTreeSortable*, int*, GtkSortType*);
+// extern gboolean _gotk4_gtk4_TreeSortableIface_has_default_sort_func(GtkTreeSortable*);
+// extern int _gotk4_gtk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk4_TreeSortableIface_set_sort_column_id(GtkTreeSortable*, int, GtkSortType);
+// extern void _gotk4_gtk4_TreeSortableIface_sort_column_changed(GtkTreeSortable*);
 // extern void _gotk4_gtk4_TreeSortable_ConnectSortColumnChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
@@ -30,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTreeSortable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeSortable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tree_sortable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTreeSortable)
 	return gtype
 }
@@ -59,7 +58,7 @@ const TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
 type TreeIterCompareFunc func(model TreeModeller, a, b *TreeIter) (gint int32)
 
 //export _gotk4_gtk4_TreeIterCompareFunc
-func _gotk4_gtk4_TreeIterCompareFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) (cret C.int) {
+func _gotk4_gtk4_TreeIterCompareFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GtkTreeIter, arg4 C.gpointer) (cret C.int) {
 	var fn TreeIterCompareFunc
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -127,6 +126,8 @@ type TreeSortabler interface {
 	// SetDefaultSortFunc sets the default comparison function used when sorting
 	// to be sort_func.
 	SetDefaultSortFunc(sortFunc TreeIterCompareFunc)
+	// SetSortColumnID sets the current sort column to be sort_column_id.
+	SetSortColumnID(sortColumnId int32, order SortType)
 	// SetSortFunc sets the comparison function used when sorting to be
 	// sort_func.
 	SetSortFunc(sortColumnId int32, sortFunc TreeIterCompareFunc)
@@ -188,24 +189,23 @@ func (sortable *TreeSortable) ConnectSortColumnChanged(f func()) coreglib.Signal
 //    - ok: TRUE if the sort column is not one of the special sort column ids.
 //
 func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkTreeSortable // out
+	var _arg1 C.int              // in
+	var _arg2 C.GtkSortType      // in
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeSortable")
-	_gret := _info.InvokeIfaceMethod("get_sort_column_id", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(sortable)
 
 	var _sortColumnId int32 // out
 	var _order SortType     // out
 	var _ok bool            // out
 
-	_sortColumnId = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_order = *(*SortType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_sortColumnId = int32(_arg1)
+	_order = SortType(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -221,19 +221,17 @@ func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
 //    - ok: TRUE, if the model has a default sort function.
 //
 func (sortable *TreeSortable) HasDefaultSortFunc() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeSortable // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeSortable")
-	_gret := _info.InvokeIfaceMethod("has_default_sort_func", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
 	runtime.KeepAlive(sortable)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -255,18 +253,49 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 //    - sortFunc: comparison function.
 //
 func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkTreeSortable       // out
+	var _arg1 C.GtkTreeIterCompareFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
-	_args[2] = C.gpointer(gbox.Assign(sortFunc))
-	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
+	_arg2 = C.gpointer(gbox.Assign(sortFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("Gtk", "TreeSortable")
-	_info.InvokeIfaceMethod("set_default_sort_func", _args[:], nil)
-
+	C.gtk_tree_sortable_set_default_sort_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(sortable)
 	runtime.KeepAlive(sortFunc)
+}
+
+// SetSortColumnID sets the current sort column to be sort_column_id. The
+// sortable will resort itself to reflect this change, after emitting a
+// TreeSortable::sort-column-changed signal. sort_column_id may either be a
+// regular column id, or one of the following special values:
+//
+// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function will be
+// used, if it is set
+//
+// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur.
+//
+// The function takes the following parameters:
+//
+//    - sortColumnId: sort column id to set.
+//    - order: sort order of the column.
+//
+func (sortable *TreeSortable) SetSortColumnID(sortColumnId int32, order SortType) {
+	var _arg0 *C.GtkTreeSortable // out
+	var _arg1 C.int              // out
+	var _arg2 C.GtkSortType      // out
+
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	_arg1 = C.int(sortColumnId)
+	_arg2 = C.GtkSortType(order)
+
+	C.gtk_tree_sortable_set_sort_column_id(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(sortable)
+	runtime.KeepAlive(sortColumnId)
+	runtime.KeepAlive(order)
 }
 
 // SetSortFunc sets the comparison function used when sorting to be sort_func.
@@ -279,17 +308,19 @@ func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 //    - sortFunc: comparison function.
 //
 func (sortable *TreeSortable) SetSortFunc(sortColumnId int32, sortFunc TreeIterCompareFunc) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkTreeSortable       // out
+	var _arg1 C.int                    // out
+	var _arg2 C.GtkTreeIterCompareFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(sortColumnId)
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
-	_args[3] = C.gpointer(gbox.Assign(sortFunc))
-	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	_arg1 = C.int(sortColumnId)
+	_arg2 = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
+	_arg3 = C.gpointer(gbox.Assign(sortFunc))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("Gtk", "TreeSortable")
-	_info.InvokeIfaceMethod("set_sort_func", _args[:], nil)
-
+	C.gtk_tree_sortable_set_sort_func(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(sortable)
 	runtime.KeepAlive(sortColumnId)
 	runtime.KeepAlive(sortFunc)
@@ -298,12 +329,10 @@ func (sortable *TreeSortable) SetSortFunc(sortColumnId int32, sortFunc TreeIterC
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 // sortable.
 func (sortable *TreeSortable) SortColumnChanged() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeSortable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeSortable")
-	_info.InvokeIfaceMethod("sort_column_changed", _args[:], nil)
-
+	C.gtk_tree_sortable_sort_column_changed(_arg0)
 	runtime.KeepAlive(sortable)
 }

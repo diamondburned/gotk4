@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGObjectAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "GObjectAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.atk_gobject_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGObjectAccessible)
 	return gtype
 }
@@ -71,19 +69,17 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 //    - object which is the object for which obj is the accessible object.
 //
 func (obj *GObjectAccessible) Object() *coreglib.Object {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkGObjectAccessible // out
+	var _cret *C.GObject              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "GObjectAccessible")
-	_gret := _info.InvokeClassMethod("get_object", _args[:], nil)
-	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_gobject_accessible_get_object(_arg0)
 	runtime.KeepAlive(obj)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+	_object = coreglib.Take(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -99,19 +95,17 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 //    - object which is the accessible object for the obj.
 //
 func GObjectAccessibleForObject(obj *coreglib.Object) *ObjectClass {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GObject   // out
+	var _cret *C.AtkObject // in
 
-	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
-	_info := girepository.MustFind("Atk", "for_object")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_gobject_accessible_for_object(_arg1)
 	runtime.KeepAlive(obj)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }

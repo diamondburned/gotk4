@@ -7,17 +7,15 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeImageType returns the GType for the type ImageType.
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeImageType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ImageType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_image_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalImageType)
 	return gtype
 }
@@ -37,7 +35,7 @@ func GTypeImageType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeImage() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Image").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_image_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalImage)
 	return gtype
 }
@@ -162,13 +160,13 @@ func marshalImage(p uintptr) (interface{}, error) {
 //    - image: newly created GtkImage widget.
 //
 func NewImage() *Image {
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_image_new()
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -194,20 +192,18 @@ func NewImage() *Image {
 //    - image: new GtkImage.
 //
 func NewImageFromFile(filename string) *Image {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image_from_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_new_from_file(_arg1)
 	runtime.KeepAlive(filename)
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -228,19 +224,17 @@ func NewImageFromFile(filename string) *Image {
 //    - image: new GtkImage displaying the themed icon.
 //
 func NewImageFromGIcon(icon gio.Iconner) *Image {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GIcon     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image_from_gicon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_new_from_gicon(_arg1)
 	runtime.KeepAlive(icon)
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -261,22 +255,20 @@ func NewImageFromGIcon(icon gio.Iconner) *Image {
 //    - image: new GtkImage displaying the themed icon.
 //
 func NewImageFromIconName(iconName string) *Image {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
 	if iconName != "" {
-		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image_from_icon_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_new_from_icon_name(_arg1)
 	runtime.KeepAlive(iconName)
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -299,21 +291,19 @@ func NewImageFromIconName(iconName string) *Image {
 //    - image: new GtkImage.
 //
 func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkPaintable // out
+	var _cret *C.GtkWidget    // in
 
 	if paintable != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image_from_paintable", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_new_from_paintable(_arg1)
 	runtime.KeepAlive(paintable)
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -340,21 +330,19 @@ func NewImageFromPaintable(paintable gdk.Paintabler) *Image {
 //    - image: new GtkImage.
 //
 func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkPixbuf // out
+	var _cret *C.GtkWidget // in
 
 	if pixbuf != nil {
-		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image_from_pixbuf", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_new_from_pixbuf(_arg1)
 	runtime.KeepAlive(pixbuf)
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
@@ -382,33 +370,29 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 //    - image: new GtkImage.
 //
 func NewImageFromResource(resourcePath string) *Image {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("new_Image_from_resource", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_new_from_resource(_arg1)
 	runtime.KeepAlive(resourcePath)
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _image
 }
 
 // Clear resets the image to be empty.
 func (image *Image) Clear() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkImage // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("clear", _args[:], nil)
-
+	C.gtk_image_clear(_arg0)
 	runtime.KeepAlive(image)
 }
 
@@ -423,21 +407,19 @@ func (image *Image) Clear() {
 //    - icon (optional): GIcon, or NULL.
 //
 func (image *Image) GIcon() *gio.Icon {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _cret *C.GIcon    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("get_gicon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_get_gicon(_arg0)
 	runtime.KeepAlive(image)
 
 	var _icon *gio.Icon // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_icon = &gio.Icon{
 				Object: obj,
 			}
@@ -458,23 +440,43 @@ func (image *Image) GIcon() *gio.Icon {
 //    - utf8 (optional): icon name, or NULL.
 //
 func (image *Image) IconName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _cret *C.char     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_get_icon_name(_arg0)
 	runtime.KeepAlive(image)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
+}
+
+// IconSize gets the icon size used by the image when rendering icons.
+//
+// The function returns the following values:
+//
+//    - iconSize: image size used by icons.
+//
+func (image *Image) IconSize() IconSize {
+	var _arg0 *C.GtkImage   // out
+	var _cret C.GtkIconSize // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C.gtk_image_get_icon_size(_arg0)
+	runtime.KeepAlive(image)
+
+	var _iconSize IconSize // out
+
+	_iconSize = IconSize(_cret)
+
+	return _iconSize
 }
 
 // Paintable gets the image GdkPaintable being displayed by the GtkImage.
@@ -488,21 +490,19 @@ func (image *Image) IconName() string {
 //    - paintable (optional): displayed paintable, or NULL if the image is empty.
 //
 func (image *Image) Paintable() *gdk.Paintable {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkImage     // out
+	var _cret *C.GdkPaintable // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("get_paintable", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_get_paintable(_arg0)
 	runtime.KeepAlive(image)
 
 	var _paintable *gdk.Paintable // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_paintable = &gdk.Paintable{
 				Object: obj,
 			}
@@ -519,21 +519,44 @@ func (image *Image) Paintable() *gdk.Paintable {
 //    - gint: pixel size used for named icons.
 //
 func (image *Image) PixelSize() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_gret := _info.InvokeClassMethod("get_pixel_size", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_image_get_pixel_size(_arg0)
 	runtime.KeepAlive(image)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// StorageType gets the type of representation being used by the GtkImage to
+// store image data.
+//
+// If the GtkImage has no image data, the return value will be GTK_IMAGE_EMPTY.
+//
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
+func (image *Image) StorageType() ImageType {
+	var _arg0 *C.GtkImage    // out
+	var _cret C.GtkImageType // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C.gtk_image_get_storage_type(_arg0)
+	runtime.KeepAlive(image)
+
+	var _imageType ImageType // out
+
+	_imageType = ImageType(_cret)
+
+	return _imageType
 }
 
 // SetFromFile sets a GtkImage to show a file.
@@ -545,17 +568,16 @@ func (image *Image) PixelSize() int32 {
 //    - filename (optional) or NULL.
 //
 func (image *Image) SetFromFile(filename string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.char     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if filename != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_from_file", _args[:], nil)
-
+	C.gtk_image_set_from_file(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(filename)
 }
@@ -569,14 +591,13 @@ func (image *Image) SetFromFile(filename string) {
 //    - icon: icon.
 //
 func (image *Image) SetFromGIcon(icon gio.Iconner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.GIcon    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_from_gicon", _args[:], nil)
-
+	C.gtk_image_set_from_gicon(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(icon)
 }
@@ -590,17 +611,16 @@ func (image *Image) SetFromGIcon(icon gio.Iconner) {
 //    - iconName (optional): icon name or NULL.
 //
 func (image *Image) SetFromIconName(iconName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.char     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if iconName != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_from_icon_name", _args[:], nil)
-
+	C.gtk_image_set_from_icon_name(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(iconName)
 }
@@ -614,16 +634,15 @@ func (image *Image) SetFromIconName(iconName string) {
 //    - paintable (optional): GdkPaintable or NULL.
 //
 func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage     // out
+	var _arg1 *C.GdkPaintable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if paintable != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_from_paintable", _args[:], nil)
-
+	C.gtk_image_set_from_paintable(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(paintable)
 }
@@ -640,16 +659,15 @@ func (image *Image) SetFromPaintable(paintable gdk.Paintabler) {
 //    - pixbuf (optional): GdkPixbuf or NULL.
 //
 func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage  // out
+	var _arg1 *C.GdkPixbuf // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if pixbuf != nil {
-		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_from_pixbuf", _args[:], nil)
-
+	C.gtk_image_set_from_pixbuf(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(pixbuf)
 }
@@ -663,19 +681,36 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //    - resourcePath (optional): resource path or NULL.
 //
 func (image *Image) SetFromResource(resourcePath string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.char     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if resourcePath != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_from_resource", _args[:], nil)
-
+	C.gtk_image_set_from_resource(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(resourcePath)
+}
+
+// SetIconSize suggests an icon size to the theme for named icons.
+//
+// The function takes the following parameters:
+//
+//    - iconSize: new icon size.
+//
+func (image *Image) SetIconSize(iconSize IconSize) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = C.GtkIconSize(iconSize)
+
+	C.gtk_image_set_icon_size(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(iconSize)
 }
 
 // SetPixelSize sets the pixel size to use for named icons.
@@ -688,14 +723,13 @@ func (image *Image) SetFromResource(resourcePath string) {
 //    - pixelSize: new pixel size.
 //
 func (image *Image) SetPixelSize(pixelSize int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkImage // out
+	var _arg1 C.int       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pixelSize)
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = C.int(pixelSize)
 
-	_info := girepository.MustFind("Gtk", "Image")
-	_info.InvokeClassMethod("set_pixel_size", _args[:], nil)
-
+	C.gtk_image_set_pixel_size(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(pixelSize)
 }

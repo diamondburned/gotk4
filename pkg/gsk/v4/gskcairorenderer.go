@@ -5,14 +5,12 @@ package gsk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gsk/gsk.h>
 import "C"
 
 // GTypeCairoRenderer returns the GType for the type CairoRenderer.
@@ -21,9 +19,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCairoRenderer() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gsk", "CairoRenderer").RegisteredGType())
+	gtype := coreglib.Type(C.gsk_cairo_renderer_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCairoRenderer)
 	return gtype
+}
+
+// CairoRendererOverrider contains methods that are overridable.
+type CairoRendererOverrider interface {
 }
 
 // CairoRenderer: GSK renderer that is using cairo.
@@ -37,6 +39,14 @@ type CairoRenderer struct {
 var (
 	_ Rendererer = (*CairoRenderer)(nil)
 )
+
+func classInitCairoRendererer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapCairoRenderer(obj *coreglib.Object) *CairoRenderer {
 	return &CairoRenderer{
@@ -63,13 +73,13 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 //    - cairoRenderer: new Cairo renderer.
 //
 func NewCairoRenderer() *CairoRenderer {
-	_info := girepository.MustFind("Gsk", "CairoRenderer")
-	_gret := _info.InvokeClassMethod("new_CairoRenderer", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GskRenderer // in
+
+	_cret = C.gsk_cairo_renderer_new()
 
 	var _cairoRenderer *CairoRenderer // out
 
-	_cairoRenderer = wrapCairoRenderer(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cairoRenderer = wrapCairoRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cairoRenderer
 }

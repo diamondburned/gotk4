@@ -9,15 +9,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_InitableIface_init(void*, void*, GError**);
+// extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
 import "C"
 
 // GTypeInitable returns the GType for the type Initable.
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeInitable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Initable").RegisteredGType())
+	gtype := coreglib.Type(C.g_initable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalInitable)
 	return gtype
 }
@@ -124,12 +122,12 @@ type Initabler interface {
 var _ Initabler = (*Initable)(nil)
 
 func ifaceInitInitabler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gio", "InitableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("init"))) = unsafe.Pointer(C._gotk4_gio2_InitableIface_init)
+	iface := (*C.GInitableIface)(unsafe.Pointer(gifacePtr))
+	iface.init = (*[0]byte)(C._gotk4_gio2_InitableIface_init)
 }
 
 //export _gotk4_gio2_InitableIface_init
-func _gotk4_gio2_InitableIface_init(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_InitableIface_init(arg0 *C.GInitable, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(InitableOverrider)
 
@@ -201,25 +199,25 @@ func marshalInitable(p uintptr) (interface{}, error) {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (initable *Initable) Init(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GInitable    // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	_arg0 = (*C.GInitable)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "Initable")
-	_info.InvokeIfaceMethod("init", _args[:], nil)
-
+	C.g_initable_init(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

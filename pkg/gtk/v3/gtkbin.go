@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeBin returns the GType for the type Bin.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBin() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Bin").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_bin_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBin)
 	return gtype
 }
@@ -107,21 +107,19 @@ func BaseBin(obj Binner) *Bin {
 //    - widget (optional): child of bin, or NULL if it does not have a child.
 //
 func (bin *Bin) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBin    // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bin).Native()))
+	_arg0 = (*C.GtkBin)(unsafe.Pointer(coreglib.InternObject(bin).Native()))
 
-	_info := girepository.MustFind("Gtk", "Bin")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bin_get_child(_arg0)
 	runtime.KeepAlive(bin)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

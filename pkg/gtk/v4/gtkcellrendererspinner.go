@@ -5,14 +5,12 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeCellRendererSpinner returns the GType for the type CellRendererSpinner.
@@ -21,7 +19,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellRendererSpinner() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererSpinner").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_renderer_spinner_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererSpinner)
 	return gtype
 }
@@ -68,13 +66,13 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 //    - cellRendererSpinner: new CellRenderer.
 //
 func NewCellRendererSpinner() *CellRendererSpinner {
-	_info := girepository.MustFind("Gtk", "CellRendererSpinner")
-	_gret := _info.InvokeClassMethod("new_CellRendererSpinner", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_spinner_new()
 
 	var _cellRendererSpinner *CellRendererSpinner // out
 
-	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpinner
 }

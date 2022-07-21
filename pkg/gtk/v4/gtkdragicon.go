@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeDragIcon returns the GType for the type DragIcon.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDragIcon() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DragIcon").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_drag_icon_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDragIcon)
 	return gtype
 }
@@ -115,21 +113,19 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 //    - widget (optional): drag icon or NULL if none.
 //
 func (self *DragIcon) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDragIcon // out
+	var _cret *C.GtkWidget   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DragIcon")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_icon_get_child(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -154,16 +150,15 @@ func (self *DragIcon) Child() Widgetter {
 //    - child (optional): GtkWidget or NULL.
 //
 func (self *DragIcon) SetChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDragIcon // out
+	var _arg1 *C.GtkWidget   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "DragIcon")
-	_info.InvokeClassMethod("set_child", _args[:], nil)
-
+	C.gtk_drag_icon_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }
@@ -187,21 +182,19 @@ func (self *DragIcon) SetChild(child Widgetter) {
 //    - widget (optional): new GtkWidget for displaying value as a drag icon.
 //
 func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GValue    // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.GValue)(unsafe.Pointer(&_args[0])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gtk", "create_widget_for_value")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_icon_create_widget_for_value(_arg1)
 	runtime.KeepAlive(value)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -232,20 +225,18 @@ func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 //    - widget: GtkDragIcon.
 //
 func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkDrag   // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_info := girepository.MustFind("Gtk", "get_for_drag")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
 	runtime.KeepAlive(drag)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -279,16 +270,17 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 //    - hotY: y coordinate of the hotspot.
 //
 func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, hotY int32) {
-	var _args [4]girepository.Argument
+	var _arg1 *C.GdkDrag      // out
+	var _arg2 *C.GdkPaintable // out
+	var _arg3 C.int           // out
+	var _arg4 C.int           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotX)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hotY)
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	_arg3 = C.int(hotX)
+	_arg4 = C.int(hotY)
 
-	_info := girepository.MustFind("Gtk", "set_from_paintable")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_drag_icon_set_from_paintable(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(drag)
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(hotX)

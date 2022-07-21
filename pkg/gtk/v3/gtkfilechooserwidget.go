@@ -3,17 +3,18 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_FileChooserWidget_ConnectDesktopFolder(gpointer, guintptr);
 // extern void _gotk4_gtk3_FileChooserWidget_ConnectDownFolder(gpointer, guintptr);
 // extern void _gotk4_gtk3_FileChooserWidget_ConnectHomeFolder(gpointer, guintptr);
@@ -34,7 +35,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserWidget").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_file_chooser_widget_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserWidget)
 	return gtype
 }
@@ -442,4 +443,32 @@ func _gotk4_gtk3_FileChooserWidget_ConnectUpFolder(arg0 C.gpointer, arg1 C.guint
 // The default binding for this signal is Alt + Up.
 func (v *FileChooserWidget) ConnectUpFolder(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "up-folder", false, unsafe.Pointer(C._gotk4_gtk3_FileChooserWidget_ConnectUpFolder), f)
+}
+
+// NewFileChooserWidget creates a new FileChooserWidget. This is a file chooser
+// widget that can be embedded in custom windows, and it is the same widget that
+// is used by FileChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - action: open or save mode for the widget.
+//
+// The function returns the following values:
+//
+//    - fileChooserWidget: new FileChooserWidget.
+//
+func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
+	var _arg1 C.GtkFileChooserAction // out
+	var _cret *C.GtkWidget           // in
+
+	_arg1 = C.GtkFileChooserAction(action)
+
+	_cret = C.gtk_file_chooser_widget_new(_arg1)
+	runtime.KeepAlive(action)
+
+	var _fileChooserWidget *FileChooserWidget // out
+
+	_fileChooserWidget = wrapFileChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _fileChooserWidget
 }

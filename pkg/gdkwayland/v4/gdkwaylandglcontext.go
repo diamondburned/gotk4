@@ -5,14 +5,12 @@ package gdkwayland
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWaylandGLContext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandGLContext").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wayland_gl_context_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandGLContext)
 	return gtype
+}
+
+// WaylandGLContextOverrider contains methods that are overridable.
+type WaylandGLContextOverrider interface {
 }
 
 // WaylandGLContext: wayland implementation of GdkGLContext.
@@ -36,6 +38,14 @@ type WaylandGLContext struct {
 var (
 	_ gdk.GLContexter = (*WaylandGLContext)(nil)
 )
+
+func classInitWaylandGLContexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapWaylandGLContext(obj *coreglib.Object) *WaylandGLContext {
 	return &WaylandGLContext{

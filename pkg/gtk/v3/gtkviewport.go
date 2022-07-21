@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeViewport returns the GType for the type Viewport.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeViewport() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Viewport").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_viewport_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalViewport)
 	return gtype
 }
@@ -114,25 +114,24 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //    - viewport: new Viewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkAdjustment // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
 
 	if hadjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
 	if vadjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("new_Viewport", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_new(_arg1, _arg2)
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
 	var _viewport *Viewport // out
 
-	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -144,20 +143,18 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //    - window: Window.
 //
 func (viewport *Viewport) BinWindow() gdk.Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkViewport // out
+	var _cret *C.GdkWindow   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("get_bin_window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_get_bin_window(_arg0)
 	runtime.KeepAlive(viewport)
 
 	var _window gdk.Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -186,21 +183,42 @@ func (viewport *Viewport) BinWindow() gdk.Windower {
 //    - adjustment: horizontal adjustment of viewport.
 //
 func (viewport *Viewport) HAdjustment() *Adjustment {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkViewport   // out
+	var _cret *C.GtkAdjustment // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("get_hadjustment", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_get_hadjustment(_arg0)
 	runtime.KeepAlive(viewport)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
+}
+
+// ShadowType gets the shadow type of the Viewport. See
+// gtk_viewport_set_shadow_type().
+//
+// The function returns the following values:
+//
+//    - shadowType: shadow type.
+//
+func (viewport *Viewport) ShadowType() ShadowType {
+	var _arg0 *C.GtkViewport  // out
+	var _cret C.GtkShadowType // in
+
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+
+	_cret = C.gtk_viewport_get_shadow_type(_arg0)
+	runtime.KeepAlive(viewport)
+
+	var _shadowType ShadowType // out
+
+	_shadowType = ShadowType(_cret)
+
+	return _shadowType
 }
 
 // VAdjustment returns the vertical adjustment of the viewport.
@@ -212,19 +230,17 @@ func (viewport *Viewport) HAdjustment() *Adjustment {
 //    - adjustment: vertical adjustment of viewport.
 //
 func (viewport *Viewport) VAdjustment() *Adjustment {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkViewport   // out
+	var _cret *C.GtkAdjustment // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("get_vadjustment", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_get_vadjustment(_arg0)
 	runtime.KeepAlive(viewport)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -236,20 +252,18 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 //    - window: Window.
 //
 func (viewport *Viewport) ViewWindow() gdk.Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkViewport // out
+	var _cret *C.GdkWindow   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("get_view_window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_get_view_window(_arg0)
 	runtime.KeepAlive(viewport)
 
 	var _window gdk.Windower // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -278,18 +292,35 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 //    - adjustment (optional): Adjustment.
 //
 func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkViewport   // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if adjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_info.InvokeClassMethod("set_hadjustment", _args[:], nil)
-
+	C.gtk_viewport_set_hadjustment(_arg0, _arg1)
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(adjustment)
+}
+
+// SetShadowType sets the shadow type of the viewport.
+//
+// The function takes the following parameters:
+//
+//    - typ: new shadow type.
+//
+func (viewport *Viewport) SetShadowType(typ ShadowType) {
+	var _arg0 *C.GtkViewport  // out
+	var _arg1 C.GtkShadowType // out
+
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg1 = C.GtkShadowType(typ)
+
+	C.gtk_viewport_set_shadow_type(_arg0, _arg1)
+	runtime.KeepAlive(viewport)
+	runtime.KeepAlive(typ)
 }
 
 // SetVAdjustment sets the vertical adjustment of the viewport.
@@ -301,16 +332,15 @@ func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 //    - adjustment (optional): Adjustment.
 //
 func (viewport *Viewport) SetVAdjustment(adjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkViewport   // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if adjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_info.InvokeClassMethod("set_vadjustment", _args[:], nil)
-
+	C.gtk_viewport_set_vadjustment(_arg0, _arg1)
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(adjustment)
 }

@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSFileDatabase() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsFileDatabase").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_file_database_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSFileDatabase)
 	return gtype
 }
@@ -94,23 +92,22 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //    - tlsFileDatabase: new FileDatabase, or NULL on error.
 //
 func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar        // out
+	var _cret *C.GTlsDatabase // in
+	var _cerr *C.GError       // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(anchors)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(anchors)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "new")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_file_database_new(_arg1, &_cerr)
 	runtime.KeepAlive(anchors)
 
 	var _tlsFileDatabase *TLSFileDatabase // out
 	var _goerr error                      // out
 
-	_tlsFileDatabase = wrapTLSFileDatabase(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_tlsFileDatabase = wrapTLSFileDatabase(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _tlsFileDatabase, _goerr

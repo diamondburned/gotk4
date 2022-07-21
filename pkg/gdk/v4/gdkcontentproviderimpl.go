@@ -7,14 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -31,22 +29,21 @@ import "C"
 //    - contentProvider: new GdkContentProvider.
 //
 func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
-	var _args [2]girepository.Argument
+	var _arg1 *C.char               // out
+	var _arg2 *C.GBytes             // out
+	var _cret *C.GdkContentProvider // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
-	*(**C.GBytes)(unsafe.Pointer(&_args[1])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
-	_info := girepository.MustFind("Gdk", "ContentProvider")
-	_gret := _info.InvokeClassMethod("new_ContentProvider_for_bytes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_content_provider_new_for_bytes(_arg1, _arg2)
 	runtime.KeepAlive(mimeType)
 	runtime.KeepAlive(bytes)
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -63,19 +60,17 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 //    - contentProvider: new GdkContentProvider.
 //
 func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GValue             // out
+	var _cret *C.GdkContentProvider // in
 
-	*(**C.GValue)(unsafe.Pointer(&_args[0])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gdk", "ContentProvider")
-	_gret := _info.InvokeClassMethod("new_ContentProvider_for_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_content_provider_new_for_value(_arg1)
 	runtime.KeepAlive(value)
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }
@@ -105,29 +100,28 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 //    - contentProvider: new GdkContentProvider.
 //
 func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
-	var _args [2]girepository.Argument
+	var _arg1 **C.GdkContentProvider // out
+	var _arg2 C.gsize
+	var _cret *C.GdkContentProvider // in
 
 	if providers != nil {
-		*(*C.gsize)(unsafe.Pointer(&_args[1])) = (C.gsize)(len(providers))
-		*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t(len(providers)), C.size_t(unsafe.Sizeof(uint(0)))))
+		_arg2 = (C.gsize)(len(providers))
+		_arg1 = (**C.GdkContentProvider)(C.calloc(C.size_t(len(providers)), C.size_t(unsafe.Sizeof(uint(0)))))
 		{
-			out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[0]))), len(providers))
+			out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
 			for i := range providers {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(providers[i]).Native()))
+				out[i] = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(providers[i]).Native()))
 				C.g_object_ref(C.gpointer(coreglib.InternObject(providers[i]).Native()))
 			}
 		}
 	}
 
-	_info := girepository.MustFind("Gdk", "ContentProvider")
-	_gret := _info.InvokeClassMethod("new_ContentProvider_union", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
 	runtime.KeepAlive(providers)
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _contentProvider
 }

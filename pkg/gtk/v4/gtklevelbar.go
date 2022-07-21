@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_LevelBar_ConnectOffsetChanged(gpointer, gchar*, guintptr);
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLevelBar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "LevelBar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_level_bar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLevelBar)
 	return gtype
 }
@@ -216,13 +214,13 @@ func (self *LevelBar) ConnectOffsetChanged(f func(name string)) coreglib.SignalH
 //    - levelBar: GtkLevelBar.
 //
 func NewLevelBar() *LevelBar {
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("new_LevelBar", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_level_bar_new()
 
 	var _levelBar *LevelBar // out
 
-	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -239,21 +237,20 @@ func NewLevelBar() *LevelBar {
 //    - levelBar: GtkLevelBar.
 //
 func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
-	var _args [2]girepository.Argument
+	var _arg1 C.double     // out
+	var _arg2 C.double     // out
+	var _cret *C.GtkWidget // in
 
-	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(minValue)
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(maxValue)
+	_arg1 = C.double(minValue)
+	_arg2 = C.double(maxValue)
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("new_LevelBar_for_interval", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
 	runtime.KeepAlive(minValue)
 	runtime.KeepAlive(maxValue)
 
 	var _levelBar *LevelBar // out
 
-	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _levelBar
 }
@@ -274,16 +271,16 @@ func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 //    - value for the new offset.
 //
 func (self *LevelBar) AddOffsetValue(name string, value float64) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 *C.char        // out
+	var _arg2 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(value)
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.double(value)
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_info.InvokeClassMethod("add_offset_value", _args[:], nil)
-
+	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)
@@ -296,19 +293,17 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 //    - ok: TRUE if the level bar is inverted.
 //
 func (self *LevelBar) Inverted() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("get_inverted", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_level_bar_get_inverted(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -322,19 +317,17 @@ func (self *LevelBar) Inverted() bool {
 //    - gdouble: positive value.
 //
 func (self *LevelBar) MaxValue() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _cret C.double       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("get_max_value", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_level_bar_get_max_value(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -346,21 +339,41 @@ func (self *LevelBar) MaxValue() float64 {
 //    - gdouble: positive value.
 //
 func (self *LevelBar) MinValue() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _cret C.double       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("get_min_value", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_level_bar_get_min_value(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
+}
+
+// Mode returns the mode of the GtkLevelBar.
+//
+// The function returns the following values:
+//
+//    - levelBarMode: GtkLevelBarMode.
+//
+func (self *LevelBar) Mode() LevelBarMode {
+	var _arg0 *C.GtkLevelBar    // out
+	var _cret C.GtkLevelBarMode // in
+
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_level_bar_get_mode(_arg0)
+	runtime.KeepAlive(self)
+
+	var _levelBarMode LevelBarMode // out
+
+	_levelBarMode = LevelBarMode(_cret)
+
+	return _levelBarMode
 }
 
 // OffsetValue fetches the value specified for the offset marker name in self.
@@ -375,27 +388,26 @@ func (self *LevelBar) MinValue() float64 {
 //    - ok: TRUE if the specified offset is found.
 //
 func (self *LevelBar) OffsetValue(name string) (float64, bool) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 *C.char        // out
+	var _arg2 C.double       // in
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("get_offset_value", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
 
 	var _value float64 // out
 	var _ok bool       // out
 
-	_value = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_value = float64(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -410,19 +422,17 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 //      GtkLevelBar:max-value.
 //
 func (self *LevelBar) Value() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _cret C.double       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_level_bar_get_value(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -437,17 +447,16 @@ func (self *LevelBar) Value() float64 {
 //    - name (optional) of an offset in the bar.
 //
 func (self *LevelBar) RemoveOffsetValue(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 *C.char        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_info.InvokeClassMethod("remove_offset_value", _args[:], nil)
-
+	C.gtk_level_bar_remove_offset_value(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
 }
@@ -459,16 +468,15 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 //    - inverted: TRUE to invert the level bar.
 //
 func (self *LevelBar) SetInverted(inverted bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if inverted {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_info.InvokeClassMethod("set_inverted", _args[:], nil)
-
+	C.gtk_level_bar_set_inverted(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(inverted)
 }
@@ -483,14 +491,13 @@ func (self *LevelBar) SetInverted(inverted bool) {
 //    - value: positive value.
 //
 func (self *LevelBar) SetMaxValue(value float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(value)
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(value)
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_info.InvokeClassMethod("set_max_value", _args[:], nil)
-
+	C.gtk_level_bar_set_max_value(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 }
@@ -505,16 +512,33 @@ func (self *LevelBar) SetMaxValue(value float64) {
 //    - value: positive value.
 //
 func (self *LevelBar) SetMinValue(value float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(value)
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(value)
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_info.InvokeClassMethod("set_min_value", _args[:], nil)
-
+	C.gtk_level_bar_set_min_value(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
+}
+
+// SetMode sets the mode of the GtkLevelBar.
+//
+// The function takes the following parameters:
+//
+//    - mode: GtkLevelBarMode.
+//
+func (self *LevelBar) SetMode(mode LevelBarMode) {
+	var _arg0 *C.GtkLevelBar    // out
+	var _arg1 C.GtkLevelBarMode // out
+
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkLevelBarMode(mode)
+
+	C.gtk_level_bar_set_mode(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(mode)
 }
 
 // SetValue sets the value of the GtkLevelBar.
@@ -525,14 +549,13 @@ func (self *LevelBar) SetMinValue(value float64) {
 //      gtk.LevelBar:max-value.
 //
 func (self *LevelBar) SetValue(value float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkLevelBar // out
+	var _arg1 C.double       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(value)
+	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.double(value)
 
-	_info := girepository.MustFind("Gtk", "LevelBar")
-	_info.InvokeClassMethod("set_value", _args[:], nil)
-
+	C.gtk_level_bar_set_value(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
 }

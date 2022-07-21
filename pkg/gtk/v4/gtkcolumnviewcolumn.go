@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeColumnViewColumn returns the GType for the type ColumnViewColumn.
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColumnViewColumn() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColumnViewColumn").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_column_view_column_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColumnViewColumn)
 	return gtype
+}
+
+// ColumnViewColumnOverrider contains methods that are overridable.
+type ColumnViewColumnOverrider interface {
 }
 
 // ColumnViewColumn: GtkColumnViewColumn represents the columns being added to
@@ -49,6 +51,14 @@ type ColumnViewColumn struct {
 var (
 	_ coreglib.Objector = (*ColumnViewColumn)(nil)
 )
+
+func classInitColumnViewColumner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapColumnViewColumn(obj *coreglib.Object) *ColumnViewColumn {
 	return &ColumnViewColumn{
@@ -80,27 +90,26 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 //    - columnViewColumn: new GtkColumnViewColumn using the given factory.
 //
 func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColumn {
-	var _args [2]girepository.Argument
+	var _arg1 *C.char                // out
+	var _arg2 *C.GtkListItemFactory  // out
+	var _cret *C.GtkColumnViewColumn // in
 
 	if title != "" {
-		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 	if factory != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(factory).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("new_ColumnViewColumn", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_new(_arg1, _arg2)
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(factory)
 
 	var _columnViewColumn *ColumnViewColumn // out
 
-	_columnViewColumn = wrapColumnViewColumn(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_columnViewColumn = wrapColumnViewColumn(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _columnViewColumn
 }
@@ -114,20 +123,18 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 //    - columnView (optional): column view displaying self.
 //
 func (self *ColumnViewColumn) ColumnView() *ColumnView {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GtkColumnView       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_column_view", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_column_view(_arg0)
 	runtime.KeepAlive(self)
 
 	var _columnView *ColumnView // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _columnView
@@ -140,19 +147,17 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 //    - ok: TRUE if this column expands.
 //
 func (self *ColumnViewColumn) Expand() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.gboolean             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_expand", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_expand(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -167,20 +172,18 @@ func (self *ColumnViewColumn) Expand() bool {
 //    - listItemFactory (optional): factory in use.
 //
 func (self *ColumnViewColumn) Factory() *ListItemFactory {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GtkListItemFactory  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_factory", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_factory(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _listItemFactory
@@ -193,19 +196,17 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 //    - gint: fixed with of the column.
 //
 func (self *ColumnViewColumn) FixedWidth() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.int                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_fixed_width", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_fixed_width(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -218,21 +219,19 @@ func (self *ColumnViewColumn) FixedWidth() int32 {
 //    - menuModel (optional) or NULL.
 //
 func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GMenuModel          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_header_menu", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_header_menu(_arg0)
 	runtime.KeepAlive(self)
 
 	var _menuModel gio.MenuModeller // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -257,19 +256,17 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 //    - ok: TRUE if this column is resizable.
 //
 func (self *ColumnViewColumn) Resizable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.gboolean             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_resizable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_resizable(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -283,20 +280,18 @@ func (self *ColumnViewColumn) Resizable() bool {
 //    - sorter (optional): GtkSorter of self.
 //
 func (self *ColumnViewColumn) Sorter() *Sorter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.GtkSorter           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_sorter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_sorter(_arg0)
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _sorter
@@ -309,20 +304,18 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 //    - utf8 (optional) column's title.
 //
 func (self *ColumnViewColumn) Title() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret *C.char                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_title(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -335,19 +328,17 @@ func (self *ColumnViewColumn) Title() string {
 //    - ok: TRUE if this column is visible.
 //
 func (self *ColumnViewColumn) Visible() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _cret C.gboolean             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_column_get_visible(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -364,16 +355,15 @@ func (self *ColumnViewColumn) Visible() bool {
 //    - expand: TRUE if this column should expand to fill available sace.
 //
 func (self *ColumnViewColumn) SetExpand(expand bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 C.gboolean             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expand {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_expand", _args[:], nil)
-
+	C.gtk_column_view_column_set_expand(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expand)
 }
@@ -386,16 +376,15 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 //    - factory (optional) to use or NULL for none.
 //
 func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 *C.GtkListItemFactory  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if factory != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_factory", _args[:], nil)
-
+	C.gtk_column_view_column_set_factory(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(factory)
 }
@@ -411,14 +400,13 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 //    - fixedWidth: new fixed width, or -1.
 //
 func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 C.int                  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(fixedWidth)
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(fixedWidth)
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_fixed_width", _args[:], nil)
-
+	C.gtk_column_view_column_set_fixed_width(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(fixedWidth)
 }
@@ -431,16 +419,15 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int32) {
 //    - menu (optional): GMenuModel, or NULL.
 //
 func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 *C.GMenuModel          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if menu != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_header_menu", _args[:], nil)
-
+	C.gtk_column_view_column_set_header_menu(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(menu)
 }
@@ -452,16 +439,15 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 //    - resizable: whether this column should be resizable.
 //
 func (self *ColumnViewColumn) SetResizable(resizable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 C.gboolean             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if resizable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_resizable", _args[:], nil)
-
+	C.gtk_column_view_column_set_resizable(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resizable)
 }
@@ -482,16 +468,15 @@ func (self *ColumnViewColumn) SetResizable(resizable bool) {
 //    - sorter (optional): GtkSorter to associate with column.
 //
 func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 *C.GtkSorter           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sorter != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_sorter", _args[:], nil)
-
+	C.gtk_column_view_column_set_sorter(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
 }
@@ -506,17 +491,16 @@ func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 //    - title (optional): title to use for this column.
 //
 func (self *ColumnViewColumn) SetTitle(title string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 *C.char                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if title != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_title", _args[:], nil)
-
+	C.gtk_column_view_column_set_title(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(title)
 }
@@ -528,16 +512,15 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 //    - visible: whether this column should be visible.
 //
 func (self *ColumnViewColumn) SetVisible(visible bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnViewColumn // out
+	var _arg1 C.gboolean             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if visible {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
-	_info.InvokeClassMethod("set_visible", _args[:], nil)
-
+	C.gtk_column_view_column_set_visible(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(visible)
 }

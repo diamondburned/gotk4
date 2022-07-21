@@ -7,16 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // RenderActivity renders an activity indicator (such as in Spinner). The state
@@ -32,18 +29,21 @@ import "C"
 //    - height: rectangle height.
 //
 func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_activity")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_activity(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -69,18 +69,21 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 //    - size: square side for render area.
 //
 func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(angle)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(size)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(angle)
+	_arg4 = C.double(x)
+	_arg5 = C.double(y)
+	_arg6 = C.double(size)
 
-	_info := girepository.MustFind("Gtk", "render_arrow")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_arrow(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(angle)
@@ -106,18 +109,21 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size flo
 //    - height: rectangle height.
 //
 func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_background")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_background(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -146,18 +152,21 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 //    - height: rectangle height.
 //
 func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_check")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_check(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -184,18 +193,21 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height f
 //    - height: rectangle height.
 //
 func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_expander")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_expander(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -221,18 +233,21 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 //    - height: rectangle height.
 //
 func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_focus")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_focus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -259,18 +274,21 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height f
 //    - height: rectangle height.
 //
 func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_frame")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_frame(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -296,18 +314,21 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height f
 //    - height: rectangle height.
 //
 func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_handle")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_handle(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -331,17 +352,19 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height 
 //    - y: y position for the texture.
 //
 func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, x, y float64) {
-	var _args [5]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 *C.GdkTexture      // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(y)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg4 = C.double(x)
+	_arg5 = C.double(y)
 
-	_info := girepository.MustFind("Gtk", "render_icon")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_icon(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(texture)
@@ -360,17 +383,19 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, texture gdk.Texturer, 
 //    - layout to render.
 //
 func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout *pango.Layout) {
-	var _args [5]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 *C.PangoLayout     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Gtk", "render_layout")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_layout(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -390,18 +415,21 @@ func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout
 //    - y1: y coordinate for the end of the line.
 //
 func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x0)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y0)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(x1)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(y1)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x0)
+	_arg4 = C.double(y0)
+	_arg5 = C.double(x1)
+	_arg6 = C.double(y1)
 
-	_info := girepository.MustFind("Gtk", "render_line")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_line(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x0)
@@ -428,18 +456,21 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64
 //    - height: rectangle height.
 //
 func RenderOption(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
-	var _args [6]girepository.Argument
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
+	var _arg6 C.double           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
-	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
-	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
-	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg3 = C.double(x)
+	_arg4 = C.double(y)
+	_arg5 = C.double(width)
+	_arg6 = C.double(height)
 
-	_info := girepository.MustFind("Gtk", "render_option")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_render_option(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)

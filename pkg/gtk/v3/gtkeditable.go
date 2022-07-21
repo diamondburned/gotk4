@@ -6,20 +6,20 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_EditableInterface_get_selection_bounds(void*, gint*, gint*);
-// extern gchar* _gotk4_gtk3_EditableInterface_get_chars(void*, gint, gint);
-// extern gint _gotk4_gtk3_EditableInterface_get_position(void*);
-// extern void _gotk4_gtk3_EditableInterface_changed(void*);
-// extern void _gotk4_gtk3_EditableInterface_delete_text(void*, gint, gint);
-// extern void _gotk4_gtk3_EditableInterface_set_position(void*, gint);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern gboolean _gotk4_gtk3_EditableInterface_get_selection_bounds(GtkEditable*, gint*, gint*);
+// extern gchar* _gotk4_gtk3_EditableInterface_get_chars(GtkEditable*, gint, gint);
+// extern gint _gotk4_gtk3_EditableInterface_get_position(GtkEditable*);
+// extern void _gotk4_gtk3_EditableInterface_changed(GtkEditable*);
+// extern void _gotk4_gtk3_EditableInterface_delete_text(GtkEditable*, gint, gint);
+// extern void _gotk4_gtk3_EditableInterface_set_position(GtkEditable*, gint);
 // extern void _gotk4_gtk3_Editable_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
 import "C"
@@ -30,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEditable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Editable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_editable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEditable)
 	return gtype
 }
@@ -197,39 +197,33 @@ func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int32)) core
 // CopyClipboard copies the contents of the currently selected content in the
 // editable and puts it on the clipboard.
 func (editable *Editable) CopyClipboard() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("copy_clipboard", _args[:], nil)
-
+	C.gtk_editable_copy_clipboard(_arg0)
 	runtime.KeepAlive(editable)
 }
 
 // CutClipboard removes the contents of the currently selected content in the
 // editable and puts it on the clipboard.
 func (editable *Editable) CutClipboard() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("cut_clipboard", _args[:], nil)
-
+	C.gtk_editable_cut_clipboard(_arg0)
 	runtime.KeepAlive(editable)
 }
 
 // DeleteSelection deletes the currently selected text of the editable. This
 // call doesn’t do anything if there is no selected text.
 func (editable *Editable) DeleteSelection() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("delete_selection", _args[:], nil)
-
+	C.gtk_editable_delete_selection(_arg0)
 	runtime.KeepAlive(editable)
 }
 
@@ -246,15 +240,15 @@ func (editable *Editable) DeleteSelection() {
 //    - endPos: end position.
 //
 func (editable *Editable) DeleteText(startPos, endPos int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("delete_text", _args[:], nil)
-
+	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -279,24 +273,24 @@ func (editable *Editable) DeleteText(startPos, endPos int32) {
 //      caller.
 //
 func (editable *Editable) Chars(startPos, endPos int32) string {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _cret *C.gchar       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_gret := _info.InvokeIfaceMethod("get_chars", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -309,19 +303,17 @@ func (editable *Editable) Chars(startPos, endPos int32) string {
 //    - ok: TRUE if editable is editable.
 //
 func (editable *Editable) Editable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_gret := _info.InvokeIfaceMethod("get_editable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_editable_get_editable(_arg0)
 	runtime.KeepAlive(editable)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -338,19 +330,17 @@ func (editable *Editable) Editable() bool {
 //    - gint: cursor position.
 //
 func (editable *Editable) Position() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _cret C.gint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_gret := _info.InvokeIfaceMethod("get_position", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_editable_get_position(_arg0)
 	runtime.KeepAlive(editable)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -368,24 +358,23 @@ func (editable *Editable) Position() int32 {
 //    - ok: TRUE if an area is selected, FALSE otherwise.
 //
 func (editable *Editable) SelectionBounds() (startPos, endPos int32, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_gret := _info.InvokeIfaceMethod("get_selection_bounds", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(editable)
 
 	var _startPos int32 // out
 	var _endPos int32   // out
 	var _ok bool        // out
 
-	_startPos = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_endPos = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_startPos = int32(_arg1)
+	_endPos = int32(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -395,13 +384,11 @@ func (editable *Editable) SelectionBounds() (startPos, endPos int32, ok bool) {
 // PasteClipboard pastes the content of the clipboard to the current position of
 // the cursor in the editable.
 func (editable *Editable) PasteClipboard() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("paste_clipboard", _args[:], nil)
-
+	C.gtk_editable_paste_clipboard(_arg0)
 	runtime.KeepAlive(editable)
 }
 
@@ -418,15 +405,15 @@ func (editable *Editable) PasteClipboard() {
 //    - endPos: end of region.
 //
 func (editable *Editable) SelectRegion(startPos, endPos int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("select_region", _args[:], nil)
-
+	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -440,16 +427,15 @@ func (editable *Editable) SelectRegion(startPos, endPos int32) {
 //    - isEditable: TRUE if the user is allowed to edit the text in the widget.
 //
 func (editable *Editable) SetEditable(isEditable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 	if isEditable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("set_editable", _args[:], nil)
-
+	C.gtk_editable_set_editable(_arg0, _arg1)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(isEditable)
 }
@@ -467,14 +453,13 @@ func (editable *Editable) SetEditable(isEditable bool) {
 //    - position of the cursor.
 //
 func (editable *Editable) SetPosition(position int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(position)
 
-	_info := girepository.MustFind("Gtk", "Editable")
-	_info.InvokeIfaceMethod("set_position", _args[:], nil)
-
+	C.gtk_editable_set_position(_arg0, _arg1)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(position)
 }

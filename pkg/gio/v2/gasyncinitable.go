@@ -10,16 +10,14 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_AsyncInitableIface_init_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern gboolean _gotk4_gio2_AsyncInitableIface_init_finish(GAsyncInitable*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeAsyncInitable returns the GType for the type AsyncInitable.
@@ -28,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAsyncInitable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "AsyncInitable").RegisteredGType())
+	gtype := coreglib.Type(C.g_async_initable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAsyncInitable)
 	return gtype
 }
@@ -212,23 +210,25 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GAsyncInitable     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "AsyncInitable")
-	_info.InvokeIfaceMethod("init_async", _args[:], nil)
-
+	C.g_async_initable_init_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -243,21 +243,21 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, 
 //    - res: Result.
 //
 func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GAsyncInitable // out
+	var _arg1 *C.GAsyncResult   // out
+	var _cerr *C.GError         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "AsyncInitable")
-	_info.InvokeIfaceMethod("init_finish", _args[:], nil)
-
+	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -276,24 +276,24 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 //      g_object_unref().
 //
 func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GAsyncInitable // out
+	var _arg1 *C.GAsyncResult   // out
+	var _cret *C.GObject        // in
+	var _cerr *C.GError         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_info := girepository.MustFind("Gio", "AsyncInitable")
-	_gret := _info.InvokeIfaceMethod("new_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)
 
 	var _object *coreglib.Object // out
 	var _goerr error             // out
 
-	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _object, _goerr

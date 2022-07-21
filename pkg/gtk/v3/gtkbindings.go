@@ -7,17 +7,54 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
+
+// BindingsActivate: find a key binding matching keyval and modifiers and
+// activate the binding on object.
+//
+// The function takes the following parameters:
+//
+//    - object to activate when binding found.
+//    - keyval: key value of the binding.
+//    - modifiers: key modifier of the binding.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a binding was found and activated.
+//
+func BindingsActivate(object *coreglib.Object, keyval uint32, modifiers gdk.ModifierType) bool {
+	var _arg1 *C.GObject        // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _cret C.gboolean        // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
 
 // BindingsActivateEvent looks up key bindings for object to find one matching
 // event, and if one was found, activate it.
@@ -32,21 +69,20 @@ import "C"
 //    - ok: TRUE if a matching key binding was found.
 //
 func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GdkEventKey // out
+	var _cret C.gboolean     // in
 
-	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(object.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_info := girepository.MustFind("Gtk", "bindings_activate_event")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -63,15 +99,14 @@ type BindingArg struct {
 
 // bindingArg is the struct that's finalized.
 type bindingArg struct {
-	native unsafe.Pointer
+	native *C.GtkBindingArg
 }
 
 // ArgType: implementation detail.
 func (b *BindingArg) ArgType() coreglib.Type {
-	offset := girepository.MustFind("Gtk", "BindingArg").StructFieldOffset("arg_type")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.arg_type
 	var v coreglib.Type // out
-	v = coreglib.Type(*(*C.GType)(unsafe.Pointer(&*valptr)))
+	v = coreglib.Type(*valptr)
 	return v
 }
 
@@ -85,7 +120,61 @@ type BindingEntry struct {
 
 // bindingEntry is the struct that's finalized.
 type bindingEntry struct {
-	native unsafe.Pointer
+	native *C.GtkBindingEntry
+}
+
+// Keyval: key value to match.
+func (b *BindingEntry) Keyval() uint32 {
+	valptr := &b.native.keyval
+	var v uint32 // out
+	v = uint32(*valptr)
+	return v
+}
+
+// Modifiers: key modifiers to match.
+func (b *BindingEntry) Modifiers() gdk.ModifierType {
+	valptr := &b.native.modifiers
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(*valptr)
+	return v
+}
+
+// BindingSet: binding set this entry belongs to.
+func (b *BindingEntry) BindingSet() *BindingSet {
+	valptr := &b.native.binding_set
+	var v *BindingSet // out
+	v = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// SetNext: linked list of entries maintained by binding set.
+func (b *BindingEntry) SetNext() *BindingEntry {
+	valptr := &b.native.set_next
+	var v *BindingEntry // out
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// HashNext: implementation detail.
+func (b *BindingEntry) HashNext() *BindingEntry {
+	valptr := &b.native.hash_next
+	var v *BindingEntry // out
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Signals: action signals of this entry.
+func (b *BindingEntry) Signals() *BindingSignal {
+	valptr := &b.native.signals
+	var v *BindingSignal // out
+	v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Keyval: key value to match.
+func (b *BindingEntry) SetKeyval(keyval uint32) {
+	valptr := &b.native.keyval
+	*valptr = C.guint(keyval)
 }
 
 // BindingEntryAddSignalFromString parses a signal description from signal_desc
@@ -116,24 +205,110 @@ type bindingEntry struct {
 //      the expected token otherwise.
 //
 func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkBindingSet // out
+	var _arg2 *C.gchar         // out
+	var _cret C.GTokenType     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bindingSet)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "add_signal_from_string")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.GTokenType)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
 	runtime.KeepAlive(bindingSet)
 	runtime.KeepAlive(signalDesc)
 
 	var _tokenType glib.TokenType // out
 
-	_tokenType = glib.TokenType(*(*C.GTokenType)(unsafe.Pointer(&_cret)))
+	_tokenType = glib.TokenType(_cret)
 
 	return _tokenType
+}
+
+// BindingEntryAddSignall: override or install a new key binding for keyval with
+// modifiers on binding_set.
+//
+// The function takes the following parameters:
+//
+//    - bindingSet to add a signal to.
+//    - keyval: key value.
+//    - modifiers: key modifier.
+//    - signalName: signal name to be bound.
+//    - bindingArgs: list of BindingArg signal arguments.
+//
+func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType, signalName string, bindingArgs []*BindingArg) {
+	var _arg1 *C.GtkBindingSet  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+	var _arg4 *C.gchar          // out
+	var _arg5 *C.GSList         // out
+
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg4))
+	for i := len(bindingArgs) - 1; i >= 0; i-- {
+		src := bindingArgs[i]
+		var dst *C.GtkBindingArg // out
+		dst = (*C.GtkBindingArg)(gextras.StructNative(unsafe.Pointer(src)))
+		_arg5 = C.g_slist_prepend(_arg5, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_slist_free(_arg5)
+
+	C.gtk_binding_entry_add_signall(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+	runtime.KeepAlive(signalName)
+	runtime.KeepAlive(bindingArgs)
+}
+
+// BindingEntryRemove: remove a binding previously installed via
+// gtk_binding_entry_add_signal() on binding_set.
+//
+// The function takes the following parameters:
+//
+//    - bindingSet to remove an entry of.
+//    - keyval: key value of binding to remove.
+//    - modifiers: key modifier of binding to remove.
+//
+func BindingEntryRemove(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType) {
+	var _arg1 *C.GtkBindingSet  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	C.gtk_binding_entry_remove(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+}
+
+// BindingEntrySkip: install a binding on binding_set which causes key lookups
+// to be aborted, to prevent bindings from lower priority sets to be activated.
+//
+// The function takes the following parameters:
+//
+//    - bindingSet to skip an entry of.
+//    - keyval: key value of binding to skip.
+//    - modifiers: key modifier of binding to skip.
+//
+func BindingEntrySkip(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType) {
+	var _arg1 *C.GtkBindingSet  // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
+
+	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg2 = C.guint(keyval)
+	_arg3 = C.GdkModifierType(modifiers)
+
+	C.gtk_binding_entry_skip(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
 }
 
 // BindingSet: binding set maintains a list of activatable key bindings. A
@@ -149,50 +324,117 @@ type BindingSet struct {
 
 // bindingSet is the struct that's finalized.
 type bindingSet struct {
-	native unsafe.Pointer
+	native *C.GtkBindingSet
 }
 
 // SetName: unique name of this binding set.
 func (b *BindingSet) SetName() string {
-	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("set_name")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.set_name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Priority: unused.
 func (b *BindingSet) Priority() int32 {
-	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("priority")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.priority
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Entries: key binding entries in this binding set.
 func (b *BindingSet) Entries() *BindingEntry {
-	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("entries")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.entries
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Current: implementation detail.
 func (b *BindingSet) Current() *BindingEntry {
-	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("current")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	valptr := &b.native.current
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Priority: unused.
 func (b *BindingSet) SetPriority(priority int32) {
-	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("priority")
-	valptr := (*uintptr)(unsafe.Add(b.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(priority)
+	valptr := &b.native.priority
+	*valptr = C.gint(priority)
+}
+
+// Activate: find a key binding matching keyval and modifiers within binding_set
+// and activate the binding on object.
+//
+// The function takes the following parameters:
+//
+//    - keyval: key value of the binding.
+//    - modifiers: key modifier of the binding.
+//    - object to activate when binding found.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if a binding was found and activated.
+//
+func (bindingSet *BindingSet) Activate(keyval uint32, modifiers gdk.ModifierType, object *coreglib.Object) bool {
+	var _arg0 *C.GtkBindingSet  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 *C.GObject        // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
+	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
+
+	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+	runtime.KeepAlive(object)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AddPath: this function was used internally by the GtkRC parsing mechanism to
+// assign match patterns to BindingSet structures.
+//
+// In GTK+ 3, these match patterns are unused.
+//
+// Deprecated: since version 3.0.
+//
+// The function takes the following parameters:
+//
+//    - pathType: path type the pattern applies to.
+//    - pathPattern: actual match pattern.
+//    - priority: binding priority.
+//
+func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
+	var _arg0 *C.GtkBindingSet      // out
+	var _arg1 C.GtkPathType         // out
+	var _arg2 *C.gchar              // out
+	var _arg3 C.GtkPathPriorityType // out
+
+	_arg0 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	_arg1 = C.GtkPathType(pathType)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(pathPattern)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GtkPathPriorityType(priority)
+
+	C.gtk_binding_set_add_path(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(pathType)
+	runtime.KeepAlive(pathPattern)
+	runtime.KeepAlive(priority)
 }
 
 // BindingSetFind: find a binding set by its globally unique name.
@@ -209,21 +451,19 @@ func (b *BindingSet) SetPriority(priority int32) {
 //    - bindingSet (optional): NULL or the specified binding set.
 //
 func BindingSetFind(setName string) *BindingSet {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar         // out
+	var _cret *C.GtkBindingSet // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(setName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(setName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "find")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_binding_set_find(_arg1)
 	runtime.KeepAlive(setName)
 
 	var _bindingSet *BindingSet // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _bindingSet
@@ -239,5 +479,5 @@ type BindingSignal struct {
 
 // bindingSignal is the struct that's finalized.
 type bindingSignal struct {
-	native unsafe.Pointer
+	native *C.GtkBindingSignal
 }

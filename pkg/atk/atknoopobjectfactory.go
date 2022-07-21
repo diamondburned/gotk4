@@ -5,13 +5,11 @@ package atk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -21,7 +19,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNoOpObjectFactory() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "NoOpObjectFactory").RegisteredGType())
+	gtype := coreglib.Type(C.atk_no_op_object_factory_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNoOpObjectFactory)
 	return gtype
 }
@@ -70,13 +68,13 @@ func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 //    - noOpObjectFactory: instance of an ObjectFactory.
 //
 func NewNoOpObjectFactory() *NoOpObjectFactory {
-	_info := girepository.MustFind("Atk", "NoOpObjectFactory")
-	_gret := _info.InvokeClassMethod("new_NoOpObjectFactory", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkObjectFactory // in
+
+	_cret = C.atk_no_op_object_factory_new()
 
 	var _noOpObjectFactory *NoOpObjectFactory // out
 
-	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObjectFactory
 }

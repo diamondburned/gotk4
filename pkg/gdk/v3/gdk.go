@@ -7,15 +7,17 @@ import (
 	_ "runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk3_DragContext_ConnectActionChanged(gpointer, GdkDragAction, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
 // extern void _gotk4_gdk3_DragContext_ConnectDNDFinished(gpointer, guintptr);
 // extern void _gotk4_gdk3_DragContext_ConnectDropPerformed(gpointer, gint, guintptr);
 import "C"
@@ -26,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStatus() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Status").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_status_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStatus)
 	return gtype
 }
@@ -37,7 +39,7 @@ func GTypeStatus() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDeviceTool() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DeviceTool").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_device_tool_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceTool)
 	return gtype
 }
@@ -48,25 +50,21 @@ func GTypeDeviceTool() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDragContext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "DragContext").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_drag_context_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDragContext)
 	return gtype
-}
-
-func init() {
-	girepository.Require("Gdk", "3.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func GLErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gdk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gdk_gl_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -139,6 +137,63 @@ func wrapDragContext(obj *coreglib.Object) *DragContext {
 
 func marshalDragContext(p uintptr) (interface{}, error) {
 	return wrapDragContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gdk3_DragContext_ConnectActionChanged
+func _gotk4_gdk3_DragContext_ConnectActionChanged(arg0 C.gpointer, arg1 C.GdkDragAction, arg2 C.guintptr) {
+	var f func(action DragAction)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(action DragAction))
+	}
+
+	var _action DragAction // out
+
+	_action = DragAction(arg1)
+
+	f(_action)
+}
+
+// ConnectActionChanged: new action is being chosen for the drag and drop
+// operation.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (context *DragContext) ConnectActionChanged(f func(action DragAction)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "action-changed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectActionChanged), f)
+}
+
+//export _gotk4_gdk3_DragContext_ConnectCancel
+func _gotk4_gdk3_DragContext_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason, arg2 C.guintptr) {
+	var f func(reason DragCancelReason)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(reason DragCancelReason))
+	}
+
+	var _reason DragCancelReason // out
+
+	_reason = DragCancelReason(arg1)
+
+	f(_reason)
+}
+
+// ConnectCancel: drag and drop operation was cancelled.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "cancel", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectCancel), f)
 }
 
 //export _gotk4_gdk3_DragContext_ConnectDNDFinished

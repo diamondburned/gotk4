@@ -7,18 +7,16 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_MediaFileClass_close(void*);
-// extern void _gotk4_gtk4_MediaFileClass_open(void*);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_MediaFileClass_close(GtkMediaFile*);
+// extern void _gotk4_gtk4_MediaFileClass_open(GtkMediaFile*);
 import "C"
 
 // GTypeMediaFile returns the GType for the type MediaFile.
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMediaFile() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MediaFile").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_media_file_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMediaFile)
 	return gtype
 }
@@ -75,21 +73,19 @@ func classInitMediaFiler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "MediaFileClass")
+	pclass := (*C.GtkMediaFileClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Close() }); ok {
-		o := pclass.StructFieldOffset("close")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaFileClass_close)
+		pclass.close = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_close)
 	}
 
 	if _, ok := goval.(interface{ Open() }); ok {
-		o := pclass.StructFieldOffset("open")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaFileClass_open)
+		pclass.open = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_open)
 	}
 }
 
 //export _gotk4_gtk4_MediaFileClass_close
-func _gotk4_gtk4_MediaFileClass_close(arg0 *C.void) {
+func _gotk4_gtk4_MediaFileClass_close(arg0 *C.GtkMediaFile) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
@@ -97,7 +93,7 @@ func _gotk4_gtk4_MediaFileClass_close(arg0 *C.void) {
 }
 
 //export _gotk4_gtk4_MediaFileClass_open
-func _gotk4_gtk4_MediaFileClass_open(arg0 *C.void) {
+func _gotk4_gtk4_MediaFileClass_open(arg0 *C.GtkMediaFile) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Open() })
 
@@ -135,13 +131,13 @@ func BaseMediaFile(obj MediaFiler) *MediaFile {
 //    - mediaFile: new GtkMediaFile.
 //
 func NewMediaFile() *MediaFile {
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("new_MediaFile", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkMediaStream // in
+
+	_cret = C.gtk_media_file_new()
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -157,19 +153,17 @@ func NewMediaFile() *MediaFile {
 //    - mediaFile: new GtkMediaFile playing file.
 //
 func NewMediaFileForFile(file gio.Filer) *MediaFile {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GFile          // out
+	var _cret *C.GtkMediaStream // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("new_MediaFile_for_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_file_new_for_file(_arg1)
 	runtime.KeepAlive(file)
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -188,20 +182,18 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 //    - mediaFile: new GtkMediaFile playing filename.
 //
 func NewMediaFileForFilename(filename string) *MediaFile {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char           // out
+	var _cret *C.GtkMediaStream // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("new_MediaFile_for_filename", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_file_new_for_filename(_arg1)
 	runtime.KeepAlive(filename)
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -220,19 +212,17 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 //    - mediaFile: new GtkMediaFile.
 //
 func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GInputStream   // out
+	var _cret *C.GtkMediaStream // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("new_MediaFile_for_input_stream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_file_new_for_input_stream(_arg1)
 	runtime.KeepAlive(stream)
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
@@ -251,33 +241,29 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 //    - mediaFile: new GtkMediaFile playing resource_path.
 //
 func NewMediaFileForResource(resourcePath string) *MediaFile {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char           // out
+	var _cret *C.GtkMediaStream // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("new_MediaFile_for_resource", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_file_new_for_resource(_arg1)
 	runtime.KeepAlive(resourcePath)
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mediaFile
 }
 
 // Clear resets the media file to be empty.
 func (self *MediaFile) Clear() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_info.InvokeClassMethod("clear", _args[:], nil)
-
+	C.gtk_media_file_clear(_arg0)
 	runtime.KeepAlive(self)
 }
 
@@ -291,21 +277,19 @@ func (self *MediaFile) Clear() {
 //      file.
 //
 func (self *MediaFile) File() *gio.File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
+	var _cret *C.GFile        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("get_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_file_get_file(_arg0)
 	runtime.KeepAlive(self)
 
 	var _file *gio.File // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -325,21 +309,19 @@ func (self *MediaFile) File() *gio.File {
 //      from a stream.
 //
 func (self *MediaFile) InputStream() gio.InputStreamer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
+	var _cret *C.GInputStream // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_gret := _info.InvokeClassMethod("get_input_stream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_media_file_get_input_stream(_arg0)
 	runtime.KeepAlive(self)
 
 	var _inputStream gio.InputStreamer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -366,16 +348,15 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 //    - file (optional) to play.
 //
 func (self *MediaFile) SetFile(file gio.Filer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.GFile        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if file != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_info.InvokeClassMethod("set_file", _args[:], nil)
-
+	C.gtk_media_file_set_file(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(file)
 }
@@ -390,17 +371,16 @@ func (self *MediaFile) SetFile(file gio.Filer) {
 //    - filename (optional): name of file to play.
 //
 func (self *MediaFile) SetFilename(filename string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if filename != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_info.InvokeClassMethod("set_filename", _args[:], nil)
-
+	C.gtk_media_file_set_filename(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filename)
 }
@@ -417,16 +397,15 @@ func (self *MediaFile) SetFilename(filename string) {
 //    - stream (optional) to play from.
 //
 func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.GInputStream // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if stream != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+		_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_info.InvokeClassMethod("set_input_stream", _args[:], nil)
-
+	C.gtk_media_file_set_input_stream(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(stream)
 }
@@ -441,17 +420,16 @@ func (self *MediaFile) SetInputStream(stream gio.InputStreamer) {
 //    - resourcePath (optional): path to resource to play.
 //
 func (self *MediaFile) SetResource(resourcePath string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if resourcePath != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "MediaFile")
-	_info.InvokeClassMethod("set_resource", _args[:], nil)
-
+	C.gtk_media_file_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
 }

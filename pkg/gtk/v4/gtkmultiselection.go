@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeMultiSelection returns the GType for the type MultiSelection.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMultiSelection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MultiSelection").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_multi_selection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMultiSelection)
 	return gtype
 }
@@ -79,22 +77,20 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 //    - multiSelection: new GtkMultiSelection.
 //
 func NewMultiSelection(model gio.ListModeller) *MultiSelection {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GListModel        // out
+	var _cret *C.GtkMultiSelection // in
 
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MultiSelection")
-	_gret := _info.InvokeClassMethod("new_MultiSelection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_multi_selection_new(_arg1)
 	runtime.KeepAlive(model)
 
 	var _multiSelection *MultiSelection // out
 
-	_multiSelection = wrapMultiSelection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_multiSelection = wrapMultiSelection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _multiSelection
 }
@@ -106,20 +102,18 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 //    - listModel: underlying model.
 //
 func (self *MultiSelection) Model() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMultiSelection // out
+	var _cret *C.GListModel        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MultiSelection")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_multi_selection_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -137,16 +131,15 @@ func (self *MultiSelection) Model() *gio.ListModel {
 //    - model (optional): GListModel to wrap.
 //
 func (self *MultiSelection) SetModel(model gio.ListModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMultiSelection // out
+	var _arg1 *C.GListModel        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "MultiSelection")
-	_info.InvokeClassMethod("set_model", _args[:], nil)
-
+	C.gtk_multi_selection_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }

@@ -3,16 +3,61 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
+
+// DistributeNaturalAllocation distributes extra_space to child sizes by
+// bringing smaller children up to natural size first.
+//
+// The remaining space will be added to the minimum_size member of the
+// GtkRequestedSize struct. If all sizes reach their natural size then the
+// remaining space is returned.
+//
+// The function takes the following parameters:
+//
+//    - extraSpace: extra space to redistribute among children after subtracting
+//      minimum sizes and any child padding from the overall allocation.
+//    - sizes: array of structs with a client pointer and a minimum/natural size
+//      in the orientation of the allocation.
+//
+// The function returns the following values:
+//
+//    - gint: remainder of extra_space after redistributing space to sizes.
+//
+func DistributeNaturalAllocation(extraSpace int32, sizes []RequestedSize) int32 {
+	var _arg1 C.int               // out
+	var _arg3 *C.GtkRequestedSize // out
+	var _arg2 C.guint
+	var _cret C.int // in
+
+	_arg1 = C.int(extraSpace)
+	_arg2 = (C.guint)(len(sizes))
+	_arg3 = (*C.GtkRequestedSize)(C.calloc(C.size_t(len(sizes)), C.size_t(C.sizeof_GtkRequestedSize)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.GtkRequestedSize)(_arg3), len(sizes))
+		for i := range sizes {
+			out[i] = *(*C.GtkRequestedSize)(gextras.StructNative(unsafe.Pointer((&sizes[i]))))
+		}
+	}
+
+	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(extraSpace)
+	runtime.KeepAlive(sizes)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
 
 // RequestedSize represents a request of a screen object in a given orientation.
 // These are primarily used in container implementations when allocating a
@@ -25,46 +70,41 @@ type RequestedSize struct {
 
 // requestedSize is the struct that's finalized.
 type requestedSize struct {
-	native unsafe.Pointer
+	native *C.GtkRequestedSize
 }
 
 // Data: client pointer.
 func (r *RequestedSize) Data() unsafe.Pointer {
-	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("data")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.data
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) MinimumSize() int32 {
-	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("minimum_size")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.minimum_size
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) NaturalSize() int32 {
-	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("natural_size")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.natural_size
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) SetMinimumSize(minimumSize int32) {
-	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("minimum_size")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(minimumSize)
+	valptr := &r.native.minimum_size
+	*valptr = C.int(minimumSize)
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) SetNaturalSize(naturalSize int32) {
-	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("natural_size")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(naturalSize)
+	valptr := &r.native.natural_size
+	*valptr = C.int(naturalSize)
 }

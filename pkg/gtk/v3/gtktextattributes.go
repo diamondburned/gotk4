@@ -7,14 +7,16 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeTextAttributes returns the GType for the type TextAttributes.
@@ -23,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextAttributes() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextAttributes").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_text_attributes_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextAttributes)
 	return gtype
 }
@@ -35,7 +37,37 @@ type TextAppearance struct {
 
 // textAppearance is the struct that's finalized.
 type textAppearance struct {
-	native unsafe.Pointer
+	native *C.GtkTextAppearance
+}
+
+// BgColor: background Color.
+func (t *TextAppearance) BgColor() *gdk.Color {
+	valptr := &t.native.bg_color
+	var v *gdk.Color // out
+	v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// FgColor: foreground Color.
+func (t *TextAppearance) FgColor() *gdk.Color {
+	valptr := &t.native.fg_color
+	var v *gdk.Color // out
+	v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// Rise: super/subscript rise, can be negative.
+func (t *TextAppearance) Rise() int32 {
+	valptr := &t.native.rise
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Rise: super/subscript rise, can be negative.
+func (t *TextAppearance) SetRise(rise int32) {
+	valptr := &t.native.rise
+	*valptr = C.gint(rise)
 }
 
 // TextAttributes: using TextAttributes directly should rarely be necessary.
@@ -50,23 +82,23 @@ type TextAttributes struct {
 
 // textAttributes is the struct that's finalized.
 type textAttributes struct {
-	native unsafe.Pointer
+	native *C.GtkTextAttributes
 }
 
 func marshalTextAttributes(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TextAttributes{&textAttributes{(unsafe.Pointer)(b)}}, nil
+	return &TextAttributes{&textAttributes{(*C.GtkTextAttributes)(b)}}, nil
 }
 
 // NewTextAttributes constructs a struct TextAttributes.
 func NewTextAttributes() *TextAttributes {
-	_info := girepository.MustFind("Gtk", "TextAttributes")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkTextAttributes // in
+
+	_cret = C.gtk_text_attributes_new()
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -77,6 +109,174 @@ func NewTextAttributes() *TextAttributes {
 	return _textAttributes
 }
 
+// Appearance for text.
+func (t *TextAttributes) Appearance() *TextAppearance {
+	valptr := &t.native.appearance
+	var v *TextAppearance // out
+	v = (*TextAppearance)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// Justification for text.
+func (t *TextAttributes) Justification() Justification {
+	valptr := &t.native.justification
+	var v Justification // out
+	v = Justification(*valptr)
+	return v
+}
+
+// Direction for text.
+func (t *TextAttributes) Direction() TextDirection {
+	valptr := &t.native.direction
+	var v TextDirection // out
+	v = TextDirection(*valptr)
+	return v
+}
+
+// Font for text.
+func (t *TextAttributes) Font() *pango.FontDescription {
+	valptr := &t.native.font
+	var v *pango.FontDescription // out
+	v = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// FontScale: font scale factor.
+func (t *TextAttributes) FontScale() float64 {
+	valptr := &t.native.font_scale
+	var v float64 // out
+	v = float64(*valptr)
+	return v
+}
+
+// LeftMargin: width of the left margin in pixels.
+func (t *TextAttributes) LeftMargin() int32 {
+	valptr := &t.native.left_margin
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// RightMargin: width of the right margin in pixels.
+func (t *TextAttributes) RightMargin() int32 {
+	valptr := &t.native.right_margin
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Indent: amount to indent the paragraph, in pixels.
+func (t *TextAttributes) Indent() int32 {
+	valptr := &t.native.indent
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// PixelsAboveLines pixels of blank space above paragraphs.
+func (t *TextAttributes) PixelsAboveLines() int32 {
+	valptr := &t.native.pixels_above_lines
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// PixelsBelowLines pixels of blank space below paragraphs.
+func (t *TextAttributes) PixelsBelowLines() int32 {
+	valptr := &t.native.pixels_below_lines
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
+func (t *TextAttributes) PixelsInsideWrap() int32 {
+	valptr := &t.native.pixels_inside_wrap
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Tabs: custom TabArray for this text.
+func (t *TextAttributes) Tabs() *pango.TabArray {
+	valptr := &t.native.tabs
+	var v *pango.TabArray // out
+	v = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// WrapMode for text.
+func (t *TextAttributes) WrapMode() WrapMode {
+	valptr := &t.native.wrap_mode
+	var v WrapMode // out
+	v = WrapMode(*valptr)
+	return v
+}
+
+// Language for text.
+func (t *TextAttributes) Language() *pango.Language {
+	valptr := &t.native.language
+	var v *pango.Language // out
+	v = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// LetterSpacing: extra space to insert between graphemes, in Pango units.
+func (t *TextAttributes) LetterSpacing() int32 {
+	valptr := &t.native.letter_spacing
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// FontScale: font scale factor.
+func (t *TextAttributes) SetFontScale(fontScale float64) {
+	valptr := &t.native.font_scale
+	*valptr = C.gdouble(fontScale)
+}
+
+// LeftMargin: width of the left margin in pixels.
+func (t *TextAttributes) SetLeftMargin(leftMargin int32) {
+	valptr := &t.native.left_margin
+	*valptr = C.gint(leftMargin)
+}
+
+// RightMargin: width of the right margin in pixels.
+func (t *TextAttributes) SetRightMargin(rightMargin int32) {
+	valptr := &t.native.right_margin
+	*valptr = C.gint(rightMargin)
+}
+
+// Indent: amount to indent the paragraph, in pixels.
+func (t *TextAttributes) SetIndent(indent int32) {
+	valptr := &t.native.indent
+	*valptr = C.gint(indent)
+}
+
+// PixelsAboveLines pixels of blank space above paragraphs.
+func (t *TextAttributes) SetPixelsAboveLines(pixelsAboveLines int32) {
+	valptr := &t.native.pixels_above_lines
+	*valptr = C.gint(pixelsAboveLines)
+}
+
+// PixelsBelowLines pixels of blank space below paragraphs.
+func (t *TextAttributes) SetPixelsBelowLines(pixelsBelowLines int32) {
+	valptr := &t.native.pixels_below_lines
+	*valptr = C.gint(pixelsBelowLines)
+}
+
+// PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
+func (t *TextAttributes) SetPixelsInsideWrap(pixelsInsideWrap int32) {
+	valptr := &t.native.pixels_inside_wrap
+	*valptr = C.gint(pixelsInsideWrap)
+}
+
+// LetterSpacing: extra space to insert between graphemes, in Pango units.
+func (t *TextAttributes) SetLetterSpacing(letterSpacing int32) {
+	valptr := &t.native.letter_spacing
+	*valptr = C.gint(letterSpacing)
+}
+
 // Copy copies src and returns a new TextAttributes.
 //
 // The function returns the following values:
@@ -84,19 +284,17 @@ func NewTextAttributes() *TextAttributes {
 //    - textAttributes: copy of src, free with gtk_text_attributes_unref().
 //
 func (src *TextAttributes) Copy() *TextAttributes {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTextAttributes // out
+	var _cret *C.GtkTextAttributes // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
+	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_info := girepository.MustFind("Gtk", "TextAttributes")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_attributes_copy(_arg0)
 	runtime.KeepAlive(src)
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -115,14 +313,13 @@ func (src *TextAttributes) Copy() *TextAttributes {
 //    - dest: another TextAttributes.
 //
 func (src *TextAttributes) CopyValues(dest *TextAttributes) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTextAttributes // out
+	var _arg1 *C.GtkTextAttributes // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
+	_arg0 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(src)))
+	_arg1 = (*C.GtkTextAttributes)(gextras.StructNative(unsafe.Pointer(dest)))
 
-	_info := girepository.MustFind("Gtk", "TextAttributes")
-	_info.InvokeRecordMethod("copy_values", _args[:], nil)
-
+	C.gtk_text_attributes_copy_values(_arg0, _arg1)
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(dest)
 }

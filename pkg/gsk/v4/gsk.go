@@ -4,32 +4,26 @@ package gsk
 
 import (
 	_ "runtime/cgo"
-	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: gtk4
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gsk/gsk.h>
 import "C"
-
-func init() {
-	girepository.Require("Gsk", "4.0", girepository.LoadFlagLazy)
-}
 
 // The function returns the following values:
 //
 func SerializationErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gsk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gsk_serialization_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }

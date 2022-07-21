@@ -4,15 +4,12 @@ package gtk
 
 import (
 	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GetDebugFlags returns the GTK+ debug flags.
@@ -25,13 +22,13 @@ import "C"
 //    - guint: GTK+ debug flags.
 //
 func GetDebugFlags() uint32 {
-	_info := girepository.MustFind("Gtk", "get_debug_flags")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
+	var _cret C.guint // in
+
+	_cret = C.gtk_get_debug_flags()
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -41,12 +38,10 @@ func GetDebugFlags() uint32 {
 // The function takes the following parameters:
 //
 func SetDebugFlags(flags uint32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.guint // out
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(flags)
+	_arg1 = C.guint(flags)
 
-	_info := girepository.MustFind("Gtk", "set_debug_flags")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_set_debug_flags(_arg1)
 	runtime.KeepAlive(flags)
 }

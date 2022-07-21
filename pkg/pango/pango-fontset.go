@@ -8,18 +8,16 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_pango1_FontsetForEachFunc(void*, void*, gpointer);
-// extern void* _gotk4_pango1_FontsetClass_get_font(void*, guint);
-// extern void* _gotk4_pango1_FontsetClass_get_language(void*);
-// extern void* _gotk4_pango1_FontsetClass_get_metrics(void*);
+// #include <pango/pango.h>
+// extern PangoFont* _gotk4_pango1_FontsetClass_get_font(PangoFontset*, guint);
+// extern PangoFontMetrics* _gotk4_pango1_FontsetClass_get_metrics(PangoFontset*);
+// extern PangoLanguage* _gotk4_pango1_FontsetClass_get_language(PangoFontset*);
+// extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
 // GTypeFontset returns the GType for the type Fontset.
@@ -28,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFontset() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Fontset").RegisteredGType())
+	gtype := coreglib.Type(C.pango_fontset_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFontset)
 	return gtype
 }
@@ -39,7 +37,7 @@ func GTypeFontset() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFontsetSimple() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "FontsetSimple").RegisteredGType())
+	gtype := coreglib.Type(C.pango_fontset_simple_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFontsetSimple)
 	return gtype
 }
@@ -49,7 +47,7 @@ func GTypeFontsetSimple() coreglib.Type {
 type FontsetForEachFunc func(fontset Fontsetter, font Fonter) (ok bool)
 
 //export _gotk4_pango1_FontsetForEachFunc
-func _gotk4_pango1_FontsetForEachFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_pango1_FontsetForEachFunc(arg1 *C.PangoFontset, arg2 *C.PangoFont, arg3 C.gpointer) (cret C.gboolean) {
 	var fn FontsetForEachFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -168,26 +166,23 @@ func classInitFontsetter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Pango", "FontsetClass")
+	pclass := (*C.PangoFontsetClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Font(wc uint32) Fonter }); ok {
-		o := pclass.StructFieldOffset("get_font")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontsetClass_get_font)
+		pclass.get_font = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_font)
 	}
 
 	if _, ok := goval.(interface{ Language() *Language }); ok {
-		o := pclass.StructFieldOffset("get_language")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontsetClass_get_language)
+		pclass.get_language = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_language)
 	}
 
 	if _, ok := goval.(interface{ Metrics() *FontMetrics }); ok {
-		o := pclass.StructFieldOffset("get_metrics")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontsetClass_get_metrics)
+		pclass.get_metrics = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_metrics)
 	}
 }
 
 //export _gotk4_pango1_FontsetClass_get_font
-func _gotk4_pango1_FontsetClass_get_font(arg0 *C.void, arg1 C.guint) (cret *C.void) {
+func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cret *C.PangoFont) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Font(wc uint32) Fonter })
 
@@ -197,33 +192,33 @@ func _gotk4_pango1_FontsetClass_get_font(arg0 *C.void, arg1 C.guint) (cret *C.vo
 
 	font := iface.Font(_wc)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	cret = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(font).Native()))
 
 	return cret
 }
 
 //export _gotk4_pango1_FontsetClass_get_language
-func _gotk4_pango1_FontsetClass_get_language(arg0 *C.void) (cret *C.void) {
+func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.PangoLanguage) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Language() *Language })
 
 	language := iface.Language()
 
-	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
+	cret = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(language)), nil)
 
 	return cret
 }
 
 //export _gotk4_pango1_FontsetClass_get_metrics
-func _gotk4_pango1_FontsetClass_get_metrics(arg0 *C.void) (cret *C.void) {
+func _gotk4_pango1_FontsetClass_get_metrics(arg0 *C.PangoFontset) (cret *C.PangoFontMetrics) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Metrics() *FontMetrics })
 
 	fontMetrics := iface.Metrics()
 
-	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(fontMetrics)))
+	cret = (*C.PangoFontMetrics)(gextras.StructNative(unsafe.Pointer(fontMetrics)))
 
 	return cret
 }
@@ -257,16 +252,16 @@ func BaseFontset(obj Fontsetter) *Fontset {
 //    - fn: callback function.
 //
 func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoFontset           // out
+	var _arg1 C.PangoFontsetForeachFunc // out
+	var _arg2 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
-	_args[2] = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_args[2]))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
-	_info := girepository.MustFind("Pango", "Fontset")
-	_info.InvokeClassMethod("foreach", _args[:], nil)
-
+	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(fontset)
 	runtime.KeepAlive(fn)
 }
@@ -284,22 +279,21 @@ func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
 //      the font.
 //
 func (fontset *Fontset) Font(wc uint32) Fonter {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoFontset // out
+	var _arg1 C.guint         // out
+	var _cret *C.PangoFont    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(wc)
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg1 = C.guint(wc)
 
-	_info := girepository.MustFind("Pango", "Fontset")
-	_gret := _info.InvokeClassMethod("get_font", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_fontset_get_font(_arg0, _arg1)
 	runtime.KeepAlive(fontset)
 	runtime.KeepAlive(wc)
 
 	var _font Fonter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -327,19 +321,17 @@ func (fontset *Fontset) Font(wc uint32) Fonter {
 //      finished using the object.
 //
 func (fontset *Fontset) Metrics() *FontMetrics {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoFontset     // out
+	var _cret *C.PangoFontMetrics // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
 
-	_info := girepository.MustFind("Pango", "Fontset")
-	_gret := _info.InvokeClassMethod("get_metrics", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_fontset_get_metrics(_arg0)
 	runtime.KeepAlive(fontset)
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -348,6 +340,10 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	)
 
 	return _fontMetrics
+}
+
+// FontsetSimpleOverrider contains methods that are overridable.
+type FontsetSimpleOverrider interface {
 }
 
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract
@@ -363,6 +359,14 @@ type FontsetSimple struct {
 var (
 	_ Fontsetter = (*FontsetSimple)(nil)
 )
+
+func classInitFontsetSimpler(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFontsetSimple(obj *coreglib.Object) *FontsetSimple {
 	return &FontsetSimple{
@@ -388,19 +392,17 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 //      with g_object_unref().
 //
 func NewFontsetSimple(language *Language) *FontsetSimple {
-	var _args [1]girepository.Argument
+	var _arg1 *C.PangoLanguage      // out
+	var _cret *C.PangoFontsetSimple // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
+	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_info := girepository.MustFind("Pango", "FontsetSimple")
-	_gret := _info.InvokeClassMethod("new_FontsetSimple", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_fontset_simple_new(_arg1)
 	runtime.KeepAlive(language)
 
 	var _fontsetSimple *FontsetSimple // out
 
-	_fontsetSimple = wrapFontsetSimple(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fontsetSimple = wrapFontsetSimple(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _fontsetSimple
 }
@@ -412,14 +414,13 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 //    - font: PangoFont.
 //
 func (fontset *FontsetSimple) Append(font Fonter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoFontsetSimple // out
+	var _arg1 *C.PangoFont          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
-	_info := girepository.MustFind("Pango", "FontsetSimple")
-	_info.InvokeClassMethod("append", _args[:], nil)
-
+	C.pango_fontset_simple_append(_arg0, _arg1)
 	runtime.KeepAlive(fontset)
 	runtime.KeepAlive(font)
 }
@@ -431,19 +432,17 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 //    - gint: size of fontset.
 //
 func (fontset *FontsetSimple) Size() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoFontsetSimple // out
+	var _cret C.int                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
 
-	_info := girepository.MustFind("Pango", "FontsetSimple")
-	_gret := _info.InvokeClassMethod("size", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_fontset_simple_size(_arg0)
 	runtime.KeepAlive(fontset)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }

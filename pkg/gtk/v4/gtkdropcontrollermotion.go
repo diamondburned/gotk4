@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
@@ -26,9 +24,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDropControllerMotion() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DropControllerMotion").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_drop_controller_motion_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDropControllerMotion)
 	return gtype
+}
+
+// DropControllerMotionOverrider contains methods that are overridable.
+type DropControllerMotionOverrider interface {
 }
 
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking
@@ -47,6 +49,14 @@ type DropControllerMotion struct {
 var (
 	_ EventControllerer = (*DropControllerMotion)(nil)
 )
+
+func classInitDropControllerMotioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapDropControllerMotion(obj *coreglib.Object) *DropControllerMotion {
 	return &DropControllerMotion{
@@ -143,13 +153,13 @@ func (self *DropControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.S
 //    - dropControllerMotion: new GtkDropControllerMotion.
 //
 func NewDropControllerMotion() *DropControllerMotion {
-	_info := girepository.MustFind("Gtk", "DropControllerMotion")
-	_gret := _info.InvokeClassMethod("new_DropControllerMotion", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkEventController // in
+
+	_cret = C.gtk_drop_controller_motion_new()
 
 	var _dropControllerMotion *DropControllerMotion // out
 
-	_dropControllerMotion = wrapDropControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dropControllerMotion = wrapDropControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dropControllerMotion
 }
@@ -162,19 +172,17 @@ func NewDropControllerMotion() *DropControllerMotion {
 //    - ok: TRUE if a dragging pointer is within self or one of its children.
 //
 func (self *DropControllerMotion) ContainsPointer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropControllerMotion // out
+	var _cret C.gboolean                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropControllerMotion")
-	_gret := _info.InvokeClassMethod("contains_pointer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -189,21 +197,19 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 //    - drop (optional): GdkDrop currently happening within self or NULL if none.
 //
 func (self *DropControllerMotion) Drop() gdk.Dropper {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropControllerMotion // out
+	var _cret *C.GdkDrop                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropControllerMotion")
-	_gret := _info.InvokeClassMethod("get_drop", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_controller_motion_get_drop(_arg0)
 	runtime.KeepAlive(self)
 
 	var _drop gdk.Dropper // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -230,19 +236,17 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 //      children.
 //
 func (self *DropControllerMotion) IsPointer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropControllerMotion // out
+	var _cret C.gboolean                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropControllerMotion")
-	_gret := _info.InvokeClassMethod("is_pointer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

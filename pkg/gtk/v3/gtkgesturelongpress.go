@@ -6,14 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_GestureLongPress_ConnectCancelled(gpointer, guintptr);
 // extern void _gotk4_gtk3_GestureLongPress_ConnectPressed(gpointer, gdouble, gdouble, guintptr);
 import "C"
@@ -24,9 +24,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureLongPress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureLongPress").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_long_press_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureLongPress)
 	return gtype
+}
+
+// GestureLongPressOverrider contains methods that are overridable.
+type GestureLongPressOverrider interface {
 }
 
 // GestureLongPress is a Gesture implementation able to recognize long presses,
@@ -43,6 +47,14 @@ type GestureLongPress struct {
 var (
 	_ Gesturer = (*GestureLongPress)(nil)
 )
+
+func classInitGestureLongPresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureLongPress(obj *coreglib.Object) *GestureLongPress {
 	return &GestureLongPress{
@@ -122,19 +134,17 @@ func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.SignalH
 //    - gestureLongPress: newly created GestureLongPress.
 //
 func NewGestureLongPress(widget Widgetter) *GestureLongPress {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkWidget  // out
+	var _cret *C.GtkGesture // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureLongPress")
-	_gret := _info.InvokeClassMethod("new_GestureLongPress", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_long_press_new(_arg1)
 	runtime.KeepAlive(widget)
 
 	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = wrapGestureLongPress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureLongPress = wrapGestureLongPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
 }

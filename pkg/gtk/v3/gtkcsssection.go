@@ -8,15 +8,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeCSSSectionType returns the GType for the type CSSSectionType.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCSSSectionType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CssSectionType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_css_section_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCSSSectionType)
 	return gtype
 }
@@ -36,7 +36,7 @@ func GTypeCSSSectionType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCSSSection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CssSection").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_css_section_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCSSSection)
 	return gtype
 }
@@ -117,12 +117,12 @@ type CSSSection struct {
 
 // cssSection is the struct that's finalized.
 type cssSection struct {
-	native unsafe.Pointer
+	native *C.GtkCssSection
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &CSSSection{&cssSection{(unsafe.Pointer)(b)}}, nil
+	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
 }
 
 // EndLine returns the line in the CSS document where this section end. The line
@@ -138,19 +138,17 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 //    - guint: line number.
 //
 func (section *CSSSection) EndLine() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_end_line", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_end_line(_arg0)
 	runtime.KeepAlive(section)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -167,19 +165,17 @@ func (section *CSSSection) EndLine() uint32 {
 //    - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) EndPosition() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_end_position", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_end_position(_arg0)
 	runtime.KeepAlive(section)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -194,20 +190,18 @@ func (section *CSSSection) EndPosition() uint32 {
 //      other data.
 //
 func (section *CSSSection) File() *gio.File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.GFile         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_file(_arg0)
 	runtime.KeepAlive(section)
 
 	var _file *gio.File // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -228,21 +222,19 @@ func (section *CSSSection) File() *gio.File {
 //    - cssSection (optional): parent section or NULL if none.
 //
 func (section *CSSSection) Parent() *CSSSection {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.GtkCssSection // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_parent(_arg0)
 	runtime.KeepAlive(section)
 
 	var _cssSection *CSSSection // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.gtk_css_section_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_css_section_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -254,6 +246,28 @@ func (section *CSSSection) Parent() *CSSSection {
 	return _cssSection
 }
 
+// SectionType gets the type of information that section describes.
+//
+// The function returns the following values:
+//
+//    - cssSectionType: type of section.
+//
+func (section *CSSSection) SectionType() CSSSectionType {
+	var _arg0 *C.GtkCssSection    // out
+	var _cret C.GtkCssSectionType // in
+
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+
+	_cret = C.gtk_css_section_get_section_type(_arg0)
+	runtime.KeepAlive(section)
+
+	var _cssSectionType CSSSectionType // out
+
+	_cssSectionType = CSSSectionType(_cret)
+
+	return _cssSectionType
+}
+
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
 //
@@ -262,19 +276,17 @@ func (section *CSSSection) Parent() *CSSSection {
 //    - guint: line number.
 //
 func (section *CSSSection) StartLine() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_start_line", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_start_line(_arg0)
 	runtime.KeepAlive(section)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -287,19 +299,17 @@ func (section *CSSSection) StartLine() uint32 {
 //    - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) StartPosition() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCssSection // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
 
-	_info := girepository.MustFind("Gtk", "CssSection")
-	_gret := _info.InvokeRecordMethod("get_start_position", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_css_section_get_start_position(_arg0)
 	runtime.KeepAlive(section)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }

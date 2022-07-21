@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCredentials() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Credentials").RegisteredGType())
+	gtype := coreglib.Type(C.g_credentials_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCredentials)
 	return gtype
+}
+
+// CredentialsOverrider contains methods that are overridable.
+type CredentialsOverrider interface {
 }
 
 // Credentials type is a reference-counted wrapper for native credentials. This
@@ -67,6 +69,14 @@ var (
 	_ coreglib.Objector = (*Credentials)(nil)
 )
 
+func classInitCredentialser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapCredentials(obj *coreglib.Object) *Credentials {
 	return &Credentials{
 		Object: obj,
@@ -85,13 +95,13 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 //    - credentials Free with g_object_unref().
 //
 func NewCredentials() *Credentials {
-	_info := girepository.MustFind("Gio", "Credentials")
-	_gret := _info.InvokeClassMethod("new_Credentials", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GCredentials // in
+
+	_cret = C.g_credentials_new()
 
 	var _credentials *Credentials // out
 
-	_credentials = wrapCredentials(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_credentials = wrapCredentials(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _credentials
 }
@@ -105,24 +115,51 @@ func NewCredentials() *Credentials {
 //    - otherCredentials: #GCredentials.
 //
 func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GCredentials // out
+	var _arg1 *C.GCredentials // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherCredentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer(coreglib.InternObject(otherCredentials).Native()))
 
-	_info := girepository.MustFind("Gio", "Credentials")
-	_info.InvokeClassMethod("is_same_user", _args[:], nil)
-
+	C.g_credentials_is_same_user(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(credentials)
 	runtime.KeepAlive(otherCredentials)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// SetNative copies the native credentials of type native_type from native into
+// credentials.
+//
+// It is a programming error (which will cause a warning to be logged) to use
+// this method if there is no #GCredentials support for the OS or if native_type
+// isn't supported by the OS.
+//
+// The function takes the following parameters:
+//
+//    - nativeType: type of native credentials to set.
+//    - native: pointer to native credentials.
+//
+func (credentials *Credentials) SetNative(nativeType CredentialsType, native unsafe.Pointer) {
+	var _arg0 *C.GCredentials    // out
+	var _arg1 C.GCredentialsType // out
+	var _arg2 C.gpointer         // out
+
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
+	_arg1 = C.GCredentialsType(nativeType)
+	_arg2 = (C.gpointer)(unsafe.Pointer(native))
+
+	C.g_credentials_set_native(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(credentials)
+	runtime.KeepAlive(nativeType)
+	runtime.KeepAlive(native)
 }
 
 // String creates a human-readable textual representation of credentials that
@@ -134,20 +171,18 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 //    - utf8: string that should be freed with g_free().
 //
 func (credentials *Credentials) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GCredentials // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
+	_arg0 = (*C.GCredentials)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 
-	_info := girepository.MustFind("Gio", "Credentials")
-	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_credentials_to_string(_arg0)
 	runtime.KeepAlive(credentials)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

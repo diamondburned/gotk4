@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConverterOutputStream() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ConverterOutputStream").RegisteredGType())
+	gtype := coreglib.Type(C.g_converter_output_stream_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConverterOutputStream)
 	return gtype
 }
@@ -94,21 +92,20 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 //    - converterOutputStream: new Stream.
 //
 func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) *ConverterOutputStream {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.GConverter    // out
+	var _cret *C.GOutputStream // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
+	_arg2 = (*C.GConverter)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
-	_info := girepository.MustFind("Gio", "ConverterOutputStream")
-	_gret := _info.InvokeClassMethod("new_ConverterOutputStream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_converter_output_stream_new(_arg1, _arg2)
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(converter)
 
 	var _converterOutputStream *ConverterOutputStream // out
 
-	_converterOutputStream = wrapConverterOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_converterOutputStream = wrapConverterOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterOutputStream
 }
@@ -120,19 +117,17 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) 
 //    - converter of the converter output stream.
 //
 func (converterStream *ConverterOutputStream) Converter() *Converter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GConverterOutputStream // out
+	var _cret *C.GConverter             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converterStream).Native()))
+	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(coreglib.InternObject(converterStream).Native()))
 
-	_info := girepository.MustFind("Gio", "ConverterOutputStream")
-	_gret := _info.InvokeClassMethod("get_converter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_converter_output_stream_get_converter(_arg0)
 	runtime.KeepAlive(converterStream)
 
 	var _converter *Converter // out
 
-	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _converter
 }

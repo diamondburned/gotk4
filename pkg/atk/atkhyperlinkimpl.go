@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern void* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(void*);
+// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(AtkHyperlinkImpl*);
 import "C"
 
 // GTypeHyperlinkImpl returns the GType for the type HyperlinkImpl.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeHyperlinkImpl() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "HyperlinkImpl").RegisteredGType())
+	gtype := coreglib.Type(C.atk_hyperlink_impl_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalHyperlinkImpl)
 	return gtype
 }
@@ -87,18 +85,18 @@ type HyperlinkImpler interface {
 var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
 
 func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "HyperlinkImplIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_hyperlink"))) = unsafe.Pointer(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
+	iface := (*C.AtkHyperlinkImplIface)(unsafe.Pointer(gifacePtr))
+	iface.get_hyperlink = (*[0]byte)(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
 }
 
 //export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
-func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cret *C.AtkHyperlink) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HyperlinkImplOverrider)
 
 	hyperlink := iface.Hyperlink()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(hyperlink).Native()))
 
 	return cret
@@ -122,19 +120,17 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 //      AtkObject.
 //
 func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkHyperlinkImpl // out
+	var _cret *C.AtkHyperlink     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
 
-	_info := girepository.MustFind("Atk", "HyperlinkImpl")
-	_gret := _info.InvokeIfaceMethod("get_hyperlink", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
 	runtime.KeepAlive(impl)
 
 	var _hyperlink *Hyperlink // out
 
-	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _hyperlink
 }

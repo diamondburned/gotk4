@@ -4,32 +4,26 @@ package gio
 
 import (
 	_ "runtime/cgo"
-	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: gio-2.0 gobject-introspection-1.0
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
-
-func init() {
-	girepository.Require("Gio", "2.0", girepository.LoadFlagLazy)
-}
 
 // The function returns the following values:
 //
 func DBusErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.g_dbus_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }

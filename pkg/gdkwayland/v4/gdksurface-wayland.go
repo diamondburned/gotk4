@@ -5,14 +5,12 @@ package gdkwayland
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/wayland/gdkwayland.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWaylandPopup() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandPopup").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wayland_popup_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandPopup)
 	return gtype
 }
@@ -33,7 +31,7 @@ func GTypeWaylandPopup() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWaylandSurface() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandSurface").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wayland_surface_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandSurface)
 	return gtype
 }
@@ -44,7 +42,7 @@ func GTypeWaylandSurface() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWaylandToplevel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandToplevel").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_wayland_toplevel_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandToplevel)
 	return gtype
 }

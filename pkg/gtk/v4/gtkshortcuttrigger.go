@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeAlternativeTrigger returns the GType for the type AlternativeTrigger.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAlternativeTrigger() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AlternativeTrigger").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_alternative_trigger_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAlternativeTrigger)
 	return gtype
 }
@@ -34,7 +32,7 @@ func GTypeAlternativeTrigger() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeKeyvalTrigger() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "KeyvalTrigger").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_keyval_trigger_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalKeyvalTrigger)
 	return gtype
 }
@@ -45,7 +43,7 @@ func GTypeKeyvalTrigger() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMnemonicTrigger() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MnemonicTrigger").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_mnemonic_trigger_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMnemonicTrigger)
 	return gtype
 }
@@ -56,7 +54,7 @@ func GTypeMnemonicTrigger() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNeverTrigger() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "NeverTrigger").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_never_trigger_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNeverTrigger)
 	return gtype
 }
@@ -67,9 +65,13 @@ func GTypeNeverTrigger() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcutTrigger() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutTrigger").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcut_trigger_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutTrigger)
 	return gtype
+}
+
+// AlternativeTriggerOverrider contains methods that are overridable.
+type AlternativeTriggerOverrider interface {
 }
 
 // AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
@@ -85,6 +87,14 @@ type AlternativeTrigger struct {
 var (
 	_ ShortcutTriggerer = (*AlternativeTrigger)(nil)
 )
+
+func classInitAlternativeTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapAlternativeTrigger(obj *coreglib.Object) *AlternativeTrigger {
 	return &AlternativeTrigger{
@@ -114,23 +124,22 @@ func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 //    - alternativeTrigger: new GtkShortcutTrigger.
 //
 func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkShortcutTrigger // out
+	var _arg2 *C.GtkShortcutTrigger // out
+	var _cret *C.GtkShortcutTrigger // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(first).Native()))
+	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(first).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(first).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(second).Native()))
+	_arg2 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(second).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(second).Native()))
 
-	_info := girepository.MustFind("Gtk", "AlternativeTrigger")
-	_gret := _info.InvokeClassMethod("new_AlternativeTrigger", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_alternative_trigger_new(_arg1, _arg2)
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
 
 	var _alternativeTrigger *AlternativeTrigger // out
 
-	_alternativeTrigger = wrapAlternativeTrigger(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_alternativeTrigger = wrapAlternativeTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _alternativeTrigger
 }
@@ -144,20 +153,18 @@ func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger 
 //    - shortcutTrigger: first alternative trigger.
 //
 func (self *AlternativeTrigger) First() ShortcutTriggerer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAlternativeTrigger // out
+	var _cret *C.GtkShortcutTrigger    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "AlternativeTrigger")
-	_gret := _info.InvokeClassMethod("get_first", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_alternative_trigger_get_first(_arg0)
 	runtime.KeepAlive(self)
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.ShortcutTriggerer is nil")
 		}
@@ -186,20 +193,18 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 //    - shortcutTrigger: second alternative trigger.
 //
 func (self *AlternativeTrigger) Second() ShortcutTriggerer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAlternativeTrigger // out
+	var _cret *C.GtkShortcutTrigger    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkAlternativeTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "AlternativeTrigger")
-	_gret := _info.InvokeClassMethod("get_second", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_alternative_trigger_get_second(_arg0)
 	runtime.KeepAlive(self)
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.ShortcutTriggerer is nil")
 		}
@@ -219,6 +224,10 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	return _shortcutTrigger
 }
 
+// KeyvalTriggerOverrider contains methods that are overridable.
+type KeyvalTriggerOverrider interface {
+}
+
 // KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger struct {
@@ -229,6 +238,14 @@ type KeyvalTrigger struct {
 var (
 	_ ShortcutTriggerer = (*KeyvalTrigger)(nil)
 )
+
+func classInitKeyvalTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapKeyvalTrigger(obj *coreglib.Object) *KeyvalTrigger {
 	return &KeyvalTrigger{
@@ -242,6 +259,37 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	return wrapKeyvalTrigger(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewKeyvalTrigger creates a GtkShortcutTrigger that will trigger whenever the
+// key with the given keyval and modifiers is pressed.
+//
+// The function takes the following parameters:
+//
+//    - keyval to trigger for.
+//    - modifiers that need to be present.
+//
+// The function returns the following values:
+//
+//    - keyvalTrigger: new GtkShortcutTrigger.
+//
+func NewKeyvalTrigger(keyval uint32, modifiers gdk.ModifierType) *KeyvalTrigger {
+	var _arg1 C.guint               // out
+	var _arg2 C.GdkModifierType     // out
+	var _cret *C.GtkShortcutTrigger // in
+
+	_arg1 = C.guint(keyval)
+	_arg2 = C.GdkModifierType(modifiers)
+
+	_cret = C.gtk_keyval_trigger_new(_arg1, _arg2)
+	runtime.KeepAlive(keyval)
+	runtime.KeepAlive(modifiers)
+
+	var _keyvalTrigger *KeyvalTrigger // out
+
+	_keyvalTrigger = wrapKeyvalTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _keyvalTrigger
+}
+
 // Keyval gets the keyval that must be pressed to succeed triggering self.
 //
 // The function returns the following values:
@@ -249,21 +297,45 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 //    - guint: keyval.
 //
 func (self *KeyvalTrigger) Keyval() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkKeyvalTrigger // out
+	var _cret C.guint             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "KeyvalTrigger")
-	_gret := _info.InvokeClassMethod("get_keyval", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// Modifiers gets the modifiers that must be present to succeed triggering self.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifiers.
+//
+func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
+	var _arg0 *C.GtkKeyvalTrigger // out
+	var _cret C.GdkModifierType   // in
+
+	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_keyval_trigger_get_modifiers(_arg0)
+	runtime.KeepAlive(self)
+
+	var _modifierType gdk.ModifierType // out
+
+	_modifierType = gdk.ModifierType(_cret)
+
+	return _modifierType
+}
+
+// MnemonicTriggerOverrider contains methods that are overridable.
+type MnemonicTriggerOverrider interface {
 }
 
 // MnemonicTrigger: GtkShortcutTrigger that triggers when a specific mnemonic is
@@ -279,6 +351,14 @@ type MnemonicTrigger struct {
 var (
 	_ ShortcutTriggerer = (*MnemonicTrigger)(nil)
 )
+
+func classInitMnemonicTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapMnemonicTrigger(obj *coreglib.Object) *MnemonicTrigger {
 	return &MnemonicTrigger{
@@ -307,19 +387,17 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 //    - mnemonicTrigger: new GtkShortcutTrigger.
 //
 func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
-	var _args [1]girepository.Argument
+	var _arg1 C.guint               // out
+	var _cret *C.GtkShortcutTrigger // in
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	_info := girepository.MustFind("Gtk", "MnemonicTrigger")
-	_gret := _info.InvokeClassMethod("new_MnemonicTrigger", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_mnemonic_trigger_new(_arg1)
 	runtime.KeepAlive(keyval)
 
 	var _mnemonicTrigger *MnemonicTrigger // out
 
-	_mnemonicTrigger = wrapMnemonicTrigger(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_mnemonicTrigger = wrapMnemonicTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _mnemonicTrigger
 }
@@ -331,21 +409,23 @@ func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
 //    - guint: keyval.
 //
 func (self *MnemonicTrigger) Keyval() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMnemonicTrigger // out
+	var _cret C.guint               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "MnemonicTrigger")
-	_gret := _info.InvokeClassMethod("get_keyval", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
+}
+
+// NeverTriggerOverrider contains methods that are overridable.
+type NeverTriggerOverrider interface {
 }
 
 // NeverTrigger: GtkShortcutTrigger that never triggers.
@@ -357,6 +437,14 @@ type NeverTrigger struct {
 var (
 	_ ShortcutTriggerer = (*NeverTrigger)(nil)
 )
+
+func classInitNeverTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapNeverTrigger(obj *coreglib.Object) *NeverTrigger {
 	return &NeverTrigger{
@@ -380,15 +468,19 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 //    - neverTrigger: never trigger.
 //
 func NeverTriggerGet() *NeverTrigger {
-	_info := girepository.MustFind("Gtk", "get")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkShortcutTrigger // in
+
+	_cret = C.gtk_never_trigger_get()
 
 	var _neverTrigger *NeverTrigger // out
 
-	_neverTrigger = wrapNeverTrigger(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_neverTrigger = wrapNeverTrigger(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _neverTrigger
+}
+
+// ShortcutTriggerOverrider contains methods that are overridable.
+type ShortcutTriggerOverrider interface {
 }
 
 // ShortcutTrigger: GtkShortcutTrigger tracks how a GtkShortcut should be
@@ -422,6 +514,14 @@ type ShortcutTriggerer interface {
 }
 
 var _ ShortcutTriggerer = (*ShortcutTrigger)(nil)
+
+func classInitShortcutTriggerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapShortcutTrigger(obj *coreglib.Object) *ShortcutTrigger {
 	return &ShortcutTrigger{
@@ -468,21 +568,19 @@ func BaseShortcutTrigger(obj ShortcutTriggerer) *ShortcutTrigger {
 //    - shortcutTrigger (optional): new GtkShortcutTrigger or NULL on error.
 //
 func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char               // out
+	var _cret *C.GtkShortcutTrigger // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
-	_gret := _info.InvokeClassMethod("new_ShortcutTrigger_parse_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_trigger_parse_string(_arg1)
 	runtime.KeepAlive(str)
 
 	var _shortcutTrigger *ShortcutTrigger // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_shortcutTrigger = wrapShortcutTrigger(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_shortcutTrigger = wrapShortcutTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _shortcutTrigger
@@ -504,21 +602,20 @@ func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 //      trigger2.
 //
 func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.int           // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
+	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
+	_arg1 = *(*C.gconstpointer)(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
 
-	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
-	_gret := _info.InvokeClassMethod("compare", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 	runtime.KeepAlive(trigger1)
 	runtime.KeepAlive(trigger2)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -537,21 +634,20 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
 //    - ok: TRUE if trigger1 and trigger2 are equal.
 //
 func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 C.gconstpointer // out
+	var _arg1 C.gconstpointer // out
+	var _cret C.gboolean      // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
+	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
+	_arg1 = *(*C.gconstpointer)(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
 
-	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
-	_gret := _info.InvokeClassMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 	runtime.KeepAlive(trigger1)
 	runtime.KeepAlive(trigger2)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -573,19 +669,17 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 //    - guint: hash value corresponding to trigger.
 //
 func (trigger *ShortcutTrigger) Hash() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 C.gconstpointer // out
+	var _cret C.guint         // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
+	_arg0 = *(*C.gconstpointer)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 
-	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
-	_gret := _info.InvokeClassMethod("hash", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 	runtime.KeepAlive(trigger)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -610,22 +704,21 @@ func (trigger *ShortcutTrigger) Hash() uint32 {
 //    - utf8: new string.
 //
 func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkShortcutTrigger // out
+	var _arg1 *C.GdkDisplay         // out
+	var _cret *C.char               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
-	_gret := _info.InvokeClassMethod("to_label", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -640,20 +733,55 @@ func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 //    - utf8: new string.
 //
 func (self *ShortcutTrigger) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkShortcutTrigger // out
+	var _cret *C.char               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
-	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_shortcut_trigger_to_string(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// Trigger checks if the given event triggers self.
+//
+// The function takes the following parameters:
+//
+//    - event to check.
+//    - enableMnemonics: TRUE if mnemonics should trigger. Usually the value of
+//      this property is determined by checking that the passed in event is a Key
+//      event and has the right modifiers set.
+//
+// The function returns the following values:
+//
+//    - keyMatch: whether the event triggered the shortcut.
+//
+func (self *ShortcutTrigger) Trigger(event gdk.Eventer, enableMnemonics bool) gdk.KeyMatch {
+	var _arg0 *C.GtkShortcutTrigger // out
+	var _arg1 *C.GdkEvent           // out
+	var _arg2 C.gboolean            // out
+	var _cret C.GdkKeyMatch         // in
+
+	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	if enableMnemonics {
+		_arg2 = C.TRUE
+	}
+
+	_cret = C.gtk_shortcut_trigger_trigger(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(enableMnemonics)
+
+	var _keyMatch gdk.KeyMatch // out
+
+	_keyMatch = gdk.KeyMatch(_cret)
+
+	return _keyMatch
 }

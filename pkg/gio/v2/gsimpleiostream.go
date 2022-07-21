@@ -6,14 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // NewSimpleIOStream creates a new IOStream wrapping input_stream and
@@ -29,21 +26,20 @@ import "C"
 //    - simpleIOStream: new IOStream instance.
 //
 func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *SimpleIOStream {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GInputStream  // out
+	var _arg2 *C.GOutputStream // out
+	var _cret *C.GIOStream     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(inputStream).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(outputStream).Native()))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(inputStream).Native()))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(outputStream).Native()))
 
-	_info := girepository.MustFind("Gio", "SimpleIOStream")
-	_gret := _info.InvokeClassMethod("new_SimpleIOStream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_simple_io_stream_new(_arg1, _arg2)
 	runtime.KeepAlive(inputStream)
 	runtime.KeepAlive(outputStream)
 
 	var _simpleIOStream *SimpleIOStream // out
 
-	_simpleIOStream = wrapSimpleIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_simpleIOStream = wrapSimpleIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleIOStream
 }

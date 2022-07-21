@@ -5,13 +5,11 @@ package gdkx11
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
@@ -21,9 +19,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeX11DeviceManagerXI2() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11DeviceManagerXI2").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_x11_device_manager_xi2_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalX11DeviceManagerXI2)
 	return gtype
+}
+
+// X11DeviceManagerXI2Overrider contains methods that are overridable.
+type X11DeviceManagerXI2Overrider interface {
 }
 
 type X11DeviceManagerXI2 struct {
@@ -34,6 +36,14 @@ type X11DeviceManagerXI2 struct {
 var (
 	_ coreglib.Objector = (*X11DeviceManagerXI2)(nil)
 )
+
+func classInitX11DeviceManagerXI2er(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11DeviceManagerXI2(obj *coreglib.Object) *X11DeviceManagerXI2 {
 	return &X11DeviceManagerXI2{

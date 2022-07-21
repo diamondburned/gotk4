@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,9 +20,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGLTexture() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "GLTexture").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_gl_texture_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGLTexture)
 	return gtype
+}
+
+// GLTextureOverrider contains methods that are overridable.
+type GLTextureOverrider interface {
 }
 
 // GLTexture: gdkTexture representing a GL texture object.
@@ -36,6 +38,14 @@ type GLTexture struct {
 var (
 	_ Texturer = (*GLTexture)(nil)
 )
+
+func classInitGLTexturer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGLTexture(obj *coreglib.Object) *GLTexture {
 	return &GLTexture{
@@ -57,12 +67,10 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 // The texture contents are still available via the gdk.Texture.Download()
 // function, after this function has been called.
 func (self *GLTexture) Release() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkGLTexture // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "GLTexture")
-	_info.InvokeClassMethod("release", _args[:], nil)
-
+	C.gdk_gl_texture_release(_arg0)
 	runtime.KeepAlive(self)
 }

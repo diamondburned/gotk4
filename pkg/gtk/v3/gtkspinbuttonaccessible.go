@@ -6,14 +6,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeSpinButtonAccessible returns the GType for the type SpinButtonAccessible.
@@ -22,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSpinButtonAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SpinButtonAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_spin_button_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSpinButtonAccessible)
 	return gtype
 }

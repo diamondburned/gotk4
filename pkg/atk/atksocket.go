@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern void _gotk4_atk1_SocketClass_embed(void*, gchar*);
+// extern void _gotk4_atk1_SocketClass_embed(AtkSocket*, gchar*);
 import "C"
 
 // GTypeSocket returns the GType for the type Socket.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocket() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Socket").RegisteredGType())
+	gtype := coreglib.Type(C.atk_socket_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocket)
 	return gtype
 }
@@ -86,16 +84,15 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Atk", "SocketClass")
+	pclass := (*C.AtkSocketClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Embed(plugId string) }); ok {
-		o := pclass.StructFieldOffset("embed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_SocketClass_embed)
+		pclass.embed = (*[0]byte)(C._gotk4_atk1_SocketClass_embed)
 	}
 }
 
 //export _gotk4_atk1_SocketClass_embed
-func _gotk4_atk1_SocketClass_embed(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embed(plugId string) })
 
@@ -129,13 +126,13 @@ func marshalSocket(p uintptr) (interface{}, error) {
 //    - socket: newly created Socket instance.
 //
 func NewSocket() *Socket {
-	_info := girepository.MustFind("Atk", "Socket")
-	_gret := _info.InvokeClassMethod("new_Socket", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_socket_new()
 
 	var _socket *Socket // out
 
-	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socket
 }
@@ -154,15 +151,14 @@ func NewSocket() *Socket {
 //    - plugId: ID of an Plug.
 //
 func (obj *Socket) Embed(plugId string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkSocket // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "Socket")
-	_info.InvokeClassMethod("embed", _args[:], nil)
-
+	C.atk_socket_embed(_arg0, _arg1)
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(plugId)
 }
@@ -174,19 +170,17 @@ func (obj *Socket) Embed(plugId string) {
 //    - ok: TRUE if a plug is embedded in the socket.
 //
 func (obj *Socket) IsOccupied() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkSocket // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_info := girepository.MustFind("Atk", "Socket")
-	_gret := _info.InvokeClassMethod("is_occupied", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_socket_is_occupied(_arg0)
 	runtime.KeepAlive(obj)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeApplicationWindow returns the GType for the type ApplicationWindow.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeApplicationWindow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ApplicationWindow").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_application_window_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalApplicationWindow)
 	return gtype
 }
@@ -207,19 +207,17 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //    - applicationWindow: newly created ApplicationWindow.
 //
 func NewApplicationWindow(application *Application) *ApplicationWindow {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkApplication // out
+	var _cret *C.GtkWidget      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = (*C.GtkApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_info := girepository.MustFind("Gtk", "ApplicationWindow")
-	_gret := _info.InvokeClassMethod("new_ApplicationWindow", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_application_window_new(_arg1)
 	runtime.KeepAlive(application)
 
 	var _applicationWindow *ApplicationWindow // out
 
-	_applicationWindow = wrapApplicationWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_applicationWindow = wrapApplicationWindow(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _applicationWindow
 }
@@ -232,20 +230,18 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 //    - shortcutsWindow (optional): help overlay associated with window, or NULL.
 //
 func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkApplicationWindow // out
+	var _cret *C.GtkShortcutsWindow   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gtk", "ApplicationWindow")
-	_gret := _info.InvokeClassMethod("get_help_overlay", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_application_window_get_help_overlay(_arg0)
 	runtime.KeepAlive(window)
 
 	var _shortcutsWindow *ShortcutsWindow // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_shortcutsWindow = wrapShortcutsWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_shortcutsWindow = wrapShortcutsWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _shortcutsWindow
@@ -260,19 +256,17 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 //      a Application.
 //
 func (window *ApplicationWindow) ID() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkApplicationWindow // out
+	var _cret C.guint                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gtk", "ApplicationWindow")
-	_gret := _info.InvokeClassMethod("get_id", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_application_window_get_id(_arg0)
 	runtime.KeepAlive(window)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -285,19 +279,17 @@ func (window *ApplicationWindow) ID() uint32 {
 //    - ok: TRUE if window will display a menubar when needed.
 //
 func (window *ApplicationWindow) ShowMenubar() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkApplicationWindow // out
+	var _cret C.gboolean              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_info := girepository.MustFind("Gtk", "ApplicationWindow")
-	_gret := _info.InvokeClassMethod("get_show_menubar", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_application_window_get_show_menubar(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -314,16 +306,15 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 //    - helpOverlay (optional): ShortcutsWindow.
 //
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkApplicationWindow // out
+	var _arg1 *C.GtkShortcutsWindow   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if helpOverlay != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(helpOverlay).Native()))
+		_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(coreglib.InternObject(helpOverlay).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ApplicationWindow")
-	_info.InvokeClassMethod("set_help_overlay", _args[:], nil)
-
+	C.gtk_application_window_set_help_overlay(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(helpOverlay)
 }
@@ -336,16 +327,15 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 //    - showMenubar: whether to show a menubar when needed.
 //
 func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkApplicationWindow // out
+	var _arg1 C.gboolean              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if showMenubar {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ApplicationWindow")
-	_info.InvokeClassMethod("set_show_menubar", _args[:], nil)
-
+	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(showMenubar)
 }

@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeInvisible returns the GType for the type Invisible.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeInvisible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Invisible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_invisible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalInvisible)
 	return gtype
 }
@@ -83,13 +83,13 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 //    - invisible: new Invisible.
 //
 func NewInvisible() *Invisible {
-	_info := girepository.MustFind("Gtk", "Invisible")
-	_gret := _info.InvokeClassMethod("new_Invisible", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_invisible_new()
 
 	var _invisible *Invisible // out
 
-	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -105,19 +105,17 @@ func NewInvisible() *Invisible {
 //    - invisible: newly created Invisible object.
 //
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkScreen // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gtk", "Invisible")
-	_gret := _info.InvokeClassMethod("new_Invisible_for_screen", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_invisible_new_for_screen(_arg1)
 	runtime.KeepAlive(screen)
 
 	var _invisible *Invisible // out
 
-	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
 }
@@ -129,20 +127,18 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 //    - screen: associated Screen.
 //
 func (invisible *Invisible) Screen() *gdk.Screen {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkInvisible // out
+	var _cret *C.GdkScreen    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
 
-	_info := girepository.MustFind("Gtk", "Invisible")
-	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_invisible_get_screen(_arg0)
 	runtime.KeepAlive(invisible)
 
 	var _screen *gdk.Screen // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_screen = &gdk.Screen{
 			Object: obj,
 		}
@@ -158,14 +154,13 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 //    - screen: Screen.
 //
 func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkInvisible // out
+	var _arg1 *C.GdkScreen    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gtk", "Invisible")
-	_info.InvokeClassMethod("set_screen", _args[:], nil)
-
+	C.gtk_invisible_set_screen(_arg0, _arg1)
 	runtime.KeepAlive(invisible)
 	runtime.KeepAlive(screen)
 }

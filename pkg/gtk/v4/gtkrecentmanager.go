@@ -10,17 +10,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_RecentManagerClass_changed(void*);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_RecentManagerClass_changed(GtkRecentManager*);
 // extern void _gotk4_gtk4_RecentManager_ConnectChanged(gpointer, guintptr);
 import "C"
 
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentManagerError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentManagerError").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_manager_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentManagerError)
 	return gtype
 }
@@ -41,7 +39,7 @@ func GTypeRecentManagerError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentManager() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentManager").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_manager_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentManager)
 	return gtype
 }
@@ -52,7 +50,7 @@ func GTypeRecentManager() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentInfo").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentInfo)
 	return gtype
 }
@@ -179,16 +177,15 @@ func classInitRecentManagerer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "RecentManagerClass")
+	pclass := (*C.GtkRecentManagerClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		o := pclass.StructFieldOffset("changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_RecentManagerClass_changed)
+		pclass.changed = (*[0]byte)(C._gotk4_gtk4_RecentManagerClass_changed)
 	}
 }
 
 //export _gotk4_gtk4_RecentManagerClass_changed
-func _gotk4_gtk4_RecentManagerClass_changed(arg0 *C.void) {
+func _gotk4_gtk4_RecentManagerClass_changed(arg0 *C.GtkRecentManager) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
@@ -245,13 +242,13 @@ func (manager *RecentManager) ConnectChanged(f func()) coreglib.SignalHandle {
 //    - recentManager: newly created GtkRecentManager object.
 //
 func NewRecentManager() *RecentManager {
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("new_RecentManager", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkRecentManager // in
+
+	_cret = C.gtk_recent_manager_new()
 
 	var _recentManager *RecentManager // out
 
-	_recentManager = wrapRecentManager(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentManager = wrapRecentManager(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentManager
 }
@@ -284,24 +281,24 @@ func NewRecentManager() *RecentManager {
 //      resources list, FALSE otherwise.
 //
 func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _arg2 *C.GtkRecentData    // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(recentData)))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkRecentData)(gextras.StructNative(unsafe.Pointer(recentData)))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("add_full", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(recentData)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -328,22 +325,21 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 //      resources list.
 //
 func (manager *RecentManager) AddItem(uri string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("add_item", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -359,23 +355,21 @@ func (manager *RecentManager) AddItem(uri string) bool {
 //      g_list_free().
 //
 func (manager *RecentManager) Items() []*RecentInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _cret *C.GList            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("get_items", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_manager_get_items(_arg0)
 	runtime.KeepAlive(manager)
 
 	var _list []*RecentInfo // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
-		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -400,22 +394,21 @@ func (manager *RecentManager) Items() []*RecentInfo {
 //    - ok: TRUE if the resource was found, FALSE otherwise.
 //
 func (manager *RecentManager) HasItem(uri string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("has_item", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -437,24 +430,24 @@ func (manager *RecentManager) HasItem(uri string) bool {
 //      recently used resources list. Free with gtk.RecentInfo.Unref().
 //
 func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _cret *C.GtkRecentInfo    // in
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("lookup_item", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
 
 	var _recentInfo *RecentInfo // out
 	var _goerr error            // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -462,8 +455,8 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 			},
 		)
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _recentInfo, _goerr
@@ -482,27 +475,28 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 //      remove the item pointed by uri in the list.
 //
 func (manager *RecentManager) MoveItem(uri, newUri string) error {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _arg2 *C.char             // out
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if newUri != "" {
-		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(newUri)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(newUri)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_info.InvokeClassMethod("move_item", _args[:], nil)
-
+	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(newUri)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -516,22 +510,21 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 //      resources list.
 //
 func (manager *RecentManager) PurgeItems() (int32, error) {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _cret C.int               // in
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_gret := _info.InvokeClassMethod("purge_items", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
 	runtime.KeepAlive(manager)
 
 	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_gint = int32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _gint, _goerr
@@ -545,22 +538,22 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 //    - uri: URI of the item you wish to remove.
 //
 func (manager *RecentManager) RemoveItem(uri string) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.char             // out
+	var _cerr *C.GError           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentManager")
-	_info.InvokeClassMethod("remove_item", _args[:], nil)
-
+	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -574,13 +567,13 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 //    - recentManager: unique GtkRecentManager. Do not ref or unref it.
 //
 func RecentManagerGetDefault() *RecentManager {
-	_info := girepository.MustFind("Gtk", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkRecentManager // in
+
+	_cret = C.gtk_recent_manager_get_default()
 
 	var _recentManager *RecentManager // out
 
-	_recentManager = wrapRecentManager(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentManager = wrapRecentManager(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentManager
 }
@@ -595,45 +588,41 @@ type RecentData struct {
 
 // recentData is the struct that's finalized.
 type recentData struct {
-	native unsafe.Pointer
+	native *C.GtkRecentData
 }
 
 // DisplayName: UTF-8 encoded string, containing the name of the recently used
 // resource to be displayed, or NULL;.
 func (r *RecentData) DisplayName() string {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("display_name")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.display_name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Description: UTF-8 encoded string, containing a short description of the
 // resource, or NULL;.
 func (r *RecentData) Description() string {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("description")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.description
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // MIMEType: MIME type of the resource;.
 func (r *RecentData) MIMEType() string {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("mime_type")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.mime_type
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // AppName: name of the application that is registering this recently used
 // resource;.
 func (r *RecentData) AppName() string {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("app_name")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.app_name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -641,29 +630,27 @@ func (r *RecentData) AppName() string {
 // “\u” escape characters which will be expanded to the resource file path and
 // URI respectively when the command line is retrieved;.
 func (r *RecentData) AppExec() string {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("app_exec")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.app_exec
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Groups: vector of strings containing groups names;.
 func (r *RecentData) Groups() []string {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("groups")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.groups
 	var v []string // out
 	{
 		var i int
 		var z *C.char
-		for p := *(***C.char)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]string, i)
 		for i := range src {
-			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
 	return v
@@ -672,10 +659,9 @@ func (r *RecentData) Groups() []string {
 // IsPrivate: whether this resource should be displayed only by the applications
 // that have registered it or not.
 func (r *RecentData) IsPrivate() bool {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("is_private")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.is_private
 	var v bool // out
-	if *(*C.gboolean)(unsafe.Pointer(&*valptr)) != 0 {
+	if *valptr != 0 {
 		v = true
 	}
 	return v
@@ -684,10 +670,9 @@ func (r *RecentData) IsPrivate() bool {
 // IsPrivate: whether this resource should be displayed only by the applications
 // that have registered it or not.
 func (r *RecentData) SetIsPrivate(isPrivate bool) {
-	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("is_private")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.is_private
 	if isPrivate {
-		*(*C.gboolean)(unsafe.Pointer(&*valptr)) = C.TRUE
+		*valptr = C.TRUE
 	}
 }
 
@@ -701,12 +686,12 @@ type RecentInfo struct {
 
 // recentInfo is the struct that's finalized.
 type recentInfo struct {
-	native unsafe.Pointer
+	native *C.GtkRecentInfo
 }
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &RecentInfo{&recentInfo{(unsafe.Pointer)(b)}}, nil
+	return &RecentInfo{&recentInfo{(*C.GtkRecentInfo)(b)}}, nil
 }
 
 // CreateAppInfo creates a GAppInfo for the specified GtkRecentInfo.
@@ -723,34 +708,34 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 //      error will be set either with a GTK_RECENT_MANAGER_ERROR or a G_IO_ERROR.
 //
 func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _cret *C.GAppInfo      // in
+	var _cerr *C.GError        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 	if appName != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(appName)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("create_app_info", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(appName)
 
 	var _appInfo *gio.AppInfo // out
 	var _goerr error          // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_appInfo = &gio.AppInfo{
 				Object: obj,
 			}
 		}
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _appInfo, _goerr
@@ -764,19 +749,17 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 //    - ok: TRUE if the resource exists.
 //
 func (info *RecentInfo) Exists() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("exists", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_exists(_arg0)
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -791,20 +774,18 @@ func (info *RecentInfo) Exists() bool {
 //    - dateTime for the time when the resource was added.
 //
 func (info *RecentInfo) Added() *glib.DateTime {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GDateTime     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_added", _args[:], nil)
-	_cret := *(**C.GDateTime)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_added(_arg0)
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
 
-	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_cret)))))
-	C.g_date_time_ref(*(**C.GDateTime)(unsafe.Pointer(&_cret)))
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_date_time_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -824,19 +805,17 @@ func (info *RecentInfo) Added() *glib.DateTime {
 //      time this resource was last modified.
 //
 func (info *RecentInfo) Age() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret C.int            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_age", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_age(_arg0)
 	runtime.KeepAlive(info)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -862,17 +841,18 @@ func (info *RecentInfo) Age() int32 {
 //      owned by the GtkRecentInfo and should not be modified or freed.
 //
 func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, *glib.DateTime, bool) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.char          // in
+	var _arg3 C.guint          // in
+	var _arg4 *C.GDateTime     // in
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_application_info", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(appName)
 
@@ -881,17 +861,17 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, *glib.D
 	var _stamp *glib.DateTime // out
 	var _ok bool              // out
 
-	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
-	_count = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
-	_stamp = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_outs[2])))))
-	C.g_date_time_ref(*(**C.GDateTime)(unsafe.Pointer(&_outs[2])))
+	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+	_count = uint32(_arg3)
+	_stamp = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+	C.g_date_time_ref(_arg4)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_stamp)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -907,26 +887,24 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, *glib.D
 //      to free it.
 //
 func (info *RecentInfo) Applications() []string {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret **C.char         // in
+	var _arg1 C.gsize          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_applications", _args[:], _outs[:])
-	_cret := *(***C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_applications(_arg0, &_arg1)
 	runtime.KeepAlive(info)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-		_utf8s = make([]string, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-		for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
+		src := unsafe.Slice((**C.char)(_cret), _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -941,19 +919,17 @@ func (info *RecentInfo) Applications() []string {
 //      recent manager, and should not be freed.
 //
 func (info *RecentInfo) Description() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_description", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_description(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -968,19 +944,17 @@ func (info *RecentInfo) Description() string {
 //      recent manager, and should not be freed.
 //
 func (info *RecentInfo) DisplayName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_display_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_display_name(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -993,21 +967,19 @@ func (info *RecentInfo) DisplayName() string {
 //      finished using the icon.
 //
 func (info *RecentInfo) GIcon() *gio.Icon {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GIcon         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_gicon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_gicon(_arg0)
 	runtime.KeepAlive(info)
 
 	var _icon *gio.Icon // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_icon = &gio.Icon{
 				Object: obj,
 			}
@@ -1028,26 +1000,24 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 //      g_strfreev() to free it.
 //
 func (info *RecentInfo) Groups() []string {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret **C.char         // in
+	var _arg1 C.gsize          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_groups", _args[:], _outs[:])
-	_cret := *(***C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_groups(_arg0, &_arg1)
 	runtime.KeepAlive(info)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-		_utf8s = make([]string, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-		for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
+		src := unsafe.Slice((**C.char)(_cret), _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1062,19 +1032,17 @@ func (info *RecentInfo) Groups() []string {
 //      recent manager, and should not be freed.
 //
 func (info *RecentInfo) MIMEType() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_mime_type", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_mime_type(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1086,20 +1054,18 @@ func (info *RecentInfo) MIMEType() string {
 //    - dateTime for the time when the resource was last modified.
 //
 func (info *RecentInfo) Modified() *glib.DateTime {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GDateTime     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_modified", _args[:], nil)
-	_cret := *(**C.GDateTime)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_modified(_arg0)
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
 
-	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_cret)))))
-	C.g_date_time_ref(*(**C.GDateTime)(unsafe.Pointer(&_cret)))
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_date_time_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1120,19 +1086,17 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 //    - ok: TRUE if the private flag was found, FALSE otherwise.
 //
 func (info *RecentInfo) PrivateHint() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_private_hint", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_private_hint(_arg0)
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1150,20 +1114,18 @@ func (info *RecentInfo) PrivateHint() bool {
 //    - utf8: newly-allocated string in UTF-8 encoding free it with g_free().
 //
 func (info *RecentInfo) ShortName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_short_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_short_name(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1176,19 +1138,17 @@ func (info *RecentInfo) ShortName() string {
 //      manager, and should not be freed.
 //
 func (info *RecentInfo) URI() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_uri", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_uri(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1204,21 +1164,19 @@ func (info *RecentInfo) URI() string {
 //      URI or NULL. Use g_free() when done using it.
 //
 func (info *RecentInfo) URIDisplay() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_uri_display", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_uri_display(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1231,20 +1189,18 @@ func (info *RecentInfo) URIDisplay() string {
 //    - dateTime for the time when the resource was last visited.
 //
 func (info *RecentInfo) Visited() *glib.DateTime {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.GDateTime     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("get_visited", _args[:], nil)
-	_cret := *(**C.GDateTime)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_get_visited(_arg0)
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
 
-	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_cret)))))
-	C.g_date_time_ref(*(**C.GDateTime)(unsafe.Pointer(&_cret)))
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_date_time_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1267,22 +1223,21 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 //    - ok: TRUE if an application with name app_name was found, FALSE otherwise.
 //
 func (info *RecentInfo) HasApplication(appName string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(appName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("has_application", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(appName)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1301,22 +1256,21 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 //    - ok: TRUE if the group was found.
 //
 func (info *RecentInfo) HasGroup(groupName string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.char          // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("has_group", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(groupName)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1331,19 +1285,17 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 //    - ok: TRUE if the resource is local.
 //
 func (info *RecentInfo) IsLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("is_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_is_local(_arg0)
 	runtime.KeepAlive(info)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1358,20 +1310,18 @@ func (info *RecentInfo) IsLocal() bool {
 //    - utf8: application name. Use g_free() to free it.
 //
 func (info *RecentInfo) LastApplication() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("last_application", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_last_application(_arg0)
 	runtime.KeepAlive(info)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -1388,21 +1338,20 @@ func (info *RecentInfo) LastApplication() string {
 //      otherwise.
 //
 func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.GtkRecentInfo // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(infoA)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(infoB)))
+	_arg0 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(infoA)))
+	_arg1 = (*C.GtkRecentInfo)(gextras.StructNative(unsafe.Pointer(infoB)))
 
-	_info := girepository.MustFind("Gtk", "RecentInfo")
-	_gret := _info.InvokeRecordMethod("match", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_info_match(_arg0, _arg1)
 	runtime.KeepAlive(infoA)
 	runtime.KeepAlive(infoB)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

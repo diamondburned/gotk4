@@ -9,34 +9,36 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_FlowBoxFilterFunc(void*, gpointer);
-// extern gint _gotk4_gtk3_FlowBoxSortFunc(void*, void*, gpointer);
-// extern void _gotk4_gtk3_FlowBoxChildClass_activate(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern GtkWidget* _gotk4_gtk3_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// extern gboolean _gotk4_gtk3_FlowBoxClass_move_cursor(GtkFlowBox*, GtkMovementStep, gint);
+// extern gboolean _gotk4_gtk3_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
+// extern gboolean _gotk4_gtk3_FlowBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, guintptr);
+// extern gint _gotk4_gtk3_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
+// extern void _gotk4_gtk3_FlowBoxChildClass_activate(GtkFlowBoxChild*);
 // extern void _gotk4_gtk3_FlowBoxChild_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk3_FlowBoxClass_activate_cursor_child(void*);
-// extern void _gotk4_gtk3_FlowBoxClass_child_activated(void*, void*);
-// extern void _gotk4_gtk3_FlowBoxClass_select_all(void*);
-// extern void _gotk4_gtk3_FlowBoxClass_selected_children_changed(void*);
-// extern void _gotk4_gtk3_FlowBoxClass_toggle_cursor_child(void*);
-// extern void _gotk4_gtk3_FlowBoxClass_unselect_all(void*);
-// extern void _gotk4_gtk3_FlowBoxForEachFunc(void*, void*, gpointer);
+// extern void _gotk4_gtk3_FlowBoxClass_activate_cursor_child(GtkFlowBox*);
+// extern void _gotk4_gtk3_FlowBoxClass_child_activated(GtkFlowBox*, GtkFlowBoxChild*);
+// extern void _gotk4_gtk3_FlowBoxClass_select_all(GtkFlowBox*);
+// extern void _gotk4_gtk3_FlowBoxClass_selected_children_changed(GtkFlowBox*);
+// extern void _gotk4_gtk3_FlowBoxClass_toggle_cursor_child(GtkFlowBox*);
+// extern void _gotk4_gtk3_FlowBoxClass_unselect_all(GtkFlowBox*);
+// extern void _gotk4_gtk3_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 // extern void _gotk4_gtk3_FlowBox_ConnectActivateCursorChild(gpointer, guintptr);
-// extern void _gotk4_gtk3_FlowBox_ConnectChildActivated(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_FlowBox_ConnectChildActivated(gpointer, GtkFlowBoxChild*, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectSelectAll(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectSelectedChildrenChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectToggleCursorChild(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk3_FlowBoxCreateWidgetFunc(gpointer, gpointer);
 import "C"
 
 // GTypeFlowBox returns the GType for the type FlowBox.
@@ -45,7 +47,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFlowBox() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FlowBox").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_flow_box_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFlowBox)
 	return gtype
 }
@@ -56,7 +58,7 @@ func GTypeFlowBox() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFlowBoxChild() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FlowBoxChild").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_flow_box_child_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFlowBoxChild)
 	return gtype
 }
@@ -66,7 +68,7 @@ func GTypeFlowBoxChild() coreglib.Type {
 type FlowBoxCreateWidgetFunc func(item *coreglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk3_FlowBoxCreateWidgetFunc
-func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.void) {
+func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GtkWidget) {
 	var fn FlowBoxCreateWidgetFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -82,7 +84,7 @@ func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret
 
 	widget := fn(_item)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	cret = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(widget).Native()))
 
 	return cret
@@ -93,7 +95,7 @@ func _gotk4_gtk3_FlowBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret
 type FlowBoxFilterFunc func(child *FlowBoxChild) (ok bool)
 
 //export _gotk4_gtk3_FlowBoxFilterFunc
-func _gotk4_gtk3_FlowBoxFilterFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk3_FlowBoxFilterFunc(arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cret C.gboolean) {
 	var fn FlowBoxFilterFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -121,7 +123,7 @@ func _gotk4_gtk3_FlowBoxFilterFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboole
 type FlowBoxForEachFunc func(box *FlowBox, child *FlowBoxChild)
 
 //export _gotk4_gtk3_FlowBoxForEachFunc
-func _gotk4_gtk3_FlowBoxForEachFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gtk3_FlowBoxForEachFunc(arg1 *C.GtkFlowBox, arg2 *C.GtkFlowBoxChild, arg3 C.gpointer) {
 	var fn FlowBoxForEachFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -145,7 +147,7 @@ func _gotk4_gtk3_FlowBoxForEachFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer)
 type FlowBoxSortFunc func(child1, child2 *FlowBoxChild) (gint int32)
 
 //export _gotk4_gtk3_FlowBoxSortFunc
-func _gotk4_gtk3_FlowBoxSortFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gint) {
+func _gotk4_gtk3_FlowBoxSortFunc(arg1 *C.GtkFlowBoxChild, arg2 *C.GtkFlowBoxChild, arg3 C.gpointer) (cret C.gint) {
 	var fn FlowBoxSortFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -174,6 +176,14 @@ type FlowBoxOverrider interface {
 	// The function takes the following parameters:
 	//
 	ChildActivated(child *FlowBoxChild)
+	// The function takes the following parameters:
+	//
+	//    - step
+	//    - count
+	//
+	// The function returns the following values:
+	//
+	MoveCursor(step MovementStep, count int32) bool
 	// SelectAll: select all children of box, if the selection mode allows it.
 	SelectAll()
 	SelectedChildrenChanged()
@@ -241,41 +251,41 @@ func classInitFlowBoxer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "FlowBoxClass")
+	pclass := (*C.GtkFlowBoxClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ActivateCursorChild() }); ok {
-		o := pclass.StructFieldOffset("activate_cursor_child")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_activate_cursor_child)
+		pclass.activate_cursor_child = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_activate_cursor_child)
 	}
 
 	if _, ok := goval.(interface{ ChildActivated(child *FlowBoxChild) }); ok {
-		o := pclass.StructFieldOffset("child_activated")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_child_activated)
+		pclass.child_activated = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_child_activated)
+	}
+
+	if _, ok := goval.(interface {
+		MoveCursor(step MovementStep, count int32) bool
+	}); ok {
+		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_move_cursor)
 	}
 
 	if _, ok := goval.(interface{ SelectAll() }); ok {
-		o := pclass.StructFieldOffset("select_all")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_select_all)
+		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_select_all)
 	}
 
 	if _, ok := goval.(interface{ SelectedChildrenChanged() }); ok {
-		o := pclass.StructFieldOffset("selected_children_changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_selected_children_changed)
+		pclass.selected_children_changed = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_selected_children_changed)
 	}
 
 	if _, ok := goval.(interface{ ToggleCursorChild() }); ok {
-		o := pclass.StructFieldOffset("toggle_cursor_child")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_toggle_cursor_child)
+		pclass.toggle_cursor_child = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_toggle_cursor_child)
 	}
 
 	if _, ok := goval.(interface{ UnselectAll() }); ok {
-		o := pclass.StructFieldOffset("unselect_all")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_unselect_all)
+		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_unselect_all)
 	}
 }
 
 //export _gotk4_gtk3_FlowBoxClass_activate_cursor_child
-func _gotk4_gtk3_FlowBoxClass_activate_cursor_child(arg0 *C.void) {
+func _gotk4_gtk3_FlowBoxClass_activate_cursor_child(arg0 *C.GtkFlowBox) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateCursorChild() })
 
@@ -283,7 +293,7 @@ func _gotk4_gtk3_FlowBoxClass_activate_cursor_child(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_FlowBoxClass_child_activated
-func _gotk4_gtk3_FlowBoxClass_child_activated(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_FlowBoxClass_child_activated(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChildActivated(child *FlowBoxChild) })
 
@@ -294,8 +304,30 @@ func _gotk4_gtk3_FlowBoxClass_child_activated(arg0 *C.void, arg1 *C.void) {
 	iface.ChildActivated(_child)
 }
 
+//export _gotk4_gtk3_FlowBoxClass_move_cursor
+func _gotk4_gtk3_FlowBoxClass_move_cursor(arg0 *C.GtkFlowBox, arg1 C.GtkMovementStep, arg2 C.gint) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		MoveCursor(step MovementStep, count int32) bool
+	})
+
+	var _step MovementStep // out
+	var _count int32       // out
+
+	_step = MovementStep(arg1)
+	_count = int32(arg2)
+
+	ok := iface.MoveCursor(_step, _count)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gtk3_FlowBoxClass_select_all
-func _gotk4_gtk3_FlowBoxClass_select_all(arg0 *C.void) {
+func _gotk4_gtk3_FlowBoxClass_select_all(arg0 *C.GtkFlowBox) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectAll() })
 
@@ -303,7 +335,7 @@ func _gotk4_gtk3_FlowBoxClass_select_all(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_FlowBoxClass_selected_children_changed
-func _gotk4_gtk3_FlowBoxClass_selected_children_changed(arg0 *C.void) {
+func _gotk4_gtk3_FlowBoxClass_selected_children_changed(arg0 *C.GtkFlowBox) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectedChildrenChanged() })
 
@@ -311,7 +343,7 @@ func _gotk4_gtk3_FlowBoxClass_selected_children_changed(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_FlowBoxClass_toggle_cursor_child
-func _gotk4_gtk3_FlowBoxClass_toggle_cursor_child(arg0 *C.void) {
+func _gotk4_gtk3_FlowBoxClass_toggle_cursor_child(arg0 *C.GtkFlowBox) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleCursorChild() })
 
@@ -319,7 +351,7 @@ func _gotk4_gtk3_FlowBoxClass_toggle_cursor_child(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_FlowBoxClass_unselect_all
-func _gotk4_gtk3_FlowBoxClass_unselect_all(arg0 *C.void) {
+func _gotk4_gtk3_FlowBoxClass_unselect_all(arg0 *C.GtkFlowBox) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UnselectAll() })
 
@@ -376,7 +408,7 @@ func (box *FlowBox) ConnectActivateCursorChild(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_FlowBox_ConnectChildActivated
-func _gotk4_gtk3_FlowBox_ConnectChildActivated(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_FlowBox_ConnectChildActivated(arg0 C.gpointer, arg1 *C.GtkFlowBoxChild, arg2 C.guintptr) {
 	var f func(child *FlowBoxChild)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -399,6 +431,53 @@ func _gotk4_gtk3_FlowBox_ConnectChildActivated(arg0 C.gpointer, arg1 *C.void, ar
 // the user.
 func (box *FlowBox) ConnectChildActivated(f func(child *FlowBoxChild)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "child-activated", false, unsafe.Pointer(C._gotk4_gtk3_FlowBox_ConnectChildActivated), f)
+}
+
+//export _gotk4_gtk3_FlowBox_ConnectMoveCursor
+func _gotk4_gtk3_FlowBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(step MovementStep, count int32) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(step MovementStep, count int32) (ok bool))
+	}
+
+	var _step MovementStep // out
+	var _count int32       // out
+
+	_step = MovementStep(arg1)
+	_count = int32(arg2)
+
+	ok := f(_step, _count)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a cursor movement.
+//
+// Applications should not connect to it, but may emit it with
+// g_signal_emit_by_name() if they need to control the cursor programmatically.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifer does not. There are too many key combinations to list them all here.
+//
+// - Arrow keys move by individual children
+//
+// - Home/End keys move to the ends of the box
+//
+// - PageUp/PageDown keys move vertically by pages.
+func (box *FlowBox) ConnectMoveCursor(f func(step MovementStep, count int32) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(box, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_FlowBox_ConnectMoveCursor), f)
 }
 
 //export _gotk4_gtk3_FlowBox_ConnectSelectAll
@@ -506,13 +585,13 @@ func (box *FlowBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 //    - flowBox: new FlowBox container.
 //
 func NewFlowBox() *FlowBox {
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("new_FlowBox", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_flow_box_new()
 
 	var _flowBox *FlowBox // out
 
-	_flowBox = wrapFlowBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_flowBox = wrapFlowBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBox
 }
@@ -538,19 +617,21 @@ func NewFlowBox() *FlowBox {
 //    - createWidgetFunc: function that creates widgets for items.
 //
 func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkFlowBox                // out
+	var _arg1 *C.GListModel                // out
+	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gtk3_FlowBoxCreateWidgetFunc)
-	_args[3] = C.gpointer(gbox.Assign(createWidgetFunc))
-	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_FlowBoxCreateWidgetFunc)
+	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("bind_model", _args[:], nil)
-
+	C.gtk_flow_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(createWidgetFunc)
@@ -563,19 +644,17 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 //    - ok: TRUE if children are activated on single click, FALSE otherwise.
 //
 func (box *FlowBox) ActivateOnSingleClick() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_activate_on_single_click", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -594,22 +673,21 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 //      FlowBoxChild or NULL in case no child widget with the given index exists.
 //
 func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.gint             // out
+	var _cret *C.GtkFlowBoxChild // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(idx)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.gint(idx)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_child_at_index", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(idx)
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _flowBoxChild
@@ -629,24 +707,24 @@ func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
 //      coordinates.
 //
 func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _cret *C.GtkFlowBoxChild // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_child_at_pos", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _flowBoxChild
@@ -659,19 +737,17 @@ func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
 //    - guint: horizontal spacing.
 //
 func (box *FlowBox) ColumnSpacing() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_column_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
 	runtime.KeepAlive(box)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -684,19 +760,17 @@ func (box *FlowBox) ColumnSpacing() uint32 {
 //    - ok: TRUE if the box is homogeneous.
 //
 func (box *FlowBox) Homogeneous() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_homogeneous", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_homogeneous(_arg0)
 	runtime.KeepAlive(box)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -710,19 +784,17 @@ func (box *FlowBox) Homogeneous() bool {
 //    - guint: maximum number of children per line.
 //
 func (box *FlowBox) MaxChildrenPerLine() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_max_children_per_line", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
 	runtime.KeepAlive(box)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -734,19 +806,17 @@ func (box *FlowBox) MaxChildrenPerLine() uint32 {
 //    - guint: minimum number of children per line.
 //
 func (box *FlowBox) MinChildrenPerLine() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_min_children_per_line", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
 	runtime.KeepAlive(box)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -758,19 +828,17 @@ func (box *FlowBox) MinChildrenPerLine() uint32 {
 //    - guint: vertical spacing.
 //
 func (box *FlowBox) RowSpacing() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_row_spacing", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
 	runtime.KeepAlive(box)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -783,27 +851,47 @@ func (box *FlowBox) RowSpacing() uint32 {
 //      g_list_free() when done.
 //
 func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _cret *C.GList      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_gret := _info.InvokeClassMethod("get_selected_children", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_get_selected_children(_arg0)
 	runtime.KeepAlive(box)
 
 	var _list []*FlowBoxChild // out
 
-	_list = make([]*FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkFlowBoxChild)(v)
 		var dst *FlowBoxChild // out
-		dst = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
 	return _list
+}
+
+// SelectionMode gets the selection mode of box.
+//
+// The function returns the following values:
+//
+//    - selectionMode: SelectionMode.
+//
+func (box *FlowBox) SelectionMode() SelectionMode {
+	var _arg0 *C.GtkFlowBox      // out
+	var _cret C.GtkSelectionMode // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_selection_mode(_arg0)
+	runtime.KeepAlive(box)
+
+	var _selectionMode SelectionMode // out
+
+	_selectionMode = SelectionMode(_cret)
+
+	return _selectionMode
 }
 
 // Insert inserts the widget into box at position.
@@ -821,15 +909,15 @@ func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
 //    - position to insert child in.
 //
 func (box *FlowBox) Insert(widget Widgetter, position int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gint        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.gint(position)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("insert", _args[:], nil)
-
+	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(position)
@@ -842,13 +930,11 @@ func (box *FlowBox) Insert(widget Widgetter, position int32) {
 // filter function just looked for a specific search term, and the entry with
 // the string has changed.
 func (box *FlowBox) InvalidateFilter() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("invalidate_filter", _args[:], nil)
-
+	C.gtk_flow_box_invalidate_filter(_arg0)
 	runtime.KeepAlive(box)
 }
 
@@ -857,25 +943,21 @@ func (box *FlowBox) InvalidateFilter() {
 // Call this when the result of the sort function on box is changed due to an
 // external factor.
 func (box *FlowBox) InvalidateSort() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("invalidate_sort", _args[:], nil)
-
+	C.gtk_flow_box_invalidate_sort(_arg0)
 	runtime.KeepAlive(box)
 }
 
 // SelectAll: select all children of box, if the selection mode allows it.
 func (box *FlowBox) SelectAll() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("select_all", _args[:], nil)
-
+	C.gtk_flow_box_select_all(_arg0)
 	runtime.KeepAlive(box)
 }
 
@@ -886,14 +968,13 @@ func (box *FlowBox) SelectAll() {
 //    - child of box.
 //
 func (box *FlowBox) SelectChild(child *FlowBoxChild) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 *C.GtkFlowBoxChild // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("select_child", _args[:], nil)
-
+	C.gtk_flow_box_select_child(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 }
@@ -907,16 +988,16 @@ func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 //    - fn: function to call for each selected child.
 //
 func (box *FlowBox) SelectedForEach(fn FlowBoxForEachFunc) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkFlowBox           // out
+	var _arg1 C.GtkFlowBoxForeachFunc // out
+	var _arg2 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_FlowBoxForEachFunc)
-	_args[2] = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_args[2]))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("selected_foreach", _args[:], nil)
-
+	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(fn)
 }
@@ -929,16 +1010,15 @@ func (box *FlowBox) SelectedForEach(fn FlowBoxForEachFunc) {
 //    - single: TRUE to emit child-activated on a single click.
 //
 func (box *FlowBox) SetActivateOnSingleClick(single bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if single {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_activate_on_single_click", _args[:], nil)
-
+	C.gtk_flow_box_set_activate_on_single_click(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(single)
 }
@@ -951,14 +1031,13 @@ func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 //    - spacing to use.
 //
 func (box *FlowBox) SetColumnSpacing(spacing uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_column_spacing", _args[:], nil)
-
+	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)
 }
@@ -981,18 +1060,19 @@ func (box *FlowBox) SetColumnSpacing(spacing uint32) {
 //      show.
 //
 func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkFlowBox          // out
+	var _arg1 C.GtkFlowBoxFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if filterFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_FlowBoxFilterFunc)
-		_args[2] = C.gpointer(gbox.Assign(filterFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filterFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_filter_func", _args[:], nil)
-
+	C.gtk_flow_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(filterFunc)
 }
@@ -1012,14 +1092,13 @@ func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 //      descendents of container.
 //
 func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox    // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_hadjustment", _args[:], nil)
-
+	C.gtk_flow_box_set_hadjustment(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(adjustment)
 }
@@ -1033,16 +1112,15 @@ func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 //      allotments.
 //
 func (box *FlowBox) SetHomogeneous(homogeneous bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if homogeneous {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_homogeneous", _args[:], nil)
-
+	C.gtk_flow_box_set_homogeneous(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(homogeneous)
 }
@@ -1059,14 +1137,13 @@ func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 //    - nChildren: maximum number of children per line.
 //
 func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nChildren)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(nChildren)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_max_children_per_line", _args[:], nil)
-
+	C.gtk_flow_box_set_max_children_per_line(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(nChildren)
 }
@@ -1079,14 +1156,13 @@ func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
 //    - nChildren: minimum number of children per line.
 //
 func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nChildren)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(nChildren)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_min_children_per_line", _args[:], nil)
-
+	C.gtk_flow_box_set_min_children_per_line(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(nChildren)
 }
@@ -1099,16 +1175,34 @@ func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
 //    - spacing to use.
 //
 func (box *FlowBox) SetRowSpacing(spacing uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(spacing)
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_row_spacing", _args[:], nil)
-
+	C.gtk_flow_box_set_row_spacing(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)
+}
+
+// SetSelectionMode sets how selection works in box. See SelectionMode for
+// details.
+//
+// The function takes the following parameters:
+//
+//    - mode: new selection mode.
+//
+func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.GtkSelectionMode // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.GtkSelectionMode(mode)
+
+	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(mode)
 }
 
 // SetSortFunc: by setting a sort function on the box, one can dynamically
@@ -1126,18 +1220,19 @@ func (box *FlowBox) SetRowSpacing(spacing uint32) {
 //    - sortFunc (optional): sort function.
 //
 func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkFlowBox        // out
+	var _arg1 C.GtkFlowBoxSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if sortFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_FlowBoxSortFunc)
-		_args[2] = C.gpointer(gbox.Assign(sortFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxSortFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_sort_func", _args[:], nil)
-
+	C.gtk_flow_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(sortFunc)
 }
@@ -1157,27 +1252,24 @@ func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 //      descendents of container.
 //
 func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox    // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("set_vadjustment", _args[:], nil)
-
+	C.gtk_flow_box_set_vadjustment(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(adjustment)
 }
 
 // UnselectAll: unselect all children of box, if the selection mode allows it.
 func (box *FlowBox) UnselectAll() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBox // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("unselect_all", _args[:], nil)
-
+	C.gtk_flow_box_unselect_all(_arg0)
 	runtime.KeepAlive(box)
 }
 
@@ -1189,14 +1281,13 @@ func (box *FlowBox) UnselectAll() {
 //    - child of box.
 //
 func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 *C.GtkFlowBoxChild // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBox")
-	_info.InvokeClassMethod("unselect_child", _args[:], nil)
-
+	C.gtk_flow_box_unselect_child(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 }
@@ -1222,16 +1313,15 @@ func classInitFlowBoxChilder(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "FlowBoxChildClass")
+	pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		o := pclass.StructFieldOffset("activate")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxChildClass_activate)
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_FlowBoxChildClass_activate)
 	}
 }
 
 //export _gotk4_gtk3_FlowBoxChildClass_activate
-func _gotk4_gtk3_FlowBoxChildClass_activate(arg0 *C.void) {
+func _gotk4_gtk3_FlowBoxChildClass_activate(arg0 *C.GtkFlowBoxChild) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
@@ -1297,13 +1387,13 @@ func (child *FlowBoxChild) ConnectActivate(f func()) coreglib.SignalHandle {
 //    - flowBoxChild: new FlowBoxChild.
 //
 func NewFlowBoxChild() *FlowBoxChild {
-	_info := girepository.MustFind("Gtk", "FlowBoxChild")
-	_gret := _info.InvokeClassMethod("new_FlowBoxChild", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_flow_box_child_new()
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _flowBoxChild
 }
@@ -1324,13 +1414,11 @@ func NewFlowBoxChild() *FlowBoxChild {
 // gtk_flow_box_invalidate_sort() on any model change, but that is more
 // expensive.
 func (child *FlowBoxChild) Changed() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBoxChild // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBoxChild")
-	_info.InvokeClassMethod("changed", _args[:], nil)
-
+	C.gtk_flow_box_child_changed(_arg0)
 	runtime.KeepAlive(child)
 }
 
@@ -1341,19 +1429,17 @@ func (child *FlowBoxChild) Changed() {
 //    - gint: index of the child, or -1 if the child is not in a flow box.
 //
 func (child *FlowBoxChild) Index() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret C.gint             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBoxChild")
-	_gret := _info.InvokeClassMethod("get_index", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_child_get_index(_arg0)
 	runtime.KeepAlive(child)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1366,19 +1452,17 @@ func (child *FlowBoxChild) Index() int32 {
 //    - ok: TRUE if child is selected.
 //
 func (child *FlowBoxChild) IsSelected() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "FlowBoxChild")
-	_gret := _info.InvokeClassMethod("is_selected", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_flow_box_child_is_selected(_arg0)
 	runtime.KeepAlive(child)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

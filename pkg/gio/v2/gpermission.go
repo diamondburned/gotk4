@@ -10,19 +10,17 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_PermissionClass_acquire(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_PermissionClass_acquire_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_PermissionClass_release(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_PermissionClass_release_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern gboolean _gotk4_gio2_PermissionClass_acquire(GPermission*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_PermissionClass_acquire_finish(GPermission*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_PermissionClass_release(GPermission*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_PermissionClass_release_finish(GPermission*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypePermission returns the GType for the type Permission.
@@ -31,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePermission() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Permission").RegisteredGType())
+	gtype := coreglib.Type(C.g_permission_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPermission)
 	return gtype
 }
@@ -144,39 +142,35 @@ func classInitPermissioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "PermissionClass")
+	pclass := (*C.GPermissionClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		Acquire(ctx context.Context) error
 	}); ok {
-		o := pclass.StructFieldOffset("acquire")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_acquire)
+		pclass.acquire = (*[0]byte)(C._gotk4_gio2_PermissionClass_acquire)
 	}
 
 	if _, ok := goval.(interface {
 		AcquireFinish(result AsyncResulter) error
 	}); ok {
-		o := pclass.StructFieldOffset("acquire_finish")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_acquire_finish)
+		pclass.acquire_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_acquire_finish)
 	}
 
 	if _, ok := goval.(interface {
 		Release(ctx context.Context) error
 	}); ok {
-		o := pclass.StructFieldOffset("release")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_release)
+		pclass.release = (*[0]byte)(C._gotk4_gio2_PermissionClass_release)
 	}
 
 	if _, ok := goval.(interface {
 		ReleaseFinish(result AsyncResulter) error
 	}); ok {
-		o := pclass.StructFieldOffset("release_finish")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_release_finish)
+		pclass.release_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_release_finish)
 	}
 }
 
 //export _gotk4_gio2_PermissionClass_acquire
-func _gotk4_gio2_PermissionClass_acquire(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_PermissionClass_acquire(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Acquire(ctx context.Context) error
@@ -198,7 +192,7 @@ func _gotk4_gio2_PermissionClass_acquire(arg0 *C.void, arg1 *C.void, _cerr **C.G
 }
 
 //export _gotk4_gio2_PermissionClass_acquire_finish
-func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AcquireFinish(result AsyncResulter) error
@@ -234,7 +228,7 @@ func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.void, arg1 *C.void, _cer
 }
 
 //export _gotk4_gio2_PermissionClass_release
-func _gotk4_gio2_PermissionClass_release(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_PermissionClass_release(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Release(ctx context.Context) error
@@ -256,7 +250,7 @@ func _gotk4_gio2_PermissionClass_release(arg0 *C.void, arg1 *C.void, _cerr **C.G
 }
 
 //export _gotk4_gio2_PermissionClass_release_finish
-func _gotk4_gio2_PermissionClass_release_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_PermissionClass_release_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ReleaseFinish(result AsyncResulter) error
@@ -331,25 +325,25 @@ func BasePermission(obj Permissioner) *Permission {
 //    - ctx (optional) or NULL.
 //
 func (permission *Permission) Acquire(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("acquire", _args[:], nil)
-
+	C.g_permission_acquire(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -365,22 +359,23 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 //    - callback (optional) to call when done.
 //
 func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("acquire_async", _args[:], nil)
-
+	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -397,21 +392,21 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 //    - result given to the ReadyCallback.
 //
 func (permission *Permission) AcquireFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("acquire_finish", _args[:], nil)
-
+	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -426,19 +421,17 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 //    - ok: value of the 'allowed' property.
 //
 func (permission *Permission) Allowed() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_gret := _info.InvokeClassMethod("get_allowed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_permission_get_allowed(_arg0)
 	runtime.KeepAlive(permission)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -454,19 +447,17 @@ func (permission *Permission) Allowed() bool {
 //    - ok: value of the 'can-acquire' property.
 //
 func (permission *Permission) CanAcquire() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_gret := _info.InvokeClassMethod("get_can_acquire", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_permission_get_can_acquire(_arg0)
 	runtime.KeepAlive(permission)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -482,19 +473,17 @@ func (permission *Permission) CanAcquire() bool {
 //    - ok: value of the 'can-release' property.
 //
 func (permission *Permission) CanRelease() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_gret := _info.InvokeClassMethod("get_can_release", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_permission_get_can_release(_arg0)
 	runtime.KeepAlive(permission)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -514,22 +503,23 @@ func (permission *Permission) CanRelease() bool {
 //    - canRelease: new value for the 'can-release' property.
 //
 func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GPermission // out
+	var _arg1 C.gboolean     // out
+	var _arg2 C.gboolean     // out
+	var _arg3 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	if allowed {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 	if canAcquire {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 	if canRelease {
-		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
+		_arg3 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("impl_update", _args[:], nil)
-
+	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(allowed)
 	runtime.KeepAlive(canAcquire)
@@ -557,25 +547,25 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 //    - ctx (optional) or NULL.
 //
 func (permission *Permission) Release(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("release", _args[:], nil)
-
+	C.g_permission_release(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -591,22 +581,23 @@ func (permission *Permission) Release(ctx context.Context) error {
 //    - callback (optional) to call when done.
 //
 func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("release_async", _args[:], nil)
-
+	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -623,21 +614,21 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 //    - result given to the ReadyCallback.
 //
 func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "Permission")
-	_info.InvokeClassMethod("release_finish", _args[:], nil)
-
+	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

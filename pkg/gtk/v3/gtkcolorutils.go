@@ -4,15 +4,12 @@ package gtk
 
 import (
 	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // RGBToHSV converts a color from RGB space to HSV.
@@ -33,16 +30,18 @@ import "C"
 //    - v: return value for the value component.
 //
 func RGBToHSV(r, g, b float64) (h, s, v float64) {
-	var _args [3]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+	var _arg3 C.gdouble // out
+	var _arg4 C.gdouble // in
+	var _arg5 C.gdouble // in
+	var _arg6 C.gdouble // in
 
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(r)
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(g)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(b)
+	_arg1 = C.gdouble(r)
+	_arg2 = C.gdouble(g)
+	_arg3 = C.gdouble(b)
 
-	_info := girepository.MustFind("Gtk", "rgb_to_hsv")
-	_info.InvokeFunction(_args[:], _outs[:])
-
+	C.gtk_rgb_to_hsv(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(g)
 	runtime.KeepAlive(b)
@@ -51,9 +50,9 @@ func RGBToHSV(r, g, b float64) (h, s, v float64) {
 	var _s float64 // out
 	var _v float64 // out
 
-	_h = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
-	_s = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
-	_v = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[2])))
+	_h = float64(_arg4)
+	_s = float64(_arg5)
+	_v = float64(_arg6)
 
 	return _h, _s, _v
 }
@@ -76,16 +75,18 @@ func RGBToHSV(r, g, b float64) (h, s, v float64) {
 //    - b: return value for the blue component.
 //
 func HSVToRGB(h, s, v float64) (r, g, b float64) {
-	var _args [3]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg1 C.gdouble // out
+	var _arg2 C.gdouble // out
+	var _arg3 C.gdouble // out
+	var _arg4 C.gdouble // in
+	var _arg5 C.gdouble // in
+	var _arg6 C.gdouble // in
 
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(h)
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(s)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(v)
+	_arg1 = C.gdouble(h)
+	_arg2 = C.gdouble(s)
+	_arg3 = C.gdouble(v)
 
-	_info := girepository.MustFind("Gtk", "to_rgb")
-	_info.InvokeFunction(_args[:], _outs[:])
-
+	C.gtk_hsv_to_rgb(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 	runtime.KeepAlive(h)
 	runtime.KeepAlive(s)
 	runtime.KeepAlive(v)
@@ -94,9 +95,9 @@ func HSVToRGB(h, s, v float64) (r, g, b float64) {
 	var _g float64 // out
 	var _b float64 // out
 
-	_r = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
-	_g = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
-	_b = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[2])))
+	_r = float64(_arg4)
+	_g = float64(_arg5)
+	_b = float64(_arg6)
 
 	return _r, _g, _b
 }

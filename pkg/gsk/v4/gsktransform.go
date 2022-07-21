@@ -7,13 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gsk/gsk.h>
 import "C"
 
 // TransformParse parses the given string into a transform and puts it in
@@ -35,29 +32,27 @@ import "C"
 //    - ok: TRUE if string described a valid transform.
 //
 func TransformParse(str string) (*Transform, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg1 *C.char         // out
+	var _arg2 *C.GskTransform // in
+	var _cret C.gboolean      // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gsk", "parse")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gsk_transform_parse(_arg1, &_arg2)
 	runtime.KeepAlive(str)
 
 	var _outTransform *Transform // out
 	var _ok bool                 // out
 
-	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_outTransform)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

@@ -7,13 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gdk/gdkx.h>
 import "C"
 
 // X11GetParentRelativePattern: used with gdk_window_set_background_pattern() to
@@ -25,18 +22,18 @@ import "C"
 // The function returns the following values:
 //
 func X11GetParentRelativePattern() *cairo.Pattern {
-	_info := girepository.MustFind("GdkX11", "x11_get_parent_relative_pattern")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.cairo_pattern_t // in
+
+	_cret = C.gdk_x11_get_parent_relative_pattern()
 
 	var _pattern *cairo.Pattern // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-		C.cairo_pattern_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _pattern
@@ -47,13 +44,11 @@ func X11GetParentRelativePattern() *cairo.Pattern {
 //
 // gdk_x11_grab_server()/gdk_x11_ungrab_server() calls can be nested.
 func X11GrabServer() {
-	_info := girepository.MustFind("GdkX11", "x11_grab_server")
-	_info.InvokeFunction(nil, nil)
+	C.gdk_x11_grab_server()
 }
 
 // X11UngrabServer: ungrab the default display after it has been grabbed with
 // gdk_x11_grab_server().
 func X11UngrabServer() {
-	_info := girepository.MustFind("GdkX11", "x11_ungrab_server")
-	_info.InvokeFunction(nil, nil)
+	C.gdk_x11_ungrab_server()
 }

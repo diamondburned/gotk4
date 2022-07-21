@@ -8,15 +8,12 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // DBUS_METHOD_INVOCATION_HANDLED: value returned by handlers of the signals
@@ -47,19 +44,17 @@ const DBUS_METHOD_INVOCATION_UNHANDLED = false
 //    - dBusConnection Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.GDBusConnection       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_connection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_connection(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }
@@ -75,19 +70,17 @@ func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 //    - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) InterfaceName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.gchar                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_interface_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_interface_name(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -105,19 +98,17 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 //    - dBusMessage Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Message() *DBusMessage {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.GDBusMessage          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_message", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_message(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusMessage = wrapDBusMessage(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusMessage
 }
@@ -135,21 +126,19 @@ func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 //      invocation.
 //
 func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.GDBusMethodInfo       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_method_info", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_method_info(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_dbus_method_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_method_info_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusMethodInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -168,19 +157,17 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 //    - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) MethodName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.gchar                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_method_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_method_name(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -192,19 +179,17 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 //    - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) ObjectPath() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.gchar                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_object_path", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_object_path(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -218,20 +203,18 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 //    - variant tuple. Do not unref this because it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.GVariant              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_parameters", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_parameters(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -259,21 +242,19 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 //    - dBusPropertyInfo (optional) or NULL.
 //
 func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.GDBusPropertyInfo     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_property_info", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_property_info(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_dbus_property_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_property_info_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusPropertyInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -292,19 +273,17 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 //    - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Sender() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _cret *C.gchar                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_gret := _info.InvokeClassMethod("get_sender", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_method_invocation_get_sender(_arg0)
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -320,18 +299,18 @@ func (invocation *DBusMethodInvocation) Sender() string {
 //    - errorMessage: valid D-Bus error message.
 //
 func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 *C.gchar                 // out
+	var _arg2 *C.gchar                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_info.InvokeClassMethod("return_dbus_error", _args[:], nil)
-
+	C.g_dbus_method_invocation_return_dbus_error(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(invocation)
 	runtime.KeepAlive(errorName)
 	runtime.KeepAlive(errorMessage)
@@ -350,18 +329,19 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 //    - message: error message.
 //
 func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int32, message string) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 C.GQuark                 // out
+	var _arg2 C.gint                   // out
+	var _arg3 *C.gchar                 // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(domain)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(code)
-	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(message)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+	_arg1 = C.guint32(domain)
+	_arg2 = C.gint(code)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_info.InvokeClassMethod("return_error_literal", _args[:], nil)
-
+	C.g_dbus_method_invocation_return_error_literal(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(invocation)
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(code)
@@ -379,17 +359,16 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 //    - err: #GError.
 //
 func (invocation *DBusMethodInvocation) ReturnGError(err error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 *C.GError                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
 	if err != nil {
-		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
+		_arg1 = (*C.GError)(gerror.New(err))
 	}
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_info.InvokeClassMethod("return_gerror", _args[:], nil)
-
+	C.g_dbus_method_invocation_return_gerror(_arg0, _arg1)
 	runtime.KeepAlive(invocation)
 	runtime.KeepAlive(err)
 }
@@ -429,17 +408,16 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 //      not passing any parameters.
 //
 func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusMethodInvocation // out
+	var _arg1 *C.GVariant              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
 	if parameters != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}
 
-	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
-	_info.InvokeClassMethod("return_value", _args[:], nil)
-
+	C.g_dbus_method_invocation_return_value(_arg0, _arg1)
 	runtime.KeepAlive(invocation)
 	runtime.KeepAlive(parameters)
 }

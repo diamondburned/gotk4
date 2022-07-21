@@ -3,28 +3,24 @@
 package gdk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
 // The function returns the following values:
 //
 func ToplevelSizeGetType() coreglib.Type {
-	_info := girepository.MustFind("Gdk", "toplevel_size_get_type")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+	var _cret C.GType // in
+
+	_cret = C.gdk_toplevel_size_get_type()
 
 	var _gType coreglib.Type // out
 
-	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }

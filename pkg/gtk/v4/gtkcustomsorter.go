@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern gint _gotk4_gtk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern void callbackDelete(gpointer);
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCustomSorter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CustomSorter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_custom_sorter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCustomSorter)
 	return gtype
 }
@@ -81,23 +79,23 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 //    - customSorter: new GtkCustomSorter.
 //
 func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
-	var _args [3]girepository.Argument
+	var _arg1 C.GCompareDataFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret *C.GtkCustomSorter // in
 
 	if sortFunc != nil {
-		*(*C.GCompareDataFunc)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
-		_args[1] = C.gpointer(gbox.Assign(sortFunc))
-		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "CustomSorter")
-	_gret := _info.InvokeClassMethod("new_CustomSorter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_custom_sorter_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(sortFunc)
 
 	var _customSorter *CustomSorter // out
 
-	_customSorter = wrapCustomSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_customSorter = wrapCustomSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _customSorter
 }
@@ -116,18 +114,19 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 //    - sortFunc (optional): function to sort items.
 //
 func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkCustomSorter // out
+	var _arg1 C.GCompareDataFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sortFunc != nil {
-		*(*C.GCompareDataFunc)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
-		_args[2] = C.gpointer(gbox.Assign(sortFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "CustomSorter")
-	_info.InvokeClassMethod("set_sort_func", _args[:], nil)
-
+	C.gtk_custom_sorter_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sortFunc)
 }

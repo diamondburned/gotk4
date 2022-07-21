@@ -7,17 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern char* _gotk4_gtk4_ScaleFormatValueFunc(void*, double, gpointer);
-// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(void*, int*, int*);
+// #include <gtk/gtk.h>
+// extern char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
+// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(GtkScale*, int*, int*);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScale() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Scale").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scale_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScale)
 	return gtype
 }
@@ -35,7 +33,7 @@ func GTypeScale() coreglib.Type {
 type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
 
 //export _gotk4_gtk4_ScaleFormatValueFunc
-func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.void, arg2 C.double, arg3 C.gpointer) (cret *C.char) {
+func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.GtkScale, arg2 C.double, arg3 C.gpointer) (cret *C.char) {
 	var fn ScaleFormatValueFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -173,16 +171,15 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "ScaleClass")
+	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ LayoutOffsets() (x, y int32) }); ok {
-		o := pclass.StructFieldOffset("get_layout_offsets")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_ScaleClass_get_layout_offsets)
+		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk4_ScaleClass_get_layout_offsets)
 	}
 }
 
 //export _gotk4_gtk4_ScaleClass_get_layout_offsets
-func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.void, arg1 *C.int, arg2 *C.int) {
+func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.int, arg2 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LayoutOffsets() (x, y int32) })
 
@@ -222,15 +219,135 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return wrapScale(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewScale creates a new GtkScale.
+//
+// The function takes the following parameters:
+//
+//    - orientation scale’s orientation.
+//    - adjustment (optional): gtk.Adjustment which sets the range of the scale,
+//      or NULL to create a new adjustment.
+//
+// The function returns the following values:
+//
+//    - scale: new GtkScale.
+//
+func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	if adjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+
+	_cret = C.gtk_scale_new(_arg1, _arg2)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(adjustment)
+
+	var _scale *Scale // out
+
+	_scale = wrapScale(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _scale
+}
+
+// NewScaleWithRange creates a new scale widget with a range from min to max.
+//
+// The returns scale will have the given orientation and will let the user input
+// a number between min and max (including min and max) with the increment step.
+// step must be nonzero; it’s the distance the slider moves when using the arrow
+// keys to adjust the scale value.
+//
+// Note that the way in which the precision is derived works best if step is a
+// power of ten. If the resulting precision is not suitable for your needs, use
+// gtk.Scale.SetDigits() to correct it.
+//
+// The function takes the following parameters:
+//
+//    - orientation scale’s orientation.
+//    - min: minimum value.
+//    - max: maximum value.
+//    - step increment (tick size) used with keyboard shortcuts.
+//
+// The function returns the following values:
+//
+//    - scale: new Scale.
+//
+func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 C.double         // out
+	var _arg3 C.double         // out
+	var _arg4 C.double         // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.double(min)
+	_arg3 = C.double(max)
+	_arg4 = C.double(step)
+
+	_cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+	runtime.KeepAlive(step)
+
+	var _scale *Scale // out
+
+	_scale = wrapScale(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _scale
+}
+
+// AddMark adds a mark at value.
+//
+// A mark is indicated visually by drawing a tick mark next to the scale, and
+// GTK makes it easy for the user to position the scale exactly at the marks
+// value.
+//
+// If markup is not NULL, text is shown next to the tick mark.
+//
+// To remove marks from a scale, use gtk.Scale.ClearMarks().
+//
+// The function takes the following parameters:
+//
+//    - value at which the mark is placed, must be between the lower and upper
+//      limits of the scales’ adjustment.
+//    - position: where to draw the mark. For a horizontal scale, K_POS_TOP and
+//      GTK_POS_LEFT are drawn above the scale, anything else below. For a
+//      vertical scale, K_POS_LEFT and GTK_POS_TOP are drawn to the left of the
+//      scale, anything else to the right.
+//    - markup (optional): text to be shown at the mark, using Pango markup, or
+//      NULL.
+//
+func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
+	var _arg0 *C.GtkScale       // out
+	var _arg1 C.double          // out
+	var _arg2 C.GtkPositionType // out
+	var _arg3 *C.char           // out
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg1 = C.double(value)
+	_arg2 = C.GtkPositionType(position)
+	if markup != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	C.gtk_scale_add_mark(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(markup)
+}
+
 // ClearMarks removes any marks that have been added.
 func (scale *Scale) ClearMarks() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScale // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_info.InvokeClassMethod("clear_marks", _args[:], nil)
-
+	C.gtk_scale_clear_marks(_arg0)
 	runtime.KeepAlive(scale)
 }
 
@@ -241,19 +358,17 @@ func (scale *Scale) ClearMarks() {
 //    - gint: number of decimal places that are displayed.
 //
 func (scale *Scale) Digits() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_gret := _info.InvokeClassMethod("get_digits", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scale_get_digits(_arg0)
 	runtime.KeepAlive(scale)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -266,19 +381,17 @@ func (scale *Scale) Digits() int32 {
 //    - ok: whether the current value is displayed as a string.
 //
 func (scale *Scale) DrawValue() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_gret := _info.InvokeClassMethod("get_draw_value", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scale_get_draw_value(_arg0)
 	runtime.KeepAlive(scale)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -292,19 +405,17 @@ func (scale *Scale) DrawValue() bool {
 //    - ok: TRUE if the scale has an origin.
 //
 func (scale *Scale) HasOrigin() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_gret := _info.InvokeClassMethod("get_has_origin", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scale_get_has_origin(_arg0)
 	runtime.KeepAlive(scale)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -322,21 +433,19 @@ func (scale *Scale) HasOrigin() bool {
 //      gtkscale:draw-value property is FALSE.
 //
 func (scale *Scale) Layout() *pango.Layout {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScale    // out
+	var _cret *C.PangoLayout // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_gret := _info.InvokeClassMethod("get_layout", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scale_get_layout(_arg0)
 	runtime.KeepAlive(scale)
 
 	var _layout *pango.Layout // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_layout = &pango.Layout{
 				Object: obj,
 			}
@@ -361,23 +470,44 @@ func (scale *Scale) Layout() *pango.Layout {
 //    - y (optional): location to store Y offset of layout, or NULL.
 //
 func (scale *Scale) LayoutOffsets() (x, y int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.int       // in
+	var _arg2 C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_info.InvokeClassMethod("get_layout_offsets", _args[:], _outs[:])
-
+	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(scale)
 
 	var _x int32 // out
 	var _y int32 // out
 
-	_x = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_y = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_x = int32(_arg1)
+	_y = int32(_arg2)
 
 	return _x, _y
+}
+
+// ValuePos gets the position in which the current value is displayed.
+//
+// The function returns the following values:
+//
+//    - positionType: position in which the current value is displayed.
+//
+func (scale *Scale) ValuePos() PositionType {
+	var _arg0 *C.GtkScale       // out
+	var _cret C.GtkPositionType // in
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+
+	_cret = C.gtk_scale_get_value_pos(_arg0)
+	runtime.KeepAlive(scale)
+
+	var _positionType PositionType // out
+
+	_positionType = PositionType(_cret)
+
+	return _positionType
 }
 
 // SetDigits sets the number of decimal places that are displayed in the value.
@@ -398,14 +528,13 @@ func (scale *Scale) LayoutOffsets() (x, y int32) {
 //      to display 1.00, etc.
 //
 func (scale *Scale) SetDigits(digits int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.int       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(digits)
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg1 = C.int(digits)
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_info.InvokeClassMethod("set_digits", _args[:], nil)
-
+	C.gtk_scale_set_digits(_arg0, _arg1)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(digits)
 }
@@ -418,16 +547,15 @@ func (scale *Scale) SetDigits(digits int32) {
 //    - drawValue: TRUE to draw the value.
 //
 func (scale *Scale) SetDrawValue(drawValue bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 	if drawValue {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_info.InvokeClassMethod("set_draw_value", _args[:], nil)
-
+	C.gtk_scale_set_draw_value(_arg0, _arg1)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(drawValue)
 }
@@ -446,18 +574,19 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 //    - fn (optional): function that formats the value.
 //
 func (scale *Scale) SetFormatValueFunc(fn ScaleFormatValueFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkScale               // out
+	var _arg1 C.GtkScaleFormatValueFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 	if fn != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_ScaleFormatValueFunc)
-		_args[2] = C.gpointer(gbox.Assign(fn))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_ScaleFormatValueFunc)
+		_arg2 = C.gpointer(gbox.Assign(fn))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_info.InvokeClassMethod("set_format_value_func", _args[:], nil)
-
+	C.gtk_scale_set_format_value_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(fn)
 }
@@ -473,16 +602,33 @@ func (scale *Scale) SetFormatValueFunc(fn ScaleFormatValueFunc) {
 //    - hasOrigin: TRUE if the scale has an origin.
 //
 func (scale *Scale) SetHasOrigin(hasOrigin bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 	if hasOrigin {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Scale")
-	_info.InvokeClassMethod("set_has_origin", _args[:], nil)
-
+	C.gtk_scale_set_has_origin(_arg0, _arg1)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(hasOrigin)
+}
+
+// SetValuePos sets the position in which the current value is displayed.
+//
+// The function takes the following parameters:
+//
+//    - pos: position in which the current value is displayed.
+//
+func (scale *Scale) SetValuePos(pos PositionType) {
+	var _arg0 *C.GtkScale       // out
+	var _arg1 C.GtkPositionType // out
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	_arg1 = C.GtkPositionType(pos)
+
+	C.gtk_scale_set_value_pos(_arg0, _arg1)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(pos)
 }

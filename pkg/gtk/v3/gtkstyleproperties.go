@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeStyleProperties returns the GType for the type StyleProperties.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStyleProperties() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "StyleProperties").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_style_properties_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStyleProperties)
 	return gtype
 }
@@ -36,7 +36,7 @@ func GTypeStyleProperties() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGradient() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Gradient").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gradient_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGradient)
 	return gtype
 }
@@ -47,7 +47,7 @@ func GTypeGradient() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSymbolicColor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SymbolicColor").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_symbolic_color_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSymbolicColor)
 	return gtype
 }
@@ -111,13 +111,13 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 //    - styleProperties: new StyleProperties.
 //
 func NewStyleProperties() *StyleProperties {
-	_info := girepository.MustFind("Gtk", "StyleProperties")
-	_gret := _info.InvokeClassMethod("new_StyleProperties", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkStyleProperties // in
+
+	_cret = C.gtk_style_properties_new()
 
 	var _styleProperties *StyleProperties // out
 
-	_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _styleProperties
 }
@@ -126,14 +126,58 @@ func NewStyleProperties() *StyleProperties {
 //
 // Deprecated: StyleProperties are deprecated.
 func (props *StyleProperties) Clear() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkStyleProperties // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
 
-	_info := girepository.MustFind("Gtk", "StyleProperties")
-	_info.InvokeClassMethod("clear", _args[:], nil)
-
+	C.gtk_style_properties_clear(_arg0)
 	runtime.KeepAlive(props)
+}
+
+// Property gets a style property from props for the given state. When done with
+// value, g_value_unset() needs to be called to free any allocated memory.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property: style property name.
+//    - state to retrieve the property value for.
+//
+// The function returns the following values:
+//
+//    - value: return location for the style property value.
+//    - ok: TRUE if the property exists in props, FALSE otherwise.
+//
+func (props *StyleProperties) Property(property string, state StateFlags) (coreglib.Value, bool) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 C.GValue              // in
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+
+	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
+
+	var _value coreglib.Value // out
+	var _ok bool              // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg3)))
+	runtime.SetFinalizer(_value, func(v *coreglib.Value) {
+		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
 }
 
 // LookupColor returns the symbolic color that is mapped to name.
@@ -149,23 +193,22 @@ func (props *StyleProperties) Clear() {
 //    - symbolicColor: mapped color.
 //
 func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GtkSymbolicColor   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "StyleProperties")
-	_gret := _info.InvokeClassMethod("lookup_color", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
 	runtime.KeepAlive(props)
 	runtime.KeepAlive(name)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.gtk_symbolic_color_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_symbolic_color_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -187,16 +230,16 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 //    - color to map name to.
 //
 func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GtkSymbolicColor   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_info := girepository.MustFind("Gtk", "StyleProperties")
-	_info.InvokeClassMethod("map_color", _args[:], nil)
-
+	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(props)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(color)
@@ -214,20 +257,74 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 //    - replace: whether to replace values or not.
 //
 func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 C.gboolean            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(propsToMerge).Native()))
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(propsToMerge).Native()))
 	if replace {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "StyleProperties")
-	_info.InvokeClassMethod("merge", _args[:], nil)
-
+	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(props)
 	runtime.KeepAlive(propsToMerge)
 	runtime.KeepAlive(replace)
+}
+
+// SetProperty sets a styling property in props.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property: styling property to set.
+//    - state to set the value for.
+//    - value: new value for the property.
+//
+func (props *StyleProperties) SetProperty(property string, state StateFlags, value *coreglib.Value) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 *C.GValue             // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(value)
+}
+
+// UnsetProperty unsets a style property in props.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property to unset.
+//    - state to unset.
+//
+func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+
+	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
 }
 
 // Gradient is a boxed type that represents a gradient. It is the result of
@@ -252,27 +349,28 @@ type Gradient struct {
 
 // gradient is the struct that's finalized.
 type gradient struct {
-	native unsafe.Pointer
+	native *C.GtkGradient
 }
 
 func marshalGradient(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Gradient{&gradient{(unsafe.Pointer)(b)}}, nil
+	return &Gradient{&gradient{(*C.GtkGradient)(b)}}, nil
 }
 
 // NewGradientLinear constructs a struct Gradient.
 func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient {
-	var _args [4]girepository.Argument
+	var _arg1 C.gdouble      // out
+	var _arg2 C.gdouble      // out
+	var _arg3 C.gdouble      // out
+	var _arg4 C.gdouble      // out
+	var _cret *C.GtkGradient // in
 
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(x0)
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(y0)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(x1)
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y1)
+	_arg1 = C.gdouble(x0)
+	_arg2 = C.gdouble(y0)
+	_arg3 = C.gdouble(x1)
+	_arg4 = C.gdouble(y1)
 
-	_info := girepository.MustFind("Gtk", "Gradient")
-	_gret := _info.InvokeRecordMethod("new_linear", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gradient_new_linear(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(x0)
 	runtime.KeepAlive(y0)
 	runtime.KeepAlive(x1)
@@ -280,7 +378,7 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 
 	var _gradient *Gradient // out
 
-	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_gradient)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -293,19 +391,22 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 
 // NewGradientRadial constructs a struct Gradient.
 func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 float64, radius1 float64) *Gradient {
-	var _args [6]girepository.Argument
+	var _arg1 C.gdouble      // out
+	var _arg2 C.gdouble      // out
+	var _arg3 C.gdouble      // out
+	var _arg4 C.gdouble      // out
+	var _arg5 C.gdouble      // out
+	var _arg6 C.gdouble      // out
+	var _cret *C.GtkGradient // in
 
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(x0)
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(y0)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(radius0)
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(x1)
-	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(y1)
-	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(radius1)
+	_arg1 = C.gdouble(x0)
+	_arg2 = C.gdouble(y0)
+	_arg3 = C.gdouble(radius0)
+	_arg4 = C.gdouble(x1)
+	_arg5 = C.gdouble(y1)
+	_arg6 = C.gdouble(radius1)
 
-	_info := girepository.MustFind("Gtk", "Gradient")
-	_gret := _info.InvokeRecordMethod("new_radial", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gradient_new_radial(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(x0)
 	runtime.KeepAlive(y0)
 	runtime.KeepAlive(radius0)
@@ -315,7 +416,7 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 
 	var _gradient *Gradient // out
 
-	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_gradient)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -336,15 +437,15 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 //    - color to use.
 //
 func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkGradient      // out
+	var _arg1 C.gdouble           // out
+	var _arg2 *C.GtkSymbolicColor // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(offset)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
+	_arg1 = C.gdouble(offset)
+	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_info := girepository.MustFind("Gtk", "Gradient")
-	_info.InvokeRecordMethod("add_color_stop", _args[:], nil)
-
+	C.gtk_gradient_add_color_stop(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(gradient)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(color)
@@ -367,16 +468,15 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 //    - ok: TRUE if the gradient has been resolved.
 //
 func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkGradient        // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 *C.cairo_pattern_t    // in
+	var _cret C.gboolean            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gradient")
-	_gret := _info.InvokeRecordMethod("resolve", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gradient_resolve(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(gradient)
 	runtime.KeepAlive(props)
 
@@ -384,13 +484,13 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 	var _ok bool                         // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_arg2)}
 		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
-		C.cairo_pattern_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -402,26 +502,25 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 // The function returns the following values:
 //
 func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Pattern {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGradient     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _cret *C.cairo_pattern_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gradient")
-	_gret := _info.InvokeRecordMethod("resolve_for_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
 	runtime.KeepAlive(gradient)
 	runtime.KeepAlive(context)
 
 	var _pattern *cairo.Pattern // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-		C.cairo_pattern_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _pattern
@@ -437,20 +536,18 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 //    - utf8: string representation for gradient.
 //
 func (gradient *Gradient) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGradient // out
+	var _cret *C.char        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
+	_arg0 = (*C.GtkGradient)(gextras.StructNative(unsafe.Pointer(gradient)))
 
-	_info := girepository.MustFind("Gtk", "Gradient")
-	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gradient_to_string(_arg0)
 	runtime.KeepAlive(gradient)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -475,31 +572,30 @@ type SymbolicColor struct {
 
 // symbolicColor is the struct that's finalized.
 type symbolicColor struct {
-	native unsafe.Pointer
+	native *C.GtkSymbolicColor
 }
 
 func marshalSymbolicColor(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &SymbolicColor{&symbolicColor{(unsafe.Pointer)(b)}}, nil
+	return &SymbolicColor{&symbolicColor{(*C.GtkSymbolicColor)(b)}}, nil
 }
 
 // NewSymbolicColorAlpha constructs a struct SymbolicColor.
 func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkSymbolicColor // out
+	var _arg2 C.gdouble           // out
+	var _cret *C.GtkSymbolicColor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(factor)
+	_arg1 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg2 = C.gdouble(factor)
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("new_alpha", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_new_alpha(_arg1, _arg2)
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(factor)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -512,19 +608,17 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 
 // NewSymbolicColorLiteral constructs a struct SymbolicColor.
 func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkRGBA          // out
+	var _cret *C.GtkSymbolicColor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("new_literal", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_new_literal(_arg1)
 	runtime.KeepAlive(color)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -537,23 +631,23 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 
 // NewSymbolicColorMix constructs a struct SymbolicColor.
 func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor float64) *SymbolicColor {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GtkSymbolicColor // out
+	var _arg2 *C.GtkSymbolicColor // out
+	var _arg3 C.gdouble           // out
+	var _cret *C.GtkSymbolicColor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color1)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color2)))
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(factor)
+	_arg1 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color1)))
+	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color2)))
+	_arg3 = C.gdouble(factor)
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("new_mix", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_new_mix(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(color1)
 	runtime.KeepAlive(color2)
 	runtime.KeepAlive(factor)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -566,20 +660,18 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 
 // NewSymbolicColorName constructs a struct SymbolicColor.
 func NewSymbolicColorName(name string) *SymbolicColor {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar            // out
+	var _cret *C.GtkSymbolicColor // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("new_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_new_name(_arg1)
 	runtime.KeepAlive(name)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -592,21 +684,20 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 
 // NewSymbolicColorShade constructs a struct SymbolicColor.
 func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkSymbolicColor // out
+	var _arg2 C.gdouble           // out
+	var _cret *C.GtkSymbolicColor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(factor)
+	_arg1 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg2 = C.gdouble(factor)
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("new_shade", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_new_shade(_arg1, _arg2)
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(factor)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -619,22 +710,21 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 
 // NewSymbolicColorWin32 constructs a struct SymbolicColor.
 func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gint              // out
+	var _cret *C.GtkSymbolicColor // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(themeClass)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(id)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(themeClass)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(id)
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("new_win32", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_new_win32(_arg1, _arg2)
 	runtime.KeepAlive(themeClass)
 	runtime.KeepAlive(id)
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -665,26 +755,25 @@ func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
 //    - ok: TRUE if the color has been resolved.
 //
 func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkSymbolicColor   // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 C.GdkRGBA             // in
+	var _cret C.gboolean            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 	if props != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+		_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("resolve", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(props)
 
 	var _resolvedColor *gdk.RGBA // out
 	var _ok bool                 // out
 
-	_resolvedColor = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_resolvedColor = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -704,20 +793,18 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 //    - utf8: new string representing color.
 //
 func (color *SymbolicColor) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSymbolicColor // out
+	var _cret *C.char             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	_arg0 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_info := girepository.MustFind("Gtk", "SymbolicColor")
-	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_symbolic_color_to_string(_arg0)
 	runtime.KeepAlive(color)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

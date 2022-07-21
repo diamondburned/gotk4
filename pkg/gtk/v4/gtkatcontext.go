@@ -6,14 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_ATContext_ConnectStateChange(gpointer, guintptr);
 import "C"
 
@@ -23,9 +22,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeATContext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ATContext").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_at_context_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalATContext)
 	return gtype
+}
+
+// ATContextOverrider contains methods that are overridable.
+type ATContextOverrider interface {
 }
 
 // ATContext: GtkATContext is an abstract class provided by GTK to communicate
@@ -53,6 +56,14 @@ type ATContexter interface {
 }
 
 var _ ATContexter = (*ATContext)(nil)
+
+func classInitATContexter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapATContext(obj *coreglib.Object) *ATContext {
 	return &ATContext{
@@ -95,6 +106,46 @@ func (self *ATContext) ConnectStateChange(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "state-change", false, unsafe.Pointer(C._gotk4_gtk4_ATContext_ConnectStateChange), f)
 }
 
+// NewATContextCreate creates a new GtkATContext instance for the given
+// accessible role, accessible instance, and display connection.
+//
+// The GtkATContext implementation being instantiated will depend on the
+// platform.
+//
+// The function takes the following parameters:
+//
+//    - accessibleRole: accessible role used by the GtkATContext.
+//    - accessible: GtkAccessible implementation using the GtkATContext.
+//    - display: GdkDisplay used by the GtkATContext.
+//
+// The function returns the following values:
+//
+//    - atContext (optional): GtkATContext.
+//
+func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display *gdk.Display) *ATContext {
+	var _arg1 C.GtkAccessibleRole // out
+	var _arg2 *C.GtkAccessible    // out
+	var _arg3 *C.GdkDisplay       // out
+	var _cret *C.GtkATContext     // in
+
+	_arg1 = C.GtkAccessibleRole(accessibleRole)
+	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	_cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(accessibleRole)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(display)
+
+	var _atContext *ATContext // out
+
+	if _cret != nil {
+		_atContext = wrapATContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _atContext
+}
+
 // Accessible retrieves the GtkAccessible using this context.
 //
 // The function returns the following values:
@@ -102,19 +153,39 @@ func (self *ATContext) ConnectStateChange(f func()) coreglib.SignalHandle {
 //    - accessible: GtkAccessible.
 //
 func (self *ATContext) Accessible() *Accessible {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkATContext  // out
+	var _cret *C.GtkAccessible // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ATContext")
-	_gret := _info.InvokeClassMethod("get_accessible", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_at_context_get_accessible(_arg0)
 	runtime.KeepAlive(self)
 
 	var _accessible *Accessible // out
 
-	_accessible = wrapAccessible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_accessible = wrapAccessible(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _accessible
+}
+
+// AccessibleRole retrieves the accessible role of this context.
+//
+// The function returns the following values:
+//
+//    - accessibleRole: GtkAccessibleRole.
+//
+func (self *ATContext) AccessibleRole() AccessibleRole {
+	var _arg0 *C.GtkATContext     // out
+	var _cret C.GtkAccessibleRole // in
+
+	_arg0 = (*C.GtkATContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_at_context_get_accessible_role(_arg0)
+	runtime.KeepAlive(self)
+
+	var _accessibleRole AccessibleRole // out
+
+	_accessibleRole = AccessibleRole(_cret)
+
+	return _accessibleRole
 }

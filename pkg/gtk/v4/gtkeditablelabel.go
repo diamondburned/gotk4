@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeEditableLabel returns the GType for the type EditableLabel.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEditableLabel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EditableLabel").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_editable_label_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEditableLabel)
 	return gtype
 }
@@ -130,20 +128,18 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 //    - editableLabel: new GtkEditableLabel.
 //
 func NewEditableLabel(str string) *EditableLabel {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char      // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "EditableLabel")
-	_gret := _info.InvokeClassMethod("new_EditableLabel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_editable_label_new(_arg1)
 	runtime.KeepAlive(str)
 
 	var _editableLabel *EditableLabel // out
 
-	_editableLabel = wrapEditableLabel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_editableLabel = wrapEditableLabel(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _editableLabel
 }
@@ -155,19 +151,17 @@ func NewEditableLabel(str string) *EditableLabel {
 //    - ok: TRUE if self is currently in editing mode.
 //
 func (self *EditableLabel) Editing() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditableLabel // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "EditableLabel")
-	_gret := _info.InvokeClassMethod("get_editing", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_editable_label_get_editing(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -176,13 +170,11 @@ func (self *EditableLabel) Editing() bool {
 
 // StartEditing switches the label into “editing mode”.
 func (self *EditableLabel) StartEditing() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEditableLabel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "EditableLabel")
-	_info.InvokeClassMethod("start_editing", _args[:], nil)
-
+	C.gtk_editable_label_start_editing(_arg0)
 	runtime.KeepAlive(self)
 }
 
@@ -197,16 +189,15 @@ func (self *EditableLabel) StartEditing() {
 //    - commit: whether to set the edited text on the label.
 //
 func (self *EditableLabel) StopEditing(commit bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEditableLabel // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if commit {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "EditableLabel")
-	_info.InvokeClassMethod("stop_editing", _args[:], nil)
-
+	C.gtk_editable_label_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(commit)
 }

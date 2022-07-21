@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTCPConnection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TcpConnection").RegisteredGType())
+	gtype := coreglib.Type(C.g_tcp_connection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTCPConnection)
 	return gtype
 }
@@ -72,19 +70,17 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 //    - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
 //
 func (connection *TCPConnection) GracefulDisconnect() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GTcpConnection // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_info := girepository.MustFind("Gio", "TcpConnection")
-	_gret := _info.InvokeClassMethod("get_graceful_disconnect", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 	runtime.KeepAlive(connection)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -107,16 +103,15 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 //    - gracefulDisconnect: whether to do graceful disconnects or not.
 //
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GTcpConnection // out
+	var _arg1 C.gboolean        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if gracefulDisconnect {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "TcpConnection")
-	_info.InvokeClassMethod("set_graceful_disconnect", _args[:], nil)
-
+	C.g_tcp_connection_set_graceful_disconnect(_arg0, _arg1)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(gracefulDisconnect)
 }

@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeColorSelectionDialog returns the GType for the type ColorSelectionDialog.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColorSelectionDialog() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColorSelectionDialog").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_color_selection_dialog_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColorSelectionDialog)
 	return gtype
 }
@@ -89,20 +89,18 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 //    - colorSelectionDialog: ColorSelectionDialog.
 //
 func NewColorSelectionDialog(title string) *ColorSelectionDialog {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "ColorSelectionDialog")
-	_gret := _info.InvokeClassMethod("new_ColorSelectionDialog", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_color_selection_dialog_new(_arg1)
 	runtime.KeepAlive(title)
 
 	var _colorSelectionDialog *ColorSelectionDialog // out
 
-	_colorSelectionDialog = wrapColorSelectionDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_colorSelectionDialog = wrapColorSelectionDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelectionDialog
 }
@@ -114,20 +112,18 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 //    - widget: embedded ColorSelection.
 //
 func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColorSelectionDialog // out
+	var _cret *C.GtkWidget               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColorSelectionDialog")
-	_gret := _info.InvokeClassMethod("get_color_selection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 	runtime.KeepAlive(colorsel)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

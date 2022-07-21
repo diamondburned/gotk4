@@ -7,13 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // SCALE: scale between dimensions used for Pango distances and device units.
@@ -53,18 +50,17 @@ type Glyph = uint32
 //    - nearest (optional): rectangle to round to nearest pixels, or NULL.
 //
 func ExtentsToPixels(inclusive, nearest *Rectangle) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.PangoRectangle // out
+	var _arg2 *C.PangoRectangle // out
 
 	if inclusive != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(inclusive)))
+		_arg1 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(inclusive)))
 	}
 	if nearest != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(nearest)))
+		_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(nearest)))
 	}
 
-	_info := girepository.MustFind("Pango", "extents_to_pixels")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.pango_extents_to_pixels(_arg1, _arg2)
 	runtime.KeepAlive(inclusive)
 	runtime.KeepAlive(nearest)
 }
@@ -83,19 +79,17 @@ func ExtentsToPixels(inclusive, nearest *Rectangle) {
 //    - gint: value in Pango units.
 //
 func UnitsFromDouble(d float64) int32 {
-	var _args [1]girepository.Argument
+	var _arg1 C.double // out
+	var _cret C.int    // in
 
-	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(d)
+	_arg1 = C.double(d)
 
-	_info := girepository.MustFind("Pango", "units_from_double")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_units_from_double(_arg1)
 	runtime.KeepAlive(d)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -113,19 +107,17 @@ func UnitsFromDouble(d float64) int32 {
 //    - gdouble: double value.
 //
 func UnitsToDouble(i int32) float64 {
-	var _args [1]girepository.Argument
+	var _arg1 C.int    // out
+	var _cret C.double // in
 
-	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(i)
+	_arg1 = C.int(i)
 
-	_info := girepository.MustFind("Pango", "units_to_double")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_units_to_double(_arg1)
 	runtime.KeepAlive(i)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -143,69 +135,61 @@ type Rectangle struct {
 
 // rectangle is the struct that's finalized.
 type rectangle struct {
-	native unsafe.Pointer
+	native *C.PangoRectangle
 }
 
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) X() int32 {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.x
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Y coordinate of the the top side of the rectangle.
 func (r *Rectangle) Y() int32 {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.y
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) Width() int32 {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.width
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) Height() int32 {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("height")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	valptr := &r.native.height
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) SetX(x int32) {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(x)
+	valptr := &r.native.x
+	*valptr = C.int(x)
 }
 
 // Y coordinate of the the top side of the rectangle.
 func (r *Rectangle) SetY(y int32) {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(y)
+	valptr := &r.native.y
+	*valptr = C.int(y)
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) SetWidth(width int32) {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(width)
+	valptr := &r.native.width
+	*valptr = C.int(width)
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) SetHeight(height int32) {
-	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("height")
-	valptr := (*uintptr)(unsafe.Add(r.native, offset))
-	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(height)
+	valptr := &r.native.height
+	*valptr = C.int(height)
 }

@@ -11,18 +11,16 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeClipboard returns the GType for the type Clipboard.
@@ -31,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeClipboard() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Clipboard").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_clipboard_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalClipboard)
 	return gtype
 }
@@ -101,20 +99,18 @@ func (clipboard *Clipboard) ConnectChanged(f func()) coreglib.SignalHandle {
 //      clipboard does not maintain any content.
 //
 func (clipboard *Clipboard) Content() *ContentProvider {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _cret *C.GdkContentProvider // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("get_content", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_get_content(_arg0)
 	runtime.KeepAlive(clipboard)
 
 	var _contentProvider *ContentProvider // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_contentProvider = wrapContentProvider(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_contentProvider = wrapContentProvider(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _contentProvider
@@ -127,19 +123,17 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 //    - display: GdkDisplay.
 //
 func (clipboard *Clipboard) Display() *Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _cret *C.GdkDisplay   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_get_display(_arg0)
 	runtime.KeepAlive(clipboard)
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _display
 }
@@ -152,20 +146,18 @@ func (clipboard *Clipboard) Display() *Display {
 //    - contentFormats formats of the clipboard.
 //
 func (clipboard *Clipboard) Formats() *ContentFormats {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkClipboard      // out
+	var _cret *C.GdkContentFormats // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_get_formats(_arg0)
 	runtime.KeepAlive(clipboard)
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.gdk_content_formats_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_content_formats_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -189,19 +181,17 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 //    - ok: TRUE if the clipboard is local.
 //
 func (clipboard *Clipboard) IsLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("is_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_is_local(_arg0)
 	runtime.KeepAlive(clipboard)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -225,36 +215,39 @@ func (clipboard *Clipboard) IsLocal() bool {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 **C.char              // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	{
-		*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
-			out := unsafe.Slice(_args[1], len(mimeTypes)+1)
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
 			var zero *C.char
 			out[len(mimeTypes)] = zero
 			for i := range mimeTypes {
-				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
-				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("read_async", _args[:], nil)
-
+	C.gdk_clipboard_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(mimeTypes)
@@ -276,16 +269,16 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 //    - inputStream (optional): GInputStream or NULL on error.
 //
 func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.char         // in
+	var _cret *C.GInputStream // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("read_finish", _args[:], _outs[:])
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_read_finish(_arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
@@ -293,12 +286,12 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	var _inputStream gio.InputStreamer // out
 	var _goerr error                   // out
 
-	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
-		_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+	if _arg2 != nil {
+		_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -312,8 +305,8 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 			_inputStream = rv
 		}
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _outMimeType, _inputStream, _goerr
@@ -335,22 +328,23 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 //    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("read_text_async", _args[:], nil)
-
+	C.gdk_clipboard_read_text_async(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -369,27 +363,27 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 //    - utf8 (optional): new string or NULL on error.
 //
 func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.char         // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("read_text_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_read_text_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _utf8, _goerr
@@ -411,22 +405,23 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 //    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[3] = C.gpointer(gbox.AssignOnce(callback))
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("read_texture_async", _args[:], nil)
-
+	C.gdk_clipboard_read_texture_async(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -445,24 +440,24 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 //    - texture (optional): new GdkTexture or NULL on error.
 //
 func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texturer, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GdkTexture   // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("read_texture_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_read_texture_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
 	var _texture Texturer // out
 	var _goerr error      // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -476,8 +471,8 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 			_texture = rv
 		}
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _texture, _goerr
@@ -501,24 +496,27 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 //    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GType               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = C.GType(typ)
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("read_value_async", _args[:], nil)
-
+	C.gdk_clipboard_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(typ)
@@ -539,24 +537,24 @@ func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Typ
 //    - value: GValue containing the result.
 //
 func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cret *C.GValue       // in
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("read_value_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_read_value_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
 	var _value *coreglib.Value // out
 	var _goerr error           // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _value, _goerr
@@ -584,23 +582,22 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*coreglib
 //    - ok: TRUE if setting the clipboard succeeded.
 //
 func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _arg1 *C.GdkContentProvider // out
+	var _cret C.gboolean            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	if provider != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+		_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	}
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_gret := _info.InvokeClassMethod("set_content", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_clipboard_set_content(_arg0, _arg1)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(provider)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -614,15 +611,14 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 //    - text: text to put into the clipboard.
 //
 func (clipboard *Clipboard) SetText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("set_text", _args[:], nil)
-
+	C.gdk_clipboard_set_text(_arg0, _arg1)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(text)
 }
@@ -634,14 +630,13 @@ func (clipboard *Clipboard) SetText(text string) {
 //    - texture: GdkTexture to put into the clipboard.
 //
 func (clipboard *Clipboard) SetTexture(texture Texturer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GdkTexture   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("set_texture", _args[:], nil)
-
+	C.gdk_clipboard_set_texture(_arg0, _arg1)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(texture)
 }
@@ -653,14 +648,13 @@ func (clipboard *Clipboard) SetTexture(texture Texturer) {
 //    - value: GValue to set.
 //
 func (clipboard *Clipboard) Set(value *coreglib.Value) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GValue       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("set_value", _args[:], nil)
-
+	C.gdk_clipboard_set_value(_arg0, _arg1)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(value)
 }
@@ -687,23 +681,25 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int32, callback gio.AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GdkClipboard       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("store_async", _args[:], nil)
-
+	C.gdk_clipboard_store_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -719,21 +715,21 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int32, ca
 //    - result: GAsyncResult.
 //
 func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkClipboard // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gdk", "Clipboard")
-	_info.InvokeClassMethod("store_finish", _args[:], nil)
-
+	C.gdk_clipboard_store_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

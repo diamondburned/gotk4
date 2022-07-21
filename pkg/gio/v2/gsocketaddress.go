@@ -8,16 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_SocketAddressClass_to_native(void*, gpointer, gsize, GError**);
-// extern gssize _gotk4_gio2_SocketAddressClass_get_native_size(void*);
+// extern GSocketFamily _gotk4_gio2_SocketAddressClass_get_family(GSocketAddress*);
+// extern gboolean _gotk4_gio2_SocketAddressClass_to_native(GSocketAddress*, gpointer, gsize, GError**);
+// extern gssize _gotk4_gio2_SocketAddressClass_get_native_size(GSocketAddress*);
 import "C"
 
 // GTypeSocketAddress returns the GType for the type SocketAddress.
@@ -26,13 +25,20 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketAddress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketAddress").RegisteredGType())
+	gtype := coreglib.Type(C.g_socket_address_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketAddress)
 	return gtype
 }
 
 // SocketAddressOverrider contains methods that are overridable.
 type SocketAddressOverrider interface {
+	// Family gets the socket family type of address.
+	//
+	// The function returns the following values:
+	//
+	//    - socketFamily: socket family type of address.
+	//
+	Family() SocketFamily
 	// NativeSize gets the size of address's native struct sockaddr. You can use
 	// this to allocate memory to pass to g_socket_address_to_native().
 	//
@@ -90,23 +96,37 @@ func classInitSocketAddresser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "SocketAddressClass")
+	pclass := (*C.GSocketAddressClass)(unsafe.Pointer(gclassPtr))
+
+	if _, ok := goval.(interface{ Family() SocketFamily }); ok {
+		pclass.get_family = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_get_family)
+	}
 
 	if _, ok := goval.(interface{ NativeSize() int }); ok {
-		o := pclass.StructFieldOffset("get_native_size")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketAddressClass_get_native_size)
+		pclass.get_native_size = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_get_native_size)
 	}
 
 	if _, ok := goval.(interface {
 		ToNative(dest unsafe.Pointer, destlen uint) error
 	}); ok {
-		o := pclass.StructFieldOffset("to_native")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketAddressClass_to_native)
+		pclass.to_native = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_to_native)
 	}
 }
 
+//export _gotk4_gio2_SocketAddressClass_get_family
+func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.GSocketFamily) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Family() SocketFamily })
+
+	socketFamily := iface.Family()
+
+	cret = C.GSocketFamily(socketFamily)
+
+	return cret
+}
+
 //export _gotk4_gio2_SocketAddressClass_get_native_size
-func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.void) (cret C.gssize) {
+func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.GSocketAddress) (cret C.gssize) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NativeSize() int })
 
@@ -118,7 +138,7 @@ func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.void) (cret C.gssize
 }
 
 //export _gotk4_gio2_SocketAddressClass_to_native
-func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.void, arg1 C.gpointer, arg2 C.gsize, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.GSocketAddress, arg1 C.gpointer, arg2 C.gsize, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ToNative(dest unsafe.Pointer, destlen uint) error
@@ -175,23 +195,44 @@ func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
 //      otherwise NULL.
 //
 func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress {
-	var _args [2]girepository.Argument
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cret *C.GSocketAddress // in
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(native))
-	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(len)
+	_arg1 = (C.gpointer)(unsafe.Pointer(native))
+	_arg2 = C.gsize(len)
 
-	_info := girepository.MustFind("Gio", "SocketAddress")
-	_gret := _info.InvokeClassMethod("new_SocketAddress_from_native", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_address_new_from_native(_arg1, _arg2)
 	runtime.KeepAlive(native)
 	runtime.KeepAlive(len)
 
 	var _socketAddress *SocketAddress // out
 
-	_socketAddress = wrapSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_socketAddress = wrapSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketAddress
+}
+
+// Family gets the socket family type of address.
+//
+// The function returns the following values:
+//
+//    - socketFamily: socket family type of address.
+//
+func (address *SocketAddress) Family() SocketFamily {
+	var _arg0 *C.GSocketAddress // out
+	var _cret C.GSocketFamily   // in
+
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+
+	_cret = C.g_socket_address_get_family(_arg0)
+	runtime.KeepAlive(address)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
 }
 
 // NativeSize gets the size of address's native struct sockaddr. You can use
@@ -202,19 +243,17 @@ func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress 
 //    - gssize: size of the native struct sockaddr that address represents.
 //
 func (address *SocketAddress) NativeSize() int {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSocketAddress // out
+	var _cret C.gssize          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "SocketAddress")
-	_gret := _info.InvokeClassMethod("get_native_size", _args[:], nil)
-	_cret := *(*C.gssize)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_socket_address_get_native_size(_arg0)
 	runtime.KeepAlive(address)
 
 	var _gssize int // out
 
-	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
+	_gssize = int(_cret)
 
 	return _gssize
 }
@@ -234,23 +273,24 @@ func (address *SocketAddress) NativeSize() int {
 //      g_socket_address_get_native_size().
 //
 func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GSocketAddress // out
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cerr *C.GError         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(dest))
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(destlen)
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(dest))
+	_arg2 = C.gsize(destlen)
 
-	_info := girepository.MustFind("Gio", "SocketAddress")
-	_info.InvokeClassMethod("to_native", _args[:], nil)
-
+	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(dest)
 	runtime.KeepAlive(destlen)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

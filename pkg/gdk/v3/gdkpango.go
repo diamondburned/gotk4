@@ -6,15 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gdk/gdk.h>
 import "C"
 
 // PangoContextGet creates a Context for the default GDK screen.
@@ -36,14 +33,14 @@ import "C"
 //    - context: new Context for the default display.
 //
 func PangoContextGet() *pango.Context {
-	_info := girepository.MustFind("Gdk", "pango_context_get")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.PangoContext // in
+
+	_cret = C.gdk_pango_context_get()
 
 	var _context *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_context = &pango.Context{
 			Object: obj,
 		}
@@ -75,20 +72,18 @@ func PangoContextGet() *pango.Context {
 //    - context: new Context for display.
 //
 func PangoContextGetForDisplay(display *Display) *pango.Context {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkDisplay   // out
+	var _cret *C.PangoContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "pango_context_get_for_display")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pango_context_get_for_display(_arg1)
 	runtime.KeepAlive(display)
 
 	var _context *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_context = &pango.Context{
 			Object: obj,
 		}
@@ -120,20 +115,18 @@ func PangoContextGetForDisplay(display *Display) *pango.Context {
 //    - context: new Context for screen.
 //
 func PangoContextGetForScreen(screen *Screen) *pango.Context {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkScreen    // out
+	var _cret *C.PangoContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("Gdk", "pango_context_get_for_screen")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_pango_context_get_for_screen(_arg1)
 	runtime.KeepAlive(screen)
 
 	var _context *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_context = &pango.Context{
 			Object: obj,
 		}

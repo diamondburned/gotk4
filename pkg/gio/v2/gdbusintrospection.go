@@ -8,13 +8,11 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusAnnotationInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusAnnotationInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_annotation_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusAnnotationInfo)
 	return gtype
 }
@@ -35,7 +33,7 @@ func GTypeDBusAnnotationInfo() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusArgInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusArgInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_arg_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusArgInfo)
 	return gtype
 }
@@ -46,7 +44,7 @@ func GTypeDBusArgInfo() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusInterfaceInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusInterfaceInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_interface_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusInterfaceInfo)
 	return gtype
 }
@@ -57,7 +55,7 @@ func GTypeDBusInterfaceInfo() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusMethodInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMethodInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_method_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMethodInfo)
 	return gtype
 }
@@ -68,7 +66,7 @@ func GTypeDBusMethodInfo() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusNodeInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusNodeInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_node_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusNodeInfo)
 	return gtype
 }
@@ -79,7 +77,7 @@ func GTypeDBusNodeInfo() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusPropertyInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusPropertyInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_property_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusPropertyInfo)
 	return gtype
 }
@@ -90,7 +88,7 @@ func GTypeDBusPropertyInfo() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusSignalInfo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSignalInfo").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_signal_info_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSignalInfo)
 	return gtype
 }
@@ -104,59 +102,55 @@ type DBusAnnotationInfo struct {
 
 // dBusAnnotationInfo is the struct that's finalized.
 type dBusAnnotationInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusAnnotationInfo
 }
 
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusAnnotationInfo{&dBusAnnotationInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusAnnotationInfo{&dBusAnnotationInfo{(*C.GDBusAnnotationInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusAnnotationInfo) RefCount() int32 {
-	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.ref_count
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Key: name of the annotation, e.g. "org.freedesktop.DBus.Deprecated".
 func (d *DBusAnnotationInfo) Key() string {
-	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("key")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.key
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Value: value of the annotation.
 func (d *DBusAnnotationInfo) Value() string {
-	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("value")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.value
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
-	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("annotations")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.annotations
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -170,9 +164,8 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusAnnotationInfo) SetRefCount(refCount int32) {
-	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }
 
 // DBusAnnotationInfoLookup looks up the value of an annotation.
@@ -190,36 +183,35 @@ func (d *DBusAnnotationInfo) SetRefCount(refCount int32) {
 //      annotations.
 //
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
-	var _args [2]girepository.Argument
+	var _arg1 **C.GDBusAnnotationInfo // out
+	var _arg2 *C.gchar                // out
+	var _cret *C.gchar                // in
 
 	if annotations != nil {
 		{
-			*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t((len(annotations) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-			defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_args[0]))))
+			_arg1 = (**C.GDBusAnnotationInfo)(C.calloc(C.size_t((len(annotations) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+			defer C.free(unsafe.Pointer(_arg1))
 			{
-				out := unsafe.Slice(_args[0], len(annotations)+1)
-				var zero *C.void
+				out := unsafe.Slice(_arg1, len(annotations)+1)
+				var zero *C.GDBusAnnotationInfo
 				out[len(annotations)] = zero
 				for i := range annotations {
-					*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(gextras.StructNative(unsafe.Pointer(annotations[i])))
+					out[i] = (*C.GDBusAnnotationInfo)(gextras.StructNative(unsafe.Pointer(annotations[i])))
 				}
 			}
 		}
 	}
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "lookup")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_annotation_info_lookup(_arg1, _arg2)
 	runtime.KeepAlive(annotations)
 	runtime.KeepAlive(name)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -234,59 +226,55 @@ type DBusArgInfo struct {
 
 // dBusArgInfo is the struct that's finalized.
 type dBusArgInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusArgInfo
 }
 
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusArgInfo{&dBusArgInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusArgInfo{&dBusArgInfo{(*C.GDBusArgInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusArgInfo) RefCount() int32 {
-	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.ref_count
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Name of the argument, e.g. unix_user_id.
 func (d *DBusArgInfo) Name() string {
-	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("name")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Signature d-Bus signature of the argument (a single complete type).
 func (d *DBusArgInfo) Signature() string {
-	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("signature")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.signature
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
-	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("annotations")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.annotations
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -300,9 +288,8 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusArgInfo) SetRefCount(refCount int32) {
-	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
@@ -314,50 +301,47 @@ type DBusInterfaceInfo struct {
 
 // dBusInterfaceInfo is the struct that's finalized.
 type dBusInterfaceInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusInterfaceInfo
 }
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusInterfaceInfo{&dBusInterfaceInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusInterfaceInfo{&dBusInterfaceInfo{(*C.GDBusInterfaceInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusInterfaceInfo) RefCount() int32 {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.ref_count
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Name: name of the D-Bus interface, e.g. "org.freedesktop.DBus.Properties".
 func (d *DBusInterfaceInfo) Name() string {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("name")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Methods: pointer to a NULL-terminated array of pointers to BusMethodInfo
 // structures or NULL if there are no methods.
 func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("methods")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.methods
 	var v []*DBusMethodInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusMethodInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusMethodInfo, i)
 		for i := range src {
-			v[i] = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_method_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_method_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -372,21 +356,20 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 // Signals: pointer to a NULL-terminated array of pointers to BusSignalInfo
 // structures or NULL if there are no signals.
 func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("signals")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.signals
 	var v []*DBusSignalInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusSignalInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusSignalInfo, i)
 		for i := range src {
-			v[i] = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_signal_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_signal_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -401,21 +384,20 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 // Properties: pointer to a NULL-terminated array of pointers to BusPropertyInfo
 // structures or NULL if there are no properties.
 func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("properties")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.properties
 	var v []*DBusPropertyInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusPropertyInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
-			v[i] = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_property_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_property_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -430,21 +412,20 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("annotations")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.annotations
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -458,9 +439,8 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusInterfaceInfo) SetRefCount(refCount int32) {
-	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }
 
 // CacheBuild builds a lookup-cache to speed up
@@ -473,13 +453,11 @@ func (d *DBusInterfaceInfo) SetRefCount(refCount int32) {
 // Note that info cannot be modified until g_dbus_interface_info_cache_release()
 // is called.
 func (info *DBusInterfaceInfo) CacheBuild() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusInterfaceInfo // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
-	_info.InvokeRecordMethod("cache_build", _args[:], nil)
-
+	C.g_dbus_interface_info_cache_build(_arg0)
 	runtime.KeepAlive(info)
 }
 
@@ -487,13 +465,11 @@ func (info *DBusInterfaceInfo) CacheBuild() {
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
 func (info *DBusInterfaceInfo) CacheRelease() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusInterfaceInfo // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
 
-	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
-	_info.InvokeRecordMethod("cache_release", _args[:], nil)
-
+	C.g_dbus_interface_info_cache_release(_arg0)
 	runtime.KeepAlive(info)
 }
 
@@ -512,24 +488,23 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 //      by info.
 //
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusInterfaceInfo // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusMethodInfo    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
-	_gret := _info.InvokeRecordMethod("lookup_method", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_interface_info_lookup_method(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
 	var _dBusMethodInfo *DBusMethodInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_dbus_method_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_method_info_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusMethodInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -556,24 +531,23 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //      owned by info.
 //
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusInterfaceInfo // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusPropertyInfo  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
-	_gret := _info.InvokeRecordMethod("lookup_property", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_interface_info_lookup_property(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_dbus_property_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_property_info_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusPropertyInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -600,24 +574,23 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //      by info.
 //
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusInterfaceInfo // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusSignalInfo    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
-	_gret := _info.InvokeRecordMethod("lookup_signal", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_interface_info_lookup_signal(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
 	var _dBusSignalInfo *DBusSignalInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusSignalInfo = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_dbus_signal_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_dBusSignalInfo = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_signal_info_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusSignalInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -638,50 +611,47 @@ type DBusMethodInfo struct {
 
 // dBusMethodInfo is the struct that's finalized.
 type dBusMethodInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusMethodInfo
 }
 
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusMethodInfo{&dBusMethodInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusMethodInfo{&dBusMethodInfo{(*C.GDBusMethodInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusMethodInfo) RefCount() int32 {
-	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.ref_count
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Name: name of the D-Bus method, e.g. RequestName.
 func (d *DBusMethodInfo) Name() string {
-	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("name")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // InArgs: pointer to a NULL-terminated array of pointers to BusArgInfo
 // structures or NULL if there are no in arguments.
 func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
-	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("in_args")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.in_args
 	var v []*DBusArgInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusArgInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
-			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_arg_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -696,21 +666,20 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 // OutArgs: pointer to a NULL-terminated array of pointers to BusArgInfo
 // structures or NULL if there are no out arguments.
 func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
-	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("out_args")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.out_args
 	var v []*DBusArgInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusArgInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
-			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_arg_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -725,21 +694,20 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
-	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("annotations")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.annotations
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -753,9 +721,8 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusMethodInfo) SetRefCount(refCount int32) {
-	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }
 
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
@@ -767,39 +734,38 @@ type DBusNodeInfo struct {
 
 // dBusNodeInfo is the struct that's finalized.
 type dBusNodeInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusNodeInfo
 }
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusNodeInfo{&dBusNodeInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusNodeInfo{&dBusNodeInfo{(*C.GDBusNodeInfo)(b)}}, nil
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
 func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar         // out
+	var _cret *C.GDBusNodeInfo // in
+	var _cerr *C.GError        // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(xmlData)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(xmlData)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusNodeInfo")
-	_gret := _info.InvokeRecordMethod("new_for_xml", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_node_info_new_for_xml(_arg1, &_cerr)
 	runtime.KeepAlive(xmlData)
 
 	var _dBusNodeInfo *DBusNodeInfo // out
 	var _goerr error                // out
 
-	_dBusNodeInfo = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusNodeInfo = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusNodeInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _dBusNodeInfo, _goerr
@@ -807,41 +773,38 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusNodeInfo) RefCount() int32 {
-	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.ref_count
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Path: path of the node or NULL if omitted. Note that this may be a relative
 // path. See the D-Bus specification for more details.
 func (d *DBusNodeInfo) Path() string {
-	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("path")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.path
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Interfaces: pointer to a NULL-terminated array of pointers to
 // BusInterfaceInfo structures or NULL if there are no interfaces.
 func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
-	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("interfaces")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.interfaces
 	var v []*DBusInterfaceInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusInterfaceInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
-			v[i] = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_interface_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_interface_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -856,21 +819,20 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 // Nodes: pointer to a NULL-terminated array of pointers to BusNodeInfo
 // structures or NULL if there are no nodes.
 func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
-	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("nodes")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.nodes
 	var v []*DBusNodeInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusNodeInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusNodeInfo, i)
 		for i := range src {
-			v[i] = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_node_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_node_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -885,21 +847,20 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
-	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("annotations")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.annotations
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -913,9 +874,8 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusNodeInfo) SetRefCount(refCount int32) {
-	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }
 
 // LookupInterface looks up information about an interface.
@@ -932,24 +892,23 @@ func (d *DBusNodeInfo) SetRefCount(refCount int32) {
 //      owned by info.
 //
 func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDBusNodeInfo      // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GDBusInterfaceInfo // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GDBusNodeInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "DBusNodeInfo")
-	_gret := _info.InvokeRecordMethod("lookup_interface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_node_info_lookup_interface(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_dbus_interface_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_dbus_interface_info_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -970,12 +929,78 @@ type DBusPropertyInfo struct {
 
 // dBusPropertyInfo is the struct that's finalized.
 type dBusPropertyInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusPropertyInfo
 }
 
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusPropertyInfo{&dBusPropertyInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusPropertyInfo{&dBusPropertyInfo{(*C.GDBusPropertyInfo)(b)}}, nil
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusPropertyInfo) RefCount() int32 {
+	valptr := &d.native.ref_count
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Name: name of the D-Bus property, e.g. "SupportedFilesystems".
+func (d *DBusPropertyInfo) Name() string {
+	valptr := &d.native.name
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Signature d-Bus signature of the property (a single complete type).
+func (d *DBusPropertyInfo) Signature() string {
+	valptr := &d.native.signature
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Flags access control flags for the property.
+func (d *DBusPropertyInfo) Flags() DBusPropertyInfoFlags {
+	valptr := &d.native.flags
+	var v DBusPropertyInfoFlags // out
+	v = DBusPropertyInfoFlags(*valptr)
+	return v
+}
+
+// Annotations: pointer to a NULL-terminated array of pointers to
+// BusAnnotationInfo structures or NULL if there are no annotations.
+func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
+	valptr := &d.native.annotations
+	var v []*DBusAnnotationInfo // out
+	{
+		var i int
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(*valptr, i)
+		v = make([]*DBusAnnotationInfo, i)
+		for i := range src {
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(v[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
+	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusPropertyInfo) SetRefCount(refCount int32) {
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
@@ -987,50 +1012,47 @@ type DBusSignalInfo struct {
 
 // dBusSignalInfo is the struct that's finalized.
 type dBusSignalInfo struct {
-	native unsafe.Pointer
+	native *C.GDBusSignalInfo
 }
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &DBusSignalInfo{&dBusSignalInfo{(unsafe.Pointer)(b)}}, nil
+	return &DBusSignalInfo{&dBusSignalInfo{(*C.GDBusSignalInfo)(b)}}, nil
 }
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusSignalInfo) RefCount() int32 {
-	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.ref_count
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Name: name of the D-Bus signal, e.g. "NameOwnerChanged".
 func (d *DBusSignalInfo) Name() string {
-	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("name")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Args: pointer to a NULL-terminated array of pointers to BusArgInfo structures
 // or NULL if there are no arguments.
 func (d *DBusSignalInfo) Args() []*DBusArgInfo {
-	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("args")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.args
 	var v []*DBusArgInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusArgInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
-			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_arg_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_arg_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -1045,21 +1067,20 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 // Annotations: pointer to a NULL-terminated array of pointers to
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
-	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("annotations")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	valptr := &d.native.annotations
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
-		var z *C.void
-		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.GDBusAnnotationInfo
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
-			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			C.g_dbus_annotation_info_ref(src[i])
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -1073,7 +1094,6 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusSignalInfo) SetRefCount(refCount int32) {
-	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("ref_count")
-	valptr := (*uintptr)(unsafe.Add(d.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
+	valptr := &d.native.ref_count
+	*valptr = C.gint(refCount)
 }

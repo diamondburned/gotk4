@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_SearchEntry_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_SearchEntry_ConnectNextMatch(gpointer, guintptr);
 // extern void _gotk4_gtk4_SearchEntry_ConnectPreviousMatch(gpointer, guintptr);
@@ -28,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSearchEntry() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SearchEntry").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_search_entry_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSearchEntry)
 	return gtype
 }
@@ -288,13 +286,13 @@ func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
 //    - searchEntry: new GtkSearchEntry.
 //
 func NewSearchEntry() *SearchEntry {
-	_info := girepository.MustFind("Gtk", "SearchEntry")
-	_gret := _info.InvokeClassMethod("new_SearchEntry", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_search_entry_new()
 
 	var _searchEntry *SearchEntry // out
 
-	_searchEntry = wrapSearchEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_searchEntry = wrapSearchEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
 }
@@ -306,20 +304,18 @@ func NewSearchEntry() *SearchEntry {
 //    - widget: key capture widget.
 //
 func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSearchEntry // out
+	var _cret *C.GtkWidget      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "SearchEntry")
-	_gret := _info.InvokeClassMethod("get_key_capture_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -359,16 +355,15 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 //    - widget (optional): Widget.
 //
 func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSearchEntry // out
+	var _arg1 *C.GtkWidget      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if widget != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SearchEntry")
-	_info.InvokeClassMethod("set_key_capture_widget", _args[:], nil)
-
+	C.gtk_search_entry_set_key_capture_widget(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(widget)
 }

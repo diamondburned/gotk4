@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_GestureLongPress_ConnectCancelled(gpointer, guintptr);
 // extern void _gotk4_gtk4_GestureLongPress_ConnectPressed(gpointer, gdouble, gdouble, guintptr);
 import "C"
@@ -24,9 +22,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureLongPress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureLongPress").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_long_press_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureLongPress)
 	return gtype
+}
+
+// GestureLongPressOverrider contains methods that are overridable.
+type GestureLongPressOverrider interface {
 }
 
 // GestureLongPress: GtkGestureLongPress is a GtkGesture for long presses.
@@ -51,6 +53,14 @@ type GestureLongPress struct {
 var (
 	_ Gesturer = (*GestureLongPress)(nil)
 )
+
+func classInitGestureLongPresser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureLongPress(obj *coreglib.Object) *GestureLongPress {
 	return &GestureLongPress{
@@ -126,13 +136,13 @@ func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.S
 //    - gestureLongPress: newly created GtkGestureLongPress.
 //
 func NewGestureLongPress() *GestureLongPress {
-	_info := girepository.MustFind("Gtk", "GestureLongPress")
-	_gret := _info.InvokeClassMethod("new_GestureLongPress", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkGesture // in
+
+	_cret = C.gtk_gesture_long_press_new()
 
 	var _gestureLongPress *GestureLongPress // out
 
-	_gestureLongPress = wrapGestureLongPress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureLongPress = wrapGestureLongPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureLongPress
 }
@@ -144,19 +154,17 @@ func NewGestureLongPress() *GestureLongPress {
 //    - gdouble: delay factor.
 //
 func (gesture *GestureLongPress) DelayFactor() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGestureLongPress // out
+	var _cret C.double               // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureLongPress")
-	_gret := _info.InvokeClassMethod("get_delay_factor", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -171,14 +179,13 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 //    - delayFactor: delay factor to apply.
 //
 func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGestureLongPress // out
+	var _arg1 C.double               // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(delayFactor)
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg1 = C.double(delayFactor)
 
-	_info := girepository.MustFind("Gtk", "GestureLongPress")
-	_info.InvokeClassMethod("set_delay_factor", _args[:], nil)
-
+	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(delayFactor)
 }

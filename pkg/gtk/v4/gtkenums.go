@@ -4,17 +4,16 @@ package gtk
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeAccessibleAutocomplete returns the GType for the type AccessibleAutocomplete.
@@ -23,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleAutocomplete() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleAutocomplete").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_autocomplete_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleAutocomplete)
 	return gtype
 }
@@ -34,7 +33,7 @@ func GTypeAccessibleAutocomplete() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleInvalidState() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleInvalidState").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_invalid_state_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleInvalidState)
 	return gtype
 }
@@ -45,7 +44,7 @@ func GTypeAccessibleInvalidState() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleProperty() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleProperty").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_property_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleProperty)
 	return gtype
 }
@@ -56,7 +55,7 @@ func GTypeAccessibleProperty() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleRelation() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleRelation").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_relation_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleRelation)
 	return gtype
 }
@@ -67,7 +66,7 @@ func GTypeAccessibleRelation() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleRole() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleRole").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_role_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleRole)
 	return gtype
 }
@@ -78,7 +77,7 @@ func GTypeAccessibleRole() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleSort() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleSort").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_sort_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleSort)
 	return gtype
 }
@@ -89,7 +88,7 @@ func GTypeAccessibleSort() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleState() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleState").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_state_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleState)
 	return gtype
 }
@@ -100,7 +99,7 @@ func GTypeAccessibleState() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAccessibleTristate() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccessibleTristate").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_accessible_tristate_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleTristate)
 	return gtype
 }
@@ -111,7 +110,7 @@ func GTypeAccessibleTristate() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAlign() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Align").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_align_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAlign)
 	return gtype
 }
@@ -122,7 +121,7 @@ func GTypeAlign() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeArrowType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ArrowType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_arrow_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalArrowType)
 	return gtype
 }
@@ -133,7 +132,7 @@ func GTypeArrowType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBaselinePosition() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BaselinePosition").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_baseline_position_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBaselinePosition)
 	return gtype
 }
@@ -144,7 +143,7 @@ func GTypeBaselinePosition() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBorderStyle() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BorderStyle").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_border_style_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBorderStyle)
 	return gtype
 }
@@ -155,7 +154,7 @@ func GTypeBorderStyle() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintAttribute() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintAttribute").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_attribute_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintAttribute)
 	return gtype
 }
@@ -166,7 +165,7 @@ func GTypeConstraintAttribute() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintRelation() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintRelation").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_relation_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintRelation)
 	return gtype
 }
@@ -177,7 +176,7 @@ func GTypeConstraintRelation() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintStrength() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintStrength").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_strength_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintStrength)
 	return gtype
 }
@@ -188,7 +187,7 @@ func GTypeConstraintStrength() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeConstraintVflParserError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintVflParserError").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_constraint_vfl_parser_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintVflParserError)
 	return gtype
 }
@@ -199,7 +198,7 @@ func GTypeConstraintVflParserError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDeleteType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DeleteType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_delete_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDeleteType)
 	return gtype
 }
@@ -210,7 +209,7 @@ func GTypeDeleteType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDirectionType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DirectionType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_direction_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDirectionType)
 	return gtype
 }
@@ -221,7 +220,7 @@ func GTypeDirectionType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventSequenceState() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventSequenceState").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_event_sequence_state_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventSequenceState)
 	return gtype
 }
@@ -232,7 +231,7 @@ func GTypeEventSequenceState() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconSize() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconSize").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_size_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconSize)
 	return gtype
 }
@@ -243,7 +242,7 @@ func GTypeIconSize() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeInputPurpose() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "InputPurpose").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_input_purpose_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalInputPurpose)
 	return gtype
 }
@@ -254,7 +253,7 @@ func GTypeInputPurpose() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeJustification() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Justification").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_justification_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalJustification)
 	return gtype
 }
@@ -265,7 +264,7 @@ func GTypeJustification() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLevelBarMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "LevelBarMode").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_level_bar_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLevelBarMode)
 	return gtype
 }
@@ -276,7 +275,7 @@ func GTypeLevelBarMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMessageType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MessageType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_message_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMessageType)
 	return gtype
 }
@@ -287,7 +286,7 @@ func GTypeMessageType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMovementStep() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MovementStep").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_movement_step_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMovementStep)
 	return gtype
 }
@@ -298,7 +297,7 @@ func GTypeMovementStep() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNumberUpLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "NumberUpLayout").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_number_up_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNumberUpLayout)
 	return gtype
 }
@@ -309,7 +308,7 @@ func GTypeNumberUpLayout() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOrdering() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Ordering").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_ordering_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOrdering)
 	return gtype
 }
@@ -320,7 +319,7 @@ func GTypeOrdering() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOrientation() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Orientation").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_orientation_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOrientation)
 	return gtype
 }
@@ -331,7 +330,7 @@ func GTypeOrientation() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeOverflow() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Overflow").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_overflow_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalOverflow)
 	return gtype
 }
@@ -342,7 +341,7 @@ func GTypeOverflow() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePackType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PackType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_pack_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPackType)
 	return gtype
 }
@@ -353,7 +352,7 @@ func GTypePackType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePageOrientation() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PageOrientation").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_page_orientation_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPageOrientation)
 	return gtype
 }
@@ -364,7 +363,7 @@ func GTypePageOrientation() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePageSet() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PageSet").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_page_set_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPageSet)
 	return gtype
 }
@@ -375,7 +374,7 @@ func GTypePageSet() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePanDirection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PanDirection").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_pan_direction_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPanDirection)
 	return gtype
 }
@@ -386,7 +385,7 @@ func GTypePanDirection() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePositionType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PositionType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_position_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPositionType)
 	return gtype
 }
@@ -397,7 +396,7 @@ func GTypePositionType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePrintDuplex() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PrintDuplex").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_print_duplex_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPrintDuplex)
 	return gtype
 }
@@ -408,7 +407,7 @@ func GTypePrintDuplex() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePrintPages() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PrintPages").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_print_pages_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPrintPages)
 	return gtype
 }
@@ -419,7 +418,7 @@ func GTypePrintPages() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePrintQuality() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PrintQuality").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_print_quality_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPrintQuality)
 	return gtype
 }
@@ -430,7 +429,7 @@ func GTypePrintQuality() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePropagationLimit() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PropagationLimit").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_propagation_limit_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPropagationLimit)
 	return gtype
 }
@@ -441,7 +440,7 @@ func GTypePropagationLimit() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePropagationPhase() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PropagationPhase").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_propagation_phase_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPropagationPhase)
 	return gtype
 }
@@ -452,7 +451,7 @@ func GTypePropagationPhase() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollStep() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrollStep").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scroll_step_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollStep)
 	return gtype
 }
@@ -463,7 +462,7 @@ func GTypeScrollStep() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrollType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scroll_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollType)
 	return gtype
 }
@@ -474,7 +473,7 @@ func GTypeScrollType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollablePolicy() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrollablePolicy").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scrollable_policy_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollablePolicy)
 	return gtype
 }
@@ -485,7 +484,7 @@ func GTypeScrollablePolicy() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSelectionMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SelectionMode").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_selection_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionMode)
 	return gtype
 }
@@ -496,7 +495,7 @@ func GTypeSelectionMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSensitivityType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SensitivityType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_sensitivity_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSensitivityType)
 	return gtype
 }
@@ -507,7 +506,7 @@ func GTypeSensitivityType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeShortcutScope() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutScope").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_shortcut_scope_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutScope)
 	return gtype
 }
@@ -518,7 +517,7 @@ func GTypeShortcutScope() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSizeGroupMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SizeGroupMode").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_size_group_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSizeGroupMode)
 	return gtype
 }
@@ -529,7 +528,7 @@ func GTypeSizeGroupMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSizeRequestMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SizeRequestMode").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_size_request_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSizeRequestMode)
 	return gtype
 }
@@ -540,7 +539,7 @@ func GTypeSizeRequestMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSortType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SortType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_sort_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSortType)
 	return gtype
 }
@@ -551,7 +550,7 @@ func GTypeSortType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSystemSetting() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SystemSetting").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_system_setting_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSystemSetting)
 	return gtype
 }
@@ -562,7 +561,7 @@ func GTypeSystemSetting() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextDirection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextDirection").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_text_direction_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextDirection)
 	return gtype
 }
@@ -573,7 +572,7 @@ func GTypeTextDirection() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTreeViewGridLines() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeViewGridLines").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewGridLines)
 	return gtype
 }
@@ -584,7 +583,7 @@ func GTypeTreeViewGridLines() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeUnit() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Unit").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_unit_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalUnit)
 	return gtype
 }
@@ -595,7 +594,7 @@ func GTypeUnit() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWrapMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "WrapMode").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_wrap_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWrapMode)
 	return gtype
 }
@@ -606,7 +605,7 @@ func GTypeWrapMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeInputHints() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "InputHints").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_input_hints_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalInputHints)
 	return gtype
 }
@@ -617,7 +616,7 @@ func GTypeInputHints() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePickFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PickFlags").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_pick_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPickFlags)
 	return gtype
 }
@@ -628,7 +627,7 @@ func GTypePickFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStateFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "StateFlags").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_state_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStateFlags)
 	return gtype
 }
@@ -2302,6 +2301,33 @@ func (o Ordering) String() string {
 	default:
 		return fmt.Sprintf("Ordering(%d)", o)
 	}
+}
+
+// OrderingFromCmpfunc converts the result of a GCompareFunc like strcmp() to a
+// GtkOrdering value.
+//
+// The function takes the following parameters:
+//
+//    - cmpfuncResult: result of a comparison function.
+//
+// The function returns the following values:
+//
+//    - ordering: corresponding GtkOrdering.
+//
+func OrderingFromCmpfunc(cmpfuncResult int32) Ordering {
+	var _arg1 C.int         // out
+	var _cret C.GtkOrdering // in
+
+	_arg1 = C.int(cmpfuncResult)
+
+	_cret = C.gtk_ordering_from_cmpfunc(_arg1)
+	runtime.KeepAlive(cmpfuncResult)
+
+	var _ordering Ordering // out
+
+	_ordering = Ordering(_cret)
+
+	return _ordering
 }
 
 // Orientation represents the orientation of widgets and other objects.

@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeMisc returns the GType for the type Misc.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMisc() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Misc").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_misc_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMisc)
 	return gtype
 }
@@ -116,21 +116,20 @@ func BaseMisc(obj Miscer) *Misc {
 //    - yalign (optional): location to store Y alignment of misc, or NULL.
 //
 func (misc *Misc) Alignment() (xalign, yalign float32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkMisc // out
+	var _arg1 C.gfloat   // in
+	var _arg2 C.gfloat   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	_info := girepository.MustFind("Gtk", "Misc")
-	_info.InvokeClassMethod("get_alignment", _args[:], _outs[:])
-
+	C.gtk_misc_get_alignment(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(misc)
 
 	var _xalign float32 // out
 	var _yalign float32 // out
 
-	_xalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[0])))
-	_yalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[1])))
+	_xalign = float32(_arg1)
+	_yalign = float32(_arg2)
 
 	return _xalign, _yalign
 }
@@ -146,21 +145,20 @@ func (misc *Misc) Alignment() (xalign, yalign float32) {
 //    - ypad (optional): location to store padding in the Y direction, or NULL.
 //
 func (misc *Misc) Padding() (xpad, ypad int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkMisc // out
+	var _arg1 C.gint     // in
+	var _arg2 C.gint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	_info := girepository.MustFind("Gtk", "Misc")
-	_info.InvokeClassMethod("get_padding", _args[:], _outs[:])
-
+	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(misc)
 
 	var _xpad int32 // out
 	var _ypad int32 // out
 
-	_xpad = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_ypad = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_xpad = int32(_arg1)
+	_ypad = int32(_arg2)
 
 	return _xpad, _ypad
 }
@@ -176,15 +174,15 @@ func (misc *Misc) Padding() (xpad, ypad int32) {
 //    - yalign: vertical alignment, from 0 (top) to 1 (bottom).
 //
 func (misc *Misc) SetAlignment(xalign, yalign float32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkMisc // out
+	var _arg1 C.gfloat   // out
+	var _arg2 C.gfloat   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	_arg1 = C.gfloat(xalign)
+	_arg2 = C.gfloat(yalign)
 
-	_info := girepository.MustFind("Gtk", "Misc")
-	_info.InvokeClassMethod("set_alignment", _args[:], nil)
-
+	C.gtk_misc_set_alignment(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
@@ -202,15 +200,15 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 //      pixels.
 //
 func (misc *Misc) SetPadding(xpad, ypad int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkMisc // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(xpad)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(ypad)
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+	_arg1 = C.gint(xpad)
+	_arg2 = C.gint(ypad)
 
-	_info := girepository.MustFind("Gtk", "Misc")
-	_info.InvokeClassMethod("set_padding", _args[:], nil)
-
+	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)
 	runtime.KeepAlive(ypad)

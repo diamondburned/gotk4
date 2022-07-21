@@ -8,20 +8,18 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_GLAreaClass_render(void*, void*);
-// extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_GLAreaClass_resize(void*, int, int);
+// #include <gtk/gtk.h>
+// extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
+// extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
+// extern void _gotk4_gtk4_GLAreaClass_resize(GtkGLArea*, int, int);
 // extern void _gotk4_gtk4_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
-// extern void* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
 import "C"
 
 // GTypeGLArea returns the GType for the type GLArea.
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGLArea() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GLArea").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gl_area_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGLArea)
 	return gtype
 }
@@ -166,23 +164,21 @@ func classInitGLAreaer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "GLAreaClass")
+	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		Render(context gdk.GLContexter) bool
 	}); ok {
-		o := pclass.StructFieldOffset("render")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_GLAreaClass_render)
+		pclass.render = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_render)
 	}
 
 	if _, ok := goval.(interface{ Resize(width, height int32) }); ok {
-		o := pclass.StructFieldOffset("resize")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_GLAreaClass_resize)
+		pclass.resize = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_resize)
 	}
 }
 
 //export _gotk4_gtk4_GLAreaClass_render
-func _gotk4_gtk4_GLAreaClass_render(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
+func _gotk4_gtk4_GLAreaClass_render(arg0 *C.GtkGLArea, arg1 *C.GdkGLContext) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Render(context gdk.GLContexter) bool
@@ -218,7 +214,7 @@ func _gotk4_gtk4_GLAreaClass_render(arg0 *C.void, arg1 *C.void) (cret C.gboolean
 }
 
 //export _gotk4_gtk4_GLAreaClass_resize
-func _gotk4_gtk4_GLAreaClass_resize(arg0 *C.void, arg1 C.int, arg2 C.int) {
+func _gotk4_gtk4_GLAreaClass_resize(arg0 *C.GtkGLArea, arg1 C.int, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Resize(width, height int32) })
 
@@ -256,7 +252,7 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_GLArea_ConnectCreateContext
-func _gotk4_gtk4_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.void) {
+func _gotk4_gtk4_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GdkGLContext) {
 	var f func() (glContext gdk.GLContexter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -270,7 +266,7 @@ func _gotk4_gtk4_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (
 
 	glContext := f()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(glContext).Native()))
+	cret = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(glContext).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(glContext).Native()))
 
 	return cret
@@ -290,7 +286,7 @@ func (area *GLArea) ConnectCreateContext(f func() (glContext gdk.GLContexter)) c
 }
 
 //export _gotk4_gtk4_GLArea_ConnectRender
-func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(context gdk.GLContexter) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -384,13 +380,13 @@ func (area *GLArea) ConnectResize(f func(width, height int32)) coreglib.SignalHa
 //    - glArea: new GtkGLArea.
 //
 func NewGLArea() *GLArea {
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("new_GLArea", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_gl_area_new()
 
 	var _glArea *GLArea // out
 
-	_glArea = wrapGLArea(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_glArea = wrapGLArea(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _glArea
 }
@@ -404,13 +400,11 @@ func NewGLArea() *GLArea {
 // This function is automatically called before emitting the gtk.GLArea::render
 // signal, and doesn't normally need to be called by application code.
 func (area *GLArea) AttachBuffers() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("attach_buffers", _args[:], nil)
-
+	C.gtk_gl_area_attach_buffers(_arg0)
 	runtime.KeepAlive(area)
 }
 
@@ -421,19 +415,17 @@ func (area *GLArea) AttachBuffers() {
 //    - ok: TRUE if the area is auto rendering, FALSE otherwise.
 //
 func (area *GLArea) AutoRender() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("get_auto_render", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gl_area_get_auto_render(_arg0)
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -447,20 +439,18 @@ func (area *GLArea) AutoRender() bool {
 //    - glContext: GdkGLContext.
 //
 func (area *GLArea) Context() gdk.GLContexter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea    // out
+	var _cret *C.GdkGLContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("get_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gl_area_get_context(_arg0)
 	runtime.KeepAlive(area)
 
 	var _glContext gdk.GLContexter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gdk.GLContexter is nil")
 		}
@@ -487,20 +477,18 @@ func (area *GLArea) Context() gdk.GLContexter {
 //    - err (optional) or NULL.
 //
 func (area *GLArea) Error() error {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _cret *C.GError    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("get_error", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gl_area_get_error(_arg0)
 	runtime.KeepAlive(area)
 
 	var _err error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cret)) != nil {
-		_err = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_err = gerror.Take(unsafe.Pointer(_cret))
 	}
 
 	return _err
@@ -513,19 +501,17 @@ func (area *GLArea) Error() error {
 //    - ok: TRUE if the area has a depth buffer, FALSE otherwise.
 //
 func (area *GLArea) HasDepthBuffer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("get_has_depth_buffer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -539,19 +525,17 @@ func (area *GLArea) HasDepthBuffer() bool {
 //    - ok: TRUE if the area has a stencil buffer, FALSE otherwise.
 //
 func (area *GLArea) HasStencilBuffer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("get_has_stencil_buffer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -568,21 +552,20 @@ func (area *GLArea) HasStencilBuffer() bool {
 //    - minor: return location for the required minor version.
 //
 func (area *GLArea) RequiredVersion() (major, minor int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.int        // in
+	var _arg2 C.int        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("get_required_version", _args[:], _outs[:])
-
+	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(area)
 
 	var _major int32 // out
 	var _minor int32 // out
 
-	_major = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_minor = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_major = int32(_arg1)
+	_minor = int32(_arg2)
 
 	return _major, _minor
 }
@@ -597,19 +580,17 @@ func (area *GLArea) RequiredVersion() (major, minor int32) {
 //      otherwise.
 //
 func (area *GLArea) UseES() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_gret := _info.InvokeClassMethod("get_use_es", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gl_area_get_use_es(_arg0)
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -622,13 +603,11 @@ func (area *GLArea) UseES() bool {
 // This function is automatically called before emitting the gtk.GLArea::render
 // signal, and doesn't normally need to be called by application code.
 func (area *GLArea) MakeCurrent() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("make_current", _args[:], nil)
-
+	C.gtk_gl_area_make_current(_arg0)
 	runtime.KeepAlive(area)
 }
 
@@ -641,13 +620,11 @@ func (area *GLArea) MakeCurrent() {
 // FALSE value. The default behaviour is to emit gtk.GLArea::render on each
 // draw.
 func (area *GLArea) QueueRender() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("queue_render", _args[:], nil)
-
+	C.gtk_gl_area_queue_render(_arg0)
 	runtime.KeepAlive(area)
 }
 
@@ -668,16 +645,15 @@ func (area *GLArea) QueueRender() {
 //    - autoRender: boolean.
 //
 func (area *GLArea) SetAutoRender(autoRender bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if autoRender {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("set_auto_render", _args[:], nil)
-
+	C.gtk_gl_area_set_auto_render(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(autoRender)
 }
@@ -693,16 +669,15 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 //    - err (optional): new GError, or NULL to unset the error.
 //
 func (area *GLArea) SetError(err error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 *C.GError    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if err != nil {
-		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
+		_arg1 = (*C.GError)(gerror.New(err))
 	}
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("set_error", _args[:], nil)
-
+	C.gtk_gl_area_set_error(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(err)
 }
@@ -717,16 +692,15 @@ func (area *GLArea) SetError(err error) {
 //    - hasDepthBuffer: TRUE to add a depth buffer.
 //
 func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if hasDepthBuffer {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("set_has_depth_buffer", _args[:], nil)
-
+	C.gtk_gl_area_set_has_depth_buffer(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(hasDepthBuffer)
 }
@@ -741,16 +715,15 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 //    - hasStencilBuffer: TRUE to add a stencil buffer.
 //
 func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if hasStencilBuffer {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("set_has_stencil_buffer", _args[:], nil)
-
+	C.gtk_gl_area_set_has_stencil_buffer(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(hasStencilBuffer)
 }
@@ -766,15 +739,15 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 //    - minor version.
 //
 func (area *GLArea) SetRequiredVersion(major, minor int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(major)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(minor)
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = C.int(major)
+	_arg2 = C.int(minor)
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("set_required_version", _args[:], nil)
-
+	C.gtk_gl_area_set_required_version(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(major)
 	runtime.KeepAlive(minor)
@@ -791,16 +764,15 @@ func (area *GLArea) SetRequiredVersion(major, minor int32) {
 //    - useEs: whether to use OpenGL or OpenGL ES.
 //
 func (area *GLArea) SetUseES(useEs bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if useEs {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GLArea")
-	_info.InvokeClassMethod("set_use_es", _args[:], nil)
-
+	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)
 }

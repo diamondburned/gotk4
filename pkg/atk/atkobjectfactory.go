@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern void _gotk4_atk1_ObjectFactoryClass_invalidate(void*);
+// extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
 import "C"
 
 // GTypeObjectFactory returns the GType for the type ObjectFactory.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeObjectFactory() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "ObjectFactory").RegisteredGType())
+	gtype := coreglib.Type(C.atk_object_factory_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalObjectFactory)
 	return gtype
 }
@@ -58,16 +56,15 @@ func classInitObjectFactorier(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Atk", "ObjectFactoryClass")
+	pclass := (*C.AtkObjectFactoryClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Invalidate() }); ok {
-		o := pclass.StructFieldOffset("invalidate")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectFactoryClass_invalidate)
+		pclass.invalidate = (*[0]byte)(C._gotk4_atk1_ObjectFactoryClass_invalidate)
 	}
 }
 
 //export _gotk4_atk1_ObjectFactoryClass_invalidate
-func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.void) {
+func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Invalidate() })
 
@@ -96,21 +93,20 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 //    - object that implements an accessibility interface on behalf of obj.
 //
 func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClass {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObjectFactory // out
+	var _arg1 *C.GObject          // out
+	var _cret *C.AtkObject        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(obj.Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
-	_info := girepository.MustFind("Atk", "ObjectFactory")
-	_gret := _info.InvokeClassMethod("create_accessible", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(obj)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -124,19 +120,17 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 //      G_TYPE_INVALID is returned if no type if found.
 //
 func (factory *ObjectFactory) AccessibleType() coreglib.Type {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObjectFactory // out
+	var _cret C.GType             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	_info := girepository.MustFind("Atk", "ObjectFactory")
-	_gret := _info.InvokeClassMethod("get_accessible_type", _args[:], nil)
-	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_factory_get_accessible_type(_arg0)
 	runtime.KeepAlive(factory)
 
 	var _gType coreglib.Type // out
 
-	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }
@@ -146,12 +140,10 @@ func (factory *ObjectFactory) AccessibleType() coreglib.Type {
 // created that they need to be re-instantiated. Note: primarily used for
 // runtime replacement of ObjectFactorys in object registries.
 func (factory *ObjectFactory) Invalidate() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObjectFactory // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	_info := girepository.MustFind("Atk", "ObjectFactory")
-	_info.InvokeClassMethod("invalidate", _args[:], nil)
-
+	C.atk_object_factory_invalidate(_arg0)
 	runtime.KeepAlive(factory)
 }

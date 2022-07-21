@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDBusObjectProxy() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectProxy").RegisteredGType())
+	gtype := coreglib.Type(C.g_dbus_object_proxy_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectProxy)
 	return gtype
 }
@@ -79,22 +77,21 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 //    - dBusObjectProxy: new BusObjectProxy.
 //
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GDBusConnection  // out
+	var _arg2 *C.gchar            // out
+	var _cret *C.GDBusObjectProxy // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gio", "DBusObjectProxy")
-	_gret := _info.InvokeClassMethod("new_DBusObjectProxy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
 
 	var _dBusObjectProxy *DBusObjectProxy // out
 
-	_dBusObjectProxy = wrapDBusObjectProxy(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusObjectProxy = wrapDBusObjectProxy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusObjectProxy
 }
@@ -106,19 +103,17 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 //    - dBusConnection Do not free, the object is owned by proxy.
 //
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GDBusObjectProxy // out
+	var _cret *C.GDBusConnection  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_info := girepository.MustFind("Gio", "DBusObjectProxy")
-	_gret := _info.InvokeClassMethod("get_connection", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_dbus_object_proxy_get_connection(_arg0)
 	runtime.KeepAlive(proxy)
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
 }

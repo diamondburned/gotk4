@@ -4,16 +4,10 @@ package gdkx11
 
 import (
 	_ "runtime/cgo"
-
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: gtk4-x11 gtk4
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gdk/x11/gdkx.h>
 import "C"
-
-func init() {
-	girepository.Require("GdkX11", "4.0", girepository.LoadFlagLazy)
-}

@@ -6,14 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeProgressBar returns the GType for the type ProgressBar.
@@ -22,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeProgressBar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ProgressBar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_progress_bar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalProgressBar)
 	return gtype
 }
@@ -121,15 +120,39 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 //    - progressBar: GtkProgressBar.
 //
 func NewProgressBar() *ProgressBar {
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_gret := _info.InvokeClassMethod("new_ProgressBar", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_progress_bar_new()
 
 	var _progressBar *ProgressBar // out
 
-	_progressBar = wrapProgressBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_progressBar = wrapProgressBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
+}
+
+// Ellipsize returns the ellipsizing position of the progress bar.
+//
+// See gtk.ProgressBar.SetEllipsize().
+//
+// The function returns the following values:
+//
+//    - ellipsizeMode: PangoEllipsizeMode.
+//
+func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
+	var _arg0 *C.GtkProgressBar    // out
+	var _cret C.PangoEllipsizeMode // in
+
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+
+	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
+	runtime.KeepAlive(pbar)
+
+	var _ellipsizeMode pango.EllipsizeMode // out
+
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -139,19 +162,17 @@ func NewProgressBar() *ProgressBar {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (pbar *ProgressBar) Fraction() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _cret C.double          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_gret := _info.InvokeClassMethod("get_fraction", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 	runtime.KeepAlive(pbar)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -163,19 +184,17 @@ func (pbar *ProgressBar) Fraction() float64 {
 //    - ok: TRUE if the progress bar is inverted.
 //
 func (pbar *ProgressBar) Inverted() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_gret := _info.InvokeClassMethod("get_inverted", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_progress_bar_get_inverted(_arg0)
 	runtime.KeepAlive(pbar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -191,19 +210,17 @@ func (pbar *ProgressBar) Inverted() bool {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (pbar *ProgressBar) PulseStep() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _cret C.double          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_gret := _info.InvokeClassMethod("get_pulse_step", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 	runtime.KeepAlive(pbar)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -217,19 +234,17 @@ func (pbar *ProgressBar) PulseStep() float64 {
 //    - ok: TRUE if text is shown in the progress bar.
 //
 func (pbar *ProgressBar) ShowText() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _cret C.gboolean        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_gret := _info.InvokeClassMethod("get_show_text", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_progress_bar_get_show_text(_arg0)
 	runtime.KeepAlive(pbar)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -247,20 +262,18 @@ func (pbar *ProgressBar) ShowText() bool {
 //      should not be modified or freed.
 //
 func (pbar *ProgressBar) Text() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _cret *C.char           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_gret := _info.InvokeClassMethod("get_text", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_progress_bar_get_text(_arg0)
 	runtime.KeepAlive(pbar)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -274,14 +287,33 @@ func (pbar *ProgressBar) Text() string {
 // little bit (the amount of movement per pulse is determined by
 // gtk.ProgressBar.SetPulseStep()).
 func (pbar *ProgressBar) Pulse() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_info.InvokeClassMethod("pulse", _args[:], nil)
-
+	C.gtk_progress_bar_pulse(_arg0)
 	runtime.KeepAlive(pbar)
+}
+
+// SetEllipsize sets the mode used to ellipsize the text.
+//
+// The text is ellipsized if there is not enough space to render the entire
+// string.
+//
+// The function takes the following parameters:
+//
+//    - mode: PangoEllipsizeMode.
+//
+func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
+	var _arg0 *C.GtkProgressBar    // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg1 = C.PangoEllipsizeMode(mode)
+
+	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
+	runtime.KeepAlive(pbar)
+	runtime.KeepAlive(mode)
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of the
@@ -294,14 +326,13 @@ func (pbar *ProgressBar) Pulse() {
 //    - fraction of the task that’s been completed.
 //
 func (pbar *ProgressBar) SetFraction(fraction float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _arg1 C.double          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(fraction)
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg1 = C.double(fraction)
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_info.InvokeClassMethod("set_fraction", _args[:], nil)
-
+	C.gtk_progress_bar_set_fraction(_arg0, _arg1)
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(fraction)
 }
@@ -316,16 +347,15 @@ func (pbar *ProgressBar) SetFraction(fraction float64) {
 //    - inverted: TRUE to invert the progress bar.
 //
 func (pbar *ProgressBar) SetInverted(inverted bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _arg1 C.gboolean        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 	if inverted {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_info.InvokeClassMethod("set_inverted", _args[:], nil)
-
+	C.gtk_progress_bar_set_inverted(_arg0, _arg1)
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(inverted)
 }
@@ -340,14 +370,13 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 //    - fraction between 0.0 and 1.0.
 //
 func (pbar *ProgressBar) SetPulseStep(fraction float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _arg1 C.double          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(fraction)
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg1 = C.double(fraction)
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_info.InvokeClassMethod("set_pulse_step", _args[:], nil)
-
+	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(fraction)
 }
@@ -366,16 +395,15 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 //    - showText: whether to show text.
 //
 func (pbar *ProgressBar) SetShowText(showText bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _arg1 C.gboolean        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 	if showText {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_info.InvokeClassMethod("set_show_text", _args[:], nil)
-
+	C.gtk_progress_bar_set_show_text(_arg0, _arg1)
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(showText)
 }
@@ -395,17 +423,16 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 //    - text (optional): UTF-8 string, or NULL.
 //
 func (pbar *ProgressBar) SetText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkProgressBar // out
+	var _arg1 *C.char           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
+	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
 	if text != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "ProgressBar")
-	_info.InvokeClassMethod("set_text", _args[:], nil)
-
+	C.gtk_progress_bar_set_text(_arg0, _arg1)
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(text)
 }

@@ -7,14 +7,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // GtkWidget* _gotk4_gtk_message_dialog_new2(GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons) {
 // 	return gtk_message_dialog_new_with_markup(parent, flags, type, buttons, NULL);
 // }
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeButtonsType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ButtonsType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_buttons_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalButtonsType)
 	return gtype
 }
@@ -37,7 +35,7 @@ func GTypeButtonsType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeMessageDialog() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "MessageDialog").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_message_dialog_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalMessageDialog)
 	return gtype
 }
@@ -89,6 +87,10 @@ func (b ButtonsType) String() string {
 	default:
 		return fmt.Sprintf("ButtonsType(%d)", b)
 	}
+}
+
+// MessageDialogOverrider contains methods that are overridable.
+type MessageDialogOverrider interface {
 }
 
 // MessageDialog: GtkMessageDialog presents a dialog with some message text.
@@ -157,6 +159,14 @@ var (
 	_ coreglib.Objector = (*MessageDialog)(nil)
 )
 
+func classInitMessageDialogger(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapMessageDialog(obj *coreglib.Object) *MessageDialog {
 	return &MessageDialog{
 		Dialog: Dialog{
@@ -220,20 +230,18 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 //    - widget: GtkBox corresponding to the “message area” in the message_dialog.
 //
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkMessageDialog // out
+	var _cret *C.GtkWidget        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
 
-	_info := girepository.MustFind("Gtk", "MessageDialog")
-	_gret := _info.InvokeClassMethod("get_message_area", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_message_dialog_get_message_area(_arg0)
 	runtime.KeepAlive(messageDialog)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -260,15 +268,14 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 //    - str: string with Pango markup.
 //
 func (messageDialog *MessageDialog) SetMarkup(str string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.char             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "MessageDialog")
-	_info.InvokeClassMethod("set_markup", _args[:], nil)
-
+	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 	runtime.KeepAlive(messageDialog)
 	runtime.KeepAlive(str)
 }

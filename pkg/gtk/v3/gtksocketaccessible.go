@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeSocketAccessible returns the GType for the type SocketAccessible.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSocketAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SocketAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_socket_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSocketAccessible)
 	return gtype
 }
@@ -73,15 +73,14 @@ func marshalSocketAccessible(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 func (socket *SocketAccessible) Embed(path string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSocketAccessible // out
+	var _arg1 *C.gchar               // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "SocketAccessible")
-	_info.InvokeClassMethod("embed", _args[:], nil)
-
+	C.gtk_socket_accessible_embed(_arg0, _arg1)
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(path)
 }

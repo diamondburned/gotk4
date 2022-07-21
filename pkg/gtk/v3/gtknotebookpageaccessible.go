@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeNotebookPageAccessible returns the GType for the type NotebookPageAccessible.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNotebookPageAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "NotebookPageAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_notebook_page_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNotebookPageAccessible)
 	return gtype
 }
@@ -76,32 +76,29 @@ func marshalNotebookPageAccessible(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *NotebookPageAccessible {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkNotebookAccessible // out
+	var _arg2 *C.GtkWidget             // out
+	var _cret *C.AtkObject             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg1 = (*C.GtkNotebookAccessible)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "NotebookPageAccessible")
-	_gret := _info.InvokeClassMethod("new_NotebookPageAccessible", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_notebook_page_accessible_new(_arg1, _arg2)
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
 
 	var _notebookPageAccessible *NotebookPageAccessible // out
 
-	_notebookPageAccessible = wrapNotebookPageAccessible(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_notebookPageAccessible = wrapNotebookPageAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _notebookPageAccessible
 }
 
 func (page *NotebookPageAccessible) Invalidate() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkNotebookPageAccessible // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkNotebookPageAccessible)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "NotebookPageAccessible")
-	_info.InvokeClassMethod("invalidate", _args[:], nil)
-
+	C.gtk_notebook_page_accessible_invalidate(_arg0)
 	runtime.KeepAlive(page)
 }

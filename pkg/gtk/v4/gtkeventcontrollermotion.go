@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_EventControllerMotion_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk4_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
@@ -25,9 +23,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventControllerMotion() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerMotion").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_event_controller_motion_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerMotion)
 	return gtype
+}
+
+// EventControllerMotionOverrider contains methods that are overridable.
+type EventControllerMotionOverrider interface {
 }
 
 // EventControllerMotion: GtkEventControllerMotion is an event controller
@@ -46,6 +48,14 @@ type EventControllerMotion struct {
 var (
 	_ EventControllerer = (*EventControllerMotion)(nil)
 )
+
+func classInitEventControllerMotioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEventControllerMotion(obj *coreglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
@@ -142,13 +152,13 @@ func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.
 //    - eventControllerMotion: new GtkEventControllerMotion.
 //
 func NewEventControllerMotion() *EventControllerMotion {
-	_info := girepository.MustFind("Gtk", "EventControllerMotion")
-	_gret := _info.InvokeClassMethod("new_EventControllerMotion", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkEventController // in
+
+	_cret = C.gtk_event_controller_motion_new()
 
 	var _eventControllerMotion *EventControllerMotion // out
 
-	_eventControllerMotion = wrapEventControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_eventControllerMotion = wrapEventControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }
@@ -160,19 +170,17 @@ func NewEventControllerMotion() *EventControllerMotion {
 //    - ok: TRUE if a pointer is within self or one of its children.
 //
 func (self *EventControllerMotion) ContainsPointer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEventControllerMotion // out
+	var _cret C.gboolean                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventControllerMotion")
-	_gret := _info.InvokeClassMethod("contains_pointer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -186,19 +194,17 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 //    - ok: TRUE if a pointer is within self but not one of its children.
 //
 func (self *EventControllerMotion) IsPointer() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEventControllerMotion // out
+	var _cret C.gboolean                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventControllerMotion")
-	_gret := _info.InvokeClassMethod("is_pointer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_motion_is_pointer(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

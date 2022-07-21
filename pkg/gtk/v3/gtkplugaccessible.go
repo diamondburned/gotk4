@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypePlugAccessible returns the GType for the type PlugAccessible.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePlugAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PlugAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_plug_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPlugAccessible)
 	return gtype
 }
@@ -80,20 +80,18 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func (plug *PlugAccessible) ID() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPlugAccessible // out
+	var _cret *C.gchar             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_info := girepository.MustFind("Gtk", "PlugAccessible")
-	_gret := _info.InvokeClassMethod("get_id", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_plug_accessible_get_id(_arg0)
 	runtime.KeepAlive(plug)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

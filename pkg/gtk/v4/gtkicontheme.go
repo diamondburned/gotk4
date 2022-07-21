@@ -8,16 +8,14 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_IconTheme_ConnectChanged(gpointer, guintptr);
 import "C"
 
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconThemeError() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconThemeError").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_theme_error_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconThemeError)
 	return gtype
 }
@@ -38,7 +36,7 @@ func GTypeIconThemeError() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconLookupFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconLookupFlags").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_lookup_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconLookupFlags)
 	return gtype
 }
@@ -49,7 +47,7 @@ func GTypeIconLookupFlags() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconPaintable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconPaintable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_paintable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconPaintable)
 	return gtype
 }
@@ -60,7 +58,7 @@ func GTypeIconPaintable() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconTheme() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconTheme").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_theme_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconTheme)
 	return gtype
 }
@@ -190,23 +188,23 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 //      g_object_unref().
 //
 func NewIconPaintableForFile(file gio.Filer, size, scale int32) *IconPaintable {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GFile            // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _cret *C.GtkIconPaintable // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(scale)
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
 
-	_info := girepository.MustFind("Gtk", "IconPaintable")
-	_gret := _info.InvokeClassMethod("new_IconPaintable_for_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_paintable_new_for_file(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(scale)
 
 	var _iconPaintable *IconPaintable // out
 
-	_iconPaintable = wrapIconPaintable(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconPaintable = wrapIconPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconPaintable
 }
@@ -220,21 +218,19 @@ func NewIconPaintableForFile(file gio.Filer, size, scale int32) *IconPaintable {
 //    - file (optional) for the icon, or NULL. Free with g_object_unref().
 //
 func (self *IconPaintable) File() *gio.File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconPaintable // out
+	var _cret *C.GFile            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconPaintable")
-	_gret := _info.InvokeClassMethod("get_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_paintable_get_file(_arg0)
 	runtime.KeepAlive(self)
 
 	var _file *gio.File // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -259,20 +255,18 @@ func (self *IconPaintable) File() *gio.File {
 //      themed icon.
 //
 func (self *IconPaintable) IconName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconPaintable // out
+	var _cret *C.char             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconPaintable")
-	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
 	runtime.KeepAlive(self)
 
 	var _filename string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _filename
@@ -291,19 +285,17 @@ func (self *IconPaintable) IconName() string {
 //    - ok: TRUE if the icon is symbolic, FALSE otherwise.
 //
 func (self *IconPaintable) IsSymbolic() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconPaintable // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconPaintable")
-	_gret := _info.InvokeClassMethod("is_symbolic", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -395,13 +387,13 @@ func (self *IconTheme) ConnectChanged(f func()) coreglib.SignalHandle {
 //    - iconTheme: newly created GtkIconTheme object.
 //
 func NewIconTheme() *IconTheme {
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("new_IconTheme", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkIconTheme // in
+
+	_cret = C.gtk_icon_theme_new()
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = wrapIconTheme(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconTheme = wrapIconTheme(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _iconTheme
 }
@@ -419,15 +411,14 @@ func NewIconTheme() *IconTheme {
 //    - path: resource path.
 //
 func (self *IconTheme) AddResourcePath(path string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_info.InvokeClassMethod("add_resource_path", _args[:], nil)
-
+	C.gtk_icon_theme_add_resource_path(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(path)
 }
@@ -441,15 +432,14 @@ func (self *IconTheme) AddResourcePath(path string) {
 //    - path: directory name to append to the icon path.
 //
 func (self *IconTheme) AddSearchPath(path string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_info.InvokeClassMethod("add_search_path", _args[:], nil)
-
+	C.gtk_icon_theme_add_search_path(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(path)
 }
@@ -461,21 +451,19 @@ func (self *IconTheme) AddSearchPath(path string) {
 //    - display (optional) of icon_theme.
 //
 func (self *IconTheme) Display() *gdk.Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _cret *C.GdkDisplay   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_display(_arg0)
 	runtime.KeepAlive(self)
 
 	var _display *gdk.Display // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_display = &gdk.Display{
 				Object: obj,
 			}
@@ -493,31 +481,29 @@ func (self *IconTheme) Display() *gdk.Display {
 //      must free the array using g_strfreev().
 //
 func (self *IconTheme) IconNames() []string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _cret **C.char        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("get_icon_names", _args[:], nil)
-	_cret := *(***C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.char
-		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -541,33 +527,32 @@ func (self *IconTheme) IconNames() []string {
 //      needed.
 //
 func (self *IconTheme) IconSizes(iconName string) []int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+	var _cret *C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("get_icon_sizes", _args[:], nil)
-	_cret := *(**C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
 
 	var _gints []int32 // out
 
-	defer C.free(unsafe.Pointer(*(**C.int)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z C.int
-		for p := *(**C.int)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(**C.int)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_gints = make([]int32, i)
 		for i := range src {
-			_gints[i] = int32(*(*C.int)(unsafe.Pointer(&src[i])))
+			_gints[i] = int32(src[i])
 		}
 	}
 
@@ -584,32 +569,30 @@ func (self *IconTheme) IconSizes(iconName string) []int32 {
 //      should be freed with g_strfreev().
 //
 func (self *IconTheme) ResourcePath() []string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _cret **C.char        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("get_resource_path", _args[:], nil)
-	_cret := *(***C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8s []string // out
 
-	if *(***C.char)(unsafe.Pointer(&_cret)) != nil {
-		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z *C.char
-			for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
-			src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
+			src := unsafe.Slice(_cret, i)
 			_utf8s = make([]string, i)
 			for i := range src {
-				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
-				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}
@@ -627,32 +610,30 @@ func (self *IconTheme) ResourcePath() []string {
 //      returned value should be freed with g_strfreev().
 //
 func (self *IconTheme) SearchPath() []string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _cret **C.char        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("get_search_path", _args[:], nil)
-	_cret := *(***C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_search_path(_arg0)
 	runtime.KeepAlive(self)
 
 	var _filenames []string // out
 
-	if *(***C.char)(unsafe.Pointer(&_cret)) != nil {
-		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
 			var z *C.char
-			for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
-			src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
+			src := unsafe.Slice(_cret, i)
 			_filenames = make([]string, i)
 			for i := range src {
-				_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
-				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
+				_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
 			}
 		}
 	}
@@ -667,20 +648,18 @@ func (self *IconTheme) SearchPath() []string {
 // The function returns the following values:
 //
 func (self *IconTheme) ThemeName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _cret *C.char         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("get_theme_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
@@ -697,21 +676,20 @@ func (self *IconTheme) ThemeName() string {
 //    - ok: TRUE if self includes an icon for gicon.
 //
 func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.GIcon        // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("has_gicon", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(gicon)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -729,26 +707,151 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 //    - ok: TRUE if self includes an icon for icon_name.
 //
 func (self *IconTheme) HasIcon(iconName string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_gret := _info.InvokeClassMethod("has_icon", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// LookupByGIcon looks up a icon for a desired size and window scale.
+//
+// The icon can then be rendered by using it as a GdkPaintable, or you can get
+// information such as the filename and size.
+//
+// The function takes the following parameters:
+//
+//    - icon: GIcon to look up.
+//    - size: desired icon size.
+//    - scale: desired scale.
+//    - direction: text direction the icon will be displayed in.
+//    - flags modifying the behavior of the icon lookup.
+//
+// The function returns the following values:
+//
+//    - iconPaintable: GtkIconPaintable containing information about the icon.
+//      Unref with g_object_unref().
+//
+func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int32, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+	var _arg0 *C.GtkIconTheme      // out
+	var _arg1 *C.GIcon             // out
+	var _arg2 C.int                // out
+	var _arg3 C.int                // out
+	var _arg4 C.GtkTextDirection   // out
+	var _arg5 C.GtkIconLookupFlags // out
+	var _cret *C.GtkIconPaintable  // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg2 = C.int(size)
+	_arg3 = C.int(scale)
+	_arg4 = C.GtkTextDirection(direction)
+	_arg5 = C.GtkIconLookupFlags(flags)
+
+	_cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(flags)
+
+	var _iconPaintable *IconPaintable // out
+
+	_iconPaintable = wrapIconPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _iconPaintable
+}
+
+// LookupIcon looks up a named icon for a desired size and window scale,
+// returning a GtkIconPaintable.
+//
+// The icon can then be rendered by using it as a GdkPaintable, or you can get
+// information such as the filename and size.
+//
+// If the available icon_name is not available and fallbacks are provided, they
+// will be tried in order.
+//
+// If no matching icon is found, then a paintable that renders the "missing
+// icon" icon is returned. If you need to do something else for missing icons
+// you need to use gtk.IconTheme.HasIcon().
+//
+// Note that you probably want to listen for icon theme changes and update the
+// icon. This is usually done by overriding the GtkWidgetClass.css-changed()
+// function.
+//
+// The function takes the following parameters:
+//
+//    - iconName: name of the icon to lookup.
+//    - fallbacks (optional)
+//    - size: desired icon size.
+//    - scale: window scale this will be displayed on.
+//    - direction: text direction the icon will be displayed in.
+//    - flags modifying the behavior of the icon lookup.
+//
+// The function returns the following values:
+//
+//    - iconPaintable: GtkIconPaintable object containing the icon.
+//
+func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, scale int32, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+	var _arg0 *C.GtkIconTheme      // out
+	var _arg1 *C.char              // out
+	var _arg2 **C.char             // out
+	var _arg3 C.int                // out
+	var _arg4 C.int                // out
+	var _arg5 C.GtkTextDirection   // out
+	var _arg6 C.GtkIconLookupFlags // out
+	var _cret *C.GtkIconPaintable  // in
+
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		_arg2 = (**C.char)(C.calloc(C.size_t((len(fallbacks) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg2))
+		{
+			out := unsafe.Slice(_arg2, len(fallbacks)+1)
+			var zero *C.char
+			out[len(fallbacks)] = zero
+			for i := range fallbacks {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(fallbacks[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+	_arg3 = C.int(size)
+	_arg4 = C.int(scale)
+	_arg5 = C.GtkTextDirection(direction)
+	_arg6 = C.GtkIconLookupFlags(flags)
+
+	_cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(fallbacks)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(scale)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(flags)
+
+	var _iconPaintable *IconPaintable // out
+
+	_iconPaintable = wrapIconPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _iconPaintable
 }
 
 // SetSearchPath sets the search path for the icon theme object.
@@ -772,26 +875,25 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //      for icon themes.
 //
 func (self *IconTheme) SetSearchPath(path []string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 **C.char        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	{
-		*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t((len(path) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(path) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
-			out := unsafe.Slice(_args[1], len(path)+1)
+			out := unsafe.Slice(_arg1, len(path)+1)
 			var zero *C.char
 			out[len(path)] = zero
 			for i := range path {
-				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(path[i])))
-				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(path[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_info.InvokeClassMethod("set_search_path", _args[:], nil)
-
+	C.gtk_icon_theme_set_search_path(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(path)
 }
@@ -808,17 +910,16 @@ func (self *IconTheme) SetSearchPath(path []string) {
 //      theme, or NULL to unset a previously set custom theme.
 //
 func (self *IconTheme) SetThemeName(themeName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconTheme // out
+	var _arg1 *C.char         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if themeName != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(themeName)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(themeName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "IconTheme")
-	_info.InvokeClassMethod("set_theme_name", _args[:], nil)
-
+	C.gtk_icon_theme_set_theme_name(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(themeName)
 }
@@ -843,19 +944,17 @@ func (self *IconTheme) SetThemeName(themeName string) {
 //      display is open. Do not ref or unref it.
 //
 func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkDisplay   // out
+	var _cret *C.GtkIconTheme // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gtk", "get_for_display")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_theme_get_for_display(_arg1)
 	runtime.KeepAlive(display)
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconTheme
 }

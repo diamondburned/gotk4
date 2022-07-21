@@ -7,16 +7,16 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, void*, guintptr);
+// #include <gtk/gtk.h>
+// extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
+// extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, GdkDrop*, guintptr);
 // extern gboolean _gotk4_gtk4_DropTarget_ConnectDrop(gpointer, GValue, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 import "C"
@@ -27,9 +27,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDropTarget() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DropTarget").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_drop_target_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDropTarget)
 	return gtype
+}
+
+// DropTargetOverrider contains methods that are overridable.
+type DropTargetOverrider interface {
 }
 
 // DropTarget: GtkDropTarget is an event controller to receive Drag-and-Drop
@@ -110,6 +114,14 @@ var (
 	_ EventControllerer = (*DropTarget)(nil)
 )
 
+func classInitDropTargetter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapDropTarget(obj *coreglib.Object) *DropTarget {
 	return &DropTarget{
 		EventController: EventController{
@@ -123,7 +135,7 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_DropTarget_ConnectAccept
-func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(drop gdk.Dropper) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -227,6 +239,39 @@ func (self *DropTarget) ConnectDrop(f func(value coreglib.Value, x, y float64) (
 	return coreglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectDrop), f)
 }
 
+//export _gotk4_gtk4_DropTarget_ConnectEnter
+func _gotk4_gtk4_DropTarget_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret C.GdkDragAction) {
+	var f func(x, y float64) (dragAction gdk.DragAction)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64) (dragAction gdk.DragAction))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	dragAction := f(_x, _y)
+
+	cret = C.GdkDragAction(dragAction)
+
+	return cret
+}
+
+// ConnectEnter is emitted on the drop site when the pointer enters the widget.
+//
+// It can be used to set up custom highlighting.
+func (self *DropTarget) ConnectEnter(f func(x, y float64) (dragAction gdk.DragAction)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectEnter), f)
+}
+
 //export _gotk4_gtk4_DropTarget_ConnectLeave
 func _gotk4_gtk4_DropTarget_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
@@ -250,6 +295,92 @@ func (self *DropTarget) ConnectLeave(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectLeave), f)
 }
 
+//export _gotk4_gtk4_DropTarget_ConnectMotion
+func _gotk4_gtk4_DropTarget_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret C.GdkDragAction) {
+	var f func(x, y float64) (dragAction gdk.DragAction)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(x, y float64) (dragAction gdk.DragAction))
+	}
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(arg1)
+	_y = float64(arg2)
+
+	dragAction := f(_x, _y)
+
+	cret = C.GdkDragAction(dragAction)
+
+	return cret
+}
+
+// ConnectMotion is emitted while the pointer is moving over the drop target.
+func (self *DropTarget) ConnectMotion(f func(x, y float64) (dragAction gdk.DragAction)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "motion", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectMotion), f)
+}
+
+// NewDropTarget creates a new GtkDropTarget object.
+//
+// If the drop target should support more than 1 type, pass G_TYPE_INVALID for
+// type and then call gtk.DropTarget.SetGTypes().
+//
+// The function takes the following parameters:
+//
+//    - typ: supported type or G_TYPE_INVALID.
+//    - actions: supported actions.
+//
+// The function returns the following values:
+//
+//    - dropTarget: new GtkDropTarget.
+//
+func NewDropTarget(typ coreglib.Type, actions gdk.DragAction) *DropTarget {
+	var _arg1 C.GType          // out
+	var _arg2 C.GdkDragAction  // out
+	var _cret *C.GtkDropTarget // in
+
+	_arg1 = C.GType(typ)
+	_arg2 = C.GdkDragAction(actions)
+
+	_cret = C.gtk_drop_target_new(_arg1, _arg2)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(actions)
+
+	var _dropTarget *DropTarget // out
+
+	_dropTarget = wrapDropTarget(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _dropTarget
+}
+
+// Actions gets the actions that this drop target supports.
+//
+// The function returns the following values:
+//
+//    - dragAction actions that this drop target supports.
+//
+func (self *DropTarget) Actions() gdk.DragAction {
+	var _arg0 *C.GtkDropTarget // out
+	var _cret C.GdkDragAction  // in
+
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_drop_target_get_actions(_arg0)
+	runtime.KeepAlive(self)
+
+	var _dragAction gdk.DragAction // out
+
+	_dragAction = gdk.DragAction(_cret)
+
+	return _dragAction
+}
+
 // Drop gets the currently handled drop operation.
 //
 // If no drop operation is going on, NULL is returned.
@@ -259,21 +390,19 @@ func (self *DropTarget) ConnectLeave(f func()) coreglib.SignalHandle {
 //    - drop (optional): current drop.
 //
 func (self *DropTarget) Drop() gdk.Dropper {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
+	var _cret *C.GdkDrop       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_gret := _info.InvokeClassMethod("get_drop", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_target_get_drop(_arg0)
 	runtime.KeepAlive(self)
 
 	var _drop gdk.Dropper // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -300,20 +429,18 @@ func (self *DropTarget) Drop() gdk.Dropper {
 //    - contentFormats (optional): supported data formats.
 //
 func (self *DropTarget) Formats() *gdk.ContentFormats {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropTarget     // out
+	var _cret *C.GdkContentFormats // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_target_get_formats(_arg0)
 	runtime.KeepAlive(self)
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -335,25 +462,23 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 //      formats or NULL if none.
 //
 func (self *DropTarget) GTypes() []coreglib.Type {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
+	var _cret *C.GType         // in
+	var _arg1 C.gsize          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_gret := _info.InvokeClassMethod("get_gtypes", _args[:], _outs[:])
-	_cret := *(**C.GType)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_target_get_gtypes(_arg0, &_arg1)
 	runtime.KeepAlive(self)
 
 	var _gTypes []coreglib.Type // out
 
-	if *(**C.GType)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			src := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-			_gTypes = make([]coreglib.Type, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
-			for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
-				_gTypes[i] = coreglib.Type(*(*C.GType)(unsafe.Pointer(&src[i])))
+			src := unsafe.Slice((*C.GType)(_cret), _arg1)
+			_gTypes = make([]coreglib.Type, _arg1)
+			for i := 0; i < int(_arg1); i++ {
+				_gTypes[i] = coreglib.Type(src[i])
 			}
 		}
 	}
@@ -368,19 +493,17 @@ func (self *DropTarget) GTypes() []coreglib.Type {
 //    - ok: TRUE if drop data should be preloaded.
 //
 func (self *DropTarget) Preload() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_gret := _info.InvokeClassMethod("get_preload", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_target_get_preload(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -394,20 +517,18 @@ func (self *DropTarget) Preload() bool {
 //    - value (optional): current drop data.
 //
 func (self *DropTarget) Value() *coreglib.Value {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
+	var _cret *C.GValue        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
-	_cret := *(**C.GValue)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drop_target_get_value(_arg0)
 	runtime.KeepAlive(self)
 
 	var _value *coreglib.Value // out
 
-	if *(**C.GValue)(unsafe.Pointer(&_cret)) != nil {
-		_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
 	}
 
 	return _value
@@ -421,14 +542,30 @@ func (self *DropTarget) Value() *coreglib.Value {
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
 func (self *DropTarget) Reject() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_info.InvokeClassMethod("reject", _args[:], nil)
-
+	C.gtk_drop_target_reject(_arg0)
 	runtime.KeepAlive(self)
+}
+
+// SetActions sets the actions that this drop target supports.
+//
+// The function takes the following parameters:
+//
+//    - actions: supported actions.
+//
+func (self *DropTarget) SetActions(actions gdk.DragAction) {
+	var _arg0 *C.GtkDropTarget // out
+	var _arg1 C.GdkDragAction  // out
+
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkDragAction(actions)
+
+	C.gtk_drop_target_set_actions(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(actions)
 }
 
 // SetGTypes sets the supported GTypes for this drop target.
@@ -438,22 +575,22 @@ func (self *DropTarget) Reject() {
 //    - types (optional): all supported #GTypes that can be dropped.
 //
 func (self *DropTarget) SetGTypes(types []coreglib.Type) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
+	var _arg1 *C.GType         // out
+	var _arg2 C.gsize
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(types))
-	*(**C.GType)(unsafe.Pointer(&_args[1])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
-	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg2 = (C.gsize)(len(types))
+	_arg1 = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[1]))), len(types))
+		out := unsafe.Slice((*C.GType)(_arg1), len(types))
 		for i := range types {
-			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+			out[i] = C.GType(types[i])
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_info.InvokeClassMethod("set_gtypes", _args[:], nil)
-
+	C.gtk_drop_target_set_gtypes(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(types)
 }
@@ -465,16 +602,15 @@ func (self *DropTarget) SetGTypes(types []coreglib.Type) {
 //    - preload: TRUE to preload drop data.
 //
 func (self *DropTarget) SetPreload(preload bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDropTarget // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if preload {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "DropTarget")
-	_info.InvokeClassMethod("set_preload", _args[:], nil)
-
+	C.gtk_drop_target_set_preload(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(preload)
 }

@@ -10,18 +10,16 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach(void*, void*, void*, GError**);
-// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void _gotk4_gio2_NetworkMonitorInterface_network_changed(void*, gboolean);
+// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach(GNetworkMonitor*, GSocketConnectable*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(GNetworkMonitor*, GAsyncResult*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_NetworkMonitorInterface_network_changed(GNetworkMonitor*, gboolean);
 // extern void _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(gpointer, gboolean, guintptr);
 import "C"
 
@@ -31,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNetworkMonitor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "NetworkMonitor").RegisteredGType())
+	gtype := coreglib.Type(C.g_network_monitor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkMonitor)
 	return gtype
 }
@@ -68,6 +66,9 @@ type NetworkMonitorrer interface {
 	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test.
 	CanReachFinish(result AsyncResulter) error
+	// Connectivity gets a more detailed networking state than
+	// g_network_monitor_get_network_available().
+	Connectivity() NetworkConnectivity
 	// NetworkAvailable checks if the network is available.
 	NetworkAvailable() bool
 	// NetworkMetered checks if the network is metered.
@@ -140,27 +141,28 @@ func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable boo
 //    - connectable: Connectable.
 //
 func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _cerr *C.GError             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkMonitor")
-	_info.InvokeIfaceMethod("can_reach", _args[:], nil)
-
+	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connectable)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -182,23 +184,25 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //    - callback (optional) to call when the request is satisfied.
 //
 func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "NetworkMonitor")
-	_info.InvokeIfaceMethod("can_reach_async", _args[:], nil)
-
+	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connectable)
@@ -213,24 +217,64 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 //    - result: Result.
 //
 func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GNetworkMonitor // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkMonitor")
-	_info.InvokeIfaceMethod("can_reach_finish", _args[:], nil)
-
+	C.g_network_monitor_can_reach_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
+}
+
+// Connectivity gets a more detailed networking state than
+// g_network_monitor_get_network_available().
+//
+// If Monitor:network-available is FALSE, then the connectivity state will be
+// G_NETWORK_CONNECTIVITY_LOCAL.
+//
+// If Monitor:network-available is TRUE, then the connectivity state will be
+// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
+// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but appears
+// to be unable to actually reach the full Internet), or
+// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
+// portal" that requires some sort of login or acknowledgement before allowing
+// full Internet access).
+//
+// Note that in the case of G_NETWORK_CONNECTIVITY_LIMITED and
+// G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are reachable
+// but others are not. In this case, applications can attempt to connect to
+// remote servers, but should gracefully fall back to their "offline" behavior
+// if the connection attempt fails.
+//
+// The function returns the following values:
+//
+//    - networkConnectivity: network connectivity state.
+//
+func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
+	var _arg0 *C.GNetworkMonitor     // out
+	var _cret C.GNetworkConnectivity // in
+
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+
+	_cret = C.g_network_monitor_get_connectivity(_arg0)
+	runtime.KeepAlive(monitor)
+
+	var _networkConnectivity NetworkConnectivity // out
+
+	_networkConnectivity = NetworkConnectivity(_cret)
+
+	return _networkConnectivity
 }
 
 // NetworkAvailable checks if the network is available. "Available" here means
@@ -243,19 +287,17 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 //    - ok: whether the network is available.
 //
 func (monitor *NetworkMonitor) NetworkAvailable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GNetworkMonitor // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkMonitor")
-	_gret := _info.InvokeIfaceMethod("get_network_available", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_monitor_get_network_available(_arg0)
 	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -270,19 +312,17 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 //    - ok: whether the connection is metered.
 //
 func (monitor *NetworkMonitor) NetworkMetered() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GNetworkMonitor // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkMonitor")
-	_gret := _info.InvokeIfaceMethod("get_network_metered", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_monitor_get_network_metered(_arg0)
 	runtime.KeepAlive(monitor)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -297,13 +337,13 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //      available.
 //
 func NetworkMonitorGetDefault() *NetworkMonitor {
-	_info := girepository.MustFind("Gio", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GNetworkMonitor // in
+
+	_cret = C.g_network_monitor_get_default()
 
 	var _networkMonitor *NetworkMonitor // out
 
-	_networkMonitor = wrapNetworkMonitor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_networkMonitor = wrapNetworkMonitor(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _networkMonitor
 }

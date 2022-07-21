@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeRendererCellAccessible returns the GType for the type RendererCellAccessible.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRendererCellAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RendererCellAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_renderer_cell_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRendererCellAccessible)
 	return gtype
 }
@@ -85,19 +85,17 @@ func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkCellRenderer // out
+	var _cret *C.AtkObject       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "RendererCellAccessible")
-	_gret := _info.InvokeClassMethod("new_RendererCellAccessible", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_renderer_cell_accessible_new(_arg1)
 	runtime.KeepAlive(renderer)
 
 	var _rendererCellAccessible *RendererCellAccessible // out
 
-	_rendererCellAccessible = wrapRendererCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_rendererCellAccessible = wrapRendererCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rendererCellAccessible
 }

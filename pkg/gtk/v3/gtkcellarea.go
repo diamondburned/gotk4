@@ -6,33 +6,39 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_CellAllocCallback(void*, void*, void*, gpointer);
-// extern gboolean _gotk4_gtk3_CellAreaClass_is_activatable(void*);
-// extern gboolean _gotk4_gtk3_CellCallback(void*, gpointer);
-// extern void _gotk4_gtk3_CellAreaClass_add(void*, void*);
-// extern void _gotk4_gtk3_CellAreaClass_apply_attributes(void*, void*, void*, gboolean, gboolean);
-// extern void _gotk4_gtk3_CellAreaClass_get_preferred_height(void*, void*, void*, gint*, gint*);
-// extern void _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(void*, void*, void*, gint, gint*, gint*);
-// extern void _gotk4_gtk3_CellAreaClass_get_preferred_width(void*, void*, void*, gint*, gint*);
-// extern void _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(void*, void*, void*, gint, gint*, gint*);
-// extern void _gotk4_gtk3_CellAreaClass_remove(void*, void*);
-// extern void _gotk4_gtk3_CellArea_ConnectAddEditable(gpointer, void*, void*, void*, gchar*, guintptr);
-// extern void _gotk4_gtk3_CellArea_ConnectApplyAttributes(gpointer, void*, void*, gboolean, gboolean, guintptr);
-// extern void _gotk4_gtk3_CellArea_ConnectFocusChanged(gpointer, void*, gchar*, guintptr);
-// extern void _gotk4_gtk3_CellArea_ConnectRemoveEditable(gpointer, void*, void*, guintptr);
-// extern void* _gotk4_gtk3_CellAreaClass_copy_context(void*, void*);
-// extern void* _gotk4_gtk3_CellAreaClass_create_context(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern GtkCellAreaContext* _gotk4_gtk3_CellAreaClass_copy_context(GtkCellArea*, GtkCellAreaContext*);
+// extern GtkCellAreaContext* _gotk4_gtk3_CellAreaClass_create_context(GtkCellArea*);
+// extern GtkSizeRequestMode _gotk4_gtk3_CellAreaClass_get_request_mode(GtkCellArea*);
+// extern gboolean _gotk4_gtk3_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
+// extern gboolean _gotk4_gtk3_CellAreaClass_activate(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkRectangle*, GtkCellRendererState, gboolean);
+// extern gboolean _gotk4_gtk3_CellAreaClass_focus(GtkCellArea*, GtkDirectionType);
+// extern gboolean _gotk4_gtk3_CellAreaClass_is_activatable(GtkCellArea*);
+// extern gboolean _gotk4_gtk3_CellCallback(GtkCellRenderer*, gpointer);
+// extern gint _gotk4_gtk3_CellAreaClass_event(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkEvent*, GdkRectangle*, GtkCellRendererState);
+// extern void _gotk4_gtk3_CellAreaClass_add(GtkCellArea*, GtkCellRenderer*);
+// extern void _gotk4_gtk3_CellAreaClass_apply_attributes(GtkCellArea*, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean);
+// extern void _gotk4_gtk3_CellAreaClass_get_preferred_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaClass_get_preferred_width(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaClass_remove(GtkCellArea*, GtkCellRenderer*);
+// extern void _gotk4_gtk3_CellAreaClass_render(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, cairo_t*, GdkRectangle*, GdkRectangle*, GtkCellRendererState, gboolean);
+// extern void _gotk4_gtk3_CellArea_ConnectAddEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, GdkRectangle*, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellArea_ConnectApplyAttributes(gpointer, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean, guintptr);
+// extern void _gotk4_gtk3_CellArea_ConnectFocusChanged(gpointer, GtkCellRenderer*, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellArea_ConnectRemoveEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, guintptr);
 import "C"
 
 // GTypeCellArea returns the GType for the type CellArea.
@@ -41,7 +47,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellArea() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellArea").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_area_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellArea)
 	return gtype
 }
@@ -52,7 +58,7 @@ func GTypeCellArea() coreglib.Type {
 type CellAllocCallback func(renderer CellRendererer, cellArea, cellBackground *gdk.Rectangle) (ok bool)
 
 //export _gotk4_gtk3_CellAllocCallback
-func _gotk4_gtk3_CellAllocCallback(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk3_CellAllocCallback(arg1 *C.GtkCellRenderer, arg2 *C.GdkRectangle, arg3 *C.GdkRectangle, arg4 C.gpointer) (cret C.gboolean) {
 	var fn CellAllocCallback
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -100,7 +106,7 @@ func _gotk4_gtk3_CellAllocCallback(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg
 type CellCallback func(renderer CellRendererer) (ok bool)
 
 //export _gotk4_gtk3_CellCallback
-func _gotk4_gtk3_CellCallback(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk3_CellCallback(arg1 *C.GtkCellRenderer, arg2 C.gpointer) (cret C.gboolean) {
 	var fn CellCallback
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -141,6 +147,24 @@ func _gotk4_gtk3_CellCallback(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
 
 // CellAreaOverrider contains methods that are overridable.
 type CellAreaOverrider interface {
+	// Activate activates area, usually by activating the currently focused
+	// cell, however some subclasses which embed widgets in the area can also
+	// activate a widget if it currently has the focus.
+	//
+	// The function takes the following parameters:
+	//
+	//    - context in context with the current row data.
+	//    - widget that area is rendering on.
+	//    - cellArea: size and location of area relative to widget’s allocation.
+	//    - flags flags for area for this row of data.
+	//    - editOnly: if TRUE then only cell renderers that are
+	//      GTK_CELL_RENDERER_MODE_EDITABLE will be activated.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether area was successfully activated.
+	//
+	Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
 	// Add adds renderer to area with the default child cell properties.
 	//
 	// The function takes the following parameters:
@@ -192,6 +216,37 @@ type CellAreaOverrider interface {
 	//      area.
 	//
 	CreateContext() *CellAreaContext
+	// Event delegates event handling to a CellArea.
+	//
+	// The function takes the following parameters:
+	//
+	//    - context for this row of data.
+	//    - widget that area is rendering to.
+	//    - event to handle.
+	//    - cellArea: widget relative coordinates for area.
+	//    - flags for area in this row.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: TRUE if the event was handled by area.
+	//
+	Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32
+	// Focus: this should be called by the area’s owning layout widget when
+	// focus is to be passed to area, or moved within area for a given direction
+	// and row data.
+	//
+	// Implementing CellArea classes should implement this method to receive and
+	// navigate focus in its own way particular to how it lays out cells.
+	//
+	// The function takes the following parameters:
+	//
+	//    - direction: DirectionType.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: TRUE if focus remains inside area as a result of this call.
+	//
+	Focus(direction DirectionType) bool
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -293,6 +348,14 @@ type CellAreaOverrider interface {
 	//      NULL.
 	//
 	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+	// RequestMode gets whether the area prefers a height-for-width layout or a
+	// width-for-height layout.
+	//
+	// The function returns the following values:
+	//
+	//    - sizeRequestMode preferred by area.
+	//
+	RequestMode() SizeRequestMode
 	// IsActivatable returns whether the area can do anything when activated,
 	// after applying new attributes to area.
 	//
@@ -308,6 +371,21 @@ type CellAreaOverrider interface {
 	//    - renderer to remove from area.
 	//
 	Remove(renderer CellRendererer)
+	// Render renders area’s cells according to area’s layout onto widget at the
+	// given coordinates.
+	//
+	// The function takes the following parameters:
+	//
+	//    - context for this row of data.
+	//    - widget that area is rendering to.
+	//    - cr to render with.
+	//    - backgroundArea: widget relative coordinates for area’s background.
+	//    - cellArea: widget relative coordinates for area.
+	//    - flags for area in this row.
+	//    - paintFocus: whether area should paint focus on focused cells for
+	//      focused rows or not.
+	//
+	Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 }
 
 // CellArea is an abstract class for CellLayout widgets (also referred to as
@@ -464,73 +542,137 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "CellAreaClass")
+	pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(gclassPtr))
+
+	if _, ok := goval.(interface {
+		Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	}); ok {
+		pclass.activate = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_activate)
+	}
 
 	if _, ok := goval.(interface{ Add(renderer CellRendererer) }); ok {
-		o := pclass.StructFieldOffset("add")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_add)
+		pclass.add = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_add)
 	}
 
 	if _, ok := goval.(interface {
 		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
 	}); ok {
-		o := pclass.StructFieldOffset("apply_attributes")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_apply_attributes)
+		pclass.apply_attributes = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_apply_attributes)
 	}
 
 	if _, ok := goval.(interface {
 		CopyContext(context *CellAreaContext) *CellAreaContext
 	}); ok {
-		o := pclass.StructFieldOffset("copy_context")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_copy_context)
+		pclass.copy_context = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_copy_context)
 	}
 
 	if _, ok := goval.(interface{ CreateContext() *CellAreaContext }); ok {
-		o := pclass.StructFieldOffset("create_context")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_create_context)
+		pclass.create_context = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_create_context)
+	}
+
+	if _, ok := goval.(interface {
+		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32
+	}); ok {
+		pclass.event = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_event)
+	}
+
+	if _, ok := goval.(interface {
+		Focus(direction DirectionType) bool
+	}); ok {
+		pclass.focus = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_focus)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
 	}); ok {
-		o := pclass.StructFieldOffset("get_preferred_height")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_height)
+		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
-		o := pclass.StructFieldOffset("get_preferred_height_for_width")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_height_for_width)
+		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
 	}); ok {
-		o := pclass.StructFieldOffset("get_preferred_width")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_width)
+		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
-		o := pclass.StructFieldOffset("get_preferred_width_for_height")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_width_for_height)
+		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_width_for_height)
+	}
+
+	if _, ok := goval.(interface{ RequestMode() SizeRequestMode }); ok {
+		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_request_mode)
 	}
 
 	if _, ok := goval.(interface{ IsActivatable() bool }); ok {
-		o := pclass.StructFieldOffset("is_activatable")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_is_activatable)
+		pclass.is_activatable = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_is_activatable)
 	}
 
 	if _, ok := goval.(interface{ Remove(renderer CellRendererer) }); ok {
-		o := pclass.StructFieldOffset("remove")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_remove)
+		pclass.remove = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_remove)
+	}
+
+	if _, ok := goval.(interface {
+		Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	}); ok {
+		pclass.render = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_render)
 	}
 }
 
+//export _gotk4_gtk3_CellAreaClass_activate
+func _gotk4_gtk3_CellAreaClass_activate(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkRectangle, arg4 C.GtkCellRendererState, arg5 C.gboolean) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _cellArea *gdk.Rectangle  // out
+	var _flags CellRendererState  // out
+	var _editOnly bool            // out
+
+	_context = wrapCellAreaContext(coreglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+	_flags = CellRendererState(arg4)
+	if arg5 != 0 {
+		_editOnly = true
+	}
+
+	ok := iface.Activate(_context, _widget, _cellArea, _flags, _editOnly)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gtk3_CellAreaClass_add
-func _gotk4_gtk3_CellAreaClass_add(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_CellAreaClass_add(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Add(renderer CellRendererer) })
 
@@ -558,7 +700,7 @@ func _gotk4_gtk3_CellAreaClass_add(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gtk3_CellAreaClass_apply_attributes
-func _gotk4_gtk3_CellAreaClass_apply_attributes(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.gboolean, arg4 C.gboolean) {
+func _gotk4_gtk3_CellAreaClass_apply_attributes(arg0 *C.GtkCellArea, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
@@ -598,7 +740,7 @@ func _gotk4_gtk3_CellAreaClass_apply_attributes(arg0 *C.void, arg1 *C.void, arg2
 }
 
 //export _gotk4_gtk3_CellAreaClass_copy_context
-func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext) (cret *C.GtkCellAreaContext) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CopyContext(context *CellAreaContext) *CellAreaContext
@@ -610,27 +752,93 @@ func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.void, arg1 *C.void) (cret *C
 
 	cellAreaContext := iface.CopyContext(_context)
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellAreaContext).Native()))
+	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(cellAreaContext).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(cellAreaContext).Native()))
 
 	return cret
 }
 
 //export _gotk4_gtk3_CellAreaClass_create_context
-func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.void) (cret *C.void) {
+func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkCellAreaContext) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateContext() *CellAreaContext })
 
 	cellAreaContext := iface.CreateContext()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellAreaContext).Native()))
+	cret = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(cellAreaContext).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(cellAreaContext).Native()))
 
 	return cret
 }
 
+//export _gotk4_gtk3_CellAreaClass_event
+func _gotk4_gtk3_CellAreaClass_event(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkEvent, arg4 *C.GdkRectangle, arg5 C.GtkCellRendererState) (cret C.gint) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32
+	})
+
+	var _context *CellAreaContext // out
+	var _widget Widgetter         // out
+	var _event *gdk.Event         // out
+	var _cellArea *gdk.Rectangle  // out
+	var _flags CellRendererState  // out
+
+	_context = wrapCellAreaContext(coreglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	{
+		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg3)))
+		v = gdk.CopyEventer(v)
+		_event = v
+	}
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_flags = CellRendererState(arg5)
+
+	gint := iface.Event(_context, _widget, _event, _cellArea, _flags)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_gtk3_CellAreaClass_focus
+func _gotk4_gtk3_CellAreaClass_focus(arg0 *C.GtkCellArea, arg1 C.GtkDirectionType) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Focus(direction DirectionType) bool
+	})
+
+	var _direction DirectionType // out
+
+	_direction = DirectionType(arg1)
+
+	ok := iface.Focus(_direction)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gtk3_CellAreaClass_get_preferred_height
-func _gotk4_gtk3_CellAreaClass_get_preferred_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.gint, arg4 *C.gint) {
+func _gotk4_gtk3_CellAreaClass_get_preferred_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
@@ -665,7 +873,7 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_height(arg0 *C.void, arg1 *C.void, 
 }
 
 //export _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width
-func _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.gint, arg4 *C.gint, arg5 *C.gint) {
+func _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.gint, arg4 *C.gint, arg5 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
@@ -702,7 +910,7 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(arg0 *C.void, arg1
 }
 
 //export _gotk4_gtk3_CellAreaClass_get_preferred_width
-func _gotk4_gtk3_CellAreaClass_get_preferred_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.gint, arg4 *C.gint) {
+func _gotk4_gtk3_CellAreaClass_get_preferred_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
@@ -737,7 +945,7 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_width(arg0 *C.void, arg1 *C.void, a
 }
 
 //export _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height
-func _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.gint, arg4 *C.gint, arg5 *C.gint) {
+func _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.gint, arg4 *C.gint, arg5 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
@@ -773,8 +981,20 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(arg0 *C.void, arg1
 	*arg5 = C.gint(naturalWidth)
 }
 
+//export _gotk4_gtk3_CellAreaClass_get_request_mode
+func _gotk4_gtk3_CellAreaClass_get_request_mode(arg0 *C.GtkCellArea) (cret C.GtkSizeRequestMode) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ RequestMode() SizeRequestMode })
+
+	sizeRequestMode := iface.RequestMode()
+
+	cret = C.GtkSizeRequestMode(sizeRequestMode)
+
+	return cret
+}
+
 //export _gotk4_gtk3_CellAreaClass_is_activatable
-func _gotk4_gtk3_CellAreaClass_is_activatable(arg0 *C.void) (cret C.gboolean) {
+func _gotk4_gtk3_CellAreaClass_is_activatable(arg0 *C.GtkCellArea) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsActivatable() bool })
 
@@ -788,7 +1008,7 @@ func _gotk4_gtk3_CellAreaClass_is_activatable(arg0 *C.void) (cret C.gboolean) {
 }
 
 //export _gotk4_gtk3_CellAreaClass_remove
-func _gotk4_gtk3_CellAreaClass_remove(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_CellAreaClass_remove(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Remove(renderer CellRendererer) })
 
@@ -813,6 +1033,54 @@ func _gotk4_gtk3_CellAreaClass_remove(arg0 *C.void, arg1 *C.void) {
 	}
 
 	iface.Remove(_renderer)
+}
+
+//export _gotk4_gtk3_CellAreaClass_render
+func _gotk4_gtk3_CellAreaClass_render(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.cairo_t, arg4 *C.GdkRectangle, arg5 *C.GdkRectangle, arg6 C.GtkCellRendererState, arg7 C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface {
+		Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	})
+
+	var _context *CellAreaContext      // out
+	var _widget Widgetter              // out
+	var _cr *cairo.Context             // out
+	var _backgroundArea *gdk.Rectangle // out
+	var _cellArea *gdk.Rectangle       // out
+	var _flags CellRendererState       // out
+	var _paintFocus bool               // out
+
+	_context = wrapCellAreaContext(coreglib.Take(unsafe.Pointer(arg1)))
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg3)))
+	C.cairo_reference(arg3)
+	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+	})
+	_backgroundArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg5)))
+	_flags = CellRendererState(arg6)
+	if arg7 != 0 {
+		_paintFocus = true
+	}
+
+	iface.Render(_context, _widget, _cr, _backgroundArea, _cellArea, _flags, _paintFocus)
 }
 
 func wrapCellArea(obj *coreglib.Object) *CellArea {
@@ -844,7 +1112,7 @@ func BaseCellArea(obj CellAreaer) *CellArea {
 }
 
 //export _gotk4_gtk3_CellArea_ConnectAddEditable
-func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.gchar, arg5 C.guintptr) {
+func _gotk4_gtk3_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.GtkCellEditable, arg3 *C.GdkRectangle, arg4 *C.gchar, arg5 C.guintptr) {
 	var f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
@@ -908,7 +1176,7 @@ func (area *CellArea) ConnectAddEditable(f func(renderer CellRendererer, editabl
 }
 
 //export _gotk4_gtk3_CellArea_ConnectApplyAttributes
-func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
+func _gotk4_gtk3_CellArea_ConnectApplyAttributes(arg0 C.gpointer, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
 	var f func(model TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
@@ -960,7 +1228,7 @@ func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *Tr
 }
 
 //export _gotk4_gtk3_CellArea_ConnectFocusChanged
-func _gotk4_gtk3_CellArea_ConnectFocusChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.gchar, arg3 C.guintptr) {
+func _gotk4_gtk3_CellArea_ConnectFocusChanged(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(renderer CellRendererer, path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1008,7 +1276,7 @@ func (area *CellArea) ConnectFocusChanged(f func(renderer CellRendererer, path s
 }
 
 //export _gotk4_gtk3_CellArea_ConnectRemoveEditable
-func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_CellArea_ConnectRemoveEditable(arg0 C.gpointer, arg1 *C.GtkCellRenderer, arg2 *C.GtkCellEditable, arg3 C.guintptr) {
 	var f func(renderer CellRendererer, editable CellEditabler)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1067,6 +1335,107 @@ func (area *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, edit
 	return coreglib.ConnectGeneratedClosure(area, "remove-editable", false, unsafe.Pointer(C._gotk4_gtk3_CellArea_ConnectRemoveEditable), f)
 }
 
+// Activate activates area, usually by activating the currently focused cell,
+// however some subclasses which embed widgets in the area can also activate a
+// widget if it currently has the focus.
+//
+// The function takes the following parameters:
+//
+//    - context in context with the current row data.
+//    - widget that area is rendering on.
+//    - cellArea: size and location of area relative to widget’s allocation.
+//    - flags flags for area for this row of data.
+//    - editOnly: if TRUE then only cell renderers that are
+//      GTK_CELL_RENDERER_MODE_EDITABLE will be activated.
+//
+// The function returns the following values:
+//
+//    - ok: whether area was successfully activated.
+//
+func (area *CellArea) Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkRectangle        // out
+	var _arg4 C.GtkCellRendererState // out
+	var _arg5 C.gboolean             // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg4 = C.GtkCellRendererState(flags)
+	if editOnly {
+		_arg5 = C.TRUE
+	}
+
+	_cret = C.gtk_cell_area_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(editOnly)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ActivateCell: this is used by CellArea subclasses when handling events to
+// activate cells, the base CellArea class activates cells for keyboard events
+// for free in its own GtkCellArea->activate() implementation.
+//
+// The function takes the following parameters:
+//
+//    - widget that area is rendering onto.
+//    - renderer in area to activate.
+//    - event for which cell activation should occur.
+//    - cellArea in widget relative coordinates of renderer for the current row.
+//    - flags for renderer.
+//
+// The function returns the following values:
+//
+//    - ok: whether cell activation was successful.
+//
+func (area *CellArea) ActivateCell(widget Widgetter, renderer CellRendererer, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 *C.GtkCellRenderer     // out
+	var _arg3 *C.GdkEvent            // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg3 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg5 = C.GtkCellRendererState(flags)
+
+	_cret = C.gtk_cell_area_activate_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Add adds renderer to area with the default child cell properties.
 //
 // The function takes the following parameters:
@@ -1074,14 +1443,13 @@ func (area *CellArea) ConnectRemoveEditable(f func(renderer CellRendererer, edit
 //    - renderer to add to area.
 //
 func (area *CellArea) Add(renderer CellRendererer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("add", _args[:], nil)
-
+	C.gtk_cell_area_add(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 }
@@ -1099,15 +1467,15 @@ func (area *CellArea) Add(renderer CellRendererer) {
 //    - sibling to add to renderer’s focus area.
 //
 func (area *CellArea) AddFocusSibling(renderer, sibling CellRendererer) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.GtkCellRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("add_focus_sibling", _args[:], nil)
-
+	C.gtk_cell_area_add_focus_sibling(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(sibling)
@@ -1125,21 +1493,23 @@ func (area *CellArea) AddFocusSibling(renderer, sibling CellRendererer) {
 //      visible.
 //
 func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkCellArea  // out
+	var _arg1 *C.GtkTreeModel // out
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.gboolean      // out
+	var _arg4 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	if isExpander {
-		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
+		_arg3 = C.TRUE
 	}
 	if isExpanded {
-		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
+		_arg4 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("apply_attributes", _args[:], nil)
-
+	C.gtk_cell_area_apply_attributes(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1157,17 +1527,18 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 //    - column column to fetch attribute values from.
 //
 func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
+	var _arg3 C.gint             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(column)
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gint(column)
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("attribute_connect", _args[:], nil)
-
+	C.gtk_cell_area_attribute_connect(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
@@ -1183,16 +1554,16 @@ func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string
 //    - attribute name.
 //
 func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("attribute_disconnect", _args[:], nil)
-
+	C.gtk_cell_area_attribute_disconnect(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
@@ -1211,24 +1582,24 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 //    - gint: model column, or -1.
 //
 func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int32 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
+	var _cret C.gint             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("attribute_get_column", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_attribute_get_column(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1242,17 +1613,18 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 //    - value: location to return the value.
 //
 func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName string, value *coreglib.Value) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
+	var _arg3 *C.GValue          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("cell_get_property", _args[:], nil)
-
+	C.gtk_cell_area_cell_get_property(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(propertyName)
@@ -1268,17 +1640,18 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 //    - value to set the cell property to.
 //
 func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName string, value *coreglib.Value) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
+	var _arg3 *C.GValue          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("cell_set_property", _args[:], nil)
-
+	C.gtk_cell_area_cell_set_property(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(propertyName)
@@ -1304,21 +1677,20 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 //    - cellAreaContext: newly created CellAreaContext copy of context.
 //
 func (area *CellArea) CopyContext(context *CellAreaContext) *CellAreaContext {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _cret *C.GtkCellAreaContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("copy_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_copy_context(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 
 	var _cellAreaContext *CellAreaContext // out
 
-	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cellAreaContext
 }
@@ -1335,21 +1707,100 @@ func (area *CellArea) CopyContext(context *CellAreaContext) *CellAreaContext {
 //      area.
 //
 func (area *CellArea) CreateContext() *CellAreaContext {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _cret *C.GtkCellAreaContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("create_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_create_context(_arg0)
 	runtime.KeepAlive(area)
 
 	var _cellAreaContext *CellAreaContext // out
 
-	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _cellAreaContext
+}
+
+// Event delegates event handling to a CellArea.
+//
+// The function takes the following parameters:
+//
+//    - context for this row of data.
+//    - widget that area is rendering to.
+//    - event to handle.
+//    - cellArea: widget relative coordinates for area.
+//    - flags for area in this row.
+//
+// The function returns the following values:
+//
+//    - gint: TRUE if the event was handled by area.
+//
+func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32 {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkEvent            // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
+	var _cret C.gint                 // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg5 = C.GtkCellRendererState(flags)
+
+	_cret = C.gtk_cell_area_event(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// Focus: this should be called by the area’s owning layout widget when focus is
+// to be passed to area, or moved within area for a given direction and row
+// data.
+//
+// Implementing CellArea classes should implement this method to receive and
+// navigate focus in its own way particular to how it lays out cells.
+//
+// The function takes the following parameters:
+//
+//    - direction: DirectionType.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if focus remains inside area as a result of this call.
+//
+func (area *CellArea) Focus(direction DirectionType) bool {
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C.gtk_cell_area_focus(_arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(direction)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // ForEach calls callback for every CellRenderer in area.
@@ -1359,16 +1810,16 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 //    - callback to call.
 //
 func (area *CellArea) ForEach(callback CellCallback) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellArea    // out
+	var _arg1 C.GtkCellCallback // out
+	var _arg2 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_CellCallback)
-	_args[2] = C.gpointer(gbox.Assign(callback))
-	defer gbox.Delete(uintptr(_args[2]))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_CellCallback)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg2))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("foreach", _args[:], nil)
-
+	C.gtk_cell_area_foreach(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(callback)
 }
@@ -1385,20 +1836,24 @@ func (area *CellArea) ForEach(callback CellCallback) {
 //    - callback to call.
 //
 func (area *CellArea) ForEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
-	var _args [7]girepository.Argument
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkRectangle        // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellAllocCallback // out
+	var _arg6 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
-	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gtk3_CellAllocCallback)
-	_args[6] = C.gpointer(gbox.Assign(callback))
-	defer gbox.Delete(uintptr(_args[6]))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg5 = (*[0]byte)(C._gotk4_gtk3_CellAllocCallback)
+	_arg6 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg6))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("foreach_alloc", _args[:], nil)
-
+	C.gtk_cell_area_foreach_alloc(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1422,18 +1877,20 @@ func (area *CellArea) ForEachAlloc(context *CellAreaContext, widget Widgetter, c
 //    - allocation: where to store the allocation for renderer.
 //
 func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter, renderer CellRendererer, cellArea *gdk.Rectangle) *gdk.Rectangle {
-	var _args [5]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 *C.GtkCellRenderer    // out
+	var _arg4 *C.GdkRectangle       // out
+	var _arg5 C.GdkRectangle        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("get_cell_allocation", _args[:], _outs[:])
-
+	C.gtk_cell_area_get_cell_allocation(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1442,7 +1899,7 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 
 	var _allocation *gdk.Rectangle // out
 
-	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg5))))
 
 	return _allocation
 }
@@ -1465,20 +1922,23 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 //    - cellRenderer at x and y.
 //
 func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x, y int32) (*gdk.Rectangle, CellRendererer) {
-	var _args [6]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 *C.GdkRectangle       // out
+	var _arg4 C.gint                // out
+	var _arg5 C.gint                // out
+	var _arg6 C.GdkRectangle        // in
+	var _cret *C.GtkCellRenderer    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[5])) = C.gint(y)
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg4 = C.gint(x)
+	_arg5 = C.gint(y)
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_cell_at_position", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_cell_at_position(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1489,11 +1949,9 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	var _allocArea *gdk.Rectangle    // out
 	var _cellRenderer CellRendererer // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_allocArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
+	_allocArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -1523,19 +1981,17 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 //      This string belongs to the area and should not be freed.
 //
 func (area *CellArea) CurrentPathString() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellArea // out
+	var _cret *C.gchar       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_current_path_string", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_current_path_string(_arg0)
 	runtime.KeepAlive(area)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1548,19 +2004,17 @@ func (area *CellArea) CurrentPathString() string {
 //    - cellEditable: currently active CellEditable widget.
 //
 func (area *CellArea) EditWidget() *CellEditable {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _cret *C.GtkCellEditable // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_edit_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_edit_widget(_arg0)
 	runtime.KeepAlive(area)
 
 	var _cellEditable *CellEditable // out
 
-	_cellEditable = wrapCellEditable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cellEditable = wrapCellEditable(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellEditable
 }
@@ -1572,20 +2026,18 @@ func (area *CellArea) EditWidget() *CellEditable {
 //    - cellRenderer: currently edited CellRenderer.
 //
 func (area *CellArea) EditedCell() CellRendererer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _cret *C.GtkCellRenderer // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_edited_cell", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_edited_cell(_arg0)
 	runtime.KeepAlive(area)
 
 	var _cellRenderer CellRendererer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -1612,20 +2064,18 @@ func (area *CellArea) EditedCell() CellRendererer {
 //    - cellRenderer: currently focused cell in area.
 //
 func (area *CellArea) FocusCell() CellRendererer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _cret *C.GtkCellRenderer // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_focus_cell", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_focus_cell(_arg0)
 	runtime.KeepAlive(area)
 
 	var _cellRenderer CellRendererer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -1661,23 +2111,22 @@ func (area *CellArea) FocusCell() CellRendererer {
 //    - cellRenderer (optional) for which renderer is a sibling, or NULL.
 //
 func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _cret *C.GtkCellRenderer // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_focus_from_sibling", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_focus_from_sibling(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
 	var _cellRenderer CellRendererer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1707,26 +2156,25 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 //      freed.
 //
 func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _cret *C.GList           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("get_focus_siblings", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_get_focus_siblings(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
 	var _list []CellRendererer // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkCellRenderer)(v)
 		var dst CellRendererer // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gtk.CellRendererer is nil")
 			}
@@ -1767,16 +2215,17 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
 func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 C.gint                // in
+	var _arg4 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("get_preferred_height", _args[:], _outs[:])
-
+	C.gtk_cell_area_get_preferred_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1784,8 +2233,8 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumHeight = int32(_arg3)
+	_naturalHeight = int32(_arg4)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1816,17 +2265,19 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
 func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32) {
-	var _args [4]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 C.gint                // out
+	var _arg4 C.gint                // in
+	var _arg5 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = C.gint(width)
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("get_preferred_height_for_width", _args[:], _outs[:])
-
+	C.gtk_cell_area_get_preferred_height_for_width(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1835,8 +2286,8 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumHeight = int32(_arg4)
+	_naturalHeight = int32(_arg5)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1859,16 +2310,17 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
 func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 C.gint                // in
+	var _arg4 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("get_preferred_width", _args[:], _outs[:])
-
+	C.gtk_cell_area_get_preferred_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1876,8 +2328,8 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumWidth = int32(_arg3)
+	_naturalWidth = int32(_arg4)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -1908,17 +2360,19 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
 func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32) {
-	var _args [4]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 C.gint                // out
+	var _arg4 C.gint                // in
+	var _arg5 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(height)
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = C.gint(height)
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("get_preferred_width_for_height", _args[:], _outs[:])
-
+	C.gtk_cell_area_get_preferred_width_for_height(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
@@ -1927,10 +2381,33 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumWidth = int32(_arg4)
+	_naturalWidth = int32(_arg5)
 
 	return _minimumWidth, _naturalWidth
+}
+
+// RequestMode gets whether the area prefers a height-for-width layout or a
+// width-for-height layout.
+//
+// The function returns the following values:
+//
+//    - sizeRequestMode preferred by area.
+//
+func (area *CellArea) RequestMode() SizeRequestMode {
+	var _arg0 *C.GtkCellArea       // out
+	var _cret C.GtkSizeRequestMode // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+
+	_cret = C.gtk_cell_area_get_request_mode(_arg0)
+	runtime.KeepAlive(area)
+
+	var _sizeRequestMode SizeRequestMode // out
+
+	_sizeRequestMode = SizeRequestMode(_cret)
+
+	return _sizeRequestMode
 }
 
 // HasRenderer checks if area contains renderer.
@@ -1944,21 +2421,20 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 //    - ok: TRUE if renderer is in the area.
 //
 func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("has_renderer", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_has_renderer(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1980,23 +2456,23 @@ func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
 //    - innerArea: return location for the inner cell area.
 //
 func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) *gdk.Rectangle {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkCellArea  // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.GdkRectangle // out
+	var _arg3 C.GdkRectangle  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("inner_cell_area", _args[:], _outs[:])
-
+	C.gtk_cell_area_inner_cell_area(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(cellArea)
 
 	var _innerArea *gdk.Rectangle // out
 
-	_innerArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_innerArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _innerArea
 }
@@ -2009,19 +2485,17 @@ func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) *
 //    - ok: whether area can do anything when activated.
 //
 func (area *CellArea) IsActivatable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellArea // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("is_activatable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_is_activatable(_arg0)
 	runtime.KeepAlive(area)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2041,23 +2515,23 @@ func (area *CellArea) IsActivatable() bool {
 //    - ok: TRUE if sibling is a focus sibling of renderer.
 //
 func (area *CellArea) IsFocusSibling(renderer, sibling CellRendererer) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.GtkCellRenderer // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_gret := _info.InvokeClassMethod("is_focus_sibling", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_is_focus_sibling(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(sibling)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2071,14 +2545,13 @@ func (area *CellArea) IsFocusSibling(renderer, sibling CellRendererer) bool {
 //    - renderer to remove from area.
 //
 func (area *CellArea) Remove(renderer CellRendererer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("remove", _args[:], nil)
-
+	C.gtk_cell_area_remove(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 }
@@ -2092,18 +2565,113 @@ func (area *CellArea) Remove(renderer CellRendererer) {
 //    - sibling to remove from renderer’s focus area.
 //
 func (area *CellArea) RemoveFocusSibling(renderer, sibling CellRendererer) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.GtkCellRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("remove_focus_sibling", _args[:], nil)
-
+	C.gtk_cell_area_remove_focus_sibling(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(sibling)
+}
+
+// Render renders area’s cells according to area’s layout onto widget at the
+// given coordinates.
+//
+// The function takes the following parameters:
+//
+//    - context for this row of data.
+//    - widget that area is rendering to.
+//    - cr to render with.
+//    - backgroundArea: widget relative coordinates for area’s background.
+//    - cellArea: widget relative coordinates for area.
+//    - flags for area in this row.
+//    - paintFocus: whether area should paint focus on focused cells for focused
+//      rows or not.
+//
+func (area *CellArea) Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.cairo_t             // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+	var _arg7 C.gboolean             // out
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg3 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
+	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
+	_arg6 = C.GtkCellRendererState(flags)
+	if paintFocus {
+		_arg7 = C.TRUE
+	}
+
+	C.gtk_cell_area_render(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(backgroundArea)
+	runtime.KeepAlive(cellArea)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(paintFocus)
+}
+
+// RequestRenderer: this is a convenience function for CellArea implementations
+// to request size for cell renderers. It’s important to use this function to
+// request size and then use gtk_cell_area_inner_cell_area() at render and event
+// time since this function will add padding around the cell for focus painting.
+//
+// The function takes the following parameters:
+//
+//    - renderer to request size for.
+//    - orientation in which to request size.
+//    - widget that area is rendering onto.
+//    - forSize: allocation contextual size to request for, or -1 if the base
+//      request for the orientation is to be returned.
+//
+// The function returns the following values:
+//
+//    - minimumSize (optional): location to store the minimum size, or NULL.
+//    - naturalSize (optional): location to store the natural size, or NULL.
+//
+func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int32) (minimumSize, naturalSize int32) {
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.GtkOrientation   // out
+	var _arg3 *C.GtkWidget       // out
+	var _arg4 C.gint             // out
+	var _arg5 C.gint             // in
+	var _arg6 C.gint             // in
+
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg2 = C.GtkOrientation(orientation)
+	_arg3 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg4 = C.gint(forSize)
+
+	C.gtk_cell_area_request_renderer(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(forSize)
+
+	var _minimumSize int32 // out
+	var _naturalSize int32 // out
+
+	_minimumSize = int32(_arg5)
+	_naturalSize = int32(_arg6)
+
+	return _minimumSize, _naturalSize
 }
 
 // SetFocusCell: explicitly sets the currently focused cell to renderer.
@@ -2117,14 +2685,13 @@ func (area *CellArea) RemoveFocusSibling(renderer, sibling CellRendererer) {
 //    - renderer to give focus to.
 //
 func (area *CellArea) SetFocusCell(renderer CellRendererer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("set_focus_cell", _args[:], nil)
-
+	C.gtk_cell_area_set_focus_cell(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 }
@@ -2142,16 +2709,15 @@ func (area *CellArea) SetFocusCell(renderer CellRendererer) {
 //    - canceled: whether editing was canceled.
 //
 func (area *CellArea) StopEditing(canceled bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellArea // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if canceled {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "CellArea")
-	_info.InvokeClassMethod("stop_editing", _args[:], nil)
-
+	C.gtk_cell_area_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(canceled)
 }

@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeSortListModel returns the GType for the type SortListModel.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSortListModel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SortListModel").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_sort_list_model_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSortListModel)
 	return gtype
 }
@@ -87,27 +85,26 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 //    - sortListModel: new GtkSortListModel.
 //
 func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GListModel       // out
+	var _arg2 *C.GtkSorter        // out
+	var _cret *C.GtkSortListModel // in
 
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 	if sorter != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+		_arg2 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_gret := _info.InvokeClassMethod("new_SortListModel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_sort_list_model_new(_arg1, _arg2)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(sorter)
 
 	var _sortListModel *SortListModel // out
 
-	_sortListModel = wrapSortListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_sortListModel = wrapSortListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _sortListModel
 }
@@ -121,19 +118,17 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 //    - ok: TRUE if incremental sorting is enabled.
 //
 func (self *SortListModel) Incremental() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_gret := _info.InvokeClassMethod("get_incremental", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -147,21 +142,19 @@ func (self *SortListModel) Incremental() bool {
 //    - listModel (optional): model that gets sorted.
 //
 func (self *SortListModel) Model() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _cret *C.GListModel       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_sort_list_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}
@@ -192,19 +185,17 @@ func (self *SortListModel) Model() *gio.ListModel {
 //    - guint progress estimate of remaining items to sort.
 //
 func (self *SortListModel) Pending() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _cret C.guint             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_gret := _info.InvokeClassMethod("get_pending", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -216,20 +207,18 @@ func (self *SortListModel) Pending() uint32 {
 //    - sorter (optional) of #self.
 //
 func (self *SortListModel) Sorter() *Sorter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _cret *C.GtkSorter        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_gret := _info.InvokeClassMethod("get_sorter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_sort_list_model_get_sorter(_arg0)
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _sorter
@@ -257,16 +246,15 @@ func (self *SortListModel) Sorter() *Sorter {
 //    - incremental: TRUE to sort incrementally.
 //
 func (self *SortListModel) SetIncremental(incremental bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _arg1 C.gboolean          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if incremental {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_info.InvokeClassMethod("set_incremental", _args[:], nil)
-
+	C.gtk_sort_list_model_set_incremental(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(incremental)
 }
@@ -280,16 +268,15 @@ func (self *SortListModel) SetIncremental(incremental bool) {
 //    - model (optional) to be sorted.
 //
 func (self *SortListModel) SetModel(model gio.ListModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _arg1 *C.GListModel       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_info.InvokeClassMethod("set_model", _args[:], nil)
-
+	C.gtk_sort_list_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }
@@ -301,16 +288,15 @@ func (self *SortListModel) SetModel(model gio.ListModeller) {
 //    - sorter (optional): GtkSorter to sort model with.
 //
 func (self *SortListModel) SetSorter(sorter *Sorter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSortListModel // out
+	var _arg1 *C.GtkSorter        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sorter != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+		_arg1 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SortListModel")
-	_info.InvokeClassMethod("set_sorter", _args[:], nil)
-
+	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
 }

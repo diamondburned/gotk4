@@ -10,17 +10,14 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void _gotk4_gtk4_AsyncReadyCallback(GObject*, void*, gpointer);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gtk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // ShowURI: this function launches the default application for showing a given
@@ -33,18 +30,18 @@ import "C"
 //    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
 //
 func ShowURI(parent *Window, uri string, timestamp uint32) {
-	var _args [3]girepository.Argument
+	var _arg1 *C.GtkWindow // out
+	var _arg2 *C.char      // out
+	var _arg3 C.guint32    // out
 
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 
-	_info := girepository.MustFind("Gtk", "show_uri")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_show_uri(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(timestamp)
@@ -68,27 +65,30 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 //    - callback (optional) to call when the action is complete.
 //
 func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint32, callback gio.AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.GtkWindow          // out
+	var _arg2 *C.char               // out
+	var _arg3 C.guint32             // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if parent != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gtk", "show_uri_full")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_show_uri_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)
@@ -105,21 +105,21 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 //    - result that was passed to callback.
 //
 func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkWindow    // out
+	var _arg2 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gtk", "show_uri_full_finish")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

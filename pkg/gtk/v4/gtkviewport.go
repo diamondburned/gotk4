@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeViewport returns the GType for the type Viewport.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeViewport() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Viewport").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_viewport_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalViewport)
 	return gtype
 }
@@ -100,25 +98,24 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //    - viewport: new GtkViewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkAdjustment // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
 
 	if hadjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
 	if vadjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("new_Viewport", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_new(_arg1, _arg2)
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
 
 	var _viewport *Viewport // out
 
-	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
 }
@@ -130,21 +127,19 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //    - widget (optional): child widget of viewport.
 //
 func (viewport *Viewport) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkViewport // out
+	var _cret *C.GtkWidget   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_get_child(_arg0)
 	runtime.KeepAlive(viewport)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -170,19 +165,17 @@ func (viewport *Viewport) Child() Widgetter {
 //    - ok: TRUE if the viewport keeps the focus child scrolled to view.
 //
 func (viewport *Viewport) ScrollToFocus() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkViewport // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_gret := _info.InvokeClassMethod("get_scroll_to_focus", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 	runtime.KeepAlive(viewport)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -196,16 +189,15 @@ func (viewport *Viewport) ScrollToFocus() bool {
 //    - child (optional) widget.
 //
 func (viewport *Viewport) SetChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkViewport // out
+	var _arg1 *C.GtkWidget   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_info.InvokeClassMethod("set_child", _args[:], nil)
-
+	C.gtk_viewport_set_child(_arg0, _arg1)
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(child)
 }
@@ -218,16 +210,15 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 //    - scrollToFocus: whether to keep the focus widget scrolled to view.
 //
 func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkViewport // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if scrollToFocus {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Viewport")
-	_info.InvokeClassMethod("set_scroll_to_focus", _args[:], nil)
-
+	C.gtk_viewport_set_scroll_to_focus(_arg0, _arg1)
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(scrollToFocus)
 }

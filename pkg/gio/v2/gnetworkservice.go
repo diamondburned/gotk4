@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeNetworkService() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "NetworkService").RegisteredGType())
+	gtype := coreglib.Type(C.g_network_service_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkService)
 	return gtype
 }
@@ -85,26 +83,26 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 //    - networkService: new Service.
 //
 func NewNetworkService(service, protocol, domain string) *NetworkService {
-	var _args [3]girepository.Argument
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg3 *C.gchar              // out
+	var _cret *C.GSocketConnectable // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	_info := girepository.MustFind("Gio", "NetworkService")
-	_gret := _info.InvokeClassMethod("new_NetworkService", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_service_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(service)
 	runtime.KeepAlive(protocol)
 	runtime.KeepAlive(domain)
 
 	var _networkService *NetworkService // out
 
-	_networkService = wrapNetworkService(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_networkService = wrapNetworkService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _networkService
 }
@@ -117,19 +115,17 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 //    - utf8 srv's domain name.
 //
 func (srv *NetworkService) Domain() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkService")
-	_gret := _info.InvokeClassMethod("get_domain", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_service_get_domain(_arg0)
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -141,19 +137,17 @@ func (srv *NetworkService) Domain() string {
 //    - utf8 srv's protocol name.
 //
 func (srv *NetworkService) Protocol() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkService")
-	_gret := _info.InvokeClassMethod("get_protocol", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_service_get_protocol(_arg0)
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -166,19 +160,17 @@ func (srv *NetworkService) Protocol() string {
 //    - utf8 srv's scheme name.
 //
 func (srv *NetworkService) Scheme() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkService")
-	_gret := _info.InvokeClassMethod("get_scheme", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_service_get_scheme(_arg0)
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -190,19 +182,17 @@ func (srv *NetworkService) Scheme() string {
 //    - utf8 srv's service name.
 //
 func (srv *NetworkService) Service() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GNetworkService // out
+	var _cret *C.gchar           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_info := girepository.MustFind("Gio", "NetworkService")
-	_gret := _info.InvokeClassMethod("get_service", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_network_service_get_service(_arg0)
 	runtime.KeepAlive(srv)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -215,15 +205,14 @@ func (srv *NetworkService) Service() string {
 //    - scheme: URI scheme.
 //
 func (srv *NetworkService) SetScheme(scheme string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GNetworkService // out
+	var _arg1 *C.gchar           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GNetworkService)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "NetworkService")
-	_info.InvokeClassMethod("set_scheme", _args[:], nil)
-
+	C.g_network_service_set_scheme(_arg0, _arg1)
 	runtime.KeepAlive(srv)
 	runtime.KeepAlive(scheme)
 }

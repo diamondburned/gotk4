@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeFixed returns the GType for the type Fixed.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFixed() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Fixed").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_fixed_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFixed)
 	return gtype
 }
@@ -116,13 +116,13 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //    - fixed: new Fixed.
 //
 func NewFixed() *Fixed {
-	_info := girepository.MustFind("Gtk", "Fixed")
-	_gret := _info.InvokeClassMethod("new_Fixed", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_fixed_new()
 
 	var _fixed *Fixed // out
 
-	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fixed
 }
@@ -136,16 +136,17 @@ func NewFixed() *Fixed {
 //    - y: vertical position to move the widget to.
 //
 func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	_info := girepository.MustFind("Gtk", "Fixed")
-	_info.InvokeClassMethod("move", _args[:], nil)
-
+	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(x)
@@ -161,16 +162,17 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
 //    - y: vertical position to place the widget at.
 //
 func (fixed *Fixed) Put(widget Widgetter, x, y int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	_info := girepository.MustFind("Gtk", "Fixed")
-	_info.InvokeClassMethod("put", _args[:], nil)
-
+	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(x)
@@ -184,15 +186,14 @@ type FixedChild struct {
 
 // fixedChild is the struct that's finalized.
 type fixedChild struct {
-	native unsafe.Pointer
+	native *C.GtkFixedChild
 }
 
 func (f *FixedChild) Widget() Widgetter {
-	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("widget")
-	valptr := (*uintptr)(unsafe.Add(f.native, offset))
+	valptr := &f.native.widget
 	var v Widgetter // out
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))
+		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -212,29 +213,25 @@ func (f *FixedChild) Widget() Widgetter {
 }
 
 func (f *FixedChild) X() int32 {
-	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(f.native, offset))
+	valptr := &f.native.x
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 func (f *FixedChild) Y() int32 {
-	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(f.native, offset))
+	valptr := &f.native.y
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 func (f *FixedChild) SetX(x int32) {
-	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(f.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+	valptr := &f.native.x
+	*valptr = C.gint(x)
 }
 
 func (f *FixedChild) SetY(y int32) {
-	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(f.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
+	valptr := &f.native.y
+	*valptr = C.gint(y)
 }

@@ -7,14 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // BusAcquiredCallback: invoked when a connection to a message bus has been
@@ -22,7 +19,7 @@ import "C"
 type BusAcquiredCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusAcquiredCallback
-func _gotk4_gio2_BusAcquiredCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointer) {
+func _gotk4_gio2_BusAcquiredCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusAcquiredCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -45,7 +42,7 @@ func _gotk4_gio2_BusAcquiredCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointe
 type BusNameAcquiredCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameAcquiredCallback
-func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointer) {
+func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusNameAcquiredCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -69,7 +66,7 @@ func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpo
 type BusNameLostCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameLostCallback
-func _gotk4_gio2_BusNameLostCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointer) {
+func _gotk4_gio2_BusNameLostCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusNameLostCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -101,12 +98,10 @@ func _gotk4_gio2_BusNameLostCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointe
 //    - ownerId: identifier obtained from g_bus_own_name().
 //
 func BusUnownName(ownerId uint32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.guint // out
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(ownerId)
+	_arg1 = C.guint(ownerId)
 
-	_info := girepository.MustFind("Gio", "bus_unown_name")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.g_bus_unown_name(_arg1)
 	runtime.KeepAlive(ownerId)
 }

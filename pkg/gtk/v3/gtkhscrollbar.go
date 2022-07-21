@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeHScrollbar returns the GType for the type HScrollbar.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeHScrollbar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "HScrollbar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_hscrollbar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalHScrollbar)
 	return gtype
 }
@@ -98,21 +98,19 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 //    - hScrollbar: new HScrollbar.
 //
 func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
 
 	if adjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "HScrollbar")
-	_gret := _info.InvokeClassMethod("new_HScrollbar", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_hscrollbar_new(_arg1)
 	runtime.KeepAlive(adjustment)
 
 	var _hScrollbar *HScrollbar // out
 
-	_hScrollbar = wrapHScrollbar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_hScrollbar = wrapHScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScrollbar
 }

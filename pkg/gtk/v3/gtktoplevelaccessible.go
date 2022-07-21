@@ -8,14 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeToplevelAccessible returns the GType for the type ToplevelAccessible.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeToplevelAccessible() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToplevelAccessible").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_toplevel_accessible_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalToplevelAccessible)
 	return gtype
 }
@@ -67,23 +67,21 @@ func marshalToplevelAccessible(p uintptr) (interface{}, error) {
 //    - list: list of children.
 //
 func (accessible *ToplevelAccessible) Children() []*Window {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkToplevelAccessible // out
+	var _cret *C.GList                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.GtkToplevelAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Gtk", "ToplevelAccessible")
-	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_toplevel_accessible_get_children(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _list []*Window // out
 
-	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.GtkWindow)(v)
 		var dst *Window // out
-		dst = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapWindow(coreglib.Take(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 

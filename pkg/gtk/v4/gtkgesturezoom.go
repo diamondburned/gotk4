@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_GestureZoom_ConnectScaleChanged(gpointer, gdouble, guintptr);
 import "C"
 
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureZoom() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureZoom").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_zoom_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureZoom)
 	return gtype
+}
+
+// GestureZoomOverrider contains methods that are overridable.
+type GestureZoomOverrider interface {
 }
 
 // GestureZoom: GtkGestureZoom is a GtkGesture for 2-finger pinch/zoom gestures.
@@ -40,6 +42,14 @@ type GestureZoom struct {
 var (
 	_ Gesturer = (*GestureZoom)(nil)
 )
+
+func classInitGestureZoomer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureZoom(obj *coreglib.Object) *GestureZoom {
 	return &GestureZoom{
@@ -89,13 +99,13 @@ func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.
 //    - gestureZoom: newly created GtkGestureZoom.
 //
 func NewGestureZoom() *GestureZoom {
-	_info := girepository.MustFind("Gtk", "GestureZoom")
-	_gret := _info.InvokeClassMethod("new_GestureZoom", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkGesture // in
+
+	_cret = C.gtk_gesture_zoom_new()
 
 	var _gestureZoom *GestureZoom // out
 
-	_gestureZoom = wrapGestureZoom(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureZoom = wrapGestureZoom(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureZoom
 }
@@ -111,19 +121,17 @@ func NewGestureZoom() *GestureZoom {
 //    - gdouble: scale delta.
 //
 func (gesture *GestureZoom) ScaleDelta() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGestureZoom // out
+	var _cret C.double          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureZoom")
-	_gret := _info.InvokeClassMethod("get_scale_delta", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }

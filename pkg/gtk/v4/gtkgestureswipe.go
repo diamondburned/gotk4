@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_GestureSwipe_ConnectSwipe(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureSwipe() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureSwipe").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_swipe_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureSwipe)
 	return gtype
+}
+
+// GestureSwipeOverrider contains methods that are overridable.
+type GestureSwipeOverrider interface {
 }
 
 // GestureSwipe: GtkGestureSwipe is a GtkGesture for swipe gestures.
@@ -47,6 +49,14 @@ type GestureSwipe struct {
 var (
 	_ Gesturer = (*GestureSwipe)(nil)
 )
+
+func classInitGestureSwiper(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureSwipe(obj *coreglib.Object) *GestureSwipe {
 	return &GestureSwipe{
@@ -100,13 +110,13 @@ func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) 
 //    - gestureSwipe: newly created GtkGestureSwipe.
 //
 func NewGestureSwipe() *GestureSwipe {
-	_info := girepository.MustFind("Gtk", "GestureSwipe")
-	_gret := _info.InvokeClassMethod("new_GestureSwipe", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkGesture // in
+
+	_cret = C.gtk_gesture_swipe_new()
 
 	var _gestureSwipe *GestureSwipe // out
 
-	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureSwipe
 }
@@ -124,24 +134,23 @@ func NewGestureSwipe() *GestureSwipe {
 //    - ok: whether velocity could be calculated.
 //
 func (gesture *GestureSwipe) Velocity() (velocityX, velocityY float64, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkGestureSwipe // out
+	var _arg1 C.double           // in
+	var _arg2 C.double           // in
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "GestureSwipe")
-	_gret := _info.InvokeClassMethod("get_velocity", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(gesture)
 
 	var _velocityX float64 // out
 	var _velocityY float64 // out
 	var _ok bool           // out
 
-	_velocityX = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_velocityY = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_velocityX = float64(_arg1)
+	_velocityY = float64(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 

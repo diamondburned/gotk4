@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeAspectFrame returns the GType for the type AspectFrame.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAspectFrame() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AspectFrame").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_aspect_frame_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAspectFrame)
 	return gtype
 }
@@ -104,23 +104,25 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 //    - aspectFrame: new AspectFrame.
 //
 func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
-	var _args [5]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gfloat     // out
+	var _arg3 C.gfloat     // out
+	var _arg4 C.gfloat     // out
+	var _arg5 C.gboolean   // out
+	var _cret *C.GtkWidget // in
 
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
-	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = C.gfloat(ratio)
+	_arg2 = C.gfloat(xalign)
+	_arg3 = C.gfloat(yalign)
+	_arg4 = C.gfloat(ratio)
 	if obeyChild {
-		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
+		_arg5 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "AspectFrame")
-	_gret := _info.InvokeClassMethod("new_AspectFrame", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)
@@ -129,7 +131,7 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 
 	var _aspectFrame *AspectFrame // out
 
-	_aspectFrame = wrapAspectFrame(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_aspectFrame = wrapAspectFrame(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _aspectFrame
 }
@@ -147,19 +149,21 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 //      the requistion of the child.
 //
 func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild bool) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkAspectFrame // out
+	var _arg1 C.gfloat          // out
+	var _arg2 C.gfloat          // out
+	var _arg3 C.gfloat          // out
+	var _arg4 C.gboolean        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(aspectFrame).Native()))
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
-	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = C.gfloat(ratio)
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(coreglib.InternObject(aspectFrame).Native()))
+	_arg1 = C.gfloat(xalign)
+	_arg2 = C.gfloat(yalign)
+	_arg3 = C.gfloat(ratio)
 	if obeyChild {
-		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
+		_arg4 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "AspectFrame")
-	_info.InvokeClassMethod("set", _args[:], nil)
-
+	C.gtk_aspect_frame_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(aspectFrame)
 	runtime.KeepAlive(xalign)
 	runtime.KeepAlive(yalign)

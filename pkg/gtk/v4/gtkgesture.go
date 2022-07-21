@@ -7,19 +7,18 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_Gesture_ConnectBegin(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_Gesture_ConnectCancel(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_Gesture_ConnectEnd(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_Gesture_ConnectUpdate(gpointer, void*, guintptr);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_Gesture_ConnectBegin(gpointer, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectCancel(gpointer, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectEnd(gpointer, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(gpointer, GdkEventSequence*, GtkEventSequenceState, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectUpdate(gpointer, GdkEventSequence*, guintptr);
 import "C"
 
 // GTypeGesture returns the GType for the type Gesture.
@@ -28,9 +27,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGesture() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Gesture").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGesture)
 	return gtype
+}
+
+// GestureOverrider contains methods that are overridable.
+type GestureOverrider interface {
 }
 
 // Gesture: GtkGesture is the base class for gesture recognition.
@@ -144,6 +147,14 @@ type Gesturer interface {
 
 var _ Gesturer = (*Gesture)(nil)
 
+func classInitGesturer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapGesture(obj *coreglib.Object) *Gesture {
 	return &Gesture{
 		EventController: EventController{
@@ -166,7 +177,7 @@ func BaseGesture(obj Gesturer) *Gesture {
 }
 
 //export _gotk4_gtk4_Gesture_ConnectBegin
-func _gotk4_gtk4_Gesture_ConnectBegin(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_Gesture_ConnectBegin(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
 	var f func(sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -199,7 +210,7 @@ func (gesture *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) coregl
 }
 
 //export _gotk4_gtk4_Gesture_ConnectCancel
-func _gotk4_gtk4_Gesture_ConnectCancel(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_Gesture_ConnectCancel(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
 	var f func(sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -232,7 +243,7 @@ func (gesture *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) coreg
 }
 
 //export _gotk4_gtk4_Gesture_ConnectEnd
-func _gotk4_gtk4_Gesture_ConnectEnd(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_Gesture_ConnectEnd(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
 	var f func(sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -265,8 +276,40 @@ func (gesture *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) coreglib
 	return coreglib.ConnectGeneratedClosure(gesture, "end", false, unsafe.Pointer(C._gotk4_gtk4_Gesture_ConnectEnd), f)
 }
 
+//export _gotk4_gtk4_Gesture_ConnectSequenceStateChanged
+func _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.GtkEventSequenceState, arg3 C.guintptr) {
+	var f func(sequence *gdk.EventSequence, state EventSequenceState)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(sequence *gdk.EventSequence, state EventSequenceState))
+	}
+
+	var _sequence *gdk.EventSequence // out
+	var _state EventSequenceState    // out
+
+	if arg1 != nil {
+		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	}
+	_state = EventSequenceState(arg2)
+
+	f(_sequence, _state)
+}
+
+// ConnectSequenceStateChanged is emitted whenever a sequence state changes.
+//
+// See gtk.Gesture.SetSequenceState() to know more about the expectable sequence
+// lifetimes.
+func (gesture *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(gesture, "sequence-state-changed", false, unsafe.Pointer(C._gotk4_gtk4_Gesture_ConnectSequenceStateChanged), f)
+}
+
 //export _gotk4_gtk4_Gesture_ConnectUpdate
-func _gotk4_gtk4_Gesture_ConnectUpdate(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_Gesture_ConnectUpdate(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
 	var f func(sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -312,22 +355,20 @@ func (gesture *Gesture) ConnectUpdate(f func(sequence *gdk.EventSequence)) coreg
 //    - ok: TRUE if there are active touches, FALSE otherwise.
 //
 func (gesture *Gesture) BoundingBox() (*gdk.Rectangle, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkGesture  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_bounding_box", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_bounding_box(_arg0, &_arg1)
 	runtime.KeepAlive(gesture)
 
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -347,24 +388,23 @@ func (gesture *Gesture) BoundingBox() (*gdk.Rectangle, bool) {
 //    - ok: FALSE if no active touches are present, TRUE otherwise.
 //
 func (gesture *Gesture) BoundingBoxCenter() (x, y float64, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _arg1 C.double      // in
+	var _arg2 C.double      // in
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_bounding_box_center", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_bounding_box_center(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(gesture)
 
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_x = float64(_arg1)
+	_y = float64(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -380,21 +420,19 @@ func (gesture *Gesture) BoundingBoxCenter() (x, y float64, ok bool) {
 //    - device (optional): GdkDevice, or NULL.
 //
 func (gesture *Gesture) Device() gdk.Devicer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _cret *C.GdkDevice  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_device", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_device(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _device gdk.Devicer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -419,24 +457,22 @@ func (gesture *Gesture) Device() gdk.Devicer {
 //    - list: list of GtkGestures, free with g_list_free().
 //
 func (gesture *Gesture) GetGroup() []Gesturer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _cret *C.GList      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_group(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _list []Gesturer // out
 
-	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkGesture)(v)
 		var dst Gesturer // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gtk.Gesturer is nil")
 			}
@@ -472,25 +508,24 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 //    - event (optional): last event from sequence.
 //
 func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGesture       // out
+	var _arg1 *C.GdkEventSequence // out
+	var _cret *C.GdkEvent         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	if sequence != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sequence)))
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_last_event", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_last_event(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(sequence)
 
 	var _event gdk.Eventer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -516,20 +551,18 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) gdk.Eventer {
 //    - eventSequence (optional): last updated sequence.
 //
 func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture       // out
+	var _cret *C.GdkEventSequence // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_last_updated_sequence", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_last_updated_sequence(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _eventSequence *gdk.EventSequence // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _eventSequence
@@ -552,18 +585,18 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 //    - ok: TRUE if sequence is currently interpreted.
 //
 func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x, y float64, ok bool) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkGesture       // out
+	var _arg1 *C.GdkEventSequence // out
+	var _arg2 C.double            // in
+	var _arg3 C.double            // in
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	if sequence != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sequence)))
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_point", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_point(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(sequence)
 
@@ -571,13 +604,42 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x, y float64, ok boo
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
-	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_x = float64(_arg2)
+	_y = float64(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _x, _y, _ok
+}
+
+// SequenceState returns the sequence state, as seen by gesture.
+//
+// The function takes the following parameters:
+//
+//    - sequence: EventSequence.
+//
+// The function returns the following values:
+//
+//    - eventSequenceState: sequence state in gesture.
+//
+func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
+	var _arg0 *C.GtkGesture           // out
+	var _arg1 *C.GdkEventSequence     // out
+	var _cret C.GtkEventSequenceState // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+
+	_cret = C.gtk_gesture_get_sequence_state(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
+
+	var _eventSequenceState EventSequenceState // out
+
+	_eventSequenceState = EventSequenceState(_cret)
+
+	return _eventSequenceState
 }
 
 // Sequences returns the list of GdkEventSequences currently being interpreted
@@ -590,23 +652,21 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x, y float64, ok boo
 //      g_list_free().
 //
 func (gesture *Gesture) Sequences() []*gdk.EventSequence {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _cret *C.GList      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("get_sequences", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_get_sequences(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _list []*gdk.EventSequence // out
 
-	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkEventSequence)(v)
 		var dst *gdk.EventSequence // out
-		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
 
@@ -634,14 +694,13 @@ func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 //    - gesture: GtkGesture.
 //
 func (groupGesture *Gesture) Group(gesture Gesturer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _arg1 *C.GtkGesture // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupGesture).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(groupGesture).Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_info.InvokeClassMethod("group", _args[:], nil)
-
+	C.gtk_gesture_group(_arg0, _arg1)
 	runtime.KeepAlive(groupGesture)
 	runtime.KeepAlive(gesture)
 }
@@ -658,23 +717,22 @@ func (groupGesture *Gesture) Group(gesture Gesturer) {
 //    - ok: TRUE if gesture is handling sequence, FALSE otherwise.
 //
 func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGesture       // out
+	var _arg1 *C.GdkEventSequence // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	if sequence != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sequence)))
+		_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("handles_sequence", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_handles_sequence(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(sequence)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -690,19 +748,17 @@ func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 //    - ok: TRUE if gesture is active.
 //
 func (gesture *Gesture) IsActive() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("is_active", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_is_active(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -720,21 +776,20 @@ func (gesture *Gesture) IsActive() bool {
 //    - ok: whether the gestures are grouped.
 //
 func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _arg1 *C.GtkGesture // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg1 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(other).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("is_grouped_with", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_is_grouped_with(_arg0, _arg1)
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(other)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -751,19 +806,122 @@ func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 //    - ok: TRUE if gesture is recognized.
 //
 func (gesture *Gesture) IsRecognized() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_gret := _info.InvokeClassMethod("is_recognized", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_gesture_is_recognized(_arg0)
 	runtime.KeepAlive(gesture)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetSequenceState sets the state of sequence in gesture.
+//
+// Sequences start in state GTK_EVENT_SEQUENCE_NONE, and whenever they change
+// state, they can never go back to that state. Likewise, sequences in state
+// GTK_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With these
+// rules, the lifetime of an event sequence is constrained to the next four:
+//
+// * None * None → Denied * None → Claimed * None → Claimed → Denied
+//
+// Note: Due to event handling ordering, it may be unsafe to set the state on
+// another gesture within a gtk.Gesture::begin signal handler, as the callback
+// might be executed before the other gesture knows about the sequence. A safe
+// way to perform this could be:
+//
+//    static void
+//    first_gesture_begin_cb (GtkGesture       *first_gesture,
+//                            GdkEventSequence *sequence,
+//                            gpointer          user_data)
+//    {
+//      gtk_gesture_set_sequence_state (first_gesture, sequence, GTK_EVENT_SEQUENCE_CLAIMED);
+//      gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
+//    }
+//
+//    static void
+//    second_gesture_begin_cb (GtkGesture       *second_gesture,
+//                             GdkEventSequence *sequence,
+//                             gpointer          user_data)
+//    {
+//      if (gtk_gesture_get_sequence_state (first_gesture, sequence) == GTK_EVENT_SEQUENCE_CLAIMED)
+//        gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
+//    }
+//
+//
+// If both gestures are in the same group, just set the state on the gesture
+// emitting the event, the sequence will be already be initialized to the
+// group's global state when the second gesture processes the event.
+//
+// The function takes the following parameters:
+//
+//    - sequence: GdkEventSequence.
+//    - state: sequence state.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if sequence is handled by gesture, and the state is changed
+//      successfully.
+//
+func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
+	var _arg0 *C.GtkGesture           // out
+	var _arg1 *C.GdkEventSequence     // out
+	var _arg2 C.GtkEventSequenceState // out
+	var _cret C.gboolean              // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg1 = (*C.GdkEventSequence)(gextras.StructNative(unsafe.Pointer(sequence)))
+	_arg2 = C.GtkEventSequenceState(state)
+
+	_cret = C.gtk_gesture_set_sequence_state(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(sequence)
+	runtime.KeepAlive(state)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetState sets the state of all sequences that gesture is currently
+// interacting with.
+//
+// See gtk.Gesture.SetSequenceState() for more details on sequence states.
+//
+// The function takes the following parameters:
+//
+//    - state: sequence state.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the state of at least one sequence was changed successfully.
+//
+func (gesture *Gesture) SetState(state EventSequenceState) bool {
+	var _arg0 *C.GtkGesture           // out
+	var _arg1 C.GtkEventSequenceState // out
+	var _cret C.gboolean              // in
+
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg1 = C.GtkEventSequenceState(state)
+
+	_cret = C.gtk_gesture_set_state(_arg0, _arg1)
+	runtime.KeepAlive(gesture)
+	runtime.KeepAlive(state)
+
+	var _ok bool // out
+
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -772,12 +930,10 @@ func (gesture *Gesture) IsRecognized() bool {
 
 // Ungroup separates gesture into an isolated group.
 func (gesture *Gesture) Ungroup() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGesture // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	_arg0 = (*C.GtkGesture)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_info := girepository.MustFind("Gtk", "Gesture")
-	_info.InvokeClassMethod("ungroup", _args[:], nil)
-
+	C.gtk_gesture_ungroup(_arg0)
 	runtime.KeepAlive(gesture)
 }

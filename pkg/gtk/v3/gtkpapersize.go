@@ -8,15 +8,15 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypePaperSize returns the GType for the type PaperSize.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePaperSize() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PaperSize").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_paper_size_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPaperSize)
 	return gtype
 }
@@ -70,40 +70,71 @@ type PaperSize struct {
 
 // paperSize is the struct that's finalized.
 type paperSize struct {
-	native unsafe.Pointer
+	native *C.GtkPaperSize
 }
 
 func marshalPaperSize(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &PaperSize{&paperSize{(unsafe.Pointer)(b)}}, nil
+	return &PaperSize{&paperSize{(*C.GtkPaperSize)(b)}}, nil
 }
 
 // NewPaperSize constructs a struct PaperSize.
 func NewPaperSize(name string) *PaperSize {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar        // out
+	var _cret *C.GtkPaperSize // in
 
 	if name != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_new(_arg1)
 	runtime.KeepAlive(name)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+		},
+	)
+
+	return _paperSize
+}
+
+// NewPaperSizeCustom constructs a struct PaperSize.
+func NewPaperSizeCustom(name string, displayName string, width float64, height float64, unit Unit) *PaperSize {
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.gchar        // out
+	var _arg3 C.gdouble       // out
+	var _arg4 C.gdouble       // out
+	var _arg5 C.GtkUnit       // out
+	var _cret *C.GtkPaperSize // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gdouble(width)
+	_arg4 = C.gdouble(height)
+	_arg5 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_new_custom(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(displayName)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(unit)
+
+	var _paperSize *PaperSize // out
+
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_paperSize)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
 
@@ -112,27 +143,21 @@ func NewPaperSize(name string) *PaperSize {
 
 // NewPaperSizeFromGVariant constructs a struct PaperSize.
 func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GVariant     // out
+	var _cret *C.GtkPaperSize // in
 
-	*(**C.GVariant)(unsafe.Pointer(&_args[0])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("new_from_gvariant", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_new_from_gvariant(_arg1)
 	runtime.KeepAlive(variant)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
 
@@ -141,32 +166,28 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 
 // NewPaperSizeFromIPP constructs a struct PaperSize.
 func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSize {
-	var _args [3]girepository.Argument
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gdouble       // out
+	var _arg3 C.gdouble       // out
+	var _cret *C.GtkPaperSize // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(ippName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(width)
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(height)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(ippName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gdouble(width)
+	_arg3 = C.gdouble(height)
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("new_from_ipp", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_new_from_ipp(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(ippName)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
 
@@ -175,37 +196,33 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 
 // NewPaperSizeFromKeyFile constructs a struct PaperSize.
 func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSize, error) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
+	var _cret *C.GtkPaperSize // in
+	var _cerr *C.GError       // in
 
-	*(**C.GKeyFile)(unsafe.Pointer(&_args[0])) = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("new_from_key_file", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_new_from_key_file(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
 
 	var _paperSize *PaperSize // out
 	var _goerr error          // out
 
-	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _paperSize, _goerr
@@ -213,19 +230,20 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 
 // NewPaperSizeFromPPD constructs a struct PaperSize.
 func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
-	var _args [4]girepository.Argument
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.gchar        // out
+	var _arg3 C.gdouble       // out
+	var _arg4 C.gdouble       // out
+	var _cret *C.GtkPaperSize // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(ppdName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(ppdDisplayName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(width)
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(height)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(ppdName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(ppdDisplayName)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gdouble(width)
+	_arg4 = C.gdouble(height)
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("new_from_ppd", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_new_from_ppd(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(ppdName)
 	runtime.KeepAlive(ppdDisplayName)
 	runtime.KeepAlive(width)
@@ -233,15 +251,11 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
 
@@ -255,31 +269,141 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 //    - paperSize: copy of other.
 //
 func (other *PaperSize) Copy() *PaperSize {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret *C.GtkPaperSize // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_copy(_arg0)
 	runtime.KeepAlive(other)
 
 	var _paperSize *PaperSize // out
 
-	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
 
 	return _paperSize
+}
+
+// DefaultBottomMargin gets the default bottom margin for the PaperSize.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value, not GTK_UNIT_NONE.
+//
+// The function returns the following values:
+//
+//    - gdouble: default bottom margin.
+//
+func (size *PaperSize) DefaultBottomMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_get_default_bottom_margin(_arg0, _arg1)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// DefaultLeftMargin gets the default left margin for the PaperSize.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value, not GTK_UNIT_NONE.
+//
+// The function returns the following values:
+//
+//    - gdouble: default left margin.
+//
+func (size *PaperSize) DefaultLeftMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_get_default_left_margin(_arg0, _arg1)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// DefaultRightMargin gets the default right margin for the PaperSize.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value, not GTK_UNIT_NONE.
+//
+// The function returns the following values:
+//
+//    - gdouble: default right margin.
+//
+func (size *PaperSize) DefaultRightMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_get_default_right_margin(_arg0, _arg1)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// DefaultTopMargin gets the default top margin for the PaperSize.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value, not GTK_UNIT_NONE.
+//
+// The function returns the following values:
+//
+//    - gdouble: default top margin.
+//
+func (size *PaperSize) DefaultTopMargin(unit Unit) float64 {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_get_default_top_margin(_arg0, _arg1)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // DisplayName gets the human-readable name of the PaperSize.
@@ -289,21 +413,48 @@ func (other *PaperSize) Copy() *PaperSize {
 //    - utf8: human-readable name of size.
 //
 func (size *PaperSize) DisplayName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("get_display_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_get_display_name(_arg0)
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// Height gets the paper height of the PaperSize, in units of unit.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value, not GTK_UNIT_NONE.
+//
+// The function returns the following values:
+//
+//    - gdouble: paper height.
+//
+func (size *PaperSize) Height(unit Unit) float64 {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_get_height(_arg0, _arg1)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // Name gets the name of the PaperSize.
@@ -313,19 +464,17 @@ func (size *PaperSize) DisplayName() string {
 //    - utf8: name of size.
 //
 func (size *PaperSize) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("get_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_get_name(_arg0)
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -337,21 +486,48 @@ func (size *PaperSize) Name() string {
 //    - utf8: PPD name of size.
 //
 func (size *PaperSize) PPDName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("get_ppd_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_get_ppd_name(_arg0)
 	runtime.KeepAlive(size)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// Width gets the paper width of the PaperSize, in units of unit.
+//
+// The function takes the following parameters:
+//
+//    - unit for the return value, not GTK_UNIT_NONE.
+//
+// The function returns the following values:
+//
+//    - gdouble: paper width.
+//
+func (size *PaperSize) Width(unit Unit) float64 {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.GtkUnit       // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.GtkUnit(unit)
+
+	_cret = C.gtk_paper_size_get_width(_arg0, _arg1)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(unit)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // IsCustom returns TRUE if size is not a standard paper size.
@@ -361,19 +537,17 @@ func (size *PaperSize) PPDName() string {
 //    - ok: whether size is a custom paper size.
 //
 func (size *PaperSize) IsCustom() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("is_custom", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_is_custom(_arg0)
 	runtime.KeepAlive(size)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -391,21 +565,20 @@ func (size *PaperSize) IsCustom() bool {
 //    - ok: TRUE, if size1 and size2 represent the same paper size.
 //
 func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 *C.GtkPaperSize // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size1)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size2)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size1)))
+	_arg1 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size2)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("is_equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_is_equal(_arg0, _arg1)
 	runtime.KeepAlive(size1)
 	runtime.KeepAlive(size2)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -419,23 +592,47 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 //    - ok: whether size is not an IPP custom paper size.
 //
 func (size *PaperSize) IsIPP() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("is_ipp", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_is_ipp(_arg0)
 	runtime.KeepAlive(size)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// SetSize changes the dimensions of a size to width x height.
+//
+// The function takes the following parameters:
+//
+//    - width: new width in units of unit.
+//    - height: new height in units of unit.
+//    - unit for width and height.
+//
+func (size *PaperSize) SetSize(width float64, height float64, unit Unit) {
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.gdouble       // out
+	var _arg3 C.GtkUnit       // out
+
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = C.gdouble(width)
+	_arg2 = C.gdouble(height)
+	_arg3 = C.GtkUnit(unit)
+
+	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(unit)
 }
 
 // ToGVariant: serialize a paper size to an a{sv} variant.
@@ -445,20 +642,18 @@ func (size *PaperSize) IsIPP() bool {
 //    - variant: new, floating, #GVariant.
 //
 func (paperSize *PaperSize) ToGVariant() *glib.Variant {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _cret *C.GVariant     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(paperSize)))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(paperSize)))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_gret := _info.InvokeRecordMethod("to_gvariant", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_to_gvariant(_arg0)
 	runtime.KeepAlive(paperSize)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -477,16 +672,16 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 //    - groupName: group to add the settings to in key_file.
 //
 func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkPaperSize // out
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-	*(**C.GKeyFile)(unsafe.Pointer(&_args[1])) = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkPaperSize)(gextras.StructNative(unsafe.Pointer(size)))
+	_arg1 = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "PaperSize")
-	_info.InvokeRecordMethod("to_key_file", _args[:], nil)
-
+	C.gtk_paper_size_to_key_file(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
@@ -501,13 +696,13 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 //      should not be modified.
 //
 func PaperSizeGetDefault() string {
-	_info := girepository.MustFind("Gtk", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
+	var _cret *C.gchar // in
+
+	_cret = C.gtk_paper_size_get_default()
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -524,33 +719,27 @@ func PaperSizeGetDefault() string {
 //    - list: newly allocated list of newly allocated PaperSize objects.
 //
 func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
-	var _args [1]girepository.Argument
+	var _arg1 C.gboolean // out
+	var _cret *C.GList   // in
 
 	if includeCustom {
-		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "get_paper_sizes")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paper_size_get_paper_sizes(_arg1)
 	runtime.KeepAlive(includeCustom)
 
 	var _list []*PaperSize // out
 
-	_list = make([]*PaperSize, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*PaperSize, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkPaperSize)(v)
 		var dst *PaperSize // out
-		dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 			},
 		)
 		_list = append(_list, dst)

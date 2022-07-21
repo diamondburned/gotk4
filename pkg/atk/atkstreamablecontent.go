@@ -7,19 +7,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(void*, gchar*);
-// extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(void*, gint);
-// extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(void*, gchar*);
-// extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(void*);
+// extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(AtkStreamableContent*, gchar*);
+// extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(AtkStreamableContent*, gint);
+// extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(AtkStreamableContent*, gchar*);
+// extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(AtkStreamableContent*);
 import "C"
 
 // GTypeStreamableContent returns the GType for the type StreamableContent.
@@ -28,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStreamableContent() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "StreamableContent").RegisteredGType())
+	gtype := coreglib.Type(C.atk_streamable_content_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStreamableContent)
 	return gtype
 }
@@ -134,15 +132,15 @@ type StreamableContenter interface {
 var _ StreamableContenter = (*StreamableContent)(nil)
 
 func ifaceInitStreamableContenter(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "StreamableContentIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_mime_type"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_mime_type)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_n_mime_types"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_n_mime_types)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_stream"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_stream)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_uri"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_uri)
+	iface := (*C.AtkStreamableContentIface)(unsafe.Pointer(gifacePtr))
+	iface.get_mime_type = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_mime_type)
+	iface.get_n_mime_types = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_n_mime_types)
+	iface.get_stream = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_stream)
+	iface.get_uri = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_uri)
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_mime_type
-func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.AtkStreamableContent, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -159,7 +157,7 @@ func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.void, arg1 C.gint)
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_n_mime_types
-func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.AtkStreamableContent) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -171,7 +169,7 @@ func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.void) (cret C.g
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_stream
-func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.gchar) (cret *C.GIOChannel) {
+func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.GIOChannel) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -187,7 +185,7 @@ func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.gchar) 
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_uri
-func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.void, arg1 *C.gchar) (cret *C.gchar) {
+func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -228,21 +226,20 @@ func marshalStreamableContent(p uintptr) (interface{}, error) {
 //      free the character string.
 //
 func (streamable *StreamableContent) MIMEType(i int32) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 C.gint                  // out
+	var _cret *C.gchar                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "StreamableContent")
-	_gret := _info.InvokeIfaceMethod("get_mime_type", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_streamable_content_get_mime_type(_arg0, _arg1)
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(i)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -254,19 +251,17 @@ func (streamable *StreamableContent) MIMEType(i int32) string {
 //    - gint which is the number of mime types supported by the object.
 //
 func (streamable *StreamableContent) NMIMETypes() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkStreamableContent // out
+	var _cret C.gint                  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
 
-	_info := girepository.MustFind("Atk", "StreamableContent")
-	_gret := _info.InvokeIfaceMethod("get_n_mime_types", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
 	runtime.KeepAlive(streamable)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -282,22 +277,21 @@ func (streamable *StreamableContent) NMIMETypes() int32 {
 //    - ioChannel which contains the content in the specified mime type.
 //
 func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.GIOChannel           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "StreamableContent")
-	_gret := _info.InvokeIfaceMethod("get_stream", _args[:], nil)
-	_cret := *(**C.GIOChannel)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_streamable_content_get_stream(_arg0, _arg1)
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(mimeType)
 
 	var _ioChannel *glib.IOChannel // out
 
-	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(*(**C.GIOChannel)(unsafe.Pointer(&_cret)))))
+	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -327,23 +321,22 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 //      corresponding URI can be constructed.
 //
 func (streamable *StreamableContent) URI(mimeType string) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.gchar                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "StreamableContent")
-	_gret := _info.InvokeIfaceMethod("get_uri", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_streamable_content_get_uri(_arg0, _arg1)
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(mimeType)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8

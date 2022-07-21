@@ -10,15 +10,12 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // NewPollableSource: utility method for InputStream and OutputStream
@@ -36,27 +33,21 @@ import "C"
 //    - source: new #GSource.
 //
 func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GObject // out
+	var _cret *C.GSource // in
 
-	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
 
-	_info := girepository.MustFind("Gio", "pollable_source_new")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GSource)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_pollable_source_new(_arg1)
 	runtime.KeepAlive(pollableStream)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(*(**C.GSource)(unsafe.Pointer(&_cret)))))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -79,37 +70,33 @@ func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 //    - source: new #GSource.
 //
 func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object, childSource *glib.Source) *glib.Source {
-	var _args [3]girepository.Argument
+	var _arg3 *C.GCancellable // out
+	var _arg1 C.gpointer      // out
+	var _arg2 *C.GSource      // out
+	var _cret *C.GSource      // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(pollableStream.Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
 	if childSource != nil {
-		*(**C.GSource)(unsafe.Pointer(&_args[1])) = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
+		_arg2 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(childSource)))
 	}
 
-	_info := girepository.MustFind("Gio", "pollable_source_new_full")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GSource)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(pollableStream)
 	runtime.KeepAlive(childSource)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(*(**C.GSource)(unsafe.Pointer(&_cret)))))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -138,26 +125,29 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object,
 //    - gssize: number of bytes read, or -1 on error.
 //
 func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte, blocking bool) (int, error) {
-	var _args [5]girepository.Argument
+	var _arg5 *C.GCancellable // out
+	var _arg1 *C.GInputStream // out
+	var _arg2 *C.void         // out
+	var _arg3 C.gsize
+	var _arg4 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	if blocking {
-		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
+		_arg4 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "pollable_stream_read")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_pollable_stream_read(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)
@@ -166,9 +156,9 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _gssize, _goerr
@@ -196,26 +186,29 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 //    - gssize: number of bytes written, or -1 on error.
 //
 func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (int, error) {
-	var _args [5]girepository.Argument
+	var _arg5 *C.GCancellable  // out
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.void          // out
+	var _arg3 C.gsize
+	var _arg4 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	if blocking {
-		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
+		_arg4 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "pollable_stream_write")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_pollable_stream_write(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, _arg5, &_cerr)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)
@@ -224,9 +217,9 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 	var _gssize int  // out
 	var _goerr error // out
 
-	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _gssize, _goerr
@@ -262,26 +255,29 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 //      the stream.
 //
 func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (uint, error) {
-	var _args [5]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg6 *C.GCancellable  // out
+	var _arg1 *C.GOutputStream // out
+	var _arg2 *C.void          // out
+	var _arg3 C.gsize
+	var _arg4 C.gboolean // out
+	var _arg5 C.gsize    // in
+	var _cerr *C.GError  // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = (C.gsize)(len(buffer))
 	if len(buffer) > 0 {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+		_arg2 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	}
 	if blocking {
-		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
+		_arg4 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "pollable_stream_write_all")
-	_info.InvokeFunction(_args[:], _outs[:])
-
+	C.g_pollable_stream_write_all(_arg1, unsafe.Pointer(_arg2), _arg3, _arg4, &_arg5, _arg6, &_cerr)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(buffer)
@@ -290,9 +286,9 @@ func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer [
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_bytesWritten = uint(_arg5)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _bytesWritten, _goerr

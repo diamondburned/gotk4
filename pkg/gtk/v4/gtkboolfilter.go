@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeBoolFilter returns the GType for the type BoolFilter.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeBoolFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "BoolFilter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_bool_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalBoolFilter)
 	return gtype
 }
@@ -73,22 +71,20 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 //    - boolFilter: new GtkBoolFilter.
 //
 func NewBoolFilter(expression Expressioner) *BoolFilter {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkExpression // out
+	var _cret *C.GtkBoolFilter // in
 
 	if expression != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "BoolFilter")
-	_gret := _info.InvokeClassMethod("new_BoolFilter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bool_filter_new(_arg1)
 	runtime.KeepAlive(expression)
 
 	var _boolFilter *BoolFilter // out
 
-	_boolFilter = wrapBoolFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_boolFilter = wrapBoolFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _boolFilter
 }
@@ -101,21 +97,19 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 //    - expression (optional): GtkExpression.
 //
 func (self *BoolFilter) Expression() Expressioner {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBoolFilter // out
+	var _cret *C.GtkExpression // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "BoolFilter")
-	_gret := _info.InvokeClassMethod("get_expression", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bool_filter_get_expression(_arg0)
 	runtime.KeepAlive(self)
 
 	var _expression Expressioner // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -140,19 +134,17 @@ func (self *BoolFilter) Expression() Expressioner {
 //    - ok: TRUE if the filter inverts.
 //
 func (self *BoolFilter) Invert() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkBoolFilter // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "BoolFilter")
-	_gret := _info.InvokeClassMethod("get_invert", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_bool_filter_get_invert(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -169,16 +161,15 @@ func (self *BoolFilter) Invert() bool {
 //    - expression (optional): GtkExpression.
 //
 func (self *BoolFilter) SetExpression(expression Expressioner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBoolFilter // out
+	var _arg1 *C.GtkExpression // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expression != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		_arg1 = (*C.GtkExpression)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "BoolFilter")
-	_info.InvokeClassMethod("set_expression", _args[:], nil)
-
+	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
 }
@@ -190,16 +181,15 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 //    - invert: TRUE to invert.
 //
 func (self *BoolFilter) SetInvert(invert bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkBoolFilter // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if invert {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "BoolFilter")
-	_info.InvokeClassMethod("set_invert", _args[:], nil)
-
+	C.gtk_bool_filter_set_invert(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(invert)
 }

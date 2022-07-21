@@ -8,15 +8,15 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
+// #cgo pkg-config: gtk4
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeEditableProperties returns the GType for the type EditableProperties.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEditableProperties() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EditableProperties").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_editable_properties_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEditableProperties)
 	return gtype
 }
@@ -36,25 +36,21 @@ func GTypeEditableProperties() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDebugFlags() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DebugFlags").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_debug_flags_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDebugFlags)
 	return gtype
-}
-
-func init() {
-	girepository.Require("Gtk", "4.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func BuilderErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_builder_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -62,13 +58,13 @@ func BuilderErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func ConstraintVflParserErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_constraint_vfl_parser_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -120,13 +116,13 @@ func (e EditableProperties) String() string {
 // The function returns the following values:
 //
 func IconThemeErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_icon_theme_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -134,13 +130,13 @@ func IconThemeErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func RecentManagerErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_recent_manager_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }
@@ -243,13 +239,13 @@ func (d DebugFlags) Has(other DebugFlags) bool {
 // The function returns the following values:
 //
 func CSSParserErrorQuark() glib.Quark {
-	_info := girepository.MustFind("Gtk", "css_parser_error_quark")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
+	var _cret C.GQuark // in
+
+	_cret = C.gtk_css_parser_error_quark()
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(_cret)
 
 	return _quark
 }

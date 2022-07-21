@@ -7,14 +7,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeCoverageLevel returns the GType for the type CoverageLevel.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCoverageLevel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "CoverageLevel").RegisteredGType())
+	gtype := coreglib.Type(C.pango_coverage_level_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCoverageLevel)
 	return gtype
 }
@@ -34,7 +32,7 @@ func GTypeCoverageLevel() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCoverage() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Coverage").RegisteredGType())
+	gtype := coreglib.Type(C.pango_coverage_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCoverage)
 	return gtype
 }
@@ -116,13 +114,13 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 //      with pango_coverage_unref().
 //
 func NewCoverage() *Coverage {
-	_info := girepository.MustFind("Pango", "Coverage")
-	_gret := _info.InvokeClassMethod("new_Coverage", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.PangoCoverage // in
+
+	_cret = C.pango_coverage_new()
 
 	var _coverage *Coverage // out
 
-	_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
 }
@@ -135,21 +133,48 @@ func NewCoverage() *Coverage {
 //      should be freed with pango_coverage_unref().
 //
 func (coverage *Coverage) Copy() *Coverage {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoCoverage // out
+	var _cret *C.PangoCoverage // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
 
-	_info := girepository.MustFind("Pango", "Coverage")
-	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_coverage_copy(_arg0)
 	runtime.KeepAlive(coverage)
 
 	var _ret *Coverage // out
 
-	_ret = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_ret = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _ret
+}
+
+// Get: determine whether a particular index is covered by coverage.
+//
+// The function takes the following parameters:
+//
+//    - index_: index to check.
+//
+// The function returns the following values:
+//
+//    - coverageLevel: coverage level of coverage for character index_.
+//
+func (coverage *Coverage) Get(index_ int32) CoverageLevel {
+	var _arg0 *C.PangoCoverage     // out
+	var _arg1 C.int                // out
+	var _cret C.PangoCoverageLevel // in
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
+	_arg1 = C.int(index_)
+
+	_cret = C.pango_coverage_get(_arg0, _arg1)
+	runtime.KeepAlive(coverage)
+	runtime.KeepAlive(index_)
+
+	var _coverageLevel CoverageLevel // out
+
+	_coverageLevel = CoverageLevel(_cret)
+
+	return _coverageLevel
 }
 
 // Max: set the coverage for each index in coverage to be the max (better) value
@@ -163,16 +188,37 @@ func (coverage *Coverage) Copy() *Coverage {
 //    - other PangoCoverage.
 //
 func (coverage *Coverage) Max(other *Coverage) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoCoverage // out
+	var _arg1 *C.PangoCoverage // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
+	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(coreglib.InternObject(other).Native()))
 
-	_info := girepository.MustFind("Pango", "Coverage")
-	_info.InvokeClassMethod("max", _args[:], nil)
-
+	C.pango_coverage_max(_arg0, _arg1)
 	runtime.KeepAlive(coverage)
 	runtime.KeepAlive(other)
+}
+
+// Set: modify a particular index within coverage.
+//
+// The function takes the following parameters:
+//
+//    - index_: index to modify.
+//    - level: new level for index_.
+//
+func (coverage *Coverage) Set(index_ int32, level CoverageLevel) {
+	var _arg0 *C.PangoCoverage     // out
+	var _arg1 C.int                // out
+	var _arg2 C.PangoCoverageLevel // out
+
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
+	_arg1 = C.int(index_)
+	_arg2 = C.PangoCoverageLevel(level)
+
+	C.pango_coverage_set(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(coverage)
+	runtime.KeepAlive(index_)
+	runtime.KeepAlive(level)
 }
 
 // ToBytes: convert a PangoCoverage structure into a flat binary format.
@@ -184,21 +230,20 @@ func (coverage *Coverage) Max(other *Coverage) {
 //    - bytes: location to store result (must be freed with g_free()).
 //
 func (coverage *Coverage) ToBytes() []byte {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoCoverage // out
+	var _arg1 *C.guchar        // in
+	var _arg2 C.int            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
 
-	_info := girepository.MustFind("Pango", "Coverage")
-	_info.InvokeClassMethod("to_bytes", _args[:], _outs[:])
-
+	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(coverage)
 
 	var _bytes []byte // out
 
-	defer C.free(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_outs[0]))))
-	_bytes = make([]byte, *(*C.int)(unsafe.Pointer(&_outs[1])))
-	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_outs[0])))), *(*C.int)(unsafe.Pointer(&_outs[1]))))
+	defer C.free(unsafe.Pointer(_arg1))
+	_bytes = make([]byte, _arg2)
+	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), _arg2))
 
 	return _bytes
 }
@@ -218,23 +263,22 @@ func (coverage *Coverage) ToBytes() []byte {
 //      was invalid.
 //
 func CoverageFromBytes(bytes []byte) *Coverage {
-	var _args [2]girepository.Argument
+	var _arg1 *C.guchar // out
+	var _arg2 C.int
+	var _cret *C.PangoCoverage // in
 
-	*(*C.int)(unsafe.Pointer(&_args[1])) = (C.int)(len(bytes))
+	_arg2 = (C.int)(len(bytes))
 	if len(bytes) > 0 {
-		*(**C.guchar)(unsafe.Pointer(&_args[0])) = (*C.guchar)(unsafe.Pointer(&bytes[0]))
+		_arg1 = (*C.guchar)(unsafe.Pointer(&bytes[0]))
 	}
 
-	_info := girepository.MustFind("Pango", "from_bytes")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_coverage_from_bytes(_arg1, _arg2)
 	runtime.KeepAlive(bytes)
 
 	var _coverage *Coverage // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
 	return _coverage

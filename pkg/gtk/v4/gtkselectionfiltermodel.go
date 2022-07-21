@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeSelectionFilterModel returns the GType for the type SelectionFilterModel.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSelectionFilterModel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SelectionFilterModel").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_selection_filter_model_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionFilterModel)
 	return gtype
 }
@@ -78,21 +76,19 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 //    - selectionFilterModel: new GtkSelectionFilterModel.
 //
 func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkSelectionModel       // out
+	var _cret *C.GtkSelectionFilterModel // in
 
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SelectionFilterModel")
-	_gret := _info.InvokeClassMethod("new_SelectionFilterModel", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_filter_model_new(_arg1)
 	runtime.KeepAlive(model)
 
 	var _selectionFilterModel *SelectionFilterModel // out
 
-	_selectionFilterModel = wrapSelectionFilterModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_selectionFilterModel = wrapSelectionFilterModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _selectionFilterModel
 }
@@ -104,20 +100,18 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 //    - selectionModel (optional): model that gets filtered.
 //
 func (self *SelectionFilterModel) Model() *SelectionModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionFilterModel // out
+	var _cret *C.GtkSelectionModel       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "SelectionFilterModel")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_filter_model_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _selectionModel *SelectionModel // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _selectionModel
@@ -134,16 +128,15 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 //    - model (optional) to be filtered.
 //
 func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSelectionFilterModel // out
+	var _arg1 *C.GtkSelectionModel       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "SelectionFilterModel")
-	_info.InvokeClassMethod("set_model", _args[:], nil)
-
+	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }

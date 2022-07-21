@@ -6,19 +6,17 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_TableCellIface_get_position(void*, gint*, gint*);
-// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(void*, gint*, gint*, gint*, gint*);
-// extern gint _gotk4_atk1_TableCellIface_get_column_span(void*);
-// extern gint _gotk4_atk1_TableCellIface_get_row_span(void*);
-// extern void* _gotk4_atk1_TableCellIface_get_table(void*);
+// extern AtkObject* _gotk4_atk1_TableCellIface_get_table(AtkTableCell*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_position(AtkTableCell*, gint*, gint*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(AtkTableCell*, gint*, gint*, gint*, gint*);
+// extern gint _gotk4_atk1_TableCellIface_get_column_span(AtkTableCell*);
+// extern gint _gotk4_atk1_TableCellIface_get_row_span(AtkTableCell*);
 import "C"
 
 // GTypeTableCell returns the GType for the type TableCell.
@@ -27,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTableCell() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "TableCell").RegisteredGType())
+	gtype := coreglib.Type(C.atk_table_cell_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTableCell)
 	return gtype
 }
@@ -123,16 +121,16 @@ type TableCeller interface {
 var _ TableCeller = (*TableCell)(nil)
 
 func ifaceInitTableCeller(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "TableCellIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_column_span"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_column_span)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_position"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_position)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_row_column_span"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_row_column_span)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_row_span"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_row_span)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_table"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_table)
+	iface := (*C.AtkTableCellIface)(unsafe.Pointer(gifacePtr))
+	iface.get_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_column_span)
+	iface.get_position = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_position)
+	iface.get_row_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_column_span)
+	iface.get_row_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_span)
+	iface.get_table = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_table)
 }
 
 //export _gotk4_atk1_TableCellIface_get_column_span
-func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -144,7 +142,7 @@ func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TableCellIface_get_position
-func _gotk4_atk1_TableCellIface_get_position(arg0 *C.void, arg1 *C.gint, arg2 *C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableCellIface_get_position(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -160,7 +158,7 @@ func _gotk4_atk1_TableCellIface_get_position(arg0 *C.void, arg1 *C.gint, arg2 *C
 }
 
 //export _gotk4_atk1_TableCellIface_get_row_column_span
-func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.void, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -178,7 +176,7 @@ func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.void, arg1 *C.gint, 
 }
 
 //export _gotk4_atk1_TableCellIface_get_row_span
-func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
@@ -190,13 +188,13 @@ func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TableCellIface_get_table
-func _gotk4_atk1_TableCellIface_get_table(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_TableCellIface_get_table(arg0 *C.AtkTableCell) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	object := iface.Table()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
 
 	return cret
@@ -222,19 +220,17 @@ func marshalTableCell(p uintptr) (interface{}, error) {
 //      the cell does not implement this method.
 //
 func (cell *TableCell) ColumnSpan() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkTableCell // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_info := girepository.MustFind("Atk", "TableCell")
-	_gret := _info.InvokeIfaceMethod("get_column_span", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_table_cell_get_column_span(_arg0)
 	runtime.KeepAlive(cell)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -248,24 +244,23 @@ func (cell *TableCell) ColumnSpan() int32 {
 //    - ok: TRUE if successful; FALSE otherwise.
 //
 func (cell *TableCell) Position() (row, column int32, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.AtkTableCell // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_info := girepository.MustFind("Atk", "TableCell")
-	_gret := _info.InvokeIfaceMethod("get_position", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_table_cell_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(cell)
 
 	var _row int32    // out
 	var _column int32 // out
 	var _ok bool      // out
 
-	_row = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_column = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_row = int32(_arg1)
+	_column = int32(_arg2)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -288,15 +283,16 @@ func (cell *TableCell) Position() (row, column int32, ok bool) {
 //    - ok: TRUE if successful; FALSE otherwise.
 //
 func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int32, ok bool) {
-	var _args [1]girepository.Argument
-	var _outs [4]girepository.Argument
+	var _arg0 *C.AtkTableCell // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_info := girepository.MustFind("Atk", "TableCell")
-	_gret := _info.InvokeIfaceMethod("get_row_column_span", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_table_cell_get_row_column_span(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(cell)
 
 	var _row int32        // out
@@ -305,11 +301,11 @@ func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int32, 
 	var _columnSpan int32 // out
 	var _ok bool          // out
 
-	_row = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_column = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	_rowSpan = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
-	_columnSpan = int32(*(*C.gint)(unsafe.Pointer(&_outs[3])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_row = int32(_arg1)
+	_column = int32(_arg2)
+	_rowSpan = int32(_arg3)
+	_columnSpan = int32(_arg4)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -324,19 +320,17 @@ func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int32, 
 //      cell does not implement this method.
 //
 func (cell *TableCell) RowSpan() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkTableCell // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_info := girepository.MustFind("Atk", "TableCell")
-	_gret := _info.InvokeIfaceMethod("get_row_span", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_table_cell_get_row_span(_arg0)
 	runtime.KeepAlive(cell)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -348,19 +342,17 @@ func (cell *TableCell) RowSpan() int32 {
 //    - object: atk object for the containing table.
 //
 func (cell *TableCell) Table() *ObjectClass {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkTableCell // out
+	var _cret *C.AtkObject    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_info := girepository.MustFind("Atk", "TableCell")
-	_gret := _info.InvokeIfaceMethod("get_table", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_table_cell_get_table(_arg0)
 	runtime.KeepAlive(cell)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }

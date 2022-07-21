@@ -9,13 +9,11 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCoordType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "CoordType").RegisteredGType())
+	gtype := coreglib.Type(C.atk_coord_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCoordType)
 	return gtype
 }
@@ -36,7 +34,7 @@ func GTypeCoordType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeKeyEventType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "KeyEventType").RegisteredGType())
+	gtype := coreglib.Type(C.atk_key_event_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalKeyEventType)
 	return gtype
 }
@@ -47,7 +45,7 @@ func GTypeKeyEventType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeUtil() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Util").RegisteredGType())
+	gtype := coreglib.Type(C.atk_util_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalUtil)
 	return gtype
 }
@@ -123,7 +121,7 @@ func (k KeyEventType) String() string {
 type KeySnoopFunc func(event *KeyEventStruct) (gint int32)
 
 //export _gotk4_atk1_KeySnoopFunc
-func _gotk4_atk1_KeySnoopFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gint) {
+func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret C.gint) {
 	var fn KeySnoopFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -157,13 +155,11 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gint) {
 //    - object: Object.
 //
 func FocusTrackerNotify(object *ObjectClass) {
-	var _args [1]girepository.Argument
+	var _arg1 *C.AtkObject // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	_info := girepository.MustFind("Atk", "focus_tracker_notify")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.atk_focus_tracker_notify(_arg1)
 	runtime.KeepAlive(object)
 }
 
@@ -174,13 +170,13 @@ func FocusTrackerNotify(object *ObjectClass) {
 //    - object: currently focused object for the current application.
 //
 func GetFocusObject() *ObjectClass {
-	_info := girepository.MustFind("Atk", "get_focus_object")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_get_focus_object()
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -192,13 +188,13 @@ func GetFocusObject() *ObjectClass {
 //    - object: root accessible container for the current application.
 //
 func GetRoot() *ObjectClass {
-	_info := girepository.MustFind("Atk", "get_root")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_get_root()
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -212,13 +208,13 @@ func GetRoot() *ObjectClass {
 //      application.
 //
 func GetToolkitName() string {
-	_info := girepository.MustFind("Atk", "get_toolkit_name")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
+	var _cret *C.gchar // in
+
+	_cret = C.atk_get_toolkit_name()
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -232,13 +228,13 @@ func GetToolkitName() string {
 //      application.
 //
 func GetToolkitVersion() string {
-	_info := girepository.MustFind("Atk", "get_toolkit_version")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
+	var _cret *C.gchar // in
+
+	_cret = C.atk_get_toolkit_version()
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -250,13 +246,13 @@ func GetToolkitVersion() string {
 //    - utf8: version string for ATK.
 //
 func GetVersion() string {
-	_info := girepository.MustFind("Atk", "get_version")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
+	var _cret *C.gchar // in
+
+	_cret = C.atk_get_version()
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -273,13 +269,11 @@ func GetVersion() string {
 //    - trackerId: id of the focus tracker to remove.
 //
 func RemoveFocusTracker(trackerId uint32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.guint // out
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(trackerId)
+	_arg1 = C.guint(trackerId)
 
-	_info := girepository.MustFind("Atk", "remove_focus_tracker")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.atk_remove_focus_tracker(_arg1)
 	runtime.KeepAlive(trackerId)
 }
 
@@ -300,13 +294,11 @@ func RemoveFocusTracker(trackerId uint32) {
 //    - listenerId: id of the event listener to remove.
 //
 func RemoveGlobalEventListener(listenerId uint32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.guint // out
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(listenerId)
+	_arg1 = C.guint(listenerId)
 
-	_info := girepository.MustFind("Atk", "remove_global_event_listener")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.atk_remove_global_event_listener(_arg1)
 	runtime.KeepAlive(listenerId)
 }
 
@@ -320,13 +312,11 @@ func RemoveGlobalEventListener(listenerId uint32) {
 //    - listenerId: id of the event listener to remove.
 //
 func RemoveKeyEventListener(listenerId uint32) {
-	var _args [1]girepository.Argument
+	var _arg1 C.guint // out
 
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(listenerId)
+	_arg1 = C.guint(listenerId)
 
-	_info := girepository.MustFind("Atk", "remove_key_event_listener")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.atk_remove_key_event_listener(_arg1)
 	runtime.KeepAlive(listenerId)
 }
 
@@ -374,16 +364,15 @@ type KeyEventStruct struct {
 
 // keyEventStruct is the struct that's finalized.
 type keyEventStruct struct {
-	native unsafe.Pointer
+	native *C.AtkKeyEventStruct
 }
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
 // ATK_KEY_EVENT_RELEASE.
 func (k *KeyEventStruct) Type() int32 {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("type")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native._type
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
@@ -392,29 +381,26 @@ func (k *KeyEventStruct) Type() int32 {
 // the bitmask used by GDK in GdkEventType.state, see
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) State() uint32 {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("state")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native.state
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
+	v = uint32(*valptr)
 	return v
 }
 
 // Keyval: guint representing a keysym value corresponding to those used by GDK
 // and X11: see /usr/X11/include/keysymdef.h.
 func (k *KeyEventStruct) Keyval() uint32 {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keyval")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native.keyval
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
+	v = uint32(*valptr)
 	return v
 }
 
 // Length: length of member #string.
 func (k *KeyEventStruct) Length() int32 {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("length")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native.length
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
@@ -424,20 +410,18 @@ func (k *KeyEventStruct) Length() int32 {
 // printable keys will have the symbolic key name in this string member, for
 // instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
 func (k *KeyEventStruct) String() string {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("string")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native.string
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Keycode: raw hardware code that generated the key event. This field is raraly
 // useful.
 func (k *KeyEventStruct) Keycode() uint16 {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keycode")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native.keycode
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
+	v = uint16(*valptr)
 	return v
 }
 
@@ -446,19 +430,17 @@ func (k *KeyEventStruct) Keycode() uint16 {
 // arbitrary, and only used to compare the dispatch times of events to one
 // another.
 func (k *KeyEventStruct) Timestamp() uint32 {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("timestamp")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	valptr := &k.native.timestamp
 	var v uint32 // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&*valptr)))
+	v = uint32(*valptr)
 	return v
 }
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
 // ATK_KEY_EVENT_RELEASE.
 func (k *KeyEventStruct) SetType(typ int32) {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("type")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(typ)
+	valptr := &k.native._type
+	*valptr = C.gint(typ)
 }
 
 // State: bitmask representing the state of the modifier keys immediately after
@@ -466,32 +448,28 @@ func (k *KeyEventStruct) SetType(typ int32) {
 // the bitmask used by GDK in GdkEventType.state, see
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) SetState(state uint32) {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("state")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
-	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(state)
+	valptr := &k.native.state
+	*valptr = C.guint(state)
 }
 
 // Keyval: guint representing a keysym value corresponding to those used by GDK
 // and X11: see /usr/X11/include/keysymdef.h.
 func (k *KeyEventStruct) SetKeyval(keyval uint32) {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keyval")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
-	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(keyval)
+	valptr := &k.native.keyval
+	*valptr = C.guint(keyval)
 }
 
 // Length: length of member #string.
 func (k *KeyEventStruct) SetLength(length int32) {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("length")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(length)
+	valptr := &k.native.length
+	*valptr = C.gint(length)
 }
 
 // Keycode: raw hardware code that generated the key event. This field is raraly
 // useful.
 func (k *KeyEventStruct) SetKeycode(keycode uint16) {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keycode")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
-	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(keycode)
+	valptr := &k.native.keycode
+	*valptr = C.guint16(keycode)
 }
 
 // Timestamp: timestamp in milliseconds indicating when the event occurred.
@@ -499,7 +477,6 @@ func (k *KeyEventStruct) SetKeycode(keycode uint16) {
 // arbitrary, and only used to compare the dispatch times of events to one
 // another.
 func (k *KeyEventStruct) SetTimestamp(timestamp uint32) {
-	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("timestamp")
-	valptr := (*uintptr)(unsafe.Add(k.native, offset))
-	*(*C.guint32)(unsafe.Pointer(&*valptr)) = C.guint32(timestamp)
+	valptr := &k.native.timestamp
+	*valptr = C.guint32(timestamp)
 }

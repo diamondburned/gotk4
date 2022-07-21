@@ -9,13 +9,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 // extern void _gotk4_gdk3_FrameClock_ConnectAfterPaint(gpointer, guintptr);
 // extern void _gotk4_gdk3_FrameClock_ConnectBeforePaint(gpointer, guintptr);
@@ -32,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFrameClockPhase() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "FrameClockPhase").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_frame_clock_phase_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFrameClockPhase)
 	return gtype
 }
@@ -43,7 +41,7 @@ func GTypeFrameClockPhase() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFrameClock() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "FrameClock").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_frame_clock_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFrameClock)
 	return gtype
 }
@@ -125,6 +123,10 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 	return (f & other) == other
 }
 
+// FrameClockOverrider contains methods that are overridable.
+type FrameClockOverrider interface {
+}
+
 // FrameClock tells the application when to update and repaint a window. This
 // may be synced to the vertical refresh rate of the monitor, for example. Even
 // when the frame clock uses a simple timer rather than a hardware-based
@@ -173,6 +175,14 @@ type FrameClocker interface {
 }
 
 var _ FrameClocker = (*FrameClock)(nil)
+
+func classInitFrameClocker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapFrameClock(obj *coreglib.Object) *FrameClock {
 	return &FrameClock{
@@ -361,26 +371,22 @@ func (frameClock *FrameClock) ConnectUpdate(f func()) coreglib.SignalHandle {
 // function may be called multiple times and frames will be requested until
 // gdk_frame_clock_end_updating() is called the same number of times.
 func (frameClock *FrameClock) BeginUpdating() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkFrameClock // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_info.InvokeClassMethod("begin_updating", _args[:], nil)
-
+	C.gdk_frame_clock_begin_updating(_arg0)
 	runtime.KeepAlive(frameClock)
 }
 
 // EndUpdating stops updates for an animation. See the documentation for
 // gdk_frame_clock_begin_updating().
 func (frameClock *FrameClock) EndUpdating() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkFrameClock // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_info.InvokeClassMethod("end_updating", _args[:], nil)
-
+	C.gdk_frame_clock_end_updating(_arg0)
 	runtime.KeepAlive(frameClock)
 }
 
@@ -393,21 +399,19 @@ func (frameClock *FrameClock) EndUpdating() {
 //      have been processed, returns NULL.
 //
 func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkFrameClock   // out
+	var _cret *C.GdkFrameTimings // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_gret := _info.InvokeClassMethod("get_current_timings", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_frame_clock_get_current_timings(_arg0)
 	runtime.KeepAlive(frameClock)
 
 	var _frameTimings *FrameTimings // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.gdk_frame_timings_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_frame_timings_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -428,19 +432,17 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 //      last frame.
 //
 func (frameClock *FrameClock) FrameCounter() int64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkFrameClock // out
+	var _cret C.gint64         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_gret := _info.InvokeClassMethod("get_frame_counter", _args[:], nil)
-	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_frame_clock_get_frame_counter(_arg0)
 	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
 
-	_gint64 = int64(*(*C.gint64)(unsafe.Pointer(&_cret)))
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -457,19 +459,17 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 //      g_get_monotonic_time().
 //
 func (frameClock *FrameClock) FrameTime() int64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkFrameClock // out
+	var _cret C.gint64         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_gret := _info.InvokeClassMethod("get_frame_time", _args[:], nil)
-	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_frame_clock_get_frame_time(_arg0)
 	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
 
-	_gint64 = int64(*(*C.gint64)(unsafe.Pointer(&_cret)))
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -486,19 +486,17 @@ func (frameClock *FrameClock) FrameTime() int64 {
 //      internal frame history of the FrameClock.
 //
 func (frameClock *FrameClock) HistoryStart() int64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkFrameClock // out
+	var _cret C.gint64         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_gret := _info.InvokeClassMethod("get_history_start", _args[:], nil)
-	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_frame_clock_get_history_start(_arg0)
 	runtime.KeepAlive(frameClock)
 
 	var _gint64 int64 // out
 
-	_gint64 = int64(*(*C.gint64)(unsafe.Pointer(&_cret)))
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -523,23 +521,23 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 //      present.
 //
 func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn, presentationTimeReturn int64) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkFrameClock // out
+	var _arg1 C.gint64         // out
+	var _arg2 C.gint64         // in
+	var _arg3 C.gint64         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(baseTime)
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg1 = C.gint64(baseTime)
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_info.InvokeClassMethod("get_refresh_info", _args[:], _outs[:])
-
+	C.gdk_frame_clock_get_refresh_info(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(baseTime)
 
 	var _refreshIntervalReturn int64  // out
 	var _presentationTimeReturn int64 // out
 
-	_refreshIntervalReturn = int64(*(*C.gint64)(unsafe.Pointer(&_outs[0])))
-	_presentationTimeReturn = int64(*(*C.gint64)(unsafe.Pointer(&_outs[1])))
+	_refreshIntervalReturn = int64(_arg2)
+	_presentationTimeReturn = int64(_arg3)
 
 	return _refreshIntervalReturn, _presentationTimeReturn
 }
@@ -558,23 +556,22 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 //      not available. See gdk_frame_clock_get_history_start().
 //
 func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkFrameClock   // out
+	var _arg1 C.gint64           // out
+	var _cret *C.GdkFrameTimings // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
-	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(frameCounter)
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg1 = C.gint64(frameCounter)
 
-	_info := girepository.MustFind("Gdk", "FrameClock")
-	_gret := _info.InvokeClassMethod("get_timings", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_frame_clock_get_timings(_arg0, _arg1)
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(frameCounter)
 
 	var _frameTimings *FrameTimings // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.gdk_frame_timings_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_frame_timings_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -584,4 +581,29 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	}
 
 	return _frameTimings
+}
+
+// RequestPhase asks the frame clock to run a particular phase. The signal
+// corresponding the requested phase will be emitted the next time the frame
+// clock processes. Multiple calls to gdk_frame_clock_request_phase() will be
+// combined together and only one frame processed. If you are displaying
+// animated content and want to continually request the
+// GDK_FRAME_CLOCK_PHASE_UPDATE phase for a period of time, you should use
+// gdk_frame_clock_begin_updating() instead, since this allows GTK+ to adjust
+// system parameters to get maximally smooth animations.
+//
+// The function takes the following parameters:
+//
+//    - phase that is requested.
+//
+func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
+	var _arg0 *C.GdkFrameClock     // out
+	var _arg1 C.GdkFrameClockPhase // out
+
+	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
+	_arg1 = C.GdkFrameClockPhase(phase)
+
+	C.gdk_frame_clock_request_phase(_arg0, _arg1)
+	runtime.KeepAlive(frameClock)
+	runtime.KeepAlive(phase)
 }

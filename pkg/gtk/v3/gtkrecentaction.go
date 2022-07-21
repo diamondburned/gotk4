@@ -6,14 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeRecentAction returns the GType for the type RecentAction.
@@ -22,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRecentAction() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentAction").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_recent_action_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRecentAction)
 	return gtype
 }
@@ -96,27 +96,28 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 //    - recentAction: newly created RecentAction.
 //
 func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
-	var _args [4]girepository.Argument
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.gchar     // out
+	var _arg3 *C.gchar     // out
+	var _arg4 *C.gchar     // out
+	var _cret *C.GtkAction // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if tooltip != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
 	if stockId != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg4))
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentAction")
-	_gret := _info.InvokeClassMethod("new_RecentAction", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -124,7 +125,7 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 
 	var _recentAction *RecentAction // out
 
-	_recentAction = wrapRecentAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentAction = wrapRecentAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }
@@ -149,30 +150,32 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 //    - recentAction: newly created RecentAction.
 //
 func NewRecentActionForManager(name, label, tooltip, stockId string, manager *RecentManager) *RecentAction {
-	var _args [5]girepository.Argument
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.gchar            // out
+	var _arg3 *C.gchar            // out
+	var _arg4 *C.gchar            // out
+	var _arg5 *C.GtkRecentManager // out
+	var _cret *C.GtkAction        // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if label != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 	if tooltip != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg3))
 	}
 	if stockId != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg4))
 	}
 	if manager != nil {
-		*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+		_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentAction")
-	_gret := _info.InvokeClassMethod("new_RecentAction_for_manager", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(tooltip)
@@ -181,7 +184,7 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 
 	var _recentAction *RecentAction // out
 
-	_recentAction = wrapRecentAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_recentAction = wrapRecentAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _recentAction
 }
@@ -196,19 +199,17 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 //    - ok: TRUE if numbers should be shown.
 //
 func (action *RecentAction) ShowNumbers() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkRecentAction // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_info := girepository.MustFind("Gtk", "RecentAction")
-	_gret := _info.InvokeClassMethod("get_show_numbers", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 	runtime.KeepAlive(action)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -227,16 +228,15 @@ func (action *RecentAction) ShowNumbers() bool {
 //    - showNumbers: TRUE if the shown items should be numbered.
 //
 func (action *RecentAction) SetShowNumbers(showNumbers bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkRecentAction // out
+	var _arg1 C.gboolean         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if showNumbers {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "RecentAction")
-	_info.InvokeClassMethod("set_show_numbers", _args[:], nil)
-
+	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(showNumbers)
 }

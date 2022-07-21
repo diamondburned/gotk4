@@ -6,19 +6,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_GestureClick_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectStopped(gpointer, guintptr);
-// extern void _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(gpointer, gdouble, gdouble, guint, void*, guintptr);
+// extern void _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(gpointer, gdouble, gdouble, guint, GdkEventSequence*, guintptr);
 import "C"
 
 // GTypeGestureClick returns the GType for the type GestureClick.
@@ -27,9 +25,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGestureClick() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureClick").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_gesture_click_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGestureClick)
 	return gtype
+}
+
+// GestureClickOverrider contains methods that are overridable.
+type GestureClickOverrider interface {
 }
 
 // GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.
@@ -46,6 +48,14 @@ type GestureClick struct {
 var (
 	_ Gesturer = (*GestureClick)(nil)
 )
+
+func classInitGestureClicker(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGestureClick(obj *coreglib.Object) *GestureClick {
 	return &GestureClick{
@@ -148,7 +158,7 @@ func (v *GestureClick) ConnectStopped(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectUnpairedRelease
-func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guint, arg4 *C.void, arg5 C.guintptr) {
+func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guint, arg4 *C.GdkEventSequence, arg5 C.guintptr) {
 	var f func(x, y float64, button uint32, sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
@@ -191,13 +201,13 @@ func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint32
 //    - gestureClick: newly created GtkGestureClick.
 //
 func NewGestureClick() *GestureClick {
-	_info := girepository.MustFind("Gtk", "GestureClick")
-	_gret := _info.InvokeClassMethod("new_GestureClick", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkGesture // in
+
+	_cret = C.gtk_gesture_click_new()
 
 	var _gestureClick *GestureClick // out
 
-	_gestureClick = wrapGestureClick(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gestureClick = wrapGestureClick(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _gestureClick
 }

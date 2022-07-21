@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeWindowControls returns the GType for the type WindowControls.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWindowControls() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "WindowControls").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_window_controls_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWindowControls)
 	return gtype
 }
@@ -120,6 +118,32 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 	return wrapWindowControls(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewWindowControls creates a new GtkWindowControls.
+//
+// The function takes the following parameters:
+//
+//    - side: side.
+//
+// The function returns the following values:
+//
+//    - windowControls: new GtkWindowControls.
+//
+func NewWindowControls(side PackType) *WindowControls {
+	var _arg1 C.GtkPackType // out
+	var _cret *C.GtkWidget  // in
+
+	_arg1 = C.GtkPackType(side)
+
+	_cret = C.gtk_window_controls_new(_arg1)
+	runtime.KeepAlive(side)
+
+	var _windowControls *WindowControls // out
+
+	_windowControls = wrapWindowControls(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _windowControls
+}
+
 // DecorationLayout gets the decoration layout of this GtkWindowControls.
 //
 // The function returns the following values:
@@ -127,20 +151,18 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 //    - utf8 (optional): decoration layout or NULL if it is unset.
 //
 func (self *WindowControls) DecorationLayout() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWindowControls // out
+	var _cret *C.char              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "WindowControls")
-	_gret := _info.InvokeClassMethod("get_decoration_layout", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -153,23 +175,43 @@ func (self *WindowControls) DecorationLayout() string {
 //    - ok: TRUE if the widget has window buttons, otherwise FALSE.
 //
 func (self *WindowControls) Empty() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWindowControls // out
+	var _cret C.gboolean           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "WindowControls")
-	_gret := _info.InvokeClassMethod("get_empty", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_window_controls_get_empty(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Side gets the side to which this GtkWindowControls instance belongs.
+//
+// The function returns the following values:
+//
+//    - packType: side.
+//
+func (self *WindowControls) Side() PackType {
+	var _arg0 *C.GtkWindowControls // out
+	var _cret C.GtkPackType        // in
+
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_window_controls_get_side(_arg0)
+	runtime.KeepAlive(self)
+
+	var _packType PackType // out
+
+	_packType = PackType(_cret)
+
+	return _packType
 }
 
 // SetDecorationLayout sets the decoration layout for the title buttons.
@@ -192,17 +234,37 @@ func (self *WindowControls) Empty() bool {
 //    - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (self *WindowControls) SetDecorationLayout(layout string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWindowControls // out
+	var _arg1 *C.char              // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if layout != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(layout)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(layout)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "WindowControls")
-	_info.InvokeClassMethod("set_decoration_layout", _args[:], nil)
-
+	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(layout)
+}
+
+// SetSide determines which part of decoration layout the GtkWindowControls
+// uses.
+//
+// See gtk.WindowControls:decoration-layout.
+//
+// The function takes the following parameters:
+//
+//    - side: side.
+//
+func (self *WindowControls) SetSide(side PackType) {
+	var _arg0 *C.GtkWindowControls // out
+	var _arg1 C.GtkPackType        // out
+
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkPackType(side)
+
+	C.gtk_window_controls_set_side(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(side)
 }

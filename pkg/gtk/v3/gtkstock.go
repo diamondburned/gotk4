@@ -8,13 +8,13 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
@@ -618,6 +618,63 @@ func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
 	return cret
 }
 
+// StockAdd registers each of the stock items in items. If an item already
+// exists with the same stock ID as one of the items, the old item gets
+// replaced. The stock items are copied, so GTK+ does not hold any pointer into
+// items and items can be freed. Use gtk_stock_add_static() if items is
+// persistent and GTK+ need not copy the array.
+//
+// Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - items or array of items.
+//
+func StockAdd(items []StockItem) {
+	var _arg1 *C.GtkStockItem // out
+	var _arg2 C.guint
+
+	_arg2 = (C.guint)(len(items))
+	_arg1 = (*C.GtkStockItem)(C.calloc(C.size_t(len(items)), C.size_t(C.sizeof_GtkStockItem)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
+		for i := range items {
+			out[i] = *(*C.GtkStockItem)(gextras.StructNative(unsafe.Pointer((&items[i]))))
+		}
+	}
+
+	C.gtk_stock_add(_arg1, _arg2)
+	runtime.KeepAlive(items)
+}
+
+// StockAddStatic: same as gtk_stock_add(), but doesn’t copy items, so items
+// must persist until application exit.
+//
+// Deprecated: since version 3.10.
+//
+// The function takes the following parameters:
+//
+//    - items or array of StockItem.
+//
+func StockAddStatic(items []StockItem) {
+	var _arg1 *C.GtkStockItem // out
+	var _arg2 C.guint
+
+	_arg2 = (C.guint)(len(items))
+	_arg1 = (*C.GtkStockItem)(C.calloc(C.size_t(len(items)), C.size_t(C.sizeof_GtkStockItem)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkStockItem)(_arg1), len(items))
+		for i := range items {
+			out[i] = *(*C.GtkStockItem)(gextras.StructNative(unsafe.Pointer((&items[i]))))
+		}
+	}
+
+	C.gtk_stock_add_static(_arg1, _arg2)
+	runtime.KeepAlive(items)
+}
+
 // StockListIDs retrieves a list of all known stock IDs added to a IconFactory
 // or registered with gtk_stock_add(). The list must be freed with
 // g_slist_free(), and each string in the list must be freed with g_free().
@@ -629,18 +686,18 @@ func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
 //    - sList: list of known stock IDs.
 //
 func StockListIDs() []string {
-	_info := girepository.MustFind("Gtk", "stock_list_ids")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
+	var _cret *C.GSList // in
+
+	_cret = C.gtk_stock_list_ids()
 
 	var _sList []string // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src))))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		defer C.free(unsafe.Pointer(src))
 		_sList = append(_sList, dst)
 	})
 
@@ -662,23 +719,21 @@ func StockListIDs() []string {
 //    - ok: TRUE if item was initialized.
 //
 func StockLookup(stockId string) (*StockItem, bool) {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg1 *C.gchar       // out
+	var _arg2 C.GtkStockItem // in
+	var _cret C.gboolean     // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "stock_lookup")
-	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_stock_lookup(_arg1, &_arg2)
 	runtime.KeepAlive(stockId)
 
 	var _item *StockItem // out
 	var _ok bool         // out
 
-	_item = (*StockItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_item = (*StockItem)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -724,17 +779,18 @@ func StockLookup(stockId string) (*StockItem, bool) {
 //    - fn: TranslateFunc.
 //
 func StockSetTranslateFunc(domain string, fn TranslateFunc) {
-	var _args [4]girepository.Argument
+	var _arg1 *C.gchar           // out
+	var _arg2 C.GtkTranslateFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
-	_args[2] = C.gpointer(gbox.Assign(fn))
-	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_info := girepository.MustFind("Gtk", "stock_set_translate_func")
-	_info.InvokeFunction(_args[:], nil)
-
+	C.gtk_stock_set_translate_func(_arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(fn)
 }
@@ -748,5 +804,51 @@ type StockItem struct {
 
 // stockItem is the struct that's finalized.
 type stockItem struct {
-	native unsafe.Pointer
+	native *C.GtkStockItem
+}
+
+// StockID: identifier.
+func (s *StockItem) StockID() string {
+	valptr := &s.native.stock_id
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Label: user visible label.
+func (s *StockItem) Label() string {
+	valptr := &s.native.label
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Modifier type for keyboard accelerator.
+func (s *StockItem) Modifier() gdk.ModifierType {
+	valptr := &s.native.modifier
+	var v gdk.ModifierType // out
+	v = gdk.ModifierType(*valptr)
+	return v
+}
+
+// Keyval: keyboard accelerator.
+func (s *StockItem) Keyval() uint32 {
+	valptr := &s.native.keyval
+	var v uint32 // out
+	v = uint32(*valptr)
+	return v
+}
+
+// TranslationDomain: translation domain of the menu or toolbar item.
+func (s *StockItem) TranslationDomain() string {
+	valptr := &s.native.translation_domain
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// Keyval: keyboard accelerator.
+func (s *StockItem) SetKeyval(keyval uint32) {
+	valptr := &s.native.keyval
+	*valptr = C.guint(keyval)
 }

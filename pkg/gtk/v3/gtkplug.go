@@ -8,16 +8,16 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_PlugClass_embedded(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_PlugClass_embedded(GtkPlug*);
 // extern void _gotk4_gtk3_Plug_ConnectEmbedded(gpointer, guintptr);
 import "C"
 
@@ -27,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePlug() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Plug").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_plug_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPlug)
 	return gtype
 }
@@ -69,16 +69,15 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "PlugClass")
+	pclass := (*C.GtkPlugClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Embedded() }); ok {
-		o := pclass.StructFieldOffset("embedded")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PlugClass_embedded)
+		pclass.embedded = (*[0]byte)(C._gotk4_gtk3_PlugClass_embedded)
 	}
 }
 
 //export _gotk4_gtk3_PlugClass_embedded
-func _gotk4_gtk3_PlugClass_embedded(arg0 *C.void) {
+func _gotk4_gtk3_PlugClass_embedded(arg0 *C.GtkPlug) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embedded() })
 
@@ -140,19 +139,17 @@ func (plug *Plug) ConnectEmbedded(f func()) coreglib.SignalHandle {
 //    - ok: TRUE if the plug is embedded in a socket.
 //
 func (plug *Plug) Embedded() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPlug // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_info := girepository.MustFind("Gtk", "Plug")
-	_gret := _info.InvokeClassMethod("get_embedded", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_plug_get_embedded(_arg0)
 	runtime.KeepAlive(plug)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -166,21 +163,19 @@ func (plug *Plug) Embedded() bool {
 //    - window (optional) of the socket, or NULL.
 //
 func (plug *Plug) SocketWindow() gdk.Windower {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPlug   // out
+	var _cret *C.GdkWindow // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_info := girepository.MustFind("Gtk", "Plug")
-	_gret := _info.InvokeClassMethod("get_socket_window", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_plug_get_socket_window(_arg0)
 	runtime.KeepAlive(plug)
 
 	var _window gdk.Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

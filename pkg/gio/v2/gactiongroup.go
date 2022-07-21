@@ -7,29 +7,27 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(void*, gchar*);
-// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(void*, gchar*);
-// extern const GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(void*, gchar*);
-// extern const GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(void*, gchar*);
-// extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(void*, gchar*);
-// extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(void*, gchar*);
-// extern gboolean _gotk4_gio2_ActionGroupInterface_query_action(void*, gchar*, gboolean*, const GVariantType**, const GVariantType**, GVariant**, GVariant**);
-// extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(void*);
-// extern void _gotk4_gio2_ActionGroupInterface_action_added(void*, gchar*);
-// extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(void*, gchar*, gboolean);
-// extern void _gotk4_gio2_ActionGroupInterface_action_removed(void*, gchar*);
-// extern void _gotk4_gio2_ActionGroupInterface_action_state_changed(void*, gchar*, GVariant*);
-// extern void _gotk4_gio2_ActionGroupInterface_activate_action(void*, gchar*, GVariant*);
-// extern void _gotk4_gio2_ActionGroupInterface_change_action_state(void*, gchar*, GVariant*);
+// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(GActionGroup*, gchar*);
+// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(GActionGroup*, gchar*);
+// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(GActionGroup*, gchar*);
+// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(GActionGroup*, gchar*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(GActionGroup*, gchar*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(GActionGroup*, gchar*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_query_action(GActionGroup*, gchar*, gboolean*, GVariantType**, GVariantType**, GVariant**, GVariant**);
+// extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(GActionGroup*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_added(GActionGroup*, gchar*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(GActionGroup*, gchar*, gboolean);
+// extern void _gotk4_gio2_ActionGroupInterface_action_removed(GActionGroup*, gchar*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_state_changed(GActionGroup*, gchar*, GVariant*);
+// extern void _gotk4_gio2_ActionGroupInterface_activate_action(GActionGroup*, gchar*, GVariant*);
+// extern void _gotk4_gio2_ActionGroupInterface_change_action_state(GActionGroup*, gchar*, GVariant*);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionAdded(gpointer, gchar*, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(gpointer, gchar*, gboolean, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionRemoved(gpointer, gchar*, guintptr);
@@ -42,7 +40,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeActionGroup() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ActionGroup").RegisteredGType())
+	gtype := coreglib.Type(C.g_action_group_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalActionGroup)
 	return gtype
 }
@@ -431,25 +429,25 @@ type ActionGrouper interface {
 var _ ActionGrouper = (*ActionGroup)(nil)
 
 func ifaceInitActionGrouper(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gio", "ActionGroupInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("action_added"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_action_added)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("action_enabled_changed"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_action_enabled_changed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("action_removed"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_action_removed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("action_state_changed"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_action_state_changed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("activate_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_activate_action)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("change_action_state"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_change_action_state)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_enabled"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_get_action_enabled)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_parameter_type"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_get_action_parameter_type)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_state"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_get_action_state)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_state_hint"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_get_action_state_hint)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_state_type"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_get_action_state_type)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("has_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_has_action)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("list_actions"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_list_actions)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("query_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionGroupInterface_query_action)
+	iface := (*C.GActionGroupInterface)(unsafe.Pointer(gifacePtr))
+	iface.action_added = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_added)
+	iface.action_enabled_changed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_enabled_changed)
+	iface.action_removed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_removed)
+	iface.action_state_changed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_state_changed)
+	iface.activate_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_activate_action)
+	iface.change_action_state = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_change_action_state)
+	iface.get_action_enabled = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_enabled)
+	iface.get_action_parameter_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_parameter_type)
+	iface.get_action_state = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state)
+	iface.get_action_state_hint = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_hint)
+	iface.get_action_state_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_type)
+	iface.has_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_has_action)
+	iface.list_actions = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_list_actions)
+	iface.query_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_query_action)
 }
 
 //export _gotk4_gio2_ActionGroupInterface_action_added
-func _gotk4_gio2_ActionGroupInterface_action_added(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_gio2_ActionGroupInterface_action_added(arg0 *C.GActionGroup, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -461,7 +459,7 @@ func _gotk4_gio2_ActionGroupInterface_action_added(arg0 *C.void, arg1 *C.gchar) 
 }
 
 //export _gotk4_gio2_ActionGroupInterface_action_enabled_changed
-func _gotk4_gio2_ActionGroupInterface_action_enabled_changed(arg0 *C.void, arg1 *C.gchar, arg2 C.gboolean) {
+func _gotk4_gio2_ActionGroupInterface_action_enabled_changed(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -477,7 +475,7 @@ func _gotk4_gio2_ActionGroupInterface_action_enabled_changed(arg0 *C.void, arg1 
 }
 
 //export _gotk4_gio2_ActionGroupInterface_action_removed
-func _gotk4_gio2_ActionGroupInterface_action_removed(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_gio2_ActionGroupInterface_action_removed(arg0 *C.GActionGroup, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -489,7 +487,7 @@ func _gotk4_gio2_ActionGroupInterface_action_removed(arg0 *C.void, arg1 *C.gchar
 }
 
 //export _gotk4_gio2_ActionGroupInterface_action_state_changed
-func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.void, arg1 *C.gchar, arg2 *C.GVariant) {
+func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -510,7 +508,7 @@ func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.void, arg1 *C
 }
 
 //export _gotk4_gio2_ActionGroupInterface_activate_action
-func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.void, arg1 *C.gchar, arg2 *C.GVariant) {
+func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -533,7 +531,7 @@ func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.void, arg1 *C.gcha
 }
 
 //export _gotk4_gio2_ActionGroupInterface_change_action_state
-func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.void, arg1 *C.gchar, arg2 *C.GVariant) {
+func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -554,7 +552,7 @@ func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.void, arg1 *C.
 }
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_enabled
-func _gotk4_gio2_ActionGroupInterface_get_action_enabled(arg0 *C.void, arg1 *C.gchar) (cret C.gboolean) {
+func _gotk4_gio2_ActionGroupInterface_get_action_enabled(arg0 *C.GActionGroup, arg1 *C.gchar) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -572,7 +570,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_enabled(arg0 *C.void, arg1 *C.g
 }
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_parameter_type
-func _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(arg0 *C.void, arg1 *C.gchar) (cret *C.GVariantType) {
+func _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariantType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -590,7 +588,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(arg0 *C.void, ar
 }
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_state
-func _gotk4_gio2_ActionGroupInterface_get_action_state(arg0 *C.void, arg1 *C.gchar) (cret *C.GVariant) {
+func _gotk4_gio2_ActionGroupInterface_get_action_state(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -608,7 +606,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_state(arg0 *C.void, arg1 *C.gch
 }
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_state_hint
-func _gotk4_gio2_ActionGroupInterface_get_action_state_hint(arg0 *C.void, arg1 *C.gchar) (cret *C.GVariant) {
+func _gotk4_gio2_ActionGroupInterface_get_action_state_hint(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -626,7 +624,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_state_hint(arg0 *C.void, arg1 *
 }
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_state_type
-func _gotk4_gio2_ActionGroupInterface_get_action_state_type(arg0 *C.void, arg1 *C.gchar) (cret *C.GVariantType) {
+func _gotk4_gio2_ActionGroupInterface_get_action_state_type(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariantType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -644,7 +642,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_state_type(arg0 *C.void, arg1 *
 }
 
 //export _gotk4_gio2_ActionGroupInterface_has_action
-func _gotk4_gio2_ActionGroupInterface_has_action(arg0 *C.void, arg1 *C.gchar) (cret C.gboolean) {
+func _gotk4_gio2_ActionGroupInterface_has_action(arg0 *C.GActionGroup, arg1 *C.gchar) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -662,7 +660,7 @@ func _gotk4_gio2_ActionGroupInterface_has_action(arg0 *C.void, arg1 *C.gchar) (c
 }
 
 //export _gotk4_gio2_ActionGroupInterface_list_actions
-func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.void) (cret **C.gchar) {
+func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.GActionGroup) (cret **C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -684,7 +682,7 @@ func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.void) (cret **C.gchar
 }
 
 //export _gotk4_gio2_ActionGroupInterface_query_action
-func _gotk4_gio2_ActionGroupInterface_query_action(arg0 *C.void, arg1 *C.gchar, arg2 *C.gboolean, arg3 **C.GVariantType, arg4 **C.GVariantType, arg5 **C.GVariant, arg6 **C.GVariant) (cret C.gboolean) {
+func _gotk4_gio2_ActionGroupInterface_query_action(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.gboolean, arg3 **C.GVariantType, arg4 **C.GVariantType, arg5 **C.GVariant, arg6 **C.GVariant) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
@@ -863,15 +861,14 @@ func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName stri
 //    - actionName: name of an action in the group.
 //
 func (actionGroup *ActionGroup) ActionAdded(actionName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_info.InvokeIfaceMethod("action_added", _args[:], nil)
-
+	C.g_action_group_action_added(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 }
@@ -887,18 +884,18 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 //    - enabled: whether or not the action is now enabled.
 //
 func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if enabled {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_info.InvokeIfaceMethod("action_enabled_changed", _args[:], nil)
-
+	C.g_action_group_action_enabled_changed(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(enabled)
@@ -913,15 +910,14 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 //    - actionName: name of an action in the group.
 //
 func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_info.InvokeIfaceMethod("action_removed", _args[:], nil)
-
+	C.g_action_group_action_removed(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 }
@@ -937,16 +933,16 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 //    - state: new state of the named action.
 //
 func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariant     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_info.InvokeIfaceMethod("action_state_changed", _args[:], nil)
-
+	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(state)
@@ -988,18 +984,18 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 //    - parameter (optional) parameters to the activation.
 //
 func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariant     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if parameter != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_info.InvokeIfaceMethod("activate_action", _args[:], nil)
-
+	C.g_action_group_activate_action(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(parameter)
@@ -1023,16 +1019,16 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 //    - value: new state.
 //
 func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariant     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_info.InvokeIfaceMethod("change_action_state", _args[:], nil)
-
+	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(value)
@@ -1053,22 +1049,21 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 //    - ok: whether or not the action is currently enabled.
 //
 func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("get_action_enabled", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1098,23 +1093,22 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 //    - variantType (optional): parameter type.
 //
 func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.VariantType {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _cret *C.GVariantType // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("get_action_parameter_type", _args[:], nil)
-	_cret := *(**C.GVariantType)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_get_action_parameter_type(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _variantType *glib.VariantType // out
 
-	if *(**C.GVariantType)(unsafe.Pointer(&_cret)) != nil {
-		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariantType)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _variantType
@@ -1139,23 +1133,22 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 //    - variant (optional): current state of the action.
 //
 func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _cret *C.GVariant     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("get_action_state", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_get_action_state(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1194,23 +1187,22 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 //    - variant (optional): state range hint.
 //
 func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _cret *C.GVariant     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("get_action_state_hint", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_get_action_state_hint(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1247,23 +1239,22 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 //    - variantType (optional): state type, if the action is stateful.
 //
 func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.VariantType {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _cret *C.GVariantType // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("get_action_state_type", _args[:], nil)
-	_cret := *(**C.GVariantType)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_get_action_state_type(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _variantType *glib.VariantType // out
 
-	if *(**C.GVariantType)(unsafe.Pointer(&_cret)) != nil {
-		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariantType)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _variantType
@@ -1280,22 +1271,21 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 //    - ok: whether the named action exists.
 //
 func (actionGroup *ActionGroup) HasAction(actionName string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("has_action", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_has_action(_arg0, _arg1)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1312,31 +1302,29 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 //    - utf8s: NULL-terminated array of the names of the actions in the group.
 //
 func (actionGroup *ActionGroup) ListActions() []string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _cret **C.gchar       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("list_actions", _args[:], nil)
-	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_list_actions(_arg0)
 	runtime.KeepAlive(actionGroup)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
-		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1384,17 +1372,20 @@ func (actionGroup *ActionGroup) ListActions() []string {
 //    - ok: TRUE if the action exists, else FALSE.
 //
 func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType, stateType *glib.VariantType, stateHint, state *glib.Variant, ok bool) {
-	var _args [2]girepository.Argument
-	var _outs [5]girepository.Argument
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gboolean      // in
+	var _arg3 *C.GVariantType // in
+	var _arg4 *C.GVariantType // in
+	var _arg5 *C.GVariant     // in
+	var _arg6 *C.GVariant     // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "ActionGroup")
-	_gret := _info.InvokeIfaceMethod("query_action", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 
@@ -1405,37 +1396,29 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	var _state *glib.Variant             // out
 	var _ok bool                         // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+	if _arg2 != 0 {
 		_enabled = true
 	}
-	if *(**C.GVariantType)(unsafe.Pointer(&_outs[1])) != nil {
-		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariantType)(unsafe.Pointer(&_outs[1])))))
+	if _arg3 != nil {
+		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_parameterType)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("GLib", "VariantType").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
 			},
 		)
 	}
-	if *(**C.GVariantType)(unsafe.Pointer(&_outs[2])) != nil {
-		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariantType)(unsafe.Pointer(&_outs[2])))))
+	if _arg4 != nil {
+		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_stateType)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("GLib", "VariantType").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
 			},
 		)
 	}
-	if *(**C.GVariant)(unsafe.Pointer(&_outs[3])) != nil {
-		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_outs[3])))))
+	if _arg5 != nil {
+		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_stateHint)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1443,8 +1426,8 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			},
 		)
 	}
-	if *(**C.GVariant)(unsafe.Pointer(&_outs[4])) != nil {
-		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_outs[4])))))
+	if _arg6 != nil {
+		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_arg6)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_state)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1452,7 +1435,7 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			},
 		)
 	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

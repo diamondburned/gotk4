@@ -7,14 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 import "C"
 
@@ -24,9 +22,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeX11Monitor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11Monitor").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_x11_monitor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalX11Monitor)
 	return gtype
+}
+
+// X11MonitorOverrider contains methods that are overridable.
+type X11MonitorOverrider interface {
 }
 
 type X11Monitor struct {
@@ -37,6 +39,14 @@ type X11Monitor struct {
 var (
 	_ coreglib.Objector = (*X11Monitor)(nil)
 )
+
+func classInitX11Monitorrer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Monitor(obj *coreglib.Object) *X11Monitor {
 	return &X11Monitor{
@@ -59,19 +69,17 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 //    - workarea to be filled with the monitor workarea.
 //
 func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GdkMonitor  // out
+	var _arg1 C.GdkRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Monitor")
-	_info.InvokeClassMethod("get_workarea", _args[:], _outs[:])
-
+	C.gdk_x11_monitor_get_workarea(_arg0, &_arg1)
 	runtime.KeepAlive(monitor)
 
 	var _workarea *gdk.Rectangle // out
 
-	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _workarea
 }

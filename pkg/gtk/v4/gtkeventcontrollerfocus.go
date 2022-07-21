@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectEnter(gpointer, guintptr);
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectLeave(gpointer, guintptr);
 import "C"
@@ -24,9 +22,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventControllerFocus() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerFocus").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_event_controller_focus_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerFocus)
 	return gtype
+}
+
+// EventControllerFocusOverrider contains methods that are overridable.
+type EventControllerFocusOverrider interface {
 }
 
 // EventControllerFocus: GtkEventControllerFocus is an event controller to keep
@@ -45,6 +47,14 @@ type EventControllerFocus struct {
 var (
 	_ EventControllerer = (*EventControllerFocus)(nil)
 )
+
+func classInitEventControllerFocusser(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEventControllerFocus(obj *coreglib.Object) *EventControllerFocus {
 	return &EventControllerFocus{
@@ -121,13 +131,13 @@ func (self *EventControllerFocus) ConnectLeave(f func()) coreglib.SignalHandle {
 //    - eventControllerFocus: new GtkEventControllerFocus.
 //
 func NewEventControllerFocus() *EventControllerFocus {
-	_info := girepository.MustFind("Gtk", "EventControllerFocus")
-	_gret := _info.InvokeClassMethod("new_EventControllerFocus", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkEventController // in
+
+	_cret = C.gtk_event_controller_focus_new()
 
 	var _eventControllerFocus *EventControllerFocus // out
 
-	_eventControllerFocus = wrapEventControllerFocus(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_eventControllerFocus = wrapEventControllerFocus(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerFocus
 }
@@ -139,19 +149,17 @@ func NewEventControllerFocus() *EventControllerFocus {
 //    - ok: TRUE if focus is within self or one of its children.
 //
 func (self *EventControllerFocus) ContainsFocus() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEventControllerFocus // out
+	var _cret C.gboolean                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventControllerFocus")
-	_gret := _info.InvokeClassMethod("contains_focus", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -165,19 +173,17 @@ func (self *EventControllerFocus) ContainsFocus() bool {
 //    - ok: TRUE if focus is within self, but not one of its children.
 //
 func (self *EventControllerFocus) IsFocus() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEventControllerFocus // out
+	var _cret C.gboolean                 // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventControllerFocus")
-	_gret := _info.InvokeClassMethod("is_focus", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

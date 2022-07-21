@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeAppChooser returns the GType for the type AppChooser.
@@ -24,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAppChooser() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AppChooser").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_app_chooser_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAppChooser)
 	return gtype
 }
@@ -101,21 +101,19 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //      none is selected. Free with g_object_unref().
 //
 func (self *AppChooser) AppInfo() *gio.AppInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.GAppInfo      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "AppChooser")
-	_gret := _info.InvokeIfaceMethod("get_app_info", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_app_chooser_get_app_info(_arg0)
 	runtime.KeepAlive(self)
 
 	var _appInfo *gio.AppInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_appInfo = &gio.AppInfo{
 				Object: obj,
 			}
@@ -133,32 +131,28 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 //    - utf8: content type of self. Free with g_free().
 //
 func (self *AppChooser) ContentType() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "AppChooser")
-	_gret := _info.InvokeIfaceMethod("get_content_type", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }
 
 // Refresh reloads the list of applications.
 func (self *AppChooser) Refresh() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAppChooser // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "AppChooser")
-	_info.InvokeIfaceMethod("refresh", _args[:], nil)
-
+	C.gtk_app_chooser_refresh(_arg0)
 	runtime.KeepAlive(self)
 }

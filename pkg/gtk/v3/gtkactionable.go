@@ -8,19 +8,19 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern GVariant* _gotk4_gtk3_ActionableInterface_get_action_target_value(void*);
-// extern gchar* _gotk4_gtk3_ActionableInterface_get_action_name(void*);
-// extern void _gotk4_gtk3_ActionableInterface_set_action_name(void*, gchar*);
-// extern void _gotk4_gtk3_ActionableInterface_set_action_target_value(void*, GVariant*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern GVariant* _gotk4_gtk3_ActionableInterface_get_action_target_value(GtkActionable*);
+// extern gchar* _gotk4_gtk3_ActionableInterface_get_action_name(GtkActionable*);
+// extern void _gotk4_gtk3_ActionableInterface_set_action_name(GtkActionable*, gchar*);
+// extern void _gotk4_gtk3_ActionableInterface_set_action_target_value(GtkActionable*, GVariant*);
 import "C"
 
 // GTypeActionable returns the GType for the type Actionable.
@@ -29,7 +29,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeActionable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Actionable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_actionable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalActionable)
 	return gtype
 }
@@ -141,15 +141,15 @@ type Actionabler interface {
 var _ Actionabler = (*Actionable)(nil)
 
 func ifaceInitActionabler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gtk", "ActionableInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_name"))) = unsafe.Pointer(C._gotk4_gtk3_ActionableInterface_get_action_name)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_action_target_value"))) = unsafe.Pointer(C._gotk4_gtk3_ActionableInterface_get_action_target_value)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_action_name"))) = unsafe.Pointer(C._gotk4_gtk3_ActionableInterface_set_action_name)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_action_target_value"))) = unsafe.Pointer(C._gotk4_gtk3_ActionableInterface_set_action_target_value)
+	iface := (*C.GtkActionableInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_action_name = (*[0]byte)(C._gotk4_gtk3_ActionableInterface_get_action_name)
+	iface.get_action_target_value = (*[0]byte)(C._gotk4_gtk3_ActionableInterface_get_action_target_value)
+	iface.set_action_name = (*[0]byte)(C._gotk4_gtk3_ActionableInterface_set_action_name)
+	iface.set_action_target_value = (*[0]byte)(C._gotk4_gtk3_ActionableInterface_set_action_target_value)
 }
 
 //export _gotk4_gtk3_ActionableInterface_get_action_name
-func _gotk4_gtk3_ActionableInterface_get_action_name(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gtk3_ActionableInterface_get_action_name(arg0 *C.GtkActionable) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -164,7 +164,7 @@ func _gotk4_gtk3_ActionableInterface_get_action_name(arg0 *C.void) (cret *C.gcha
 }
 
 //export _gotk4_gtk3_ActionableInterface_get_action_target_value
-func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.void) (cret *C.GVariant) {
+func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.GtkActionable) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -176,7 +176,7 @@ func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.void) (cret
 }
 
 //export _gotk4_gtk3_ActionableInterface_set_action_name
-func _gotk4_gtk3_ActionableInterface_set_action_name(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_gtk3_ActionableInterface_set_action_name(arg0 *C.GtkActionable, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -190,7 +190,7 @@ func _gotk4_gtk3_ActionableInterface_set_action_name(arg0 *C.void, arg1 *C.gchar
 }
 
 //export _gotk4_gtk3_ActionableInterface_set_action_target_value
-func _gotk4_gtk3_ActionableInterface_set_action_target_value(arg0 *C.void, arg1 *C.GVariant) {
+func _gotk4_gtk3_ActionableInterface_set_action_target_value(arg0 *C.GtkActionable, arg1 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -240,20 +240,18 @@ func marshalActionable(p uintptr) (interface{}, error) {
 //    - utf8 (optional): action name, or NULL if none is set.
 //
 func (actionable *Actionable) ActionName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkActionable // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Actionable")
-	_gret := _info.InvokeIfaceMethod("get_action_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_actionable_get_action_name(_arg0)
 	runtime.KeepAlive(actionable)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -268,20 +266,18 @@ func (actionable *Actionable) ActionName() string {
 //    - variant: current target value.
 //
 func (actionable *Actionable) ActionTargetValue() *glib.Variant {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkActionable // out
+	var _cret *C.GVariant      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 
-	_info := girepository.MustFind("Gtk", "Actionable")
-	_gret := _info.InvokeIfaceMethod("get_action_target_value", _args[:], nil)
-	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_actionable_get_action_target_value(_arg0)
 	runtime.KeepAlive(actionable)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.g_variant_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -308,17 +304,16 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 //    - actionName (optional): action name, or NULL.
 //
 func (actionable *Actionable) SetActionName(actionName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionable // out
+	var _arg1 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	if actionName != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Actionable")
-	_info.InvokeIfaceMethod("set_action_name", _args[:], nil)
-
+	C.gtk_actionable_set_action_name(_arg0, _arg1)
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(actionName)
 }
@@ -346,16 +341,15 @@ func (actionable *Actionable) SetActionName(actionName string) {
 //    - targetValue (optional) to set as the target value, or NULL.
 //
 func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionable // out
+	var _arg1 *C.GVariant      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	if targetValue != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Actionable")
-	_info.InvokeIfaceMethod("set_action_target_value", _args[:], nil)
-
+	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(targetValue)
 }
@@ -376,15 +370,14 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 //    - detailedActionName: detailed action name.
 //
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkActionable // out
+	var _arg1 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Actionable")
-	_info.InvokeIfaceMethod("set_detailed_action_name", _args[:], nil)
-
+	C.gtk_actionable_set_detailed_action_name(_arg0, _arg1)
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(detailedActionName)
 }

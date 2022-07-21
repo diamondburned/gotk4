@@ -7,16 +7,16 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // DragSourceAddImageTargets: add the writable image targets supported by
@@ -24,13 +24,11 @@ import "C"
 // with info = 0. If you need another value, use
 // gtk_target_list_add_image_targets() and gtk_drag_source_set_target_list().
 func (widget *Widget) DragSourceAddImageTargets() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_add_image_targets", _args[:], nil)
-
+	C.gtk_drag_source_add_image_targets(_arg0)
 	runtime.KeepAlive(widget)
 }
 
@@ -39,13 +37,11 @@ func (widget *Widget) DragSourceAddImageTargets() {
 // you need another value, use gtk_target_list_add_text_targets() and
 // gtk_drag_source_set_target_list().
 func (widget *Widget) DragSourceAddTextTargets() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_add_text_targets", _args[:], nil)
-
+	C.gtk_drag_source_add_text_targets(_arg0)
 	runtime.KeepAlive(widget)
 }
 
@@ -54,13 +50,11 @@ func (widget *Widget) DragSourceAddTextTargets() {
 // you need another value, use gtk_target_list_add_uri_targets() and
 // gtk_drag_source_set_target_list().
 func (widget *Widget) DragSourceAddURITargets() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_add_uri_targets", _args[:], nil)
-
+	C.gtk_drag_source_add_uri_targets(_arg0)
 	runtime.KeepAlive(widget)
 }
 
@@ -72,21 +66,19 @@ func (widget *Widget) DragSourceAddURITargets() {
 //    - targetList (optional) or NULL if none.
 //
 func (widget *Widget) DragSourceGetTargetList() *TargetList {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidget     // out
+	var _cret *C.GtkTargetList // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_gret := _info.InvokeClassMethod("drag_source_get_target_list", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_source_get_target_list(_arg0)
 	runtime.KeepAlive(widget)
 
 	var _targetList *TargetList // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.gtk_target_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gtk_target_list_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_targetList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -98,6 +90,43 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	return _targetList
 }
 
+// DragSourceSet sets up a widget so that GTK+ will start a drag operation when
+// the user clicks and drags on the widget. The widget must have a window.
+//
+// The function takes the following parameters:
+//
+//    - startButtonMask: bitmask of buttons that can start the drag.
+//    - targets (optional): table of targets that the drag will support, may be
+//      NULL.
+//    - actions: bitmask of possible actions for a drag from this widget.
+//
+func (widget *Widget) DragSourceSet(startButtonMask gdk.ModifierType, targets []TargetEntry, actions gdk.DragAction) {
+	var _arg0 *C.GtkWidget      // out
+	var _arg1 C.GdkModifierType // out
+	var _arg2 *C.GtkTargetEntry // out
+	var _arg3 C.gint
+	var _arg4 C.GdkDragAction // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GdkModifierType(startButtonMask)
+	_arg3 = (C.gint)(len(targets))
+	_arg2 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GtkTargetEntry)(_arg2), len(targets))
+		for i := range targets {
+			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
+		}
+	}
+	_arg4 = C.GdkDragAction(actions)
+
+	C.gtk_drag_source_set(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(startButtonMask)
+	runtime.KeepAlive(targets)
+	runtime.KeepAlive(actions)
+}
+
 // DragSourceSetIconGIcon sets the icon that will be used for drags from a
 // particular source to icon. See the docs for IconTheme for more details.
 //
@@ -106,14 +135,13 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 //    - icon: #GIcon.
 //
 func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GIcon     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_set_icon_gicon", _args[:], nil)
-
+	C.gtk_drag_source_set_icon_gicon(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(icon)
 }
@@ -127,15 +155,14 @@ func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
 //    - iconName: name of icon to use.
 //
 func (widget *Widget) DragSourceSetIconName(iconName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_set_icon_name", _args[:], nil)
-
+	C.gtk_drag_source_set_icon_name(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(iconName)
 }
@@ -149,14 +176,13 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 //    - pixbuf for the drag icon.
 //
 func (widget *Widget) DragSourceSetIconPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GdkPixbuf // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_set_icon_pixbuf", _args[:], nil)
-
+	C.gtk_drag_source_set_icon_pixbuf(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(pixbuf)
 }
@@ -171,15 +197,14 @@ func (widget *Widget) DragSourceSetIconPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //    - stockId: ID of the stock icon to use.
 //
 func (widget *Widget) DragSourceSetIconStock(stockId string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_set_icon_stock", _args[:], nil)
-
+	C.gtk_drag_source_set_icon_stock(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(stockId)
 }
@@ -193,28 +218,25 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 //    - targetList (optional): list of draggable targets, or NULL for none.
 //
 func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 *C.GtkTargetList // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if targetList != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetList)))
+		_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_set_target_list", _args[:], nil)
-
+	C.gtk_drag_source_set_target_list(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(targetList)
 }
 
 // DragSourceUnset undoes the effects of gtk_drag_source_set().
 func (widget *Widget) DragSourceUnset() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_info.InvokeClassMethod("drag_source_unset", _args[:], nil)
-
+	C.gtk_drag_source_unset(_arg0)
 	runtime.KeepAlive(widget)
 }

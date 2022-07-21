@@ -7,15 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
-// #include <glib-object.h>
+// #include <gio/gio.h>
 import "C"
 
 // NewSimpleAction creates a new action.
@@ -34,24 +31,23 @@ import "C"
 //    - simpleAction: new Action.
 //
 func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction {
-	var _args [2]girepository.Argument
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariantType  // out
+	var _cret *C.GSimpleAction // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if parameterType != nil {
-		*(**C.GVariantType)(unsafe.Pointer(&_args[1])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
+		_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
 
-	_info := girepository.MustFind("Gio", "SimpleAction")
-	_gret := _info.InvokeClassMethod("new_SimpleAction", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_simple_action_new(_arg1, _arg2)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(parameterType)
 
 	var _simpleAction *SimpleAction // out
 
-	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleAction
 }
@@ -74,26 +70,26 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 //    - simpleAction: new Action.
 //
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction {
-	var _args [3]girepository.Argument
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.GVariantType  // out
+	var _arg3 *C.GVariant      // out
+	var _cret *C.GSimpleAction // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 	if parameterType != nil {
-		*(**C.GVariantType)(unsafe.Pointer(&_args[1])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
+		_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
-	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
-	_info := girepository.MustFind("Gio", "SimpleAction")
-	_gret := _info.InvokeClassMethod("new_SimpleAction_stateful", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_simple_action_new_stateful(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(parameterType)
 	runtime.KeepAlive(state)
 
 	var _simpleAction *SimpleAction // out
 
-	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _simpleAction
 }
@@ -111,16 +107,15 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 //    - enabled: whether the action is enabled.
 //
 func (simple *SimpleAction) SetEnabled(enabled bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleAction // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if enabled {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "SimpleAction")
-	_info.InvokeClassMethod("set_enabled", _args[:], nil)
-
+	C.g_simple_action_set_enabled(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(enabled)
 }
@@ -140,14 +135,13 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 //    - value: new #GVariant for the state.
 //
 func (simple *SimpleAction) SetState(value *glib.Variant) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleAction // out
+	var _arg1 *C.GVariant      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
-	_info := girepository.MustFind("Gio", "SimpleAction")
-	_info.InvokeClassMethod("set_state", _args[:], nil)
-
+	C.g_simple_action_set_state(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(value)
 }
@@ -161,16 +155,15 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 //    - stateHint (optional) representing the state hint.
 //
 func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GSimpleAction // out
+	var _arg1 *C.GVariant      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	_arg0 = (*C.GSimpleAction)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if stateHint != nil {
-		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(stateHint)))
+		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(stateHint)))
 	}
 
-	_info := girepository.MustFind("Gio", "SimpleAction")
-	_info.InvokeClassMethod("set_state_hint", _args[:], nil)
-
+	C.g_simple_action_set_state_hint(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(stateHint)
 }

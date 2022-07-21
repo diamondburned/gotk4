@@ -8,15 +8,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_FilterClass_match(void*, gpointer);
+// #include <gtk/gtk.h>
+// extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
+// extern gboolean _gotk4_gtk4_FilterClass_match(GtkFilter*, gpointer);
+// extern void _gotk4_gtk4_Filter_ConnectChanged(gpointer, GtkFilterChange, guintptr);
 import "C"
 
 // GTypeFilterChange returns the GType for the type FilterChange.
@@ -25,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFilterChange() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FilterChange").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_filter_change_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFilterChange)
 	return gtype
 }
@@ -36,7 +36,7 @@ func GTypeFilterChange() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFilterMatch() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "FilterMatch").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_filter_match_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFilterMatch)
 	return gtype
 }
@@ -47,7 +47,7 @@ func GTypeFilterMatch() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Filter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFilter)
 	return gtype
 }
@@ -130,6 +130,19 @@ func (f FilterMatch) String() string {
 
 // FilterOverrider contains methods that are overridable.
 type FilterOverrider interface {
+	// Strictness gets the known strictness of filters. If the strictness is not
+	// known, GTK_FILTER_MATCH_SOME is returned.
+	//
+	// This value may change after emission of the Filter::changed signal.
+	//
+	// This function is meant purely for optimization purposes, filters can
+	// choose to omit implementing it, but FilterListModel uses it.
+	//
+	// The function returns the following values:
+	//
+	//    - filterMatch strictness of self.
+	//
+	Strictness() FilterMatch
 	// Match checks if the given item is matched by the filter or not.
 	//
 	// The function takes the following parameters:
@@ -178,18 +191,33 @@ func classInitFilterer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "FilterClass")
+	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclassPtr))
+
+	if _, ok := goval.(interface{ Strictness() FilterMatch }); ok {
+		pclass.get_strictness = (*[0]byte)(C._gotk4_gtk4_FilterClass_get_strictness)
+	}
 
 	if _, ok := goval.(interface {
 		Match(item *coreglib.Object) bool
 	}); ok {
-		o := pclass.StructFieldOffset("match")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_FilterClass_match)
+		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
 	}
 }
 
+//export _gotk4_gtk4_FilterClass_get_strictness
+func _gotk4_gtk4_FilterClass_get_strictness(arg0 *C.GtkFilter) (cret C.GtkFilterMatch) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Strictness() FilterMatch })
+
+	filterMatch := iface.Strictness()
+
+	cret = C.GtkFilterMatch(filterMatch)
+
+	return cret
+}
+
 //export _gotk4_gtk4_FilterClass_match
-func _gotk4_gtk4_FilterClass_match(arg0 *C.void, arg1 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk4_FilterClass_match(arg0 *C.GtkFilter, arg1 C.gpointer) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Match(item *coreglib.Object) bool
@@ -218,6 +246,92 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+//export _gotk4_gtk4_Filter_ConnectChanged
+func _gotk4_gtk4_Filter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkFilterChange, arg2 C.guintptr) {
+	var f func(change FilterChange)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(change FilterChange))
+	}
+
+	var _change FilterChange // out
+
+	_change = FilterChange(arg1)
+
+	f(_change)
+}
+
+// ConnectChanged is emitted whenever the filter changed.
+//
+// Users of the filter should then check items again via gtk.Filter.Match().
+//
+// GtkFilterListModel handles this signal automatically.
+//
+// Depending on the change parameter, not all items need to be checked, but only
+// some. Refer to the gtk.FilterChange documentation for details.
+func (self *Filter) ConnectChanged(f func(change FilterChange)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Filter_ConnectChanged), f)
+}
+
+// Changed emits the Filter::changed signal to notify all users of the filter
+// that the filter changed. Users of the filter should then check items again
+// via gtk_filter_match().
+//
+// Depending on the change parameter, not all items need to be changed, but only
+// some. Refer to the FilterChange documentation for details.
+//
+// This function is intended for implementors of Filter subclasses and should
+// not be called from other functions.
+//
+// The function takes the following parameters:
+//
+//    - change: how the filter changed.
+//
+func (self *Filter) Changed(change FilterChange) {
+	var _arg0 *C.GtkFilter      // out
+	var _arg1 C.GtkFilterChange // out
+
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GtkFilterChange(change)
+
+	C.gtk_filter_changed(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(change)
+}
+
+// Strictness gets the known strictness of filters. If the strictness is not
+// known, GTK_FILTER_MATCH_SOME is returned.
+//
+// This value may change after emission of the Filter::changed signal.
+//
+// This function is meant purely for optimization purposes, filters can choose
+// to omit implementing it, but FilterListModel uses it.
+//
+// The function returns the following values:
+//
+//    - filterMatch strictness of self.
+//
+func (self *Filter) Strictness() FilterMatch {
+	var _arg0 *C.GtkFilter     // out
+	var _cret C.GtkFilterMatch // in
+
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_filter_get_strictness(_arg0)
+	runtime.KeepAlive(self)
+
+	var _filterMatch FilterMatch // out
+
+	_filterMatch = FilterMatch(_cret)
+
+	return _filterMatch
+}
+
 // Match checks if the given item is matched by the filter or not.
 //
 // The function takes the following parameters:
@@ -230,21 +344,20 @@ func marshalFilter(p uintptr) (interface{}, error) {
 //      it, FALSE if not.
 //
 func (self *Filter) Match(item *coreglib.Object) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkFilter // out
+	var _arg1 C.gpointer   // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
-	_info := girepository.MustFind("Gtk", "Filter")
-	_gret := _info.InvokeClassMethod("match", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_filter_match(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(item)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

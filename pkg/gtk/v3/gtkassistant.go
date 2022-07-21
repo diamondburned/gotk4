@@ -9,26 +9,26 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // extern gint _gotk4_gtk3_AssistantPageFunc(gint, gpointer);
-// extern void _gotk4_gtk3_AssistantClass_apply(void*);
-// extern void _gotk4_gtk3_AssistantClass_cancel(void*);
-// extern void _gotk4_gtk3_AssistantClass_close(void*);
-// extern void _gotk4_gtk3_AssistantClass_prepare(void*, void*);
+// extern void _gotk4_gtk3_AssistantClass_apply(GtkAssistant*);
+// extern void _gotk4_gtk3_AssistantClass_cancel(GtkAssistant*);
+// extern void _gotk4_gtk3_AssistantClass_close(GtkAssistant*);
+// extern void _gotk4_gtk3_AssistantClass_prepare(GtkAssistant*, GtkWidget*);
 // extern void _gotk4_gtk3_Assistant_ConnectApply(gpointer, guintptr);
 // extern void _gotk4_gtk3_Assistant_ConnectCancel(gpointer, guintptr);
 // extern void _gotk4_gtk3_Assistant_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk3_Assistant_ConnectEscape(gpointer, guintptr);
-// extern void _gotk4_gtk3_Assistant_ConnectPrepare(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_Assistant_ConnectPrepare(gpointer, GtkWidget*, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -38,7 +38,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAssistantPageType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "AssistantPageType").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_assistant_page_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAssistantPageType)
 	return gtype
 }
@@ -49,7 +49,7 @@ func GTypeAssistantPageType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAssistant() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Assistant").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_assistant_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAssistant)
 	return gtype
 }
@@ -193,31 +193,27 @@ func classInitAssistanter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "AssistantClass")
+	pclass := (*C.GtkAssistantClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Apply() }); ok {
-		o := pclass.StructFieldOffset("apply")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_apply)
+		pclass.apply = (*[0]byte)(C._gotk4_gtk3_AssistantClass_apply)
 	}
 
 	if _, ok := goval.(interface{ Cancel() }); ok {
-		o := pclass.StructFieldOffset("cancel")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_cancel)
+		pclass.cancel = (*[0]byte)(C._gotk4_gtk3_AssistantClass_cancel)
 	}
 
 	if _, ok := goval.(interface{ Close() }); ok {
-		o := pclass.StructFieldOffset("close")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_close)
+		pclass.close = (*[0]byte)(C._gotk4_gtk3_AssistantClass_close)
 	}
 
 	if _, ok := goval.(interface{ Prepare(page Widgetter) }); ok {
-		o := pclass.StructFieldOffset("prepare")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_prepare)
+		pclass.prepare = (*[0]byte)(C._gotk4_gtk3_AssistantClass_prepare)
 	}
 }
 
 //export _gotk4_gtk3_AssistantClass_apply
-func _gotk4_gtk3_AssistantClass_apply(arg0 *C.void) {
+func _gotk4_gtk3_AssistantClass_apply(arg0 *C.GtkAssistant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Apply() })
 
@@ -225,7 +221,7 @@ func _gotk4_gtk3_AssistantClass_apply(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_AssistantClass_cancel
-func _gotk4_gtk3_AssistantClass_cancel(arg0 *C.void) {
+func _gotk4_gtk3_AssistantClass_cancel(arg0 *C.GtkAssistant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancel() })
 
@@ -233,7 +229,7 @@ func _gotk4_gtk3_AssistantClass_cancel(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_AssistantClass_close
-func _gotk4_gtk3_AssistantClass_close(arg0 *C.void) {
+func _gotk4_gtk3_AssistantClass_close(arg0 *C.GtkAssistant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
@@ -241,7 +237,7 @@ func _gotk4_gtk3_AssistantClass_close(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_AssistantClass_prepare
-func _gotk4_gtk3_AssistantClass_prepare(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_AssistantClass_prepare(arg0 *C.GtkAssistant, arg1 *C.GtkWidget) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Prepare(page Widgetter) })
 
@@ -390,7 +386,7 @@ func (assistant *Assistant) ConnectEscape(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_Assistant_ConnectPrepare
-func _gotk4_gtk3_Assistant_ConnectPrepare(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_Assistant_ConnectPrepare(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
 	var f func(page Widgetter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -441,13 +437,13 @@ func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) coreglib.Sign
 //    - assistant: newly created Assistant.
 //
 func NewAssistant() *Assistant {
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("new_Assistant", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_assistant_new()
 
 	var _assistant *Assistant // out
 
-	_assistant = wrapAssistant(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_assistant = wrapAssistant(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _assistant
 }
@@ -459,14 +455,13 @@ func NewAssistant() *Assistant {
 //    - child: Widget.
 //
 func (assistant *Assistant) AddActionWidget(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("add_action_widget", _args[:], nil)
-
+	C.gtk_assistant_add_action_widget(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(child)
 }
@@ -482,21 +477,20 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 //    - gint: index (starting at 0) of the inserted page.
 //
 func (assistant *Assistant) AppendPage(page Widgetter) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("append_page", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -509,13 +503,11 @@ func (assistant *Assistant) AppendPage(page Widgetter) int32 {
 // progress page to track a long-running, unreversible operation after the user
 // has clicked apply on a confirmation page.
 func (assistant *Assistant) Commit() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("commit", _args[:], nil)
-
+	C.gtk_assistant_commit(_arg0)
 	runtime.KeepAlive(assistant)
 }
 
@@ -527,19 +519,17 @@ func (assistant *Assistant) Commit() {
 //      if the assistant has no pages, or no current page.
 //
 func (assistant *Assistant) CurrentPage() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_current_page", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_current_page(_arg0)
 	runtime.KeepAlive(assistant)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -551,19 +541,17 @@ func (assistant *Assistant) CurrentPage() int32 {
 //    - gint: number of pages in the assistant.
 //
 func (assistant *Assistant) NPages() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_n_pages", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_n_pages(_arg0)
 	runtime.KeepAlive(assistant)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -579,23 +567,22 @@ func (assistant *Assistant) NPages() int32 {
 //    - widget (optional): child widget, or NULL if page_num is out of bounds.
 //
 func (assistant *Assistant) NthPage(pageNum int32) Widgetter {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 C.gint          // out
+	var _cret *C.GtkWidget    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pageNum)
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = C.gint(pageNum)
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_nth_page", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -624,21 +611,20 @@ func (assistant *Assistant) NthPage(pageNum int32) Widgetter {
 //    - ok: TRUE if page is complete.
 //
 func (assistant *Assistant) PageComplete(page Widgetter) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_page_complete", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -656,21 +642,20 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 //    - ok: TRUE if page has padding.
 //
 func (assistant *Assistant) PageHasPadding(page Widgetter) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_page_has_padding", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_page_has_padding(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -692,22 +677,21 @@ func (assistant *Assistant) PageHasPadding(page Widgetter) bool {
 //      page.
 //
 func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GdkPixbuf    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_page_header_image", _args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_page_header_image(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -735,22 +719,21 @@ func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
 //      page.
 //
 func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.GdkPixbuf    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_page_side_image", _args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_page_side_image(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -775,23 +758,51 @@ func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
 //    - utf8: title for page.
 //
 func (assistant *Assistant) PageTitle(page Widgetter) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("get_page_title", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// PageType gets the page type of page.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//
+// The function returns the following values:
+//
+//    - assistantPageType: page type of page.
+//
+func (assistant *Assistant) PageType(page Widgetter) AssistantPageType {
+	var _arg0 *C.GtkAssistant        // out
+	var _arg1 *C.GtkWidget           // out
+	var _cret C.GtkAssistantPageType // in
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+
+	_cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+
+	var _assistantPageType AssistantPageType // out
+
+	_assistantPageType = AssistantPageType(_cret)
+
+	return _assistantPageType
 }
 
 // InsertPage inserts a page in the assistant at a given position.
@@ -807,23 +818,23 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 //    - gint: index (starting from 0) of the inserted page.
 //
 func (assistant *Assistant) InsertPage(page Widgetter, position int32) int32 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 C.gint          // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg2 = C.gint(position)
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("insert_page", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(position)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -835,13 +846,11 @@ func (assistant *Assistant) InsertPage(page Widgetter, position int32) int32 {
 // This function is for use when creating pages of the K_ASSISTANT_PAGE_CUSTOM
 // type.
 func (assistant *Assistant) NextPage() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("next_page", _args[:], nil)
-
+	C.gtk_assistant_next_page(_arg0)
 	runtime.KeepAlive(assistant)
 }
 
@@ -856,21 +865,20 @@ func (assistant *Assistant) NextPage() {
 //    - gint: index (starting at 0) of the inserted page.
 //
 func (assistant *Assistant) PrependPage(page Widgetter) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_gret := _info.InvokeClassMethod("prepend_page", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -883,13 +891,11 @@ func (assistant *Assistant) PrependPage(page Widgetter) int32 {
 // This function is for use when creating pages of the K_ASSISTANT_PAGE_CUSTOM
 // type.
 func (assistant *Assistant) PreviousPage() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("previous_page", _args[:], nil)
-
+	C.gtk_assistant_previous_page(_arg0)
 	runtime.KeepAlive(assistant)
 }
 
@@ -900,14 +906,13 @@ func (assistant *Assistant) PreviousPage() {
 //    - child: Widget.
 //
 func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("remove_action_widget", _args[:], nil)
-
+	C.gtk_assistant_remove_action_widget(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(child)
 }
@@ -919,14 +924,13 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 //    - pageNum: index of a page in the assistant, or -1 to remove the last page.
 //
 func (assistant *Assistant) RemovePage(pageNum int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 C.gint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pageNum)
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = C.gint(pageNum)
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("remove_page", _args[:], nil)
-
+	C.gtk_assistant_remove_page(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
 }
@@ -943,14 +947,13 @@ func (assistant *Assistant) RemovePage(pageNum int32) {
 //      assistant, nothing will be done.
 //
 func (assistant *Assistant) SetCurrentPage(pageNum int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 C.gint          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pageNum)
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = C.gint(pageNum)
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_current_page", _args[:], nil)
-
+	C.gtk_assistant_set_current_page(_arg0, _arg1)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
 }
@@ -967,18 +970,19 @@ func (assistant *Assistant) SetCurrentPage(pageNum int32) {
 //    - pageFunc (optional) or NULL to use the default one.
 //
 func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkAssistant        // out
+	var _arg1 C.GtkAssistantPageFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	if pageFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_AssistantPageFunc)
-		_args[2] = C.gpointer(gbox.Assign(pageFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_AssistantPageFunc)
+		_arg2 = C.gpointer(gbox.Assign(pageFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_forward_page_func", _args[:], nil)
-
+	C.gtk_assistant_set_forward_page_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageFunc)
 }
@@ -994,17 +998,17 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 //    - complete completeness status of the page.
 //
 func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	if complete {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_page_complete", _args[:], nil)
-
+	C.gtk_assistant_set_page_complete(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(complete)
@@ -1019,17 +1023,17 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 //    - hasPadding: whether this page has padding.
 //
 func (assistant *Assistant) SetPageHasPadding(page Widgetter, hasPadding bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 C.gboolean      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	if hasPadding {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_page_has_padding", _args[:], nil)
-
+	C.gtk_assistant_set_page_has_padding(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(hasPadding)
@@ -1046,17 +1050,17 @@ func (assistant *Assistant) SetPageHasPadding(page Widgetter, hasPadding bool) {
 //    - pixbuf (optional): new header image page.
 //
 func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf *gdkpixbuf.Pixbuf) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.GdkPixbuf    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	if pixbuf != nil {
-		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[2])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_page_header_image", _args[:], nil)
-
+	C.gtk_assistant_set_page_header_image(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(pixbuf)
@@ -1075,17 +1079,17 @@ func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf *gdkpixbuf
 //    - pixbuf (optional): new side image page.
 //
 func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf *gdkpixbuf.Pixbuf) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.GdkPixbuf    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	if pixbuf != nil {
-		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[2])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_page_side_image", _args[:], nil)
-
+	C.gtk_assistant_set_page_side_image(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(pixbuf)
@@ -1102,19 +1106,43 @@ func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf *gdkpixbuf.P
 //    - title: new title for page.
 //
 func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.gchar        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("set_page_title", _args[:], nil)
-
+	C.gtk_assistant_set_page_title(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(title)
+}
+
+// SetPageType sets the page type for page.
+//
+// The page type determines the page behavior in the assistant.
+//
+// The function takes the following parameters:
+//
+//    - page of assistant.
+//    - typ: new type for page.
+//
+func (assistant *Assistant) SetPageType(page Widgetter, typ AssistantPageType) {
+	var _arg0 *C.GtkAssistant        // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 C.GtkAssistantPageType // out
+
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(page).Native()))
+	_arg2 = C.GtkAssistantPageType(typ)
+
+	C.gtk_assistant_set_page_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(assistant)
+	runtime.KeepAlive(page)
+	runtime.KeepAlive(typ)
 }
 
 // UpdateButtonsState forces assistant to recompute the buttons state.
@@ -1127,12 +1155,10 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 // changing a value on the current page affects the future page flow of the
 // assistant.
 func (assistant *Assistant) UpdateButtonsState() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkAssistant // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
+	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_info := girepository.MustFind("Gtk", "Assistant")
-	_info.InvokeClassMethod("update_buttons_state", _args[:], nil)
-
+	C.gtk_assistant_update_buttons_state(_arg0)
 	runtime.KeepAlive(assistant)
 }

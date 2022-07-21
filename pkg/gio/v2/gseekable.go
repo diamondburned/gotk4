@@ -9,19 +9,17 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_SeekableIface_can_seek(void*);
-// extern gboolean _gotk4_gio2_SeekableIface_can_truncate(void*);
-// extern gboolean _gotk4_gio2_SeekableIface_seek(void*, goffset, GSeekType, void*, GError**);
-// extern goffset _gotk4_gio2_SeekableIface_tell(void*);
+// extern gboolean _gotk4_gio2_SeekableIface_can_seek(GSeekable*);
+// extern gboolean _gotk4_gio2_SeekableIface_can_truncate(GSeekable*);
+// extern gboolean _gotk4_gio2_SeekableIface_seek(GSeekable*, goffset, GSeekType, GCancellable*, GError**);
+// extern goffset _gotk4_gio2_SeekableIface_tell(GSeekable*);
 import "C"
 
 // GTypeSeekable returns the GType for the type Seekable.
@@ -30,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSeekable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "Seekable").RegisteredGType())
+	gtype := coreglib.Type(C.g_seekable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSeekable)
 	return gtype
 }
@@ -95,19 +93,17 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 //    - ok: TRUE if seekable can be seeked. FALSE otherwise.
 //
 func (seekable *Seekable) CanSeek() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSeekable // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
 
-	_info := girepository.MustFind("Gio", "Seekable")
-	_gret := _info.InvokeIfaceMethod("can_seek", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_seekable_can_seek(_arg0)
 	runtime.KeepAlive(seekable)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -122,19 +118,17 @@ func (seekable *Seekable) CanSeek() bool {
 //    - ok: TRUE if the stream can be truncated, FALSE otherwise.
 //
 func (seekable *Seekable) CanTruncate() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSeekable // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
 
-	_info := girepository.MustFind("Gio", "Seekable")
-	_gret := _info.InvokeIfaceMethod("can_truncate", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_seekable_can_truncate(_arg0)
 	runtime.KeepAlive(seekable)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -163,20 +157,22 @@ func (seekable *Seekable) CanTruncate() bool {
 //    - typ: Type.
 //
 func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekType) error {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GSeekable    // out
+	var _arg3 *C.GCancellable // out
+	var _arg1 C.goffset       // out
+	var _arg2 C.GSeekType     // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.goffset)(unsafe.Pointer(&_args[1])) = C.goffset(offset)
-	*(*C.GSeekType)(unsafe.Pointer(&_args[2])) = C.GSeekType(typ)
+	_arg1 = C.goffset(offset)
+	_arg2 = C.GSeekType(typ)
 
-	_info := girepository.MustFind("Gio", "Seekable")
-	_info.InvokeIfaceMethod("seek", _args[:], nil)
-
+	C.g_seekable_seek(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(seekable)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(offset)
@@ -184,8 +180,8 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -198,19 +194,17 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 //    - gint64: offset from the beginning of the buffer.
 //
 func (seekable *Seekable) Tell() int64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GSeekable // out
+	var _cret C.goffset    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
 
-	_info := girepository.MustFind("Gio", "Seekable")
-	_gret := _info.InvokeIfaceMethod("tell", _args[:], nil)
-	_cret := *(*C.goffset)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_seekable_tell(_arg0)
 	runtime.KeepAlive(seekable)
 
 	var _gint64 int64 // out
 
-	_gint64 = int64(*(*C.goffset)(unsafe.Pointer(&_cret)))
+	_gint64 = int64(_cret)
 
 	return _gint64
 }
@@ -231,27 +225,28 @@ func (seekable *Seekable) Tell() int64 {
 //    - offset: new length for seekable, in bytes.
 //
 func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GSeekable    // out
+	var _arg2 *C.GCancellable // out
+	var _arg1 C.goffset       // out
+	var _cerr *C.GError       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	_arg0 = (*C.GSeekable)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.goffset)(unsafe.Pointer(&_args[1])) = C.goffset(offset)
+	_arg1 = C.goffset(offset)
 
-	_info := girepository.MustFind("Gio", "Seekable")
-	_info.InvokeIfaceMethod("truncate", _args[:], nil)
-
+	C.g_seekable_truncate(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(seekable)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(offset)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr

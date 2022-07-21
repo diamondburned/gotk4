@@ -6,18 +6,17 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern gboolean _gotk4_gtk4_Paned_ConnectAcceptPosition(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectCancelPosition(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectCycleChildFocus(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectCycleHandleFocus(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Paned_ConnectMoveHandle(gpointer, GtkScrollType, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
 import "C"
 
@@ -27,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePaned() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Paned").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_paned_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPaned)
 	return gtype
 }
@@ -278,6 +277,39 @@ func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) (ok bool)) cor
 	return coreglib.ConnectGeneratedClosure(paned, "cycle-handle-focus", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectCycleHandleFocus), f)
 }
 
+//export _gotk4_gtk4_Paned_ConnectMoveHandle
+func _gotk4_gtk4_Paned_ConnectMoveHandle(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(scrollType ScrollType) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(scrollType ScrollType) (ok bool))
+	}
+
+	var _scrollType ScrollType // out
+
+	_scrollType = ScrollType(arg1)
+
+	ok := f(_scrollType)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectMoveHandle is emitted to move the handle with key bindings.
+//
+// This is a keybinding signal (class.SignalAction.html).
+func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(paned, "move-handle", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectMoveHandle), f)
+}
+
 //export _gotk4_gtk4_Paned_ConnectToggleHandleFocus
 func _gotk4_gtk4_Paned_ConnectToggleHandleFocus(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
 	var f func() (ok bool)
@@ -310,6 +342,32 @@ func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) coreglib.Signal
 	return coreglib.ConnectGeneratedClosure(paned, "toggle-handle-focus", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectToggleHandleFocus), f)
 }
 
+// NewPaned creates a new GtkPaned widget.
+//
+// The function takes the following parameters:
+//
+//    - orientation paned’s orientation.
+//
+// The function returns the following values:
+//
+//    - paned: new GtkPaned.
+//
+func NewPaned(orientation Orientation) *Paned {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_paned_new(_arg1)
+	runtime.KeepAlive(orientation)
+
+	var _paned *Paned // out
+
+	_paned = wrapPaned(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _paned
+}
+
 // EndChild retrieves the end child of the given GtkPaned.
 //
 // See also: GtkPaned:end-child.
@@ -319,21 +377,19 @@ func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) coreglib.Signal
 //    - widget (optional): end child widget.
 //
 func (paned *Paned) EndChild() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_end_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_end_child(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -358,19 +414,17 @@ func (paned *Paned) EndChild() Widgetter {
 //    - gint: position of the divider.
 //
 func (paned *Paned) Position() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_position", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_position(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -382,19 +436,17 @@ func (paned *Paned) Position() int32 {
 //    - ok: TRUE if the end child is resizable.
 //
 func (paned *Paned) ResizeEndChild() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_resize_end_child", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_resize_end_child(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -408,19 +460,17 @@ func (paned *Paned) ResizeEndChild() bool {
 //    - ok: TRUE if the start child is resizable.
 //
 func (paned *Paned) ResizeStartChild() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_resize_start_child", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_resize_start_child(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -434,19 +484,17 @@ func (paned *Paned) ResizeStartChild() bool {
 //    - ok: TRUE if the end child is shrinkable.
 //
 func (paned *Paned) ShrinkEndChild() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_shrink_end_child", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_shrink_end_child(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -460,19 +508,17 @@ func (paned *Paned) ShrinkEndChild() bool {
 //    - ok: TRUE if the start child is shrinkable.
 //
 func (paned *Paned) ShrinkStartChild() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_shrink_start_child", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_shrink_start_child(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -488,21 +534,19 @@ func (paned *Paned) ShrinkStartChild() bool {
 //    - widget (optional): start child widget.
 //
 func (paned *Paned) StartChild() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GtkWidget // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_start_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_start_child(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -527,19 +571,17 @@ func (paned *Paned) StartChild() Widgetter {
 //    - ok: TRUE if the paned should have a wide handle.
 //
 func (paned *Paned) WideHandle() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_gret := _info.InvokeClassMethod("get_wide_handle", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_paned_get_wide_handle(_arg0)
 	runtime.KeepAlive(paned)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -553,14 +595,13 @@ func (paned *Paned) WideHandle() bool {
 //    - child: widget to add.
 //
 func (paned *Paned) SetEndChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned  // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_end_child", _args[:], nil)
-
+	C.gtk_paned_set_end_child(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
 }
@@ -573,14 +614,13 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 //      position is unset.
 //
 func (paned *Paned) SetPosition(position int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.int       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(position)
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg1 = C.int(position)
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_position", _args[:], nil)
-
+	C.gtk_paned_set_position(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(position)
 }
@@ -592,16 +632,15 @@ func (paned *Paned) SetPosition(position int32) {
 //    - resize: TRUE to let the end child be resized.
 //
 func (paned *Paned) SetResizeEndChild(resize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	if resize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_resize_end_child", _args[:], nil)
-
+	C.gtk_paned_set_resize_end_child(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
 }
@@ -613,16 +652,15 @@ func (paned *Paned) SetResizeEndChild(resize bool) {
 //    - resize: TRUE to let the start child be resized.
 //
 func (paned *Paned) SetResizeStartChild(resize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	if resize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_resize_start_child", _args[:], nil)
-
+	C.gtk_paned_set_resize_start_child(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
 }
@@ -634,16 +672,15 @@ func (paned *Paned) SetResizeStartChild(resize bool) {
 //    - resize: TRUE to let the end child be shrunk.
 //
 func (paned *Paned) SetShrinkEndChild(resize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	if resize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_shrink_end_child", _args[:], nil)
-
+	C.gtk_paned_set_shrink_end_child(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
 }
@@ -655,16 +692,15 @@ func (paned *Paned) SetShrinkEndChild(resize bool) {
 //    - resize: TRUE to let the start child be shrunk.
 //
 func (paned *Paned) SetShrinkStartChild(resize bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	if resize {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_shrink_start_child", _args[:], nil)
-
+	C.gtk_paned_set_shrink_start_child(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
 }
@@ -676,14 +712,13 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 //    - child: widget to add.
 //
 func (paned *Paned) SetStartChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned  // out
+	var _arg1 *C.GtkWidget // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_start_child", _args[:], nil)
-
+	C.gtk_paned_set_start_child(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
 }
@@ -695,16 +730,15 @@ func (paned *Paned) SetStartChild(child Widgetter) {
 //    - wide: new value for the gtk.Paned:wide-handle property.
 //
 func (paned *Paned) SetWideHandle(wide bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	if wide {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Paned")
-	_info.InvokeClassMethod("set_wide_handle", _args[:], nil)
-
+	C.gtk_paned_set_wide_handle(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(wide)
 }

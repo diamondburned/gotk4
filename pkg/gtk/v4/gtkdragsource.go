@@ -6,18 +6,17 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, void*, gboolean, guintptr);
-// extern void* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
+// #include <gtk/gtk.h>
+// extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
+// extern gboolean _gotk4_gtk4_DragSource_ConnectDragCancel(gpointer, GdkDrag*, GdkDragCancelReason, guintptr);
+// extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, GdkDrag*, guintptr);
+// extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, GdkDrag*, gboolean, guintptr);
 import "C"
 
 // GTypeDragSource returns the GType for the type DragSource.
@@ -26,9 +25,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDragSource() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DragSource").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_drag_source_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDragSource)
 	return gtype
+}
+
+// DragSourceOverrider contains methods that are overridable.
+type DragSourceOverrider interface {
 }
 
 // DragSource: GtkDragSource is an event controller to initiate Drag-And-Drop
@@ -110,6 +113,14 @@ var (
 	_ Gesturer = (*DragSource)(nil)
 )
 
+func classInitDragSourcer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapDragSource(obj *coreglib.Object) *DragSource {
 	return &DragSource{
 		GestureSingle: GestureSingle{
@@ -127,7 +138,7 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_DragSource_ConnectDragBegin
-func _gotk4_gtk4_DragSource_ConnectDragBegin(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_DragSource_ConnectDragBegin(arg0 C.gpointer, arg1 *C.GdkDrag, arg2 C.guintptr) {
 	var f func(drag gdk.Dragger)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -169,8 +180,61 @@ func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) coreglib.Si
 	return coreglib.ConnectGeneratedClosure(source, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectDragBegin), f)
 }
 
+//export _gotk4_gtk4_DragSource_ConnectDragCancel
+func _gotk4_gtk4_DragSource_ConnectDragCancel(arg0 C.gpointer, arg1 *C.GdkDrag, arg2 C.GdkDragCancelReason, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(drag gdk.Dragger, reason gdk.DragCancelReason) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(drag gdk.Dragger, reason gdk.DragCancelReason) (ok bool))
+	}
+
+	var _drag gdk.Dragger            // out
+	var _reason gdk.DragCancelReason // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Dragger is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Dragger)
+			return ok
+		})
+		rv, ok := casted.(gdk.Dragger)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
+		}
+		_drag = rv
+	}
+	_reason = gdk.DragCancelReason(arg2)
+
+	ok := f(_drag, _reason)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectDragCancel is emitted on the drag source when a drag has failed.
+//
+// The signal handler may handle a failed drag operation based on the type of
+// error. It should return TRUE if the failure has been handled and the default
+// "drag operation failed" animation should not be shown.
+func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.DragCancelReason) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(source, "drag-cancel", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectDragCancel), f)
+}
+
 //export _gotk4_gtk4_DragSource_ConnectDragEnd
-func _gotk4_gtk4_DragSource_ConnectDragEnd(arg0 C.gpointer, arg1 *C.void, arg2 C.gboolean, arg3 C.guintptr) {
+func _gotk4_gtk4_DragSource_ConnectDragEnd(arg0 C.gpointer, arg1 *C.GdkDrag, arg2 C.gboolean, arg3 C.guintptr) {
 	var f func(drag gdk.Dragger, deleteData bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -218,7 +282,7 @@ func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData boo
 }
 
 //export _gotk4_gtk4_DragSource_ConnectPrepare
-func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.void) {
+func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkContentProvider) {
 	var f func(x, y float64) (contentProvider *gdk.ContentProvider)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -239,7 +303,7 @@ func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2
 	contentProvider := f(_x, _y)
 
 	if contentProvider != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(contentProvider).Native()))
+		cret = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(contentProvider).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(contentProvider).Native()))
 	}
 
@@ -263,27 +327,47 @@ func (source *DragSource) ConnectPrepare(f func(x, y float64) (contentProvider *
 //    - dragSource: new GtkDragSource.
 //
 func NewDragSource() *DragSource {
-	_info := girepository.MustFind("Gtk", "DragSource")
-	_gret := _info.InvokeClassMethod("new_DragSource", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkDragSource // in
+
+	_cret = C.gtk_drag_source_new()
 
 	var _dragSource *DragSource // out
 
-	_dragSource = wrapDragSource(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dragSource = wrapDragSource(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dragSource
 }
 
 // DragCancel cancels a currently ongoing drag operation.
 func (source *DragSource) DragCancel() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDragSource // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
-	_info := girepository.MustFind("Gtk", "DragSource")
-	_info.InvokeClassMethod("drag_cancel", _args[:], nil)
-
+	C.gtk_drag_source_drag_cancel(_arg0)
 	runtime.KeepAlive(source)
+}
+
+// Actions gets the actions that are currently set on the GtkDragSource.
+//
+// The function returns the following values:
+//
+//    - dragAction actions set on source.
+//
+func (source *DragSource) Actions() gdk.DragAction {
+	var _arg0 *C.GtkDragSource // out
+	var _cret C.GdkDragAction  // in
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+
+	_cret = C.gtk_drag_source_get_actions(_arg0)
+	runtime.KeepAlive(source)
+
+	var _dragAction gdk.DragAction // out
+
+	_dragAction = gdk.DragAction(_cret)
+
+	return _dragAction
 }
 
 // Content gets the current content provider of a GtkDragSource.
@@ -293,21 +377,19 @@ func (source *DragSource) DragCancel() {
 //    - contentProvider (optional): GdkContentProvider of source.
 //
 func (source *DragSource) Content() *gdk.ContentProvider {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDragSource      // out
+	var _cret *C.GdkContentProvider // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
-	_info := girepository.MustFind("Gtk", "DragSource")
-	_gret := _info.InvokeClassMethod("get_content", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_source_get_content(_arg0)
 	runtime.KeepAlive(source)
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_contentProvider = &gdk.ContentProvider{
 				Object: obj,
 			}
@@ -324,21 +406,19 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 //    - drag (optional): GdkDrag of the current drag operation, or NULL.
 //
 func (source *DragSource) Drag() gdk.Dragger {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDragSource // out
+	var _cret *C.GdkDrag       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
-	_info := girepository.MustFind("Gtk", "DragSource")
-	_gret := _info.InvokeClassMethod("get_drag", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_source_get_drag(_arg0)
 	runtime.KeepAlive(source)
 
 	var _drag gdk.Dragger // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -354,6 +434,31 @@ func (source *DragSource) Drag() gdk.Dragger {
 	}
 
 	return _drag
+}
+
+// SetActions sets the actions on the GtkDragSource.
+//
+// During a DND operation, the actions are offered to potential drop targets. If
+// actions include GDK_ACTION_MOVE, you need to listen to the
+// gtk.DragSource::drag-end signal and handle delete_data being TRUE.
+//
+// This function can be called before a drag is started, or in a handler for the
+// gtk.DragSource::prepare signal.
+//
+// The function takes the following parameters:
+//
+//    - actions to offer.
+//
+func (source *DragSource) SetActions(actions gdk.DragAction) {
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 C.GdkDragAction  // out
+
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg1 = C.GdkDragAction(actions)
+
+	C.gtk_drag_source_set_actions(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(actions)
 }
 
 // SetContent sets a content provider on a GtkDragSource.
@@ -372,16 +477,15 @@ func (source *DragSource) Drag() gdk.Dragger {
 //    - content (optional): GdkContentProvider, or NULL.
 //
 func (source *DragSource) SetContent(content *gdk.ContentProvider) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDragSource      // out
+	var _arg1 *C.GdkContentProvider // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 	if content != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(content).Native()))
+		_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(content).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "DragSource")
-	_info.InvokeClassMethod("set_content", _args[:], nil)
-
+	C.gtk_drag_source_set_content(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(content)
 }
@@ -403,18 +507,19 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //    - hotY: hotspot Y coordinate on the icon.
 //
 func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 *C.GdkPaintable  // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 	if paintable != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+		_arg1 = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotX)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hotY)
+	_arg2 = C.int(hotX)
+	_arg3 = C.int(hotY)
 
-	_info := girepository.MustFind("Gtk", "DragSource")
-	_info.InvokeClassMethod("set_icon", _args[:], nil)
-
+	C.gtk_drag_source_set_icon(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(hotX)
@@ -436,18 +541,20 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int32) {
 //    - ok: TRUE if the drag threshold has been passed.
 //
 func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int32) bool {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _arg3 C.int        // out
+	var _arg4 C.int        // out
+	var _cret C.gboolean   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(startX)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(startY)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(currentX)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(currentY)
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(startX)
+	_arg2 = C.int(startY)
+	_arg3 = C.int(currentX)
+	_arg4 = C.int(currentY)
 
-	_info := girepository.MustFind("Gtk", "Widget")
-	_gret := _info.InvokeClassMethod("drag_check_threshold", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(startX)
 	runtime.KeepAlive(startY)
@@ -456,7 +563,7 @@ func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int3
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

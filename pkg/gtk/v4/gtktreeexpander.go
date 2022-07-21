@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeTreeExpander returns the GType for the type TreeExpander.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTreeExpander() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeExpander").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_tree_expander_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTreeExpander)
 	return gtype
 }
@@ -118,13 +116,13 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 //    - treeExpander: new GtkTreeExpander.
 //
 func NewTreeExpander() *TreeExpander {
-	_info := girepository.MustFind("Gtk", "TreeExpander")
-	_gret := _info.InvokeClassMethod("new_TreeExpander", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_tree_expander_new()
 
 	var _treeExpander *TreeExpander // out
 
-	_treeExpander = wrapTreeExpander(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_treeExpander = wrapTreeExpander(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeExpander
 }
@@ -136,21 +134,19 @@ func NewTreeExpander() *TreeExpander {
 //    - widget (optional): child displayed by self.
 //
 func (self *TreeExpander) Child() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeExpander // out
+	var _cret *C.GtkWidget       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeExpander")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_expander_get_child(_arg0)
 	runtime.KeepAlive(self)
 
 	var _widget Widgetter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -179,19 +175,17 @@ func (self *TreeExpander) Child() Widgetter {
 //    - object (optional): item of the row.
 //
 func (self *TreeExpander) Item() *coreglib.Object {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeExpander // out
+	var _cret C.gpointer         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeExpander")
-	_gret := _info.InvokeClassMethod("get_item", _args[:], nil)
-	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_expander_get_item(_arg0)
 	runtime.KeepAlive(self)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 
 	return _object
 }
@@ -203,20 +197,18 @@ func (self *TreeExpander) Item() *coreglib.Object {
 //    - treeListRow (optional): list row displayed by self.
 //
 func (self *TreeExpander) ListRow() *TreeListRow {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTreeExpander // out
+	var _cret *C.GtkTreeListRow  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "TreeExpander")
-	_gret := _info.InvokeClassMethod("get_list_row", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_tree_expander_get_list_row(_arg0)
 	runtime.KeepAlive(self)
 
 	var _treeListRow *TreeListRow // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeListRow = wrapTreeListRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_treeListRow = wrapTreeListRow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _treeListRow
@@ -229,16 +221,15 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 //    - child (optional): GtkWidget, or NULL.
 //
 func (self *TreeExpander) SetChild(child Widgetter) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeExpander // out
+	var _arg1 *C.GtkWidget       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeExpander")
-	_info.InvokeClassMethod("set_child", _args[:], nil)
-
+	C.gtk_tree_expander_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
 }
@@ -250,16 +241,15 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 //    - listRow (optional): GtkTreeListRow, or NULL.
 //
 func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTreeExpander // out
+	var _arg1 *C.GtkTreeListRow  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if listRow != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listRow).Native()))
+		_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(coreglib.InternObject(listRow).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "TreeExpander")
-	_info.InvokeClassMethod("set_list_row", _args[:], nil)
-
+	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(listRow)
 }

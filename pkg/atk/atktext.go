@@ -7,28 +7,37 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_TextIface_add_selection(void*, gint, gint);
-// extern gboolean _gotk4_atk1_TextIface_remove_selection(void*, gint);
-// extern gboolean _gotk4_atk1_TextIface_set_caret_offset(void*, gint);
-// extern gboolean _gotk4_atk1_TextIface_set_selection(void*, gint, gint, gint);
-// extern gchar* _gotk4_atk1_TextIface_get_selection(void*, gint, gint*, gint*);
-// extern gchar* _gotk4_atk1_TextIface_get_text(void*, gint, gint);
-// extern gint _gotk4_atk1_TextIface_get_caret_offset(void*);
-// extern gint _gotk4_atk1_TextIface_get_character_count(void*);
-// extern gint _gotk4_atk1_TextIface_get_n_selections(void*);
-// extern gunichar _gotk4_atk1_TextIface_get_character_at_offset(void*, gint);
-// extern void _gotk4_atk1_TextIface_text_attributes_changed(void*);
-// extern void _gotk4_atk1_TextIface_text_caret_moved(void*, gint);
-// extern void _gotk4_atk1_TextIface_text_changed(void*, gint, gint);
-// extern void _gotk4_atk1_TextIface_text_selection_changed(void*);
+// extern AtkTextRange** _gotk4_atk1_TextIface_get_bounded_ranges(AtkText*, AtkTextRectangle*, AtkCoordType, AtkTextClipType, AtkTextClipType);
+// extern gboolean _gotk4_atk1_TextIface_add_selection(AtkText*, gint, gint);
+// extern gboolean _gotk4_atk1_TextIface_remove_selection(AtkText*, gint);
+// extern gboolean _gotk4_atk1_TextIface_scroll_substring_to(AtkText*, gint, gint, AtkScrollType);
+// extern gboolean _gotk4_atk1_TextIface_scroll_substring_to_point(AtkText*, gint, gint, AtkCoordType, gint, gint);
+// extern gboolean _gotk4_atk1_TextIface_set_caret_offset(AtkText*, gint);
+// extern gboolean _gotk4_atk1_TextIface_set_selection(AtkText*, gint, gint, gint);
+// extern gchar* _gotk4_atk1_TextIface_get_selection(AtkText*, gint, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_string_at_offset(AtkText*, gint, AtkTextGranularity, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text(AtkText*, gint, gint);
+// extern gchar* _gotk4_atk1_TextIface_get_text_after_offset(AtkText*, gint, AtkTextBoundary, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text_at_offset(AtkText*, gint, AtkTextBoundary, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text_before_offset(AtkText*, gint, AtkTextBoundary, gint*, gint*);
+// extern gint _gotk4_atk1_TextIface_get_caret_offset(AtkText*);
+// extern gint _gotk4_atk1_TextIface_get_character_count(AtkText*);
+// extern gint _gotk4_atk1_TextIface_get_n_selections(AtkText*);
+// extern gint _gotk4_atk1_TextIface_get_offset_at_point(AtkText*, gint, gint, AtkCoordType);
+// extern gunichar _gotk4_atk1_TextIface_get_character_at_offset(AtkText*, gint);
+// extern void _gotk4_atk1_TextIface_get_character_extents(AtkText*, gint, gint*, gint*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_TextIface_get_range_extents(AtkText*, gint, gint, AtkCoordType, AtkTextRectangle*);
+// extern void _gotk4_atk1_TextIface_text_attributes_changed(AtkText*);
+// extern void _gotk4_atk1_TextIface_text_caret_moved(AtkText*, gint);
+// extern void _gotk4_atk1_TextIface_text_changed(AtkText*, gint, gint);
+// extern void _gotk4_atk1_TextIface_text_selection_changed(AtkText*);
 // extern void _gotk4_atk1_Text_ConnectTextAttributesChanged(gpointer, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextCaretMoved(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextChanged(gpointer, gint, gint, guintptr);
@@ -43,7 +52,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextAttribute() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "TextAttribute").RegisteredGType())
+	gtype := coreglib.Type(C.atk_text_attribute_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextAttribute)
 	return gtype
 }
@@ -54,7 +63,7 @@ func GTypeTextAttribute() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextBoundary() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "TextBoundary").RegisteredGType())
+	gtype := coreglib.Type(C.atk_text_boundary_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextBoundary)
 	return gtype
 }
@@ -65,7 +74,7 @@ func GTypeTextBoundary() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextClipType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "TextClipType").RegisteredGType())
+	gtype := coreglib.Type(C.atk_text_clip_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextClipType)
 	return gtype
 }
@@ -76,7 +85,7 @@ func GTypeTextClipType() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextGranularity() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "TextGranularity").RegisteredGType())
+	gtype := coreglib.Type(C.atk_text_granularity_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextGranularity)
 	return gtype
 }
@@ -87,7 +96,7 @@ func GTypeTextGranularity() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeText() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Text").RegisteredGType())
+	gtype := coreglib.Type(C.atk_text_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalText)
 	return gtype
 }
@@ -98,7 +107,7 @@ func GTypeText() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextRange() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "TextRange").RegisteredGType())
+	gtype := coreglib.Type(C.atk_text_range_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextRange)
 	return gtype
 }
@@ -267,6 +276,122 @@ func (t TextAttribute) String() string {
 	}
 }
 
+// TextAttributeForName: get the TextAttribute type corresponding to a text
+// attribute name.
+//
+// The function takes the following parameters:
+//
+//    - name: string which is the (non-localized) name of an ATK text attribute.
+//
+// The function returns the following values:
+//
+//    - textAttribute enumerated type corresponding to the specified name, or
+//      K_TEXT_ATTRIBUTE_INVALID if no matching text attribute is found.
+//
+func TextAttributeForName(name string) TextAttribute {
+	var _arg1 *C.gchar           // out
+	var _cret C.AtkTextAttribute // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_text_attribute_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _textAttribute TextAttribute // out
+
+	_textAttribute = TextAttribute(_cret)
+
+	return _textAttribute
+}
+
+// TextAttributeGetName gets the name corresponding to the TextAttribute.
+//
+// The function takes the following parameters:
+//
+//    - attr whose name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: string containing the name; this string should not be freed.
+//
+func TextAttributeGetName(attr TextAttribute) string {
+	var _arg1 C.AtkTextAttribute // out
+	var _cret *C.gchar           // in
+
+	_arg1 = C.AtkTextAttribute(attr)
+
+	_cret = C.atk_text_attribute_get_name(_arg1)
+	runtime.KeepAlive(attr)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// TextAttributeGetValue gets the value for the index of the TextAttribute.
+//
+// The function takes the following parameters:
+//
+//    - attr for which a value is required.
+//    - index_: index of the required value.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the value; this string should not be
+//      freed; NULL is returned if there are no values maintained for the attr
+//      value.
+//
+func TextAttributeGetValue(attr TextAttribute, index_ int32) string {
+	var _arg1 C.AtkTextAttribute // out
+	var _arg2 C.gint             // out
+	var _cret *C.gchar           // in
+
+	_arg1 = C.AtkTextAttribute(attr)
+	_arg2 = C.gint(index_)
+
+	_cret = C.atk_text_attribute_get_value(_arg1, _arg2)
+	runtime.KeepAlive(attr)
+	runtime.KeepAlive(index_)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// TextAttributeRegister: associate name with a new TextAttribute.
+//
+// The function takes the following parameters:
+//
+//    - name string.
+//
+// The function returns the following values:
+//
+//    - textAttribute associated with name.
+//
+func TextAttributeRegister(name string) TextAttribute {
+	var _arg1 *C.gchar           // out
+	var _cret C.AtkTextAttribute // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_text_attribute_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _textAttribute TextAttribute // out
+
+	_textAttribute = TextAttribute(_cret)
+
+	return _textAttribute
+}
+
 // TextBoundary: text boundary types used for specifying boundaries for regions
 // of text. This enumeration is deprecated since 2.9.4 and should not be used.
 // Use AtkTextGranularity with #atk_text_get_string_at_offset instead.
@@ -418,6 +543,22 @@ type TextOverrider interface {
 	//    - ok: TRUE if successful, FALSE otherwise.
 	//
 	AddSelection(startOffset, endOffset int32) bool
+	// BoundedRanges: get the ranges of text in the specified bounding box.
+	//
+	// The function takes the following parameters:
+	//
+	//    - rect: atkTextRectangle giving the dimensions of the bounding box.
+	//    - coordType: specify whether coordinates are relative to the screen or
+	//      widget window.
+	//    - xClipType: specify the horizontal clip type.
+	//    - yClipType: specify the vertical clip type.
+	//
+	// The function returns the following values:
+	//
+	//    - textRanges: array of AtkTextRange. The last element of the array
+	//      returned by this function will be NULL.
+	//
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
 	//
 	// The function returns the following values:
@@ -445,6 +586,27 @@ type TextOverrider interface {
 	//    - gint: number of characters or -1 in case of failure.
 	//
 	CharacterCount() int32
+	// CharacterExtents: if the extent can not be obtained (e.g. missing
+	// support), all of x, y, width, height are set to -1.
+	//
+	// Get the bounding box containing the glyph representing the character at a
+	// particular text offset.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset of the text character for which bounding information is
+	//      required.
+	//    - coords: specify whether coordinates are relative to the screen or
+	//      widget window.
+	//
+	// The function returns the following values:
+	//
+	//    - x (optional): pointer for the x coordinate of the bounding box.
+	//    - y (optional): pointer for the y coordinate of the bounding box.
+	//    - width (optional): pointer for the width of the bounding box.
+	//    - height (optional): pointer for the height of the bounding box.
+	//
+	CharacterExtents(offset int32, coords CoordType) (x, y, width, height int32)
 	// NSelections gets the number of selected regions.
 	//
 	// The function returns the following values:
@@ -452,6 +614,43 @@ type TextOverrider interface {
 	//    - gint: number of selected regions, or -1 in the case of failure.
 	//
 	NSelections() int32
+	// OffsetAtPoint gets the offset of the character located at coordinates x
+	// and y. x and y are interpreted as being relative to the screen or this
+	// widget's window depending on coords.
+	//
+	// The function takes the following parameters:
+	//
+	//    - x: screen x-position of character.
+	//    - y: screen y-position of character.
+	//    - coords: specify whether coordinates are relative to the screen or
+	//      widget window.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: offset to the character which is located at the specified x and
+	//      y coordinates of -1 in case of failure.
+	//
+	OffsetAtPoint(x, y int32, coords CoordType) int32
+	// RangeExtents: get the bounding box for text within the specified range.
+	//
+	// If the extents can not be obtained (e.g. or missing support), the
+	// rectangle fields are set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startOffset: offset of the first text character for which boundary
+	//      information is required.
+	//    - endOffset: offset of the text character after the last character for
+	//      which boundary information is required.
+	//    - coordType: specify whether coordinates are relative to the screen or
+	//      widget window.
+	//
+	// The function returns the following values:
+	//
+	//    - rect: pointer to a AtkTextRectangle which is filled in by this
+	//      function.
+	//
+	RangeExtents(startOffset, endOffset int32, coordType CoordType) *TextRectangle
 	// Selection gets the text from the specified selection.
 	//
 	// The function takes the following parameters:
@@ -472,6 +671,54 @@ type TextOverrider interface {
 	//      g_free() to free the returned string.
 	//
 	Selection(selectionNum int32) (startOffset, endOffset int32, utf8 string)
+	// StringAtOffset gets a portion of the text exposed through an Text
+	// according to a given offset and a specific granularity, along with the
+	// start and end offsets defining the boundaries of such a portion of text.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset
+	// is returned.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from
+	// the word start at or before the offset to the word start after the
+	// offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is
+	// from the sentence start at or before the offset to the sentence start
+	// after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from
+	// the line start at or before the offset to the line start after the
+	// offset.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+	// from the start of the paragraph at or before the offset to the start of
+	// the following paragraph after the offset.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset: position.
+	//    - granularity: TextGranularity.
+	//
+	// The function returns the following values:
+	//
+	//    - startOffset: starting character offset of the returned string, or -1
+	//      in the case of error (e.g. invalid offset, not implemented).
+	//    - endOffset: offset of the first character after the returned string,
+	//      or -1 in the case of error (e.g. invalid offset, not implemented).
+	//    - utf8 (optional): newly allocated string containing the text at the
+	//      offset bounded by the specified granularity. Use g_free() to free the
+	//      returned string. Returns NULL if the offset is invalid or no
+	//      implementation is available.
+	//
+	StringAtOffset(offset int32, granularity TextGranularity) (startOffset, endOffset int32, utf8 string)
 	// Text gets the specified text.
 	//
 	// The function takes the following parameters:
@@ -487,6 +734,87 @@ type TextOverrider interface {
 	//      string.
 	//
 	Text(startOffset, endOffset int32) string
+	// TextAfterOffset gets the specified text.
+	//
+	// Deprecated: Please use atk_text_get_string_at_offset() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset: position.
+	//    - boundaryType: TextBoundary.
+	//
+	// The function returns the following values:
+	//
+	//    - startOffset: starting character offset of the returned string.
+	//    - endOffset: offset of the first character after the returned
+	//      substring.
+	//    - utf8: newly allocated string containing the text after offset bounded
+	//      by the specified boundary_type. Use g_free() to free the returned
+	//      string.
+	//
+	TextAfterOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string)
+	// TextAtOffset gets the specified text.
+	//
+	// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the
+	// offset is returned.
+	//
+	// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string
+	// is from the word start at or before the offset to the word start after
+	// the offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned
+	// string is from the sentence start at or before the offset to the sentence
+	// start after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string
+	// is from the line start at or before the offset to the line start after
+	// the offset.
+	//
+	// Deprecated: This method is deprecated since ATK version 2.9.4. Please use
+	// atk_text_get_string_at_offset() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset: position.
+	//    - boundaryType: TextBoundary.
+	//
+	// The function returns the following values:
+	//
+	//    - startOffset: starting character offset of the returned string.
+	//    - endOffset: offset of the first character after the returned
+	//      substring.
+	//    - utf8: newly allocated string containing the text at offset bounded by
+	//      the specified boundary_type. Use g_free() to free the returned
+	//      string.
+	//
+	TextAtOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string)
+	// TextBeforeOffset gets the specified text.
+	//
+	// Deprecated: Please use atk_text_get_string_at_offset() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//    - offset: position.
+	//    - boundaryType: TextBoundary.
+	//
+	// The function returns the following values:
+	//
+	//    - startOffset: starting character offset of the returned string.
+	//    - endOffset: offset of the first character after the returned
+	//      substring.
+	//    - utf8: newly allocated string containing the text before offset
+	//      bounded by the specified boundary_type. Use g_free() to free the
+	//      returned string.
+	//
+	TextBeforeOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string)
 	// RemoveSelection removes the specified selection.
 	//
 	// The function takes the following parameters:
@@ -502,6 +830,37 @@ type TextOverrider interface {
 	//    - ok: TRUE if successful, FALSE otherwise.
 	//
 	RemoveSelection(selectionNum int32) bool
+	// ScrollSubstringTo makes a substring of text visible on the screen by
+	// scrolling all necessary parents.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startOffset: start offset in the text.
+	//    - endOffset: end offset in the text, or -1 for the end of the text.
+	//    - typ: specify where the object should be made visible.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether scrolling was successful.
+	//
+	ScrollSubstringTo(startOffset, endOffset int32, typ ScrollType) bool
+	// ScrollSubstringToPoint: move the top-left of a substring of text to a
+	// given position of the screen by scrolling all necessary parents.
+	//
+	// The function takes the following parameters:
+	//
+	//    - startOffset: start offset in the text.
+	//    - endOffset: end offset in the text, or -1 for the end of the text.
+	//    - coords: specify whether coordinates are relative to the screen or to
+	//      the parent object.
+	//    - x: x-position where to scroll to.
+	//    - y: y-position where to scroll to.
+	//
+	// The function returns the following values:
+	//
+	//    - ok: whether scrolling was successful.
+	//
+	ScrollSubstringToPoint(startOffset, endOffset int32, coords CoordType, x, y int32) bool
 	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	//
 	// In the case of rich-text content, this method should either grab focus or
@@ -596,20 +955,45 @@ type Texter interface {
 
 	// AddSelection adds a selection bounded by the specified offsets.
 	AddSelection(startOffset, endOffset int32) bool
+	// BoundedRanges: get the ranges of text in the specified bounding box.
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange
 	// CaretOffset gets the offset of the position of the caret (cursor).
 	CaretOffset() int32
 	// CharacterAtOffset gets the specified text.
 	CharacterAtOffset(offset int32) uint32
 	// CharacterCount gets the character count.
 	CharacterCount() int32
+	// CharacterExtents: if the extent can not be obtained (e.g.
+	CharacterExtents(offset int32, coords CoordType) (x, y, width, height int32)
 	// NSelections gets the number of selected regions.
 	NSelections() int32
+	// OffsetAtPoint gets the offset of the character located at coordinates x
+	// and y.
+	OffsetAtPoint(x, y int32, coords CoordType) int32
+	// RangeExtents: get the bounding box for text within the specified range.
+	RangeExtents(startOffset, endOffset int32, coordType CoordType) *TextRectangle
 	// Selection gets the text from the specified selection.
 	Selection(selectionNum int32) (startOffset, endOffset int32, utf8 string)
+	// StringAtOffset gets a portion of the text exposed through an Text
+	// according to a given offset and a specific granularity, along with the
+	// start and end offsets defining the boundaries of such a portion of text.
+	StringAtOffset(offset int32, granularity TextGranularity) (startOffset, endOffset int32, utf8 string)
 	// Text gets the specified text.
 	Text(startOffset, endOffset int32) string
+	// TextAfterOffset gets the specified text.
+	TextAfterOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string)
+	// TextAtOffset gets the specified text.
+	TextAtOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string)
+	// TextBeforeOffset gets the specified text.
+	TextBeforeOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string)
 	// RemoveSelection removes the specified selection.
 	RemoveSelection(selectionNum int32) bool
+	// ScrollSubstringTo makes a substring of text visible on the screen by
+	// scrolling all necessary parents.
+	ScrollSubstringTo(startOffset, endOffset int32, typ ScrollType) bool
+	// ScrollSubstringToPoint: move the top-left of a substring of text to a
+	// given position of the screen by scrolling all necessary parents.
+	ScrollSubstringToPoint(startOffset, endOffset int32, coords CoordType, x, y int32) bool
 	// SetCaretOffset sets the caret (cursor) position to the specified offset.
 	SetCaretOffset(offset int32) bool
 	// SetSelection changes the start and end offset of the specified selection.
@@ -639,25 +1023,35 @@ type Texter interface {
 var _ Texter = (*Text)(nil)
 
 func ifaceInitTexter(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "TextIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("add_selection"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_add_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_caret_offset"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_get_caret_offset)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_character_at_offset"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_get_character_at_offset)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_character_count"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_get_character_count)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_n_selections"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_get_n_selections)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_selection"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_get_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_text"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_get_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_selection"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_remove_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_caret_offset"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_set_caret_offset)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_selection"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_set_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("text_attributes_changed"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_text_attributes_changed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("text_caret_moved"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_text_caret_moved)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("text_changed"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_text_changed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("text_selection_changed"))) = unsafe.Pointer(C._gotk4_atk1_TextIface_text_selection_changed)
+	iface := (*C.AtkTextIface)(unsafe.Pointer(gifacePtr))
+	iface.add_selection = (*[0]byte)(C._gotk4_atk1_TextIface_add_selection)
+	iface.get_bounded_ranges = (*[0]byte)(C._gotk4_atk1_TextIface_get_bounded_ranges)
+	iface.get_caret_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_caret_offset)
+	iface.get_character_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_at_offset)
+	iface.get_character_count = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_count)
+	iface.get_character_extents = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_extents)
+	iface.get_n_selections = (*[0]byte)(C._gotk4_atk1_TextIface_get_n_selections)
+	iface.get_offset_at_point = (*[0]byte)(C._gotk4_atk1_TextIface_get_offset_at_point)
+	iface.get_range_extents = (*[0]byte)(C._gotk4_atk1_TextIface_get_range_extents)
+	iface.get_selection = (*[0]byte)(C._gotk4_atk1_TextIface_get_selection)
+	iface.get_string_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_string_at_offset)
+	iface.get_text = (*[0]byte)(C._gotk4_atk1_TextIface_get_text)
+	iface.get_text_after_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_text_after_offset)
+	iface.get_text_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_text_at_offset)
+	iface.get_text_before_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_text_before_offset)
+	iface.remove_selection = (*[0]byte)(C._gotk4_atk1_TextIface_remove_selection)
+	iface.scroll_substring_to = (*[0]byte)(C._gotk4_atk1_TextIface_scroll_substring_to)
+	iface.scroll_substring_to_point = (*[0]byte)(C._gotk4_atk1_TextIface_scroll_substring_to_point)
+	iface.set_caret_offset = (*[0]byte)(C._gotk4_atk1_TextIface_set_caret_offset)
+	iface.set_selection = (*[0]byte)(C._gotk4_atk1_TextIface_set_selection)
+	iface.text_attributes_changed = (*[0]byte)(C._gotk4_atk1_TextIface_text_attributes_changed)
+	iface.text_caret_moved = (*[0]byte)(C._gotk4_atk1_TextIface_text_caret_moved)
+	iface.text_changed = (*[0]byte)(C._gotk4_atk1_TextIface_text_changed)
+	iface.text_selection_changed = (*[0]byte)(C._gotk4_atk1_TextIface_text_selection_changed)
 }
 
 //export _gotk4_atk1_TextIface_add_selection
-func _gotk4_atk1_TextIface_add_selection(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_add_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -676,8 +1070,41 @@ func _gotk4_atk1_TextIface_add_selection(arg0 *C.void, arg1 C.gint, arg2 C.gint)
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_get_bounded_ranges
+func _gotk4_atk1_TextIface_get_bounded_ranges(arg0 *C.AtkText, arg1 *C.AtkTextRectangle, arg2 C.AtkCoordType, arg3 C.AtkTextClipType, arg4 C.AtkTextClipType) (cret **C.AtkTextRange) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _rect *TextRectangle    // out
+	var _coordType CoordType    // out
+	var _xClipType TextClipType // out
+	var _yClipType TextClipType // out
+
+	_rect = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_coordType = CoordType(arg2)
+	_xClipType = TextClipType(arg3)
+	_yClipType = TextClipType(arg4)
+
+	textRanges := iface.BoundedRanges(_rect, _coordType, _xClipType, _yClipType)
+
+	{
+		cret = (**C.AtkTextRange)(C.calloc(C.size_t((len(textRanges) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(textRanges)+1)
+			var zero *C.AtkTextRange
+			out[len(textRanges)] = zero
+			for i := range textRanges {
+				out[i] = (*C.AtkTextRange)(gextras.StructNative(unsafe.Pointer(textRanges[i])))
+				runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(textRanges[i])), nil)
+			}
+		}
+	}
+
+	return cret
+}
+
 //export _gotk4_atk1_TextIface_get_caret_offset
-func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.AtkText) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -689,7 +1116,7 @@ func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_get_character_at_offset
-func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.void, arg1 C.gint) (cret C.gunichar) {
+func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gunichar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -705,7 +1132,7 @@ func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.void, arg1 C.gint) (c
 }
 
 //export _gotk4_atk1_TextIface_get_character_count
-func _gotk4_atk1_TextIface_get_character_count(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_TextIface_get_character_count(arg0 *C.AtkText) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -716,8 +1143,27 @@ func _gotk4_atk1_TextIface_get_character_count(arg0 *C.void) (cret C.gint) {
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_get_character_extents
+func _gotk4_atk1_TextIface_get_character_extents(arg0 *C.AtkText, arg1 C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint, arg6 C.AtkCoordType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _offset int32     // out
+	var _coords CoordType // out
+
+	_offset = int32(arg1)
+	_coords = CoordType(arg6)
+
+	x, y, width, height := iface.CharacterExtents(_offset, _coords)
+
+	*arg2 = C.gint(x)
+	*arg3 = C.gint(y)
+	*arg4 = C.gint(width)
+	*arg5 = C.gint(height)
+}
+
 //export _gotk4_atk1_TextIface_get_n_selections
-func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.AtkText) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -728,8 +1174,46 @@ func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.void) (cret C.gint) {
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_get_offset_at_point
+func _gotk4_atk1_TextIface_get_offset_at_point(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gint) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _x int32          // out
+	var _y int32          // out
+	var _coords CoordType // out
+
+	_x = int32(arg1)
+	_y = int32(arg2)
+	_coords = CoordType(arg3)
+
+	gint := iface.OffsetAtPoint(_x, _y, _coords)
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_range_extents
+func _gotk4_atk1_TextIface_get_range_extents(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType, arg4 *C.AtkTextRectangle) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _startOffset int32   // out
+	var _endOffset int32     // out
+	var _coordType CoordType // out
+
+	_startOffset = int32(arg1)
+	_endOffset = int32(arg2)
+	_coordType = CoordType(arg3)
+
+	rect := iface.RangeExtents(_startOffset, _endOffset, _coordType)
+
+	*arg4 = *(*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+}
+
 //export _gotk4_atk1_TextIface_get_selection
-func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TextIface_get_selection(arg0 *C.AtkText, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -746,8 +1230,30 @@ func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.gint
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_get_string_at_offset
+func _gotk4_atk1_TextIface_get_string_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextGranularity, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _offset int32                // out
+	var _granularity TextGranularity // out
+
+	_offset = int32(arg1)
+	_granularity = TextGranularity(arg2)
+
+	startOffset, endOffset, utf8 := iface.StringAtOffset(_offset, _granularity)
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	}
+
+	return cret
+}
+
 //export _gotk4_atk1_TextIface_get_text
-func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TextIface_get_text(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -764,8 +1270,68 @@ func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cre
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_get_text_after_offset
+func _gotk4_atk1_TextIface_get_text_after_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _offset int32              // out
+	var _boundaryType TextBoundary // out
+
+	_offset = int32(arg1)
+	_boundaryType = TextBoundary(arg2)
+
+	startOffset, endOffset, utf8 := iface.TextAfterOffset(_offset, _boundaryType)
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_text_at_offset
+func _gotk4_atk1_TextIface_get_text_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _offset int32              // out
+	var _boundaryType TextBoundary // out
+
+	_offset = int32(arg1)
+	_boundaryType = TextBoundary(arg2)
+
+	startOffset, endOffset, utf8 := iface.TextAtOffset(_offset, _boundaryType)
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_text_before_offset
+func _gotk4_atk1_TextIface_get_text_before_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _offset int32              // out
+	var _boundaryType TextBoundary // out
+
+	_offset = int32(arg1)
+	_boundaryType = TextBoundary(arg2)
+
+	startOffset, endOffset, utf8 := iface.TextBeforeOffset(_offset, _boundaryType)
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
 //export _gotk4_atk1_TextIface_remove_selection
-func _gotk4_atk1_TextIface_remove_selection(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_remove_selection(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -782,8 +1348,56 @@ func _gotk4_atk1_TextIface_remove_selection(arg0 *C.void, arg1 C.gint) (cret C.g
 	return cret
 }
 
+//export _gotk4_atk1_TextIface_scroll_substring_to
+func _gotk4_atk1_TextIface_scroll_substring_to(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkScrollType) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _typ ScrollType    // out
+
+	_startOffset = int32(arg1)
+	_endOffset = int32(arg2)
+	_typ = ScrollType(arg3)
+
+	ok := iface.ScrollSubstringTo(_startOffset, _endOffset, _typ)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_scroll_substring_to_point
+func _gotk4_atk1_TextIface_scroll_substring_to_point(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType, arg4 C.gint, arg5 C.gint) (cret C.gboolean) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TextOverrider)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _coords CoordType  // out
+	var _x int32           // out
+	var _y int32           // out
+
+	_startOffset = int32(arg1)
+	_endOffset = int32(arg2)
+	_coords = CoordType(arg3)
+	_x = int32(arg4)
+	_y = int32(arg5)
+
+	ok := iface.ScrollSubstringToPoint(_startOffset, _endOffset, _coords, _x, _y)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_atk1_TextIface_set_caret_offset
-func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.void, arg1 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -801,7 +1415,7 @@ func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.void, arg1 C.gint) (cret C.g
 }
 
 //export _gotk4_atk1_TextIface_set_selection
-func _gotk4_atk1_TextIface_set_selection(arg0 *C.void, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+func _gotk4_atk1_TextIface_set_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -823,7 +1437,7 @@ func _gotk4_atk1_TextIface_set_selection(arg0 *C.void, arg1 C.gint, arg2 C.gint,
 }
 
 //export _gotk4_atk1_TextIface_text_attributes_changed
-func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.void) {
+func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.AtkText) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -831,7 +1445,7 @@ func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.void) {
 }
 
 //export _gotk4_atk1_TextIface_text_caret_moved
-func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.void, arg1 C.gint) {
+func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.AtkText, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -843,7 +1457,7 @@ func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.void, arg1 C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_text_changed
-func _gotk4_atk1_TextIface_text_changed(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
+func _gotk4_atk1_TextIface_text_changed(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -857,7 +1471,7 @@ func _gotk4_atk1_TextIface_text_changed(arg0 *C.void, arg1 C.gint, arg2 C.gint) 
 }
 
 //export _gotk4_atk1_TextIface_text_selection_changed
-func _gotk4_atk1_TextIface_text_selection_changed(arg0 *C.void) {
+func _gotk4_atk1_TextIface_text_selection_changed(arg0 *C.AtkText) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -1049,27 +1663,89 @@ func (text *Text) ConnectTextSelectionChanged(f func()) coreglib.SignalHandle {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) AddSelection(startOffset, endOffset int32) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("add_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_add_selection(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// BoundedRanges: get the ranges of text in the specified bounding box.
+//
+// The function takes the following parameters:
+//
+//    - rect: atkTextRectangle giving the dimensions of the bounding box.
+//    - coordType: specify whether coordinates are relative to the screen or
+//      widget window.
+//    - xClipType: specify the horizontal clip type.
+//    - yClipType: specify the vertical clip type.
+//
+// The function returns the following values:
+//
+//    - textRanges: array of AtkTextRange. The last element of the array returned
+//      by this function will be NULL.
+//
+func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
+	var _arg0 *C.AtkText          // out
+	var _arg1 *C.AtkTextRectangle // out
+	var _arg2 C.AtkCoordType      // out
+	var _arg3 C.AtkTextClipType   // out
+	var _arg4 C.AtkTextClipType   // out
+	var _cret **C.AtkTextRange    // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg2 = C.AtkCoordType(coordType)
+	_arg3 = C.AtkTextClipType(xClipType)
+	_arg4 = C.AtkTextClipType(yClipType)
+
+	_cret = C.atk_text_get_bounded_ranges(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(coordType)
+	runtime.KeepAlive(xClipType)
+	runtime.KeepAlive(yClipType)
+
+	var _textRanges []*TextRange // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		var i int
+		var z *C.AtkTextRange
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_textRanges = make([]*TextRange, i)
+		for i := range src {
+			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(_textRanges[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
+
+	return _textRanges
 }
 
 // CaretOffset gets the offset of the position of the caret (cursor).
@@ -1080,19 +1756,17 @@ func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 //      not located inside the element or in the case of any other failure.
 //
 func (text *Text) CaretOffset() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("get_caret_offset", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_get_caret_offset(_arg0)
 	runtime.KeepAlive(text)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1108,21 +1782,20 @@ func (text *Text) CaretOffset() int32 {
 //    - gunichar: character at offset or 0 in the case of failure.
 //
 func (text *Text) CharacterAtOffset(offset int32) uint32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gunichar // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("get_character_at_offset", _args[:], nil)
-	_cret := *(*C.gunichar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_get_character_at_offset(_arg0, _arg1)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 
 	var _gunichar uint32 // out
 
-	_gunichar = uint32(*(*C.gunichar)(unsafe.Pointer(&_cret)))
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -1134,21 +1807,69 @@ func (text *Text) CharacterAtOffset(offset int32) uint32 {
 //    - gint: number of characters or -1 in case of failure.
 //
 func (text *Text) CharacterCount() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("get_character_count", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_get_character_count(_arg0)
 	runtime.KeepAlive(text)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// CharacterExtents: if the extent can not be obtained (e.g. missing support),
+// all of x, y, width, height are set to -1.
+//
+// Get the bounding box containing the glyph representing the character at a
+// particular text offset.
+//
+// The function takes the following parameters:
+//
+//    - offset of the text character for which bounding information is required.
+//    - coords: specify whether coordinates are relative to the screen or widget
+//      window.
+//
+// The function returns the following values:
+//
+//    - x (optional): pointer for the x coordinate of the bounding box.
+//    - y (optional): pointer for the y coordinate of the bounding box.
+//    - width (optional): pointer for the width of the bounding box.
+//    - height (optional): pointer for the height of the bounding box.
+//
+func (text *Text) CharacterExtents(offset int32, coords CoordType) (x, y, width, height int32) {
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // in
+	var _arg3 C.gint         // in
+	var _arg4 C.gint         // in
+	var _arg5 C.gint         // in
+	var _arg6 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg6 = C.AtkCoordType(coords)
+
+	C.atk_text_get_character_extents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(coords)
+
+	var _x int32      // out
+	var _y int32      // out
+	var _width int32  // out
+	var _height int32 // out
+
+	_x = int32(_arg2)
+	_y = int32(_arg3)
+	_width = int32(_arg4)
+	_height = int32(_arg5)
+
+	return _x, _y, _width, _height
 }
 
 // NSelections gets the number of selected regions.
@@ -1158,21 +1879,103 @@ func (text *Text) CharacterCount() int32 {
 //    - gint: number of selected regions, or -1 in the case of failure.
 //
 func (text *Text) NSelections() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("get_n_selections", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_get_n_selections(_arg0)
 	runtime.KeepAlive(text)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// OffsetAtPoint gets the offset of the character located at coordinates x and
+// y. x and y are interpreted as being relative to the screen or this widget's
+// window depending on coords.
+//
+// The function takes the following parameters:
+//
+//    - x: screen x-position of character.
+//    - y: screen y-position of character.
+//    - coords: specify whether coordinates are relative to the screen or widget
+//      window.
+//
+// The function returns the following values:
+//
+//    - gint: offset to the character which is located at the specified x and y
+//      coordinates of -1 in case of failure.
+//
+func (text *Text) OffsetAtPoint(x, y int32, coords CoordType) int32 {
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _arg3 C.AtkCoordType // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coords)
+
+	_cret = C.atk_text_get_offset_at_point(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coords)
+
+	var _gint int32 // out
+
+	_gint = int32(_cret)
+
+	return _gint
+}
+
+// RangeExtents: get the bounding box for text within the specified range.
+//
+// If the extents can not be obtained (e.g. or missing support), the rectangle
+// fields are set to -1.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: offset of the first text character for which boundary
+//      information is required.
+//    - endOffset: offset of the text character after the last character for
+//      which boundary information is required.
+//    - coordType: specify whether coordinates are relative to the screen or
+//      widget window.
+//
+// The function returns the following values:
+//
+//    - rect: pointer to a AtkTextRectangle which is filled in by this function.
+//
+func (text *Text) RangeExtents(startOffset, endOffset int32, coordType CoordType) *TextRectangle {
+	var _arg0 *C.AtkText         // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _arg3 C.AtkCoordType     // out
+	var _arg4 C.AtkTextRectangle // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_text_get_range_extents(_arg0, _arg1, _arg2, _arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(coordType)
+
+	var _rect *TextRectangle // out
+
+	_rect = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+
+	return _rect
 }
 
 // Selection gets the text from the specified selection.
@@ -1195,16 +1998,16 @@ func (text *Text) NSelections() int32 {
 //      to free the returned string.
 //
 func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, utf8 string) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // in
+	var _arg3 C.gint     // in
+	var _cret *C.gchar   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("get_selection", _args[:], _outs[:])
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_get_selection(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 
@@ -1212,10 +2015,86 @@ func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, u
 	var _endOffset int32   // out
 	var _utf8 string       // out
 
-	_startOffset = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_endOffset = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_startOffset = int32(_arg2)
+	_endOffset = int32(_arg3)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// StringAtOffset gets a portion of the text exposed through an Text according
+// to a given offset and a specific granularity, along with the start and end
+// offsets defining the boundaries of such a portion of text.
+//
+// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset is
+// returned.
+//
+// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from the
+// word start at or before the offset to the word start after the offset.
+//
+// The returned string will contain the word at the offset if the offset is
+// inside a word and will contain the word before the offset if the offset is
+// not inside a word.
+//
+// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is from
+// the sentence start at or before the offset to the sentence start after the
+// offset.
+//
+// The returned string will contain the sentence at the offset if the offset is
+// inside a sentence and will contain the sentence before the offset if the
+// offset is not inside a sentence.
+//
+// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from the
+// line start at or before the offset to the line start after the offset.
+//
+// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is from
+// the start of the paragraph at or before the offset to the start of the
+// following paragraph after the offset.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - granularity: TextGranularity.
+//
+// The function returns the following values:
+//
+//    - startOffset: starting character offset of the returned string, or -1 in
+//      the case of error (e.g. invalid offset, not implemented).
+//    - endOffset: offset of the first character after the returned string, or -1
+//      in the case of error (e.g. invalid offset, not implemented).
+//    - utf8 (optional): newly allocated string containing the text at the offset
+//      bounded by the specified granularity. Use g_free() to free the returned
+//      string. Returns NULL if the offset is invalid or no implementation is
+//      available.
+//
+func (text *Text) StringAtOffset(offset int32, granularity TextGranularity) (startOffset, endOffset int32, utf8 string) {
+	var _arg0 *C.AtkText           // out
+	var _arg1 C.gint               // out
+	var _arg2 C.AtkTextGranularity // out
+	var _arg3 C.gint               // in
+	var _arg4 C.gint               // in
+	var _cret *C.gchar             // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextGranularity(granularity)
+
+	_cret = C.atk_text_get_string_at_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(granularity)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
+
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _startOffset, _endOffset, _utf8
 }
@@ -1234,26 +2113,185 @@ func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, u
 //      but not including end_offset. Use g_free() to free the returned string.
 //
 func (text *Text) Text(startOffset, endOffset int32) string {
-	var _args [3]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret *C.gchar   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("get_text", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_get_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// TextAfterOffset gets the specified text.
+//
+// Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//    - startOffset: starting character offset of the returned string.
+//    - endOffset: offset of the first character after the returned substring.
+//    - utf8: newly allocated string containing the text after offset bounded by
+//      the specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) TextAfterOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string) {
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C.atk_text_get_text_after_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
+
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// TextAtOffset gets the specified text.
+//
+// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the offset is
+// returned.
+//
+// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string is
+// from the word start at or before the offset to the word start after the
+// offset.
+//
+// The returned string will contain the word at the offset if the offset is
+// inside a word and will contain the word before the offset if the offset is
+// not inside a word.
+//
+// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned string
+// is from the sentence start at or before the offset to the sentence start
+// after the offset.
+//
+// The returned string will contain the sentence at the offset if the offset is
+// inside a sentence and will contain the sentence before the offset if the
+// offset is not inside a sentence.
+//
+// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string is
+// from the line start at or before the offset to the line start after the
+// offset.
+//
+// Deprecated: This method is deprecated since ATK version 2.9.4. Please use
+// atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//    - startOffset: starting character offset of the returned string.
+//    - endOffset: offset of the first character after the returned substring.
+//    - utf8: newly allocated string containing the text at offset bounded by the
+//      specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) TextAtOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string) {
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C.atk_text_get_text_at_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
+
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// TextBeforeOffset gets the specified text.
+//
+// Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//    - offset: position.
+//    - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//    - startOffset: starting character offset of the returned string.
+//    - endOffset: offset of the first character after the returned substring.
+//    - utf8: newly allocated string containing the text before offset bounded by
+//      the specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) TextBeforeOffset(offset int32, boundaryType TextBoundary) (startOffset, endOffset int32, utf8 string) {
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C.atk_text_get_text_before_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int32 // out
+	var _endOffset int32   // out
+	var _utf8 string       // out
+
+	_startOffset = int32(_arg3)
+	_endOffset = int32(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
 }
 
 // RemoveSelection removes the specified selection.
@@ -1271,21 +2309,109 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) RemoveSelection(selectionNum int32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("remove_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_remove_selection(_arg0, _arg1)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollSubstringTo makes a substring of text visible on the screen by
+// scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: start offset in the text.
+//    - endOffset: end offset in the text, or -1 for the end of the text.
+//    - typ: specify where the object should be made visible.
+//
+// The function returns the following values:
+//
+//    - ok: whether scrolling was successful.
+//
+func (text *Text) ScrollSubstringTo(startOffset, endOffset int32, typ ScrollType) bool {
+	var _arg0 *C.AtkText      // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkScrollType // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkScrollType(typ)
+
+	_cret = C.atk_text_scroll_substring_to(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollSubstringToPoint: move the top-left of a substring of text to a given
+// position of the screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//    - startOffset: start offset in the text.
+//    - endOffset: end offset in the text, or -1 for the end of the text.
+//    - coords: specify whether coordinates are relative to the screen or to the
+//      parent object.
+//    - x: x-position where to scroll to.
+//    - y: y-position where to scroll to.
+//
+// The function returns the following values:
+//
+//    - ok: whether scrolling was successful.
+//
+func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int32, coords CoordType, x, y int32) bool {
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _arg3 C.AtkCoordType // out
+	var _arg4 C.gint         // out
+	var _arg5 C.gint         // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkCoordType(coords)
+	_arg4 = C.gint(x)
+	_arg5 = C.gint(y)
+
+	_cret = C.atk_text_scroll_substring_to_point(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(coords)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1319,21 +2445,20 @@ func (text *Text) RemoveSelection(selectionNum int32) bool {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) SetCaretOffset(offset int32) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("set_caret_offset", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_set_caret_offset(_arg0, _arg1)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1358,17 +2483,18 @@ func (text *Text) SetCaretOffset(offset int32) bool {
 //    - ok: TRUE if successful, FALSE otherwise.
 //
 func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool {
-	var _args [4]girepository.Argument
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // out
+	var _cret C.gboolean // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(startOffset)
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(endOffset)
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+	_arg2 = C.gint(startOffset)
+	_arg3 = C.gint(endOffset)
 
-	_info := girepository.MustFind("Atk", "Text")
-	_gret := _info.InvokeIfaceMethod("set_selection", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_text_set_selection(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
 	runtime.KeepAlive(startOffset)
@@ -1376,7 +2502,7 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool 
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1392,12 +2518,56 @@ type TextRange struct {
 
 // textRange is the struct that's finalized.
 type textRange struct {
-	native unsafe.Pointer
+	native *C.AtkTextRange
 }
 
 func marshalTextRange(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TextRange{&textRange{(unsafe.Pointer)(b)}}, nil
+	return &TextRange{&textRange{(*C.AtkTextRange)(b)}}, nil
+}
+
+// Bounds: rectangle giving the bounds of the text range.
+func (t *TextRange) Bounds() *TextRectangle {
+	valptr := &t.native.bounds
+	var v *TextRectangle // out
+	v = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// StartOffset: start offset of a AtkTextRange.
+func (t *TextRange) StartOffset() int32 {
+	valptr := &t.native.start_offset
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// EndOffset: end offset of a AtkTextRange.
+func (t *TextRange) EndOffset() int32 {
+	valptr := &t.native.end_offset
+	var v int32 // out
+	v = int32(*valptr)
+	return v
+}
+
+// Content: text in the text range.
+func (t *TextRange) Content() string {
+	valptr := &t.native.content
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// StartOffset: start offset of a AtkTextRange.
+func (t *TextRange) SetStartOffset(startOffset int32) {
+	valptr := &t.native.start_offset
+	*valptr = C.gint(startOffset)
+}
+
+// EndOffset: end offset of a AtkTextRange.
+func (t *TextRange) SetEndOffset(endOffset int32) {
+	valptr := &t.native.end_offset
+	*valptr = C.gint(endOffset)
 }
 
 // TextRectangle: structure used to store a rectangle used by AtkText.
@@ -1409,69 +2579,61 @@ type TextRectangle struct {
 
 // textRectangle is the struct that's finalized.
 type textRectangle struct {
-	native unsafe.Pointer
+	native *C.AtkTextRectangle
 }
 
 // X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) X() int32 {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.x
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Y: vertical coordinate of a rectangle.
 func (t *TextRectangle) Y() int32 {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.y
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Width: width of a rectangle.
 func (t *TextRectangle) Width() int32 {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.width
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Height: height of a rectangle.
 func (t *TextRectangle) Height() int32 {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("height")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	valptr := &t.native.height
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) SetX(x int32) {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("x")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+	valptr := &t.native.x
+	*valptr = C.gint(x)
 }
 
 // Y: vertical coordinate of a rectangle.
 func (t *TextRectangle) SetY(y int32) {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("y")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
+	valptr := &t.native.y
+	*valptr = C.gint(y)
 }
 
 // Width: width of a rectangle.
 func (t *TextRectangle) SetWidth(width int32) {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("width")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(width)
+	valptr := &t.native.width
+	*valptr = C.gint(width)
 }
 
 // Height: height of a rectangle.
 func (t *TextRectangle) SetHeight(height int32) {
-	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("height")
-	valptr := (*uintptr)(unsafe.Add(t.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(height)
+	valptr := &t.native.height
+	*valptr = C.gint(height)
 }

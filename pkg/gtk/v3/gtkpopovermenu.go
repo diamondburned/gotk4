@@ -7,14 +7,14 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypePopoverMenu returns the GType for the type PopoverMenu.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypePopoverMenu() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "PopoverMenu").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_popover_menu_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverMenu)
 	return gtype
 }
@@ -151,13 +151,13 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //    - popoverMenu: new PopoverMenu.
 //
 func NewPopoverMenu() *PopoverMenu {
-	_info := girepository.MustFind("Gtk", "PopoverMenu")
-	_gret := _info.InvokeClassMethod("new_PopoverMenu", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_popover_menu_new()
 
 	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = wrapPopoverMenu(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_popoverMenu = wrapPopoverMenu(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _popoverMenu
 }
@@ -175,15 +175,14 @@ func NewPopoverMenu() *PopoverMenu {
 //    - name of the menu to switch to.
 //
 func (popover *PopoverMenu) OpenSubmenu(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkPopoverMenu // out
+	var _arg1 *C.gchar          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "PopoverMenu")
-	_info.InvokeClassMethod("open_submenu", _args[:], nil)
-
+	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(name)
 }

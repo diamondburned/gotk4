@@ -9,18 +9,19 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_EntryClass_activate(void*);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_EntryClass_activate(GtkEntry*);
 // extern void _gotk4_gtk4_Entry_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_Entry_ConnectIconPress(gpointer, GtkEntryIconPosition, guintptr);
+// extern void _gotk4_gtk4_Entry_ConnectIconRelease(gpointer, GtkEntryIconPosition, guintptr);
 import "C"
 
 // GTypeEntryIconPosition returns the GType for the type EntryIconPosition.
@@ -29,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEntryIconPosition() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EntryIconPosition").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_entry_icon_position_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEntryIconPosition)
 	return gtype
 }
@@ -40,7 +41,7 @@ func GTypeEntryIconPosition() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEntry() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Entry").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_entry_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEntry)
 	return gtype
 }
@@ -186,16 +187,15 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "EntryClass")
+	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		o := pclass.StructFieldOffset("activate")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_EntryClass_activate)
+		pclass.activate = (*[0]byte)(C._gotk4_gtk4_EntryClass_activate)
 	}
 }
 
 //export _gotk4_gtk4_EntryClass_activate
-func _gotk4_gtk4_EntryClass_activate(arg0 *C.void) {
+func _gotk4_gtk4_EntryClass_activate(arg0 *C.GtkEntry) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
@@ -296,6 +296,57 @@ func (entry *Entry) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectActivate), f)
 }
 
+//export _gotk4_gtk4_Entry_ConnectIconPress
+func _gotk4_gtk4_Entry_ConnectIconPress(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.guintptr) {
+	var f func(iconPos EntryIconPosition)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iconPos EntryIconPosition))
+	}
+
+	var _iconPos EntryIconPosition // out
+
+	_iconPos = EntryIconPosition(arg1)
+
+	f(_iconPos)
+}
+
+// ConnectIconPress is emitted when an activatable icon is clicked.
+func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "icon-press", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconPress), f)
+}
+
+//export _gotk4_gtk4_Entry_ConnectIconRelease
+func _gotk4_gtk4_Entry_ConnectIconRelease(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.guintptr) {
+	var f func(iconPos EntryIconPosition)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(iconPos EntryIconPosition))
+	}
+
+	var _iconPos EntryIconPosition // out
+
+	_iconPos = EntryIconPosition(arg1)
+
+	f(_iconPos)
+}
+
+// ConnectIconRelease is emitted on the button release from a mouse click over
+// an activatable icon.
+func (entry *Entry) ConnectIconRelease(f func(iconPos EntryIconPosition)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "icon-release", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconRelease), f)
+}
+
 // NewEntry creates a new entry.
 //
 // The function returns the following values:
@@ -303,13 +354,13 @@ func (entry *Entry) ConnectActivate(f func()) coreglib.SignalHandle {
 //    - entry: new GtkEntry.
 //
 func NewEntry() *Entry {
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("new_Entry", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_entry_new()
 
 	var _entry *Entry // out
 
-	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
 }
@@ -325,19 +376,17 @@ func NewEntry() *Entry {
 //    - entry: new GtkEntry.
 //
 func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkEntryBuffer // out
+	var _cret *C.GtkWidget      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("new_Entry_with_buffer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_new_with_buffer(_arg1)
 	runtime.KeepAlive(buffer)
 
 	var _entry *Entry // out
 
-	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _entry
 }
@@ -350,19 +399,17 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 //    - ok: TRUE if the entry will activate the default widget.
 //
 func (entry *Entry) ActivatesDefault() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_activates_default", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_activates_default(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -378,19 +425,17 @@ func (entry *Entry) ActivatesDefault() bool {
 //    - gfloat: alignment.
 //
 func (entry *Entry) Alignment() float32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.float     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_alignment", _args[:], nil)
-	_cret := *(*C.float)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_alignment(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -404,21 +449,19 @@ func (entry *Entry) Alignment() float32 {
 //    - attrList (optional): attribute list, or NULL if none was set.
 //
 func (entry *Entry) Attributes() *pango.AttrList {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry      // out
+	var _cret *C.PangoAttrList // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_attributes(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _attrList *pango.AttrList // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -437,19 +480,17 @@ func (entry *Entry) Attributes() *pango.AttrList {
 //    - entryBuffer: GtkEntryBuffer object.
 //
 func (entry *Entry) Buffer() *EntryBuffer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry       // out
+	var _cret *C.GtkEntryBuffer // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_buffer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_buffer(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _entryBuffer
 }
@@ -462,20 +503,18 @@ func (entry *Entry) Buffer() *EntryBuffer {
 //      by entry.
 //
 func (entry *Entry) Completion() *EntryCompletion {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry           // out
+	var _cret *C.GtkEntryCompletion // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_completion", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_completion(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _entryCompletion *EntryCompletion // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _entryCompletion
@@ -490,19 +529,17 @@ func (entry *Entry) Completion() *EntryCompletion {
 //      or -1.
 //
 func (entry *Entry) CurrentIconDragSource() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_current_icon_drag_source", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -514,21 +551,19 @@ func (entry *Entry) CurrentIconDragSource() int32 {
 //    - menuModel (optional): menu model.
 //
 func (entry *Entry) ExtraMenu() gio.MenuModeller {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry   // out
+	var _cret *C.GMenuModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_extra_menu", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_extra_menu(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _menuModel gio.MenuModeller // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -553,23 +588,88 @@ func (entry *Entry) ExtraMenu() gio.MenuModeller {
 //    - ok: whether the entry has a beveled frame.
 //
 func (entry *Entry) HasFrame() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_has_frame", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_has_frame(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// IconActivatable returns whether the icon is activatable.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icon is activatable.
+//
+func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_activatable(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconArea gets the area where entry’s icon at icon_pos is drawn.
+//
+// This function is useful when drawing something to the entry in a draw
+// callback.
+//
+// If the entry is not realized or has no icon at the given position, icon_area
+// is filled with zeros. Otherwise, icon_area will be filled with the icon's
+// allocation, relative to entry's allocation.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - iconArea: return location for the icon’s area.
+//
+func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.GdkRectangle         // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	C.gtk_entry_get_icon_area(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _iconArea *gdk.Rectangle // out
+
+	_iconArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+
+	return _iconArea
 }
 
 // IconAtPos finds the icon at the given position and return its index.
@@ -588,25 +688,314 @@ func (entry *Entry) HasFrame() bool {
 //    - gint: index of the icon at the given position, or -1.
 //
 func (entry *Entry) IconAtPos(x, y int32) int32 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.int       // out
+	var _arg2 C.int       // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_icon_at_pos", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_icon_at_pos(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// IconGIcon retrieves the GIcon used for the icon.
+//
+// NULL will be returned if there is no icon or if the icon was set by some
+// other method (e.g., by GdkPaintable or icon name).
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - icon (optional): GIcon, or NULL if no icon is set or if the icon is not a
+//      GIcon.
+//
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.GIcon               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _icon *gio.Icon // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
+			}
+		}
+	}
+
+	return _icon
+}
+
+// IconName retrieves the icon name used for the icon.
+//
+// NULL is returned if there is no icon or if the icon was set by some other
+// method (e.g., by GdkPaintable or gicon).
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name, or NULL if no icon is set or if the icon
+//      wasn’t set from an icon name.
+//
+func (entry *Entry) IconName(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.char                // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// IconPaintable retrieves the GdkPaintable used for the icon.
+//
+// If no GdkPaintable was used for the icon, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - paintable (optional): GdkPaintable, or NULL if no icon is set for this
+//      position or the icon set is not a GdkPaintable.
+//
+func (entry *Entry) IconPaintable(iconPos EntryIconPosition) *gdk.Paintable {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.GdkPaintable        // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_paintable(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _paintable *gdk.Paintable // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_paintable = &gdk.Paintable{
+				Object: obj,
+			}
+		}
+	}
+
+	return _paintable
+}
+
+// IconSensitive returns whether the icon appears sensitive or insensitive.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icon is sensitive.
+//
+func (entry *Entry) IconSensitive(iconPos EntryIconPosition) bool {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconStorageType gets the type of representation being used by the icon to
+// store image data.
+//
+// If the icon has no image data, the return value will be GTK_IMAGE_EMPTY.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
+func (entry *Entry) IconStorageType(iconPos EntryIconPosition) ImageType {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.GtkImageType         // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_storage_type(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _imageType ImageType // out
+
+	_imageType = ImageType(_cret)
+
+	return _imageType
+}
+
+// IconTooltipMarkup gets the contents of the tooltip on the icon at the
+// specified position in entry.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. Free the returned string with
+//      g_free() when done.
+//
+func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.char                // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_tooltip_markup(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// IconTooltipText gets the contents of the tooltip on the icon at the specified
+// position in entry.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. Free the returned string with
+//      g_free() when done.
+//
+func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.char                // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_tooltip_text(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// InputHints gets the input hints of this GtkEntry.
+//
+// The function returns the following values:
+//
+//    - inputHints: input hints.
+//
+func (entry *Entry) InputHints() InputHints {
+	var _arg0 *C.GtkEntry     // out
+	var _cret C.GtkInputHints // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_input_hints(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _inputHints InputHints // out
+
+	_inputHints = InputHints(_cret)
+
+	return _inputHints
+}
+
+// InputPurpose gets the input purpose of the GtkEntry.
+//
+// The function returns the following values:
+//
+//    - inputPurpose: input purpose.
+//
+func (entry *Entry) InputPurpose() InputPurpose {
+	var _arg0 *C.GtkEntry       // out
+	var _cret C.GtkInputPurpose // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_input_purpose(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _inputPurpose InputPurpose // out
+
+	_inputPurpose = InputPurpose(_cret)
+
+	return _inputPurpose
 }
 
 // InvisibleChar retrieves the character displayed in place of the actual text
@@ -618,19 +1007,17 @@ func (entry *Entry) IconAtPos(x, y int32) int32 {
 //      invisible text at all.
 //
 func (entry *Entry) InvisibleChar() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gunichar  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_invisible_char", _args[:], nil)
-	_cret := *(*C.gunichar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_invisible_char(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _gunichar uint32 // out
 
-	_gunichar = uint32(*(*C.gunichar)(unsafe.Pointer(&_cret)))
+	_gunichar = uint32(_cret)
 
 	return _gunichar
 }
@@ -645,19 +1032,17 @@ func (entry *Entry) InvisibleChar() uint32 {
 //      no maximum.
 //
 func (entry *Entry) MaxLength() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.int       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_max_length", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_max_length(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -669,19 +1054,17 @@ func (entry *Entry) MaxLength() int32 {
 //    - ok: whether the text is overwritten when typing.
 //
 func (entry *Entry) OverwriteMode() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_overwrite_mode", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_overwrite_mode(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -699,20 +1082,18 @@ func (entry *Entry) OverwriteMode() bool {
 //      be returned.
 //
 func (entry *Entry) PlaceholderText() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret *C.char     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_placeholder_text", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_placeholder_text(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -728,19 +1109,17 @@ func (entry *Entry) PlaceholderText() string {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (entry *Entry) ProgressFraction() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_progress_fraction", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_progress_fraction(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -753,19 +1132,17 @@ func (entry *Entry) ProgressFraction() float64 {
 //    - gdouble: fraction from 0.0 to 1.0.
 //
 func (entry *Entry) ProgressPulseStep() float64 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.double    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_progress_pulse_step", _args[:], nil)
-	_cret := *(*C.double)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_progress_pulse_step(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
+	_gdouble = float64(_cret)
 
 	return _gdouble
 }
@@ -779,20 +1156,18 @@ func (entry *Entry) ProgressPulseStep() float64 {
 //    - tabArray (optional): tabstops, or NULL if none was set.
 //
 func (entry *Entry) Tabs() *pango.TabArray {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry      // out
+	var _cret *C.PangoTabArray // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_tabs", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_tabs(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _tabArray *pango.TabArray // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _tabArray
@@ -809,19 +1184,17 @@ func (entry *Entry) Tabs() *pango.TabArray {
 //      none.
 //
 func (entry *Entry) TextLength() uint16 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.guint16   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_text_length", _args[:], nil)
-	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_text_length(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
+	_guint16 = uint16(_cret)
 
 	return _guint16
 }
@@ -835,19 +1208,17 @@ func (entry *Entry) TextLength() uint16 {
 //    - ok: TRUE if the text is currently visible.
 //
 func (entry *Entry) Visibility() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("get_visibility", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_get_visibility(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -866,19 +1237,17 @@ func (entry *Entry) Visibility() bool {
 //    - ok: TRUE if focus is now inside self.
 //
 func (entry *Entry) GrabFocusWithoutSelecting() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_gret := _info.InvokeClassMethod("grab_focus_without_selecting", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_entry_grab_focus_without_selecting(_arg0)
 	runtime.KeepAlive(entry)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -893,13 +1262,11 @@ func (entry *Entry) GrabFocusWithoutSelecting() bool {
 // block to move by a little bit (the amount of movement per pulse is determined
 // by gtk.Entry.SetProgressPulseStep()).
 func (entry *Entry) ProgressPulse() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("progress_pulse", _args[:], nil)
-
+	C.gtk_entry_progress_pulse(_arg0)
 	runtime.KeepAlive(entry)
 }
 
@@ -908,13 +1275,11 @@ func (entry *Entry) ProgressPulse() {
 // This can be necessary in the case where modifying the buffer would confuse
 // on-going input method behavior.
 func (entry *Entry) ResetIMContext() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("reset_im_context", _args[:], nil)
-
+	C.gtk_entry_reset_im_context(_arg0)
 	runtime.KeepAlive(entry)
 }
 
@@ -929,16 +1294,15 @@ func (entry *Entry) ResetIMContext() {
 //    - setting: TRUE to activate window’s default widget on Enter keypress.
 //
 func (entry *Entry) SetActivatesDefault(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_activates_default", _args[:], nil)
-
+	C.gtk_entry_set_activates_default(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(setting)
 }
@@ -956,14 +1320,13 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 //      RTL layouts.
 //
 func (entry *Entry) SetAlignment(xalign float32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.float     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.float(xalign)
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_alignment", _args[:], nil)
-
+	C.gtk_entry_set_alignment(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(xalign)
 }
@@ -980,14 +1343,13 @@ func (entry *Entry) SetAlignment(xalign float32) {
 //    - attrs: PangoAttrList.
 //
 func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoAttrList // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_attributes", _args[:], nil)
-
+	C.gtk_entry_set_attributes(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(attrs)
 }
@@ -1000,14 +1362,13 @@ func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
 //    - buffer: GtkEntryBuffer.
 //
 func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 *C.GtkEntryBuffer // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_buffer", _args[:], nil)
-
+	C.gtk_entry_set_buffer(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(buffer)
 }
@@ -1024,16 +1385,15 @@ func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
 //    - completion (optional): GtkEntryCompletion or NULL.
 //
 func (entry *Entry) SetCompletion(completion *EntryCompletion) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry           // out
+	var _arg1 *C.GtkEntryCompletion // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if completion != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
+		_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_completion", _args[:], nil)
-
+	C.gtk_entry_set_completion(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(completion)
 }
@@ -1046,16 +1406,15 @@ func (entry *Entry) SetCompletion(completion *EntryCompletion) {
 //    - model (optional): GMenuModel.
 //
 func (entry *Entry) SetExtraMenu(model gio.MenuModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry   // out
+	var _arg1 *C.GMenuModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_extra_menu", _args[:], nil)
-
+	C.gtk_entry_set_extra_menu(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(model)
 }
@@ -1067,18 +1426,288 @@ func (entry *Entry) SetExtraMenu(model gio.MenuModeller) {
 //    - setting: new value.
 //
 func (entry *Entry) SetHasFrame(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_has_frame", _args[:], nil)
-
+	C.gtk_entry_set_has_frame(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(setting)
+}
+
+// SetIconActivatable sets whether the icon is activatable.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - activatable: TRUE if the icon should be activatable.
+//
+func (entry *Entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if activatable {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(activatable)
+}
+
+// SetIconDragSource sets up the icon at the given position as drag source.
+//
+// This makes it so that GTK will start a drag operation when the user clicks
+// and drags the icon.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - provider: ContentProvider.
+//    - actions: bitmask of the allowed drag actions.
+//
+func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, provider *gdk.ContentProvider, actions gdk.DragAction) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkContentProvider  // out
+	var _arg3 C.GdkDragAction        // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	_arg3 = C.GdkDragAction(actions)
+
+	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(actions)
+}
+
+// SetIconFromGIcon sets the icon shown in the entry at the specified position
+// from the current icon theme.
+//
+// If the icon isn’t known, a “broken image” icon will be displayed instead.
+//
+// If icon is NULL, no icon will be shown in the specified position.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: position at which to set the icon.
+//    - icon (optional) to set, or NULL.
+//
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GIcon               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if icon != nil {
+		_arg2 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	}
+
+	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(icon)
+}
+
+// SetIconFromIconName sets the icon shown in the entry at the specified
+// position from the current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead.
+//
+// If icon_name is NULL, no icon will be shown in the specified position.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: position at which to set the icon.
+//    - iconName (optional): icon name, or NULL.
+//
+func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.char                // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if iconName != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(iconName)
+}
+
+// SetIconFromPaintable sets the icon shown in the specified position using a
+// GdkPaintable.
+//
+// If paintable is NULL, no icon will be shown in the specified position.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - paintable (optional): GdkPaintable, or NULL.
+//
+func (entry *Entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Paintabler) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkPaintable        // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if paintable != nil {
+		_arg2 = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	}
+
+	C.gtk_entry_set_icon_from_paintable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(paintable)
+}
+
+// SetIconSensitive sets the sensitivity for the specified icon.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - sensitive specifies whether the icon should appear sensitive or
+//      insensitive.
+//
+func (entry *Entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if sensitive {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_entry_set_icon_sensitive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(sensitive)
+}
+
+// SetIconTooltipMarkup sets tooltip as the contents of the tooltip for the icon
+// at the specified position.
+//
+// tooltip is assumed to be marked up with Pango Markup.
+//
+// Use NULL for tooltip to remove an existing tooltip.
+//
+// See also gtk.Widget.SetTooltipMarkup() and gtk.Entry.SetIconTooltipText().
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - tooltip (optional) contents of the tooltip for the icon, or NULL.
+//
+func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.char                // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if tooltip != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_tooltip_markup(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(tooltip)
+}
+
+// SetIconTooltipText sets tooltip as the contents of the tooltip for the icon
+// at the specified position.
+//
+// Use NULL for tooltip to remove an existing tooltip.
+//
+// See also gtk.Widget.SetTooltipText() and gtk.Entry.SetIconTooltipMarkup().
+//
+// If you unset the widget tooltip via gtk.Widget.SetTooltipText() or
+// gtk.Widget.SetTooltipMarkup(), this sets gtk.Widget:has-tooltip to FALSE,
+// which suppresses icon tooltips too. You can resolve this by then calling
+// gtk.Widget.SetHasTooltip() to set gtk.Widget:has-tooltip back to TRUE, or
+// setting at least one non-empty tooltip on any icon achieves the same result.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - tooltip (optional) contents of the tooltip for the icon, or NULL.
+//
+func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.char                // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if tooltip != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(tooltip)
+}
+
+// SetInputHints: set additional hints which allow input methods to fine-tune
+// their behavior.
+//
+// The function takes the following parameters:
+//
+//    - hints: hints.
+//
+func (entry *Entry) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkEntry     // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_entry_set_input_hints(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(hints)
+}
+
+// SetInputPurpose sets the input purpose which can be used by input methods to
+// adjust their behavior.
+//
+// The function takes the following parameters:
+//
+//    - purpose: purpose.
+//
+func (entry *Entry) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_entry_set_input_purpose(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(purpose)
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text in
@@ -1095,14 +1724,13 @@ func (entry *Entry) SetHasFrame(setting bool) {
 //    - ch: unicode character.
 //
 func (entry *Entry) SetInvisibleChar(ch uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gunichar  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(*C.gunichar)(unsafe.Pointer(&_args[1])) = C.gunichar(ch)
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.gunichar(ch)
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_invisible_char", _args[:], nil)
-
+	C.gtk_entry_set_invisible_char(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(ch)
 }
@@ -1122,14 +1750,13 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //      range 0-65536.
 //
 func (entry *Entry) SetMaxLength(max int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.int       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(max)
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.int(max)
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_max_length", _args[:], nil)
-
+	C.gtk_entry_set_max_length(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(max)
 }
@@ -1142,16 +1769,15 @@ func (entry *Entry) SetMaxLength(max int32) {
 //    - overwrite: new value.
 //
 func (entry *Entry) SetOverwriteMode(overwrite bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if overwrite {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_overwrite_mode", _args[:], nil)
-
+	C.gtk_entry_set_overwrite_mode(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(overwrite)
 }
@@ -1167,17 +1793,16 @@ func (entry *Entry) SetOverwriteMode(overwrite bool) {
 //      unfocused, or NULL.
 //
 func (entry *Entry) SetPlaceholderText(text string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 *C.char     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if text != "" {
-		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_placeholder_text", _args[:], nil)
-
+	C.gtk_entry_set_placeholder_text(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(text)
 }
@@ -1192,14 +1817,13 @@ func (entry *Entry) SetPlaceholderText(text string) {
 //    - fraction of the task that’s been completed.
 //
 func (entry *Entry) SetProgressFraction(fraction float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.double    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(fraction)
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.double(fraction)
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_progress_fraction", _args[:], nil)
-
+	C.gtk_entry_set_progress_fraction(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(fraction)
 }
@@ -1214,14 +1838,13 @@ func (entry *Entry) SetProgressFraction(fraction float64) {
 //    - fraction between 0.0 and 1.0.
 //
 func (entry *Entry) SetProgressPulseStep(fraction float64) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.double    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(fraction)
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.double(fraction)
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_progress_pulse_step", _args[:], nil)
-
+	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(fraction)
 }
@@ -1235,16 +1858,15 @@ func (entry *Entry) SetProgressPulseStep(fraction float64) {
 //    - tabs (optional): PangoTabArray.
 //
 func (entry *Entry) SetTabs(tabs *pango.TabArray) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoTabArray // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if tabs != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
+		_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_tabs", _args[:], nil)
-
+	C.gtk_entry_set_tabs(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(tabs)
 }
@@ -1267,16 +1889,15 @@ func (entry *Entry) SetTabs(tabs *pango.TabArray) {
 //    - visible: TRUE if the contents of the entry are displayed as plaintext.
 //
 func (entry *Entry) SetVisibility(visible bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if visible {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("set_visibility", _args[:], nil)
-
+	C.gtk_entry_set_visibility(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(visible)
 }
@@ -1284,12 +1905,10 @@ func (entry *Entry) SetVisibility(visible bool) {
 // UnsetInvisibleChar unsets the invisible char, so that the default invisible
 // char is used again. See gtk.Entry.SetInvisibleChar().
 func (entry *Entry) UnsetInvisibleChar() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEntry // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_info := girepository.MustFind("Gtk", "Entry")
-	_info.InvokeClassMethod("unset_invisible_char", _args[:], nil)
-
+	C.gtk_entry_unset_invisible_char(_arg0)
 	runtime.KeepAlive(entry)
 }

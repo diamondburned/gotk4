@@ -6,17 +6,15 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GType _gotk4_gio2_ListModelInterface_get_item_type(void*);
-// extern gpointer _gotk4_gio2_ListModelInterface_get_item(void*, guint);
-// extern guint _gotk4_gio2_ListModelInterface_get_n_items(void*);
+// extern GType _gotk4_gio2_ListModelInterface_get_item_type(GListModel*);
+// extern gpointer _gotk4_gio2_ListModelInterface_get_item(GListModel*, guint);
+// extern guint _gotk4_gio2_ListModelInterface_get_n_items(GListModel*);
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 import "C"
 
@@ -26,7 +24,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeListModel() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ListModel").RegisteredGType())
+	gtype := coreglib.Type(C.g_list_model_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalListModel)
 	return gtype
 }
@@ -147,14 +145,14 @@ type ListModeller interface {
 var _ ListModeller = (*ListModel)(nil)
 
 func ifaceInitListModeller(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gio", "ListModelInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_item"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_item)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_item_type"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_item_type)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_n_items"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_n_items)
+	iface := (*C.GListModelInterface)(unsafe.Pointer(gifacePtr))
+	iface.get_item = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item)
+	iface.get_item_type = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item_type)
+	iface.get_n_items = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_n_items)
 }
 
 //export _gotk4_gio2_ListModelInterface_get_item
-func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.void, arg1 C.guint) (cret C.gpointer) {
+func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.GListModel, arg1 C.guint) (cret C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
@@ -171,7 +169,7 @@ func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.void, arg1 C.guint) (cret C
 }
 
 //export _gotk4_gio2_ListModelInterface_get_item_type
-func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.void) (cret C.GType) {
+func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.GListModel) (cret C.GType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
@@ -183,7 +181,7 @@ func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.void) (cret C.GType) {
 }
 
 //export _gotk4_gio2_ListModelInterface_get_n_items
-func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.void) (cret C.guint) {
+func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.GListModel) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
@@ -249,19 +247,17 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint3
 //    - gType of the items contained in list.
 //
 func (list *ListModel) ItemType() coreglib.Type {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GListModel // out
+	var _cret C.GType       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 
-	_info := girepository.MustFind("Gio", "ListModel")
-	_gret := _info.InvokeIfaceMethod("get_item_type", _args[:], nil)
-	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_list_model_get_item_type(_arg0)
 	runtime.KeepAlive(list)
 
 	var _gType coreglib.Type // out
 
-	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }
@@ -277,19 +273,17 @@ func (list *ListModel) ItemType() coreglib.Type {
 //    - guint: number of items in list.
 //
 func (list *ListModel) NItems() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GListModel // out
+	var _cret C.guint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 
-	_info := girepository.MustFind("Gio", "ListModel")
-	_gret := _info.InvokeIfaceMethod("get_n_items", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_list_model_get_n_items(_arg0)
 	runtime.KeepAlive(list)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -309,22 +303,21 @@ func (list *ListModel) NItems() uint32 {
 //    - object (optional) at position.
 //
 func (list *ListModel) Item(position uint32) *coreglib.Object {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
+	var _cret *C.GObject    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg1 = C.guint(position)
 
-	_info := girepository.MustFind("Gio", "ListModel")
-	_gret := _info.InvokeIfaceMethod("get_object", _args[:], nil)
-	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_list_model_get_object(_arg0, _arg1)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 	}
 
 	return _object
@@ -356,16 +349,17 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 //    - added: number of items added.
 //
 func (list *ListModel) ItemsChanged(position, removed, added uint32) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
+	var _arg2 C.guint       // out
+	var _arg3 C.guint       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(removed)
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(added)
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(removed)
+	_arg3 = C.guint(added)
 
-	_info := girepository.MustFind("Gio", "ListModel")
-	_info.InvokeIfaceMethod("items_changed", _args[:], nil)
-
+	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(removed)

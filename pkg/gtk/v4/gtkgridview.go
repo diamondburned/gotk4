@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_GridView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeGridView() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "GridView").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_grid_view_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalGridView)
 	return gtype
+}
+
+// GridViewOverrider contains methods that are overridable.
+type GridViewOverrider interface {
 }
 
 // GridView: GtkGridView presents a large dynamic grid of items.
@@ -70,6 +72,14 @@ type GridView struct {
 var (
 	_ ListBaser = (*GridView)(nil)
 )
+
+func classInitGridViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapGridView(obj *coreglib.Object) *GridView {
 	return &GridView{
@@ -151,27 +161,26 @@ func (self *GridView) ConnectActivate(f func(position uint32)) coreglib.SignalHa
 //    - gridView: new GtkGridView using the given model and factory.
 //
 func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GtkSelectionModel  // out
+	var _arg2 *C.GtkListItemFactory // out
+	var _cret *C.GtkWidget          // in
 
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 	if factory != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(factory).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("new_GridView", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_new(_arg1, _arg2)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(factory)
 
 	var _gridView *GridView // out
 
-	_gridView = wrapGridView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_gridView = wrapGridView(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _gridView
 }
@@ -184,19 +193,17 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 //    - ok: TRUE if rubberband selection is enabled.
 //
 func (self *GridView) EnableRubberband() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("get_enable_rubberband", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_get_enable_rubberband(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -210,20 +217,18 @@ func (self *GridView) EnableRubberband() bool {
 //    - listItemFactory (optional): factory in use.
 //
 func (self *GridView) Factory() *ListItemFactory {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridView        // out
+	var _cret *C.GtkListItemFactory // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("get_factory", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_get_factory(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listItemFactory *ListItemFactory // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _listItemFactory
@@ -236,19 +241,17 @@ func (self *GridView) Factory() *ListItemFactory {
 //    - guint: maximum number of columns.
 //
 func (self *GridView) MaxColumns() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _cret C.guint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("get_max_columns", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_get_max_columns(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -260,19 +263,17 @@ func (self *GridView) MaxColumns() uint32 {
 //    - guint: minimum number of columns.
 //
 func (self *GridView) MinColumns() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _cret C.guint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("get_min_columns", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_get_min_columns(_arg0)
 	runtime.KeepAlive(self)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -284,20 +285,18 @@ func (self *GridView) MinColumns() uint32 {
 //    - selectionModel (optional): model in use.
 //
 func (self *GridView) Model() *SelectionModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridView       // out
+	var _cret *C.GtkSelectionModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _selectionModel *SelectionModel // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _selectionModel
@@ -311,19 +310,17 @@ func (self *GridView) Model() *SelectionModel {
 //    - ok: TRUE if items are activated on single click.
 //
 func (self *GridView) SingleClickActivate() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_gret := _info.InvokeClassMethod("get_single_click_activate", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_grid_view_get_single_click_activate(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -338,16 +335,15 @@ func (self *GridView) SingleClickActivate() bool {
 //    - enableRubberband: TRUE to enable rubberband selection.
 //
 func (self *GridView) SetEnableRubberband(enableRubberband bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if enableRubberband {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_info.InvokeClassMethod("set_enable_rubberband", _args[:], nil)
-
+	C.gtk_grid_view_set_enable_rubberband(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(enableRubberband)
 }
@@ -359,16 +355,15 @@ func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 //    - factory (optional) to use or NULL for none.
 //
 func (self *GridView) SetFactory(factory *ListItemFactory) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridView        // out
+	var _arg1 *C.GtkListItemFactory // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if factory != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_info.InvokeClassMethod("set_factory", _args[:], nil)
-
+	C.gtk_grid_view_set_factory(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(factory)
 }
@@ -385,14 +380,13 @@ func (self *GridView) SetFactory(factory *ListItemFactory) {
 //    - maxColumns: maximum number of columns.
 //
 func (self *GridView) SetMaxColumns(maxColumns uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _arg1 C.guint        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(maxColumns)
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(maxColumns)
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_info.InvokeClassMethod("set_max_columns", _args[:], nil)
-
+	C.gtk_grid_view_set_max_columns(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(maxColumns)
 }
@@ -409,14 +403,13 @@ func (self *GridView) SetMaxColumns(maxColumns uint32) {
 //    - minColumns: minimum number of columns.
 //
 func (self *GridView) SetMinColumns(minColumns uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _arg1 C.guint        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(minColumns)
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(minColumns)
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_info.InvokeClassMethod("set_min_columns", _args[:], nil)
-
+	C.gtk_grid_view_set_min_columns(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(minColumns)
 }
@@ -430,16 +423,15 @@ func (self *GridView) SetMinColumns(minColumns uint32) {
 //    - model (optional) to use or NULL for none.
 //
 func (self *GridView) SetModel(model SelectionModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridView       // out
+	var _arg1 *C.GtkSelectionModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_info.InvokeClassMethod("set_model", _args[:], nil)
-
+	C.gtk_grid_view_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }
@@ -452,16 +444,15 @@ func (self *GridView) SetModel(model SelectionModeller) {
 //    - singleClickActivate: TRUE to activate items on single click.
 //
 func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkGridView // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkGridView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if singleClickActivate {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "GridView")
-	_info.InvokeClassMethod("set_single_click_activate", _args[:], nil)
-
+	C.gtk_grid_view_set_single_click_activate(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
 }

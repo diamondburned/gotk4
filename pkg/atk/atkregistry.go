@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRegistry() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Registry").RegisteredGType())
+	gtype := coreglib.Type(C.atk_registry_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRegistry)
 	return gtype
 }
@@ -39,13 +37,13 @@ func GTypeRegistry() coreglib.Type {
 //    - registry: default implementation of the ObjectFactory/type registry.
 //
 func GetDefaultRegistry() *Registry {
-	_info := girepository.MustFind("Atk", "get_default_registry")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.AtkRegistry // in
+
+	_cret = C.atk_get_default_registry()
 
 	var _registry *Registry // out
 
-	_registry = wrapRegistry(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_registry = wrapRegistry(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _registry
 }
@@ -98,21 +96,20 @@ func marshalRegistry(p uintptr) (interface{}, error) {
 //    - objectFactory appropriate for creating Objects appropriate for type.
 //
 func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkRegistry      // out
+	var _arg1 C.GType             // out
+	var _cret *C.AtkObjectFactory // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	_arg1 = C.GType(typ)
 
-	_info := girepository.MustFind("Atk", "Registry")
-	_gret := _info.InvokeClassMethod("get_factory", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_registry_get_factory(_arg0, _arg1)
 	runtime.KeepAlive(registry)
 	runtime.KeepAlive(typ)
 
 	var _objectFactory *ObjectFactory // out
 
-	_objectFactory = wrapObjectFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_objectFactory = wrapObjectFactory(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _objectFactory
 }
@@ -129,21 +126,20 @@ func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
 //    - gType associated with type type.
 //
 func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkRegistry // out
+	var _arg1 C.GType        // out
+	var _cret C.GType        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	_arg1 = C.GType(typ)
 
-	_info := girepository.MustFind("Atk", "Registry")
-	_gret := _info.InvokeClassMethod("get_factory_type", _args[:], nil)
-	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
 	runtime.KeepAlive(registry)
 	runtime.KeepAlive(typ)
 
 	var _gType coreglib.Type // out
 
-	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }
@@ -159,15 +155,15 @@ func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
 //      appropriate for type.
 //
 func (registry *Registry) SetFactoryType(typ, factoryType coreglib.Type) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.AtkRegistry // out
+	var _arg1 C.GType        // out
+	var _arg2 C.GType        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
-	*(*C.GType)(unsafe.Pointer(&_args[2])) = C.GType(factoryType)
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	_arg1 = C.GType(typ)
+	_arg2 = C.GType(factoryType)
 
-	_info := girepository.MustFind("Atk", "Registry")
-	_info.InvokeClassMethod("set_factory_type", _args[:], nil)
-
+	C.atk_registry_set_factory_type(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(registry)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(factoryType)

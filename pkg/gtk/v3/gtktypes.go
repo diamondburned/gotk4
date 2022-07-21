@@ -8,7 +8,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -16,10 +15,11 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeIconSet returns the GType for the type IconSet.
@@ -28,7 +28,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconSet() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconSet").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_set_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconSet)
 	return gtype
 }
@@ -39,7 +39,7 @@ func GTypeIconSet() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeIconSource() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconSource").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_icon_source_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalIconSource)
 	return gtype
 }
@@ -50,7 +50,7 @@ func GTypeIconSource() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSelectionData() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SelectionData").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_selection_data_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionData)
 	return gtype
 }
@@ -61,7 +61,7 @@ func GTypeSelectionData() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWidgetPath() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "WidgetPath").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_widget_path_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWidgetPath)
 	return gtype
 }
@@ -73,23 +73,23 @@ type IconSet struct {
 
 // iconSet is the struct that's finalized.
 type iconSet struct {
-	native unsafe.Pointer
+	native *C.GtkIconSet
 }
 
 func marshalIconSet(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &IconSet{&iconSet{(unsafe.Pointer)(b)}}, nil
+	return &IconSet{&iconSet{(*C.GtkIconSet)(b)}}, nil
 }
 
 // NewIconSet constructs a struct IconSet.
 func NewIconSet() *IconSet {
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkIconSet // in
+
+	_cret = C.gtk_icon_set_new()
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -102,19 +102,17 @@ func NewIconSet() *IconSet {
 
 // NewIconSetFromPixbuf constructs a struct IconSet.
 func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkPixbuf  // out
+	var _cret *C.GtkIconSet // in
 
-	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_gret := _info.InvokeRecordMethod("new_from_pixbuf", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
 	runtime.KeepAlive(pixbuf)
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -156,14 +154,13 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 //    - source: IconSource.
 //
 func (iconSet *IconSet) AddSource(source *IconSource) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSet    // out
+	var _arg1 *C.GtkIconSource // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg1 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_info.InvokeRecordMethod("add_source", _args[:], nil)
-
+	C.gtk_icon_set_add_source(_arg0, _arg1)
 	runtime.KeepAlive(iconSet)
 	runtime.KeepAlive(source)
 }
@@ -177,19 +174,17 @@ func (iconSet *IconSet) AddSource(source *IconSource) {
 //    - iconSet: new IconSet identical to the first.
 //
 func (iconSet *IconSet) Copy() *IconSet {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSet // out
+	var _cret *C.GtkIconSet // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_set_copy(_arg0)
 	runtime.KeepAlive(iconSet)
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -210,28 +205,102 @@ func (iconSet *IconSet) Copy() *IconSet {
 //    - sizes: return location for array of sizes (IconSize).
 //
 func (iconSet *IconSet) Sizes() []int32 {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkIconSet  // out
+	var _arg1 *C.GtkIconSize // in
+	var _arg2 C.gint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_info.InvokeRecordMethod("get_sizes", _args[:], _outs[:])
-
+	C.gtk_icon_set_get_sizes(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iconSet)
 
 	var _sizes []int32 // out
 
-	defer C.free(unsafe.Pointer(*(**C.GtkIconSize)(unsafe.Pointer(&_outs[0]))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice((**C.GtkIconSize)(*(**C.GtkIconSize)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
-		_sizes = make([]int32, *(*C.gint)(unsafe.Pointer(&_outs[1])))
-		for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
-			_sizes[i] = *(*int32)(unsafe.Pointer(*(**C.GtkIconSize)(unsafe.Pointer(&src[i]))))
+		src := unsafe.Slice((*C.GtkIconSize)(_arg1), _arg2)
+		_sizes = make([]int32, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_sizes[i] = int32(src[i])
 		}
 	}
 
 	return _sizes
+}
+
+// RenderIcon renders an icon using gtk_style_render_icon(). In most cases,
+// gtk_widget_render_icon() is better, since it automatically provides most of
+// the arguments from the current widget settings. This function never returns
+// NULL; if the icon can’t be rendered (perhaps because an image file fails to
+// load), a default "missing image" icon will be returned instead.
+//
+// Deprecated: Use gtk_icon_set_render_icon_pixbuf() instead.
+//
+// The function takes the following parameters:
+//
+//    - style (optional) associated with widget, or NULL.
+//    - direction: text direction.
+//    - state: widget state.
+//    - size: icon size (IconSize). A size of (GtkIconSize)-1 means render at the
+//      size of the source and don’t scale.
+//    - widget (optional) that will display the icon, or NULL. The only use that
+//      is typically made of this is to determine the appropriate Screen.
+//    - detail (optional) to pass to the theme engine, or NULL. Note that passing
+//      a detail of anything but NULL will disable caching.
+//
+// The function returns the following values:
+//
+//    - pixbuf to be displayed.
+//
+func (iconSet *IconSet) RenderIcon(style *Style, direction TextDirection, state StateType, size int32, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyle        // out
+	var _arg2 C.GtkTextDirection // out
+	var _arg3 C.GtkStateType     // out
+	var _arg4 C.GtkIconSize      // out
+	var _arg5 *C.GtkWidget       // out
+	var _arg6 *C.gchar           // out
+	var _cret *C.GdkPixbuf       // in
+
+	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	if style != nil {
+		_arg1 = (*C.GtkStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	}
+	_arg2 = C.GtkTextDirection(direction)
+	_arg3 = C.GtkStateType(state)
+	_arg4 = C.GtkIconSize(size)
+	if widget != nil {
+		_arg5 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	}
+	if detail != "" {
+		_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+		defer C.free(unsafe.Pointer(_arg6))
+	}
+
+	_cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(iconSet)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(direction)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(detail)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	{
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
+			},
+		}
+	}
+
+	return _pixbuf
 }
 
 // RenderIconPixbuf renders an icon using gtk_render_icon_pixbuf(). In most
@@ -254,16 +323,16 @@ func (iconSet *IconSet) Sizes() []int32 {
 //    - pixbuf to be displayed.
 //
 func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int32) *gdkpixbuf.Pixbuf {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.GtkIconSize      // out
+	var _cret *C.GdkPixbuf       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_gret := _info.InvokeRecordMethod("render_icon_pixbuf", _args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(iconSet)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(size)
@@ -271,7 +340,7 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int32) *gdk
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -307,20 +376,22 @@ func (iconSet *IconSet) RenderIconPixbuf(context *StyleContext, size int32) *gdk
 //    - surface to be displayed.
 //
 func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int32, scale int32, forWindow gdk.Windower) *cairo.Surface {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GtkIconSet      // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.GtkIconSize      // out
+	var _arg3 C.int              // out
+	var _arg4 *C.GdkWindow       // out
+	var _cret *C.cairo_surface_t // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(scale)
+	_arg0 = (*C.GtkIconSet)(gextras.StructNative(unsafe.Pointer(iconSet)))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.GtkIconSize(size)
+	_arg3 = C.int(scale)
 	if forWindow != nil {
-		*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(forWindow).Native()))
+		_arg4 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(forWindow).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "IconSet")
-	_gret := _info.InvokeRecordMethod("render_icon_surface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(iconSet)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(size)
@@ -329,9 +400,9 @@ func (iconSet *IconSet) RenderIconSurface(context *StyleContext, size int32, sca
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
 	})
 
 	return _surface
@@ -344,31 +415,27 @@ type IconSource struct {
 
 // iconSource is the struct that's finalized.
 type iconSource struct {
-	native unsafe.Pointer
+	native *C.GtkIconSource
 }
 
 func marshalIconSource(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &IconSource{&iconSource{(unsafe.Pointer)(b)}}, nil
+	return &IconSource{&iconSource{(*C.GtkIconSource)(b)}}, nil
 }
 
 // NewIconSource constructs a struct IconSource.
 func NewIconSource() *IconSource {
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkIconSource // in
+
+	_cret = C.gtk_icon_source_new()
 
 	var _iconSource *IconSource // out
 
-	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "IconSource").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_icon_source_free((*C.GtkIconSource)(intern.C))
 		},
 	)
 
@@ -384,31 +451,50 @@ func NewIconSource() *IconSource {
 //    - iconSource: new IconSource.
 //
 func (source *IconSource) Copy() *IconSource {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret *C.GtkIconSource // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_copy(_arg0)
 	runtime.KeepAlive(source)
 
 	var _iconSource *IconSource // out
 
-	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_iconSource = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "IconSource").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_icon_source_free((*C.GtkIconSource)(intern.C))
 		},
 	)
 
 	return _iconSource
+}
+
+// Direction obtains the text direction this icon source applies to. The return
+// value is only useful/meaningful if the text direction is not wildcarded.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - textDirection: text direction this source matches.
+//
+func (source *IconSource) Direction() TextDirection {
+	var _arg0 *C.GtkIconSource   // out
+	var _cret C.GtkTextDirection // in
+
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	_cret = C.gtk_icon_source_get_direction(_arg0)
+	runtime.KeepAlive(source)
+
+	var _textDirection TextDirection // out
+
+	_textDirection = TextDirection(_cret)
+
+	return _textDirection
 }
 
 // DirectionWildcarded gets the value set by
@@ -421,19 +507,17 @@ func (source *IconSource) Copy() *IconSource {
 //    - ok: TRUE if this icon source is a base for any text direction variant.
 //
 func (source *IconSource) DirectionWildcarded() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_direction_wildcarded", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_direction_wildcarded(_arg0)
 	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -451,19 +535,17 @@ func (source *IconSource) DirectionWildcarded() bool {
 //    - filename: image filename. This string must not be modified or freed.
 //
 func (source *IconSource) Filename() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_filename", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_filename(_arg0)
 	runtime.KeepAlive(source)
 
 	var _filename string // out
 
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _filename
 }
@@ -479,19 +561,17 @@ func (source *IconSource) Filename() string {
 //    - utf8: icon name. This string must not be modified or freed.
 //
 func (source *IconSource) IconName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_icon_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_icon_name(_arg0)
 	runtime.KeepAlive(source)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -509,20 +589,18 @@ func (source *IconSource) IconName() string {
 //    - pixbuf: source pixbuf.
 //
 func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret *C.GdkPixbuf     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_pixbuf", _args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_pixbuf(_arg0)
 	runtime.KeepAlive(source)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -546,19 +624,17 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 //    - gint: icon size (IconSize) this source matches.
 //
 func (source *IconSource) Size() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret C.GtkIconSize    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_size", _args[:], nil)
-	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_size(_arg0)
 	runtime.KeepAlive(source)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -572,23 +648,46 @@ func (source *IconSource) Size() int32 {
 //    - ok: TRUE if this icon source is a base for any icon size variant.
 //
 func (source *IconSource) SizeWildcarded() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_size_wildcarded", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_size_wildcarded(_arg0)
 	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// State obtains the widget state this icon source applies to. The return value
+// is only useful/meaningful if the widget state is not wildcarded.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function returns the following values:
+//
+//    - stateType: widget state this source matches.
+//
+func (source *IconSource) State() StateType {
+	var _arg0 *C.GtkIconSource // out
+	var _cret C.GtkStateType   // in
+
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	_cret = C.gtk_icon_source_get_state(_arg0)
+	runtime.KeepAlive(source)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
 }
 
 // StateWildcarded gets the value set by gtk_icon_source_set_state_wildcarded().
@@ -600,23 +699,47 @@ func (source *IconSource) SizeWildcarded() bool {
 //    - ok: TRUE if this icon source is a base for any widget state variant.
 //
 func (source *IconSource) StateWildcarded() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_gret := _info.InvokeRecordMethod("get_state_wildcarded", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_icon_source_get_state_wildcarded(_arg0)
 	runtime.KeepAlive(source)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// SetDirection sets the text direction this icon source is intended to be used
+// with.
+//
+// Setting the text direction on an icon source makes no difference if the text
+// direction is wildcarded. Therefore, you should usually call
+// gtk_icon_source_set_direction_wildcarded() to un-wildcard it in addition to
+// calling this function.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - direction: text direction this source applies to.
+//
+func (source *IconSource) SetDirection(direction TextDirection) {
+	var _arg0 *C.GtkIconSource   // out
+	var _arg1 C.GtkTextDirection // out
+
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = C.GtkTextDirection(direction)
+
+	C.gtk_icon_source_set_direction(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(direction)
 }
 
 // SetDirectionWildcarded: if the text direction is wildcarded, this source can
@@ -635,16 +758,15 @@ func (source *IconSource) StateWildcarded() bool {
 //    - setting: TRUE to wildcard the text direction.
 //
 func (source *IconSource) SetDirectionWildcarded(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_direction_wildcarded", _args[:], nil)
-
+	C.gtk_icon_source_set_direction_wildcarded(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
 }
@@ -659,15 +781,14 @@ func (source *IconSource) SetDirectionWildcarded(setting bool) {
 //    - filename: image file to use.
 //
 func (source *IconSource) SetFilename(filename string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_filename", _args[:], nil)
-
+	C.gtk_icon_source_set_filename(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(filename)
 }
@@ -682,17 +803,16 @@ func (source *IconSource) SetFilename(filename string) {
 //    - iconName (optional): name of icon to use.
 //
 func (source *IconSource) SetIconName(iconName string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if iconName != "" {
-		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_icon_name", _args[:], nil)
-
+	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(iconName)
 }
@@ -707,14 +827,13 @@ func (source *IconSource) SetIconName(iconName string) {
 //    - pixbuf to use as a source.
 //
 func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 *C.GdkPixbuf     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_pixbuf", _args[:], nil)
-
+	C.gtk_icon_source_set_pixbuf(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(pixbuf)
 }
@@ -733,14 +852,13 @@ func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //    - size: icon size (IconSize) this source applies to.
 //
 func (source *IconSource) SetSize(size int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 C.GtkIconSize    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(size)
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = C.GtkIconSize(size)
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_size", _args[:], nil)
-
+	C.gtk_icon_source_set_size(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(size)
 }
@@ -764,18 +882,42 @@ func (source *IconSource) SetSize(size int32) {
 //    - setting: TRUE to wildcard the widget state.
 //
 func (source *IconSource) SetSizeWildcarded(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_size_wildcarded", _args[:], nil)
-
+	C.gtk_icon_source_set_size_wildcarded(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
+}
+
+// SetState sets the widget state this icon source is intended to be used with.
+//
+// Setting the widget state on an icon source makes no difference if the state
+// is wildcarded. Therefore, you should usually call
+// gtk_icon_source_set_state_wildcarded() to un-wildcard it in addition to
+// calling this function.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - state: widget state this source applies to.
+//
+func (source *IconSource) SetState(state StateType) {
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 C.GtkStateType   // out
+
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg1 = C.GtkStateType(state)
+
+	C.gtk_icon_source_set_state(_arg0, _arg1)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(state)
 }
 
 // SetStateWildcarded: if the widget state is wildcarded, this source can be
@@ -798,16 +940,15 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 //    - setting: TRUE to wildcard the widget state.
 //
 func (source *IconSource) SetStateWildcarded(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkIconSource // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	_arg0 = (*C.GtkIconSource)(gextras.StructNative(unsafe.Pointer(source)))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "IconSource")
-	_info.InvokeRecordMethod("set_state_wildcarded", _args[:], nil)
-
+	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
 }
@@ -819,12 +960,12 @@ type SelectionData struct {
 
 // selectionData is the struct that's finalized.
 type selectionData struct {
-	native unsafe.Pointer
+	native *C.GtkSelectionData
 }
 
 func marshalSelectionData(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &SelectionData{&selectionData{(unsafe.Pointer)(b)}}, nil
+	return &SelectionData{&selectionData{(*C.GtkSelectionData)(b)}}, nil
 }
 
 // Copy makes a copy of a SelectionData-struct and its data.
@@ -834,27 +975,21 @@ func marshalSelectionData(p uintptr) (interface{}, error) {
 //    - selectionData: pointer to a copy of data.
 //
 func (data *SelectionData) Copy() *SelectionData {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret *C.GtkSelectionData // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(data)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_copy(_arg0)
 	runtime.KeepAlive(data)
 
 	var _selectionData *SelectionData // out
 
-	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_selectionData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "SelectionData").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_selection_data_free((*C.GtkSelectionData)(intern.C))
 		},
 	)
 
@@ -868,21 +1003,19 @@ func (data *SelectionData) Copy() *SelectionData {
 //    - guint8s: raw data of the selection.
 //
 func (selectionData *SelectionData) Data() []byte {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret *C.guchar           // in
+	var _arg1 C.gint              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_data_with_length", _args[:], _outs[:])
-	_cret := *(**C.guchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_data_with_length(_arg0, &_arg1)
 	runtime.KeepAlive(selectionData)
 
 	var _guint8s []byte // out
 
-	_guint8s = make([]byte, *(*C.gint)(unsafe.Pointer(&_outs[0])))
-	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_cret)))), *(*C.gint)(unsafe.Pointer(&_outs[0]))))
+	_guint8s = make([]byte, _arg1)
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _arg1))
 
 	return _guint8s
 }
@@ -894,20 +1027,18 @@ func (selectionData *SelectionData) Data() []byte {
 //    - display of the selection.
 //
 func (selectionData *SelectionData) Display() *gdk.Display {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret *C.GdkDisplay       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_display", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_display(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _display *gdk.Display // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_display = &gdk.Display{
 			Object: obj,
 		}
@@ -923,19 +1054,17 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 //    - gint: format of the selection.
 //
 func (selectionData *SelectionData) Format() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret C.gint              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_format", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_format(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -947,19 +1076,17 @@ func (selectionData *SelectionData) Format() int32 {
 //    - gint: length of the data of the selection.
 //
 func (selectionData *SelectionData) Length() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret C.gint              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_length", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_length(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -974,21 +1101,19 @@ func (selectionData *SelectionData) Length() int32 {
 //      g_object_unref().
 //
 func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret *C.GdkPixbuf        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_pixbuf", _args[:], nil)
-	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_pixbuf(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -1013,21 +1138,19 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 //      freed with g_free().
 //
 func (selectionData *SelectionData) Text() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret *C.guchar           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_text", _args[:], nil)
-	_cret := *(**C.guchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_text(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _utf8 string // out
 
-	if *(**C.guchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_cret)))))
-		defer C.free(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_cret))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
 	}
 
 	return _utf8
@@ -1042,31 +1165,29 @@ func (selectionData *SelectionData) Text() string {
 //      result is non-NULL it must be freed with g_strfreev().
 //
 func (selectionData *SelectionData) URIs() []string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret **C.gchar           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("get_uris", _args[:], nil)
-	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_get_uris(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
+	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
 		var z *C.gchar
-		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
+		src := unsafe.Slice(_cret, i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
-			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
 
@@ -1085,21 +1206,20 @@ func (selectionData *SelectionData) URIs() []string {
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
 func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 *C.GdkPixbuf        // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("set_pixbuf", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_set_pixbuf(_arg0, _arg1)
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(pixbuf)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1119,24 +1239,24 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
 func (selectionData *SelectionData) SetText(str string, len int32) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gint              // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(len)
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(len)
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("set_text", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(len)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1155,33 +1275,32 @@ func (selectionData *SelectionData) SetText(str string, len int32) bool {
 //    - ok: TRUE if the selection was successfully set, otherwise FALSE.
 //
 func (selectionData *SelectionData) SetURIs(uris []string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 **C.gchar           // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	{
-		*(***C.gchar)(unsafe.Pointer(&_args[1])) = (**C.gchar)(C.calloc(C.size_t((len(uris) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_args[1]))))
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(uris) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
 		{
-			out := unsafe.Slice(_args[1], len(uris)+1)
+			out := unsafe.Slice(_arg1, len(uris)+1)
 			var zero *C.gchar
 			out[len(uris)] = zero
 			for i := range uris {
-				*(**C.gchar)(unsafe.Pointer(&out[i])) = (*C.gchar)(unsafe.Pointer(C.CString(uris[i])))
-				defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&out[i]))))
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(uris[i])))
+				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("set_uris", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_set_uris(_arg0, _arg1)
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(uris)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1202,23 +1321,22 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 //      for images is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 C.gboolean          // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	if writable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("targets_include_image", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_targets_include_image(_arg0, _arg1)
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(writable)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1239,21 +1357,20 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 //      for rich text is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _arg1 *C.GtkTextBuffer    // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("targets_include_rich_text", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_targets_include_rich_text(_arg0, _arg1)
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(buffer)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1269,19 +1386,17 @@ func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) b
 //      for text is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeText() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("targets_include_text", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_targets_include_text(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1298,19 +1413,17 @@ func (selectionData *SelectionData) TargetsIncludeText() bool {
 //      for URI lists is included, otherwise FALSE.
 //
 func (selectionData *SelectionData) TargetsIncludeURI() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkSelectionData // out
+	var _cret C.gboolean          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
+	_arg0 = (*C.GtkSelectionData)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_info := girepository.MustFind("Gtk", "SelectionData")
-	_gret := _info.InvokeRecordMethod("targets_include_uri", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_selection_data_targets_include_uri(_arg0)
 	runtime.KeepAlive(selectionData)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1354,31 +1467,27 @@ type WidgetPath struct {
 
 // widgetPath is the struct that's finalized.
 type widgetPath struct {
-	native unsafe.Pointer
+	native *C.GtkWidgetPath
 }
 
 func marshalWidgetPath(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &WidgetPath{&widgetPath{(unsafe.Pointer)(b)}}, nil
+	return &WidgetPath{&widgetPath{(*C.GtkWidgetPath)(b)}}, nil
 }
 
 // NewWidgetPath constructs a struct WidgetPath.
 func NewWidgetPath() *WidgetPath {
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("new", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidgetPath // in
+
+	_cret = C.gtk_widget_path_new()
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
@@ -1399,21 +1508,20 @@ func NewWidgetPath() *WidgetPath {
 //    - gint: position where the data was inserted.
 //
 func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 *C.GtkWidget     // out
+	var _cret C.gint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("append_for_widget", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_append_for_widget(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(widget)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1429,21 +1537,20 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
 //    - gint: position where the element was inserted.
 //
 func (path *WidgetPath) AppendType(typ coreglib.Type) int32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.GType          // out
+	var _cret C.gint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.GType(typ)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("append_type", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_append_type(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(typ)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1468,23 +1575,23 @@ func (path *WidgetPath) AppendType(typ coreglib.Type) int32 {
 //    - gint: position where the element was inserted.
 //
 func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint32) int32 {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 *C.GtkWidgetPath // out
+	var _arg2 C.guint          // out
+	var _cret C.gint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(siblings)))
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(siblingIndex)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(siblings)))
+	_arg2 = C.guint(siblingIndex)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("append_with_siblings", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_append_with_siblings(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(siblings)
 	runtime.KeepAlive(siblingIndex)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1496,27 +1603,21 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 //    - widgetPath: copy of path.
 //
 func (path *WidgetPath) Copy() *WidgetPath {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _cret *C.GtkWidgetPath // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_copy(_arg0)
 	runtime.KeepAlive(path)
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
@@ -1531,19 +1632,17 @@ func (path *WidgetPath) Copy() *WidgetPath {
 //    - gType: object type.
 //
 func (path *WidgetPath) ObjectType() coreglib.Type {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _cret C.GType          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("get_object_type", _args[:], nil)
-	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_get_object_type(_arg0)
 	runtime.KeepAlive(path)
 
 	var _gType coreglib.Type // out
 
-	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }
@@ -1560,21 +1659,20 @@ func (path *WidgetPath) ObjectType() coreglib.Type {
 //    - ok: TRUE if any parent is of type type.
 //
 func (path *WidgetPath) HasParent(typ coreglib.Type) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.GType          // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.GType(typ)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("has_parent", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_has_parent(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1593,21 +1691,20 @@ func (path *WidgetPath) HasParent(typ coreglib.Type) bool {
 //    - ok: TRUE if the widget represented by path is of type type.
 //
 func (path *WidgetPath) IsType(typ coreglib.Type) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.GType          // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.GType(typ)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("is_type", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_is_type(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(typ)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1623,19 +1720,52 @@ func (path *WidgetPath) IsType(typ coreglib.Type) bool {
 //    - name class name.
 //
 func (path *WidgetPath) IterAddClass(pos int32, name string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_add_class", _args[:], nil)
-
+	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
+}
+
+// IterAddRegion adds the region name to the widget at position pos in the
+// hierarchy defined in path. See gtk_style_context_add_region().
+//
+// Region names must only contain lowercase letters and “-”, starting always
+// with a lowercase letter.
+//
+// Deprecated: The use of regions is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - name: region name.
+//    - flags affecting the region.
+//
+func (path *WidgetPath) IterAddRegion(pos int32, name string, flags RegionFlags) {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
+	var _arg3 C.GtkRegionFlags // out
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GtkRegionFlags(flags)
+
+	C.gtk_widget_path_iter_add_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(flags)
 }
 
 // IterClearClasses removes all classes from the widget at position pos in the
@@ -1646,14 +1776,13 @@ func (path *WidgetPath) IterAddClass(pos int32, name string) {
 //    - pos: position to modify, -1 for the path head.
 //
 func (path *WidgetPath) IterClearClasses(pos int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_clear_classes", _args[:], nil)
-
+	C.gtk_widget_path_iter_clear_classes(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 }
@@ -1668,14 +1797,13 @@ func (path *WidgetPath) IterClearClasses(pos int32) {
 //    - pos: position to modify, -1 for the path head.
 //
 func (path *WidgetPath) IterClearRegions(pos int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_clear_regions", _args[:], nil)
-
+	C.gtk_widget_path_iter_clear_regions(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 }
@@ -1692,22 +1820,21 @@ func (path *WidgetPath) IterClearRegions(pos int32) {
 //    - utf8 (optional): widget name, or NULL if none was set.
 //
 func (path *WidgetPath) IterGetName(pos int32) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.gchar         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_get_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_get_name(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -1725,22 +1852,21 @@ func (path *WidgetPath) IterGetName(pos int32) string {
 //    - utf8 (optional): name or NULL.
 //
 func (path *WidgetPath) IterGetObjectName(pos int32) string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_get_object_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_get_object_name(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -1758,21 +1884,20 @@ func (path *WidgetPath) IterGetObjectName(pos int32) string {
 //    - gType: widget type.
 //
 func (path *WidgetPath) IterGetObjectType(pos int32) coreglib.Type {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret C.GType          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_get_object_type", _args[:], nil)
-	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_get_object_type(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _gType coreglib.Type // out
 
-	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+	_gType = coreglib.Type(_cret)
 
 	return _gType
 }
@@ -1791,21 +1916,20 @@ func (path *WidgetPath) IterGetObjectType(pos int32) coreglib.Type {
 //    - guint: 0 or the index into the list of siblings for the element at pos.
 //
 func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret C.guint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_get_sibling_index", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_get_sibling_index(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1822,34 +1946,59 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
 //    - widgetPath: NULL or the list of siblings for the element at pos.
 //
 func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.GtkWidgetPath // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_get_siblings", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_get_siblings(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.gtk_widget_path_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_widget_path_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
 	return _widgetPath
+}
+
+// IterGetState returns the state flags corresponding to the widget found at the
+// position pos in the widget hierarchy defined by path.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to get the state for, -1 for the path head.
+//
+// The function returns the following values:
+//
+//    - stateFlags: state flags.
+//
+func (path *WidgetPath) IterGetState(pos int32) StateFlags {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret C.GtkStateFlags  // in
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+
+	_cret = C.gtk_widget_path_iter_get_state(_arg0, _arg1)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+
+	var _stateFlags StateFlags // out
+
+	_stateFlags = StateFlags(_cret)
+
+	return _stateFlags
 }
 
 // IterHasClass returns TRUE if the widget at position pos has the class name
@@ -1865,24 +2014,24 @@ func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 //    - ok: TRUE if the class name is defined for the widget at pos.
 //
 func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_has_class", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_has_class(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1902,24 +2051,24 @@ func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
 //    - ok: TRUE if the widget at pos has this name.
 //
 func (path *WidgetPath) IterHasName(pos int32, name string) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_has_name", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_has_name(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1939,23 +2088,23 @@ func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 //    - ok: TRUE if the widget at pos has the class defined.
 //
 func (path *WidgetPath) IterHasQclass(pos int32, qname glib.Quark) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GQuark         // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(qname)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.guint32(qname)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_has_qclass", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_has_qclass(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(qname)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1975,23 +2124,23 @@ func (path *WidgetPath) IterHasQclass(pos int32, qname glib.Quark) bool {
 //    - ok: TRUE if the widget at pos has this name.
 //
 func (path *WidgetPath) IterHasQname(pos int32, qname glib.Quark) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GQuark         // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(qname)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.guint32(qname)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_has_qname", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_has_qname(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(qname)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2014,17 +2163,17 @@ func (path *WidgetPath) IterHasQname(pos int32, qname glib.Quark) bool {
 //    - ok: TRUE if the widget at pos has the region defined.
 //
 func (path *WidgetPath) IterHasQregion(pos int32, qname glib.Quark) (RegionFlags, bool) {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GQuark         // out
+	var _arg3 C.GtkRegionFlags // in
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(qname)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.guint32(qname)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_has_qregion", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_has_qregion(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(qname)
@@ -2032,8 +2181,8 @@ func (path *WidgetPath) IterHasQregion(pos int32, qname glib.Quark) (RegionFlags
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	_flags = *(*RegionFlags)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_flags = RegionFlags(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2056,18 +2205,18 @@ func (path *WidgetPath) IterHasQregion(pos int32, qname glib.Quark) (RegionFlags
 //    - ok: TRUE if the class name is defined for the widget at pos.
 //
 func (path *WidgetPath) IterHasRegion(pos int32, name string) (RegionFlags, bool) {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
+	var _arg3 C.GtkRegionFlags // in
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_has_region", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_has_region(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -2075,8 +2224,8 @@ func (path *WidgetPath) IterHasRegion(pos int32, name string) (RegionFlags, bool
 	var _flags RegionFlags // out
 	var _ok bool           // out
 
-	_flags = *(*RegionFlags)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_flags = RegionFlags(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2096,25 +2245,24 @@ func (path *WidgetPath) IterHasRegion(pos int32, name string) (RegionFlags, bool
 //      owned by GTK+, but you should use g_slist_free() to free the list itself.
 //
 func (path *WidgetPath) IterListClasses(pos int32) []string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.GSList        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_list_classes", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_list_classes(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _sList []string // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -2136,25 +2284,24 @@ func (path *WidgetPath) IterListClasses(pos int32) []string {
 //      owned by GTK+, but you should use g_slist_free() to free the list itself.
 //
 func (path *WidgetPath) IterListRegions(pos int32) []string {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _cret *C.GSList        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("iter_list_regions", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_iter_list_regions(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 
 	var _sList []string // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
 		_sList = append(_sList, dst)
 	})
 
@@ -2170,16 +2317,16 @@ func (path *WidgetPath) IterListRegions(pos int32) []string {
 //    - name class name.
 //
 func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_remove_class", _args[:], nil)
-
+	C.gtk_widget_path_iter_remove_class(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -2196,16 +2343,16 @@ func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
 //    - name: region name.
 //
 func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_remove_region", _args[:], nil)
-
+	C.gtk_widget_path_iter_remove_region(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -2220,16 +2367,16 @@ func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
 //    - name: widget name.
 //
 func (path *WidgetPath) IterSetName(pos int32, name string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.gchar         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_set_name", _args[:], nil)
-
+	C.gtk_widget_path_iter_set_name(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -2246,18 +2393,18 @@ func (path *WidgetPath) IterSetName(pos int32, name string) {
 //    - name (optional): object name to set or NULL to unset.
 //
 func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 *C.char          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg2))
 	}
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_set_object_name", _args[:], nil)
-
+	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -2272,18 +2419,48 @@ func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
 //    - typ: object type to set.
 //
 func (path *WidgetPath) IterSetObjectType(pos int32, typ coreglib.Type) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GType          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
-	*(*C.GType)(unsafe.Pointer(&_args[2])) = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.GType(typ)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("iter_set_object_type", _args[:], nil)
-
+	C.gtk_widget_path_iter_set_object_type(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(typ)
+}
+
+// IterSetState sets the widget name for the widget found at position pos in the
+// widget hierarchy defined by path.
+//
+// If you want to update just a single state flag, you need to do this manually,
+// as this function updates all state flags.
+//
+// Setting a flag
+//
+//    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);.
+//
+// The function takes the following parameters:
+//
+//    - pos: position to modify, -1 for the path head.
+//    - state flags.
+//
+func (path *WidgetPath) IterSetState(pos int32, state StateFlags) {
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.gint           // out
+	var _arg2 C.GtkStateFlags  // out
+
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.gint(pos)
+	_arg2 = C.GtkStateFlags(state)
+
+	C.gtk_widget_path_iter_set_state(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(state)
 }
 
 // Length returns the number of Widget #GTypes between the represented widget
@@ -2294,19 +2471,17 @@ func (path *WidgetPath) IterSetObjectType(pos int32, typ coreglib.Type) {
 //    - gint: number of elements in the path.
 //
 func (path *WidgetPath) Length() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _cret C.gint           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("length", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_length(_arg0)
 	runtime.KeepAlive(path)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2319,14 +2494,13 @@ func (path *WidgetPath) Length() int32 {
 //    - typ: widget type to prepend.
 //
 func (path *WidgetPath) PrependType(typ coreglib.Type) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _arg1 C.GType          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg1 = C.GType(typ)
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_info.InvokeRecordMethod("prepend_type", _args[:], nil)
-
+	C.gtk_widget_path_prepend_type(_arg0, _arg1)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(typ)
 }
@@ -2343,20 +2517,18 @@ func (path *WidgetPath) PrependType(typ coreglib.Type) {
 //    - utf8: new string describing path.
 //
 func (path *WidgetPath) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkWidgetPath // out
+	var _cret *C.char          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_info := girepository.MustFind("Gtk", "WidgetPath")
-	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_widget_path_to_string(_arg0)
 	runtime.KeepAlive(path)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

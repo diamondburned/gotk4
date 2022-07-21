@@ -8,16 +8,14 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_DrawingAreaClass_resize(void*, int, int);
-// extern void _gotk4_gtk4_DrawingAreaDrawFunc(void*, void*, int, int, gpointer);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
+// extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
 // extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
 // extern void callbackDelete(gpointer);
 import "C"
@@ -28,7 +26,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDrawingArea() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "DrawingArea").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_drawing_area_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDrawingArea)
 	return gtype
 }
@@ -41,7 +39,7 @@ func GTypeDrawingArea() coreglib.Type {
 type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int32)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
-func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
+func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
 	var fn DrawingAreaDrawFunc
 	{
 		v := gbox.Get(uintptr(arg5))
@@ -60,7 +58,7 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.void, arg2 *C.void, arg3 C.int, arg
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
 	C.cairo_reference(arg2)
 	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
+		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
 	_width = int32(arg3)
 	_height = int32(arg4)
@@ -171,16 +169,15 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "DrawingAreaClass")
+	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Resize(width, height int32) }); ok {
-		o := pclass.StructFieldOffset("resize")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_DrawingAreaClass_resize)
+		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
 	}
 }
 
 //export _gotk4_gtk4_DrawingAreaClass_resize
-func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.void, arg1 C.int, arg2 C.int) {
+func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Resize(width, height int32) })
 
@@ -255,13 +252,13 @@ func (self *DrawingArea) ConnectResize(f func(width, height int32)) coreglib.Sig
 //    - drawingArea: new GtkDrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
-	_info := girepository.MustFind("Gtk", "DrawingArea")
-	_gret := _info.InvokeClassMethod("new_DrawingArea", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_drawing_area_new()
 
 	var _drawingArea *DrawingArea // out
 
-	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
 }
@@ -273,19 +270,17 @@ func NewDrawingArea() *DrawingArea {
 //    - gint: height requested for content of the drawing area.
 //
 func (self *DrawingArea) ContentHeight() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDrawingArea // out
+	var _cret C.int             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DrawingArea")
-	_gret := _info.InvokeClassMethod("get_content_height", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -297,19 +292,17 @@ func (self *DrawingArea) ContentHeight() int32 {
 //    - gint: width requested for content of the drawing area.
 //
 func (self *DrawingArea) ContentWidth() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkDrawingArea // out
+	var _cret C.int             // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "DrawingArea")
-	_gret := _info.InvokeClassMethod("get_content_width", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 	runtime.KeepAlive(self)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -327,14 +320,13 @@ func (self *DrawingArea) ContentWidth() int32 {
 //    - height of contents.
 //
 func (self *DrawingArea) SetContentHeight(height int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDrawingArea // out
+	var _arg1 C.int             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(height)
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(height)
 
-	_info := girepository.MustFind("Gtk", "DrawingArea")
-	_info.InvokeClassMethod("set_content_height", _args[:], nil)
-
+	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(height)
 }
@@ -352,14 +344,13 @@ func (self *DrawingArea) SetContentHeight(height int32) {
 //    - width of contents.
 //
 func (self *DrawingArea) SetContentWidth(width int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkDrawingArea // out
+	var _arg1 C.int             // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(width)
 
-	_info := girepository.MustFind("Gtk", "DrawingArea")
-	_info.InvokeClassMethod("set_content_width", _args[:], nil)
-
+	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(width)
 }
@@ -384,18 +375,19 @@ func (self *DrawingArea) SetContentWidth(width int32) {
 //      contents.
 //
 func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkDrawingArea        // out
+	var _arg1 C.GtkDrawingAreaDrawFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if drawFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
-		_args[2] = C.gpointer(gbox.Assign(drawFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
+		_arg2 = C.gpointer(gbox.Assign(drawFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "DrawingArea")
-	_info.InvokeClassMethod("set_draw_func", _args[:], nil)
-
+	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drawFunc)
 }

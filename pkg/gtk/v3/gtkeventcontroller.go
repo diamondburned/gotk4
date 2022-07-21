@@ -7,15 +7,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 // GTypeEventController returns the GType for the type EventController.
@@ -24,9 +24,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventController() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventController").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_event_controller_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventController)
 	return gtype
+}
+
+// EventControllerOverrider contains methods that are overridable.
+type EventControllerOverrider interface {
 }
 
 // EventController is a base, low-level implementation for event controllers.
@@ -52,6 +56,14 @@ type EventControllerer interface {
 
 var _ EventControllerer = (*EventController)(nil)
 
+func classInitEventControllerer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapEventController(obj *coreglib.Object) *EventController {
 	return &EventController{
 		Object: obj,
@@ -71,6 +83,29 @@ func BaseEventController(obj EventControllerer) *EventController {
 	return obj.baseEventController()
 }
 
+// PropagationPhase gets the propagation phase at which controller handles
+// events.
+//
+// The function returns the following values:
+//
+//    - propagationPhase: propagation phase.
+//
+func (controller *EventController) PropagationPhase() PropagationPhase {
+	var _arg0 *C.GtkEventController // out
+	var _cret C.GtkPropagationPhase // in
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+
+	_cret = C.gtk_event_controller_get_propagation_phase(_arg0)
+	runtime.KeepAlive(controller)
+
+	var _propagationPhase PropagationPhase // out
+
+	_propagationPhase = PropagationPhase(_cret)
+
+	return _propagationPhase
+}
+
 // Widget returns the Widget this controller relates to.
 //
 // The function returns the following values:
@@ -78,20 +113,18 @@ func BaseEventController(obj EventControllerer) *EventController {
 //    - widget: Widget.
 //
 func (controller *EventController) Widget() Widgetter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEventController // out
+	var _cret *C.GtkWidget          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventController")
-	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_get_widget(_arg0)
 	runtime.KeepAlive(controller)
 
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -124,21 +157,20 @@ func (controller *EventController) Widget() Widgetter {
 //      action.
 //
 func (controller *EventController) HandleEvent(event *gdk.Event) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkEventController // out
+	var _arg1 *C.GdkEvent           // out
+	var _cret C.gboolean            // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_info := girepository.MustFind("Gtk", "EventController")
-	_gret := _info.InvokeClassMethod("handle_event", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_handle_event(_arg0, _arg1)
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -149,12 +181,33 @@ func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 // controller did through EventController::handle-event will be dropped at this
 // point.
 func (controller *EventController) Reset() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkEventController // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventController")
-	_info.InvokeClassMethod("reset", _args[:], nil)
-
+	C.gtk_event_controller_reset(_arg0)
 	runtime.KeepAlive(controller)
+}
+
+// SetPropagationPhase sets the propagation phase at which a controller handles
+// events.
+//
+// If phase is GTK_PHASE_NONE, no automatic event handling will be performed,
+// but other additional gesture maintenance will. In that phase, the events can
+// be managed by calling gtk_event_controller_handle_event().
+//
+// The function takes the following parameters:
+//
+//    - phase: propagation phase.
+//
+func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationPhase // out
+
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	_arg1 = C.GtkPropagationPhase(phase)
+
+	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
+	runtime.KeepAlive(controller)
+	runtime.KeepAlive(phase)
 }

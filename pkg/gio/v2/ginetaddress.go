@@ -7,15 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_gio2_InetAddressClass_to_string(void*);
+// extern gchar* _gotk4_gio2_InetAddressClass_to_string(GInetAddress*);
 import "C"
 
 // GTypeInetAddress returns the GType for the type InetAddress.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeInetAddress() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "InetAddress").RegisteredGType())
+	gtype := coreglib.Type(C.g_inet_address_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalInetAddress)
 	return gtype
 }
@@ -64,16 +62,15 @@ func classInitInetAddresser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "InetAddressClass")
+	pclass := (*C.GInetAddressClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ String() string }); ok {
-		o := pclass.StructFieldOffset("to_string")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InetAddressClass_to_string)
+		pclass.to_string = (*[0]byte)(C._gotk4_gio2_InetAddressClass_to_string)
 	}
 }
 
 //export _gotk4_gio2_InetAddressClass_to_string
-func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.GInetAddress) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ String() string })
 
@@ -94,6 +91,34 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 	return wrapInetAddress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewInetAddressAny creates a Address for the "any" address (unassigned/"don't
+// care") for family.
+//
+// The function takes the following parameters:
+//
+//    - family address family.
+//
+// The function returns the following values:
+//
+//    - inetAddress: new Address corresponding to the "any" address for family.
+//      Free the returned object with g_object_unref().
+//
+func NewInetAddressAny(family SocketFamily) *InetAddress {
+	var _arg1 C.GSocketFamily // out
+	var _cret *C.GInetAddress // in
+
+	_arg1 = C.GSocketFamily(family)
+
+	_cret = C.g_inet_address_new_any(_arg1)
+	runtime.KeepAlive(family)
+
+	var _inetAddress *InetAddress // out
+
+	_inetAddress = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _inetAddress
+}
+
 // NewInetAddressFromString parses string as an IP address and creates a new
 // Address.
 //
@@ -108,22 +133,47 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 //      g_object_unref().
 //
 func NewInetAddressFromString(str string) *InetAddress {
-	var _args [1]girepository.Argument
+	var _arg1 *C.gchar        // out
+	var _cret *C.GInetAddress // in
 
-	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("new_InetAddress_from_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_new_from_string(_arg1)
 	runtime.KeepAlive(str)
 
 	var _inetAddress *InetAddress // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_inetAddress = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_inetAddress = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
+
+	return _inetAddress
+}
+
+// NewInetAddressLoopback creates a Address for the loopback address for family.
+//
+// The function takes the following parameters:
+//
+//    - family address family.
+//
+// The function returns the following values:
+//
+//    - inetAddress: new Address corresponding to the loopback address for
+//      family. Free the returned object with g_object_unref().
+//
+func NewInetAddressLoopback(family SocketFamily) *InetAddress {
+	var _arg1 C.GSocketFamily // out
+	var _cret *C.GInetAddress // in
+
+	_arg1 = C.GSocketFamily(family)
+
+	_cret = C.g_inet_address_new_loopback(_arg1)
+	runtime.KeepAlive(family)
+
+	var _inetAddress *InetAddress // out
+
+	_inetAddress = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _inetAddress
 }
@@ -139,25 +189,46 @@ func NewInetAddressFromString(str string) *InetAddress {
 //    - ok: TRUE if address and other_address are equal, FALSE otherwise.
 //
 func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _arg1 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherAddress).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(otherAddress).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("equal", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_equal(_arg0, _arg1)
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(otherAddress)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
 	return _ok
+}
+
+// Family gets address's family.
+//
+// The function returns the following values:
+//
+//    - socketFamily address's family.
+//
+func (address *InetAddress) Family() SocketFamily {
+	var _arg0 *C.GInetAddress // out
+	var _cret C.GSocketFamily // in
+
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+
+	_cret = C.g_inet_address_get_family(_arg0)
+	runtime.KeepAlive(address)
+
+	var _socketFamily SocketFamily // out
+
+	_socketFamily = SocketFamily(_cret)
+
+	return _socketFamily
 }
 
 // IsAny tests whether address is the "any" address for its family.
@@ -167,19 +238,17 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 //    - ok: TRUE if address is the "any" address for its family.
 //
 func (address *InetAddress) IsAny() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_any", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_any(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -194,19 +263,17 @@ func (address *InetAddress) IsAny() bool {
 //    - ok: TRUE if address is a link-local address.
 //
 func (address *InetAddress) IsLinkLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_link_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_link_local(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -220,19 +287,17 @@ func (address *InetAddress) IsLinkLocal() bool {
 //    - ok: TRUE if address is the loopback address for its family.
 //
 func (address *InetAddress) IsLoopback() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_loopback", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_loopback(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -246,19 +311,17 @@ func (address *InetAddress) IsLoopback() bool {
 //    - ok: TRUE if address is a global multicast address.
 //
 func (address *InetAddress) IsMcGlobal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_mc_global", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_mc_global(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -272,19 +335,17 @@ func (address *InetAddress) IsMcGlobal() bool {
 //    - ok: TRUE if address is a link-local multicast address.
 //
 func (address *InetAddress) IsMcLinkLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_mc_link_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_mc_link_local(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -298,19 +359,17 @@ func (address *InetAddress) IsMcLinkLocal() bool {
 //    - ok: TRUE if address is a node-local multicast address.
 //
 func (address *InetAddress) IsMcNodeLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_mc_node_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_mc_node_local(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -325,19 +384,17 @@ func (address *InetAddress) IsMcNodeLocal() bool {
 //    - ok: TRUE if address is an organization-local multicast address.
 //
 func (address *InetAddress) IsMcOrgLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_mc_org_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_mc_org_local(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -351,19 +408,17 @@ func (address *InetAddress) IsMcOrgLocal() bool {
 //    - ok: TRUE if address is a site-local multicast address.
 //
 func (address *InetAddress) IsMcSiteLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_mc_site_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_mc_site_local(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -377,19 +432,17 @@ func (address *InetAddress) IsMcSiteLocal() bool {
 //    - ok: TRUE if address is a multicast address.
 //
 func (address *InetAddress) IsMulticast() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_multicast", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_multicast(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -406,19 +459,17 @@ func (address *InetAddress) IsMulticast() bool {
 //    - ok: TRUE if address is a site-local address.
 //
 func (address *InetAddress) IsSiteLocal() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_is_site_local", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_is_site_local(_arg0)
 	runtime.KeepAlive(address)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -433,19 +484,17 @@ func (address *InetAddress) IsSiteLocal() bool {
 //    - gsize: number of bytes used for the native version of address.
 //
 func (address *InetAddress) NativeSize() uint {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret C.gsize         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("get_native_size", _args[:], nil)
-	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_get_native_size(_arg0)
 	runtime.KeepAlive(address)
 
 	var _gsize uint // out
 
-	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
+	_gsize = uint(_cret)
 
 	return _gsize
 }
@@ -458,20 +507,18 @@ func (address *InetAddress) NativeSize() uint {
 //      use.
 //
 func (address *InetAddress) String() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GInetAddress // out
+	var _cret *C.gchar        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_info := girepository.MustFind("Gio", "InetAddress")
-	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_inet_address_to_string(_arg0)
 	runtime.KeepAlive(address)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
 }

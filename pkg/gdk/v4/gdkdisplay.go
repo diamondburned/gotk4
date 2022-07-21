@@ -7,19 +7,17 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 // extern void _gotk4_gdk4_Display_ConnectClosed(gpointer, gboolean, guintptr);
 // extern void _gotk4_gdk4_Display_ConnectOpened(gpointer, guintptr);
-// extern void _gotk4_gdk4_Display_ConnectSeatAdded(gpointer, void*, guintptr);
-// extern void _gotk4_gdk4_Display_ConnectSeatRemoved(gpointer, void*, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectSeatAdded(gpointer, GdkSeat*, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectSeatRemoved(gpointer, GdkSeat*, guintptr);
 // extern void _gotk4_gdk4_Display_ConnectSettingChanged(gpointer, gchar*, guintptr);
 import "C"
 
@@ -29,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDisplay() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "Display").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_display_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDisplay)
 	return gtype
 }
@@ -120,7 +118,7 @@ func (display *Display) ConnectOpened(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gdk4_Display_ConnectSeatAdded
-func _gotk4_gdk4_Display_ConnectSeatAdded(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Display_ConnectSeatAdded(arg0 C.gpointer, arg1 *C.GdkSeat, arg2 C.guintptr) {
 	var f func(seat Seater)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -162,7 +160,7 @@ func (display *Display) ConnectSeatAdded(f func(seat Seater)) coreglib.SignalHan
 }
 
 //export _gotk4_gdk4_Display_ConnectSeatRemoved
-func _gotk4_gdk4_Display_ConnectSeatRemoved(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Display_ConnectSeatRemoved(arg0 C.gpointer, arg1 *C.GdkSeat, arg2 C.guintptr) {
 	var f func(seat Seater)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -230,13 +228,11 @@ func (display *Display) ConnectSettingChanged(f func(setting string)) coreglib.S
 
 // Beep emits a short beep on display.
 func (display *Display) Beep() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_info.InvokeClassMethod("beep", _args[:], nil)
-
+	C.gdk_display_beep(_arg0)
 	runtime.KeepAlive(display)
 }
 
@@ -244,13 +240,11 @@ func (display *Display) Beep() {
 //
 // This cleans up associated resources.
 func (display *Display) Close() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_info.InvokeClassMethod("close", _args[:], nil)
-
+	C.gdk_display_close(_arg0)
 	runtime.KeepAlive(display)
 }
 
@@ -266,21 +260,20 @@ func (display *Display) Close() {
 //    - ok: TRUE if there is a grab in effect for device.
 //
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkDevice  // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("device_is_grabbed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(device)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -298,13 +291,11 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 // This is most useful for X11. On windowing systems where requests are handled
 // synchronously, this function will do nothing.
 func (display *Display) Flush() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_info.InvokeClassMethod("flush", _args[:], nil)
-
+	C.gdk_display_flush(_arg0)
 	runtime.KeepAlive(display)
 }
 
@@ -317,19 +308,17 @@ func (display *Display) Flush() {
 //      g_object_unref() when done.
 //
 func (display *Display) AppLaunchContext() *AppLaunchContext {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay          // out
+	var _cret *C.GdkAppLaunchContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_app_launch_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_app_launch_context(_arg0)
 	runtime.KeepAlive(display)
 
 	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = wrapAppLaunchContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_appLaunchContext = wrapAppLaunchContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _appLaunchContext
 }
@@ -341,19 +330,17 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 //    - clipboard display's clipboard.
 //
 func (display *Display) Clipboard() *Clipboard {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay   // out
+	var _cret *C.GdkClipboard // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_clipboard", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_clipboard(_arg0)
 	runtime.KeepAlive(display)
 
 	var _clipboard *Clipboard // out
 
-	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _clipboard
 }
@@ -368,21 +355,19 @@ func (display *Display) Clipboard() *Clipboard {
 //    - seat (optional): default seat.
 //
 func (display *Display) DefaultSeat() Seater {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GdkSeat    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_default_seat", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_default_seat(_arg0)
 	runtime.KeepAlive(display)
 
 	var _seat Seater // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if _cret != nil {
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+			objptr := unsafe.Pointer(_cret)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -414,21 +399,20 @@ func (display *Display) DefaultSeat() Seater {
 //    - monitor with the largest overlap with surface.
 //
 func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkSurface // out
+	var _cret *C.GdkMonitor // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_monitor_at_surface", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_monitor_at_surface(_arg0, _arg1)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(surface)
 
 	var _monitor *Monitor // out
 
-	_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _monitor
 }
@@ -446,20 +430,18 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 //    - listModel of GdkMonitor.
 //
 func (self *Display) Monitors() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GListModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_monitors", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_monitors(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -476,19 +458,17 @@ func (self *Display) Monitors() *gio.ListModel {
 //      and should not be modified or freed.
 //
 func (display *Display) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.char       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_name(_arg0)
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -503,19 +483,17 @@ func (display *Display) Name() string {
 //    - clipboard: primary clipboard.
 //
 func (display *Display) PrimaryClipboard() *Clipboard {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay   // out
+	var _cret *C.GdkClipboard // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_primary_clipboard", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_primary_clipboard(_arg0)
 	runtime.KeepAlive(display)
 
 	var _clipboard *Clipboard // out
 
-	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _clipboard
 }
@@ -534,24 +512,24 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 //      otherwise.
 //
 func (display *Display) Setting(name string, value *coreglib.Value) bool {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.char       // out
+	var _arg2 *C.GValue     // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_setting", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_setting(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(value)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -566,20 +544,18 @@ func (display *Display) Setting(name string, value *coreglib.Value) bool {
 //    - utf8 (optional): startup notification ID for display, or NULL.
 //
 func (display *Display) StartupNotificationID() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.char       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("get_startup_notification_id", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_get_startup_notification_id(_arg0)
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
@@ -592,19 +568,17 @@ func (display *Display) StartupNotificationID() string {
 //    - ok: TRUE if the display is closed.
 //
 func (display *Display) IsClosed() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("is_closed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_is_closed(_arg0)
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -627,19 +601,17 @@ func (display *Display) IsClosed() bool {
 //      their alpha channels drawn correctly on the screen.
 //
 func (display *Display) IsComposited() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("is_composited", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_is_composited(_arg0)
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -663,19 +635,17 @@ func (display *Display) IsComposited() bool {
 //      display does not support this functionality.
 //
 func (display *Display) IsRGBA() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("is_rgba", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_is_rgba(_arg0)
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -689,24 +659,22 @@ func (display *Display) IsRGBA() bool {
 //    - list: the list of seats known to the GdkDisplay.
 //
 func (display *Display) ListSeats() []Seater {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret *C.GList      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("list_seats", _args[:], nil)
-	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_list_seats(_arg0)
 	runtime.KeepAlive(display)
 
 	var _list []Seater // out
 
-	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkSeat)(v)
 		var dst Seater // out
 		{
-			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
+			objptr := unsafe.Pointer(src)
 			if objptr == nil {
 				panic("object of type gdk.Seater is nil")
 			}
@@ -748,16 +716,17 @@ func (display *Display) ListSeats() []Seater {
 //    - ok: TRUE if there were any entries.
 //
 func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool) {
-	var _args [2]girepository.Argument
-	var _outs [3]girepository.Argument
+	var _arg0 *C.GdkDisplay   // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.GdkKeymapKey // in
+	var _arg4 C.int           // in
+	var _arg3 *C.guint        // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(keycode)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = C.guint(keycode)
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("map_keycode", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_map_keycode(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(keycode)
 
@@ -765,13 +734,13 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 	var _keyvals []uint32 // out
 	var _ok bool          // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	if _arg2 != nil {
+		defer C.free(unsafe.Pointer(_arg2))
 		{
-			src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[2])))
-			_keys = make([]KeymapKey, *(*C.int)(unsafe.Pointer(&_outs[2])))
-			for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[2]))); i++ {
-				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			src := unsafe.Slice((*C.GdkKeymapKey)(_arg2), _arg4)
+			_keys = make([]KeymapKey, _arg4)
+			for i := 0; i < int(_arg4); i++ {
+				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 				runtime.SetFinalizer(
 					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
 					func(intern *struct{ C unsafe.Pointer }) {
@@ -781,17 +750,17 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 			}
 		}
 	}
-	if *(**C.guint)(unsafe.Pointer(&_outs[1])) != nil {
-		defer C.free(unsafe.Pointer(*(**C.guint)(unsafe.Pointer(&_outs[1]))))
+	if _arg3 != nil {
+		defer C.free(unsafe.Pointer(_arg3))
 		{
-			src := unsafe.Slice((*C.guint)(*(**C.guint)(unsafe.Pointer(&_outs[1]))), *(*C.int)(unsafe.Pointer(&_outs[2])))
-			_keyvals = make([]uint32, *(*C.int)(unsafe.Pointer(&_outs[2])))
-			for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[2]))); i++ {
-				_keyvals[i] = uint32(*(*C.guint)(unsafe.Pointer(&src[i])))
+			src := unsafe.Slice((*C.guint)(_arg3), _arg4)
+			_keyvals = make([]uint32, _arg4)
+			for i := 0; i < int(_arg4); i++ {
+				_keyvals[i] = uint32(src[i])
 			}
 		}
 	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -824,28 +793,28 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 //    - ok: TRUE if keys were found and returned.
 //
 func (display *Display) MapKeyval(keyval uint32) ([]KeymapKey, bool) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GdkDisplay   // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.GdkKeymapKey // in
+	var _arg3 C.int           // in
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(keyval)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = C.guint(keyval)
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("map_keyval", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_map_keyval(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(keyval)
 
 	var _keys []KeymapKey // out
 	var _ok bool          // out
 
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	defer C.free(unsafe.Pointer(_arg2))
 	{
-		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[1])))
-		_keys = make([]KeymapKey, *(*C.int)(unsafe.Pointer(&_outs[1])))
-		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[1]))); i++ {
-			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+		src := unsafe.Slice((*C.GdkKeymapKey)(_arg2), _arg3)
+		_keys = make([]KeymapKey, _arg3)
+		for i := 0; i < int(_arg3); i++ {
+			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -854,7 +823,7 @@ func (display *Display) MapKeyval(keyval uint32) ([]KeymapKey, bool) {
 			)
 		}
 	}
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -874,15 +843,14 @@ func (display *Display) MapKeyval(keyval uint32) ([]KeymapKey, bool) {
 //      process should be completed.
 //
 func (display *Display) NotifyStartupComplete(startupId string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.char       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_info.InvokeClassMethod("notify_startup_complete", _args[:], nil)
-
+	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)
 }
@@ -898,14 +866,13 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 //    - event: GdkEvent.
 //
 func (display *Display) PutEvent(event Eventer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.GdkEvent   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_info.InvokeClassMethod("put_event", _args[:], nil)
-
+	C.gdk_display_put_event(_arg0, _arg1)
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(event)
 }
@@ -922,19 +889,17 @@ func (display *Display) PutEvent(event Eventer) {
 //    - ok: TRUE if surfaces with modified input shape are supported.
 //
 func (display *Display) SupportsInputShapes() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_gret := _info.InvokeClassMethod("supports_input_shapes", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_supports_input_shapes(_arg0)
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -952,14 +917,85 @@ func (display *Display) SupportsInputShapes() bool {
 // This is most useful for X11. On windowing systems where requests are handled
 // synchronously, this function will do nothing.
 func (display *Display) Sync() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkDisplay // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gdk", "Display")
-	_info.InvokeClassMethod("sync", _args[:], nil)
-
+	C.gdk_display_sync(_arg0)
 	runtime.KeepAlive(display)
+}
+
+// TranslateKey translates the contents of a GdkEventKey into a keyval,
+// effective group, and level.
+//
+// Modifiers that affected the translation and are thus unavailable for
+// application use are returned in consumed_modifiers.
+//
+// The effective_group is the group that was actually used for the translation;
+// some keys such as Enter are not affected by the active keyboard group. The
+// level is derived from state.
+//
+// consumed_modifiers gives modifiers that should be masked out from state when
+// comparing this key press to a keyboard shortcut. For instance, on a US
+// keyboard, the plus symbol is shifted, so when comparing a key press to a
+// <Control>plus accelerator <Shift> should be masked out.
+//
+// This function should rarely be needed, since GdkEventKey already contains the
+// translated keyval. It is exported for the benefit of virtualized test
+// environments.
+//
+// The function takes the following parameters:
+//
+//    - keycode: keycode.
+//    - state: modifier state.
+//    - group: active keyboard group.
+//
+// The function returns the following values:
+//
+//    - keyval (optional): return location for keyval, or NULL.
+//    - effectiveGroup (optional): return location for effective group, or NULL.
+//    - level (optional): return location for level, or NULL.
+//    - consumed (optional): return location for modifiers that were used to
+//      determine the group or level, or NULL.
+//    - ok: TRUE if there was a keyval bound to keycode/state/group.
+//
+func (display *Display) TranslateKey(keycode uint32, state ModifierType, group int32) (keyval uint32, effectiveGroup, level int32, consumed ModifierType, ok bool) {
+	var _arg0 *C.GdkDisplay     // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 C.int             // out
+	var _arg4 C.guint           // in
+	var _arg5 C.int             // in
+	var _arg6 C.int             // in
+	var _arg7 C.GdkModifierType // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = C.guint(keycode)
+	_arg2 = C.GdkModifierType(state)
+	_arg3 = C.int(group)
+
+	_cret = C.gdk_display_translate_key(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
+	runtime.KeepAlive(display)
+	runtime.KeepAlive(keycode)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(group)
+
+	var _keyval uint32         // out
+	var _effectiveGroup int32  // out
+	var _level int32           // out
+	var _consumed ModifierType // out
+	var _ok bool               // out
+
+	_keyval = uint32(_arg4)
+	_effectiveGroup = int32(_arg5)
+	_level = int32(_arg6)
+	_consumed = ModifierType(_arg7)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _keyval, _effectiveGroup, _level, _consumed, _ok
 }
 
 // DisplayGetDefault gets the default GdkDisplay.
@@ -972,14 +1008,14 @@ func (display *Display) Sync() {
 //    - display (optional): GdkDisplay, or NULL if there is no default display.
 //
 func DisplayGetDefault() *Display {
-	_info := girepository.MustFind("Gdk", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GdkDisplay // in
+
+	_cret = C.gdk_display_get_default()
 
 	var _display *Display // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display
@@ -997,21 +1033,19 @@ func DisplayGetDefault() *Display {
 //      opened.
 //
 func DisplayOpen(displayName string) *Display {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char       // out
+	var _cret *C.GdkDisplay // in
 
-	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gdk", "open")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_display_open(_arg1)
 	runtime.KeepAlive(displayName)
 
 	var _display *Display // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _display

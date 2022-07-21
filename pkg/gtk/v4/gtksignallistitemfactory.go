@@ -5,18 +5,16 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectBind(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectSetup(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(gpointer, void*, guintptr);
-// extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, void*, guintptr);
+// #include <gtk/gtk.h>
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectBind(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectSetup(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(gpointer, GtkListItem*, guintptr);
+// extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, GtkListItem*, guintptr);
 import "C"
 
 // GTypeSignalListItemFactory returns the GType for the type SignalListItemFactory.
@@ -25,9 +23,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSignalListItemFactory() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "SignalListItemFactory").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_signal_list_item_factory_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSignalListItemFactory)
 	return gtype
+}
+
+// SignalListItemFactoryOverrider contains methods that are overridable.
+type SignalListItemFactoryOverrider interface {
 }
 
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that
@@ -79,6 +81,14 @@ var (
 	_ coreglib.Objector = (*SignalListItemFactory)(nil)
 )
 
+func classInitSignalListItemFactorier(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapSignalListItemFactory(obj *coreglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{
 		ListItemFactory: ListItemFactory{
@@ -92,7 +102,7 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectBind
-func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -124,7 +134,7 @@ func (v *SignalListItemFactory) ConnectBind(f func(listitem *ListItem)) coreglib
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectSetup
-func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -155,7 +165,7 @@ func (v *SignalListItemFactory) ConnectSetup(f func(listitem *ListItem)) coregli
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectTeardown
-func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -185,7 +195,7 @@ func (v *SignalListItemFactory) ConnectTeardown(f func(listitem *ListItem)) core
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectUnbind
-func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
 	var f func(listitem *ListItem)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -222,13 +232,13 @@ func (v *SignalListItemFactory) ConnectUnbind(f func(listitem *ListItem)) coregl
 //    - signalListItemFactory: new GtkSignalListItemFactory.
 //
 func NewSignalListItemFactory() *SignalListItemFactory {
-	_info := girepository.MustFind("Gtk", "SignalListItemFactory")
-	_gret := _info.InvokeClassMethod("new_SignalListItemFactory", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkListItemFactory // in
+
+	_cret = C.gtk_signal_list_item_factory_new()
 
 	var _signalListItemFactory *SignalListItemFactory // out
 
-	_signalListItemFactory = wrapSignalListItemFactory(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_signalListItemFactory = wrapSignalListItemFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _signalListItemFactory
 }

@@ -8,14 +8,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <pango/pango.h>
 import "C"
 
 // GTypeAlignment returns the GType for the type Alignment.
@@ -24,7 +22,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeAlignment() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Alignment").RegisteredGType())
+	gtype := coreglib.Type(C.pango_alignment_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalAlignment)
 	return gtype
 }
@@ -35,7 +33,7 @@ func GTypeAlignment() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEllipsizeMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "EllipsizeMode").RegisteredGType())
+	gtype := coreglib.Type(C.pango_ellipsize_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEllipsizeMode)
 	return gtype
 }
@@ -46,7 +44,7 @@ func GTypeEllipsizeMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeWrapMode() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "WrapMode").RegisteredGType())
+	gtype := coreglib.Type(C.pango_wrap_mode_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalWrapMode)
 	return gtype
 }
@@ -57,7 +55,7 @@ func GTypeWrapMode() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLayout() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "Layout").RegisteredGType())
+	gtype := coreglib.Type(C.pango_layout_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLayout)
 	return gtype
 }
@@ -68,7 +66,7 @@ func GTypeLayout() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLayoutIter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "LayoutIter").RegisteredGType())
+	gtype := coreglib.Type(C.pango_layout_iter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLayoutIter)
 	return gtype
 }
@@ -79,7 +77,7 @@ func GTypeLayoutIter() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLayoutLine() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Pango", "LayoutLine").RegisteredGType())
+	gtype := coreglib.Type(C.pango_layout_line_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLayoutLine)
 	return gtype
 }
@@ -194,6 +192,10 @@ func (w WrapMode) String() string {
 	}
 }
 
+// LayoutOverrider contains methods that are overridable.
+type LayoutOverrider interface {
+}
+
 // Layout: PangoLayout structure represents an entire paragraph of text.
 //
 // While complete access to the layout capabilities of Pango is provided using
@@ -226,6 +228,14 @@ var (
 	_ coreglib.Objector = (*Layout)(nil)
 )
 
+func classInitLayouter(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapLayout(obj *coreglib.Object) *Layout {
 	return &Layout{
 		Object: obj,
@@ -249,19 +259,17 @@ func marshalLayout(p uintptr) (interface{}, error) {
 //      should be freed with g_object_unref().
 //
 func NewLayout(context *Context) *Layout {
-	var _args [1]girepository.Argument
+	var _arg1 *C.PangoContext // out
+	var _cret *C.PangoLayout  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("new_Layout", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_new(_arg1)
 	runtime.KeepAlive(context)
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -272,13 +280,11 @@ func NewLayout(context *Context) *Layout {
 // This function should be called if you make changes to the context subsequent
 // to creating the layout.
 func (layout *Layout) ContextChanged() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("context_changed", _args[:], nil)
-
+	C.pango_layout_context_changed(_arg0)
 	runtime.KeepAlive(layout)
 }
 
@@ -293,21 +299,42 @@ func (layout *Layout) ContextChanged() {
 //      should be freed with g_object_unref().
 //
 func (src *Layout) Copy() *Layout {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret *C.PangoLayout // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_copy(_arg0)
 	runtime.KeepAlive(src)
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _layout
+}
+
+// Alignment gets the alignment for the layout: how partial lines are positioned
+// within the horizontal space available.
+//
+// The function returns the following values:
+//
+//    - alignment: alignment.
+//
+func (layout *Layout) Alignment() Alignment {
+	var _arg0 *C.PangoLayout   // out
+	var _cret C.PangoAlignment // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	_cret = C.pango_layout_get_alignment(_arg0)
+	runtime.KeepAlive(layout)
+
+	var _alignment Alignment // out
+
+	_alignment = Alignment(_cret)
+
+	return _alignment
 }
 
 // Attributes gets the attribute list for the layout, if any.
@@ -317,21 +344,19 @@ func (src *Layout) Copy() *Layout {
 //    - attrList (optional): PangoAttrList or NULL if none was set.
 //
 func (layout *Layout) Attributes() *AttrList {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _cret *C.PangoAttrList // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_attributes(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _attrList *AttrList // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -354,19 +379,17 @@ func (layout *Layout) Attributes() *AttrList {
 //      layout's contents, FALSE otherwise.
 //
 func (layout *Layout) AutoDir() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_auto_dir", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_auto_dir(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -380,19 +403,17 @@ func (layout *Layout) AutoDir() bool {
 //    - gint: baseline of first line, from top of layout.
 //
 func (layout *Layout) Baseline() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_baseline", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_baseline(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -405,19 +426,17 @@ func (layout *Layout) Baseline() int32 {
 //    - gint: number of Unicode characters in the text of layout.
 //
 func (layout *Layout) CharacterCount() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.gint         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_character_count", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_character_count(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -431,19 +450,17 @@ func (layout *Layout) CharacterCount() int32 {
 //      reference it yourself.
 //
 func (layout *Layout) Context() *Context {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout  // out
+	var _cret *C.PangoContext // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_context(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _context *Context // out
 
-	_context = wrapContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_context = wrapContext(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _context
 }
@@ -469,29 +486,81 @@ func (layout *Layout) Context() *Context {
 //      NULL).
 //
 func (layout *Layout) CursorPos(index_ int32) (strongPos, weakPos *Rectangle) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
+	var _arg3 C.PangoRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(index_)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("get_cursor_pos", _args[:], _outs[:])
-
+	C.pango_layout_get_cursor_pos(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
 
 	var _strongPos *Rectangle // out
 	var _weakPos *Rectangle   // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_strongPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_weakPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_strongPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_weakPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
 
 	return _strongPos, _weakPos
+}
+
+// Direction gets the text direction at the given character position in layout.
+//
+// The function takes the following parameters:
+//
+//    - index: byte index of the char.
+//
+// The function returns the following values:
+//
+//    - direction: text direction at index.
+//
+func (layout *Layout) Direction(index int32) Direction {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _cret C.PangoDirection // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(index)
+
+	_cret = C.pango_layout_get_direction(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(index)
+
+	var _direction Direction // out
+
+	_direction = Direction(_cret)
+
+	return _direction
+}
+
+// Ellipsize gets the type of ellipsization being performed for layout.
+//
+// See pango.Layout.SetEllipsize().
+//
+// Use pango.Layout.IsEllipsized() to query whether any paragraphs were actually
+// ellipsized.
+//
+// The function returns the following values:
+//
+//    - ellipsizeMode: current ellipsization mode for layout.
+//
+func (layout *Layout) Ellipsize() EllipsizeMode {
+	var _arg0 *C.PangoLayout       // out
+	var _cret C.PangoEllipsizeMode // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	_cret = C.pango_layout_get_ellipsize(_arg0)
+	runtime.KeepAlive(layout)
+
+	var _ellipsizeMode EllipsizeMode // out
+
+	_ellipsizeMode = EllipsizeMode(_cret)
+
+	return _ellipsizeMode
 }
 
 // Extents computes the logical and ink extents of layout.
@@ -513,25 +582,20 @@ func (layout *Layout) CursorPos(index_ int32) (strongPos, weakPos *Rectangle) {
 //      the layout or NULL to indicate that the result is not needed.
 //
 func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("get_extents", _args[:], _outs[:])
-
+	C.pango_layout_get_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -545,20 +609,18 @@ func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
 //      value is owned by the layout and must not be modified or freed.
 //
 func (layout *Layout) FontDescription() *FontDescription {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout          // out
+	var _cret *C.PangoFontDescription // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_font_description", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_font_description(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _fontDescription *FontDescription // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _fontDescription
@@ -573,19 +635,17 @@ func (layout *Layout) FontDescription() *FontDescription {
 //    - gint: height, in Pango units if positive, or number of lines if negative.
 //
 func (layout *Layout) Height() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_height(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -599,19 +659,17 @@ func (layout *Layout) Height() int32 {
 //    - gint: indent in Pango units.
 //
 func (layout *Layout) Indent() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_indent", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_indent(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -624,27 +682,21 @@ func (layout *Layout) Indent() int32 {
 //      pango.LayoutIter.Free().
 //
 func (layout *Layout) Iter() *LayoutIter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout     // out
+	var _cret *C.PangoLayoutIter // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_iter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_iter(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _layoutIter *LayoutIter // out
 
-	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("Pango", "LayoutIter").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
 		},
 	)
 
@@ -659,19 +711,17 @@ func (layout *Layout) Iter() *LayoutIter {
 //    - ok: justify.
 //
 func (layout *Layout) Justify() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_justify", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_justify(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -695,23 +745,22 @@ func (layout *Layout) Justify() bool {
 //      become invalid if changes are made to the PangoLayout.
 //
 func (layout *Layout) Line(line int32) *LayoutLine {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout     // out
+	var _arg1 C.int              // out
+	var _cret *C.PangoLayoutLine // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(line)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(line)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_line", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_line(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(line)
 
 	var _layoutLine *LayoutLine // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_layout_line_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -730,19 +779,17 @@ func (layout *Layout) Line(line int32) *LayoutLine {
 //    - gint: line count.
 //
 func (layout *Layout) LineCount() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_line_count", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_line_count(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -765,23 +812,22 @@ func (layout *Layout) LineCount() int32 {
 //      be made to the line.
 //
 func (layout *Layout) LineReadonly(line int32) *LayoutLine {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout     // out
+	var _arg1 C.int              // out
+	var _cret *C.PangoLayoutLine // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(line)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(line)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_line_readonly", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_line_readonly(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(line)
 
 	var _layoutLine *LayoutLine // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if _cret != nil {
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_layout_line_ref(_cret)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -800,19 +846,17 @@ func (layout *Layout) LineReadonly(line int32) *LayoutLine {
 // The function returns the following values:
 //
 func (layout *Layout) LineSpacing() float32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.float        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_line_spacing", _args[:], nil)
-	_cret := *(*C.float)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_line_spacing(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
+	_gfloat = float32(_cret)
 
 	return _gfloat
 }
@@ -829,24 +873,22 @@ func (layout *Layout) LineSpacing() float32 {
 //      invalid on any change to the layout's text or properties.
 //
 func (layout *Layout) Lines() []*LayoutLine {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret *C.GSList      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_lines", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_lines(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _sList []*LayoutLine // out
 
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.PangoLayoutLine)(v)
 		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
-		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&src)))
+		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		C.pango_layout_line_ref(src)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -872,24 +914,22 @@ func (layout *Layout) Lines() []*LayoutLine {
 //      should be made to the lines.
 //
 func (layout *Layout) LinesReadonly() []*LayoutLine {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret *C.GSList      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_lines_readonly", _args[:], nil)
-	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_lines_readonly(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _sList []*LayoutLine // out
 
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+		src := (*C.PangoLayoutLine)(v)
 		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
-		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&src)))
+		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
+		C.pango_layout_line_ref(src)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -911,28 +951,66 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 //      value must be freed with g_free().
 //
 func (layout *Layout) LogAttrs() []LogAttr {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout  // out
+	var _arg1 *C.PangoLogAttr // in
+	var _arg2 C.gint          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("get_log_attrs", _args[:], _outs[:])
-
+	C.pango_layout_get_log_attrs(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
 	var _attrs []LogAttr // out
 
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	defer C.free(unsafe.Pointer(_arg1))
 	{
-		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
-		_attrs = make([]LogAttr, *(*C.gint)(unsafe.Pointer(&_outs[1])))
-		for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
-			_attrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+		src := unsafe.Slice((*C.PangoLogAttr)(_arg1), _arg2)
+		_attrs = make([]LogAttr, _arg2)
+		for i := 0; i < int(_arg2); i++ {
+			_attrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
 	}
 
 	return _attrs
+}
+
+// LogAttrsReadonly retrieves an array of logical attributes for each character
+// in the layout.
+//
+// This is a faster alternative to pango.Layout.GetLogAttrs(). The returned
+// array is part of layout and must not be modified. Modifying the layout will
+// invalidate the returned array.
+//
+// The number of attributes returned in n_attrs will be one more than the total
+// number of characters in the layout, since there need to be attributes
+// corresponding to both the position before the first character and the
+// position after the last character.
+//
+// The function returns the following values:
+//
+//    - logAttrs: array of logical attributes.
+//
+func (layout *Layout) LogAttrsReadonly() []LogAttr {
+	var _arg0 *C.PangoLayout  // out
+	var _cret *C.PangoLogAttr // in
+	var _arg1 C.gint          // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	_cret = C.pango_layout_get_log_attrs_readonly(_arg0, &_arg1)
+	runtime.KeepAlive(layout)
+
+	var _logAttrs []LogAttr // out
+
+	{
+		src := unsafe.Slice((*C.PangoLogAttr)(_cret), _arg1)
+		_logAttrs = make([]LogAttr, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_logAttrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+
+	return _logAttrs
 }
 
 // PixelExtents computes the logical and ink extents of layout in device units.
@@ -950,25 +1028,20 @@ func (layout *Layout) LogAttrs() []LogAttr {
 //      the layout or NULL to indicate that the result is not needed.
 //
 func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoRectangle // in
+	var _arg2 C.PangoRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("get_pixel_extents", _args[:], _outs[:])
-
+	C.pango_layout_get_pixel_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -985,21 +1058,20 @@ func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
 //    - height (optional): location to store the logical height, or NULL.
 //
 func (layout *Layout) PixelSize() (width, height int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // in
+	var _arg2 C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("get_pixel_size", _args[:], _outs[:])
-
+	C.pango_layout_get_pixel_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
 	var _width int32  // out
 	var _height int32 // out
 
-	_width = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }
@@ -1021,19 +1093,17 @@ func (layout *Layout) PixelSize() (width, height int32) {
 //    - guint: current serial number of layout.
 //
 func (layout *Layout) Serial() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.guint        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_serial", _args[:], nil)
-	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_serial(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _guint uint32 // out
 
-	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	_guint = uint32(_cret)
 
 	return _guint
 }
@@ -1048,19 +1118,17 @@ func (layout *Layout) Serial() uint32 {
 //      characters, FALSE otherwise.
 //
 func (layout *Layout) SingleParagraphMode() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_single_paragraph_mode", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_single_paragraph_mode(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1077,21 +1145,20 @@ func (layout *Layout) SingleParagraphMode() bool {
 //    - height (optional): location to store the logical height, or NULL.
 //
 func (layout *Layout) Size() (width, height int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // in
+	var _arg2 C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("get_size", _args[:], _outs[:])
-
+	C.pango_layout_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
 	var _width int32  // out
 	var _height int32 // out
 
-	_width = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }
@@ -1103,19 +1170,17 @@ func (layout *Layout) Size() (width, height int32) {
 //    - gint: spacing in Pango units.
 //
 func (layout *Layout) Spacing() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_spacing", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_spacing(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1132,28 +1197,22 @@ func (layout *Layout) Spacing() int32 {
 //    - tabArray (optional): copy of the tabs for this layout, or NULL.
 //
 func (layout *Layout) Tabs() *TabArray {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _cret *C.PangoTabArray // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_tabs", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_tabs(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _tabArray *TabArray // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
 			},
 		)
 	}
@@ -1169,19 +1228,17 @@ func (layout *Layout) Tabs() *TabArray {
 //    - utf8: text in the layout.
 //
 func (layout *Layout) Text() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret *C.char        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_text", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_text(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1198,19 +1255,17 @@ func (layout *Layout) Text() string {
 //    - gint: number of unknown glyphs in layout.
 //
 func (layout *Layout) UnknownGlyphsCount() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_unknown_glyphs_count", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_unknown_glyphs_count(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1222,21 +1277,44 @@ func (layout *Layout) UnknownGlyphsCount() int32 {
 //    - gint: width in Pango units, or -1 if no width set.
 //
 func (layout *Layout) Width() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_get_width(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// Wrap gets the wrap mode for the layout.
+//
+// Use pango.Layout.IsWrapped() to query whether any paragraphs were actually
+// wrapped.
+//
+// The function returns the following values:
+//
+//    - wrapMode: active wrap mode.
+//
+func (layout *Layout) Wrap() WrapMode {
+	var _arg0 *C.PangoLayout  // out
+	var _cret C.PangoWrapMode // in
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	_cret = C.pango_layout_get_wrap(_arg0)
+	runtime.KeepAlive(layout)
+
+	var _wrapMode WrapMode // out
+
+	_wrapMode = WrapMode(_cret)
+
+	return _wrapMode
 }
 
 // IndexToLineX converts from byte index_ within the layout to line and X
@@ -1259,18 +1337,19 @@ func (layout *Layout) Width() int32 {
 //      (PANGO_SCALE units per device unit), or NULL.
 //
 func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int32) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
+	var _arg2 C.gboolean     // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(index_)
 	if trailing {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("index_to_line_x", _args[:], _outs[:])
-
+	C.pango_layout_index_to_line_x(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
 	runtime.KeepAlive(trailing)
@@ -1278,8 +1357,8 @@ func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int3
 	var _line int32 // out
 	var _xPos int32 // out
 
-	_line = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_xPos = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_line = int32(_arg3)
+	_xPos = int32(_arg4)
 
 	return _line, _xPos
 }
@@ -1301,21 +1380,20 @@ func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int3
 //    - pos: rectangle in which to store the position of the grapheme.
 //
 func (layout *Layout) IndexToPos(index_ int32) *Rectangle {
-	var _args [2]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.int            // out
+	var _arg2 C.PangoRectangle // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(index_)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("index_to_pos", _args[:], _outs[:])
-
+	C.pango_layout_index_to_pos(_arg0, _arg1, &_arg2)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
 
 	var _pos *Rectangle // out
 
-	_pos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_pos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _pos
 }
@@ -1331,19 +1409,17 @@ func (layout *Layout) IndexToPos(index_ int32) *Rectangle {
 //    - ok: TRUE if any paragraphs had to be ellipsized, FALSE otherwise.
 //
 func (layout *Layout) IsEllipsized() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("is_ellipsized", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_is_ellipsized(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1361,19 +1437,17 @@ func (layout *Layout) IsEllipsized() bool {
 //    - ok: TRUE if any paragraphs had to be wrapped, FALSE otherwise.
 //
 func (layout *Layout) IsWrapped() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("is_wrapped", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_is_wrapped(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1419,20 +1493,23 @@ func (layout *Layout) IsWrapped() bool {
 //      always on the line where the cursor should be displayed.
 //
 func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, direction int32) (newIndex, newTrailing int32) {
-	var _args [5]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.gboolean     // out
+	var _arg2 C.int          // out
+	var _arg3 C.int          // out
+	var _arg4 C.int          // out
+	var _arg5 C.int          // in
+	var _arg6 C.int          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if strong {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(oldIndex)
-	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(oldTrailing)
-	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(direction)
+	_arg2 = C.int(oldIndex)
+	_arg3 = C.int(oldTrailing)
+	_arg4 = C.int(direction)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("move_cursor_visually", _args[:], _outs[:])
-
+	C.pango_layout_move_cursor_visually(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(strong)
 	runtime.KeepAlive(oldIndex)
@@ -1442,10 +1519,29 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 	var _newIndex int32    // out
 	var _newTrailing int32 // out
 
-	_newIndex = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_newTrailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_newIndex = int32(_arg5)
+	_newTrailing = int32(_arg6)
 
 	return _newIndex, _newTrailing
+}
+
+// SetAlignment sets the alignment for the layout: how partial lines are
+// positioned within the horizontal space available.
+//
+// The function takes the following parameters:
+//
+//    - alignment: alignment.
+//
+func (layout *Layout) SetAlignment(alignment Alignment) {
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 C.PangoAlignment // out
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.PangoAlignment(alignment)
+
+	C.pango_layout_set_alignment(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(alignment)
 }
 
 // SetAttributes sets the text attributes for a layout object. References attrs,
@@ -1456,16 +1552,15 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 //    - attrs (optional) can be NULL.
 //
 func (layout *Layout) SetAttributes(attrs *AttrList) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 *C.PangoAttrList // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if attrs != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
+		_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_attributes", _args[:], nil)
-
+	C.pango_layout_set_attributes(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(attrs)
 }
@@ -1493,18 +1588,44 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 //      layout's contents.
 //
 func (layout *Layout) SetAutoDir(autoDir bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if autoDir {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_auto_dir", _args[:], nil)
-
+	C.pango_layout_set_auto_dir(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(autoDir)
+}
+
+// SetEllipsize sets the type of ellipsization being performed for layout.
+//
+// Depending on the ellipsization mode ellipsize text is removed from the start,
+// middle, or end of text so they fit within the width and height of layout set
+// with pango.Layout.SetWidth() and pango.Layout.SetHeight().
+//
+// If the layout contains characters such as newlines that force it to be layed
+// out in multiple paragraphs, then whether each paragraph is ellipsized
+// separately or the entire layout is ellipsized as a whole depends on the set
+// height of the layout. See pango.Layout.SetHeight() for details.
+//
+// The function takes the following parameters:
+//
+//    - ellipsize: new ellipsization mode for layout.
+//
+func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
+	var _arg0 *C.PangoLayout       // out
+	var _arg1 C.PangoEllipsizeMode // out
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.PangoEllipsizeMode(ellipsize)
+
+	C.pango_layout_set_ellipsize(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(ellipsize)
 }
 
 // SetFontDescription sets the default font description for the layout.
@@ -1518,16 +1639,15 @@ func (layout *Layout) SetAutoDir(autoDir bool) {
 //      font description.
 //
 func (layout *Layout) SetFontDescription(desc *FontDescription) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout          // out
+	var _arg1 *C.PangoFontDescription // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if desc != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
+		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_font_description", _args[:], nil)
-
+	C.pango_layout_set_font_description(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(desc)
 }
@@ -1562,14 +1682,13 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 //      desired number of lines if negative.
 //
 func (layout *Layout) SetHeight(height int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(height)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(height)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_height", _args[:], nil)
-
+	C.pango_layout_set_height(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(height)
 }
@@ -1588,14 +1707,13 @@ func (layout *Layout) SetHeight(height int32) {
 //    - indent: amount by which to indent.
 //
 func (layout *Layout) SetIndent(indent int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(indent)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(indent)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_indent", _args[:], nil)
-
+	C.pango_layout_set_indent(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(indent)
 }
@@ -1615,16 +1733,15 @@ func (layout *Layout) SetIndent(indent int32) {
 //    - justify: whether the lines in the layout should be justified.
 //
 func (layout *Layout) SetJustify(justify bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if justify {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_justify", _args[:], nil)
-
+	C.pango_layout_set_justify(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(justify)
 }
@@ -1648,14 +1765,13 @@ func (layout *Layout) SetJustify(justify bool) {
 //    - factor: new line spacing factor.
 //
 func (layout *Layout) SetLineSpacing(factor float32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.float        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factor)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.float(factor)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_line_spacing", _args[:], nil)
-
+	C.pango_layout_set_line_spacing(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(factor)
 }
@@ -1674,16 +1790,16 @@ func (layout *Layout) SetLineSpacing(factor float32) {
 //    - length of marked-up text in bytes, or -1 if markup is null-terminated.
 //
 func (layout *Layout) SetMarkup(markup string, length int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 *C.char        // out
+	var _arg2 C.int          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_markup", _args[:], nil)
-
+	C.pango_layout_set_markup(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(markup)
 	runtime.KeepAlive(length)
@@ -1714,18 +1830,19 @@ func (layout *Layout) SetMarkup(markup string, length int32) {
 //      NULL.
 //
 func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarker uint32) uint32 {
-	var _args [4]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 *C.char        // out
+	var _arg2 C.int          // out
+	var _arg3 C.gunichar     // out
+	var _arg4 C.gunichar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
-	*(*C.gunichar)(unsafe.Pointer(&_args[3])) = C.gunichar(accelMarker)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = C.gunichar(accelMarker)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_markup_with_accel", _args[:], _outs[:])
-
+	C.pango_layout_set_markup_with_accel(_arg0, _arg1, _arg2, _arg3, &_arg4)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(markup)
 	runtime.KeepAlive(length)
@@ -1733,7 +1850,7 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarke
 
 	var _accelChar uint32 // out
 
-	_accelChar = uint32(*(*C.gunichar)(unsafe.Pointer(&_outs[0])))
+	_accelChar = uint32(_arg4)
 
 	return _accelChar
 }
@@ -1750,16 +1867,15 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarke
 //    - setting: new setting.
 //
 func (layout *Layout) SetSingleParagraphMode(setting bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.gboolean     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if setting {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_single_paragraph_mode", _args[:], nil)
-
+	C.pango_layout_set_single_paragraph_mode(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(setting)
 }
@@ -1782,14 +1898,13 @@ func (layout *Layout) SetSingleParagraphMode(setting bool) {
 //    - spacing: amount of spacing.
 //
 func (layout *Layout) SetSpacing(spacing int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(spacing)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(spacing)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_spacing", _args[:], nil)
-
+	C.pango_layout_set_spacing(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(spacing)
 }
@@ -1805,16 +1920,15 @@ func (layout *Layout) SetSpacing(spacing int32) {
 //    - tabs (optional): PangoTabArray, or NULL.
 //
 func (layout *Layout) SetTabs(tabs *TabArray) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout   // out
+	var _arg1 *C.PangoTabArray // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	if tabs != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
+		_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
 	}
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_tabs", _args[:], nil)
-
+	C.pango_layout_set_tabs(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(tabs)
 }
@@ -1837,16 +1951,16 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 //      truncated on encountering a nul-termination even when length is positive.
 //
 func (layout *Layout) SetText(text string, length int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 *C.char        // out
+	var _arg2 C.int          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_text", _args[:], nil)
-
+	C.pango_layout_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -1863,16 +1977,36 @@ func (layout *Layout) SetText(text string, length int32) {
 //      or ellipsization should be performed.
 //
 func (layout *Layout) SetWidth(width int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(width)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_info.InvokeClassMethod("set_width", _args[:], nil)
-
+	C.pango_layout_set_width(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(width)
+}
+
+// SetWrap sets the wrap mode.
+//
+// The wrap mode only has effect if a width is set on the layout with
+// pango.Layout.SetWidth(). To turn off wrapping, set the width to -1.
+//
+// The function takes the following parameters:
+//
+//    - wrap mode.
+//
+func (layout *Layout) SetWrap(wrap WrapMode) {
+	var _arg0 *C.PangoLayout  // out
+	var _arg1 C.PangoWrapMode // out
+
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.PangoWrapMode(wrap)
+
+	C.pango_layout_set_wrap(_arg0, _arg1)
+	runtime.KeepAlive(layout)
+	runtime.KeepAlive(wrap)
 }
 
 // XYToIndex converts from X and Y position within a layout to the byte index to
@@ -1899,17 +2033,18 @@ func (layout *Layout) SetWidth(width int32) {
 //    - ok: TRUE if the coordinates were inside text, FALSE otherwise.
 //
 func (layout *Layout) XYToIndex(x, y int32) (index_, trailing int32, ok bool) {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayout // out
+	var _arg1 C.int          // out
+	var _arg2 C.int          // out
+	var _arg3 C.int          // in
+	var _arg4 C.int          // in
+	var _cret C.gboolean     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
+	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
-	_info := girepository.MustFind("Pango", "Layout")
-	_gret := _info.InvokeClassMethod("xy_to_index", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_xy_to_index(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -1918,9 +2053,9 @@ func (layout *Layout) XYToIndex(x, y int32) (index_, trailing int32, ok bool) {
 	var _trailing int32 // out
 	var _ok bool        // out
 
-	_index_ = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_trailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_index_ = int32(_arg3)
+	_trailing = int32(_arg4)
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1941,12 +2076,12 @@ type LayoutIter struct {
 
 // layoutIter is the struct that's finalized.
 type layoutIter struct {
-	native unsafe.Pointer
+	native *C.PangoLayoutIter
 }
 
 func marshalLayoutIter(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &LayoutIter{&layoutIter{(unsafe.Pointer)(b)}}, nil
+	return &LayoutIter{&layoutIter{(*C.PangoLayoutIter)(b)}}, nil
 }
 
 // AtLastLine determines whether iter is on the last line of the layout.
@@ -1956,19 +2091,17 @@ func marshalLayoutIter(p uintptr) (interface{}, error) {
 //    - ok: TRUE if iter is on the last line.
 //
 func (iter *LayoutIter) AtLastLine() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("at_last_line", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_at_last_line(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -1983,30 +2116,24 @@ func (iter *LayoutIter) AtLastLine() bool {
 //      freed with pango.LayoutIter.Free(), or NULL if iter was NULL.
 //
 func (iter *LayoutIter) Copy() *LayoutIter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutIter // in
 
 	if iter != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+		_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_copy(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _layoutIter *LayoutIter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutIter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				{
-					var args [1]girepository.Argument
-					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-					girepository.MustFind("Pango", "LayoutIter").InvokeRecordMethod("free", args[:], nil)
-				}
+				C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
 			},
 		)
 	}
@@ -2022,19 +2149,17 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 //    - gint: baseline of current line.
 //
 func (iter *LayoutIter) Baseline() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.int              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_baseline", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_baseline(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2049,19 +2174,17 @@ func (iter *LayoutIter) Baseline() int32 {
 //    - logicalRect: rectangle to fill with logical extents.
 //
 func (iter *LayoutIter) CharExtents() *Rectangle {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_info.InvokeRecordMethod("get_char_extents", _args[:], _outs[:])
-
+	C.pango_layout_iter_get_char_extents(_arg0, &_arg1)
 	runtime.KeepAlive(iter)
 
 	var _logicalRect *Rectangle // out
 
-	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _logicalRect
 }
@@ -2075,25 +2198,20 @@ func (iter *LayoutIter) CharExtents() *Rectangle {
 //    - logicalRect (optional): rectangle to fill with logical extents, or NULL.
 //
 func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_info.InvokeRecordMethod("get_cluster_extents", _args[:], _outs[:])
-
+	C.pango_layout_iter_get_cluster_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2108,19 +2226,17 @@ func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Recta
 //    - gint: current byte index.
 //
 func (iter *LayoutIter) Index() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.int              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_index", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_index(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -2132,19 +2248,17 @@ func (iter *LayoutIter) Index() int32 {
 //    - layout associated with iter.
 //
 func (iter *LayoutIter) Layout() *Layout {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayout     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_layout", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_layout(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
 }
@@ -2158,25 +2272,20 @@ func (iter *LayoutIter) Layout() *Layout {
 //    - logicalRect (optional): rectangle to fill with logical extents, or NULL.
 //
 func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_info.InvokeRecordMethod("get_layout_extents", _args[:], _outs[:])
-
+	C.pango_layout_iter_get_layout_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2191,20 +2300,18 @@ func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectan
 //    - layoutLine: current line.
 //
 func (iter *LayoutIter) Line() *LayoutLine {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutLine // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_line", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_line(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2227,25 +2334,20 @@ func (iter *LayoutIter) Line() *LayoutLine {
 //    - logicalRect (optional): rectangle to fill with logical extents, or NULL.
 //
 func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_info.InvokeRecordMethod("get_line_extents", _args[:], _outs[:])
-
+	C.pango_layout_iter_get_line_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2260,20 +2362,18 @@ func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangl
 //    - layoutLine: current line, that should not be modified.
 //
 func (iter *LayoutIter) LineReadonly() *LayoutLine {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutLine // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_line_readonly", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_line_readonly(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.pango_layout_line_ref(_cret)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2300,21 +2400,20 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 //    - y1 (optional): end of line, or NULL.
 //
 func (iter *LayoutIter) LineYrange() (y0 int32, y1 int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.int              // in
+	var _arg2 C.int              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_info.InvokeRecordMethod("get_line_yrange", _args[:], _outs[:])
-
+	C.pango_layout_iter_get_line_yrange(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
 	var _y0 int32 // out
 	var _y1 int32 // out
 
-	_y0 = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_y1 = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_y0 = int32(_arg1)
+	_y1 = int32(_arg2)
 
 	return _y0, _y1
 }
@@ -2332,20 +2431,18 @@ func (iter *LayoutIter) LineYrange() (y0 int32, y1 int32) {
 //    - layoutRun (optional): current run.
 //
 func (iter *LayoutIter) Run() *LayoutRun {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutRun  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_run", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_run(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _layoutRun *LayoutRun // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*(**C.void)(unsafe.Pointer(&_cret)))))))
+	if _cret != nil {
+		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _layoutRun
@@ -2360,25 +2457,20 @@ func (iter *LayoutIter) Run() *LayoutRun {
 //    - logicalRect (optional): rectangle to fill with logical extents, or NULL.
 //
 func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_info.InvokeRecordMethod("get_run_extents", _args[:], _outs[:])
-
+	C.pango_layout_iter_get_run_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2396,20 +2488,18 @@ func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle
 //    - layoutRun (optional): current run, that should not be modified.
 //
 func (iter *LayoutIter) RunReadonly() *LayoutRun {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret *C.PangoLayoutRun  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("get_run_readonly", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_get_run_readonly(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _layoutRun *LayoutRun // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*(**C.void)(unsafe.Pointer(&_cret)))))))
+	if _cret != nil {
+		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
 	return _layoutRun
@@ -2423,19 +2513,17 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 //    - ok: whether motion was possible.
 //
 func (iter *LayoutIter) NextChar() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("next_char", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_next_char(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2450,19 +2538,17 @@ func (iter *LayoutIter) NextChar() bool {
 //    - ok: whether motion was possible.
 //
 func (iter *LayoutIter) NextCluster() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("next_cluster", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_next_cluster(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2477,19 +2563,17 @@ func (iter *LayoutIter) NextCluster() bool {
 //    - ok: whether motion was possible.
 //
 func (iter *LayoutIter) NextLine() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("next_line", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_next_line(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2504,19 +2588,17 @@ func (iter *LayoutIter) NextLine() bool {
 //    - ok: whether motion was possible.
 //
 func (iter *LayoutIter) NextRun() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.PangoLayoutIter // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg0 = (*C.PangoLayoutIter)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_info := girepository.MustFind("Pango", "LayoutIter")
-	_gret := _info.InvokeRecordMethod("next_run", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_iter_next_run(_arg0)
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -2537,53 +2619,48 @@ type LayoutLine struct {
 
 // layoutLine is the struct that's finalized.
 type layoutLine struct {
-	native unsafe.Pointer
+	native *C.PangoLayoutLine
 }
 
 func marshalLayoutLine(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &LayoutLine{&layoutLine{(unsafe.Pointer)(b)}}, nil
+	return &LayoutLine{&layoutLine{(*C.PangoLayoutLine)(b)}}, nil
 }
 
 // Layout: layout this line belongs to, might be NULL.
 func (l *LayoutLine) Layout() *Layout {
-	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("layout")
-	valptr := (*uintptr)(unsafe.Add(l.native, offset))
+	valptr := &l.native.layout
 	var v *Layout // out
-	v = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
+	v = wrapLayout(coreglib.Take(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // StartIndex: start of line as byte index into layout->text.
 func (l *LayoutLine) StartIndex() int32 {
-	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("start_index")
-	valptr := (*uintptr)(unsafe.Add(l.native, offset))
+	valptr := &l.native.start_index
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // Length: length of line in bytes.
 func (l *LayoutLine) Length() int32 {
-	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("length")
-	valptr := (*uintptr)(unsafe.Add(l.native, offset))
+	valptr := &l.native.length
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
+	v = int32(*valptr)
 	return v
 }
 
 // StartIndex: start of line as byte index into layout->text.
 func (l *LayoutLine) SetStartIndex(startIndex int32) {
-	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("start_index")
-	valptr := (*uintptr)(unsafe.Add(l.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(startIndex)
+	valptr := &l.native.start_index
+	*valptr = C.gint(startIndex)
 }
 
 // Length: length of line in bytes.
 func (l *LayoutLine) SetLength(length int32) {
-	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("length")
-	valptr := (*uintptr)(unsafe.Add(l.native, offset))
-	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(length)
+	valptr := &l.native.length
+	*valptr = C.gint(length)
 }
 
 // Extents computes the logical and ink extents of a layout line. See
@@ -2598,25 +2675,20 @@ func (l *LayoutLine) SetLength(length int32) {
 //      the glyph string, or NULL.
 //
 func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutLine // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
+	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 
-	_info := girepository.MustFind("Pango", "LayoutLine")
-	_info.InvokeRecordMethod("get_extents", _args[:], _outs[:])
-
+	C.pango_layout_line_get_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(line)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2629,19 +2701,17 @@ func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 //    - height (optional): return location for the line height.
 //
 func (line *LayoutLine) Height() int32 {
-	var _args [1]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.PangoLayoutLine // out
+	var _arg1 C.int              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
+	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
 
-	_info := girepository.MustFind("Pango", "LayoutLine")
-	_info.InvokeRecordMethod("get_height", _args[:], _outs[:])
-
+	C.pango_layout_line_get_height(_arg0, &_arg1)
 	runtime.KeepAlive(line)
 
 	var _height int32 // out
 
-	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_height = int32(_arg1)
 
 	return _height
 }
@@ -2662,25 +2732,20 @@ func (line *LayoutLine) Height() int32 {
 //      the glyph string, or NULL.
 //
 func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutLine // out
+	var _arg1 C.PangoRectangle   // in
+	var _arg2 C.PangoRectangle   // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layoutLine)))
+	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(layoutLine)))
 
-	_info := girepository.MustFind("Pango", "LayoutLine")
-	_info.InvokeRecordMethod("get_pixel_extents", _args[:], _outs[:])
-
+	C.pango_layout_line_get_pixel_extents(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layoutLine)
 
 	var _inkRect *Rectangle     // out
 	var _logicalRect *Rectangle // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
-	}
+	_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
 }
@@ -2711,28 +2776,29 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *R
 //      Pango units.
 //
 func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
-	var _args [3]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutLine // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
+	var _arg3 *C.int             // in
+	var _arg4 C.int              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(startIndex)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(endIndex)
+	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
+	_arg1 = C.int(startIndex)
+	_arg2 = C.int(endIndex)
 
-	_info := girepository.MustFind("Pango", "LayoutLine")
-	_info.InvokeRecordMethod("get_x_ranges", _args[:], _outs[:])
-
+	C.pango_layout_line_get_x_ranges(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(startIndex)
 	runtime.KeepAlive(endIndex)
 
 	var _ranges []int32 // out
 
-	defer C.free(unsafe.Pointer(*(**C.int)(unsafe.Pointer(&_outs[0]))))
+	defer C.free(unsafe.Pointer(_arg3))
 	{
-		src := unsafe.Slice((*C.int)(*(**C.int)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[1])))
-		_ranges = make([]int32, *(*C.int)(unsafe.Pointer(&_outs[1])))
-		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[1]))); i++ {
-			_ranges[i] = int32(*(*C.int)(unsafe.Pointer(&src[i])))
+		src := unsafe.Slice((*C.int)(_arg3), _arg4)
+		_ranges = make([]int32, _arg4)
+		for i := 0; i < int(_arg4); i++ {
+			_ranges[i] = int32(src[i])
 		}
 	}
 
@@ -2753,25 +2819,25 @@ func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
 //    - xPos: location to store the x_offset (in Pango units).
 //
 func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
-	var _args [3]girepository.Argument
-	var _outs [1]girepository.Argument
+	var _arg0 *C.PangoLayoutLine // out
+	var _arg1 C.int              // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.int              // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
+	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
+	_arg1 = C.int(index_)
 	if trailing {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Pango", "LayoutLine")
-	_info.InvokeRecordMethod("index_to_x", _args[:], _outs[:])
-
+	C.pango_layout_line_index_to_x(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(index_)
 	runtime.KeepAlive(trailing)
 
 	var _xPos int32 // out
 
-	_xPos = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_xPos = int32(_arg3)
 
 	return _xPos
 }
@@ -2800,16 +2866,16 @@ func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
 //    - ok: FALSE if x_pos was outside the line, TRUE if inside.
 //
 func (line *LayoutLine) XToIndex(xPos int32) (index_ int32, trailing int32, ok bool) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.PangoLayoutLine // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // in
+	var _arg3 C.int              // in
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(xPos)
+	_arg0 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
+	_arg1 = C.int(xPos)
 
-	_info := girepository.MustFind("Pango", "LayoutLine")
-	_gret := _info.InvokeRecordMethod("x_to_index", _args[:], _outs[:])
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.pango_layout_line_x_to_index(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(xPos)
 
@@ -2817,9 +2883,9 @@ func (line *LayoutLine) XToIndex(xPos int32) (index_ int32, trailing int32, ok b
 	var _trailing int32 // out
 	var _ok bool        // out
 
-	_index_ = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
-	_trailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	_index_ = int32(_arg2)
+	_trailing = int32(_arg3)
+	if _cret != 0 {
 		_ok = true
 	}
 

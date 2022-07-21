@@ -11,19 +11,17 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gio2_FileEnumeratorClass_next_files_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileEnumeratorClass_close_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_FileEnumeratorClass_close_fn(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
-// extern void* _gotk4_gio2_FileEnumeratorClass_next_file(void*, void*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileEnumeratorClass_next_file(GFileEnumerator*, GCancellable*, GError**);
+// extern GList* _gotk4_gio2_FileEnumeratorClass_next_files_finish(GFileEnumerator*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileEnumeratorClass_close_finish(GFileEnumerator*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileEnumeratorClass_close_fn(GFileEnumerator*, GCancellable*, GError**);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GTypeFileEnumerator returns the GType for the type FileEnumerator.
@@ -32,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeFileEnumerator() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "FileEnumerator").RegisteredGType())
+	gtype := coreglib.Type(C.g_file_enumerator_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalFileEnumerator)
 	return gtype
 }
@@ -135,39 +133,35 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gio", "FileEnumeratorClass")
+	pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	}); ok {
-		o := pclass.StructFieldOffset("close_finish")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_close_finish)
+		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_finish)
 	}
 
 	if _, ok := goval.(interface {
 		CloseFn(ctx context.Context) error
 	}); ok {
-		o := pclass.StructFieldOffset("close_fn")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_close_fn)
+		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_fn)
 	}
 
 	if _, ok := goval.(interface {
 		NextFile(ctx context.Context) (*FileInfo, error)
 	}); ok {
-		o := pclass.StructFieldOffset("next_file")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_next_file)
+		pclass.next_file = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_file)
 	}
 
 	if _, ok := goval.(interface {
 		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 	}); ok {
-		o := pclass.StructFieldOffset("next_files_finish")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
+		pclass.next_files_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
 	}
 }
 
 //export _gotk4_gio2_FileEnumeratorClass_close_finish
-func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFinish(result AsyncResulter) error
@@ -203,7 +197,7 @@ func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.void, arg1 *C.void, _c
 }
 
 //export _gotk4_gio2_FileEnumeratorClass_close_fn
-func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFn(ctx context.Context) error
@@ -225,7 +219,7 @@ func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr 
 }
 
 //export _gotk4_gio2_FileEnumeratorClass_next_file
-func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFile(ctx context.Context) (*FileInfo, error)
@@ -240,7 +234,7 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.void, arg1 *C.void, _cerr
 	fileInfo, _goerr := iface.NextFile(_cancellable)
 
 	if fileInfo != nil {
-		cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
+		cret = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(fileInfo).Native()))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -251,7 +245,7 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.void, arg1 *C.void, _cerr
 }
 
 //export _gotk4_gio2_FileEnumeratorClass_next_files_finish
-func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
@@ -281,8 +275,8 @@ func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.void, arg1 *C.voi
 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
-		var dst *C.void // out
-		dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		var dst *C.GFileInfo // out
+		dst = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(src).Native()))
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
@@ -315,25 +309,25 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (enumerator *FileEnumerator) Close(ctx context.Context) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GCancellable    // out
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_info.InvokeClassMethod("close", _args[:], nil)
-
+	C.g_file_enumerator_close(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -353,23 +347,25 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 //    - callback (optional) to call when the request is satisfied.
 //
 func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [5]girepository.Argument
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
+	_arg1 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[4] = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_info.InvokeClassMethod("close_async", _args[:], nil)
-
+	C.g_file_enumerator_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -393,21 +389,21 @@ func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int
 //    - result: Result.
 //
 func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_info.InvokeClassMethod("close_finish", _args[:], nil)
-
+	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -432,21 +428,20 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 //    - file for the Info passed it.
 //
 func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GFileInfo       // out
+	var _cret *C.GFile           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(info)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -458,19 +453,17 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
 //    - file which is being enumerated.
 //
 func (enumerator *FileEnumerator) Container() *File {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _cret *C.GFile           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_gret := _info.InvokeClassMethod("get_container", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerator_get_container(_arg0)
 	runtime.KeepAlive(enumerator)
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_file = wrapFile(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _file
 }
@@ -482,19 +475,17 @@ func (enumerator *FileEnumerator) Container() *File {
 //    - ok: TRUE if the enumerator has pending operations.
 //
 func (enumerator *FileEnumerator) HasPending() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_gret := _info.InvokeClassMethod("has_pending", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerator_has_pending(_arg0)
 	runtime.KeepAlive(enumerator)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -508,19 +499,17 @@ func (enumerator *FileEnumerator) HasPending() bool {
 //    - ok: TRUE if the enumerator is closed.
 //
 func (enumerator *FileEnumerator) IsClosed() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _cret C.gboolean         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_gret := _info.InvokeClassMethod("is_closed", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerator_is_closed(_arg0)
 	runtime.KeepAlive(enumerator)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -571,19 +560,20 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //    - outChild (optional): output location for the next #GFile, or NULL.
 //
 func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, error) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg3 *C.GCancellable    // out
+	var _arg1 *C.GFileInfo       // in
+	var _arg2 *C.GFile           // in
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(direnum).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(direnum).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_info.InvokeClassMethod("iterate", _args[:], _outs[:])
-
+	C.g_file_enumerator_iterate(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
 	runtime.KeepAlive(direnum)
 	runtime.KeepAlive(ctx)
 
@@ -591,14 +581,14 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, e
 	var _outChild *File    // out
 	var _goerr error       // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_outInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	if _arg1 != nil {
+		_outInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(_arg1)))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_outChild = wrapFile(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
+	if _arg2 != nil {
+		_outChild = wrapFile(coreglib.Take(unsafe.Pointer(_arg2)))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _outInfo, _outChild, _goerr
@@ -625,30 +615,30 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, e
 //      returned object with g_object_unref() when no longer needed.
 //
 func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GCancellable    // out
+	var _cret *C.GFileInfo       // in
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_gret := _info.InvokeClassMethod("next_file", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerator_next_file(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
 
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _fileInfo, _goerr
@@ -682,24 +672,27 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 //    - callback (optional) to call when the request is satisfied.
 //
 func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, ioPriority int32, callback AsyncReadyCallback) {
-	var _args [6]girepository.Argument
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(numFiles)
-	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	_arg1 = C.int(numFiles)
+	_arg2 = C.int(ioPriority)
 	if callback != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_info.InvokeClassMethod("next_files_async", _args[:], nil)
-
+	C.g_file_enumerator_next_files_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(numFiles)
@@ -720,30 +713,30 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, 
 //      infos with g_object_unref() when you're done with them.
 //
 func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]*FileInfo, error) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GAsyncResult    // out
+	var _cret *C.GList           // in
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_gret := _info.InvokeClassMethod("next_files_finish", _args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_file_enumerator_next_files_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)
 
 	var _list []*FileInfo // out
 	var _goerr error      // out
 
-	_list = make([]*FileInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*FileInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GFileInfo)(v)
 		var dst *FileInfo // out
-		dst = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		dst = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
 		_list = append(_list, dst)
 	})
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _list, _goerr
@@ -756,16 +749,15 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]*File
 //    - pending: boolean value.
 //
 func (enumerator *FileEnumerator) SetPending(pending bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 C.gboolean         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	if pending {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gio", "FileEnumerator")
-	_info.InvokeClassMethod("set_pending", _args[:], nil)
-
+	C.g_file_enumerator_set_pending(_arg0, _arg1)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(pending)
 }

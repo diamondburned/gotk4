@@ -7,18 +7,18 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CellAreaContextClass_allocate(void*, gint, gint);
-// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(void*, gint, gint*, gint*);
-// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(void*, gint, gint*, gint*);
-// extern void _gotk4_gtk3_CellAreaContextClass_reset(void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellAreaContextClass_allocate(GtkCellAreaContext*, gint, gint);
+// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(GtkCellAreaContext*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(GtkCellAreaContext*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaContextClass_reset(GtkCellAreaContext*);
 import "C"
 
 // GTypeCellAreaContext returns the GType for the type CellAreaContext.
@@ -27,7 +27,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellAreaContext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellAreaContext").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_area_context_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellAreaContext)
 	return gtype
 }
@@ -140,35 +140,31 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Gtk", "CellAreaContextClass")
+	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ Allocate(width, height int32) }); ok {
-		o := pclass.StructFieldOffset("allocate")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaContextClass_allocate)
+		pclass.allocate = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_allocate)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
-		o := pclass.StructFieldOffset("get_preferred_height_for_width")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width)
+		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
-		o := pclass.StructFieldOffset("get_preferred_width_for_height")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height)
+		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height)
 	}
 
 	if _, ok := goval.(interface{ Reset() }); ok {
-		o := pclass.StructFieldOffset("reset")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaContextClass_reset)
+		pclass.reset = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_reset)
 	}
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_allocate
-func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.void, arg1 C.gint, arg2 C.gint) {
+func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Allocate(width, height int32) })
 
@@ -182,7 +178,7 @@ func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.void, arg1 C.gint, arg2 C
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width
-func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.void, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
+func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
@@ -199,7 +195,7 @@ func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.voi
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height
-func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.void, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
+func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
@@ -216,7 +212,7 @@ func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.voi
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_reset
-func _gotk4_gtk3_CellAreaContextClass_reset(arg0 *C.void) {
+func _gotk4_gtk3_CellAreaContextClass_reset(arg0 *C.GtkCellAreaContext) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Reset() })
 
@@ -253,15 +249,15 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 //      -1.
 //
 func (context *CellAreaContext) Allocate(width, height int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("allocate", _args[:], nil)
-
+	C.gtk_cell_area_context_allocate(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
@@ -279,21 +275,20 @@ func (context *CellAreaContext) Allocate(width, height int32) {
 //    - height (optional): location to store the allocated height, or NULL.
 //
 func (context *CellAreaContext) Allocation() (width, height int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // in
+	var _arg2 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("get_allocation", _args[:], _outs[:])
-
+	C.gtk_cell_area_context_get_allocation(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
 	var _width int32  // out
 	var _height int32 // out
 
-	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }
@@ -313,20 +308,18 @@ func (context *CellAreaContext) Allocation() (width, height int32) {
 //    - cellArea this context was created by.
 //
 func (context *CellAreaContext) Area() CellAreaer {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _cret *C.GtkCellArea        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_gret := _info.InvokeClassMethod("get_area", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_cell_area_context_get_area(_arg0)
 	runtime.KeepAlive(context)
 
 	var _cellArea CellAreaer // out
 
 	{
-		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		objptr := unsafe.Pointer(_cret)
 		if objptr == nil {
 			panic("object of type gtk.CellAreaer is nil")
 		}
@@ -358,21 +351,20 @@ func (context *CellAreaContext) Area() CellAreaer {
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
 func (context *CellAreaContext) PreferredHeight() (minimumHeight, naturalHeight int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // in
+	var _arg2 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("get_preferred_height", _args[:], _outs[:])
-
+	C.gtk_cell_area_context_get_preferred_height(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumHeight = int32(_arg1)
+	_naturalHeight = int32(_arg2)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -393,23 +385,23 @@ func (context *CellAreaContext) PreferredHeight() (minimumHeight, naturalHeight 
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
 func (context *CellAreaContext) PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // in
+	var _arg3 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.gint(width)
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("get_preferred_height_for_width", _args[:], _outs[:])
-
+	C.gtk_cell_area_context_get_preferred_height_for_width(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(width)
 
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumHeight = int32(_arg2)
+	_naturalHeight = int32(_arg3)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -426,21 +418,20 @@ func (context *CellAreaContext) PreferredHeightForWidth(width int32) (minimumHei
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
 func (context *CellAreaContext) PreferredWidth() (minimumWidth, naturalWidth int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // in
+	var _arg2 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("get_preferred_width", _args[:], _outs[:])
-
+	C.gtk_cell_area_context_get_preferred_width(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumWidth = int32(_arg1)
+	_naturalWidth = int32(_arg2)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -462,23 +453,23 @@ func (context *CellAreaContext) PreferredWidth() (minimumWidth, naturalWidth int
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
 func (context *CellAreaContext) PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32) {
-	var _args [2]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // in
+	var _arg3 C.gint                // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(height)
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.gint(height)
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("get_preferred_width_for_height", _args[:], _outs[:])
-
+	C.gtk_cell_area_context_get_preferred_width_for_height(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(height)
 
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_minimumWidth = int32(_arg2)
+	_naturalWidth = int32(_arg3)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -496,15 +487,15 @@ func (context *CellAreaContext) PreferredWidthForHeight(height int32) (minimumWi
 //    - naturalHeight: proposed new natural height for context.
 //
 func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(minimumHeight)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(naturalHeight)
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.gint(minimumHeight)
+	_arg2 = C.gint(naturalHeight)
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("push_preferred_height", _args[:], nil)
-
+	C.gtk_cell_area_context_push_preferred_height(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(minimumHeight)
 	runtime.KeepAlive(naturalHeight)
@@ -523,15 +514,15 @@ func (context *CellAreaContext) PushPreferredHeight(minimumHeight, naturalHeight
 //    - naturalWidth: proposed new natural width for context.
 //
 func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth int32) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.gint                // out
+	var _arg2 C.gint                // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(minimumWidth)
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(naturalWidth)
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.gint(minimumWidth)
+	_arg2 = C.gint(naturalWidth)
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("push_preferred_width", _args[:], nil)
-
+	C.gtk_cell_area_context_push_preferred_width(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(minimumWidth)
 	runtime.KeepAlive(naturalWidth)
@@ -556,12 +547,10 @@ func (context *CellAreaContext) PushPreferredWidth(minimumWidth, naturalWidth in
 //
 // Since 3.0.
 func (context *CellAreaContext) Reset() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellAreaContext // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellAreaContext")
-	_info.InvokeClassMethod("reset", _args[:], nil)
-
+	C.gtk_cell_area_context_reset(_arg0)
 	runtime.KeepAlive(context)
 }

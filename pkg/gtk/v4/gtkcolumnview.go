@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_ColumnView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
@@ -24,9 +22,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeColumnView() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColumnView").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_column_view_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalColumnView)
 	return gtype
+}
+
+// ColumnViewOverrider contains methods that are overridable.
+type ColumnViewOverrider interface {
 }
 
 // ColumnView: GtkColumnView presents a large dynamic list of items using
@@ -106,6 +108,14 @@ var (
 	_ coreglib.Objector = (*ColumnView)(nil)
 )
 
+func classInitColumnViewer(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
+
 func wrapColumnView(obj *coreglib.Object) *ColumnView {
 	return &ColumnView{
 		Widget: Widget{
@@ -177,22 +187,20 @@ func (self *ColumnView) ConnectActivate(f func(position uint32)) coreglib.Signal
 //    - columnView: new GtkColumnView.
 //
 func NewColumnView(model SelectionModeller) *ColumnView {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkSelectionModel // out
+	var _cret *C.GtkWidget         // in
 
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("new_ColumnView", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_new(_arg1)
 	runtime.KeepAlive(model)
 
 	var _columnView *ColumnView // out
 
-	_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _columnView
 }
@@ -205,14 +213,13 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 //      yet.
 //
 func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView       // out
+	var _arg1 *C.GtkColumnViewColumn // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(column).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("append_column", _args[:], nil)
-
+	C.gtk_column_view_append_column(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(column)
 }
@@ -227,20 +234,18 @@ func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 //    - listModel: list managing the columns.
 //
 func (self *ColumnView) Columns() *gio.ListModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret *C.GListModel    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_columns", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_columns(_arg0)
 	runtime.KeepAlive(self)
 
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(_cret))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -257,19 +262,17 @@ func (self *ColumnView) Columns() *gio.ListModel {
 //    - ok: TRUE if rubberband selection is enabled.
 //
 func (self *ColumnView) EnableRubberband() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_enable_rubberband", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_enable_rubberband(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -283,20 +286,18 @@ func (self *ColumnView) EnableRubberband() bool {
 //    - selectionModel (optional): model in use.
 //
 func (self *ColumnView) Model() *SelectionModel {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView     // out
+	var _cret *C.GtkSelectionModel // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_model(_arg0)
 	runtime.KeepAlive(self)
 
 	var _selectionModel *SelectionModel // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _selectionModel
@@ -309,19 +310,17 @@ func (self *ColumnView) Model() *SelectionModel {
 //    - ok: TRUE if columns are reorderable.
 //
 func (self *ColumnView) Reorderable() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_reorderable", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_reorderable(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -336,19 +335,17 @@ func (self *ColumnView) Reorderable() bool {
 //    - ok: TRUE if the list shows column separators.
 //
 func (self *ColumnView) ShowColumnSeparators() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_show_column_separators", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_show_column_separators(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -363,19 +360,17 @@ func (self *ColumnView) ShowColumnSeparators() bool {
 //    - ok: TRUE if the list shows separators.
 //
 func (self *ColumnView) ShowRowSeparators() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_show_row_separators", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_show_row_separators(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -390,19 +385,17 @@ func (self *ColumnView) ShowRowSeparators() bool {
 //    - ok: TRUE if rows are activated on single click.
 //
 func (self *ColumnView) SingleClickActivate() bool {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret C.gboolean       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_single_click_activate", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_single_click_activate(_arg0)
 	runtime.KeepAlive(self)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 
@@ -432,20 +425,18 @@ func (self *ColumnView) SingleClickActivate() bool {
 //    - sorter (optional): GtkSorter of self.
 //
 func (self *ColumnView) Sorter() *Sorter {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _cret *C.GtkSorter     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_gret := _info.InvokeClassMethod("get_sorter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_column_view_get_sorter(_arg0)
 	runtime.KeepAlive(self)
 
 	var _sorter *Sorter // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _sorter
@@ -461,15 +452,15 @@ func (self *ColumnView) Sorter() *Sorter {
 //    - column: GtkColumnViewColumn to insert.
 //
 func (self *ColumnView) InsertColumn(position uint32, column *ColumnViewColumn) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GtkColumnView       // out
+	var _arg1 C.guint                // out
+	var _arg2 *C.GtkColumnViewColumn // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(column).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("insert_column", _args[:], nil)
-
+	C.gtk_column_view_insert_column(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(column)
@@ -482,14 +473,13 @@ func (self *ColumnView) InsertColumn(position uint32, column *ColumnViewColumn) 
 //    - column: GtkColumnViewColumn that's part of self.
 //
 func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView       // out
+	var _arg1 *C.GtkColumnViewColumn // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(column).Native()))
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("remove_column", _args[:], nil)
-
+	C.gtk_column_view_remove_column(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(column)
 }
@@ -502,16 +492,15 @@ func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 //    - enableRubberband: TRUE to enable rubberband selection.
 //
 func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if enableRubberband {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("set_enable_rubberband", _args[:], nil)
-
+	C.gtk_column_view_set_enable_rubberband(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(enableRubberband)
 }
@@ -525,16 +514,15 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 //    - model (optional) to use or NULL for none.
 //
 func (self *ColumnView) SetModel(model SelectionModeller) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView     // out
+	var _arg1 *C.GtkSelectionModel // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("set_model", _args[:], nil)
-
+	C.gtk_column_view_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
 }
@@ -546,16 +534,15 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 //    - reorderable: whether columns should be reorderable.
 //
 func (self *ColumnView) SetReorderable(reorderable bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if reorderable {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("set_reorderable", _args[:], nil)
-
+	C.gtk_column_view_set_reorderable(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(reorderable)
 }
@@ -568,16 +555,15 @@ func (self *ColumnView) SetReorderable(reorderable bool) {
 //    - showColumnSeparators: TRUE to show column separators.
 //
 func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if showColumnSeparators {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("set_show_column_separators", _args[:], nil)
-
+	C.gtk_column_view_set_show_column_separators(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(showColumnSeparators)
 }
@@ -590,16 +576,15 @@ func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
 //    - showRowSeparators: TRUE to show row separators.
 //
 func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if showRowSeparators {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("set_show_row_separators", _args[:], nil)
-
+	C.gtk_column_view_set_show_row_separators(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(showRowSeparators)
 }
@@ -612,16 +597,49 @@ func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
 //    - singleClickActivate: TRUE to activate items on single click.
 //
 func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkColumnView // out
+	var _arg1 C.gboolean       // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if singleClickActivate {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "ColumnView")
-	_info.InvokeClassMethod("set_single_click_activate", _args[:], nil)
-
+	C.gtk_column_view_set_single_click_activate(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)
+}
+
+// SortByColumn sets the sorting of the view.
+//
+// This function should be used to set up the initial sorting. At runtime, users
+// can change the sorting of a column view by clicking on the list headers.
+//
+// This call only has an effect if the sorter returned by
+// gtk.ColumnView.GetSorter() is set on a sort model, and
+// gtk.ColumnViewColumn.SetSorter() has been called on column to associate a
+// sorter with the column.
+//
+// If column is NULL, the view will be unsorted.
+//
+// The function takes the following parameters:
+//
+//    - column (optional): GtkColumnViewColumn to sort by, or NULL.
+//    - direction to sort in.
+//
+func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortType) {
+	var _arg0 *C.GtkColumnView       // out
+	var _arg1 *C.GtkColumnViewColumn // out
+	var _arg2 C.GtkSortType          // out
+
+	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if column != nil {
+		_arg1 = (*C.GtkColumnViewColumn)(unsafe.Pointer(coreglib.InternObject(column).Native()))
+	}
+	_arg2 = C.GtkSortType(direction)
+
+	C.gtk_column_view_sort_by_column(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(direction)
 }

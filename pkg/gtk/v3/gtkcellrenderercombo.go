@@ -6,15 +6,15 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CellRendererCombo_ConnectChanged(gpointer, gchar*, void*, guintptr);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellRendererCombo_ConnectChanged(gpointer, gchar*, GtkTreeIter*, guintptr);
 import "C"
 
 // GTypeCellRendererCombo returns the GType for the type CellRendererCombo.
@@ -23,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellRendererCombo() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererCombo").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_renderer_combo_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererCombo)
 	return gtype
 }
@@ -78,7 +78,7 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CellRendererCombo_ConnectChanged
-func _gotk4_gtk3_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GtkTreeIter, arg3 C.guintptr) {
 	var f func(pathString string, newIter *TreeIter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -126,13 +126,13 @@ func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *Tr
 //    - cellRendererCombo: new cell renderer.
 //
 func NewCellRendererCombo() *CellRendererCombo {
-	_info := girepository.MustFind("Gtk", "CellRendererCombo")
-	_gret := _info.InvokeClassMethod("new_CellRendererCombo", nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_combo_new()
 
 	var _cellRendererCombo *CellRendererCombo // out
 
-	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererCombo
 }

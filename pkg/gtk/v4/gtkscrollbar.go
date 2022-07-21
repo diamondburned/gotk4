@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeScrollbar returns the GType for the type Scrollbar.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeScrollbar() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Scrollbar").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_scrollbar_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalScrollbar)
 	return gtype
 }
@@ -108,6 +106,39 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return wrapScrollbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewScrollbar creates a new scrollbar with the given orientation.
+//
+// The function takes the following parameters:
+//
+//    - orientation scrollbar’s orientation.
+//    - adjustment (optional): gtk.Adjustment to use, or NULL to create a new
+//      adjustment.
+//
+// The function returns the following values:
+//
+//    - scrollbar: new GtkScrollbar.
+//
+func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	if adjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+
+	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(adjustment)
+
+	var _scrollbar *Scrollbar // out
+
+	_scrollbar = wrapScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _scrollbar
+}
+
 // Adjustment returns the scrollbar's adjustment.
 //
 // The function returns the following values:
@@ -115,19 +146,17 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 //    - adjustment scrollbar's adjustment.
 //
 func (self *Scrollbar) Adjustment() *Adjustment {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkScrollbar  // out
+	var _cret *C.GtkAdjustment // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gtk", "Scrollbar")
-	_gret := _info.InvokeClassMethod("get_adjustment", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_scrollbar_get_adjustment(_arg0)
 	runtime.KeepAlive(self)
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
 }
@@ -139,16 +168,15 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 //    - adjustment (optional) to set.
 //
 func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkScrollbar  // out
+	var _arg1 *C.GtkAdjustment // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if adjustment != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_info := girepository.MustFind("Gtk", "Scrollbar")
-	_info.InvokeClassMethod("set_adjustment", _args[:], nil)
-
+	C.gtk_scrollbar_set_adjustment(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(adjustment)
 }

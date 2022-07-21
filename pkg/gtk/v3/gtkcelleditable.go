@@ -8,18 +8,18 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CellEditableIface_editing_done(void*);
-// extern void _gotk4_gtk3_CellEditableIface_remove_widget(void*);
-// extern void _gotk4_gtk3_CellEditableIface_start_editing(void*, void*);
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
+// extern void _gotk4_gtk3_CellEditableIface_editing_done(GtkCellEditable*);
+// extern void _gotk4_gtk3_CellEditableIface_remove_widget(GtkCellEditable*);
+// extern void _gotk4_gtk3_CellEditableIface_start_editing(GtkCellEditable*, GdkEvent*);
 // extern void _gotk4_gtk3_CellEditable_ConnectEditingDone(gpointer, guintptr);
 // extern void _gotk4_gtk3_CellEditable_ConnectRemoveWidget(gpointer, guintptr);
 import "C"
@@ -30,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCellEditable() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellEditable").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_cell_editable_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCellEditable)
 	return gtype
 }
@@ -100,14 +100,14 @@ type CellEditabler interface {
 var _ CellEditabler = (*CellEditable)(nil)
 
 func ifaceInitCellEditabler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gtk", "CellEditableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("editing_done"))) = unsafe.Pointer(C._gotk4_gtk3_CellEditableIface_editing_done)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_widget"))) = unsafe.Pointer(C._gotk4_gtk3_CellEditableIface_remove_widget)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("start_editing"))) = unsafe.Pointer(C._gotk4_gtk3_CellEditableIface_start_editing)
+	iface := (*C.GtkCellEditableIface)(unsafe.Pointer(gifacePtr))
+	iface.editing_done = (*[0]byte)(C._gotk4_gtk3_CellEditableIface_editing_done)
+	iface.remove_widget = (*[0]byte)(C._gotk4_gtk3_CellEditableIface_remove_widget)
+	iface.start_editing = (*[0]byte)(C._gotk4_gtk3_CellEditableIface_start_editing)
 }
 
 //export _gotk4_gtk3_CellEditableIface_editing_done
-func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.void) {
+func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
@@ -115,7 +115,7 @@ func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_CellEditableIface_remove_widget
-func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.void) {
+func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
@@ -123,7 +123,7 @@ func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_CellEditableIface_start_editing
-func _gotk4_gtk3_CellEditableIface_start_editing(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_CellEditableIface_start_editing(arg0 *C.GtkCellEditable, arg1 *C.GdkEvent) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
@@ -225,25 +225,21 @@ func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) coreglib.SignalH
 
 // EditingDone emits the CellEditable::editing-done signal.
 func (cellEditable *CellEditable) EditingDone() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellEditable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellEditable")
-	_info.InvokeIfaceMethod("editing_done", _args[:], nil)
-
+	C.gtk_cell_editable_editing_done(_arg0)
 	runtime.KeepAlive(cellEditable)
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
 func (cellEditable *CellEditable) RemoveWidget() {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkCellEditable // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 
-	_info := girepository.MustFind("Gtk", "CellEditable")
-	_info.InvokeIfaceMethod("remove_widget", _args[:], nil)
-
+	C.gtk_cell_editable_remove_widget(_arg0)
 	runtime.KeepAlive(cellEditable)
 }
 
@@ -264,16 +260,15 @@ func (cellEditable *CellEditable) RemoveWidget() {
 //      initiated programmatically.
 //
 func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkCellEditable // out
+	var _arg1 *C.GdkEvent        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 	if event != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+		_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
 	}
 
-	_info := girepository.MustFind("Gtk", "CellEditable")
-	_info.InvokeIfaceMethod("start_editing", _args[:], nil)
-
+	C.gtk_cell_editable_start_editing(_arg0, _arg1)
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)
 }

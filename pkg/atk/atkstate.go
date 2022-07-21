@@ -4,15 +4,14 @@ package atk
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeStateType() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "StateType").RegisteredGType())
+	gtype := coreglib.Type(C.atk_state_type_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalStateType)
 	return gtype
 }
@@ -355,4 +354,85 @@ func (s StateType) String() string {
 	default:
 		return fmt.Sprintf("StateType(%d)", s)
 	}
+}
+
+// StateTypeForName gets the StateType corresponding to the description string
+// name.
+//
+// The function takes the following parameters:
+//
+//    - name: character string state name.
+//
+// The function returns the following values:
+//
+//    - stateType corresponding to name.
+//
+func StateTypeForName(name string) StateType {
+	var _arg1 *C.gchar       // out
+	var _cret C.AtkStateType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_state_type_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
+}
+
+// StateTypeGetName gets the description string describing the StateType type.
+//
+// The function takes the following parameters:
+//
+//    - typ whose name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the AtkStateType.
+//
+func StateTypeGetName(typ StateType) string {
+	var _arg1 C.AtkStateType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkStateType(typ)
+
+	_cret = C.atk_state_type_get_name(_arg1)
+	runtime.KeepAlive(typ)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// StateTypeRegister: register a new object state.
+//
+// The function takes the following parameters:
+//
+//    - name: character string describing the new state.
+//
+// The function returns the following values:
+//
+//    - stateType value for the new state.
+//
+func StateTypeRegister(name string) StateType {
+	var _arg1 *C.gchar       // out
+	var _cret C.AtkStateType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_state_type_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
 }

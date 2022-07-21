@@ -7,14 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 // extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
@@ -25,7 +23,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCustomFilter() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "CustomFilter").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_custom_filter_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCustomFilter)
 	return gtype
 }
@@ -113,23 +111,23 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 //    - customFilter: new GtkCustomFilter.
 //
 func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
-	var _args [3]girepository.Argument
+	var _arg1 C.GtkCustomFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+	var _cret *C.GtkCustomFilter // in
 
 	if matchFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
-		_args[1] = C.gpointer(gbox.Assign(matchFunc))
-		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(matchFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "CustomFilter")
-	_gret := _info.InvokeClassMethod("new_CustomFilter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_custom_filter_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(matchFunc)
 
 	var _customFilter *CustomFilter // out
 
-	_customFilter = wrapCustomFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_customFilter = wrapCustomFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _customFilter
 }
@@ -148,18 +146,19 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 //    - matchFunc (optional): function to filter items.
 //
 func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GtkCustomFilter    // out
+	var _arg1 C.GtkCustomFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if matchFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
-		_args[2] = C.gpointer(gbox.Assign(matchFunc))
-		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(matchFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_info := girepository.MustFind("Gtk", "CustomFilter")
-	_info.InvokeClassMethod("set_filter_func", _args[:], nil)
-
+	C.gtk_custom_filter_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(matchFunc)
 }

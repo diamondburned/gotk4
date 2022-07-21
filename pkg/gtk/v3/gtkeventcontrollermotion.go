@@ -6,14 +6,14 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk-a11y.h>
+// #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
@@ -25,9 +25,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeEventControllerMotion() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerMotion").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_event_controller_motion_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerMotion)
 	return gtype
+}
+
+// EventControllerMotionOverrider contains methods that are overridable.
+type EventControllerMotionOverrider interface {
 }
 
 // EventControllerMotion is an event controller meant for situations where you
@@ -42,6 +46,14 @@ type EventControllerMotion struct {
 var (
 	_ EventControllerer = (*EventControllerMotion)(nil)
 )
+
+func classInitEventControllerMotioner(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapEventControllerMotion(obj *coreglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{
@@ -142,19 +154,17 @@ func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.Sig
 //    - eventControllerMotion: new EventControllerMotion.
 //
 func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GtkWidget          // out
+	var _cret *C.GtkEventController // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_info := girepository.MustFind("Gtk", "EventControllerMotion")
-	_gret := _info.InvokeClassMethod("new_EventControllerMotion", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_event_controller_motion_new(_arg1)
 	runtime.KeepAlive(widget)
 
 	var _eventControllerMotion *EventControllerMotion // out
 
-	_eventControllerMotion = wrapEventControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_eventControllerMotion = wrapEventControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _eventControllerMotion
 }

@@ -9,40 +9,41 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_atk1_ObjectClass_get_description(void*);
-// extern gchar* _gotk4_atk1_ObjectClass_get_name(void*);
-// extern gchar* _gotk4_atk1_ObjectClass_get_object_locale(void*);
-// extern gint _gotk4_atk1_ObjectClass_get_index_in_parent(void*);
-// extern gint _gotk4_atk1_ObjectClass_get_mdi_zorder(void*);
-// extern gint _gotk4_atk1_ObjectClass_get_n_children(void*);
-// extern void _gotk4_atk1_ObjectClass_active_descendant_changed(void*, gpointer*);
-// extern void _gotk4_atk1_ObjectClass_children_changed(void*, guint, gpointer);
-// extern void _gotk4_atk1_ObjectClass_focus_event(void*, gboolean);
-// extern void _gotk4_atk1_ObjectClass_initialize(void*, gpointer);
-// extern void _gotk4_atk1_ObjectClass_property_change(void*, void*);
-// extern void _gotk4_atk1_ObjectClass_remove_property_change_handler(void*, guint);
-// extern void _gotk4_atk1_ObjectClass_set_description(void*, gchar*);
-// extern void _gotk4_atk1_ObjectClass_set_name(void*, gchar*);
-// extern void _gotk4_atk1_ObjectClass_set_parent(void*, void*);
-// extern void _gotk4_atk1_ObjectClass_state_change(void*, gchar*, gboolean);
-// extern void _gotk4_atk1_ObjectClass_visible_data_changed(void*);
-// extern void _gotk4_atk1_Object_ConnectActiveDescendantChanged(gpointer, void*, guintptr);
-// extern void _gotk4_atk1_Object_ConnectChildrenChanged(gpointer, guint, void*, guintptr);
+// extern AtkLayer _gotk4_atk1_ObjectClass_get_layer(AtkObject*);
+// extern AtkObject* _gotk4_atk1_ObjectClass_get_parent(AtkObject*);
+// extern AtkRelationSet* _gotk4_atk1_ObjectClass_ref_relation_set(AtkObject*);
+// extern AtkRole _gotk4_atk1_ObjectClass_get_role(AtkObject*);
+// extern AtkStateSet* _gotk4_atk1_ObjectClass_ref_state_set(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_description(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_name(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_object_locale(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_index_in_parent(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_mdi_zorder(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_n_children(AtkObject*);
+// extern void _gotk4_atk1_ObjectClass_active_descendant_changed(AtkObject*, gpointer*);
+// extern void _gotk4_atk1_ObjectClass_children_changed(AtkObject*, guint, gpointer);
+// extern void _gotk4_atk1_ObjectClass_focus_event(AtkObject*, gboolean);
+// extern void _gotk4_atk1_ObjectClass_initialize(AtkObject*, gpointer);
+// extern void _gotk4_atk1_ObjectClass_property_change(AtkObject*, AtkPropertyValues*);
+// extern void _gotk4_atk1_ObjectClass_remove_property_change_handler(AtkObject*, guint);
+// extern void _gotk4_atk1_ObjectClass_set_description(AtkObject*, gchar*);
+// extern void _gotk4_atk1_ObjectClass_set_name(AtkObject*, gchar*);
+// extern void _gotk4_atk1_ObjectClass_set_parent(AtkObject*, AtkObject*);
+// extern void _gotk4_atk1_ObjectClass_set_role(AtkObject*, AtkRole);
+// extern void _gotk4_atk1_ObjectClass_state_change(AtkObject*, gchar*, gboolean);
+// extern void _gotk4_atk1_ObjectClass_visible_data_changed(AtkObject*);
+// extern void _gotk4_atk1_Object_ConnectActiveDescendantChanged(gpointer, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectChildrenChanged(gpointer, guint, gpointer*, guintptr);
 // extern void _gotk4_atk1_Object_ConnectFocusEvent(gpointer, gboolean, guintptr);
-// extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, void*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, gpointer*, guintptr);
 // extern void _gotk4_atk1_Object_ConnectStateChange(gpointer, gchar*, gboolean, guintptr);
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
-// extern void* _gotk4_atk1_ObjectClass_get_parent(void*);
-// extern void* _gotk4_atk1_ObjectClass_ref_relation_set(void*);
-// extern void* _gotk4_atk1_ObjectClass_ref_state_set(void*);
 import "C"
 
 // GTypeLayer returns the GType for the type Layer.
@@ -51,7 +52,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeLayer() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Layer").RegisteredGType())
+	gtype := coreglib.Type(C.atk_layer_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalLayer)
 	return gtype
 }
@@ -62,7 +63,7 @@ func GTypeLayer() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeRole() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Role").RegisteredGType())
+	gtype := coreglib.Type(C.atk_role_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalRole)
 	return gtype
 }
@@ -73,7 +74,7 @@ func GTypeRole() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeImplementorIface() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "ImplementorIface").RegisteredGType())
+	gtype := coreglib.Type(C.atk_implementor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalImplementorIface)
 	return gtype
 }
@@ -84,7 +85,7 @@ func GTypeImplementorIface() coreglib.Type {
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeObjectClass() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Object").RegisteredGType())
+	gtype := coreglib.Type(C.atk_object_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalObjectClass)
 	return gtype
 }
@@ -845,6 +846,120 @@ func (r Role) String() string {
 	}
 }
 
+// RoleForName: get the Role type corresponding to a rolew name.
+//
+// The function takes the following parameters:
+//
+//    - name: string which is the (non-localized) name of an ATK role.
+//
+// The function returns the following values:
+//
+//    - role enumerated type corresponding to the specified name, or
+//      K_ROLE_INVALID if no matching role is found.
+//
+func RoleForName(name string) Role {
+	var _arg1 *C.gchar  // out
+	var _cret C.AtkRole // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_role_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
+// RoleGetLocalizedName gets the localized description string describing the
+// Role role.
+//
+// The function takes the following parameters:
+//
+//    - role whose localized name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: localized string describing the AtkRole.
+//
+func RoleGetLocalizedName(role Role) string {
+	var _arg1 C.AtkRole // out
+	var _cret *C.gchar  // in
+
+	_arg1 = C.AtkRole(role)
+
+	_cret = C.atk_role_get_localized_name(_arg1)
+	runtime.KeepAlive(role)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RoleGetName gets the description string describing the Role role.
+//
+// The function takes the following parameters:
+//
+//    - role whose name is required.
+//
+// The function returns the following values:
+//
+//    - utf8: string describing the AtkRole.
+//
+func RoleGetName(role Role) string {
+	var _arg1 C.AtkRole // out
+	var _cret *C.gchar  // in
+
+	_arg1 = C.AtkRole(role)
+
+	_cret = C.atk_role_get_name(_arg1)
+	runtime.KeepAlive(role)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RoleRegister registers the role specified by name. name must be a meaningful
+// name. So it should not be empty, or consisting on whitespaces.
+//
+// Deprecated: Since 2.12. If your application/toolkit doesn't find a suitable
+// role for a specific object defined at Role, please submit a bug in order to
+// add a new role to the specification.
+//
+// The function takes the following parameters:
+//
+//    - name: character string describing the new role.
+//
+// The function returns the following values:
+//
+//    - role for the new role if added properly. ATK_ROLE_INVALID in case of
+//      error.
+//
+func RoleRegister(name string) Role {
+	var _arg1 *C.gchar  // out
+	var _cret C.AtkRole // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_role_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
 // Function is a function definition used for padding which has been added to
 // class and interface structures to allow for expansion in the future.
 type Function func() (ok bool)
@@ -942,6 +1057,15 @@ type ObjectClassOverrider interface {
 	//    - gint: integer which is the index of the accessible in its parent.
 	//
 	IndexInParent() int32
+	// Layer gets the layer of the accessible.
+	//
+	// Deprecated: Use atk_component_get_layer instead.
+	//
+	// The function returns the following values:
+	//
+	//    - layer which is the layer of the accessible.
+	//
+	Layer() Layer
 	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
@@ -988,6 +1112,13 @@ type ObjectClassOverrider interface {
 	//    - object representing the accessible parent of the accessible.
 	//
 	Parent() *ObjectClass
+	// Role gets the role of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//    - role which is the role of the accessible.
+	//
+	Role() Role
 	// Initialize: this function is called when implementing subclasses of
 	// Object. It does initialization required for the new object. It is
 	// intended that this function should called only in the ..._new() functions
@@ -1056,6 +1187,13 @@ type ObjectClassOverrider interface {
 	//    - parent to be set as the accessible parent.
 	//
 	SetParent(parent *ObjectClass)
+	// SetRole sets the role of the accessible.
+	//
+	// The function takes the following parameters:
+	//
+	//    - role to be set as the role.
+	//
+	SetRole(role Role)
 	// The function takes the following parameters:
 	//
 	//    - name
@@ -1097,115 +1235,107 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := girepository.MustFind("Atk", "ObjectClass")
+	pclass := (*C.AtkObjectClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface{ ActiveDescendantChanged(child *unsafe.Pointer) }); ok {
-		o := pclass.StructFieldOffset("active_descendant_changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_active_descendant_changed)
+		pclass.active_descendant_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_active_descendant_changed)
 	}
 
 	if _, ok := goval.(interface {
 		ChildrenChanged(changeIndex uint32, changedChild unsafe.Pointer)
 	}); ok {
-		o := pclass.StructFieldOffset("children_changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_children_changed)
+		pclass.children_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_children_changed)
 	}
 
 	if _, ok := goval.(interface{ FocusEvent(focusIn bool) }); ok {
-		o := pclass.StructFieldOffset("focus_event")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_focus_event)
+		pclass.focus_event = (*[0]byte)(C._gotk4_atk1_ObjectClass_focus_event)
 	}
 
 	if _, ok := goval.(interface{ Description() string }); ok {
-		o := pclass.StructFieldOffset("get_description")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_description)
+		pclass.get_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_description)
 	}
 
 	if _, ok := goval.(interface{ IndexInParent() int32 }); ok {
-		o := pclass.StructFieldOffset("get_index_in_parent")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_index_in_parent)
+		pclass.get_index_in_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_index_in_parent)
+	}
+
+	if _, ok := goval.(interface{ Layer() Layer }); ok {
+		pclass.get_layer = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_layer)
 	}
 
 	if _, ok := goval.(interface{ MDIZOrder() int32 }); ok {
-		o := pclass.StructFieldOffset("get_mdi_zorder")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
+		pclass.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
 	}
 
 	if _, ok := goval.(interface{ NChildren() int32 }); ok {
-		o := pclass.StructFieldOffset("get_n_children")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_n_children)
+		pclass.get_n_children = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_n_children)
 	}
 
 	if _, ok := goval.(interface{ Name() string }); ok {
-		o := pclass.StructFieldOffset("get_name")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_name)
+		pclass.get_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_name)
 	}
 
 	if _, ok := goval.(interface{ ObjectLocale() string }); ok {
-		o := pclass.StructFieldOffset("get_object_locale")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_object_locale)
+		pclass.get_object_locale = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_object_locale)
 	}
 
 	if _, ok := goval.(interface{ Parent() *ObjectClass }); ok {
-		o := pclass.StructFieldOffset("get_parent")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_parent)
+		pclass.get_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_parent)
+	}
+
+	if _, ok := goval.(interface{ Role() Role }); ok {
+		pclass.get_role = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_role)
 	}
 
 	if _, ok := goval.(interface{ Initialize(data unsafe.Pointer) }); ok {
-		o := pclass.StructFieldOffset("initialize")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_initialize)
+		pclass.initialize = (*[0]byte)(C._gotk4_atk1_ObjectClass_initialize)
 	}
 
 	if _, ok := goval.(interface{ PropertyChange(values *PropertyValues) }); ok {
-		o := pclass.StructFieldOffset("property_change")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_property_change)
+		pclass.property_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_property_change)
 	}
 
 	if _, ok := goval.(interface{ RefRelationSet() *RelationSet }); ok {
-		o := pclass.StructFieldOffset("ref_relation_set")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_ref_relation_set)
+		pclass.ref_relation_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_relation_set)
 	}
 
 	if _, ok := goval.(interface{ RefStateSet() *StateSet }); ok {
-		o := pclass.StructFieldOffset("ref_state_set")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_ref_state_set)
+		pclass.ref_state_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_state_set)
 	}
 
 	if _, ok := goval.(interface{ RemovePropertyChangeHandler(handlerId uint32) }); ok {
-		o := pclass.StructFieldOffset("remove_property_change_handler")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
+		pclass.remove_property_change_handler = (*[0]byte)(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
 	}
 
 	if _, ok := goval.(interface{ SetDescription(description string) }); ok {
-		o := pclass.StructFieldOffset("set_description")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_set_description)
+		pclass.set_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_description)
 	}
 
 	if _, ok := goval.(interface{ SetName(name string) }); ok {
-		o := pclass.StructFieldOffset("set_name")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_set_name)
+		pclass.set_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_name)
 	}
 
 	if _, ok := goval.(interface{ SetParent(parent *ObjectClass) }); ok {
-		o := pclass.StructFieldOffset("set_parent")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_set_parent)
+		pclass.set_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_parent)
+	}
+
+	if _, ok := goval.(interface{ SetRole(role Role) }); ok {
+		pclass.set_role = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_role)
 	}
 
 	if _, ok := goval.(interface {
 		StateChange(name string, stateSet bool)
 	}); ok {
-		o := pclass.StructFieldOffset("state_change")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_state_change)
+		pclass.state_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_state_change)
 	}
 
 	if _, ok := goval.(interface{ VisibleDataChanged() }); ok {
-		o := pclass.StructFieldOffset("visible_data_changed")
-		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_visible_data_changed)
+		pclass.visible_data_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_visible_data_changed)
 	}
 }
 
 //export _gotk4_atk1_ObjectClass_active_descendant_changed
-func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.void, arg1 *C.gpointer) {
+func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActiveDescendantChanged(child *unsafe.Pointer) })
 
@@ -1219,7 +1349,7 @@ func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.void, arg1 *C.gpo
 }
 
 //export _gotk4_atk1_ObjectClass_children_changed
-func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.void, arg1 C.guint, arg2 C.gpointer) {
+func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, arg2 C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChildrenChanged(changeIndex uint32, changedChild unsafe.Pointer)
@@ -1235,7 +1365,7 @@ func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.void, arg1 C.guint, arg2 C
 }
 
 //export _gotk4_atk1_ObjectClass_focus_event
-func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.void, arg1 C.gboolean) {
+func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusEvent(focusIn bool) })
 
@@ -1249,7 +1379,7 @@ func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.void, arg1 C.gboolean) {
 }
 
 //export _gotk4_atk1_ObjectClass_get_description
-func _gotk4_atk1_ObjectClass_get_description(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Description() string })
 
@@ -1262,7 +1392,7 @@ func _gotk4_atk1_ObjectClass_get_description(arg0 *C.void) (cret *C.gchar) {
 }
 
 //export _gotk4_atk1_ObjectClass_get_index_in_parent
-func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IndexInParent() int32 })
 
@@ -1273,8 +1403,20 @@ func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.void) (cret C.gint) {
 	return cret
 }
 
+//export _gotk4_atk1_ObjectClass_get_layer
+func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Layer() Layer })
+
+	layer := iface.Layer()
+
+	cret = C.AtkLayer(layer)
+
+	return cret
+}
+
 //export _gotk4_atk1_ObjectClass_get_mdi_zorder
-func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MDIZOrder() int32 })
 
@@ -1286,7 +1428,7 @@ func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_ObjectClass_get_n_children
-func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.void) (cret C.gint) {
+func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NChildren() int32 })
 
@@ -1298,7 +1440,7 @@ func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_ObjectClass_get_name
-func _gotk4_atk1_ObjectClass_get_name(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Name() string })
 
@@ -1311,7 +1453,7 @@ func _gotk4_atk1_ObjectClass_get_name(arg0 *C.void) (cret *C.gchar) {
 }
 
 //export _gotk4_atk1_ObjectClass_get_object_locale
-func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ObjectLocale() string })
 
@@ -1324,19 +1466,31 @@ func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.void) (cret *C.gchar) {
 }
 
 //export _gotk4_atk1_ObjectClass_get_parent
-func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Parent() *ObjectClass })
 
 	object := iface.Parent()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_role
+func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ Role() Role })
+
+	role := iface.Role()
+
+	cret = C.AtkRole(role)
 
 	return cret
 }
 
 //export _gotk4_atk1_ObjectClass_initialize
-func _gotk4_atk1_ObjectClass_initialize(arg0 *C.void, arg1 C.gpointer) {
+func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Initialize(data unsafe.Pointer) })
 
@@ -1348,7 +1502,7 @@ func _gotk4_atk1_ObjectClass_initialize(arg0 *C.void, arg1 C.gpointer) {
 }
 
 //export _gotk4_atk1_ObjectClass_property_change
-func _gotk4_atk1_ObjectClass_property_change(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPropertyValues) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PropertyChange(values *PropertyValues) })
 
@@ -1360,33 +1514,33 @@ func _gotk4_atk1_ObjectClass_property_change(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_atk1_ObjectClass_ref_relation_set
-func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRelationSet) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefRelationSet() *RelationSet })
 
 	relationSet := iface.RefRelationSet()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(relationSet).Native()))
+	cret = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(relationSet).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(relationSet).Native()))
 
 	return cret
 }
 
 //export _gotk4_atk1_ObjectClass_ref_state_set
-func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateSet) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefStateSet() *StateSet })
 
 	stateSet := iface.RefStateSet()
 
-	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(stateSet).Native()))
+	cret = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(stateSet).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(stateSet).Native()))
 
 	return cret
 }
 
 //export _gotk4_atk1_ObjectClass_remove_property_change_handler
-func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.void, arg1 C.guint) {
+func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, arg1 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RemovePropertyChangeHandler(handlerId uint32) })
 
@@ -1398,7 +1552,7 @@ func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.void, arg1 C
 }
 
 //export _gotk4_atk1_ObjectClass_set_description
-func _gotk4_atk1_ObjectClass_set_description(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetDescription(description string) })
 
@@ -1410,7 +1564,7 @@ func _gotk4_atk1_ObjectClass_set_description(arg0 *C.void, arg1 *C.gchar) {
 }
 
 //export _gotk4_atk1_ObjectClass_set_name
-func _gotk4_atk1_ObjectClass_set_name(arg0 *C.void, arg1 *C.gchar) {
+func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetName(name string) })
 
@@ -1422,7 +1576,7 @@ func _gotk4_atk1_ObjectClass_set_name(arg0 *C.void, arg1 *C.gchar) {
 }
 
 //export _gotk4_atk1_ObjectClass_set_parent
-func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetParent(parent *ObjectClass) })
 
@@ -1433,8 +1587,20 @@ func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.void, arg1 *C.void) {
 	iface.SetParent(_parent)
 }
 
+//export _gotk4_atk1_ObjectClass_set_role
+func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ SetRole(role Role) })
+
+	var _role Role // out
+
+	_role = Role(arg1)
+
+	iface.SetRole(_role)
+}
+
 //export _gotk4_atk1_ObjectClass_state_change
-func _gotk4_atk1_ObjectClass_state_change(arg0 *C.void, arg1 *C.gchar, arg2 C.gboolean) {
+func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		StateChange(name string, stateSet bool)
@@ -1452,7 +1618,7 @@ func _gotk4_atk1_ObjectClass_state_change(arg0 *C.void, arg1 *C.gchar, arg2 C.gb
 }
 
 //export _gotk4_atk1_ObjectClass_visible_data_changed
-func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.void) {
+func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VisibleDataChanged() })
 
@@ -1470,7 +1636,7 @@ func marshalObjectClass(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_atk1_Object_ConnectActiveDescendantChanged
-func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
 	var f func(arg1 *ObjectClass)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -1493,12 +1659,12 @@ func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.
 // by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
 // object in the object changes. For instance, a table will emit the signal when
 // the cell in the table which has focus changes.
-func (accessible *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accessible, "active-descendant-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectActiveDescendantChanged), f)
+func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "active-descendant-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectActiveDescendantChanged), f)
 }
 
 //export _gotk4_atk1_Object_ConnectChildrenChanged
-func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.gpointer, arg3 C.guintptr) {
 	var f func(arg1 uint32, arg2 *ObjectClass)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1521,8 +1687,8 @@ func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, ar
 
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
 // added or removed form an object. It supports two details: "add" and "remove".
-func (accessible *ObjectClass) ConnectChildrenChanged(f func(arg1 uint32, arg2 *ObjectClass)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accessible, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
+func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint32, arg2 *ObjectClass)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
 }
 
 //export _gotk4_atk1_Object_ConnectFocusEvent
@@ -1549,12 +1715,12 @@ func _gotk4_atk1_Object_ConnectFocusEvent(arg0 C.gpointer, arg1 C.gboolean, arg2
 
 // ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
 // lost focus.
-func (accessible *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accessible, "focus-event", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectFocusEvent), f)
+func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "focus-event", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectFocusEvent), f)
 }
 
 //export _gotk4_atk1_Object_ConnectPropertyChange
-func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
 	var f func(arg1 *PropertyValues)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -1584,8 +1750,8 @@ func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.void, arg
 // emit property-changed notifications. Object::property-changed is needed by
 // the implementation of atk_add_global_event_listener() because GObject notify
 // doesn't support emission hooks.
-func (accessible *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accessible, "property-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectPropertyChange), f)
+func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "property-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectPropertyChange), f)
 }
 
 //export _gotk4_atk1_Object_ConnectStateChange
@@ -1614,8 +1780,8 @@ func _gotk4_atk1_Object_ConnectStateChange(arg0 C.gpointer, arg1 *C.gchar, arg2 
 
 // ConnectStateChange: "state-change" signal is emitted when an object's state
 // changes. The detail value identifies the state type which has changed.
-func (accessible *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accessible, "state-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectStateChange), f)
+func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "state-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectStateChange), f)
 }
 
 //export _gotk4_atk1_Object_ConnectVisibleDataChanged
@@ -1636,8 +1802,44 @@ func _gotk4_atk1_Object_ConnectVisibleDataChanged(arg0 C.gpointer, arg1 C.guintp
 
 // ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
 // visual appearance of the object changed.
-func (accessible *ObjectClass) ConnectVisibleDataChanged(f func()) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accessible, "visible-data-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectVisibleDataChanged), f)
+func (object *ObjectClass) ConnectVisibleDataChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "visible-data-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectVisibleDataChanged), f)
+}
+
+// AddRelationship adds a relationship of the specified type with the specified
+// target.
+//
+// The function takes the following parameters:
+//
+//    - relationship of the relation.
+//    - target which is to be the target of the relation.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the relationship is added.
+//
+func (object *ObjectClass) AddRelationship(relationship RelationType, target *ObjectClass) bool {
+	var _arg0 *C.AtkObject      // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_object_add_relationship(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // AccessibleID gets the accessible id of the accessible.
@@ -1648,19 +1850,17 @@ func (accessible *ObjectClass) ConnectVisibleDataChanged(f func()) coreglib.Sign
 //      NULL if no such string was set.
 //
 func (accessible *ObjectClass) AccessibleID() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_accessible_id", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_accessible_id(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1673,19 +1873,17 @@ func (accessible *ObjectClass) AccessibleID() string {
 //      accessible.
 //
 func (accessible *ObjectClass) Description() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_description", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_description(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1698,21 +1896,43 @@ func (accessible *ObjectClass) Description() string {
 //    - gint: integer which is the index of the accessible in its parent.
 //
 func (accessible *ObjectClass) IndexInParent() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_index_in_parent", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_index_in_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
+}
+
+// Layer gets the layer of the accessible.
+//
+// Deprecated: Use atk_component_get_layer instead.
+//
+// The function returns the following values:
+//
+//    - layer which is the layer of the accessible.
+//
+func (accessible *ObjectClass) Layer() Layer {
+	var _arg0 *C.AtkObject // out
+	var _cret C.AtkLayer   // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_layer(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _layer Layer // out
+
+	_layer = Layer(_cret)
+
+	return _layer
 }
 
 // MDIZOrder gets the zorder of the accessible. The value G_MININT will be
@@ -1726,19 +1946,17 @@ func (accessible *ObjectClass) IndexInParent() int32 {
 //      component is shown in relation to other components in the same container.
 //
 func (accessible *ObjectClass) MDIZOrder() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_mdi_zorder", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_mdi_zorder(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1751,19 +1969,17 @@ func (accessible *ObjectClass) MDIZOrder() int32 {
 //      accessible.
 //
 func (accessible *ObjectClass) NAccessibleChildren() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_n_accessible_children", _args[:], nil)
-	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_n_accessible_children(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -1775,19 +1991,17 @@ func (accessible *ObjectClass) NAccessibleChildren() int32 {
 //    - utf8: character string representing the accessible name of the object.
 //
 func (accessible *ObjectClass) Name() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_name(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1801,19 +2015,17 @@ func (accessible *ObjectClass) Name() string {
 //      accessible.
 //
 func (accessible *ObjectClass) ObjectLocale() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_object_locale", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_object_locale(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -1832,21 +2044,41 @@ func (accessible *ObjectClass) ObjectLocale() string {
 //    - object representing the accessible parent of the accessible.
 //
 func (accessible *ObjectClass) Parent() *ObjectClass {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret *C.AtkObject // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("get_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_get_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
+}
+
+// Role gets the role of the accessible.
+//
+// The function returns the following values:
+//
+//    - role which is the role of the accessible.
+//
+func (accessible *ObjectClass) Role() Role {
+	var _arg0 *C.AtkObject // out
+	var _cret C.AtkRole    // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_role(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
 }
 
 // Initialize: this function is called when implementing subclasses of Object.
@@ -1860,14 +2092,13 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 //      created.
 //
 func (accessible *ObjectClass) Initialize(data unsafe.Pointer) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.gpointer   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(data))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("initialize", _args[:], nil)
-
+	C.atk_object_initialize(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(data)
 }
@@ -1883,17 +2114,17 @@ func (accessible *ObjectClass) Initialize(data unsafe.Pointer) {
 //    - value: gboolean which indicates whether the state is being set on or off.
 //
 func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
-	var _args [3]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkState   // out
+	var _arg2 C.gboolean   // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(*C.guint64)(unsafe.Pointer(&_args[1])) = C.guint64(state)
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.guint64(state)
 	if value {
-		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+		_arg2 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("notify_state_change", _args[:], nil)
-
+	C.atk_object_notify_state_change(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(state)
 	runtime.KeepAlive(value)
@@ -1912,19 +2143,17 @@ func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 //    - object representing the accessible parent of the accessible if assigned.
 //
 func (accessible *ObjectClass) PeekParent() *ObjectClass {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _cret *C.AtkObject // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("peek_parent", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_peek_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -1942,21 +2171,20 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 //    - object representing the specified accessible child of the accessible.
 //
 func (accessible *ObjectClass) RefAccessibleChild(i int32) *ObjectClass {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.gint(i)
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("ref_accessible_child", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_ref_accessible_child(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(i)
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
 }
@@ -1968,19 +2196,17 @@ func (accessible *ObjectClass) RefAccessibleChild(i int32) *ObjectClass {
 //    - relationSet representing the relation set of the object.
 //
 func (accessible *ObjectClass) RefRelationSet() *RelationSet {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject      // out
+	var _cret *C.AtkRelationSet // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("ref_relation_set", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_ref_relation_set(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _relationSet *RelationSet // out
 
-	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relationSet
 }
@@ -1994,19 +2220,17 @@ func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 //      accessible.
 //
 func (accessible *ObjectClass) RefStateSet() *StateSet {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkObject   // out
+	var _cret *C.AtkStateSet // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_gret := _info.InvokeClassMethod("ref_state_set", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_object_ref_state_set(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _stateSet *StateSet // out
 
-	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
 }
@@ -2020,16 +2244,51 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 //    - handlerId: guint which identifies the handler to be removed.
 //
 func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.guint      // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(handlerId)
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.guint(handlerId)
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("remove_property_change_handler", _args[:], nil)
-
+	C.atk_object_remove_property_change_handler(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(handlerId)
+}
+
+// RemoveRelationship removes a relationship of the specified type with the
+// specified target.
+//
+// The function takes the following parameters:
+//
+//    - relationship of the relation.
+//    - target which is the target of the relation to be removed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the relationship is removed.
+//
+func (object *ObjectClass) RemoveRelationship(relationship RelationType, target *ObjectClass) bool {
+	var _arg0 *C.AtkObject      // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_object_remove_relationship(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetAccessibleID sets the accessible ID of the accessible. This is not meant
@@ -2043,15 +2302,14 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint32) {
 //    - name: character string to be set as the accessible id.
 //
 func (accessible *ObjectClass) SetAccessibleID(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("set_accessible_id", _args[:], nil)
-
+	C.atk_object_set_accessible_id(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(name)
 }
@@ -2066,15 +2324,14 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 //    - description: character string to be set as the accessible description.
 //
 func (accessible *ObjectClass) SetDescription(description string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("set_description", _args[:], nil)
-
+	C.atk_object_set_description(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(description)
 }
@@ -2089,15 +2346,14 @@ func (accessible *ObjectClass) SetDescription(description string) {
 //    - name: character string to be set as the accessible name.
 //
 func (accessible *ObjectClass) SetName(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("set_name", _args[:], nil)
-
+	C.atk_object_set_name(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(name)
 }
@@ -2109,16 +2365,33 @@ func (accessible *ObjectClass) SetName(name string) {
 //    - parent to be set as the accessible parent.
 //
 func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.AtkObject // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 
-	_info := girepository.MustFind("Atk", "Object")
-	_info.InvokeClassMethod("set_parent", _args[:], nil)
-
+	C.atk_object_set_parent(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(parent)
+}
+
+// SetRole sets the role of the accessible.
+//
+// The function takes the following parameters:
+//
+//    - role to be set as the role.
+//
+func (accessible *ObjectClass) SetRole(role Role) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkRole    // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.AtkRole(role)
+
+	C.atk_object_set_role(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(role)
 }
 
 // Attribute is a string name/value pair representing a generic attribute. This
@@ -2140,24 +2413,22 @@ type Attribute struct {
 
 // attribute is the struct that's finalized.
 type attribute struct {
-	native unsafe.Pointer
+	native *C.AtkAttribute
 }
 
 // Name: attribute name.
 func (a *Attribute) Name() string {
-	offset := girepository.MustFind("Atk", "Attribute").StructFieldOffset("name")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Value: value of the attribute, represented as a string.
 func (a *Attribute) Value() string {
-	offset := girepository.MustFind("Atk", "Attribute").StructFieldOffset("value")
-	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	valptr := &a.native.value
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -2172,14 +2443,13 @@ type PropertyValues struct {
 
 // propertyValues is the struct that's finalized.
 type propertyValues struct {
-	native unsafe.Pointer
+	native *C.AtkPropertyValues
 }
 
 // PropertyName: name of the ATK property which has changed.
 func (p *PropertyValues) PropertyName() string {
-	offset := girepository.MustFind("Atk", "PropertyValues").StructFieldOffset("property_name")
-	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	valptr := &p.native.property_name
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }

@@ -6,14 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeTextTag returns the GType for the type TextTag.
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTextTag() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextTag").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_text_tag_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTextTag)
 	return gtype
 }
@@ -86,22 +84,20 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 //    - textTag: new GtkTextTag.
 //
 func NewTextTag(name string) *TextTag {
-	var _args [1]girepository.Argument
+	var _arg1 *C.char       // out
+	var _cret *C.GtkTextTag // in
 
 	if name != "" {
-		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
 	}
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_gret := _info.InvokeClassMethod("new_TextTag", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_tag_new(_arg1)
 	runtime.KeepAlive(name)
 
 	var _textTag *TextTag // out
 
-	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
 }
@@ -117,16 +113,15 @@ func NewTextTag(name string) *TextTag {
 //    - sizeChanged: whether the change affects the GtkTextView layout.
 //
 func (tag *TextTag) Changed(sizeChanged bool) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.gboolean    // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	if sizeChanged {
-		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
+		_arg1 = C.TRUE
 	}
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_info.InvokeClassMethod("changed", _args[:], nil)
-
+	C.gtk_text_tag_changed(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(sizeChanged)
 }
@@ -138,19 +133,17 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //    - gint tag’s priority.
 //
 func (tag *TextTag) Priority() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GtkTextTag // out
+	var _cret C.int         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_gret := _info.InvokeClassMethod("get_priority", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_text_tag_get_priority(_arg0)
 	runtime.KeepAlive(tag)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -174,14 +167,13 @@ func (tag *TextTag) Priority() int32 {
 //    - priority: new priority.
 //
 func (tag *TextTag) SetPriority(priority int32) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.int         // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(priority)
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg1 = C.int(priority)
 
-	_info := girepository.MustFind("Gtk", "TextTag")
-	_info.InvokeClassMethod("set_priority", _args[:], nil)
-
+	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
 }

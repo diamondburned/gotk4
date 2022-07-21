@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -22,7 +20,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeZlibDecompressor() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "ZlibDecompressor").RegisteredGType())
+	gtype := coreglib.Type(C.g_zlib_decompressor_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalZlibDecompressor)
 	return gtype
 }
@@ -64,6 +62,32 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	return wrapZlibDecompressor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewZlibDecompressor creates a new Decompressor.
+//
+// The function takes the following parameters:
+//
+//    - format to use for the compressed data.
+//
+// The function returns the following values:
+//
+//    - zlibDecompressor: new Decompressor.
+//
+func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
+	var _arg1 C.GZlibCompressorFormat // out
+	var _cret *C.GZlibDecompressor    // in
+
+	_arg1 = C.GZlibCompressorFormat(format)
+
+	_cret = C.g_zlib_decompressor_new(_arg1)
+	runtime.KeepAlive(format)
+
+	var _zlibDecompressor *ZlibDecompressor // out
+
+	_zlibDecompressor = wrapZlibDecompressor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _zlibDecompressor
+}
+
 // FileInfo retrieves the Info constructed from the GZIP header data of
 // compressed data processed by compressor, or NULL if decompressor's
 // Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
@@ -75,20 +99,18 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 //    - fileInfo (optional) or NULL.
 //
 func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GZlibDecompressor // out
+	var _cret *C.GFileInfo         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(decompressor).Native()))
+	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(coreglib.InternObject(decompressor).Native()))
 
-	_info := girepository.MustFind("Gio", "ZlibDecompressor")
-	_gret := _info.InvokeClassMethod("get_file_info", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
 	runtime.KeepAlive(decompressor)
 
 	var _fileInfo *FileInfo // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fileInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_fileInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _fileInfo

@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeTLSServerConnection() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsServerConnection").RegisteredGType())
+	gtype := coreglib.Type(C.g_tls_server_connection_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalTLSServerConnection)
 	return gtype
 }
@@ -98,26 +96,26 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 //    - tlsServerConnection: new ServerConnection, or NULL on error.
 //
 func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
-	var _args [2]girepository.Argument
+	var _arg1 *C.GIOStream       // out
+	var _arg2 *C.GTlsCertificate // out
+	var _cret *C.GIOStream       // in
+	var _cerr *C.GError          // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
 	if certificate != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
+		_arg2 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 	}
 
-	_info := girepository.MustFind("Gio", "new")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_tls_server_connection_new(_arg1, _arg2, &_cerr)
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(certificate)
 
 	var _tlsServerConnection *TLSServerConnection // out
 	var _goerr error                              // out
 
-	_tlsServerConnection = wrapTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	_tlsServerConnection = wrapTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _tlsServerConnection, _goerr

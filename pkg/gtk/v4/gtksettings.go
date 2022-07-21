@@ -6,15 +6,13 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
 // #include <glib-object.h>
+// #include <gtk/gtk.h>
 import "C"
 
 // GTypeSettings returns the GType for the type Settings.
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeSettings() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gtk", "Settings").RegisteredGType())
+	gtype := coreglib.Type(C.gtk_settings_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSettings)
 	return gtype
 }
@@ -89,15 +87,14 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //    - name of the setting to reset.
 //
 func (settings *Settings) ResetProperty(name string) {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GtkSettings // out
+	var _arg1 *C.char        // out
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Gtk", "Settings")
-	_info.InvokeClassMethod("reset_property", _args[:], nil)
-
+	C.gtk_settings_reset_property(_arg0, _arg1)
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
 }
@@ -113,14 +110,14 @@ func (settings *Settings) ResetProperty(name string) {
 //      then returns NULL.
 //
 func SettingsGetDefault() *Settings {
-	_info := girepository.MustFind("Gtk", "get_default")
-	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	var _cret *C.GtkSettings // in
+
+	_cret = C.gtk_settings_get_default()
 
 	var _settings *Settings // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _settings
@@ -138,19 +135,17 @@ func SettingsGetDefault() *Settings {
 //    - settings: GtkSettings object.
 //
 func SettingsGetForDisplay(display *gdk.Display) *Settings {
-	var _args [1]girepository.Argument
+	var _arg1 *C.GdkDisplay  // out
+	var _cret *C.GtkSettings // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_info := girepository.MustFind("Gtk", "get_for_display")
-	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gtk_settings_get_for_display(_arg1)
 	runtime.KeepAlive(display)
 
 	var _settings *Settings // out
 
-	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
 }

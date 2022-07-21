@@ -10,18 +10,18 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GIOCondition _gotk4_gio2_DatagramBasedInterface_condition_check(void*, GIOCondition);
-// extern GSource* _gotk4_gio2_DatagramBasedInterface_create_source(void*, GIOCondition, void*);
-// extern gboolean _gotk4_gio2_DatagramBasedInterface_condition_wait(void*, GIOCondition, gint64, void*, GError**);
+// extern GIOCondition _gotk4_gio2_DatagramBasedInterface_condition_check(GDatagramBased*, GIOCondition);
+// extern GSource* _gotk4_gio2_DatagramBasedInterface_create_source(GDatagramBased*, GIOCondition, GCancellable*);
+// extern gboolean _gotk4_gio2_DatagramBasedInterface_condition_wait(GDatagramBased*, GIOCondition, gint64, GCancellable*, GError**);
+// extern gint _gotk4_gio2_DatagramBasedInterface_receive_messages(GDatagramBased*, GInputMessage*, guint, gint, gint64, GCancellable*, GError**);
+// extern gint _gotk4_gio2_DatagramBasedInterface_send_messages(GDatagramBased*, GOutputMessage*, guint, gint, gint64, GCancellable*, GError**);
 import "C"
 
 // GTypeDatagramBased returns the GType for the type DatagramBased.
@@ -30,7 +30,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeDatagramBased() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gio", "DatagramBased").RegisteredGType())
+	gtype := coreglib.Type(C.g_datagram_based_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalDatagramBased)
 	return gtype
 }
@@ -124,6 +124,134 @@ type DatagramBasedOverrider interface {
 	//    - source: newly allocated #GSource.
 	//
 	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
+	// ReceiveMessages: receive one or more data messages from datagram_based in
+	// one go.
+	//
+	// messages must point to an array of Message structs and num_messages must
+	// be the length of this array. Each Message contains a pointer to an array
+	// of Vector structs describing the buffers that the data received in each
+	// message will be written to.
+	//
+	// flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If timeout is negative the call will block until num_messages have been
+	// received, the connection is closed remotely (EOS), cancellable is
+	// cancelled, or an error occurs.
+	//
+	// If timeout is 0 the call will return up to num_messages without blocking,
+	// or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the operating
+	// system to be received.
+	//
+	// If timeout is positive the call will block on the same conditions as if
+	// timeout were negative. If the timeout is reached before any messages are
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of MSG_WAITFORONE with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with shutdown_read set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned. If
+	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): GCancellable.
+	//    - messages: array of Message structs.
+	//    - flags: int containing MsgFlags flags for the overall operation.
+	//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or
+	//      -1 to block indefinitely.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of messages received, or -1 on error. Note that the
+	//      number of messages received may be smaller than num_messages if
+	//      timeout is zero or positive, if the peer closed the connection, or if
+	//      num_messages was larger than UIO_MAXIOV (1024), in which case the
+	//      caller may re-try to receive the remaining messages.
+	//
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error)
+	// SendMessages: send one or more data messages from datagram_based in one
+	// go.
+	//
+	// messages must point to an array of Message structs and num_messages must
+	// be the length of this array. Each Message contains an address to send the
+	// data to, and a pointer to an array of Vector structs to describe the
+	// buffers that the data to be sent for each message will be gathered from.
+	//
+	// flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If timeout is negative the call will block until num_messages have been
+	// sent, cancellable is cancelled, or an error occurs.
+	//
+	// If timeout is 0 the call will send up to num_messages without blocking,
+	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+	// messages.
+	//
+	// If timeout is positive the call will block on the same conditions as if
+	// timeout were negative. If the timeout is reached before any messages are
+	// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages sent before timing out.
+	//
+	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_send_messages() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// If the connection is shut down or closed (by calling g_socket_close() or
+	// g_socket_shutdown() with shutdown_write set, if it’s a #GSocket, for
+	// example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned. If
+	// cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// The function takes the following parameters:
+	//
+	//    - ctx (optional): GCancellable.
+	//    - messages: array of Message structs.
+	//    - flags: int containing MsgFlags flags.
+	//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or
+	//      -1 to block indefinitely.
+	//
+	// The function returns the following values:
+	//
+	//    - gint: number of messages sent, or -1 on error. Note that the number
+	//      of messages sent may be smaller than num_messages if timeout is zero
+	//      or positive, or if num_messages was larger than UIO_MAXIOV (1024), in
+	//      which case the caller may re-try to send the remaining messages.
+	//
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error)
 }
 
 // DatagramBased is a networking interface for representing datagram-based
@@ -196,19 +324,27 @@ type DatagramBasedder interface {
 	// CreateSource creates a #GSource that can be attached to a Context to
 	// monitor for the availability of the specified condition on the Based.
 	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
+	// ReceiveMessages: receive one or more data messages from datagram_based in
+	// one go.
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error)
+	// SendMessages: send one or more data messages from datagram_based in one
+	// go.
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error)
 }
 
 var _ DatagramBasedder = (*DatagramBased)(nil)
 
 func ifaceInitDatagramBasedder(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gio", "DatagramBasedInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("condition_check"))) = unsafe.Pointer(C._gotk4_gio2_DatagramBasedInterface_condition_check)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("condition_wait"))) = unsafe.Pointer(C._gotk4_gio2_DatagramBasedInterface_condition_wait)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("create_source"))) = unsafe.Pointer(C._gotk4_gio2_DatagramBasedInterface_create_source)
+	iface := (*C.GDatagramBasedInterface)(unsafe.Pointer(gifacePtr))
+	iface.condition_check = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_condition_check)
+	iface.condition_wait = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_condition_wait)
+	iface.create_source = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_create_source)
+	iface.receive_messages = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_receive_messages)
+	iface.send_messages = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_send_messages)
 }
 
 //export _gotk4_gio2_DatagramBasedInterface_condition_check
-func _gotk4_gio2_DatagramBasedInterface_condition_check(arg0 *C.void, arg1 C.GIOCondition) (cret C.GIOCondition) {
+func _gotk4_gio2_DatagramBasedInterface_condition_check(arg0 *C.GDatagramBased, arg1 C.GIOCondition) (cret C.GIOCondition) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
@@ -224,7 +360,7 @@ func _gotk4_gio2_DatagramBasedInterface_condition_check(arg0 *C.void, arg1 C.GIO
 }
 
 //export _gotk4_gio2_DatagramBasedInterface_condition_wait
-func _gotk4_gio2_DatagramBasedInterface_condition_wait(arg0 *C.void, arg1 C.GIOCondition, arg2 C.gint64, arg3 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_DatagramBasedInterface_condition_wait(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gint64, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
@@ -248,7 +384,7 @@ func _gotk4_gio2_DatagramBasedInterface_condition_wait(arg0 *C.void, arg1 C.GIOC
 }
 
 //export _gotk4_gio2_DatagramBasedInterface_create_source
-func _gotk4_gio2_DatagramBasedInterface_create_source(arg0 *C.void, arg1 C.GIOCondition, arg2 *C.void) (cret *C.GSource) {
+func _gotk4_gio2_DatagramBasedInterface_create_source(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 *C.GCancellable) (cret *C.GSource) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
@@ -263,6 +399,72 @@ func _gotk4_gio2_DatagramBasedInterface_create_source(arg0 *C.void, arg1 C.GIOCo
 	source := iface.CreateSource(_cancellable, _condition)
 
 	cret = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	return cret
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_receive_messages
+func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased, arg1 *C.GInputMessage, arg2 C.guint, arg3 C.gint, arg4 C.gint64, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gint) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _cancellable context.Context // out
+	var _messages []InputMessage     // out
+	var _flags int32                 // out
+	var _timeout int64               // out
+
+	if arg5 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
+	}
+	{
+		src := unsafe.Slice((*C.GInputMessage)(arg1), arg2)
+		_messages = make([]InputMessage, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_messages[i] = *(*InputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+	_flags = int32(arg3)
+	_timeout = int64(arg4)
+
+	gint, _goerr := iface.ReceiveMessages(_cancellable, _messages, _flags, _timeout)
+
+	cret = C.gint(gint)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DatagramBasedInterface_send_messages
+func _gotk4_gio2_DatagramBasedInterface_send_messages(arg0 *C.GDatagramBased, arg1 *C.GOutputMessage, arg2 C.guint, arg3 C.gint, arg4 C.gint64, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gint) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(DatagramBasedOverrider)
+
+	var _cancellable context.Context // out
+	var _messages []OutputMessage    // out
+	var _flags int32                 // out
+	var _timeout int64               // out
+
+	if arg5 != nil {
+		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg5))
+	}
+	{
+		src := unsafe.Slice((*C.GOutputMessage)(arg1), arg2)
+		_messages = make([]OutputMessage, arg2)
+		for i := 0; i < int(arg2); i++ {
+			_messages[i] = *(*OutputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+		}
+	}
+	_flags = int32(arg3)
+	_timeout = int64(arg4)
+
+	gint, _goerr := iface.SendMessages(_cancellable, _messages, _flags, _timeout)
+
+	cret = C.gint(gint)
+	if _goerr != nil && _cerr != nil {
+		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
 
 	return cret
 }
@@ -324,21 +526,20 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 //    - ioCondition mask of the current state.
 //
 func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+	var _cret C.GIOCondition    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
-	*(*C.GIOCondition)(unsafe.Pointer(&_args[1])) = C.GIOCondition(condition)
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
+	_arg1 = C.GIOCondition(condition)
 
-	_info := girepository.MustFind("Gio", "DatagramBased")
-	_gret := _info.InvokeIfaceMethod("condition_check", _args[:], nil)
-	_cret := *(*C.GIOCondition)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_datagram_based_condition_check(_arg0, _arg1)
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(condition)
 
 	var _ioCondition glib.IOCondition // out
 
-	_ioCondition = glib.IOCondition(*(*C.GIOCondition)(unsafe.Pointer(&_cret)))
+	_ioCondition = glib.IOCondition(_cret)
 
 	return _ioCondition
 }
@@ -358,20 +559,22 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 //      block indefinitely.
 //
 func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error {
-	var _args [4]girepository.Argument
+	var _arg0 *C.GDatagramBased // out
+	var _arg3 *C.GCancellable   // out
+	var _arg1 C.GIOCondition    // out
+	var _arg2 C.gint64          // out
+	var _cerr *C.GError         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.GIOCondition)(unsafe.Pointer(&_args[1])) = C.GIOCondition(condition)
-	*(*C.gint64)(unsafe.Pointer(&_args[2])) = C.gint64(timeout)
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = C.gint64(timeout)
 
-	_info := girepository.MustFind("Gio", "DatagramBased")
-	_info.InvokeIfaceMethod("condition_wait", _args[:], nil)
-
+	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(condition)
@@ -379,8 +582,8 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 
 	var _goerr error // out
 
-	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
 	return _goerr
@@ -410,37 +613,244 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 //    - source: newly allocated #GSource.
 //
 func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source {
-	var _args [3]girepository.Argument
+	var _arg0 *C.GDatagramBased // out
+	var _arg2 *C.GCancellable   // out
+	var _arg1 C.GIOCondition    // out
+	var _cret *C.GSource        // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(*C.GIOCondition)(unsafe.Pointer(&_args[1])) = C.GIOCondition(condition)
+	_arg1 = C.GIOCondition(condition)
 
-	_info := girepository.MustFind("Gio", "DatagramBased")
-	_gret := _info.InvokeIfaceMethod("create_source", _args[:], nil)
-	_cret := *(**C.GSource)(unsafe.Pointer(&_gret))
-
+	_cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(datagramBased)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(condition)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(*(**C.GSource)(unsafe.Pointer(&_cret)))))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			{
-				var args [1]girepository.Argument
-				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
-				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
-			}
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
 	return _source
+}
+
+// ReceiveMessages: receive one or more data messages from datagram_based in one
+// go.
+//
+// messages must point to an array of Message structs and num_messages must be
+// the length of this array. Each Message contains a pointer to an array of
+// Vector structs describing the buffers that the data received in each message
+// will be written to.
+//
+// flags modify how all messages are received. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can pass
+// in system-specific flags too. These flags affect the overall receive
+// operation. Flags affecting individual messages are returned in Message.flags.
+//
+// The other members of Message are treated as described in its documentation.
+//
+// If timeout is negative the call will block until num_messages have been
+// received, the connection is closed remotely (EOS), cancellable is cancelled,
+// or an error occurs.
+//
+// If timeout is 0 the call will return up to num_messages without blocking, or
+// G_IO_ERROR_WOULD_BLOCK if no messages are queued in the operating system to
+// be received.
+//
+// If timeout is positive the call will block on the same conditions as if
+// timeout were negative. If the timeout is reached before any messages are
+// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+// number of messages received before timing out. (Note: This is effectively the
+// behaviour of MSG_WAITFORONE with recvmmsg().)
+//
+// To be notified when messages are available, wait for the G_IO_IN condition.
+// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
+// g_datagram_based_receive_messages() even if you were previously notified of a
+// G_IO_IN condition.
+//
+// If the remote peer closes the connection, any messages queued in the
+// underlying receive buffer will be returned, and subsequent calls to
+// g_datagram_based_receive_messages() will return 0 (with no error set).
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with shutdown_read set, if it’s a #GSocket, for example),
+// all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// On error -1 is returned and error is set accordingly. An error will only be
+// returned if zero messages could be received; otherwise the number of messages
+// successfully received before the error will be returned. If cancellable is
+// cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags for the overall operation.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
+//      block indefinitely.
+//
+// The function returns the following values:
+//
+//    - gint: number of messages received, or -1 on error. Note that the number
+//      of messages received may be smaller than num_messages if timeout is zero
+//      or positive, if the peer closed the connection, or if num_messages was
+//      larger than UIO_MAXIOV (1024), in which case the caller may re-try to
+//      receive the remaining messages.
+//
+func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error) {
+	var _arg0 *C.GDatagramBased // out
+	var _arg5 *C.GCancellable   // out
+	var _arg1 *C.GInputMessage  // out
+	var _arg2 C.guint
+	var _arg3 C.gint    // out
+	var _arg4 C.gint64  // out
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.guint)(len(messages))
+	_arg1 = (*C.GInputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GInputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GInputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
+	}
+	_arg3 = C.gint(flags)
+	_arg4 = C.gint64(timeout)
+
+	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeout)
+
+	var _gint int32  // out
+	var _goerr error // out
+
+	_gint = int32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gint, _goerr
+}
+
+// SendMessages: send one or more data messages from datagram_based in one go.
+//
+// messages must point to an array of Message structs and num_messages must be
+// the length of this array. Each Message contains an address to send the data
+// to, and a pointer to an array of Vector structs to describe the buffers that
+// the data to be sent for each message will be gathered from.
+//
+// flags modify how the message is sent. The commonly available arguments for
+// this are available in the MsgFlags enum, but the values there are the same as
+// the system values, and the flags are passed in as-is, so you can pass in
+// system-specific flags too.
+//
+// The other members of Message are treated as described in its documentation.
+//
+// If timeout is negative the call will block until num_messages have been sent,
+// cancellable is cancelled, or an error occurs.
+//
+// If timeout is 0 the call will send up to num_messages without blocking, or
+// will return G_IO_ERROR_WOULD_BLOCK if there is no space to send messages.
+//
+// If timeout is positive the call will block on the same conditions as if
+// timeout were negative. If the timeout is reached before any messages are
+// sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the number
+// of messages sent before timing out.
+//
+// To be notified when messages can be sent, wait for the G_IO_OUT condition.
+// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
+// g_datagram_based_send_messages() even if you were previously notified of a
+// G_IO_OUT condition. (On Windows in particular, this is very common due to the
+// way the underlying APIs work.)
+//
+// If the connection is shut down or closed (by calling g_socket_close() or
+// g_socket_shutdown() with shutdown_write set, if it’s a #GSocket, for
+// example), all calls to this function will return G_IO_ERROR_CLOSED.
+//
+// On error -1 is returned and error is set accordingly. An error will only be
+// returned if zero messages could be sent; otherwise the number of messages
+// successfully sent before the error will be returned. If cancellable is
+// cancelled, G_IO_ERROR_CANCELLED is returned as with any other error.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags.
+//    - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
+//      block indefinitely.
+//
+// The function returns the following values:
+//
+//    - gint: number of messages sent, or -1 on error. Note that the number of
+//      messages sent may be smaller than num_messages if timeout is zero or
+//      positive, or if num_messages was larger than UIO_MAXIOV (1024), in which
+//      case the caller may re-try to send the remaining messages.
+//
+func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error) {
+	var _arg0 *C.GDatagramBased // out
+	var _arg5 *C.GCancellable   // out
+	var _arg1 *C.GOutputMessage // out
+	var _arg2 C.guint
+	var _arg3 C.gint    // out
+	var _arg4 C.gint64  // out
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(coreglib.InternObject(datagramBased).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.guint)(len(messages))
+	_arg1 = (*C.GOutputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GOutputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GOutputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
+	}
+	_arg3 = C.gint(flags)
+	_arg4 = C.gint64(timeout)
+
+	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
+	runtime.KeepAlive(datagramBased)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeout)
+
+	var _gint int32  // out
+	var _goerr error // out
+
+	_gint = int32(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gint, _goerr
 }

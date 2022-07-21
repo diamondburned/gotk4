@@ -7,13 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/gdk.h>
 // #include <glib-object.h>
 import "C"
 
@@ -23,7 +21,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeCairoContext() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Gdk", "CairoContext").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_cairo_context_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalCairoContext)
 	return gtype
 }
@@ -90,22 +88,20 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 //      GdkSurface. NULL is returned when context is not drawing.
 //
 func (self *CairoContext) CairoCreate() *cairo.Context {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkCairoContext // out
+	var _cret *C.cairo_t         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg0 = (*C.GdkCairoContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_info := girepository.MustFind("Gdk", "CairoContext")
-	_gret := _info.InvokeClassMethod("cairo_create", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_cairo_context_cairo_create(_arg0)
 	runtime.KeepAlive(self)
 
 	var _context *cairo.Context // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_context = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(_context, func(v *cairo.Context) {
-			C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
+			C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 		})
 	}
 

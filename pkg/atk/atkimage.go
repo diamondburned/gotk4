@@ -6,18 +6,17 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_ImageIface_set_image_description(void*, gchar*);
-// extern gchar* _gotk4_atk1_ImageIface_get_image_description(void*);
-// extern gchar* _gotk4_atk1_ImageIface_get_image_locale(void*);
-// extern void _gotk4_atk1_ImageIface_get_image_size(void*, gint*, gint*);
+// extern gboolean _gotk4_atk1_ImageIface_set_image_description(AtkImage*, gchar*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_description(AtkImage*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_locale(AtkImage*);
+// extern void _gotk4_atk1_ImageIface_get_image_position(AtkImage*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_ImageIface_get_image_size(AtkImage*, gint*, gint*);
 import "C"
 
 // GTypeImage returns the GType for the type Image.
@@ -26,7 +25,7 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeImage() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("Atk", "Image").RegisteredGType())
+	gtype := coreglib.Type(C.atk_image_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalImage)
 	return gtype
 }
@@ -49,6 +48,25 @@ type ImageOverrider interface {
 	//      a locale.
 	//
 	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	//
+	// If the position can not be obtained (e.g. missing support), x and y are
+	// set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//    - coordType specifies whether the coordinates are relative to the
+	//      screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//    - x (optional) address of #gint to put x coordinate position;
+	//      otherwise, -1 if value cannot be obtained.
+	//    - y (optional) address of #gint to put y coordinate position;
+	//      otherwise, -1 if value cannot be obtained.
+	//
+	ImagePosition(coordType CoordType) (x, y int32)
 	// ImageSize: get the width and height in pixels for the specified image.
 	// The values of width and height are returned as -1 if the values cannot be
 	// obtained (for instance, if the object is not onscreen).
@@ -108,6 +126,9 @@ type Imager interface {
 	ImageDescription() string
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	ImagePosition(coordType CoordType) (x, y int32)
 	// ImageSize: get the width and height in pixels for the specified image.
 	ImageSize() (width, height int32)
 	// SetImageDescription sets the textual description for this image.
@@ -117,15 +138,16 @@ type Imager interface {
 var _ Imager = (*Image)(nil)
 
 func ifaceInitImager(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Atk", "ImageIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_image_description"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_get_image_description)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_image_locale"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_get_image_locale)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_image_size"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_get_image_size)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_image_description"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_set_image_description)
+	iface := (*C.AtkImageIface)(unsafe.Pointer(gifacePtr))
+	iface.get_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_description)
+	iface.get_image_locale = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_locale)
+	iface.get_image_position = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_position)
+	iface.get_image_size = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_size)
+	iface.set_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_set_image_description)
 }
 
 //export _gotk4_atk1_ImageIface_get_image_description
-func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -138,7 +160,7 @@ func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.void) (cret *C.gchar) 
 }
 
 //export _gotk4_atk1_ImageIface_get_image_locale
-func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -152,8 +174,23 @@ func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.void) (cret *C.gchar) {
 	return cret
 }
 
+//export _gotk4_atk1_ImageIface_get_image_position
+func _gotk4_atk1_ImageIface_get_image_position(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ImageOverrider)
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg3)
+
+	x, y := iface.ImagePosition(_coordType)
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+}
+
 //export _gotk4_atk1_ImageIface_get_image_size
-func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.void, arg1 *C.gint, arg2 *C.gint) {
+func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -164,7 +201,7 @@ func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.void, arg1 *C.gint, arg2 *C.g
 }
 
 //export _gotk4_atk1_ImageIface_set_image_description
-func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.void, arg1 *C.gchar) (cret C.gboolean) {
+func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.AtkImage, arg1 *C.gchar) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
@@ -198,19 +235,17 @@ func marshalImage(p uintptr) (interface{}, error) {
 //    - utf8: string representing the image description.
 //
 func (image *Image) ImageDescription() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Atk", "Image")
-	_gret := _info.InvokeIfaceMethod("get_image_description", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_image_get_image_description(_arg0)
 	runtime.KeepAlive(image)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -224,23 +259,61 @@ func (image *Image) ImageDescription() string {
 //      locale.
 //
 func (image *Image) ImageLocale() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Atk", "Image")
-	_gret := _info.InvokeIfaceMethod("get_image_locale", _args[:], nil)
-	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_image_get_image_locale(_arg0)
 	runtime.KeepAlive(image)
 
 	var _utf8 string // out
 
-	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
 	return _utf8
+}
+
+// ImagePosition gets the position of the image in the form of a point
+// specifying the images top-left corner.
+//
+// If the position can not be obtained (e.g. missing support), x and y are set
+// to -1.
+//
+// The function takes the following parameters:
+//
+//    - coordType specifies whether the coordinates are relative to the screen or
+//      to the components top level window.
+//
+// The function returns the following values:
+//
+//    - x (optional) address of #gint to put x coordinate position; otherwise, -1
+//      if value cannot be obtained.
+//    - y (optional) address of #gint to put y coordinate position; otherwise, -1
+//      if value cannot be obtained.
+//
+func (image *Image) ImagePosition(coordType CoordType) (x, y int32) {
+	var _arg0 *C.AtkImage    // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _arg3 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_image_get_image_position(_arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(coordType)
+
+	var _x int32 // out
+	var _y int32 // out
+
+	_x = int32(_arg1)
+	_y = int32(_arg2)
+
+	return _x, _y
 }
 
 // ImageSize: get the width and height in pixels for the specified image. The
@@ -258,21 +331,20 @@ func (image *Image) ImageLocale() string {
 //      cannot be obtained.
 //
 func (image *Image) ImageSize() (width, height int32) {
-	var _args [1]girepository.Argument
-	var _outs [2]girepository.Argument
+	var _arg0 *C.AtkImage // out
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_info := girepository.MustFind("Atk", "Image")
-	_info.InvokeIfaceMethod("get_image_size", _args[:], _outs[:])
-
+	C.atk_image_get_image_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(image)
 
 	var _width int32  // out
 	var _height int32 // out
 
-	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
-	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_width = int32(_arg1)
+	_height = int32(_arg2)
 
 	return _width, _height
 }
@@ -288,22 +360,21 @@ func (image *Image) ImageSize() (width, height int32) {
 //    - ok: boolean TRUE, or FALSE if operation could not be completed.
 //
 func (image *Image) SetImageDescription(description string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.AtkImage // out
+	var _arg1 *C.gchar    // out
+	var _cret C.gboolean  // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("Atk", "Image")
-	_gret := _info.InvokeIfaceMethod("set_image_description", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.atk_image_set_image_description(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(description)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

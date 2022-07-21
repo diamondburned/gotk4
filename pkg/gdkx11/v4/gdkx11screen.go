@@ -6,13 +6,11 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
-// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib.h>
+// #include <gdk/x11/gdkx.h>
 // #include <glib-object.h>
 // extern void _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(gpointer, guintptr);
 import "C"
@@ -23,9 +21,13 @@ import "C"
 // globally. Use this if you need that for any reason. The function is
 // concurrently safe to use.
 func GTypeX11Screen() coreglib.Type {
-	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11Screen").RegisteredGType())
+	gtype := coreglib.Type(C.gdk_x11_screen_get_type())
 	coreglib.RegisterGValueMarshaler(gtype, marshalX11Screen)
 	return gtype
+}
+
+// X11ScreenOverrider contains methods that are overridable.
+type X11ScreenOverrider interface {
 }
 
 type X11Screen struct {
@@ -36,6 +38,14 @@ type X11Screen struct {
 var (
 	_ coreglib.Objector = (*X11Screen)(nil)
 )
+
+func classInitX11Screener(gclassPtr, data C.gpointer) {
+	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+
+	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
+	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+
+}
 
 func wrapX11Screen(obj *coreglib.Object) *X11Screen {
 	return &X11Screen{
@@ -77,19 +87,17 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 //    - guint32: current workspace, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) CurrentDesktop() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkX11Screen // out
+	var _cret C.guint32       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_current_desktop", _args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -104,19 +112,17 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 //    - guint32: number of workspaces, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) NumberOfDesktops() uint32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkX11Screen // out
+	var _cret C.guint32       // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_number_of_desktops", _args[:], nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_guint32 = uint32(_cret)
 
 	return _guint32
 }
@@ -128,19 +134,17 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 //    - gint: position of screen among the screens of its display.
 //
 func (screen *X11Screen) ScreenNumber() int32 {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkX11Screen // out
+	var _cret C.int           // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_screen_number", _args[:], nil)
-	_cret := *(*C.int)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _gint int32 // out
 
-	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
+	_gint = int32(_cret)
 
 	return _gint
 }
@@ -154,19 +158,17 @@ func (screen *X11Screen) ScreenNumber() int32 {
 //      freed.
 //
 func (screen *X11Screen) WindowManagerName() string {
-	var _args [1]girepository.Argument
+	var _arg0 *C.GdkX11Screen // out
+	var _cret *C.char         // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("get_window_manager_name", _args[:], nil)
-	_cret := *(**C.char)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
 	runtime.KeepAlive(screen)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -193,22 +195,21 @@ func (screen *X11Screen) WindowManagerName() string {
 //    - ok: TRUE if the window manager supports property.
 //
 func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
-	var _args [2]girepository.Argument
+	var _arg0 *C.GdkX11Screen // out
+	var _arg1 *C.char         // out
+	var _cret C.gboolean      // in
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	_arg0 = (*C.GdkX11Screen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	_info := girepository.MustFind("GdkX11", "X11Screen")
-	_gret := _info.InvokeClassMethod("supports_net_wm_hint", _args[:], nil)
-	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
-
+	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(propertyName)
 
 	var _ok bool // out
 
-	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+	if _cret != 0 {
 		_ok = true
 	}
 

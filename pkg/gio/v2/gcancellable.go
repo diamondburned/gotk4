@@ -245,7 +245,7 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 //    - gint: valid file descriptor. -1 if the file descriptor is not supported,
 //      or on errors.
 //
-func (cancellable *Cancellable) Fd() int32 {
+func (cancellable *Cancellable) Fd() int {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
 
@@ -256,9 +256,9 @@ func (cancellable *Cancellable) Fd() int32 {
 	_cret = C.g_cancellable_get_fd(_arg0)
 	runtime.KeepAlive(cancellable)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

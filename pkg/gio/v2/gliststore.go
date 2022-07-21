@@ -137,7 +137,7 @@ func (store *ListStore) Append(item *coreglib.Object) {
 //    - ok: whether store contains item. If it was found, position will be set to
 //      the position where item occurred for the first time.
 //
-func (store *ListStore) Find(item *coreglib.Object) (uint32, bool) {
+func (store *ListStore) Find(item *coreglib.Object) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
 	var _arg2 C.guint       // in
@@ -150,10 +150,10 @@ func (store *ListStore) Find(item *coreglib.Object) (uint32, bool) {
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
 
-	var _position uint32 // out
-	var _ok bool         // out
+	var _position uint // out
+	var _ok bool       // out
 
-	_position = uint32(_arg2)
+	_position = uint(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -175,7 +175,7 @@ func (store *ListStore) Find(item *coreglib.Object) (uint32, bool) {
 //    - position at which to insert the new item.
 //    - item: new item.
 //
-func (store *ListStore) Insert(position uint32, item *coreglib.Object) {
+func (store *ListStore) Insert(position uint, item *coreglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.gpointer    // out
@@ -208,7 +208,7 @@ func (store *ListStore) Insert(position uint32, item *coreglib.Object) {
 //
 //    - guint: position at which item was inserted.
 //
-func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.CompareDataFunc) uint32 {
+func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.gpointer         // out
 	var _arg2 C.GCompareDataFunc // out
@@ -226,9 +226,9 @@ func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.Com
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(compareFunc)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -243,7 +243,7 @@ func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.Com
 //
 //    - position of the item that is to be removed.
 //
-func (store *ListStore) Remove(position uint32) {
+func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 
@@ -306,7 +306,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 //    - nRemovals: number of items to remove.
 //    - additions items to add.
 //
-func (store *ListStore) Splice(position, nRemovals uint32, additions []*coreglib.Object) {
+func (store *ListStore) Splice(position, nRemovals uint, additions []*coreglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

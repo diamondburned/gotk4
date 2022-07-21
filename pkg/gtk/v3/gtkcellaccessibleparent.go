@@ -68,7 +68,7 @@ type CellAccessibleParentOverrider interface {
 	//    - width
 	//    - height
 	//
-	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int32)
+	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -76,12 +76,12 @@ type CellAccessibleParentOverrider interface {
 	//    - row
 	//    - column
 	//
-	CellPosition(cell *CellAccessible) (row, column int32)
+	CellPosition(cell *CellAccessible) (row, column int)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	ChildIndex(cell *CellAccessible) int32
+	ChildIndex(cell *CellAccessible) int
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -120,9 +120,9 @@ type CellAccessibleParenter interface {
 	Edit(cell *CellAccessible)
 	ExpandCollapse(cell *CellAccessible)
 	CellArea(cell *CellAccessible) *gdk.Rectangle
-	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int32)
-	CellPosition(cell *CellAccessible) (row, column int32)
-	ChildIndex(cell *CellAccessible) int32
+	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int)
+	CellPosition(cell *CellAccessible) (row, column int)
+	ChildIndex(cell *CellAccessible) int
 	RendererState(cell *CellAccessible) CellRendererState
 	GrabFocus(cell *CellAccessible) bool
 	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
@@ -384,7 +384,7 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangl
 //    - width
 //    - height
 //
-func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int32) {
+func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 C.gint                     // in
@@ -402,15 +402,15 @@ func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(coordType)
 
-	var _x int32      // out
-	var _y int32      // out
-	var _width int32  // out
-	var _height int32 // out
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
 
-	_x = int32(_arg2)
-	_y = int32(_arg3)
-	_width = int32(_arg4)
-	_height = int32(_arg5)
+	_x = int(_arg2)
+	_y = int(_arg3)
+	_width = int(_arg4)
+	_height = int(_arg5)
 
 	return _x, _y, _width, _height
 }
@@ -422,7 +422,7 @@ func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType 
 //    - row
 //    - column
 //
-func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, column int32) {
+func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 	var _arg2 C.gint                     // in
@@ -435,11 +435,11 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, col
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
-	var _row int32    // out
-	var _column int32 // out
+	var _row int    // out
+	var _column int // out
 
-	_row = int32(_arg2)
-	_column = int32(_arg3)
+	_row = int(_arg2)
+	_column = int(_arg3)
 
 	return _row, _column
 }
@@ -448,7 +448,7 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, col
 //
 // The function returns the following values:
 //
-func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int32 {
+func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int {
 	var _arg0 *C.GtkCellAccessibleParent // out
 	var _arg1 *C.GtkCellAccessible       // out
 	var _cret C.int                      // in
@@ -460,9 +460,9 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int32 {
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

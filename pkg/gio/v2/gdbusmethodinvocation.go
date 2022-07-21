@@ -328,7 +328,7 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 //    - code: error code.
 //    - message: error message.
 //
-func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int32, message string) {
+func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 C.GQuark                 // out
 	var _arg2 C.gint                   // out

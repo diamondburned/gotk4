@@ -137,7 +137,7 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 //
 //    - guint: line number.
 //
-func (section *CSSSection) EndLine() uint32 {
+func (section *CSSSection) EndLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -146,9 +146,9 @@ func (section *CSSSection) EndLine() uint32 {
 	_cret = C.gtk_css_section_get_end_line(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -164,7 +164,7 @@ func (section *CSSSection) EndLine() uint32 {
 //
 //    - guint: offset in bytes from the start of the line.
 //
-func (section *CSSSection) EndPosition() uint32 {
+func (section *CSSSection) EndPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -173,9 +173,9 @@ func (section *CSSSection) EndPosition() uint32 {
 	_cret = C.gtk_css_section_get_end_position(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -275,7 +275,7 @@ func (section *CSSSection) SectionType() CSSSectionType {
 //
 //    - guint: line number.
 //
-func (section *CSSSection) StartLine() uint32 {
+func (section *CSSSection) StartLine() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -284,9 +284,9 @@ func (section *CSSSection) StartLine() uint32 {
 	_cret = C.gtk_css_section_get_start_line(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -298,7 +298,7 @@ func (section *CSSSection) StartLine() uint32 {
 //
 //    - guint: offset in bytes from the start of the line.
 //
-func (section *CSSSection) StartPosition() uint32 {
+func (section *CSSSection) StartPosition() uint {
 	var _arg0 *C.GtkCssSection // out
 	var _cret C.guint          // in
 
@@ -307,9 +307,9 @@ func (section *CSSSection) StartPosition() uint32 {
 	_cret = C.gtk_css_section_get_start_position(_arg0)
 	runtime.KeepAlive(section)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

@@ -391,7 +391,7 @@ func (device *Device) NumLockState() bool {
 //
 //    - guint: number of touch points.
 //
-func (device *Device) NumTouches() uint32 {
+func (device *Device) NumTouches() uint {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.guint      // in
 
@@ -400,9 +400,9 @@ func (device *Device) NumTouches() uint32 {
 	_cret = C.gdk_device_get_num_touches(_arg0)
 	runtime.KeepAlive(device)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

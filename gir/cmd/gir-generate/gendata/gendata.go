@@ -510,7 +510,7 @@ func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
 			// Second offset within a minute in nanoseconds.
 			seconds := (time.Duration(s) * time.Second) + time.Duration(t.Nanosecond())
 
-			return NewDateTime(tz, int32(Y), int32(M), int32(D), int32(h), int32(m), seconds.Seconds())
+			return NewDateTime(tz, int(Y), int(M), int(D), int(h), int(m), seconds.Seconds())
 		}
 	`)
 

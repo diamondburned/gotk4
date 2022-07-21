@@ -74,7 +74,7 @@ type ApplicationOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	CommandLine(commandLine *ApplicationCommandLine) int32
+	CommandLine(commandLine *ApplicationCommandLine) int
 	// The function takes the following parameters:
 	//
 	//    - connection
@@ -91,7 +91,7 @@ type ApplicationOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	HandleLocalOptions(options *glib.VariantDict) int32
+	HandleLocalOptions(options *glib.VariantDict) int
 	// The function returns the following values:
 	//
 	NameLost() bool
@@ -274,7 +274,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		CommandLine(commandLine *ApplicationCommandLine) int32
+		CommandLine(commandLine *ApplicationCommandLine) int
 	}); ok {
 		pclass.command_line = (*[0]byte)(C._gotk4_gio2_ApplicationClass_command_line)
 	}
@@ -292,7 +292,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		HandleLocalOptions(options *glib.VariantDict) int32
+		HandleLocalOptions(options *glib.VariantDict) int
 	}); ok {
 		pclass.handle_local_options = (*[0]byte)(C._gotk4_gio2_ApplicationClass_handle_local_options)
 	}
@@ -399,7 +399,7 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		CommandLine(commandLine *ApplicationCommandLine) int32
+		CommandLine(commandLine *ApplicationCommandLine) int
 	})
 
 	var _commandLine *ApplicationCommandLine // out
@@ -455,7 +455,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		HandleLocalOptions(options *glib.VariantDict) int32
+		HandleLocalOptions(options *glib.VariantDict) int
 	})
 
 	var _options *glib.VariantDict // out
@@ -600,7 +600,7 @@ func (application *Application) ConnectActivate(f func()) coreglib.SignalHandle 
 
 //export _gotk4_gio2_Application_ConnectCommandLine
 func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplicationCommandLine, arg2 C.guintptr) (cret C.gint) {
-	var f func(commandLine *ApplicationCommandLine) (gint int32)
+	var f func(commandLine *ApplicationCommandLine) (gint int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -608,7 +608,7 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(commandLine *ApplicationCommandLine) (gint int32))
+		f = closure.Func.(func(commandLine *ApplicationCommandLine) (gint int))
 	}
 
 	var _commandLine *ApplicationCommandLine // out
@@ -625,13 +625,13 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 // ConnectCommandLine signal is emitted on the primary instance when a
 // commandline is not handled locally. See g_application_run() and the
 // CommandLine documentation for more information.
-func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int32)) coreglib.SignalHandle {
+func (application *Application) ConnectCommandLine(f func(commandLine *ApplicationCommandLine) (gint int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(application, "command-line", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectCommandLine), f)
 }
 
 //export _gotk4_gio2_Application_ConnectHandleLocalOptions
 func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.GVariantDict, arg2 C.guintptr) (cret C.gint) {
-	var f func(options *glib.VariantDict) (gint int32)
+	var f func(options *glib.VariantDict) (gint int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -639,7 +639,7 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(options *glib.VariantDict) (gint int32))
+		f = closure.Func.(func(options *glib.VariantDict) (gint int))
 	}
 
 	var _options *glib.VariantDict // out
@@ -697,7 +697,7 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 //
 // You can override local_command_line() if you need more powerful capabilities
 // than what is provided here, but this should not normally be required.
-func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int32)) coreglib.SignalHandle {
+func (application *Application) ConnectHandleLocalOptions(f func(options *glib.VariantDict) (gint int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(application, "handle-local-options", false, unsafe.Pointer(C._gotk4_gio2_Application_ConnectHandleLocalOptions), f)
 }
 
@@ -1220,7 +1220,7 @@ func (application *Application) Flags() ApplicationFlags {
 //
 //    - guint: timeout, in milliseconds.
 //
-func (application *Application) InactivityTimeout() uint32 {
+func (application *Application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
 	var _cret C.guint         // in
 
@@ -1229,9 +1229,9 @@ func (application *Application) InactivityTimeout() uint32 {
 	_cret = C.g_application_get_inactivity_timeout(_arg0)
 	runtime.KeepAlive(application)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1598,7 +1598,7 @@ func (application *Application) Release() {
 //
 //    - gint: exit status.
 //
-func (application *Application) Run(argv []string) int32 {
+func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char        // out
 	var _arg1 C.int
@@ -1620,9 +1620,9 @@ func (application *Application) Run(argv []string) int32 {
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(argv)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1779,7 +1779,7 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 //
 //    - inactivityTimeout: timeout, in milliseconds.
 //
-func (application *Application) SetInactivityTimeout(inactivityTimeout uint32) {
+func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
 

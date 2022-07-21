@@ -153,7 +153,7 @@ func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 //    - paddingRight (optional): location to store the padding for the right of
 //      the widget, or NULL.
 //
-func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, paddingRight uint32) {
+func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // in
 	var _arg2 C.guint         // in
@@ -165,15 +165,15 @@ func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, p
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(alignment)
 
-	var _paddingTop uint32    // out
-	var _paddingBottom uint32 // out
-	var _paddingLeft uint32   // out
-	var _paddingRight uint32  // out
+	var _paddingTop uint    // out
+	var _paddingBottom uint // out
+	var _paddingLeft uint   // out
+	var _paddingRight uint  // out
 
-	_paddingTop = uint32(_arg1)
-	_paddingBottom = uint32(_arg2)
-	_paddingLeft = uint32(_arg3)
-	_paddingRight = uint32(_arg4)
+	_paddingTop = uint(_arg1)
+	_paddingBottom = uint(_arg2)
+	_paddingLeft = uint(_arg3)
+	_paddingRight = uint(_arg4)
 
 	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
 }
@@ -229,7 +229,7 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 //    - paddingLeft: padding at the left of the widget.
 //    - paddingRight: padding at the right of the widget.
 //
-func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint32) {
+func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out

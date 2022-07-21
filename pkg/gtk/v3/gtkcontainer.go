@@ -901,7 +901,7 @@ func (container *Container) ForEach(callback Callback) {
 //
 //    - guint: current border width.
 //
-func (container *Container) BorderWidth() uint32 {
+func (container *Container) BorderWidth() uint {
 	var _arg0 *C.GtkContainer // out
 	var _cret C.guint         // in
 
@@ -910,9 +910,9 @@ func (container *Container) BorderWidth() uint32 {
 	_cret = C.gtk_container_get_border_width(_arg0)
 	runtime.KeepAlive(container)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1262,7 +1262,7 @@ func (container *Container) ResizeChildren() {
 //    - borderWidth: amount of blank space to leave outside the container. Valid
 //      values are in the range 0-65535 pixels.
 //
-func (container *Container) SetBorderWidth(borderWidth uint32) {
+func (container *Container) SetBorderWidth(borderWidth uint) {
 	var _arg0 *C.GtkContainer // out
 	var _arg1 C.guint         // out
 

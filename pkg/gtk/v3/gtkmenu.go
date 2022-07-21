@@ -296,7 +296,7 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 //    - topAttach: row number to attach the top of the item to.
 //    - bottomAttach: row number to attach the bottom of the item to.
 //
-func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32) {
+func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -462,7 +462,7 @@ func (menu *Menu) AttachWidget() Widgetter {
 //    - gint: number of the monitor on which the menu should be popped up or -1,
 //      if no monitor has been set.
 //
-func (menu *Menu) Monitor() int32 {
+func (menu *Menu) Monitor() int {
 	var _arg0 *C.GtkMenu // out
 	var _cret C.gint     // in
 
@@ -471,9 +471,9 @@ func (menu *Menu) Monitor() int32 {
 	_cret = C.gtk_menu_get_monitor(_arg0)
 	runtime.KeepAlive(menu)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -728,7 +728,7 @@ func (menu *Menu) PopupAtWidget(widget Widgetter, widgetAnchor, menuAnchor gdk.G
 //    - position: new position to place child. Positions are numbered from 0 to n
 //      - 1.
 //
-func (menu *Menu) ReorderChild(child Widgetter, position int32) {
+func (menu *Menu) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkMenu   // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -824,7 +824,7 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 //
 //    - index of the menu item to select. Index values are from 0 to n-1.
 //
-func (menu *Menu) SetActive(index uint32) {
+func (menu *Menu) SetActive(index uint) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.guint    // out
 
@@ -849,7 +849,7 @@ func (menu *Menu) SetActive(index uint32) {
 //
 //    - monitorNum: number of the monitor on which the menu should be popped up.
 //
-func (menu *Menu) SetMonitor(monitorNum int32) {
+func (menu *Menu) SetMonitor(monitorNum int) {
 	var _arg0 *C.GtkMenu // out
 	var _arg1 C.gint     // out
 

@@ -236,7 +236,7 @@ func (context *StyleContext) AddClass(className string) {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint32) {
+func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
 	var _arg1 *C.GtkStyleProvider // out
 	var _arg2 C.guint             // out
@@ -372,7 +372,7 @@ func (context *StyleContext) Padding() *Border {
 //
 //    - gint: scale.
 //
-func (context *StyleContext) Scale() int32 {
+func (context *StyleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
 	var _cret C.int              // in
 
@@ -381,9 +381,9 @@ func (context *StyleContext) Scale() int32 {
 	_cret = C.gtk_style_context_get_scale(_arg0)
 	runtime.KeepAlive(context)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -578,7 +578,7 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 //
 //    - scale: scale.
 //
-func (context *StyleContext) SetScale(scale int32) {
+func (context *StyleContext) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
 	var _arg1 C.int              // out
 
@@ -665,7 +665,7 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 //      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
 //      GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
-func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint32) {
+func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkDisplay       // out
 	var _arg2 *C.GtkStyleProvider // out
 	var _arg3 C.guint             // out

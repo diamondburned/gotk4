@@ -1346,10 +1346,10 @@ func (e *EventButton) State() ModifierType {
 // button 1 is the left mouse button, 2 is the middle button, and 3 is the right
 // button. On 2-button mice, the middle button can often be simulated by
 // pressing both mouse buttons together.
-func (e *EventButton) Button() uint32 {
+func (e *EventButton) Button() uint {
 	valptr := &e.native.button
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -1422,7 +1422,7 @@ func (e *EventButton) SetY(y float64) {
 // button 1 is the left mouse button, 2 is the middle button, and 3 is the right
 // button. On 2-button mice, the middle button can often be simulated by
 // pressing both mouse buttons together.
-func (e *EventButton) SetButton(button uint32) {
+func (e *EventButton) SetButton(button uint) {
 	valptr := &e.native.button
 	*valptr = C.guint(button)
 }
@@ -1492,34 +1492,34 @@ func (e *EventConfigure) SendEvent() int8 {
 }
 
 // X: new x coordinate of the window, relative to its parent.
-func (e *EventConfigure) X() int32 {
+func (e *EventConfigure) X() int {
 	valptr := &e.native.x
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Y: new y coordinate of the window, relative to its parent.
-func (e *EventConfigure) Y() int32 {
+func (e *EventConfigure) Y() int {
 	valptr := &e.native.y
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Width: new width of the window.
-func (e *EventConfigure) Width() int32 {
+func (e *EventConfigure) Width() int {
 	valptr := &e.native.width
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Height: new height of the window.
-func (e *EventConfigure) Height() int32 {
+func (e *EventConfigure) Height() int {
 	valptr := &e.native.height
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -1530,25 +1530,25 @@ func (e *EventConfigure) SetSendEvent(sendEvent int8) {
 }
 
 // X: new x coordinate of the window, relative to its parent.
-func (e *EventConfigure) SetX(x int32) {
+func (e *EventConfigure) SetX(x int) {
 	valptr := &e.native.x
 	*valptr = C.gint(x)
 }
 
 // Y: new y coordinate of the window, relative to its parent.
-func (e *EventConfigure) SetY(y int32) {
+func (e *EventConfigure) SetY(y int) {
 	valptr := &e.native.y
 	*valptr = C.gint(y)
 }
 
 // Width: new width of the window.
-func (e *EventConfigure) SetWidth(width int32) {
+func (e *EventConfigure) SetWidth(width int) {
 	valptr := &e.native.width
 	*valptr = C.gint(width)
 }
 
 // Height: new height of the window.
-func (e *EventConfigure) SetHeight(height int32) {
+func (e *EventConfigure) SetHeight(height int) {
 	valptr := &e.native.height
 	*valptr = C.gint(height)
 }
@@ -1947,10 +1947,10 @@ func (e *EventExpose) Region() *cairo.Region {
 // use for this is “exposure compression”, i.e. handling all contiguous
 // GDK_EXPOSE events in one go, though GDK performs some exposure compression so
 // this is not normally needed.
-func (e *EventExpose) Count() int32 {
+func (e *EventExpose) Count() int {
 	valptr := &e.native.count
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -1964,7 +1964,7 @@ func (e *EventExpose) SetSendEvent(sendEvent int8) {
 // use for this is “exposure compression”, i.e. handling all contiguous
 // GDK_EXPOSE events in one go, though GDK performs some exposure compression so
 // this is not normally needed.
-func (e *EventExpose) SetCount(count int32) {
+func (e *EventExpose) SetCount(count int) {
 	valptr := &e.native.count
 	*valptr = C.gint(count)
 }
@@ -2240,18 +2240,18 @@ func (e *EventKey) State() ModifierType {
 
 // Keyval: key that was pressed or released. See the gdk/gdkkeysyms.h header
 // file for a complete list of GDK key codes.
-func (e *EventKey) Keyval() uint32 {
+func (e *EventKey) Keyval() uint {
 	valptr := &e.native.keyval
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Length: length of string.
-func (e *EventKey) Length() int32 {
+func (e *EventKey) Length() int {
 	valptr := &e.native.length
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -2301,13 +2301,13 @@ func (e *EventKey) SetTime(time uint32) {
 
 // Keyval: key that was pressed or released. See the gdk/gdkkeysyms.h header
 // file for a complete list of GDK key codes.
-func (e *EventKey) SetKeyval(keyval uint32) {
+func (e *EventKey) SetKeyval(keyval uint) {
 	valptr := &e.native.keyval
 	*valptr = C.guint(keyval)
 }
 
 // Length: length of string.
-func (e *EventKey) SetLength(length int32) {
+func (e *EventKey) SetLength(length int) {
 	valptr := &e.native.length
 	*valptr = C.gint(length)
 }
@@ -2587,27 +2587,27 @@ func (e *EventPadAxis) Time() uint32 {
 
 // Group: pad group the ring/strip belongs to. A GDK_SOURCE_TABLET_PAD device
 // may have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadAxis) Group() uint32 {
+func (e *EventPadAxis) Group() uint {
 	valptr := &e.native.group
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Index: number of strip/ring that was interacted. This number is 0-indexed.
-func (e *EventPadAxis) Index() uint32 {
+func (e *EventPadAxis) Index() uint {
 	valptr := &e.native.index
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
-func (e *EventPadAxis) Mode() uint32 {
+func (e *EventPadAxis) Mode() uint {
 	valptr := &e.native.mode
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -2633,20 +2633,20 @@ func (e *EventPadAxis) SetTime(time uint32) {
 
 // Group: pad group the ring/strip belongs to. A GDK_SOURCE_TABLET_PAD device
 // may have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadAxis) SetGroup(group uint32) {
+func (e *EventPadAxis) SetGroup(group uint) {
 	valptr := &e.native.group
 	*valptr = C.guint(group)
 }
 
 // Index: number of strip/ring that was interacted. This number is 0-indexed.
-func (e *EventPadAxis) SetIndex(index uint32) {
+func (e *EventPadAxis) SetIndex(index uint) {
 	valptr := &e.native.index
 	*valptr = C.guint(index)
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
-func (e *EventPadAxis) SetMode(mode uint32) {
+func (e *EventPadAxis) SetMode(mode uint) {
 	valptr := &e.native.mode
 	*valptr = C.guint(mode)
 }
@@ -2720,27 +2720,27 @@ func (e *EventPadButton) Time() uint32 {
 
 // Group: pad group the button belongs to. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadButton) Group() uint32 {
+func (e *EventPadButton) Group() uint {
 	valptr := &e.native.group
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Button: pad button that was pressed.
-func (e *EventPadButton) Button() uint32 {
+func (e *EventPadButton) Button() uint {
 	valptr := &e.native.button
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
-func (e *EventPadButton) Mode() uint32 {
+func (e *EventPadButton) Mode() uint {
 	valptr := &e.native.mode
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -2758,20 +2758,20 @@ func (e *EventPadButton) SetTime(time uint32) {
 
 // Group: pad group the button belongs to. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadButton) SetGroup(group uint32) {
+func (e *EventPadButton) SetGroup(group uint) {
 	valptr := &e.native.group
 	*valptr = C.guint(group)
 }
 
 // Button: pad button that was pressed.
-func (e *EventPadButton) SetButton(button uint32) {
+func (e *EventPadButton) SetButton(button uint) {
 	valptr := &e.native.button
 	*valptr = C.guint(button)
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
-func (e *EventPadButton) SetMode(mode uint32) {
+func (e *EventPadButton) SetMode(mode uint) {
 	valptr := &e.native.mode
 	*valptr = C.guint(mode)
 }
@@ -2839,19 +2839,19 @@ func (e *EventPadGroupMode) Time() uint32 {
 
 // Group: pad group that is switching mode. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadGroupMode) Group() uint32 {
+func (e *EventPadGroupMode) Group() uint {
 	valptr := &e.native.group
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Mode: new mode of group. Different groups in a GDK_SOURCE_TABLET_PAD device
 // may have different current modes.
-func (e *EventPadGroupMode) Mode() uint32 {
+func (e *EventPadGroupMode) Mode() uint {
 	valptr := &e.native.mode
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -2869,14 +2869,14 @@ func (e *EventPadGroupMode) SetTime(time uint32) {
 
 // Group: pad group that is switching mode. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
-func (e *EventPadGroupMode) SetGroup(group uint32) {
+func (e *EventPadGroupMode) SetGroup(group uint) {
 	valptr := &e.native.group
 	*valptr = C.guint(group)
 }
 
 // Mode: new mode of group. Different groups in a GDK_SOURCE_TABLET_PAD device
 // may have different current modes.
-func (e *EventPadGroupMode) SetMode(mode uint32) {
+func (e *EventPadGroupMode) SetMode(mode uint) {
 	valptr := &e.native.mode
 	*valptr = C.guint(mode)
 }

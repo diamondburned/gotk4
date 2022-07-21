@@ -797,7 +797,7 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 //
 //    - guint: button of event.
 //
-func (event *ButtonEvent) Button() uint32 {
+func (event *ButtonEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -806,9 +806,9 @@ func (event *ButtonEvent) Button() uint32 {
 	_cret = C.gdk_button_event_get_button(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1665,7 +1665,7 @@ func (event *KeyEvent) ConsumedModifiers() ModifierType {
 //
 //    - guint: keycode of event.
 //
-func (event *KeyEvent) Keycode() uint32 {
+func (event *KeyEvent) Keycode() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1674,9 +1674,9 @@ func (event *KeyEvent) Keycode() uint32 {
 	_cret = C.gdk_key_event_get_keycode(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1687,7 +1687,7 @@ func (event *KeyEvent) Keycode() uint32 {
 //
 //    - guint: keyval of event.
 //
-func (event *KeyEvent) Keyval() uint32 {
+func (event *KeyEvent) Keyval() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1696,9 +1696,9 @@ func (event *KeyEvent) Keyval() uint32 {
 	_cret = C.gdk_key_event_get_keyval(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1709,7 +1709,7 @@ func (event *KeyEvent) Keyval() uint32 {
 //
 //    - guint: layout of event.
 //
-func (event *KeyEvent) Layout() uint32 {
+func (event *KeyEvent) Layout() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1718,9 +1718,9 @@ func (event *KeyEvent) Layout() uint32 {
 	_cret = C.gdk_key_event_get_layout(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1731,7 +1731,7 @@ func (event *KeyEvent) Layout() uint32 {
 //
 //    - guint: shift level of event.
 //
-func (event *KeyEvent) Level() uint32 {
+func (event *KeyEvent) Level() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1740,9 +1740,9 @@ func (event *KeyEvent) Level() uint32 {
 	_cret = C.gdk_key_event_get_level(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1757,7 +1757,7 @@ func (event *KeyEvent) Level() uint32 {
 //    - modifiers: return location for modifiers.
 //    - ok: TRUE on success.
 //
-func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
+func (event *KeyEvent) Match() (uint, ModifierType, bool) {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
@@ -1768,11 +1768,11 @@ func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
 	_cret = C.gdk_key_event_get_match(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
-	var _keyval uint32          // out
+	var _keyval uint            // out
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = uint32(_arg1)
+	_keyval = uint(_arg1)
 	_modifiers = ModifierType(_arg2)
 	if _cret != 0 {
 		_ok = true
@@ -1823,7 +1823,7 @@ func (event *KeyEvent) IsModifier() bool {
 //
 //    - keyMatch: GdkKeyMatch value describing whether event matches.
 //
-func (event *KeyEvent) Matches(keyval uint32, modifiers ModifierType) KeyMatch {
+func (event *KeyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch {
 	var _arg0 *C.GdkEvent       // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -1896,7 +1896,7 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 //    - index: return location for the axis index.
 //    - value: return location for the axis value.
 //
-func (event *PadEvent) AxisValue() (uint32, float64) {
+func (event *PadEvent) AxisValue() (uint, float64) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.double    // in
@@ -1906,10 +1906,10 @@ func (event *PadEvent) AxisValue() (uint32, float64) {
 	C.gdk_pad_event_get_axis_value(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
-	var _index uint32  // out
+	var _index uint    // out
 	var _value float64 // out
 
-	_index = uint32(_arg1)
+	_index = uint(_arg1)
 	_value = float64(_arg2)
 
 	return _index, _value
@@ -1921,7 +1921,7 @@ func (event *PadEvent) AxisValue() (uint32, float64) {
 //
 //    - guint: button of event.
 //
-func (event *PadEvent) Button() uint32 {
+func (event *PadEvent) Button() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -1930,9 +1930,9 @@ func (event *PadEvent) Button() uint32 {
 	_cret = C.gdk_pad_event_get_button(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1944,7 +1944,7 @@ func (event *PadEvent) Button() uint32 {
 //    - group: return location for the group.
 //    - mode: return location for the mode.
 //
-func (event *PadEvent) GroupMode() (group, mode uint32) {
+func (event *PadEvent) GroupMode() (group, mode uint) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
@@ -1954,11 +1954,11 @@ func (event *PadEvent) GroupMode() (group, mode uint32) {
 	C.gdk_pad_event_get_group_mode(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(event)
 
-	var _group uint32 // out
-	var _mode uint32  // out
+	var _group uint // out
+	var _mode uint  // out
 
-	_group = uint32(_arg1)
-	_mode = uint32(_arg2)
+	_group = uint(_arg1)
+	_mode = uint(_arg2)
 
 	return _group, _mode
 }
@@ -2215,7 +2215,7 @@ func (event *TouchpadEvent) GesturePhase() TouchpadGesturePhase {
 //
 //    - guint: number of fingers for event.
 //
-func (event *TouchpadEvent) NFingers() uint32 {
+func (event *TouchpadEvent) NFingers() uint {
 	var _arg0 *C.GdkEvent // out
 	var _cret C.guint     // in
 
@@ -2224,9 +2224,9 @@ func (event *TouchpadEvent) NFingers() uint32 {
 	_cret = C.gdk_touchpad_event_get_n_fingers(_arg0)
 	runtime.KeepAlive(event)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

@@ -259,7 +259,7 @@ func (self *Text) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk4_Text_ConnectDeleteFromCursor
 func _gotk4_gtk4_Text_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
-	var f func(typ DeleteType, count int32)
+	var f func(typ DeleteType, count int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -267,14 +267,14 @@ func _gotk4_gtk4_Text_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteT
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(typ DeleteType, count int32))
+		f = closure.Func.(func(typ DeleteType, count int))
 	}
 
 	var _typ DeleteType // out
-	var _count int32    // out
+	var _count int      // out
 
 	_typ = DeleteType(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 
 	f(_typ, _count)
 }
@@ -288,7 +288,7 @@ func _gotk4_gtk4_Text_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteT
 //
 // The default bindings for this signal are <kbd>Delete</kbd> for deleting a
 // character and <kbd>Ctrl</kbd>-<kbd>Delete</kbd> for deleting a word.
-func (self *Text) ConnectDeleteFromCursor(f func(typ DeleteType, count int32)) coreglib.SignalHandle {
+func (self *Text) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectDeleteFromCursor), f)
 }
 
@@ -350,7 +350,7 @@ func (self *Text) ConnectInsertEmoji(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk4_Text_ConnectMoveCursor
 func _gotk4_gtk4_Text_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int32, extend bool)
+	var f func(step MovementStep, count int, extend bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -358,15 +358,15 @@ func _gotk4_gtk4_Text_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(step MovementStep, count int32, extend bool))
+		f = closure.Func.(func(step MovementStep, count int, extend bool))
 	}
 
 	var _step MovementStep // out
-	var _count int32       // out
+	var _count int         // out
 	var _extend bool       // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 	if arg3 != 0 {
 		_extend = true
 	}
@@ -394,7 +394,7 @@ func _gotk4_gtk4_Text_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep,
 // - <kbd>Ctrl</kbd>-<kbd>→</kbd>, etc. move by words/paragraphs
 //
 // - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the buffer.
-func (self *Text) ConnectMoveCursor(f func(step MovementStep, count int32, extend bool)) coreglib.SignalHandle {
+func (self *Text) ConnectMoveCursor(f func(step MovementStep, count int, extend bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectMoveCursor), f)
 }
 
@@ -742,7 +742,7 @@ func (self *Text) InvisibleChar() uint32 {
 //    - gint: maximum allowed number of characters in GtkText, or 0 if there is
 //      no maximum.
 //
-func (self *Text) MaxLength() int32 {
+func (self *Text) MaxLength() int {
 	var _arg0 *C.GtkText // out
 	var _cret C.int      // in
 
@@ -751,9 +751,9 @@ func (self *Text) MaxLength() int32 {
 	_cret = C.gtk_text_get_max_length(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1147,7 +1147,7 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 //      the maximum length of entries.) The value passed in will be clamped to
 //      the range 0-65536.
 //
-func (self *Text) SetMaxLength(length int32) {
+func (self *Text) SetMaxLength(length int) {
 	var _arg0 *C.GtkText // out
 	var _arg1 C.int      // out
 

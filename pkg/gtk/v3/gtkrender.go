@@ -541,7 +541,7 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixb
 //
 //    - pixbuf: newly-created Pixbuf containing the rendered icon.
 //
-func RenderIconPixbuf(context *StyleContext, source *IconSource, size int32) *gdkpixbuf.Pixbuf {
+func RenderIconPixbuf(context *StyleContext, source *IconSource, size int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 *C.GtkIconSource   // out
 	var _arg3 C.GtkIconSize      // out

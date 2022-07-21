@@ -263,7 +263,7 @@ func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
 //    - attribute on the renderer.
 //    - column position on the model to get the attribute from.
 //
-func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attribute string, column int32) {
+func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 	var _arg2 *C.char              // out
@@ -297,7 +297,7 @@ func (treeColumn *TreeViewColumn) AddAttribute(cellRenderer CellRendererer, attr
 //    - width (optional): return location for the width of cell, may be NULL.
 //    - ok: TRUE if cell belongs to tree_column.
 //
-func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (xOffset, width int32, ok bool) {
+func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (xOffset, width int, ok bool) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 *C.GtkCellRenderer   // out
 	var _arg2 C.int                // in
@@ -311,12 +311,12 @@ func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cellRenderer)
 
-	var _xOffset int32 // out
-	var _width int32   // out
-	var _ok bool       // out
+	var _xOffset int // out
+	var _width int   // out
+	var _ok bool     // out
 
-	_xOffset = int32(_arg2)
-	_width = int32(_arg3)
+	_xOffset = int(_arg2)
+	_width = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -338,7 +338,7 @@ func (treeColumn *TreeViewColumn) CellGetPosition(cellRenderer CellRendererer) (
 //    - height (optional): location to return height needed to render a cell, or
 //      NULL.
 //
-func (treeColumn *TreeViewColumn) CellGetSize() (xOffset, yOffset, width, height int32) {
+func (treeColumn *TreeViewColumn) CellGetSize() (xOffset, yOffset, width, height int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 C.int                // in
 	var _arg2 C.int                // in
@@ -350,15 +350,15 @@ func (treeColumn *TreeViewColumn) CellGetSize() (xOffset, yOffset, width, height
 	C.gtk_tree_view_column_cell_get_size(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(treeColumn)
 
-	var _xOffset int32 // out
-	var _yOffset int32 // out
-	var _width int32   // out
-	var _height int32  // out
+	var _xOffset int // out
+	var _yOffset int // out
+	var _width int   // out
+	var _height int  // out
 
-	_xOffset = int32(_arg1)
-	_yOffset = int32(_arg2)
-	_width = int32(_arg3)
-	_height = int32(_arg4)
+	_xOffset = int(_arg1)
+	_yOffset = int(_arg2)
+	_width = int(_arg3)
+	_height = int(_arg4)
 
 	return _xOffset, _yOffset, _width, _height
 }
@@ -603,7 +603,7 @@ func (treeColumn *TreeViewColumn) Expand() bool {
 //
 //    - gint: fixed width of the column.
 //
-func (treeColumn *TreeViewColumn) FixedWidth() int32 {
+func (treeColumn *TreeViewColumn) FixedWidth() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -612,9 +612,9 @@ func (treeColumn *TreeViewColumn) FixedWidth() int32 {
 	_cret = C.gtk_tree_view_column_get_fixed_width(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -626,7 +626,7 @@ func (treeColumn *TreeViewColumn) FixedWidth() int32 {
 //
 //    - gint: maximum width of the tree_column.
 //
-func (treeColumn *TreeViewColumn) MaxWidth() int32 {
+func (treeColumn *TreeViewColumn) MaxWidth() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -635,9 +635,9 @@ func (treeColumn *TreeViewColumn) MaxWidth() int32 {
 	_cret = C.gtk_tree_view_column_get_max_width(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -649,7 +649,7 @@ func (treeColumn *TreeViewColumn) MaxWidth() int32 {
 //
 //    - gint: minimum width of the tree_column.
 //
-func (treeColumn *TreeViewColumn) MinWidth() int32 {
+func (treeColumn *TreeViewColumn) MinWidth() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -658,9 +658,9 @@ func (treeColumn *TreeViewColumn) MinWidth() int32 {
 	_cret = C.gtk_tree_view_column_get_min_width(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -744,7 +744,7 @@ func (treeColumn *TreeViewColumn) Sizing() TreeViewColumnSizing {
 //    - gint: current sort_column_id for this column, or -1 if this column can’t
 //      be used for sorting.
 //
-func (treeColumn *TreeViewColumn) SortColumnID() int32 {
+func (treeColumn *TreeViewColumn) SortColumnID() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -753,9 +753,9 @@ func (treeColumn *TreeViewColumn) SortColumnID() int32 {
 	_cret = C.gtk_tree_view_column_get_sort_column_id(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -813,7 +813,7 @@ func (treeColumn *TreeViewColumn) SortOrder() SortType {
 //
 //    - gint: spacing of tree_column.
 //
-func (treeColumn *TreeViewColumn) Spacing() int32 {
+func (treeColumn *TreeViewColumn) Spacing() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -822,9 +822,9 @@ func (treeColumn *TreeViewColumn) Spacing() int32 {
 	_cret = C.gtk_tree_view_column_get_spacing(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -959,7 +959,7 @@ func (treeColumn *TreeViewColumn) Widget() Widgetter {
 //
 //    - gint: current width of tree_column.
 //
-func (treeColumn *TreeViewColumn) Width() int32 {
+func (treeColumn *TreeViewColumn) Width() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -968,9 +968,9 @@ func (treeColumn *TreeViewColumn) Width() int32 {
 	_cret = C.gtk_tree_view_column_get_width(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -981,7 +981,7 @@ func (treeColumn *TreeViewColumn) Width() int32 {
 //
 //    - gint: current X offset of tree_column.
 //
-func (treeColumn *TreeViewColumn) XOffset() int32 {
+func (treeColumn *TreeViewColumn) XOffset() int {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
 
@@ -990,9 +990,9 @@ func (treeColumn *TreeViewColumn) XOffset() int32 {
 	_cret = C.gtk_tree_view_column_get_x_offset(_arg0)
 	runtime.KeepAlive(treeColumn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1174,7 +1174,7 @@ func (treeColumn *TreeViewColumn) SetExpand(expand bool) {
 //
 //    - fixedWidth: new fixed width, in pixels, or -1.
 //
-func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int32) {
+func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 C.int                // out
 
@@ -1195,7 +1195,7 @@ func (treeColumn *TreeViewColumn) SetFixedWidth(fixedWidth int32) {
 //
 //    - maxWidth: maximum width of the column in pixels, or -1.
 //
-func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int32) {
+func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 C.int                // out
 
@@ -1214,7 +1214,7 @@ func (treeColumn *TreeViewColumn) SetMaxWidth(maxWidth int32) {
 //
 //    - minWidth: minimum width of the column in pixels, or -1.
 //
-func (treeColumn *TreeViewColumn) SetMinWidth(minWidth int32) {
+func (treeColumn *TreeViewColumn) SetMinWidth(minWidth int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 C.int                // out
 
@@ -1296,7 +1296,7 @@ func (treeColumn *TreeViewColumn) SetSizing(typ TreeViewColumnSizing) {
 //
 //    - sortColumnId: sort_column_id of the model to sort on.
 //
-func (treeColumn *TreeViewColumn) SetSortColumnID(sortColumnId int32) {
+func (treeColumn *TreeViewColumn) SetSortColumnID(sortColumnId int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 C.int                // out
 
@@ -1365,7 +1365,7 @@ func (treeColumn *TreeViewColumn) SetSortOrder(order SortType) {
 //
 //    - spacing: distance between cell renderers in pixels.
 //
-func (treeColumn *TreeViewColumn) SetSpacing(spacing int32) {
+func (treeColumn *TreeViewColumn) SetSpacing(spacing int) {
 	var _arg0 *C.GtkTreeViewColumn // out
 	var _arg1 C.int                // out
 

@@ -222,7 +222,7 @@ func (revealer *Revealer) RevealChild() bool {
 //
 //    - guint: transition duration.
 //
-func (revealer *Revealer) TransitionDuration() uint32 {
+func (revealer *Revealer) TransitionDuration() uint {
 	var _arg0 *C.GtkRevealer // out
 	var _cret C.guint        // in
 
@@ -231,9 +231,9 @@ func (revealer *Revealer) TransitionDuration() uint32 {
 	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 	runtime.KeepAlive(revealer)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -289,7 +289,7 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 //
 //    - duration: new duration, in milliseconds.
 //
-func (revealer *Revealer) SetTransitionDuration(duration uint32) {
+func (revealer *Revealer) SetTransitionDuration(duration uint) {
 	var _arg0 *C.GtkRevealer // out
 	var _arg1 C.guint        // out
 

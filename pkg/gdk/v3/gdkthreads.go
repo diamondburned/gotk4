@@ -65,7 +65,7 @@ import "C"
 //
 //    - guint: ID (greater than 0) of the event source.
 //
-func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
+func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.GSourceFunc // out
 	var _arg3 C.gpointer
@@ -81,9 +81,9 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(function)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -142,7 +142,7 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 //
 //    - guint: ID (greater than 0) of the event source.
 //
-func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc) uint32 {
+func ThreadsAddTimeout(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.guint       // out
 	var _arg3 C.GSourceFunc // out
@@ -161,9 +161,9 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 	runtime.KeepAlive(interval)
 	runtime.KeepAlive(function)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -183,7 +183,7 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 //
 //    - guint: ID (greater than 0) of the event source.
 //
-func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.SourceFunc) uint32 {
+func ThreadsAddTimeoutSeconds(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
 	var _arg2 C.guint       // out
 	var _arg3 C.GSourceFunc // out
@@ -202,9 +202,9 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 	runtime.KeepAlive(interval)
 	runtime.KeepAlive(function)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

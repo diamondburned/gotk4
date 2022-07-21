@@ -70,7 +70,7 @@ type FontMapOverrider interface {
 	//
 	//    - guint: current serial number of fontmap.
 	//
-	Serial() uint32
+	Serial() uint
 	// ListFamilies: list all families for a fontmap.
 	//
 	// The function returns the following values:
@@ -154,7 +154,7 @@ func classInitFontMapper(gclassPtr, data C.gpointer) {
 		pclass.get_family = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_family)
 	}
 
-	if _, ok := goval.(interface{ Serial() uint32 }); ok {
+	if _, ok := goval.(interface{ Serial() uint }); ok {
 		pclass.get_serial = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_serial)
 	}
 
@@ -204,7 +204,7 @@ func _gotk4_pango1_FontMapClass_get_family(arg0 *C.PangoFontMap, arg1 *C.char) (
 //export _gotk4_pango1_FontMapClass_get_serial
 func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Serial() uint32 })
+	iface := goval.(interface{ Serial() uint })
 
 	guint := iface.Serial()
 
@@ -405,7 +405,7 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 //
 //    - guint: current serial number of fontmap.
 //
-func (fontmap *FontMap) Serial() uint32 {
+func (fontmap *FontMap) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
 
@@ -414,9 +414,9 @@ func (fontmap *FontMap) Serial() uint32 {
 	_cret = C.pango_font_map_get_serial(_arg0)
 	runtime.KeepAlive(fontmap)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

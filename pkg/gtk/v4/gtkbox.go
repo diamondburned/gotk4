@@ -123,7 +123,7 @@ func marshalBox(p uintptr) (interface{}, error) {
 //
 //    - box: new GtkBox.
 //
-func NewBox(orientation Orientation, spacing int32) *Box {
+func NewBox(orientation Orientation, spacing int) *Box {
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.int            // out
 	var _cret *C.GtkWidget     // in
@@ -213,7 +213,7 @@ func (box *Box) Homogeneous() bool {
 //
 //    - gint: spacing between children.
 //
-func (box *Box) Spacing() int32 {
+func (box *Box) Spacing() int {
 	var _arg0 *C.GtkBox // out
 	var _cret C.int     // in
 
@@ -222,9 +222,9 @@ func (box *Box) Spacing() int32 {
 	_cret = C.gtk_box_get_spacing(_arg0)
 	runtime.KeepAlive(box)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -373,7 +373,7 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 //
 //    - spacing: number of pixels to put between children.
 //
-func (box *Box) SetSpacing(spacing int32) {
+func (box *Box) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out
 	var _arg1 C.int     // out
 

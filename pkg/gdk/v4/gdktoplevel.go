@@ -274,9 +274,9 @@ type Topleveller interface {
 	coreglib.Objector
 
 	// BeginMove begins an interactive move operation.
-	BeginMove(device Devicer, button int32, x, y float64, timestamp uint32)
+	BeginMove(device Devicer, button int, x, y float64, timestamp uint32)
 	// BeginResize begins an interactive resize operation.
-	BeginResize(edge SurfaceEdge, device Devicer, button int32, x, y float64, timestamp uint32)
+	BeginResize(edge SurfaceEdge, device Devicer, button int, x, y float64, timestamp uint32)
 	// Focus sets keyboard focus to surface.
 	Focus(timestamp uint32)
 	// State gets the bitwise or of the currently active surface state flags,
@@ -344,7 +344,7 @@ func marshalToplevel(p uintptr) (interface{}, error) {
 //    - y: surface Y coordinate of mouse click that began the drag.
 //    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
 //
-func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, timestamp uint32) {
+func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.GdkDevice   // out
 	var _arg2 C.int          // out
@@ -381,7 +381,7 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, 
 //    - y: surface Y coordinate of mouse click that began the drag.
 //    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
 //
-func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int32, x, y float64, timestamp uint32) {
+func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int, x, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel   // out
 	var _arg1 C.GdkSurfaceEdge // out
 	var _arg2 *C.GdkDevice     // out

@@ -229,7 +229,7 @@ func (button *ScaleButton) ConnectValueChanged(f func(value float64)) coreglib.S
 //
 //    - scaleButton: new ScaleButton.
 //
-func NewScaleButton(size int32, min, max, step float64, icons []string) *ScaleButton {
+func NewScaleButton(size int, min, max, step float64, icons []string) *ScaleButton {
 	var _arg1 C.GtkIconSize // out
 	var _arg2 C.gdouble     // out
 	var _arg3 C.gdouble     // out

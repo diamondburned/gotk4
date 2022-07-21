@@ -152,10 +152,10 @@ type SpinButtonOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Input(newValue *float64) int32
+	Input(newValue *float64) int
 	// The function returns the following values:
 	//
-	Output() int32
+	Output() int
 	ValueChanged()
 	Wrapped()
 }
@@ -229,11 +229,11 @@ func classInitSpinButtonner(gclassPtr, data C.gpointer) {
 		pclass.change_value = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_change_value)
 	}
 
-	if _, ok := goval.(interface{ Input(newValue *float64) int32 }); ok {
+	if _, ok := goval.(interface{ Input(newValue *float64) int }); ok {
 		pclass.input = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_input)
 	}
 
-	if _, ok := goval.(interface{ Output() int32 }); ok {
+	if _, ok := goval.(interface{ Output() int }); ok {
 		pclass.output = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_output)
 	}
 
@@ -261,7 +261,7 @@ func _gotk4_gtk3_SpinButtonClass_change_value(arg0 *C.GtkSpinButton, arg1 C.GtkS
 //export _gotk4_gtk3_SpinButtonClass_input
 func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Input(newValue *float64) int32 })
+	iface := goval.(interface{ Input(newValue *float64) int })
 
 	var _newValue *float64 // out
 
@@ -277,7 +277,7 @@ func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (
 //export _gotk4_gtk3_SpinButtonClass_output
 func _gotk4_gtk3_SpinButtonClass_output(arg0 *C.GtkSpinButton) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Output() int32 })
+	iface := goval.(interface{ Output() int })
 
 	gint := iface.Output()
 
@@ -481,7 +481,7 @@ func (spinButton *SpinButton) ConnectWrapped(f func()) coreglib.SignalHandle {
 //
 //    - spinButton: new spin button as a Widget.
 //
-func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *SpinButton {
+func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton {
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.gdouble        // out
 	var _arg3 C.guint          // out
@@ -557,7 +557,7 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 //    - climbRate: new climb rate.
 //    - digits: number of decimal places to display in the spin button.
 //
-func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint32) {
+func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 *C.GtkAdjustment // out
 	var _arg2 C.gdouble        // out
@@ -606,7 +606,7 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 //
 //    - guint: current precision.
 //
-func (spinButton *SpinButton) Digits() uint32 {
+func (spinButton *SpinButton) Digits() uint {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.guint          // in
 
@@ -615,9 +615,9 @@ func (spinButton *SpinButton) Digits() uint32 {
 	_cret = C.gtk_spin_button_get_digits(_arg0)
 	runtime.KeepAlive(spinButton)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -777,7 +777,7 @@ func (spinButton *SpinButton) Value() float64 {
 //
 //    - gint: value of spin_button.
 //
-func (spinButton *SpinButton) ValueAsInt() int32 {
+func (spinButton *SpinButton) ValueAsInt() int {
 	var _arg0 *C.GtkSpinButton // out
 	var _cret C.gint           // in
 
@@ -786,9 +786,9 @@ func (spinButton *SpinButton) ValueAsInt() int32 {
 	_cret = C.gtk_spin_button_get_value_as_int(_arg0)
 	runtime.KeepAlive(spinButton)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -845,7 +845,7 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 //    - digits: number of digits after the decimal point to be displayed for the
 //      spin button’s value.
 //
-func (spinButton *SpinButton) SetDigits(digits uint32) {
+func (spinButton *SpinButton) SetDigits(digits uint) {
 	var _arg0 *C.GtkSpinButton // out
 	var _arg1 C.guint          // out
 

@@ -138,7 +138,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 //    - gicon (optional) representing the icon, or NULL.
 //    - size: stock icon size (IconSize).
 //
-func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int32) {
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.GIcon      // out
 	var _arg2 C.GtkIconSize // out
@@ -164,7 +164,7 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int32) {
 //    - iconName (optional): icon name, or NULL.
 //    - size: stock icon size (IconSize).
 //
-func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int32) {
+func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -193,7 +193,7 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int32) {
 //    - stockId (optional): stock id, or NULL.
 //    - size: stock icon size (IconSize).
 //
-func (tooltip *Tooltip) SetIconFromStock(stockId string, size int32) {
+func (tooltip *Tooltip) SetIconFromStock(stockId string, size int) {
 	var _arg0 *C.GtkTooltip // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out

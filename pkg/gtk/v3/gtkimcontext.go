@@ -85,7 +85,7 @@ type IMContextOverrider interface {
 	//
 	//    - ok: TRUE if the signal was handled.
 	//
-	DeleteSurrounding(offset, nChars int32) bool
+	DeleteSurrounding(offset, nChars int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events. If this function returns TRUE, then no further processing
 	// should be done for this key event.
@@ -122,7 +122,7 @@ type IMContextOverrider interface {
 	//    - cursorPos: location to store position of cursor (in characters)
 	//      within the preedit string.
 	//
-	PreeditString() (string, *pango.AttrList, int32)
+	PreeditString() (string, *pango.AttrList, int)
 	// Surrounding retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -146,7 +146,7 @@ type IMContextOverrider interface {
 	//    - ok: TRUE if surrounding text was provided; in this case you must free
 	//      the result stored in *text.
 	//
-	Surrounding() (string, int32, bool)
+	Surrounding() (string, int, bool)
 	PreeditChanged()
 	PreeditEnd()
 	PreeditStart()
@@ -188,7 +188,7 @@ type IMContextOverrider interface {
 	//    - len: length of text, or -1 if text is nul-terminated.
 	//    - cursorIndex: byte index of the insertion cursor within text.
 	//
-	SetSurrounding(text string, len, cursorIndex int32)
+	SetSurrounding(text string, len, cursorIndex int)
 	// SetUsePreedit sets whether the IM context should use the preedit string
 	// to display feedback. If use_preedit is FALSE (default is TRUE), then the
 	// IM context may use some other method to display feedback, such as
@@ -273,9 +273,7 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 		pclass.commit = (*[0]byte)(C._gotk4_gtk3_IMContextClass_commit)
 	}
 
-	if _, ok := goval.(interface {
-		DeleteSurrounding(offset, nChars int32) bool
-	}); ok {
+	if _, ok := goval.(interface{ DeleteSurrounding(offset, nChars int) bool }); ok {
 		pclass.delete_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_delete_surrounding)
 	}
 
@@ -294,12 +292,12 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PreeditString() (string, *pango.AttrList, int32)
+		PreeditString() (string, *pango.AttrList, int)
 	}); ok {
 		pclass.get_preedit_string = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_preedit_string)
 	}
 
-	if _, ok := goval.(interface{ Surrounding() (string, int32, bool) }); ok {
+	if _, ok := goval.(interface{ Surrounding() (string, int, bool) }); ok {
 		pclass.get_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_surrounding)
 	}
 
@@ -332,7 +330,7 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SetSurrounding(text string, len, cursorIndex int32)
+		SetSurrounding(text string, len, cursorIndex int)
 	}); ok {
 		pclass.set_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_set_surrounding)
 	}
@@ -357,15 +355,13 @@ func _gotk4_gtk3_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.gchar) {
 //export _gotk4_gtk3_IMContextClass_delete_surrounding
 func _gotk4_gtk3_IMContextClass_delete_surrounding(arg0 *C.GtkIMContext, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DeleteSurrounding(offset, nChars int32) bool
-	})
+	iface := goval.(interface{ DeleteSurrounding(offset, nChars int) bool })
 
-	var _offset int32 // out
-	var _nChars int32 // out
+	var _offset int // out
+	var _nChars int // out
 
-	_offset = int32(arg1)
-	_nChars = int32(arg2)
+	_offset = int(arg1)
+	_nChars = int(arg2)
 
 	ok := iface.DeleteSurrounding(_offset, _nChars)
 
@@ -416,7 +412,7 @@ func _gotk4_gtk3_IMContextClass_focus_out(arg0 *C.GtkIMContext) {
 func _gotk4_gtk3_IMContextClass_get_preedit_string(arg0 *C.GtkIMContext, arg1 **C.gchar, arg2 **C.PangoAttrList, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreeditString() (string, *pango.AttrList, int32)
+		PreeditString() (string, *pango.AttrList, int)
 	})
 
 	str, attrs, cursorPos := iface.PreeditString()
@@ -429,7 +425,7 @@ func _gotk4_gtk3_IMContextClass_get_preedit_string(arg0 *C.GtkIMContext, arg1 **
 //export _gotk4_gtk3_IMContextClass_get_surrounding
 func _gotk4_gtk3_IMContextClass_get_surrounding(arg0 *C.GtkIMContext, arg1 **C.gchar, arg2 *C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Surrounding() (string, int32, bool) })
+	iface := goval.(interface{ Surrounding() (string, int, bool) })
 
 	text, cursorIndex, ok := iface.Surrounding()
 
@@ -531,16 +527,16 @@ func _gotk4_gtk3_IMContextClass_set_cursor_location(arg0 *C.GtkIMContext, arg1 *
 func _gotk4_gtk3_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.gchar, arg2 C.gint, arg3 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SetSurrounding(text string, len, cursorIndex int32)
+		SetSurrounding(text string, len, cursorIndex int)
 	})
 
-	var _text string       // out
-	var _len int32         // out
-	var _cursorIndex int32 // out
+	var _text string     // out
+	var _len int         // out
+	var _cursorIndex int // out
 
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_len = int32(arg2)
-	_cursorIndex = int32(arg3)
+	_len = int(arg2)
+	_cursorIndex = int(arg3)
 
 	iface.SetSurrounding(_text, _len, _cursorIndex)
 }
@@ -607,7 +603,7 @@ func (context *IMContext) ConnectCommit(f func(str string)) coreglib.SignalHandl
 
 //export _gotk4_gtk3_IMContext_ConnectDeleteSurrounding
 func _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(offset, nChars int32) (ok bool)
+	var f func(offset, nChars int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -615,14 +611,14 @@ func _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(offset, nChars int32) (ok bool))
+		f = closure.Func.(func(offset, nChars int) (ok bool))
 	}
 
-	var _offset int32 // out
-	var _nChars int32 // out
+	var _offset int // out
+	var _nChars int // out
 
-	_offset = int32(arg1)
-	_nChars = int32(arg2)
+	_offset = int(arg1)
+	_nChars = int(arg2)
 
 	ok := f(_offset, _nChars)
 
@@ -635,7 +631,7 @@ func _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 
 // ConnectDeleteSurrounding signal is emitted when the input method needs to
 // delete all or part of the context surrounding the cursor.
-func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int32) (ok bool)) coreglib.SignalHandle {
+func (context *IMContext) ConnectDeleteSurrounding(f func(offset, nChars int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "delete-surrounding", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectDeleteSurrounding), f)
 }
 
@@ -762,7 +758,7 @@ func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) coregli
 //
 //    - ok: TRUE if the signal was handled.
 //
-func (context *IMContext) DeleteSurrounding(offset, nChars int32) bool {
+func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -856,7 +852,7 @@ func (context *IMContext) FocusOut() {
 //    - cursorPos: location to store position of cursor (in characters) within
 //      the preedit string.
 //
-func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
+func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	var _arg0 *C.GtkIMContext  // out
 	var _arg1 *C.gchar         // in
 	var _arg2 *C.PangoAttrList // in
@@ -869,7 +865,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 
 	var _str string            // out
 	var _attrs *pango.AttrList // out
-	var _cursorPos int32       // out
+	var _cursorPos int         // out
 
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -880,7 +876,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 			C.free(intern.C)
 		},
 	)
-	_cursorPos = int32(_arg3)
+	_cursorPos = int(_arg3)
 
 	return _str, _attrs, _cursorPos
 }
@@ -907,7 +903,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 //    - ok: TRUE if surrounding text was provided; in this case you must free the
 //      result stored in *text.
 //
-func (context *IMContext) Surrounding() (string, int32, bool) {
+func (context *IMContext) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // in
 	var _arg2 C.gint          // in
@@ -918,13 +914,13 @@ func (context *IMContext) Surrounding() (string, int32, bool) {
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _text string       // out
-	var _cursorIndex int32 // out
-	var _ok bool           // out
+	var _text string     // out
+	var _cursorIndex int // out
+	var _ok bool         // out
 
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_cursorIndex = int32(_arg2)
+	_cursorIndex = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -999,7 +995,7 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 //    - len: length of text, or -1 if text is nul-terminated.
 //    - cursorIndex: byte index of the insertion cursor within text.
 //
-func (context *IMContext) SetSurrounding(text string, len, cursorIndex int32) {
+func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gint          // out

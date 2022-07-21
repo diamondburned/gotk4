@@ -983,7 +983,7 @@ func (snapshot *Snapshot) RenderFrame(context *StyleContext, x, y, width, height
 //    - index in the Layout.
 //    - direction of the text.
 //
-func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x, y float64, layout *pango.Layout, index int32, direction pango.Direction) {
+func (snapshot *Snapshot) RenderInsertionCursor(context *StyleContext, x, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg0 *C.GtkSnapshot     // out
 	var _arg1 *C.GtkStyleContext // out
 	var _arg2 C.double           // out

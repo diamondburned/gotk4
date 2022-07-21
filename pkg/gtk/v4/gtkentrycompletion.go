@@ -524,7 +524,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 //
 //    - gint: currently used minimum key length.
 //
-func (completion *EntryCompletion) MinimumKeyLength() int32 {
+func (completion *EntryCompletion) MinimumKeyLength() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
@@ -533,9 +533,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int32 {
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -648,7 +648,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 //
 //    - gint: column containing the strings.
 //
-func (completion *EntryCompletion) TextColumn() int32 {
+func (completion *EntryCompletion) TextColumn() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.int                 // in
 
@@ -657,9 +657,9 @@ func (completion *EntryCompletion) TextColumn() int32 {
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -752,7 +752,7 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 //
 //    - length: minimum length of the key in order to start completing.
 //
-func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
+func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 
@@ -870,7 +870,7 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 //
 //    - column in the model of completion to get strings from.
 //
-func (completion *EntryCompletion) SetTextColumn(column int32) {
+func (completion *EntryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.int                 // out
 

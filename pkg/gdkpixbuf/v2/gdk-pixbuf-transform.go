@@ -157,7 +157,7 @@ func (p PixbufRotation) String() string {
 //    - interpType: interpolation type for the transformation.
 //    - overallAlpha: overall alpha for source image (0..255).
 //
-func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight int32, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha int32) {
+func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha int) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
 	var _arg2 C.int            // out
@@ -231,7 +231,7 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 //    - color1: color of check at upper left.
 //    - color2: color of the other check.
 //
-func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHeight int32, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha, checkX, checkY, checkSize int32, color1, color2 uint32) {
+func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha, checkX, checkY, checkSize int, color1, color2 uint32) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
 	var _arg2 C.int            // out
@@ -306,7 +306,7 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHei
 //
 //    - pixbuf (optional): new pixbuf.
 //
-func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int32, interpType InterpType, overallAlpha, checkSize int32, color1, color2 uint32) *Pixbuf {
+func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType InterpType, overallAlpha, checkSize int, color1, color2 uint32) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -439,7 +439,7 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 //    - scaleY: scale factor in the Y direction.
 //    - interpType: interpolation type for the transformation.
 //
-func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int32, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType) {
+func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
 	var _arg2 C.int            // out
@@ -507,7 +507,7 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int32
 //
 //    - pixbuf (optional): new pixbuf.
 //
-func (src *Pixbuf) ScaleSimple(destWidth, destHeight int32, interpType InterpType) *Pixbuf {
+func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out

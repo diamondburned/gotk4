@@ -184,7 +184,7 @@ func (self *SortListModel) Model() *gio.ListModel {
 //
 //    - guint progress estimate of remaining items to sort.
 //
-func (self *SortListModel) Pending() uint32 {
+func (self *SortListModel) Pending() uint {
 	var _arg0 *C.GtkSortListModel // out
 	var _cret C.guint             // in
 
@@ -193,9 +193,9 @@ func (self *SortListModel) Pending() uint32 {
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

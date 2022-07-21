@@ -51,7 +51,7 @@ type IconOverrider interface {
 	//    - guint containing a hash for the icon, suitable for use in a Table or
 	//      similar data structure.
 	//
-	Hash() uint32
+	Hash() uint
 	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
 	// be retrieved back by calling g_icon_deserialize() on the returned value.
 	// As serialization will avoid using raw icon data when possible, it only
@@ -346,7 +346,7 @@ func IconDeserialize(value *glib.Variant) *Icon {
 //    - guint containing a hash for the icon, suitable for use in a Table or
 //      similar data structure.
 //
-func IconHash(icon unsafe.Pointer) uint32 {
+func IconHash(icon unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -355,9 +355,9 @@ func IconHash(icon unsafe.Pointer) uint32 {
 	_cret = C.g_icon_hash(_arg1)
 	runtime.KeepAlive(icon)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

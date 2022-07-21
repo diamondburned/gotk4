@@ -476,7 +476,7 @@ func (_range *Range) RestrictToFillLevel() bool {
 //
 //    - gint: number of digits to round to.
 //
-func (_range *Range) RoundDigits() int32 {
+func (_range *Range) RoundDigits() int {
 	var _arg0 *C.GtkRange // out
 	var _cret C.int       // in
 
@@ -485,9 +485,9 @@ func (_range *Range) RoundDigits() int32 {
 	_cret = C.gtk_range_get_round_digits(_arg0)
 	runtime.KeepAlive(_range)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -526,7 +526,7 @@ func (_range *Range) ShowFillLevel() bool {
 //    - sliderStart (optional): return location for the slider's start, or NULL.
 //    - sliderEnd (optional): return location for the slider's end, or NULL.
 //
-func (_range *Range) SliderRange() (sliderStart, sliderEnd int32) {
+func (_range *Range) SliderRange() (sliderStart, sliderEnd int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.int       // in
 	var _arg2 C.int       // in
@@ -536,11 +536,11 @@ func (_range *Range) SliderRange() (sliderStart, sliderEnd int32) {
 	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(_range)
 
-	var _sliderStart int32 // out
-	var _sliderEnd int32   // out
+	var _sliderStart int // out
+	var _sliderEnd int   // out
 
-	_sliderStart = int32(_arg1)
-	_sliderEnd = int32(_arg2)
+	_sliderStart = int(_arg1)
+	_sliderEnd = int(_arg2)
 
 	return _sliderStart, _sliderEnd
 }
@@ -786,7 +786,7 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 //
 //    - roundDigits: precision in digits, or -1.
 //
-func (_range *Range) SetRoundDigits(roundDigits int32) {
+func (_range *Range) SetRoundDigits(roundDigits int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.int       // out
 

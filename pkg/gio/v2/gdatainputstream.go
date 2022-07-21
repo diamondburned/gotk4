@@ -397,7 +397,7 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.gint                // out
@@ -804,7 +804,7 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -964,7 +964,7 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen int, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out

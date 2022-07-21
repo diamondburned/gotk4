@@ -189,7 +189,7 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 //
 //    - socket or NULL on error. Free the returned object with g_object_unref().
 //
-func NewSocketFromFd(fd int32) (*Socket, error) {
+func NewSocketFromFd(fd int) (*Socket, error) {
 	var _arg1 C.gint     // out
 	var _cret *C.GSocket // in
 	var _cerr *C.GError  // in
@@ -728,7 +728,7 @@ func (socket *Socket) Family() SocketFamily {
 //
 //    - gint: file descriptor of the socket.
 //
-func (socket *Socket) Fd() int32 {
+func (socket *Socket) Fd() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.int      // in
 
@@ -737,9 +737,9 @@ func (socket *Socket) Fd() int32 {
 	_cret = C.g_socket_get_fd(_arg0)
 	runtime.KeepAlive(socket)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -776,7 +776,7 @@ func (socket *Socket) Keepalive() bool {
 //
 //    - gint: maximum number of pending connections.
 //
-func (socket *Socket) ListenBacklog() int32 {
+func (socket *Socket) ListenBacklog() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gint     // in
 
@@ -785,9 +785,9 @@ func (socket *Socket) ListenBacklog() int32 {
 	_cret = C.g_socket_get_listen_backlog(_arg0)
 	runtime.KeepAlive(socket)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -871,7 +871,7 @@ func (socket *Socket) MulticastLoopback() bool {
 //
 //    - guint: multicast time-to-live setting on socket.
 //
-func (socket *Socket) MulticastTTL() uint32 {
+func (socket *Socket) MulticastTTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
 
@@ -880,9 +880,9 @@ func (socket *Socket) MulticastTTL() uint32 {
 	_cret = C.g_socket_get_multicast_ttl(_arg0)
 	runtime.KeepAlive(socket)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -909,7 +909,7 @@ func (socket *Socket) MulticastTTL() uint32 {
 //
 //    - value: return location for the option value.
 //
-func (socket *Socket) Option(level, optname int32) (int32, error) {
+func (socket *Socket) Option(level, optname int) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -925,10 +925,10 @@ func (socket *Socket) Option(level, optname int32) (int32, error) {
 	runtime.KeepAlive(level)
 	runtime.KeepAlive(optname)
 
-	var _value int32 // out
+	var _value int   // out
 	var _goerr error // out
 
-	_value = int32(_arg3)
+	_value = int(_arg3)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1033,7 +1033,7 @@ func (socket *Socket) SocketType() SocketType {
 //
 //    - guint: timeout in seconds.
 //
-func (socket *Socket) Timeout() uint32 {
+func (socket *Socket) Timeout() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
 
@@ -1042,9 +1042,9 @@ func (socket *Socket) Timeout() uint32 {
 	_cret = C.g_socket_get_timeout(_arg0)
 	runtime.KeepAlive(socket)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1056,7 +1056,7 @@ func (socket *Socket) Timeout() uint32 {
 //
 //    - guint: time-to-live setting on socket.
 //
-func (socket *Socket) TTL() uint32 {
+func (socket *Socket) TTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
 
@@ -1065,9 +1065,9 @@ func (socket *Socket) TTL() uint32 {
 	_cret = C.g_socket_get_ttl(_arg0)
 	runtime.KeepAlive(socket)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1553,7 +1553,7 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 //      than UIO_MAXIOV (1024), in which case the caller may re-try to receive
 //      the remaining messages.
 //
-func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32) (int32, error) {
+func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int) (int, error) {
 	var _arg0 *C.GSocket       // out
 	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GInputMessage // out
@@ -1585,10 +1585,10 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 	runtime.KeepAlive(messages)
 	runtime.KeepAlive(flags)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1766,7 +1766,7 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 //    - gssize: number of bytes written (which may be less than size), or -1 on
 //      error.
 //
-func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int32) (int, error) {
+func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg7 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
@@ -1856,7 +1856,7 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 //      writable, or G_POLLABLE_RETURN_FAILED if an error happened and error is
 //      set.
 //
-func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int32, timeoutUs int64) (uint, PollableReturn, error) {
+func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, timeoutUs int64) (uint, PollableReturn, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg9 *C.GCancellable   // out
 	var _arg1 *C.GSocketAddress // out
@@ -1973,7 +1973,7 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 //      non-blocking or if num_messages was larger than UIO_MAXIOV (1024), in
 //      which case the caller may re-try to send the remaining messages.
 //
-func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int32) (int32, error) {
+func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
 	var _arg1 *C.GOutputMessage // out
@@ -2005,10 +2005,10 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 	runtime.KeepAlive(messages)
 	runtime.KeepAlive(flags)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -2220,7 +2220,7 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 //
 //    - backlog: maximum number of pending connections.
 //
-func (socket *Socket) SetListenBacklog(backlog int32) {
+func (socket *Socket) SetListenBacklog(backlog int) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 
@@ -2263,7 +2263,7 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 //
 //    - ttl: time-to-live value for all multicast datagrams on socket.
 //
-func (socket *Socket) SetMulticastTTL(ttl uint32) {
+func (socket *Socket) SetMulticastTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
@@ -2290,7 +2290,7 @@ func (socket *Socket) SetMulticastTTL(ttl uint32) {
 //    - optname: "name" of the option (eg, SO_BROADCAST).
 //    - value to set the option to.
 //
-func (socket *Socket) SetOption(level, optname, value int32) error {
+func (socket *Socket) SetOption(level, optname, value int) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out
@@ -2339,7 +2339,7 @@ func (socket *Socket) SetOption(level, optname, value int32) error {
 //
 //    - timeout for socket, in seconds, or 0 for none.
 //
-func (socket *Socket) SetTimeout(timeout uint32) {
+func (socket *Socket) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 
@@ -2358,7 +2358,7 @@ func (socket *Socket) SetTimeout(timeout uint32) {
 //
 //    - ttl: time-to-live value for all unicast packets on socket.
 //
-func (socket *Socket) SetTTL(ttl uint32) {
+func (socket *Socket) SetTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
 

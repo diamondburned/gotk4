@@ -82,7 +82,7 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 }
 
 // NewTabArray constructs a struct TabArray.
-func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
+func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var _arg1 C.gint           // out
 	var _arg2 C.gboolean       // out
 	var _cret *C.PangoTabArray // in
@@ -169,7 +169,7 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 //
 //    - gint: number of tab stops in the array.
 //
-func (tabArray *TabArray) Size() int32 {
+func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
 
@@ -178,9 +178,9 @@ func (tabArray *TabArray) Size() int32 {
 	_cret = C.pango_tab_array_get_size(_arg0)
 	runtime.KeepAlive(tabArray)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -196,7 +196,7 @@ func (tabArray *TabArray) Size() int32 {
 //    - alignment (optional): location to store alignment, or NULL.
 //    - location (optional) to store tab position, or NULL.
 //
-func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
+func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 	var _arg2 C.PangoTabAlign  // in
@@ -210,10 +210,10 @@ func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
 	runtime.KeepAlive(tabIndex)
 
 	var _alignment TabAlign // out
-	var _location int32     // out
+	var _location int       // out
 
 	_alignment = TabAlign(_arg2)
-	_location = int32(_arg3)
+	_location = int(_arg3)
 
 	return _alignment, _location
 }
@@ -227,7 +227,7 @@ func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
 //
 //    - newSize: new size of the array.
 //
-func (tabArray *TabArray) Resize(newSize int32) {
+func (tabArray *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 
@@ -249,7 +249,7 @@ func (tabArray *TabArray) Resize(newSize int32) {
 //    - alignment: tab alignment.
 //    - location: tab location in Pango units.
 //
-func (tabArray *TabArray) SetTab(tabIndex int32, alignment TabAlign, location int32) {
+func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
 	var _arg2 C.PangoTabAlign  // out

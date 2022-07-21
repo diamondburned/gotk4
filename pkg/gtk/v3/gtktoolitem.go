@@ -312,7 +312,7 @@ func (toolItem *ToolItem) Homogeneous() bool {
 //
 //    - gint indicating the icon size used for tool_item.
 //
-func (toolItem *ToolItem) IconSize() int32 {
+func (toolItem *ToolItem) IconSize() int {
 	var _arg0 *C.GtkToolItem // out
 	var _cret C.GtkIconSize  // in
 
@@ -321,9 +321,9 @@ func (toolItem *ToolItem) IconSize() int32 {
 	_cret = C.gtk_tool_item_get_icon_size(_arg0)
 	runtime.KeepAlive(toolItem)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

@@ -125,7 +125,7 @@ func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) coreg
 
 //export _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited
 func _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint, arg5 C.guintptr) {
-	var f func(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)
+	var f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -133,24 +133,24 @@ func _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.g
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32))
+		f = closure.Func.(func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint))
 	}
 
 	var _pathString string          // out
-	var _accelKey uint32            // out
+	var _accelKey uint              // out
 	var _accelMods gdk.ModifierType // out
-	var _hardwareKeycode uint32     // out
+	var _hardwareKeycode uint       // out
 
 	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_accelKey = uint32(arg2)
+	_accelKey = uint(arg2)
 	_accelMods = gdk.ModifierType(arg3)
-	_hardwareKeycode = uint32(arg4)
+	_hardwareKeycode = uint(arg4)
 
 	f(_pathString, _accelKey, _accelMods, _hardwareKeycode)
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
-func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)) coreglib.SignalHandle {
+func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "accel-edited", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererAccel_ConnectAccelEdited), f)
 }
 

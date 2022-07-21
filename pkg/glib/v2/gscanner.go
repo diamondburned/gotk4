@@ -209,7 +209,7 @@ type scanner struct {
 //
 //    - guint: current line.
 //
-func (scanner *Scanner) CurLine() uint32 {
+func (scanner *Scanner) CurLine() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
@@ -218,9 +218,9 @@ func (scanner *Scanner) CurLine() uint32 {
 	_cret = C.g_scanner_cur_line(_arg0)
 	runtime.KeepAlive(scanner)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -233,7 +233,7 @@ func (scanner *Scanner) CurLine() uint32 {
 //
 //    - guint: current position on the line.
 //
-func (scanner *Scanner) CurPosition() uint32 {
+func (scanner *Scanner) CurPosition() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
 
@@ -242,9 +242,9 @@ func (scanner *Scanner) CurPosition() uint32 {
 	_cret = C.g_scanner_cur_position(_arg0)
 	runtime.KeepAlive(scanner)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -337,7 +337,7 @@ func (scanner *Scanner) NextToken() TokenType {
 //
 //    - inputFd: file descriptor.
 //
-func (scanner *Scanner) InputFile(inputFd int32) {
+func (scanner *Scanner) InputFile(inputFd int) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.gint      // out
 
@@ -356,7 +356,7 @@ func (scanner *Scanner) InputFile(inputFd int32) {
 //    - text buffer to scan.
 //    - textLen: length of the text buffer.
 //
-func (scanner *Scanner) InputText(text string, textLen uint32) {
+func (scanner *Scanner) InputText(text string, textLen uint) {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
 	var _arg2 C.guint     // out
@@ -444,7 +444,7 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 //    - symbol to add.
 //    - value (optional) of the symbol.
 //
-func (scanner *Scanner) ScopeAddSymbol(scopeId uint32, symbol string, value unsafe.Pointer) {
+func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value unsafe.Pointer) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -476,7 +476,7 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint32, symbol string, value unsa
 //    - gpointer (optional): value of symbol in the given scope, or NULL if
 //      symbol is not bound in the given scope.
 //
-func (scanner *Scanner) ScopeLookupSymbol(scopeId uint32, symbol string) unsafe.Pointer {
+func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) unsafe.Pointer {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -506,7 +506,7 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint32, symbol string) unsafe.
 //    - scopeId: scope id.
 //    - symbol to remove.
 //
-func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint32, symbol string) {
+func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _arg2 *C.gchar    // out
@@ -532,7 +532,7 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint32, symbol string) {
 //
 //    - guint: old scope id.
 //
-func (scanner *Scanner) SetScope(scopeId uint32) uint32 {
+func (scanner *Scanner) SetScope(scopeId uint) uint {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -544,9 +544,9 @@ func (scanner *Scanner) SetScope(scopeId uint32) uint32 {
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(scopeId)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -585,7 +585,7 @@ func (scanner *Scanner) SyncFileOffset() {
 //    - isError: if TRUE it is output as an error. If FALSE it is output as a
 //      warning.
 //
-func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int32) {
+func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
 	var _arg0 *C.GScanner  // out
 	var _arg1 C.GTokenType // out
 	var _arg2 *C.gchar     // out

@@ -335,7 +335,7 @@ func (context *MarkupParseContext) Element() string {
 //    - charNumber (optional): return location for a char-on-line number, or
 //      NULL.
 //
-func (context *MarkupParseContext) Position() (lineNumber int32, charNumber int32) {
+func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 C.gint                 // in
 	var _arg2 C.gint                 // in
@@ -345,11 +345,11 @@ func (context *MarkupParseContext) Position() (lineNumber int32, charNumber int3
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _lineNumber int32 // out
-	var _charNumber int32 // out
+	var _lineNumber int // out
+	var _charNumber int // out
 
-	_lineNumber = int32(_arg1)
-	_charNumber = int32(_arg2)
+	_lineNumber = int(_arg1)
+	_charNumber = int(_arg2)
 
 	return _lineNumber, _charNumber
 }

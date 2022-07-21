@@ -135,7 +135,7 @@ func NewFixed() *Fixed {
 //    - x: horizontal position to move the widget to.
 //    - y: vertical position to move the widget to.
 //
-func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
+func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -161,7 +161,7 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
 //    - x: horizontal position to place the widget at.
 //    - y: vertical position to place the widget at.
 //
-func (fixed *Fixed) Put(widget Widgetter, x, y int32) {
+func (fixed *Fixed) Put(widget Widgetter, x, y int) {
 	var _arg0 *C.GtkFixed  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -212,26 +212,26 @@ func (f *FixedChild) Widget() Widgetter {
 	return v
 }
 
-func (f *FixedChild) X() int32 {
+func (f *FixedChild) X() int {
 	valptr := &f.native.x
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (f *FixedChild) Y() int32 {
+func (f *FixedChild) Y() int {
 	valptr := &f.native.y
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (f *FixedChild) SetX(x int32) {
+func (f *FixedChild) SetX(x int) {
 	valptr := &f.native.x
 	*valptr = C.gint(x)
 }
 
-func (f *FixedChild) SetY(y int32) {
+func (f *FixedChild) SetY(y int) {
 	valptr := &f.native.y
 	*valptr = C.gint(y)
 }

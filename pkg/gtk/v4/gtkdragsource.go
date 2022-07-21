@@ -506,7 +506,7 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //    - hotX: hotspot X coordinate on the icon.
 //    - hotY: hotspot Y coordinate on the icon.
 //
-func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int32) {
+func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg0 *C.GtkDragSource // out
 	var _arg1 *C.GdkPaintable  // out
 	var _arg2 C.int            // out
@@ -540,7 +540,7 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int32) {
 //
 //    - ok: TRUE if the drag threshold has been passed.
 //
-func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int32) bool {
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

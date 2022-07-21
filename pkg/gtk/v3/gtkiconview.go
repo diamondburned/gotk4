@@ -146,7 +146,7 @@ type IconViewOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	MoveCursor(step MovementStep, count int32) bool
+	MoveCursor(step MovementStep, count int) bool
 	// SelectAll selects all the icons. icon_view must has its selection mode
 	// set to K_SELECTION_MULTIPLE.
 	SelectAll()
@@ -207,7 +207,7 @@ func classInitIconViewer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int32) bool
+		MoveCursor(step MovementStep, count int) bool
 	}); ok {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_IconViewClass_move_cursor)
 	}
@@ -263,14 +263,14 @@ func _gotk4_gtk3_IconViewClass_item_activated(arg0 *C.GtkIconView, arg1 *C.GtkTr
 func _gotk4_gtk3_IconViewClass_move_cursor(arg0 *C.GtkIconView, arg1 C.GtkMovementStep, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int32) bool
+		MoveCursor(step MovementStep, count int) bool
 	})
 
 	var _step MovementStep // out
-	var _count int32       // out
+	var _count int         // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 
 	ok := iface.MoveCursor(_step, _count)
 
@@ -416,7 +416,7 @@ func (iconView *IconView) ConnectItemActivated(f func(path *TreePath)) coreglib.
 
 //export _gotk4_gtk3_IconView_ConnectMoveCursor
 func _gotk4_gtk3_IconView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(step MovementStep, count int32) (ok bool)
+	var f func(step MovementStep, count int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -424,14 +424,14 @@ func _gotk4_gtk3_IconView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementS
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(step MovementStep, count int32) (ok bool))
+		f = closure.Func.(func(step MovementStep, count int) (ok bool))
 	}
 
 	var _step MovementStep // out
-	var _count int32       // out
+	var _count int         // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 
 	ok := f(_step, _count)
 
@@ -457,7 +457,7 @@ func _gotk4_gtk3_IconView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementS
 //
 // - PageUp/PageDown which move by "pages" All of these will extend the
 // selection when combined with the Shift modifier.
-func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int32) (ok bool)) coreglib.SignalHandle {
+func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(iconView, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_IconView_ConnectMoveCursor), f)
 }
 
@@ -676,7 +676,7 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 //    - bx: return location for bin_window X coordinate.
 //    - by: return location for bin_window Y coordinate.
 //
-func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx, by int32) {
+func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int) (bx, by int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -692,11 +692,11 @@ func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx, by i
 	runtime.KeepAlive(wx)
 	runtime.KeepAlive(wy)
 
-	var _bx int32 // out
-	var _by int32 // out
+	var _bx int // out
+	var _by int // out
 
-	_bx = int32(_arg3)
-	_by = int32(_arg4)
+	_bx = int(_arg3)
+	_by = int(_arg4)
 
 	return _bx, _by
 }
@@ -877,7 +877,7 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Re
 //
 //    - gint: space between columns.
 //
-func (iconView *IconView) ColumnSpacing() int32 {
+func (iconView *IconView) ColumnSpacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -886,9 +886,9 @@ func (iconView *IconView) ColumnSpacing() int32 {
 	_cret = C.gtk_icon_view_get_column_spacing(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -899,7 +899,7 @@ func (iconView *IconView) ColumnSpacing() int32 {
 //
 //    - gint: number of columns, or -1.
 //
-func (iconView *IconView) Columns() int32 {
+func (iconView *IconView) Columns() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -908,9 +908,9 @@ func (iconView *IconView) Columns() int32 {
 	_cret = C.gtk_icon_view_get_columns(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -987,7 +987,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 //    - pos (optional): return location for the drop position, or NULL.
 //    - ok: whether there is an item at the given position.
 //
-func (iconView *IconView) DestItemAtPos(dragX, dragY int32) (*TreePath, IconViewDropPosition, bool) {
+func (iconView *IconView) DestItemAtPos(dragX, dragY int) (*TreePath, IconViewDropPosition, bool) {
 	var _arg0 *C.GtkIconView            // out
 	var _arg1 C.gint                    // out
 	var _arg2 C.gint                    // out
@@ -1080,7 +1080,7 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 //      cell at (x, y), or NULL.
 //    - ok: TRUE if an item exists at the specified position.
 //
-func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool) {
+func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) {
 	var _arg0 *C.GtkIconView     // out
 	var _arg1 C.gint             // out
 	var _arg2 C.gint             // out
@@ -1144,7 +1144,7 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 //
 //    - gint: column in which the item is displayed.
 //
-func (iconView *IconView) ItemColumn(path *TreePath) int32 {
+func (iconView *IconView) ItemColumn(path *TreePath) int {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.gint         // in
@@ -1156,9 +1156,9 @@ func (iconView *IconView) ItemColumn(path *TreePath) int32 {
 	runtime.KeepAlive(iconView)
 	runtime.KeepAlive(path)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1192,7 +1192,7 @@ func (iconView *IconView) ItemOrientation() Orientation {
 //
 //    - gint: padding around items.
 //
-func (iconView *IconView) ItemPadding() int32 {
+func (iconView *IconView) ItemPadding() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1201,9 +1201,9 @@ func (iconView *IconView) ItemPadding() int32 {
 	_cret = C.gtk_icon_view_get_item_padding(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1219,7 +1219,7 @@ func (iconView *IconView) ItemPadding() int32 {
 //
 //    - gint: row in which the item is displayed.
 //
-func (iconView *IconView) ItemRow(path *TreePath) int32 {
+func (iconView *IconView) ItemRow(path *TreePath) int {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.gint         // in
@@ -1231,9 +1231,9 @@ func (iconView *IconView) ItemRow(path *TreePath) int32 {
 	runtime.KeepAlive(iconView)
 	runtime.KeepAlive(path)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1244,7 +1244,7 @@ func (iconView *IconView) ItemRow(path *TreePath) int32 {
 //
 //    - gint: width of a single item, or -1.
 //
-func (iconView *IconView) ItemWidth() int32 {
+func (iconView *IconView) ItemWidth() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1253,9 +1253,9 @@ func (iconView *IconView) ItemWidth() int32 {
 	_cret = C.gtk_icon_view_get_item_width(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1266,7 +1266,7 @@ func (iconView *IconView) ItemWidth() int32 {
 //
 //    - gint: space at the borders.
 //
-func (iconView *IconView) Margin() int32 {
+func (iconView *IconView) Margin() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1275,9 +1275,9 @@ func (iconView *IconView) Margin() int32 {
 	_cret = C.gtk_icon_view_get_margin(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1288,7 +1288,7 @@ func (iconView *IconView) Margin() int32 {
 //
 //    - gint: markup column, or -1 if it’s unset.
 //
-func (iconView *IconView) MarkupColumn() int32 {
+func (iconView *IconView) MarkupColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1297,9 +1297,9 @@ func (iconView *IconView) MarkupColumn() int32 {
 	_cret = C.gtk_icon_view_get_markup_column(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1345,7 +1345,7 @@ func (iconView *IconView) Model() *TreeModel {
 //    - treePath (optional) corresponding to the icon or NULL if no icon exists
 //      at that position.
 //
-func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
+func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 	var _arg2 C.gint         // out
@@ -1381,7 +1381,7 @@ func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
 //
 //    - gint: pixbuf column, or -1 if it’s unset.
 //
-func (iconView *IconView) PixbufColumn() int32 {
+func (iconView *IconView) PixbufColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1390,9 +1390,9 @@ func (iconView *IconView) PixbufColumn() int32 {
 	_cret = C.gtk_icon_view_get_pixbuf_column(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1428,7 +1428,7 @@ func (iconView *IconView) Reorderable() bool {
 //
 //    - gint: space between rows.
 //
-func (iconView *IconView) RowSpacing() int32 {
+func (iconView *IconView) RowSpacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1437,9 +1437,9 @@ func (iconView *IconView) RowSpacing() int32 {
 	_cret = C.gtk_icon_view_get_row_spacing(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1513,7 +1513,7 @@ func (iconView *IconView) SelectionMode() SelectionMode {
 //
 //    - gint: space between cells.
 //
-func (iconView *IconView) Spacing() int32 {
+func (iconView *IconView) Spacing() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1522,9 +1522,9 @@ func (iconView *IconView) Spacing() int32 {
 	_cret = C.gtk_icon_view_get_spacing(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1535,7 +1535,7 @@ func (iconView *IconView) Spacing() int32 {
 //
 //    - gint: text column, or -1 if it’s unset.
 //
-func (iconView *IconView) TextColumn() int32 {
+func (iconView *IconView) TextColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1544,9 +1544,9 @@ func (iconView *IconView) TextColumn() int32 {
 	_cret = C.gtk_icon_view_get_text_column(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1559,7 +1559,7 @@ func (iconView *IconView) TextColumn() int32 {
 //    - gint: index of the tooltip column that is currently being used, or -1 if
 //      this is disabled.
 //
-func (iconView *IconView) TooltipColumn() int32 {
+func (iconView *IconView) TooltipColumn() int {
 	var _arg0 *C.GtkIconView // out
 	var _cret C.gint         // in
 
@@ -1568,9 +1568,9 @@ func (iconView *IconView) TooltipColumn() int32 {
 	_cret = C.gtk_icon_view_get_tooltip_column(_arg0)
 	runtime.KeepAlive(iconView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1799,7 +1799,7 @@ func (iconView *IconView) SetActivateOnSingleClick(single bool) {
 //
 //    - columnSpacing: column spacing.
 //
-func (iconView *IconView) SetColumnSpacing(columnSpacing int32) {
+func (iconView *IconView) SetColumnSpacing(columnSpacing int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -1819,7 +1819,7 @@ func (iconView *IconView) SetColumnSpacing(columnSpacing int32) {
 //
 //    - columns: number of columns.
 //
-func (iconView *IconView) SetColumns(columns int32) {
+func (iconView *IconView) SetColumns(columns int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -1919,7 +1919,7 @@ func (iconView *IconView) SetItemOrientation(orientation Orientation) {
 //
 //    - itemPadding: item padding.
 //
-func (iconView *IconView) SetItemPadding(itemPadding int32) {
+func (iconView *IconView) SetItemPadding(itemPadding int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -1939,7 +1939,7 @@ func (iconView *IconView) SetItemPadding(itemPadding int32) {
 //
 //    - itemWidth: width for each item.
 //
-func (iconView *IconView) SetItemWidth(itemWidth int32) {
+func (iconView *IconView) SetItemWidth(itemWidth int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -1958,7 +1958,7 @@ func (iconView *IconView) SetItemWidth(itemWidth int32) {
 //
 //    - margin: margin.
 //
-func (iconView *IconView) SetMargin(margin int32) {
+func (iconView *IconView) SetMargin(margin int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -1979,7 +1979,7 @@ func (iconView *IconView) SetMargin(margin int32) {
 //
 //    - column in the currently used model, or -1 to display no text.
 //
-func (iconView *IconView) SetMarkupColumn(column int32) {
+func (iconView *IconView) SetMarkupColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -2020,7 +2020,7 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 //
 //    - column in the currently used model, or -1 to disable.
 //
-func (iconView *IconView) SetPixbufColumn(column int32) {
+func (iconView *IconView) SetPixbufColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -2070,7 +2070,7 @@ func (iconView *IconView) SetReorderable(reorderable bool) {
 //
 //    - rowSpacing: row spacing.
 //
-func (iconView *IconView) SetRowSpacing(rowSpacing int32) {
+func (iconView *IconView) SetRowSpacing(rowSpacing int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -2107,7 +2107,7 @@ func (iconView *IconView) SetSelectionMode(mode SelectionMode) {
 //
 //    - spacing: spacing.
 //
-func (iconView *IconView) SetSpacing(spacing int32) {
+func (iconView *IconView) SetSpacing(spacing int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -2126,7 +2126,7 @@ func (iconView *IconView) SetSpacing(spacing int32) {
 //
 //    - column in the currently used model, or -1 to display no text.
 //
-func (iconView *IconView) SetTextColumn(column int32) {
+func (iconView *IconView) SetTextColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 
@@ -2184,7 +2184,7 @@ func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell 
 //
 //    - column: integer, which is a valid column number for icon_view’s model.
 //
-func (iconView *IconView) SetTooltipColumn(column int32) {
+func (iconView *IconView) SetTooltipColumn(column int) {
 	var _arg0 *C.GtkIconView // out
 	var _arg1 C.gint         // out
 

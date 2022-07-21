@@ -377,7 +377,7 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //
 //    - list of gtk.Constraint instances that were added to the layout.
 //
-func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int32, views map[string]ConstraintTargetter) ([]*Constraint, error) {
+func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]*Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
 	var _arg1 **C.char               // out
 	var _arg2 C.gsize

@@ -60,7 +60,7 @@ type MenuShellOverrider interface {
 	Deactivate()
 	// The function returns the following values:
 	//
-	PopupDelay() int32
+	PopupDelay() int
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
 	//
@@ -70,7 +70,7 @@ type MenuShellOverrider interface {
 	//    - position in the item list where child is added. Positions are
 	//      numbered from 0 to n-1.
 	//
-	Insert(child Widgetter, position int32)
+	Insert(child Widgetter, position int)
 	// The function takes the following parameters:
 	//
 	MoveCurrent(direction MenuDirectionType)
@@ -78,7 +78,7 @@ type MenuShellOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	MoveSelected(distance int32) bool
+	MoveSelected(distance int) bool
 	// SelectItem selects the menu item from the menu shell.
 	//
 	// The function takes the following parameters:
@@ -154,12 +154,12 @@ func classInitMenuSheller(gclassPtr, data C.gpointer) {
 		pclass.deactivate = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_deactivate)
 	}
 
-	if _, ok := goval.(interface{ PopupDelay() int32 }); ok {
+	if _, ok := goval.(interface{ PopupDelay() int }); ok {
 		pclass.get_popup_delay = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_get_popup_delay)
 	}
 
 	if _, ok := goval.(interface {
-		Insert(child Widgetter, position int32)
+		Insert(child Widgetter, position int)
 	}); ok {
 		pclass.insert = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_insert)
 	}
@@ -170,7 +170,7 @@ func classInitMenuSheller(gclassPtr, data C.gpointer) {
 		pclass.move_current = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_current)
 	}
 
-	if _, ok := goval.(interface{ MoveSelected(distance int32) bool }); ok {
+	if _, ok := goval.(interface{ MoveSelected(distance int) bool }); ok {
 		pclass.move_selected = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_selected)
 	}
 
@@ -216,7 +216,7 @@ func _gotk4_gtk3_MenuShellClass_deactivate(arg0 *C.GtkMenuShell) {
 //export _gotk4_gtk3_MenuShellClass_get_popup_delay
 func _gotk4_gtk3_MenuShellClass_get_popup_delay(arg0 *C.GtkMenuShell) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PopupDelay() int32 })
+	iface := goval.(interface{ PopupDelay() int })
 
 	gint := iface.PopupDelay()
 
@@ -229,11 +229,11 @@ func _gotk4_gtk3_MenuShellClass_get_popup_delay(arg0 *C.GtkMenuShell) (cret C.gi
 func _gotk4_gtk3_MenuShellClass_insert(arg0 *C.GtkMenuShell, arg1 *C.GtkWidget, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Insert(child Widgetter, position int32)
+		Insert(child Widgetter, position int)
 	})
 
 	var _child Widgetter // out
-	var _position int32  // out
+	var _position int    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -252,7 +252,7 @@ func _gotk4_gtk3_MenuShellClass_insert(arg0 *C.GtkMenuShell, arg1 *C.GtkWidget, 
 		}
 		_child = rv
 	}
-	_position = int32(arg2)
+	_position = int(arg2)
 
 	iface.Insert(_child, _position)
 }
@@ -274,11 +274,11 @@ func _gotk4_gtk3_MenuShellClass_move_current(arg0 *C.GtkMenuShell, arg1 C.GtkMen
 //export _gotk4_gtk3_MenuShellClass_move_selected
 func _gotk4_gtk3_MenuShellClass_move_selected(arg0 *C.GtkMenuShell, arg1 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MoveSelected(distance int32) bool })
+	iface := goval.(interface{ MoveSelected(distance int) bool })
 
-	var _distance int32 // out
+	var _distance int // out
 
-	_distance = int32(arg1)
+	_distance = int(arg1)
 
 	ok := iface.MoveSelected(_distance)
 
@@ -456,7 +456,7 @@ func (menuShell *MenuShell) ConnectDeactivate(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_MenuShell_ConnectInsert
 func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.gint, arg3 C.guintptr) {
-	var f func(child Widgetter, position int32)
+	var f func(child Widgetter, position int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -464,11 +464,11 @@ func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.GtkWidget, arg
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(child Widgetter, position int32))
+		f = closure.Func.(func(child Widgetter, position int))
 	}
 
 	var _child Widgetter // out
-	var _position int32  // out
+	var _position int    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -487,7 +487,7 @@ func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.GtkWidget, arg
 		}
 		_child = rv
 	}
-	_position = int32(arg2)
+	_position = int(arg2)
 
 	f(_child, _position)
 }
@@ -497,7 +497,7 @@ func _gotk4_gtk3_MenuShell_ConnectInsert(arg0 C.gpointer, arg1 *C.GtkWidget, arg
 // for an additional position parameter.
 //
 // The inverse of this signal is the GtkContainer::removed signal.
-func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int32)) coreglib.SignalHandle {
+func (menuShell *MenuShell) ConnectInsert(f func(child Widgetter, position int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuShell, "insert", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectInsert), f)
 }
 
@@ -529,7 +529,7 @@ func (menuShell *MenuShell) ConnectMoveCurrent(f func(direction MenuDirectionTyp
 
 //export _gotk4_gtk3_MenuShell_ConnectMoveSelected
 func _gotk4_gtk3_MenuShell_ConnectMoveSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(distance int32) (ok bool)
+	var f func(distance int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -537,12 +537,12 @@ func _gotk4_gtk3_MenuShell_ConnectMoveSelected(arg0 C.gpointer, arg1 C.gint, arg
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(distance int32) (ok bool))
+		f = closure.Func.(func(distance int) (ok bool))
 	}
 
-	var _distance int32 // out
+	var _distance int // out
 
-	_distance = int32(arg1)
+	_distance = int(arg1)
 
 	ok := f(_distance)
 
@@ -554,7 +554,7 @@ func _gotk4_gtk3_MenuShell_ConnectMoveSelected(arg0 C.gpointer, arg1 C.gint, arg
 }
 
 // ConnectMoveSelected signal is emitted to move the selection to another item.
-func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int32) (ok bool)) coreglib.SignalHandle {
+func (menuShell *MenuShell) ConnectMoveSelected(f func(distance int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuShell, "move-selected", false, unsafe.Pointer(C._gotk4_gtk3_MenuShell_ConnectMoveSelected), f)
 }
 
@@ -829,7 +829,7 @@ func (menuShell *MenuShell) TakeFocus() bool {
 //    - position in the item list where child is added. Positions are numbered
 //      from 0 to n-1.
 //
-func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
+func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkMenuShell // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.gint          // out

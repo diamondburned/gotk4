@@ -113,7 +113,7 @@ func DirectEqual(v1, v2 unsafe.Pointer) bool {
 //
 //    - guint: hash value corresponding to the key.
 //
-func DirectHash(v unsafe.Pointer) uint32 {
+func DirectHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -122,9 +122,9 @@ func DirectHash(v unsafe.Pointer) uint32 {
 	_cret = C.g_direct_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -177,7 +177,7 @@ func DoubleEqual(v1, v2 unsafe.Pointer) bool {
 //
 //    - guint: hash value corresponding to the key.
 //
-func DoubleHash(v unsafe.Pointer) uint32 {
+func DoubleHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -186,9 +186,9 @@ func DoubleHash(v unsafe.Pointer) uint32 {
 	_cret = C.g_double_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -241,7 +241,7 @@ func Int64Equal(v1, v2 unsafe.Pointer) bool {
 //
 //    - guint: hash value corresponding to the key.
 //
-func Int64Hash(v unsafe.Pointer) uint32 {
+func Int64Hash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -250,9 +250,9 @@ func Int64Hash(v unsafe.Pointer) uint32 {
 	_cret = C.g_int64_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -311,7 +311,7 @@ func IntEqual(v1, v2 unsafe.Pointer) bool {
 //
 //    - guint: hash value corresponding to the key.
 //
-func IntHash(v unsafe.Pointer) uint32 {
+func IntHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -320,9 +320,9 @@ func IntHash(v unsafe.Pointer) uint32 {
 	_cret = C.g_int_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -386,7 +386,7 @@ func StrEqual(v1, v2 unsafe.Pointer) bool {
 //
 //    - guint: hash value corresponding to the key.
 //
-func StrHash(v unsafe.Pointer) uint32 {
+func StrHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -395,9 +395,9 @@ func StrHash(v unsafe.Pointer) uint32 {
 	_cret = C.g_str_hash(_arg1)
 	runtime.KeepAlive(v)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -821,7 +821,7 @@ func HashTableReplace(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value un
 //
 //    - guint: number of key/value pairs in the Table.
 //
-func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint32 {
+func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint {
 	var _arg1 *C.GHashTable // out
 	var _cret C.guint       // in
 
@@ -838,9 +838,9 @@ func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint32 {
 	_cret = C.g_hash_table_size(_arg1)
 	runtime.KeepAlive(hashTable)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

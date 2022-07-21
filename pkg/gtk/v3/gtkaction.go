@@ -431,7 +431,7 @@ func (action *Action) ConnectAccelerator() {
 //
 //    - widget that displays the icon for this action.
 //
-func (action *Action) CreateIcon(iconSize int32) Widgetter {
+func (action *Action) CreateIcon(iconSize int) Widgetter {
 	var _arg0 *C.GtkAction  // out
 	var _arg1 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in

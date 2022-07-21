@@ -144,7 +144,7 @@ func (misc *Misc) Alignment() (xalign, yalign float32) {
 //    - xpad (optional): location to store padding in the X direction, or NULL.
 //    - ypad (optional): location to store padding in the Y direction, or NULL.
 //
-func (misc *Misc) Padding() (xpad, ypad int32) {
+func (misc *Misc) Padding() (xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // in
 	var _arg2 C.gint     // in
@@ -154,11 +154,11 @@ func (misc *Misc) Padding() (xpad, ypad int32) {
 	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(misc)
 
-	var _xpad int32 // out
-	var _ypad int32 // out
+	var _xpad int // out
+	var _ypad int // out
 
-	_xpad = int32(_arg1)
-	_ypad = int32(_arg2)
+	_xpad = int(_arg1)
+	_ypad = int(_arg2)
 
 	return _xpad, _ypad
 }
@@ -199,7 +199,7 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 //    - ypad: amount of space to add on the top and bottom of the widget, in
 //      pixels.
 //
-func (misc *Misc) SetPadding(xpad, ypad int32) {
+func (misc *Misc) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out
 	var _arg1 C.gint     // out
 	var _arg2 C.gint     // out

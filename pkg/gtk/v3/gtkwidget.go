@@ -412,13 +412,13 @@ func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Wind
 type WidgetOverrider interface {
 	// The function takes the following parameters:
 	//
-	AdjustBaselineAllocation(baseline *int32)
+	AdjustBaselineAllocation(baseline *int)
 	// The function takes the following parameters:
 	//
 	//    - minimumBaseline
 	//    - naturalBaseline
 	//
-	AdjustBaselineRequest(minimumBaseline, naturalBaseline *int32)
+	AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
 	// The function takes the following parameters:
 	//
 	//    - orientation
@@ -427,14 +427,14 @@ type WidgetOverrider interface {
 	//    - allocatedPos
 	//    - allocatedSize
 	//
-	AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int32)
+	AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
 	// The function takes the following parameters:
 	//
 	//    - orientation
 	//    - minimumSize
 	//    - naturalSize
 	//
-	AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int32)
+	AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -460,7 +460,7 @@ type WidgetOverrider interface {
 	//
 	//    - ok: TRUE if the accelerator can be activated.
 	//
-	CanActivateAccel(signalId uint32) bool
+	CanActivateAccel(signalId uint) bool
 	CompositedChanged()
 	// The function takes the following parameters:
 	//
@@ -530,7 +530,7 @@ type WidgetOverrider interface {
 	//    - info
 	//    - time_
 	//
-	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint32)
+	DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
 	// The function takes the following parameters:
 	//
 	//    - context
@@ -540,7 +540,7 @@ type WidgetOverrider interface {
 	//    - info
 	//    - time_
 	//
-	DragDataReceived(context *gdk.DragContext, x, y int32, selectionData *SelectionData, info, time_ uint32)
+	DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
 	// The function takes the following parameters:
 	//
 	//    - context
@@ -550,7 +550,7 @@ type WidgetOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	DragDrop(context *gdk.DragContext, x, y int32, time_ uint32) bool
+	DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
 	// The function takes the following parameters:
 	//
 	DragEnd(context *gdk.DragContext)
@@ -567,7 +567,7 @@ type WidgetOverrider interface {
 	//    - context
 	//    - time_
 	//
-	DragLeave(context *gdk.DragContext, time_ uint32)
+	DragLeave(context *gdk.DragContext, time_ uint)
 	// The function takes the following parameters:
 	//
 	//    - context
@@ -577,7 +577,7 @@ type WidgetOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	DragMotion(context *gdk.DragContext, x, y int32, time_ uint32) bool
+	DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -656,7 +656,7 @@ type WidgetOverrider interface {
 	//    - naturalHeight (optional): location to store the natural height, or
 	//      NULL.
 	//
-	PreferredHeight() (minimumHeight, naturalHeight int32)
+	PreferredHeight() (minimumHeight, naturalHeight int)
 	// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and
 	// natural height and the corresponding baselines if it would be given the
 	// specified width, or the default height if width is -1. The baselines may
@@ -684,7 +684,7 @@ type WidgetOverrider interface {
 	//    - naturalBaseline (optional): location for storing the baseline for the
 	//      natural height, or NULL.
 	//
-	PreferredHeightAndBaselineForWidth(width int32) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int32)
+	PreferredHeightAndBaselineForWidth(width int) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int)
 	// PreferredHeightForWidth retrieves a widget’s minimum and natural height
 	// if it would be given the specified width.
 	//
@@ -705,7 +705,7 @@ type WidgetOverrider interface {
 	//    - naturalHeight (optional): location for storing the natural height, or
 	//      NULL.
 	//
-	PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
+	PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
 	// PreferredWidth retrieves a widget’s initial minimum and natural width.
 	//
 	// This call is specific to height-for-width requests.
@@ -723,7 +723,7 @@ type WidgetOverrider interface {
 	//    - naturalWidth (optional): location to store the natural width, or
 	//      NULL.
 	//
-	PreferredWidth() (minimumWidth, naturalWidth int32)
+	PreferredWidth() (minimumWidth, naturalWidth int)
 	// PreferredWidthForHeight retrieves a widget’s minimum and natural width if
 	// it would be given the specified height.
 	//
@@ -744,7 +744,7 @@ type WidgetOverrider interface {
 	//    - naturalWidth (optional): location for storing the natural width, or
 	//      NULL.
 	//
-	PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
+	PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
 	//
@@ -892,7 +892,7 @@ type WidgetOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows. Once the main loop becomes idle (after the current batch
@@ -944,7 +944,7 @@ type WidgetOverrider interface {
 	//    - info
 	//    - time_
 	//
-	SelectionGet(selectionData *SelectionData, info, time_ uint32)
+	SelectionGet(selectionData *SelectionData, info, time_ uint)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -955,7 +955,7 @@ type WidgetOverrider interface {
 	//    - selectionData
 	//    - time_
 	//
-	SelectionReceived(selectionData *SelectionData, time_ uint32)
+	SelectionReceived(selectionData *SelectionData, time_ uint)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -1168,24 +1168,24 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	goval := gbox.Get(uintptr(data))
 	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclassPtr))
 
-	if _, ok := goval.(interface{ AdjustBaselineAllocation(baseline *int32) }); ok {
+	if _, ok := goval.(interface{ AdjustBaselineAllocation(baseline *int) }); ok {
 		pclass.adjust_baseline_allocation = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_baseline_allocation)
 	}
 
 	if _, ok := goval.(interface {
-		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int32)
+		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
 	}); ok {
 		pclass.adjust_baseline_request = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_baseline_request)
 	}
 
 	if _, ok := goval.(interface {
-		AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int32)
+		AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
 	}); ok {
 		pclass.adjust_size_allocation = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_size_allocation)
 	}
 
 	if _, ok := goval.(interface {
-		AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int32)
+		AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
 	}); ok {
 		pclass.adjust_size_request = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_size_request)
 	}
@@ -1202,7 +1202,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 		pclass.button_release_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_button_release_event)
 	}
 
-	if _, ok := goval.(interface{ CanActivateAccel(signalId uint32) bool }); ok {
+	if _, ok := goval.(interface{ CanActivateAccel(signalId uint) bool }); ok {
 		pclass.can_activate_accel = (*[0]byte)(C._gotk4_gtk3_WidgetClass_can_activate_accel)
 	}
 
@@ -1257,19 +1257,19 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint32)
+		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
 	}); ok {
 		pclass.drag_data_get = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_get)
 	}
 
 	if _, ok := goval.(interface {
-		DragDataReceived(context *gdk.DragContext, x, y int32, selectionData *SelectionData, info, time_ uint32)
+		DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
 	}); ok {
 		pclass.drag_data_received = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_received)
 	}
 
 	if _, ok := goval.(interface {
-		DragDrop(context *gdk.DragContext, x, y int32, time_ uint32) bool
+		DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
 	}); ok {
 		pclass.drag_drop = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_drop)
 	}
@@ -1287,13 +1287,13 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		DragLeave(context *gdk.DragContext, time_ uint32)
+		DragLeave(context *gdk.DragContext, time_ uint)
 	}); ok {
 		pclass.drag_leave = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_leave)
 	}
 
 	if _, ok := goval.(interface {
-		DragMotion(context *gdk.DragContext, x, y int32, time_ uint32) bool
+		DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
 	}); ok {
 		pclass.drag_motion = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_motion)
 	}
@@ -1335,31 +1335,31 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeight() (minimumHeight, naturalHeight int32)
+		PreferredHeight() (minimumHeight, naturalHeight int)
 	}); ok {
 		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeightAndBaselineForWidth(width int32) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int32)
+		PreferredHeightAndBaselineForWidth(width int) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int)
 	}); ok {
 		pclass.get_preferred_height_and_baseline_for_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
+		PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
 	}); ok {
 		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidth() (minimumWidth, naturalWidth int32)
+		PreferredWidth() (minimumWidth, naturalWidth int)
 	}); ok {
 		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
+		PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
 	}); ok {
 		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_width_for_height)
 	}
@@ -1469,7 +1469,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	}); ok {
 		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk3_WidgetClass_query_tooltip)
 	}
@@ -1501,7 +1501,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SelectionGet(selectionData *SelectionData, info, time_ uint32)
+		SelectionGet(selectionData *SelectionData, info, time_ uint)
 	}); ok {
 		pclass.selection_get = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_get)
 	}
@@ -1513,7 +1513,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SelectionReceived(selectionData *SelectionData, time_ uint32)
+		SelectionReceived(selectionData *SelectionData, time_ uint)
 	}); ok {
 		pclass.selection_received = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_received)
 	}
@@ -1596,11 +1596,11 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 //export _gotk4_gtk3_WidgetClass_adjust_baseline_allocation
 func _gotk4_gtk3_WidgetClass_adjust_baseline_allocation(arg0 *C.GtkWidget, arg1 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ AdjustBaselineAllocation(baseline *int32) })
+	iface := goval.(interface{ AdjustBaselineAllocation(baseline *int) })
 
-	var _baseline *int32 // out
+	var _baseline *int // out
 
-	_baseline = (*int32)(unsafe.Pointer(arg1))
+	_baseline = (*int)(unsafe.Pointer(arg1))
 
 	iface.AdjustBaselineAllocation(_baseline)
 }
@@ -1609,14 +1609,14 @@ func _gotk4_gtk3_WidgetClass_adjust_baseline_allocation(arg0 *C.GtkWidget, arg1 
 func _gotk4_gtk3_WidgetClass_adjust_baseline_request(arg0 *C.GtkWidget, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int32)
+		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int)
 	})
 
-	var _minimumBaseline *int32 // out
-	var _naturalBaseline *int32 // out
+	var _minimumBaseline *int // out
+	var _naturalBaseline *int // out
 
-	_minimumBaseline = (*int32)(unsafe.Pointer(arg1))
-	_naturalBaseline = (*int32)(unsafe.Pointer(arg2))
+	_minimumBaseline = (*int)(unsafe.Pointer(arg1))
+	_naturalBaseline = (*int)(unsafe.Pointer(arg2))
 
 	iface.AdjustBaselineRequest(_minimumBaseline, _naturalBaseline)
 }
@@ -1625,20 +1625,20 @@ func _gotk4_gtk3_WidgetClass_adjust_baseline_request(arg0 *C.GtkWidget, arg1 *C.
 func _gotk4_gtk3_WidgetClass_adjust_size_allocation(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int32)
+		AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int)
 	})
 
 	var _orientation Orientation // out
-	var _minimumSize *int32      // out
-	var _naturalSize *int32      // out
-	var _allocatedPos *int32     // out
-	var _allocatedSize *int32    // out
+	var _minimumSize *int        // out
+	var _naturalSize *int        // out
+	var _allocatedPos *int       // out
+	var _allocatedSize *int      // out
 
 	_orientation = Orientation(arg1)
-	_minimumSize = (*int32)(unsafe.Pointer(arg2))
-	_naturalSize = (*int32)(unsafe.Pointer(arg3))
-	_allocatedPos = (*int32)(unsafe.Pointer(arg4))
-	_allocatedSize = (*int32)(unsafe.Pointer(arg5))
+	_minimumSize = (*int)(unsafe.Pointer(arg2))
+	_naturalSize = (*int)(unsafe.Pointer(arg3))
+	_allocatedPos = (*int)(unsafe.Pointer(arg4))
+	_allocatedSize = (*int)(unsafe.Pointer(arg5))
 
 	iface.AdjustSizeAllocation(_orientation, _minimumSize, _naturalSize, _allocatedPos, _allocatedSize)
 }
@@ -1647,16 +1647,16 @@ func _gotk4_gtk3_WidgetClass_adjust_size_allocation(arg0 *C.GtkWidget, arg1 C.Gt
 func _gotk4_gtk3_WidgetClass_adjust_size_request(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int32)
+		AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int)
 	})
 
 	var _orientation Orientation // out
-	var _minimumSize *int32      // out
-	var _naturalSize *int32      // out
+	var _minimumSize *int        // out
+	var _naturalSize *int        // out
 
 	_orientation = Orientation(arg1)
-	_minimumSize = (*int32)(unsafe.Pointer(arg2))
-	_naturalSize = (*int32)(unsafe.Pointer(arg3))
+	_minimumSize = (*int)(unsafe.Pointer(arg2))
+	_naturalSize = (*int)(unsafe.Pointer(arg3))
 
 	iface.AdjustSizeRequest(_orientation, _minimumSize, _naturalSize)
 }
@@ -1704,11 +1704,11 @@ func _gotk4_gtk3_WidgetClass_button_release_event(arg0 *C.GtkWidget, arg1 *C.Gdk
 //export _gotk4_gtk3_WidgetClass_can_activate_accel
 func _gotk4_gtk3_WidgetClass_can_activate_accel(arg0 *C.GtkWidget, arg1 C.guint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CanActivateAccel(signalId uint32) bool })
+	iface := goval.(interface{ CanActivateAccel(signalId uint) bool })
 
-	var _signalId uint32 // out
+	var _signalId uint // out
 
-	_signalId = uint32(arg1)
+	_signalId = uint(arg1)
 
 	ok := iface.CanActivateAccel(_signalId)
 
@@ -1871,13 +1871,13 @@ func _gotk4_gtk3_WidgetClass_drag_data_delete(arg0 *C.GtkWidget, arg1 *C.GdkDrag
 func _gotk4_gtk3_WidgetClass_drag_data_get(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 *C.GtkSelectionData, arg3 C.guint, arg4 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint32)
+		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint)
 	})
 
 	var _context *gdk.DragContext     // out
 	var _selectionData *SelectionData // out
-	var _info uint32                  // out
-	var _time_ uint32                 // out
+	var _info uint                    // out
+	var _time_ uint                   // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -1886,8 +1886,8 @@ func _gotk4_gtk3_WidgetClass_drag_data_get(arg0 *C.GtkWidget, arg1 *C.GdkDragCon
 		}
 	}
 	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_info = uint32(arg3)
-	_time_ = uint32(arg4)
+	_info = uint(arg3)
+	_time_ = uint(arg4)
 
 	iface.DragDataGet(_context, _selectionData, _info, _time_)
 }
@@ -1896,15 +1896,15 @@ func _gotk4_gtk3_WidgetClass_drag_data_get(arg0 *C.GtkWidget, arg1 *C.GdkDragCon
 func _gotk4_gtk3_WidgetClass_drag_data_received(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 *C.GtkSelectionData, arg5 C.guint, arg6 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DragDataReceived(context *gdk.DragContext, x, y int32, selectionData *SelectionData, info, time_ uint32)
+		DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint)
 	})
 
 	var _context *gdk.DragContext     // out
-	var _x int32                      // out
-	var _y int32                      // out
+	var _x int                        // out
+	var _y int                        // out
 	var _selectionData *SelectionData // out
-	var _info uint32                  // out
-	var _time_ uint32                 // out
+	var _info uint                    // out
+	var _time_ uint                   // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -1912,11 +1912,11 @@ func _gotk4_gtk3_WidgetClass_drag_data_received(arg0 *C.GtkWidget, arg1 *C.GdkDr
 			Object: obj,
 		}
 	}
-	_x = int32(arg2)
-	_y = int32(arg3)
+	_x = int(arg2)
+	_y = int(arg3)
 	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg4)))
-	_info = uint32(arg5)
-	_time_ = uint32(arg6)
+	_info = uint(arg5)
+	_time_ = uint(arg6)
 
 	iface.DragDataReceived(_context, _x, _y, _selectionData, _info, _time_)
 }
@@ -1925,13 +1925,13 @@ func _gotk4_gtk3_WidgetClass_drag_data_received(arg0 *C.GtkWidget, arg1 *C.GdkDr
 func _gotk4_gtk3_WidgetClass_drag_drop(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DragDrop(context *gdk.DragContext, x, y int32, time_ uint32) bool
+		DragDrop(context *gdk.DragContext, x, y int, time_ uint) bool
 	})
 
 	var _context *gdk.DragContext // out
-	var _x int32                  // out
-	var _y int32                  // out
-	var _time_ uint32             // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time_ uint               // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -1939,9 +1939,9 @@ func _gotk4_gtk3_WidgetClass_drag_drop(arg0 *C.GtkWidget, arg1 *C.GdkDragContext
 			Object: obj,
 		}
 	}
-	_x = int32(arg2)
-	_y = int32(arg3)
-	_time_ = uint32(arg4)
+	_x = int(arg2)
+	_y = int(arg3)
+	_time_ = uint(arg4)
 
 	ok := iface.DragDrop(_context, _x, _y, _time_)
 
@@ -2002,11 +2002,11 @@ func _gotk4_gtk3_WidgetClass_drag_failed(arg0 *C.GtkWidget, arg1 *C.GdkDragConte
 func _gotk4_gtk3_WidgetClass_drag_leave(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DragLeave(context *gdk.DragContext, time_ uint32)
+		DragLeave(context *gdk.DragContext, time_ uint)
 	})
 
 	var _context *gdk.DragContext // out
-	var _time_ uint32             // out
+	var _time_ uint               // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -2014,7 +2014,7 @@ func _gotk4_gtk3_WidgetClass_drag_leave(arg0 *C.GtkWidget, arg1 *C.GdkDragContex
 			Object: obj,
 		}
 	}
-	_time_ = uint32(arg2)
+	_time_ = uint(arg2)
 
 	iface.DragLeave(_context, _time_)
 }
@@ -2023,13 +2023,13 @@ func _gotk4_gtk3_WidgetClass_drag_leave(arg0 *C.GtkWidget, arg1 *C.GdkDragContex
 func _gotk4_gtk3_WidgetClass_drag_motion(arg0 *C.GtkWidget, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DragMotion(context *gdk.DragContext, x, y int32, time_ uint32) bool
+		DragMotion(context *gdk.DragContext, x, y int, time_ uint) bool
 	})
 
 	var _context *gdk.DragContext // out
-	var _x int32                  // out
-	var _y int32                  // out
-	var _time_ uint32             // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time_ uint               // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -2037,9 +2037,9 @@ func _gotk4_gtk3_WidgetClass_drag_motion(arg0 *C.GtkWidget, arg1 *C.GdkDragConte
 			Object: obj,
 		}
 	}
-	_x = int32(arg2)
-	_y = int32(arg3)
-	_time_ = uint32(arg4)
+	_x = int(arg2)
+	_y = int(arg3)
+	_time_ = uint(arg4)
 
 	ok := iface.DragMotion(_context, _x, _y, _time_)
 
@@ -2190,7 +2190,7 @@ func _gotk4_gtk3_WidgetClass_get_accessible(arg0 *C.GtkWidget) (cret *C.AtkObjec
 func _gotk4_gtk3_WidgetClass_get_preferred_height(arg0 *C.GtkWidget, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeight() (minimumHeight, naturalHeight int32)
+		PreferredHeight() (minimumHeight, naturalHeight int)
 	})
 
 	minimumHeight, naturalHeight := iface.PreferredHeight()
@@ -2203,12 +2203,12 @@ func _gotk4_gtk3_WidgetClass_get_preferred_height(arg0 *C.GtkWidget, arg1 *C.gin
 func _gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width(arg0 *C.GtkWidget, arg1 C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeightAndBaselineForWidth(width int32) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int32)
+		PreferredHeightAndBaselineForWidth(width int) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int)
 	})
 
-	var _width int32 // out
+	var _width int // out
 
-	_width = int32(arg1)
+	_width = int(arg1)
 
 	minimumHeight, naturalHeight, minimumBaseline, naturalBaseline := iface.PreferredHeightAndBaselineForWidth(_width)
 
@@ -2222,12 +2222,12 @@ func _gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width(arg0 *C
 func _gotk4_gtk3_WidgetClass_get_preferred_height_for_width(arg0 *C.GtkWidget, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
+		PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
 	})
 
-	var _width int32 // out
+	var _width int // out
 
-	_width = int32(arg1)
+	_width = int(arg1)
 
 	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_width)
 
@@ -2239,7 +2239,7 @@ func _gotk4_gtk3_WidgetClass_get_preferred_height_for_width(arg0 *C.GtkWidget, a
 func _gotk4_gtk3_WidgetClass_get_preferred_width(arg0 *C.GtkWidget, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidth() (minimumWidth, naturalWidth int32)
+		PreferredWidth() (minimumWidth, naturalWidth int)
 	})
 
 	minimumWidth, naturalWidth := iface.PreferredWidth()
@@ -2252,12 +2252,12 @@ func _gotk4_gtk3_WidgetClass_get_preferred_width(arg0 *C.GtkWidget, arg1 *C.gint
 func _gotk4_gtk3_WidgetClass_get_preferred_width_for_height(arg0 *C.GtkWidget, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
+		PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
 	})
 
-	var _height int32 // out
+	var _height int // out
 
-	_height = int32(arg1)
+	_height = int(arg1)
 
 	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_height)
 
@@ -2625,16 +2625,16 @@ func _gotk4_gtk3_WidgetClass_proximity_out_event(arg0 *C.GtkWidget, arg1 *C.GdkE
 func _gotk4_gtk3_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	})
 
-	var _x int32              // out
-	var _y int32              // out
+	var _x int                // out
+	var _y int                // out
 	var _keyboardTooltip bool // out
 	var _tooltip *Tooltip     // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
+	_x = int(arg1)
+	_y = int(arg2)
 	if arg3 != 0 {
 		_keyboardTooltip = true
 	}
@@ -2739,16 +2739,16 @@ func _gotk4_gtk3_WidgetClass_selection_clear_event(arg0 *C.GtkWidget, arg1 *C.Gd
 func _gotk4_gtk3_WidgetClass_selection_get(arg0 *C.GtkWidget, arg1 *C.GtkSelectionData, arg2 C.guint, arg3 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SelectionGet(selectionData *SelectionData, info, time_ uint32)
+		SelectionGet(selectionData *SelectionData, info, time_ uint)
 	})
 
 	var _selectionData *SelectionData // out
-	var _info uint32                  // out
-	var _time_ uint32                 // out
+	var _info uint                    // out
+	var _time_ uint                   // out
 
 	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_info = uint32(arg2)
-	_time_ = uint32(arg3)
+	_info = uint(arg2)
+	_time_ = uint(arg3)
 
 	iface.SelectionGet(_selectionData, _info, _time_)
 }
@@ -2777,14 +2777,14 @@ func _gotk4_gtk3_WidgetClass_selection_notify_event(arg0 *C.GtkWidget, arg1 *C.G
 func _gotk4_gtk3_WidgetClass_selection_received(arg0 *C.GtkWidget, arg1 *C.GtkSelectionData, arg2 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SelectionReceived(selectionData *SelectionData, time_ uint32)
+		SelectionReceived(selectionData *SelectionData, time_ uint)
 	})
 
 	var _selectionData *SelectionData // out
-	var _time_ uint32                 // out
+	var _time_ uint                   // out
 
 	_selectionData = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_time_ = uint32(arg2)
+	_time_ = uint(arg2)
 
 	iface.SelectionReceived(_selectionData, _time_)
 }
@@ -3123,7 +3123,7 @@ func (widget *Widget) ConnectButtonReleaseEvent(f func(event *gdk.EventButton) (
 
 //export _gotk4_gtk3_Widget_ConnectCanActivateAccel
 func _gotk4_gtk3_Widget_ConnectCanActivateAccel(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(signalId uint32) (ok bool)
+	var f func(signalId uint) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -3131,12 +3131,12 @@ func _gotk4_gtk3_Widget_ConnectCanActivateAccel(arg0 C.gpointer, arg1 C.guint, a
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(signalId uint32) (ok bool))
+		f = closure.Func.(func(signalId uint) (ok bool))
 	}
 
-	var _signalId uint32 // out
+	var _signalId uint // out
 
-	_signalId = uint32(arg1)
+	_signalId = uint(arg1)
 
 	ok := f(_signalId)
 
@@ -3151,7 +3151,7 @@ func _gotk4_gtk3_Widget_ConnectCanActivateAccel(arg0 C.gpointer, arg1 C.guint, a
 // signal identified by signal_id can currently be activated. This signal is
 // present to allow applications and derived widgets to override the default
 // Widget handling for determining whether an accelerator can be activated.
-func (widget *Widget) ConnectCanActivateAccel(f func(signalId uint32) (ok bool)) coreglib.SignalHandle {
+func (widget *Widget) ConnectCanActivateAccel(f func(signalId uint) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "can-activate-accel", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectCanActivateAccel), f)
 }
 
@@ -3448,7 +3448,7 @@ func (widget *Widget) ConnectDragDataDelete(f func(context *gdk.DragContext)) co
 
 //export _gotk4_gtk3_Widget_ConnectDragDataGet
 func _gotk4_gtk3_Widget_ConnectDragDataGet(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 *C.GtkSelectionData, arg3 C.guint, arg4 C.guint, arg5 C.guintptr) {
-	var f func(context *gdk.DragContext, data *SelectionData, info, time uint32)
+	var f func(context *gdk.DragContext, data *SelectionData, info, time uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -3456,13 +3456,13 @@ func _gotk4_gtk3_Widget_ConnectDragDataGet(arg0 C.gpointer, arg1 *C.GdkDragConte
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *gdk.DragContext, data *SelectionData, info, time uint32))
+		f = closure.Func.(func(context *gdk.DragContext, data *SelectionData, info, time uint))
 	}
 
 	var _context *gdk.DragContext // out
 	var _data *SelectionData      // out
-	var _info uint32              // out
-	var _time uint32              // out
+	var _info uint                // out
+	var _time uint                // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -3471,8 +3471,8 @@ func _gotk4_gtk3_Widget_ConnectDragDataGet(arg0 C.gpointer, arg1 *C.GdkDragConte
 		}
 	}
 	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_info = uint32(arg3)
-	_time = uint32(arg4)
+	_info = uint(arg3)
+	_time = uint(arg4)
 
 	f(_context, _data, _info, _time)
 }
@@ -3481,13 +3481,13 @@ func _gotk4_gtk3_Widget_ConnectDragDataGet(arg0 C.gpointer, arg1 *C.GdkDragConte
 // requests the data which is dragged. It is the responsibility of the signal
 // handler to fill data with the data in the format which is indicated by info.
 // See gtk_selection_data_set() and gtk_selection_data_set_text().
-func (widget *Widget) ConnectDragDataGet(f func(context *gdk.DragContext, data *SelectionData, info, time uint32)) coreglib.SignalHandle {
+func (widget *Widget) ConnectDragDataGet(f func(context *gdk.DragContext, data *SelectionData, info, time uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "drag-data-get", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDataGet), f)
 }
 
 //export _gotk4_gtk3_Widget_ConnectDragDataReceived
 func _gotk4_gtk3_Widget_ConnectDragDataReceived(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 *C.GtkSelectionData, arg5 C.guint, arg6 C.guint, arg7 C.guintptr) {
-	var f func(context *gdk.DragContext, x, y int32, data *SelectionData, info, time uint32)
+	var f func(context *gdk.DragContext, x, y int, data *SelectionData, info, time uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg7))
 		if closure == nil {
@@ -3495,15 +3495,15 @@ func _gotk4_gtk3_Widget_ConnectDragDataReceived(arg0 C.gpointer, arg1 *C.GdkDrag
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *gdk.DragContext, x, y int32, data *SelectionData, info, time uint32))
+		f = closure.Func.(func(context *gdk.DragContext, x, y int, data *SelectionData, info, time uint))
 	}
 
 	var _context *gdk.DragContext // out
-	var _x int32                  // out
-	var _y int32                  // out
+	var _x int                    // out
+	var _y int                    // out
 	var _data *SelectionData      // out
-	var _info uint32              // out
-	var _time uint32              // out
+	var _info uint                // out
+	var _time uint                // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -3511,11 +3511,11 @@ func _gotk4_gtk3_Widget_ConnectDragDataReceived(arg0 C.gpointer, arg1 *C.GdkDrag
 			Object: obj,
 		}
 	}
-	_x = int32(arg2)
-	_y = int32(arg3)
+	_x = int(arg2)
+	_y = int(arg3)
 	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg4)))
-	_info = uint32(arg5)
-	_time = uint32(arg6)
+	_info = uint(arg5)
+	_time = uint(arg6)
 
 	f(_context, _x, _y, _data, _info, _time)
 }
@@ -3577,13 +3577,13 @@ func _gotk4_gtk3_Widget_ConnectDragDataReceived(arg0 C.gpointer, arg1 *C.GdkDrag
 //      else
 //        gtk_drag_finish (context, FALSE, FALSE, time);
 //     }.
-func (widget *Widget) ConnectDragDataReceived(f func(context *gdk.DragContext, x, y int32, data *SelectionData, info, time uint32)) coreglib.SignalHandle {
+func (widget *Widget) ConnectDragDataReceived(f func(context *gdk.DragContext, x, y int, data *SelectionData, info, time uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "drag-data-received", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDataReceived), f)
 }
 
 //export _gotk4_gtk3_Widget_ConnectDragDrop
 func _gotk4_gtk3_Widget_ConnectDragDrop(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(context *gdk.DragContext, x, y int32, time uint32) (ok bool)
+	var f func(context *gdk.DragContext, x, y int, time uint) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -3591,13 +3591,13 @@ func _gotk4_gtk3_Widget_ConnectDragDrop(arg0 C.gpointer, arg1 *C.GdkDragContext,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *gdk.DragContext, x, y int32, time uint32) (ok bool))
+		f = closure.Func.(func(context *gdk.DragContext, x, y int, time uint) (ok bool))
 	}
 
 	var _context *gdk.DragContext // out
-	var _x int32                  // out
-	var _y int32                  // out
-	var _time uint32              // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time uint                // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -3605,9 +3605,9 @@ func _gotk4_gtk3_Widget_ConnectDragDrop(arg0 C.gpointer, arg1 *C.GdkDragContext,
 			Object: obj,
 		}
 	}
-	_x = int32(arg2)
-	_y = int32(arg3)
-	_time = uint32(arg4)
+	_x = int(arg2)
+	_y = int(arg3)
+	_time = uint(arg4)
 
 	ok := f(_context, _x, _y, _time)
 
@@ -3627,7 +3627,7 @@ func _gotk4_gtk3_Widget_ConnectDragDrop(arg0 C.gpointer, arg1 *C.GdkDragContext,
 // can be done either directly or in a Widget::drag-data-received handler which
 // gets triggered by calling gtk_drag_get_data() to receive the data for one or
 // more of the supported targets.
-func (widget *Widget) ConnectDragDrop(f func(context *gdk.DragContext, x, y int32, time uint32) (ok bool)) coreglib.SignalHandle {
+func (widget *Widget) ConnectDragDrop(f func(context *gdk.DragContext, x, y int, time uint) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "drag-drop", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragDrop), f)
 }
 
@@ -3707,7 +3707,7 @@ func (widget *Widget) ConnectDragFailed(f func(context *gdk.DragContext, result 
 
 //export _gotk4_gtk3_Widget_ConnectDragLeave
 func _gotk4_gtk3_Widget_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.guint, arg3 C.guintptr) {
-	var f func(context *gdk.DragContext, time uint32)
+	var f func(context *gdk.DragContext, time uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -3715,11 +3715,11 @@ func _gotk4_gtk3_Widget_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDragContext
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *gdk.DragContext, time uint32))
+		f = closure.Func.(func(context *gdk.DragContext, time uint))
 	}
 
 	var _context *gdk.DragContext // out
-	var _time uint32              // out
+	var _time uint                // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -3727,7 +3727,7 @@ func _gotk4_gtk3_Widget_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDragContext
 			Object: obj,
 		}
 	}
-	_time = uint32(arg2)
+	_time = uint(arg2)
 
 	f(_context, _time)
 }
@@ -3737,13 +3737,13 @@ func _gotk4_gtk3_Widget_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDragContext
 // in Widget::drag-motion, e.g. undo highlighting with gtk_drag_unhighlight().
 //
 //    Likewise, the Widget::drag-leave signal is also emitted before the ::drag-drop signal, for instance to allow cleaning up of a preview item created in the Widget::drag-motion signal handler.
-func (widget *Widget) ConnectDragLeave(f func(context *gdk.DragContext, time uint32)) coreglib.SignalHandle {
+func (widget *Widget) ConnectDragLeave(f func(context *gdk.DragContext, time uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "drag-leave", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragLeave), f)
 }
 
 //export _gotk4_gtk3_Widget_ConnectDragMotion
 func _gotk4_gtk3_Widget_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDragContext, arg2 C.gint, arg3 C.gint, arg4 C.guint, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(context *gdk.DragContext, x, y int32, time uint32) (ok bool)
+	var f func(context *gdk.DragContext, x, y int, time uint) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -3751,13 +3751,13 @@ func _gotk4_gtk3_Widget_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDragContex
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *gdk.DragContext, x, y int32, time uint32) (ok bool))
+		f = closure.Func.(func(context *gdk.DragContext, x, y int, time uint) (ok bool))
 	}
 
 	var _context *gdk.DragContext // out
-	var _x int32                  // out
-	var _y int32                  // out
-	var _time uint32              // out
+	var _x int                    // out
+	var _y int                    // out
+	var _time uint                // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg1))
@@ -3765,9 +3765,9 @@ func _gotk4_gtk3_Widget_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDragContex
 			Object: obj,
 		}
 	}
-	_x = int32(arg2)
-	_y = int32(arg3)
-	_time = uint32(arg4)
+	_x = int(arg2)
+	_y = int(arg3)
+	_time = uint(arg4)
 
 	ok := f(_context, _x, _y, _time)
 
@@ -3863,7 +3863,7 @@ func _gotk4_gtk3_Widget_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDragContex
 //         // accept the drop
 //       }
 //    }.
-func (widget *Widget) ConnectDragMotion(f func(context *gdk.DragContext, x, y int32, time uint32) (ok bool)) coreglib.SignalHandle {
+func (widget *Widget) ConnectDragMotion(f func(context *gdk.DragContext, x, y int, time uint) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "drag-motion", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectDragMotion), f)
 }
 
@@ -4756,7 +4756,7 @@ func (widget *Widget) ConnectProximityOutEvent(f func(event *gdk.EventProximity)
 
 //export _gotk4_gtk3_Widget_ConnectQueryTooltip
 func _gotk4_gtk3_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -4764,16 +4764,16 @@ func _gotk4_gtk3_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool))
+		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
 	}
 
-	var _x int32           // out
-	var _y int32           // out
+	var _x int             // out
+	var _y int             // out
 	var _keyboardMode bool // out
 	var _tooltip *Tooltip  // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
+	_x = int(arg1)
+	_y = int(arg2)
 	if arg3 != 0 {
 		_keyboardMode = true
 	}
@@ -4799,7 +4799,7 @@ func _gotk4_gtk3_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 //
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
-func (widget *Widget) ConnectQueryTooltip(f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
+func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectQueryTooltip), f)
 }
 
@@ -4931,7 +4931,7 @@ func (widget *Widget) ConnectSelectionClearEvent(f func(event *gdk.EventSelectio
 
 //export _gotk4_gtk3_Widget_ConnectSelectionGet
 func _gotk4_gtk3_Widget_ConnectSelectionGet(arg0 C.gpointer, arg1 *C.GtkSelectionData, arg2 C.guint, arg3 C.guint, arg4 C.guintptr) {
-	var f func(data *SelectionData, info, time uint32)
+	var f func(data *SelectionData, info, time uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -4939,21 +4939,21 @@ func _gotk4_gtk3_Widget_ConnectSelectionGet(arg0 C.gpointer, arg1 *C.GtkSelectio
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(data *SelectionData, info, time uint32))
+		f = closure.Func.(func(data *SelectionData, info, time uint))
 	}
 
 	var _data *SelectionData // out
-	var _info uint32         // out
-	var _time uint32         // out
+	var _info uint           // out
+	var _time uint           // out
 
 	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_info = uint32(arg2)
-	_time = uint32(arg3)
+	_info = uint(arg2)
+	_time = uint(arg3)
 
 	f(_data, _info, _time)
 }
 
-func (widget *Widget) ConnectSelectionGet(f func(data *SelectionData, info, time uint32)) coreglib.SignalHandle {
+func (widget *Widget) ConnectSelectionGet(f func(data *SelectionData, info, time uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "selection-get", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionGet), f)
 }
 
@@ -4989,7 +4989,7 @@ func (widget *Widget) ConnectSelectionNotifyEvent(f func(event *gdk.EventSelecti
 
 //export _gotk4_gtk3_Widget_ConnectSelectionReceived
 func _gotk4_gtk3_Widget_ConnectSelectionReceived(arg0 C.gpointer, arg1 *C.GtkSelectionData, arg2 C.guint, arg3 C.guintptr) {
-	var f func(data *SelectionData, time uint32)
+	var f func(data *SelectionData, time uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -4997,19 +4997,19 @@ func _gotk4_gtk3_Widget_ConnectSelectionReceived(arg0 C.gpointer, arg1 *C.GtkSel
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(data *SelectionData, time uint32))
+		f = closure.Func.(func(data *SelectionData, time uint))
 	}
 
 	var _data *SelectionData // out
-	var _time uint32         // out
+	var _time uint           // out
 
 	_data = (*SelectionData)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_time = uint32(arg2)
+	_time = uint(arg2)
 
 	f(_data, _time)
 }
 
-func (widget *Widget) ConnectSelectionReceived(f func(data *SelectionData, time uint32)) coreglib.SignalHandle {
+func (widget *Widget) ConnectSelectionReceived(f func(data *SelectionData, time uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "selection-received", false, unsafe.Pointer(C._gotk4_gtk3_Widget_ConnectSelectionReceived), f)
 }
 
@@ -5466,7 +5466,7 @@ func (widget *Widget) Activate() bool {
 //    - accelMods: modifier key combination of the accelerator.
 //    - accelFlags: flag accelerators, e.g. GTK_ACCEL_VISIBLE.
 //
-func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint32, accelMods gdk.ModifierType, accelFlags AccelFlags) {
+func (widget *Widget) AddAccelerator(accelSignal string, accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType, accelFlags AccelFlags) {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.GtkAccelGroup  // out
@@ -5522,7 +5522,7 @@ func (widget *Widget) AddDeviceEvents(device gdk.Devicer, events gdk.EventMask) 
 //
 //    - events: event mask, see EventMask.
 //
-func (widget *Widget) AddEvents(events int32) {
+func (widget *Widget) AddEvents(events int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -5584,7 +5584,7 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 //    - guint: id for the connection of this callback. Remove the callback by
 //      passing it to gtk_widget_remove_tick_callback().
 //
-func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
+func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkTickCallback // out
 	var _arg2 C.gpointer
@@ -5600,9 +5600,9 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(callback)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -5622,7 +5622,7 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 //
 //    - ok: TRUE if the accelerator can be activated.
 //
-func (widget *Widget) CanActivateAccel(signalId uint32) bool {
+func (widget *Widget) CanActivateAccel(signalId uint) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
@@ -6085,7 +6085,7 @@ func (widget *Widget) ActionGroup(prefix string) *gio.ActionGroup {
 //
 //    - gint: baseline of the widget, or -1 if none.
 //
-func (widget *Widget) AllocatedBaseline() int32 {
+func (widget *Widget) AllocatedBaseline() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -6094,9 +6094,9 @@ func (widget *Widget) AllocatedBaseline() int32 {
 	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6109,7 +6109,7 @@ func (widget *Widget) AllocatedBaseline() int32 {
 //
 //    - gint: height of the widget.
 //
-func (widget *Widget) AllocatedHeight() int32 {
+func (widget *Widget) AllocatedHeight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -6118,9 +6118,9 @@ func (widget *Widget) AllocatedHeight() int32 {
 	_cret = C.gtk_widget_get_allocated_height(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6140,7 +6140,7 @@ func (widget *Widget) AllocatedHeight() int32 {
 //    - allocation: pointer to a Allocation to copy to.
 //    - baseline (optional): pointer to an integer to copy to.
 //
-func (widget *Widget) AllocatedSize() (*Allocation, int32) {
+func (widget *Widget) AllocatedSize() (*Allocation, int) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.GtkAllocation // in
 	var _arg2 C.int           // in
@@ -6151,10 +6151,10 @@ func (widget *Widget) AllocatedSize() (*Allocation, int32) {
 	runtime.KeepAlive(widget)
 
 	var _allocation *Allocation // out
-	var _baseline int32         // out
+	var _baseline int           // out
 
 	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_baseline = int32(_arg2)
+	_baseline = int(_arg2)
 
 	return _allocation, _baseline
 }
@@ -6167,7 +6167,7 @@ func (widget *Widget) AllocatedSize() (*Allocation, int32) {
 //
 //    - gint: width of the widget.
 //
-func (widget *Widget) AllocatedWidth() int32 {
+func (widget *Widget) AllocatedWidth() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -6176,9 +6176,9 @@ func (widget *Widget) AllocatedWidth() int32 {
 	_cret = C.gtk_widget_get_allocated_width(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6625,7 +6625,7 @@ func (widget *Widget) DoubleBuffered() bool {
 //
 //    - gint: event mask for widget.
 //
-func (widget *Widget) Events() int32 {
+func (widget *Widget) Events() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -6634,9 +6634,9 @@ func (widget *Widget) Events() int32 {
 	_cret = C.gtk_widget_get_events(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6957,7 +6957,7 @@ func (widget *Widget) Mapped() bool {
 //
 //    - gint: bottom margin of widget.
 //
-func (widget *Widget) MarginBottom() int32 {
+func (widget *Widget) MarginBottom() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -6966,9 +6966,9 @@ func (widget *Widget) MarginBottom() int32 {
 	_cret = C.gtk_widget_get_margin_bottom(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -6979,7 +6979,7 @@ func (widget *Widget) MarginBottom() int32 {
 //
 //    - gint: end margin of widget.
 //
-func (widget *Widget) MarginEnd() int32 {
+func (widget *Widget) MarginEnd() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -6988,9 +6988,9 @@ func (widget *Widget) MarginEnd() int32 {
 	_cret = C.gtk_widget_get_margin_end(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7003,7 +7003,7 @@ func (widget *Widget) MarginEnd() int32 {
 //
 //    - gint: left margin of widget.
 //
-func (widget *Widget) MarginLeft() int32 {
+func (widget *Widget) MarginLeft() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -7012,9 +7012,9 @@ func (widget *Widget) MarginLeft() int32 {
 	_cret = C.gtk_widget_get_margin_left(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7027,7 +7027,7 @@ func (widget *Widget) MarginLeft() int32 {
 //
 //    - gint: right margin of widget.
 //
-func (widget *Widget) MarginRight() int32 {
+func (widget *Widget) MarginRight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -7036,9 +7036,9 @@ func (widget *Widget) MarginRight() int32 {
 	_cret = C.gtk_widget_get_margin_right(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7049,7 +7049,7 @@ func (widget *Widget) MarginRight() int32 {
 //
 //    - gint: start margin of widget.
 //
-func (widget *Widget) MarginStart() int32 {
+func (widget *Widget) MarginStart() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -7058,9 +7058,9 @@ func (widget *Widget) MarginStart() int32 {
 	_cret = C.gtk_widget_get_margin_start(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7071,7 +7071,7 @@ func (widget *Widget) MarginStart() int32 {
 //
 //    - gint: top margin of widget.
 //
-func (widget *Widget) MarginTop() int32 {
+func (widget *Widget) MarginTop() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -7080,9 +7080,9 @@ func (widget *Widget) MarginTop() int32 {
 	_cret = C.gtk_widget_get_margin_top(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7342,7 +7342,7 @@ func (widget *Widget) GetPath() *WidgetPath {
 //    - x (optional): return location for the X coordinate, or NULL.
 //    - y (optional): return location for the Y coordinate, or NULL.
 //
-func (widget *Widget) Pointer() (x, y int32) {
+func (widget *Widget) Pointer() (x, y int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -7352,11 +7352,11 @@ func (widget *Widget) Pointer() (x, y int32) {
 	C.gtk_widget_get_pointer(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -7375,7 +7375,7 @@ func (widget *Widget) Pointer() (x, y int32) {
 //    - minimumHeight (optional): location to store the minimum height, or NULL.
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
-func (widget *Widget) PreferredHeight() (minimumHeight, naturalHeight int32) {
+func (widget *Widget) PreferredHeight() (minimumHeight, naturalHeight int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -7385,11 +7385,11 @@ func (widget *Widget) PreferredHeight() (minimumHeight, naturalHeight int32) {
 	C.gtk_widget_get_preferred_height(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg1)
-	_naturalHeight = int32(_arg2)
+	_minimumHeight = int(_arg1)
+	_naturalHeight = int(_arg2)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -7420,7 +7420,7 @@ func (widget *Widget) PreferredHeight() (minimumHeight, naturalHeight int32) {
 //    - naturalBaseline (optional): location for storing the baseline for the
 //      natural height, or NULL.
 //
-func (widget *Widget) PreferredHeightAndBaselineForWidth(width int32) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int32) {
+func (widget *Widget) PreferredHeightAndBaselineForWidth(width int) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // in
@@ -7435,15 +7435,15 @@ func (widget *Widget) PreferredHeightAndBaselineForWidth(width int32) (minimumHe
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32   // out
-	var _naturalHeight int32   // out
-	var _minimumBaseline int32 // out
-	var _naturalBaseline int32 // out
+	var _minimumHeight int   // out
+	var _naturalHeight int   // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
 
-	_minimumHeight = int32(_arg2)
-	_naturalHeight = int32(_arg3)
-	_minimumBaseline = int32(_arg4)
-	_naturalBaseline = int32(_arg5)
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
+	_minimumBaseline = int(_arg4)
+	_naturalBaseline = int(_arg5)
 
 	return _minimumHeight, _naturalHeight, _minimumBaseline, _naturalBaseline
 }
@@ -7467,7 +7467,7 @@ func (widget *Widget) PreferredHeightAndBaselineForWidth(width int32) (minimumHe
 //    - naturalHeight (optional): location for storing the natural height, or
 //      NULL.
 //
-func (widget *Widget) PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32) {
+func (widget *Widget) PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // in
@@ -7480,11 +7480,11 @@ func (widget *Widget) PreferredHeightForWidth(width int32) (minimumHeight, natur
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg2)
-	_naturalHeight = int32(_arg3)
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -7543,7 +7543,7 @@ func (widget *Widget) PreferredSize() (minimumSize, naturalSize *Requisition) {
 //    - minimumWidth (optional): location to store the minimum width, or NULL.
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
-func (widget *Widget) PreferredWidth() (minimumWidth, naturalWidth int32) {
+func (widget *Widget) PreferredWidth() (minimumWidth, naturalWidth int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -7553,11 +7553,11 @@ func (widget *Widget) PreferredWidth() (minimumWidth, naturalWidth int32) {
 	C.gtk_widget_get_preferred_width(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg1)
-	_naturalWidth = int32(_arg2)
+	_minimumWidth = int(_arg1)
+	_naturalWidth = int(_arg2)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -7579,7 +7579,7 @@ func (widget *Widget) PreferredWidth() (minimumWidth, naturalWidth int32) {
 //    - minimumWidth (optional): location for storing the minimum width, or NULL.
 //    - naturalWidth (optional): location for storing the natural width, or NULL.
 //
-func (widget *Widget) PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32) {
+func (widget *Widget) PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // in
@@ -7592,11 +7592,11 @@ func (widget *Widget) PreferredWidthForHeight(height int32) (minimumWidth, natur
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(height)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg2)
-	_naturalWidth = int32(_arg3)
+	_minimumWidth = int(_arg2)
+	_naturalWidth = int(_arg3)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -7771,7 +7771,7 @@ func (widget *Widget) RootWindow() gdk.Windower {
 //
 //    - gint: scale factor for widget.
 //
-func (widget *Widget) ScaleFactor() int32 {
+func (widget *Widget) ScaleFactor() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.gint       // in
 
@@ -7780,9 +7780,9 @@ func (widget *Widget) ScaleFactor() int32 {
 	_cret = C.gtk_widget_get_scale_factor(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -7885,7 +7885,7 @@ func (widget *Widget) Settings() *Settings {
 //    - width (optional): return location for width, or NULL.
 //    - height (optional): return location for height, or NULL.
 //
-func (widget *Widget) GetSizeRequest() (width, height int32) {
+func (widget *Widget) GetSizeRequest() (width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -7895,11 +7895,11 @@ func (widget *Widget) GetSizeRequest() (width, height int32) {
 	C.gtk_widget_get_size_request(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -9365,7 +9365,7 @@ func (widget *Widget) QueueDraw() {
 //    - width of region to draw.
 //    - height of region to draw.
 //
-func (widget *Widget) QueueDrawArea(x, y, width, height int32) {
+func (widget *Widget) QueueDrawArea(x, y, width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -9548,7 +9548,7 @@ func (widget *Widget) RegisterWindow(window gdk.Windower) {
 //
 //    - ok: whether an accelerator was installed and could be removed.
 //
-func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint32, accelMods gdk.ModifierType) bool {
+func (widget *Widget) RemoveAccelerator(accelGroup *AccelGroup, accelKey uint, accelMods gdk.ModifierType) bool {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkAccelGroup  // out
 	var _arg2 C.guint           // out
@@ -9603,7 +9603,7 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 //
 //    - id returned by gtk_widget_add_tick_callback().
 //
-func (widget *Widget) RemoveTickCallback(id uint32) {
+func (widget *Widget) RemoveTickCallback(id uint) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
 
@@ -9637,7 +9637,7 @@ func (widget *Widget) RemoveTickCallback(id uint32) {
 //
 //    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
 //
-func (widget *Widget) RenderIconPixbuf(stockId string, size int32) *gdkpixbuf.Pixbuf {
+func (widget *Widget) RenderIconPixbuf(stockId string, size int) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
@@ -9730,7 +9730,7 @@ func (widget *Widget) ResetStyle() {
 //    - gint: return from the event signal emission (TRUE if the event was
 //      handled).
 //
-func (widget *Widget) SendExpose(event *gdk.Event) int32 {
+func (widget *Widget) SendExpose(event *gdk.Event) int {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GdkEvent  // out
 	var _cret C.gint       // in
@@ -9742,9 +9742,9 @@ func (widget *Widget) SendExpose(event *gdk.Event) int32 {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(event)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -10174,7 +10174,7 @@ func (widget *Widget) SetDoubleBuffered(doubleBuffered bool) {
 //
 //    - events: event mask.
 //
-func (widget *Widget) SetEvents(events int32) {
+func (widget *Widget) SetEvents(events int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10425,7 +10425,7 @@ func (widget *Widget) SetMapped(mapped bool) {
 //
 //    - margin: bottom margin.
 //
-func (widget *Widget) SetMarginBottom(margin int32) {
+func (widget *Widget) SetMarginBottom(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10444,7 +10444,7 @@ func (widget *Widget) SetMarginBottom(margin int32) {
 //
 //    - margin: end margin.
 //
-func (widget *Widget) SetMarginEnd(margin int32) {
+func (widget *Widget) SetMarginEnd(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10465,7 +10465,7 @@ func (widget *Widget) SetMarginEnd(margin int32) {
 //
 //    - margin: left margin.
 //
-func (widget *Widget) SetMarginLeft(margin int32) {
+func (widget *Widget) SetMarginLeft(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10486,7 +10486,7 @@ func (widget *Widget) SetMarginLeft(margin int32) {
 //
 //    - margin: right margin.
 //
-func (widget *Widget) SetMarginRight(margin int32) {
+func (widget *Widget) SetMarginRight(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10505,7 +10505,7 @@ func (widget *Widget) SetMarginRight(margin int32) {
 //
 //    - margin: start margin.
 //
-func (widget *Widget) SetMarginStart(margin int32) {
+func (widget *Widget) SetMarginStart(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10524,7 +10524,7 @@ func (widget *Widget) SetMarginStart(margin int32) {
 //
 //    - margin: top margin.
 //
-func (widget *Widget) SetMarginTop(margin int32) {
+func (widget *Widget) SetMarginTop(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 
@@ -10800,7 +10800,7 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 //    - width widget should request, or -1 to unset.
 //    - height widget should request, or -1 to unset.
 //
-func (widget *Widget) SetSizeRequest(width, height int32) {
+func (widget *Widget) SetSizeRequest(width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -11228,7 +11228,7 @@ func (widget *Widget) SizeAllocate(allocation *Allocation) {
 //    - allocation: position and size to be allocated to widget.
 //    - baseline of the child, or -1.
 //
-func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int32) {
+func (widget *Widget) SizeAllocateWithBaseline(allocation *Allocation, baseline int) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkAllocation // out
 	var _arg2 C.gint           // out
@@ -11332,7 +11332,7 @@ func (widget *Widget) ThawChildNotify() {
 //      ancestor. In this case, nothing is stored in *dest_x and *dest_y.
 //      Otherwise TRUE.
 //
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY int32) (destX, destY int32, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY int) (destX, destY int, ok bool) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -11352,12 +11352,12 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY i
 	runtime.KeepAlive(srcX)
 	runtime.KeepAlive(srcY)
 
-	var _destX int32 // out
-	var _destY int32 // out
-	var _ok bool     // out
+	var _destX int // out
+	var _destY int // out
+	var _ok bool   // out
 
-	_destX = int32(_arg4)
-	_destY = int32(_arg5)
+	_destX = int(_arg4)
+	_destY = int(_arg5)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -11551,29 +11551,29 @@ func NewRequisition() *Requisition {
 }
 
 // Width widget’s desired width.
-func (r *Requisition) Width() int32 {
+func (r *Requisition) Width() int {
 	valptr := &r.native.width
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Height widget’s desired height.
-func (r *Requisition) Height() int32 {
+func (r *Requisition) Height() int {
 	valptr := &r.native.height
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Width widget’s desired width.
-func (r *Requisition) SetWidth(width int32) {
+func (r *Requisition) SetWidth(width int) {
 	valptr := &r.native.width
 	*valptr = C.gint(width)
 }
 
 // Height widget’s desired height.
-func (r *Requisition) SetHeight(height int32) {
+func (r *Requisition) SetHeight(height int) {
 	valptr := &r.native.height
 	*valptr = C.gint(height)
 }

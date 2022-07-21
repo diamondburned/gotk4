@@ -368,7 +368,7 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 //
 //    - gint: exit status.
 //
-func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
+func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
 
@@ -377,9 +377,9 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int32 {
 	_cret = C.g_application_command_line_get_exit_status(_arg0)
 	runtime.KeepAlive(cmdline)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -594,7 +594,7 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 //
 //    - exitStatus: exit status.
 //
-func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int32) {
+func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
 

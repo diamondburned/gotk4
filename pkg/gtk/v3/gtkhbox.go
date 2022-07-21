@@ -112,7 +112,7 @@ func marshalHBox(p uintptr) (interface{}, error) {
 //
 //    - hBox: new HBox.
 //
-func NewHBox(homogeneous bool, spacing int32) *HBox {
+func NewHBox(homogeneous bool, spacing int) *HBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in

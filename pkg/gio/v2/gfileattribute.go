@@ -108,15 +108,15 @@ func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 }
 
 // NInfos: number of values in the array.
-func (f *FileAttributeInfoList) NInfos() int32 {
+func (f *FileAttributeInfoList) NInfos() int {
 	valptr := &f.native.n_infos
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // NInfos: number of values in the array.
-func (f *FileAttributeInfoList) SetNInfos(nInfos int32) {
+func (f *FileAttributeInfoList) SetNInfos(nInfos int) {
 	valptr := &f.native.n_infos
 	*valptr = C.int(nInfos)
 }

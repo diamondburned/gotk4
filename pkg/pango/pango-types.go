@@ -78,7 +78,7 @@ func ExtentsToPixels(inclusive, nearest *Rectangle) {
 //
 //    - gint: value in Pango units.
 //
-func UnitsFromDouble(d float64) int32 {
+func UnitsFromDouble(d float64) int {
 	var _arg1 C.double // out
 	var _cret C.int    // in
 
@@ -87,9 +87,9 @@ func UnitsFromDouble(d float64) int32 {
 	_cret = C.pango_units_from_double(_arg1)
 	runtime.KeepAlive(d)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -106,7 +106,7 @@ func UnitsFromDouble(d float64) int32 {
 //
 //    - gdouble: double value.
 //
-func UnitsToDouble(i int32) float64 {
+func UnitsToDouble(i int) float64 {
 	var _arg1 C.int    // out
 	var _cret C.double // in
 
@@ -139,57 +139,57 @@ type rectangle struct {
 }
 
 // X coordinate of the left side of the rectangle.
-func (r *Rectangle) X() int32 {
+func (r *Rectangle) X() int {
 	valptr := &r.native.x
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Y coordinate of the the top side of the rectangle.
-func (r *Rectangle) Y() int32 {
+func (r *Rectangle) Y() int {
 	valptr := &r.native.y
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Width: width of the rectangle.
-func (r *Rectangle) Width() int32 {
+func (r *Rectangle) Width() int {
 	valptr := &r.native.width
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Height: height of the rectangle.
-func (r *Rectangle) Height() int32 {
+func (r *Rectangle) Height() int {
 	valptr := &r.native.height
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // X coordinate of the left side of the rectangle.
-func (r *Rectangle) SetX(x int32) {
+func (r *Rectangle) SetX(x int) {
 	valptr := &r.native.x
 	*valptr = C.int(x)
 }
 
 // Y coordinate of the the top side of the rectangle.
-func (r *Rectangle) SetY(y int32) {
+func (r *Rectangle) SetY(y int) {
 	valptr := &r.native.y
 	*valptr = C.int(y)
 }
 
 // Width: width of the rectangle.
-func (r *Rectangle) SetWidth(width int32) {
+func (r *Rectangle) SetWidth(width int) {
 	valptr := &r.native.width
 	*valptr = C.int(width)
 }
 
 // Height: height of the rectangle.
-func (r *Rectangle) SetHeight(height int32) {
+func (r *Rectangle) SetHeight(height int) {
 	valptr := &r.native.height
 	*valptr = C.int(height)
 }

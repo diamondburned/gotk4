@@ -207,7 +207,7 @@ func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) 
 //      deemed user-visible.
 //    - actionName: action name that will be activated in the Group.
 //
-func (controller *PadController) SetAction(typ PadActionType, index, mode int32, label, actionName string) {
+func (controller *PadController) SetAction(typ PadActionType, index, mode int, label, actionName string) {
 	var _arg0 *C.GtkPadController // out
 	var _arg1 C.GtkPadActionType  // out
 	var _arg2 C.gint              // out
@@ -284,18 +284,18 @@ func (p *PadActionEntry) Type() PadActionType {
 
 // Index: 0-indexed button/ring/strip number that will trigger this action
 // entry.
-func (p *PadActionEntry) Index() int32 {
+func (p *PadActionEntry) Index() int {
 	valptr := &p.native.index
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Mode: mode that will trigger this action entry, or -1 for all modes.
-func (p *PadActionEntry) Mode() int32 {
+func (p *PadActionEntry) Mode() int {
 	valptr := &p.native.mode
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -318,13 +318,13 @@ func (p *PadActionEntry) ActionName() string {
 
 // Index: 0-indexed button/ring/strip number that will trigger this action
 // entry.
-func (p *PadActionEntry) SetIndex(index int32) {
+func (p *PadActionEntry) SetIndex(index int) {
 	valptr := &p.native.index
 	*valptr = C.gint(index)
 }
 
 // Mode: mode that will trigger this action entry, or -1 for all modes.
-func (p *PadActionEntry) SetMode(mode int32) {
+func (p *PadActionEntry) SetMode(mode int) {
 	valptr := &p.native.mode
 	*valptr = C.gint(mode)
 }

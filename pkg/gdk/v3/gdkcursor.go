@@ -622,7 +622,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 //    - cursor: new Cursor.
 //
-func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32) *Cursor {
+func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 *C.GdkPixbuf  // out
 	var _arg3 C.gint        // out

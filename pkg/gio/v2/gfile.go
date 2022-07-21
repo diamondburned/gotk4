@@ -199,7 +199,7 @@ type Filer interface {
 	// AppendTo gets an output stream for appending data to the file.
 	AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
 	// AppendToAsync: asynchronously opens file for appending.
-	AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
+	AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// AppendToFinish finishes an asynchronous file append operation started
 	// with g_file_append_to_async().
 	AppendToFinish(res AsyncResulter) (*FileOutputStream, error)
@@ -216,7 +216,7 @@ type Filer interface {
 	Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
 	// CreateAsync: asynchronously creates a new file and returns an output
 	// stream for writing to it.
-	CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
+	CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// CreateFinish finishes an asynchronous file create operation started with
 	// g_file_create_async().
 	CreateFinish(res AsyncResulter) (*FileOutputStream, error)
@@ -225,14 +225,14 @@ type Filer interface {
 	CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error)
 	// CreateReadwriteAsync: asynchronously creates a new file and returns a
 	// stream for reading and writing to it.
-	CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
+	CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// CreateReadwriteFinish finishes an asynchronous file create operation
 	// started with g_file_create_readwrite_async().
 	CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// Delete deletes a file.
 	Delete(ctx context.Context) error
 	// DeleteAsync: asynchronously delete a file.
-	DeleteAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// DeleteFinish finishes deleting a file started with g_file_delete_async().
 	DeleteFinish(result AsyncResulter) error
 	// Dup duplicates a #GFile handle.
@@ -252,7 +252,7 @@ type Filer interface {
 	EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error)
 	// EnumerateChildrenAsync: asynchronously gets the requested information
 	// about the files in a directory.
-	EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback)
+	EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// EnumerateChildrenFinish finishes an async enumerate children operation.
 	EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error)
 	// Equal checks if the two given #GFiles refer to the same file.
@@ -260,7 +260,7 @@ type Filer interface {
 	// FindEnclosingMount gets a #GMount for the #GFile.
 	FindEnclosingMount(ctx context.Context) (*Mount, error)
 	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
-	FindEnclosingMountAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request.
 	FindEnclosingMountFinish(res AsyncResulter) (*Mount, error)
 	// Basename gets the base name (the last component of the path) for a given
@@ -289,7 +289,7 @@ type Filer interface {
 	// HasURIScheme checks to see if a #GFile has a given URI scheme.
 	HasURIScheme(uriScheme string) bool
 	// Hash creates a hash value for a #GFile.
-	Hash() uint32
+	Hash() uint
 	// IsNative checks to see if a file is native to the platform.
 	IsNative() bool
 	// LoadBytes loads the contents of file and returns it as #GBytes.
@@ -311,7 +311,7 @@ type Filer interface {
 	// MakeDirectory creates a directory.
 	MakeDirectory(ctx context.Context) error
 	// MakeDirectoryAsync: asynchronously creates a directory.
-	MakeDirectoryAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// MakeDirectoryFinish finishes an asynchronous directory creation, started
 	// with g_file_make_directory_async().
 	MakeDirectoryFinish(result AsyncResulter) error
@@ -347,7 +347,7 @@ type Filer interface {
 	// OpenReadwrite opens an existing file for reading and writing.
 	OpenReadwrite(ctx context.Context) (*FileIOStream, error)
 	// OpenReadwriteAsync: asynchronously opens file for reading and writing.
-	OpenReadwriteAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// OpenReadwriteFinish finishes an asynchronous file read operation started
 	// with g_file_open_readwrite_async().
 	OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
@@ -363,7 +363,7 @@ type Filer interface {
 	QueryDefaultHandler(ctx context.Context) (*AppInfo, error)
 	// QueryDefaultHandlerAsync: async version of
 	// g_file_query_default_handler().
-	QueryDefaultHandlerAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 	// operation.
 	QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error)
@@ -377,14 +377,14 @@ type Filer interface {
 	QueryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryFilesystemInfoAsync: asynchronously gets the requested information
 	// about the filesystem that the specified file is on.
-	QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback)
+	QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 	QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QueryInfo gets the requested information about specified file.
 	QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error)
 	// QueryInfoAsync: asynchronously gets the requested information about
 	// specified file.
-	QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback)
+	QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous file info query.
 	QueryInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QuerySettableAttributes: obtain the list of settable attributes for the
@@ -396,7 +396,7 @@ type Filer interface {
 	// Read opens a file for reading.
 	Read(ctx context.Context) (*FileInputStream, error)
 	// ReadAsync: asynchronously opens file for reading.
-	ReadAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous file read operation started with
 	// g_file_read_async().
 	ReadFinish(res AsyncResulter) (*FileInputStream, error)
@@ -405,7 +405,7 @@ type Filer interface {
 	Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error)
 	// ReplaceAsync: asynchronously overwrites the file, replacing the contents,
 	// possibly creating a backup copy of the file first.
-	ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
+	ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// ReplaceContents replaces the contents of file with contents of length
 	// bytes.
 	ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error)
@@ -426,7 +426,7 @@ type Filer interface {
 	// ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
 	// mode, replacing the contents, possibly creating a backup copy of the file
 	// first.
-	ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback)
+	ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
 	// started with g_file_replace_readwrite_async().
 	ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
@@ -455,7 +455,7 @@ type Filer interface {
 	// value.
 	SetAttributeUint64(ctx context.Context, attribute string, value uint64, flags FileQueryInfoFlags) error
 	// SetAttributesAsync: asynchronously sets the attributes of file with info.
-	SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback)
+	SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
 	SetAttributesFinish(result AsyncResulter) (*FileInfo, error)
@@ -466,7 +466,7 @@ type Filer interface {
 	SetDisplayName(ctx context.Context, displayName string) (*File, error)
 	// SetDisplayNameAsync: asynchronously sets the display name for a given
 	// #GFile.
-	SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int32, callback AsyncReadyCallback)
+	SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
 	SetDisplayNameFinish(res AsyncResulter) (*File, error)
@@ -485,7 +485,7 @@ type Filer interface {
 	// Trash sends file to the "Trashcan", if possible.
 	Trash(ctx context.Context) error
 	// TrashAsync: asynchronously sends file to the Trash location, if possible.
-	TrashAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// TrashFinish finishes an asynchronous file trashing operation, started
 	// with g_file_trash_async().
 	TrashFinish(result AsyncResulter) error
@@ -586,7 +586,7 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GFileCreateFlags    // out
@@ -937,7 +937,7 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GFileCreateFlags    // out
@@ -1080,7 +1080,7 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GFileCreateFlags    // out
@@ -1205,7 +1205,7 @@ func (file *File) Delete(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) DeleteAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -1521,7 +1521,7 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -1687,7 +1687,7 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -2187,7 +2187,7 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 //      used as hash value for the #GFile. This function is intended for easily
 //      hashing a #GFile to add to a Table or similar data structure.
 //
-func (file *File) Hash() uint32 {
+func (file *File) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -2196,9 +2196,9 @@ func (file *File) Hash() uint32 {
 	_cret = C.g_file_hash(_arg0)
 	runtime.KeepAlive(file)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2640,7 +2640,7 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -3336,7 +3336,7 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -3548,7 +3548,7 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is done.
 //
-func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -3791,7 +3791,7 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -3948,7 +3948,7 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -4185,7 +4185,7 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) ReadAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -4359,7 +4359,7 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -4774,7 +4774,7 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -5253,7 +5253,7 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional): ReadyCallback.
 //
-func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.GFileInfo          // out
@@ -5442,7 +5442,7 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -5740,7 +5740,7 @@ func (file *File) Trash(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (file *File) TrashAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

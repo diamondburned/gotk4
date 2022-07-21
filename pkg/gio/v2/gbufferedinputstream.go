@@ -347,7 +347,7 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional): ReadyCallback.
 //
-func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg3 *C.GCancellable         // out
 	var _arg1 C.gssize                // out
@@ -540,7 +540,7 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 //
 //    - gint: byte read from the stream, or -1 on end of stream or error.
 //
-func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) {
+func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
 	var _cret C.int                   // in
@@ -557,10 +557,10 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

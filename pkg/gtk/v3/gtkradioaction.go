@@ -139,7 +139,7 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 //
 //    - radioAction: new RadioAction.
 //
-func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAction {
+func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioAction {
 	var _arg1 *C.gchar          // out
 	var _arg2 *C.gchar          // out
 	var _arg3 *C.gchar          // out
@@ -186,7 +186,7 @@ func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAct
 //
 //    - gint: value of the currently active group member.
 //
-func (action *RadioAction) CurrentValue() int32 {
+func (action *RadioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
 	var _cret C.gint            // in
 
@@ -195,9 +195,9 @@ func (action *RadioAction) CurrentValue() int32 {
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 	runtime.KeepAlive(action)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -295,7 +295,7 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 //
 //    - currentValue: new value.
 //
-func (action *RadioAction) SetCurrentValue(currentValue int32) {
+func (action *RadioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 C.gint            // out
 

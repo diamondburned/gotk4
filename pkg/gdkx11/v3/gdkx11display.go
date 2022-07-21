@@ -45,7 +45,7 @@ func GTypeX11Display() coreglib.Type {
 //    - eventBase: first event type code to register.
 //    - nEvents: number of event type codes to register.
 //
-func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int32) {
+func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
 	var _arg3 C.gint        // out
@@ -130,7 +130,7 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 //
 //    - gint: x error code or 0 on success.
 //
-func (display *X11Display) ErrorTrapPop() int32 {
+func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
@@ -139,9 +139,9 @@ func (display *X11Display) ErrorTrapPop() int32 {
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 	runtime.KeepAlive(display)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -252,7 +252,7 @@ func (display *X11Display) Grab() {
 //      previously set value.
 //    - size: cursor size to use, or 0 to keep the previous size.
 //
-func (display *X11Display) SetCursorTheme(theme string, size int32) {
+func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -313,7 +313,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 //    - scale: new scale value.
 //
-func (display *X11Display) SetWindowScale(scale int32) {
+func (display *X11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 

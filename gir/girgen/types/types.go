@@ -487,7 +487,7 @@ var girToBuiltin = map[string]string{
 	"gboolean": "bool",
 	"gfloat":   "float32",
 	"gdouble":  "float64",
-	"gint":     "int32", // in most compilers?
+	"gint":     "int",
 	"gssize":   "int",
 	"gint8":    "int8",
 	"gint16":   "int16",
@@ -496,7 +496,7 @@ var girToBuiltin = map[string]string{
 	"glong":    "int32",
 	"int32":    "int32",
 	"gint64":   "int64",
-	"guint":    "uint32", // in most compilers?
+	"guint":    "uint",
 	"gsize":    "uint",
 	"guchar":   "byte",
 	"gchar":    "byte",

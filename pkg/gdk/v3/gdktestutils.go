@@ -58,7 +58,7 @@ func TestRenderSync(window Windower) {
 //    - ok: whether all actions necessary for a button event simulation were
 //      carried out successfully.
 //
-func TestSimulateButton(window Windower, x, y int32, button uint32, modifiers ModifierType, buttonPressrelease EventType) bool {
+func TestSimulateButton(window Windower, x, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out
@@ -120,7 +120,7 @@ func TestSimulateButton(window Windower, x, y int32, button uint32, modifiers Mo
 //    - ok: whether all actions necessary for a key event simulation were carried
 //      out successfully.
 //
-func TestSimulateKey(window Windower, x, y int32, keyval uint32, modifiers ModifierType, keyPressrelease EventType) bool {
+func TestSimulateKey(window Windower, x, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
 	var _arg2 C.gint            // out
 	var _arg3 C.gint            // out

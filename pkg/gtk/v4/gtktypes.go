@@ -78,7 +78,7 @@ func NewBitsetEmpty() *Bitset {
 }
 
 // NewBitsetRange constructs a struct Bitset.
-func NewBitsetRange(start uint32, nItems uint32) *Bitset {
+func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _cret *C.GtkBitset // in
@@ -113,7 +113,7 @@ func NewBitsetRange(start uint32, nItems uint32) *Bitset {
 //
 //    - ok: TRUE if value was not part of self and self was changed.
 //
-func (self *Bitset) Add(value uint32) bool {
+func (self *Bitset) Add(value uint) bool {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
@@ -142,7 +142,7 @@ func (self *Bitset) Add(value uint32) bool {
 //    - start: first value to add.
 //    - nItems: number of consecutive values to add.
 //
-func (self *Bitset) AddRange(start uint32, nItems uint32) {
+func (self *Bitset) AddRange(start uint, nItems uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -165,7 +165,7 @@ func (self *Bitset) AddRange(start uint32, nItems uint32) {
 //    - first value to add.
 //    - last value to add.
 //
-func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
+func (self *Bitset) AddRangeClosed(first uint, last uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -191,7 +191,7 @@ func (self *Bitset) AddRangeClosed(first uint32, last uint32) {
 //    - height of the rectangle.
 //    - stride: row stride of the grid.
 //
-func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stride uint32) {
+func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -222,7 +222,7 @@ func (self *Bitset) AddRectangle(start uint32, width uint32, height uint32, stri
 //
 //    - ok: TRUE if self contains value.
 //
-func (self *Bitset) Contains(value uint32) bool {
+func (self *Bitset) Contains(value uint) bool {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
@@ -335,7 +335,7 @@ func (self *Bitset) Equals(other *Bitset) bool {
 //
 //    - guint: largest value in self.
 //
-func (self *Bitset) Maximum() uint32 {
+func (self *Bitset) Maximum() uint {
 	var _arg0 *C.GtkBitset // out
 	var _cret C.guint      // in
 
@@ -344,9 +344,9 @@ func (self *Bitset) Maximum() uint32 {
 	_cret = C.gtk_bitset_get_maximum(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -359,7 +359,7 @@ func (self *Bitset) Maximum() uint32 {
 //
 //    - guint: smallest value in self.
 //
-func (self *Bitset) Minimum() uint32 {
+func (self *Bitset) Minimum() uint {
 	var _arg0 *C.GtkBitset // out
 	var _cret C.guint      // in
 
@@ -368,9 +368,9 @@ func (self *Bitset) Minimum() uint32 {
 	_cret = C.gtk_bitset_get_minimum(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -387,7 +387,7 @@ func (self *Bitset) Minimum() uint32 {
 //
 //    - guint: value of the nth item in self.
 //
-func (self *Bitset) Nth(nth uint32) uint32 {
+func (self *Bitset) Nth(nth uint) uint {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _cret C.guint      // in
@@ -399,9 +399,9 @@ func (self *Bitset) Nth(nth uint32) uint32 {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(nth)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -450,7 +450,7 @@ func (self *Bitset) Size() uint64 {
 //
 //    - guint64: number of values in the set from first to last.
 //
-func (self *Bitset) SizeInRange(first uint32, last uint32) uint64 {
+func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -529,7 +529,7 @@ func (self *Bitset) IsEmpty() bool {
 //
 //    - ok: TRUE if value was part of self and self was changed.
 //
-func (self *Bitset) Remove(value uint32) bool {
+func (self *Bitset) Remove(value uint) bool {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _cret C.gboolean   // in
@@ -568,7 +568,7 @@ func (self *Bitset) RemoveAll() {
 //    - start: first value to remove.
 //    - nItems: number of consecutive values to remove.
 //
-func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
+func (self *Bitset) RemoveRange(start uint, nItems uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -591,7 +591,7 @@ func (self *Bitset) RemoveRange(start uint32, nItems uint32) {
 //    - first value to remove.
 //    - last value to remove.
 //
-func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
+func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -617,7 +617,7 @@ func (self *Bitset) RemoveRangeClosed(first uint32, last uint32) {
 //    - height of the rectangle.
 //    - stride: row stride of the grid.
 //
-func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, stride uint32) {
+func (self *Bitset) RemoveRectangle(start uint, width uint, height uint, stride uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
@@ -646,7 +646,7 @@ func (self *Bitset) RemoveRectangle(start uint32, width uint32, height uint32, s
 //
 //    - amount to shift all values to the left.
 //
-func (self *Bitset) ShiftLeft(amount uint32) {
+func (self *Bitset) ShiftLeft(amount uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 
@@ -666,7 +666,7 @@ func (self *Bitset) ShiftLeft(amount uint32) {
 //
 //    - amount to shift all values to the right.
 //
-func (self *Bitset) ShiftRight(amount uint32) {
+func (self *Bitset) ShiftRight(amount uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 
@@ -695,7 +695,7 @@ func (self *Bitset) ShiftRight(amount uint32) {
 //    - removed: number of values to remove.
 //    - added: number of values to add.
 //
-func (self *Bitset) Splice(position uint32, removed uint32, added uint32) {
+func (self *Bitset) Splice(position uint, removed uint, added uint) {
 	var _arg0 *C.GtkBitset // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out

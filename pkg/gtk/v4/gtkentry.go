@@ -528,7 +528,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 //    - gint: index of the icon which is the source of the current DND operation,
 //      or -1.
 //
-func (entry *Entry) CurrentIconDragSource() int32 {
+func (entry *Entry) CurrentIconDragSource() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.int       // in
 
@@ -537,9 +537,9 @@ func (entry *Entry) CurrentIconDragSource() int32 {
 	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -687,7 +687,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
 //
 //    - gint: index of the icon at the given position, or -1.
 //
-func (entry *Entry) IconAtPos(x, y int32) int32 {
+func (entry *Entry) IconAtPos(x, y int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.int       // out
 	var _arg2 C.int       // out
@@ -702,9 +702,9 @@ func (entry *Entry) IconAtPos(x, y int32) int32 {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1031,7 +1031,7 @@ func (entry *Entry) InvisibleChar() uint32 {
 //    - gint: maximum allowed number of characters in GtkEntry, or 0 if there is
 //      no maximum.
 //
-func (entry *Entry) MaxLength() int32 {
+func (entry *Entry) MaxLength() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.int       // in
 
@@ -1040,9 +1040,9 @@ func (entry *Entry) MaxLength() int32 {
 	_cret = C.gtk_entry_get_max_length(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1749,7 +1749,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //      maximum length of entries.) The value passed in will be clamped to the
 //      range 0-65536.
 //
-func (entry *Entry) SetMaxLength(max int32) {
+func (entry *Entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.int       // out
 

@@ -69,7 +69,7 @@ func IsZeroWidth(ch uint32) bool {
 //    - guint8: newly allocated array of embedding levels, one item per character
 //      (not byte), that should be freed using g_free().
 //
-func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *byte {
+func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.int             // out
 	var _arg3 *C.PangoDirection // out
@@ -116,7 +116,7 @@ func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *
 //      failure, or NULL.
 //    - ok: TRUE if str was successfully parsed.
 //
-func ParseEnum(typ coreglib.Type, str string, warn bool) (int32, string, bool) {
+func ParseEnum(typ coreglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
 	var _arg3 C.int      // in
@@ -138,11 +138,11 @@ func ParseEnum(typ coreglib.Type, str string, warn bool) (int32, string, bool) {
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
 
-	var _value int32           // out
+	var _value int             // out
 	var _possibleValues string // out
 	var _ok bool               // out
 
-	_value = int32(_arg3)
+	_value = int(_arg3)
 	if _arg5 != nil {
 		_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
 		defer C.free(unsafe.Pointer(_arg5))
@@ -408,14 +408,14 @@ func TrimString(str string) string {
 //
 //    - gint: encoded version of Pango library available at run time.
 //
-func Version() int32 {
+func Version() int {
 	var _cret C.int // in
 
 	_cret = C.pango_version()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -449,7 +449,7 @@ func Version() int32 {
 //      version, or a string describing the version mismatch. The returned string
 //      is owned by Pango and should not be modified or freed.
 //
-func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
+func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
 	var _arg3 C.int   // out

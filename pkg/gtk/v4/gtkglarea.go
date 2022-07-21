@@ -45,7 +45,7 @@ type GLAreaOverrider interface {
 	//    - width
 	//    - height
 	//
-	Resize(width, height int32)
+	Resize(width, height int)
 }
 
 // GLArea: GtkGLArea is a widget that allows drawing with OpenGL.
@@ -172,7 +172,7 @@ func classInitGLAreaer(gclassPtr, data C.gpointer) {
 		pclass.render = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_render)
 	}
 
-	if _, ok := goval.(interface{ Resize(width, height int32) }); ok {
+	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_resize)
 	}
 }
@@ -216,13 +216,13 @@ func _gotk4_gtk4_GLAreaClass_render(arg0 *C.GtkGLArea, arg1 *C.GdkGLContext) (cr
 //export _gotk4_gtk4_GLAreaClass_resize
 func _gotk4_gtk4_GLAreaClass_resize(arg0 *C.GtkGLArea, arg1 C.int, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Resize(width, height int32) })
+	iface := goval.(interface{ Resize(width, height int) })
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	iface.Resize(_width, _height)
 }
@@ -338,7 +338,7 @@ func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) (ok bool)) cor
 
 //export _gotk4_gtk4_GLArea_ConnectResize
 func _gotk4_gtk4_GLArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int32)
+	var f func(width, height int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -346,14 +346,14 @@ func _gotk4_gtk4_GLArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(width, height int32))
+		f = closure.Func.(func(width, height int))
 	}
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	f(_width, _height)
 }
@@ -369,7 +369,7 @@ func _gotk4_gtk4_GLArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint,
 // emitted.
 //
 // The default handler sets up the GL viewport.
-func (area *GLArea) ConnectResize(f func(width, height int32)) coreglib.SignalHandle {
+func (area *GLArea) ConnectResize(f func(width, height int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(area, "resize", false, unsafe.Pointer(C._gotk4_gtk4_GLArea_ConnectResize), f)
 }
 
@@ -551,7 +551,7 @@ func (area *GLArea) HasStencilBuffer() bool {
 //    - major: return location for the required major version.
 //    - minor: return location for the required minor version.
 //
-func (area *GLArea) RequiredVersion() (major, minor int32) {
+func (area *GLArea) RequiredVersion() (major, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.int        // in
 	var _arg2 C.int        // in
@@ -561,11 +561,11 @@ func (area *GLArea) RequiredVersion() (major, minor int32) {
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(area)
 
-	var _major int32 // out
-	var _minor int32 // out
+	var _major int // out
+	var _minor int // out
 
-	_major = int32(_arg1)
-	_minor = int32(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -738,7 +738,7 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 //    - major version.
 //    - minor version.
 //
-func (area *GLArea) SetRequiredVersion(major, minor int32) {
+func (area *GLArea) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GtkGLArea // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

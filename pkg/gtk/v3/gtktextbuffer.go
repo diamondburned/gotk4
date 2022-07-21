@@ -182,7 +182,7 @@ type TextBufferOverrider interface {
 	//    - newText
 	//    - newTextLength
 	//
-	InsertText(pos *TextIter, newText string, newTextLength int32)
+	InsertText(pos *TextIter, newText string, newTextLength int)
 	// The function takes the following parameters:
 	//
 	MarkDeleted(mark *TextMark)
@@ -265,7 +265,7 @@ func classInitTextBufferer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		InsertText(pos *TextIter, newText string, newTextLength int32)
+		InsertText(pos *TextIter, newText string, newTextLength int)
 	}); ok {
 		pclass.insert_text = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_insert_text)
 	}
@@ -397,16 +397,16 @@ func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.GtkTextBuffer, arg1 *C.Gt
 func _gotk4_gtk3_TextBufferClass_insert_text(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		InsertText(pos *TextIter, newText string, newTextLength int32)
+		InsertText(pos *TextIter, newText string, newTextLength int)
 	})
 
-	var _pos *TextIter       // out
-	var _newText string      // out
-	var _newTextLength int32 // out
+	var _pos *TextIter     // out
+	var _newText string    // out
+	var _newTextLength int // out
 
 	_pos = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_newTextLength = int32(arg3)
+	_newTextLength = int(arg3)
 
 	iface.InsertText(_pos, _newText, _newTextLength)
 }
@@ -716,7 +716,7 @@ func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location *TextIter, pixbuf 
 
 //export _gotk4_gtk3_TextBuffer_ConnectInsertText
 func _gotk4_gtk3_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint, arg4 C.guintptr) {
-	var f func(location *TextIter, text string, len int32)
+	var f func(location *TextIter, text string, len int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -724,16 +724,16 @@ func _gotk4_gtk3_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIt
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(location *TextIter, text string, len int32))
+		f = closure.Func.(func(location *TextIter, text string, len int))
 	}
 
 	var _location *TextIter // out
 	var _text string        // out
-	var _len int32          // out
+	var _len int            // out
 
 	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_len = int32(arg3)
+	_len = int(arg3)
 
 	f(_location, _text, _len)
 }
@@ -746,7 +746,7 @@ func _gotk4_gtk3_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIt
 // handler revalidates it to point to the end of the inserted text.
 //
 // See also: gtk_text_buffer_insert(), gtk_text_buffer_insert_range().
-func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int32)) coreglib.SignalHandle {
+func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text string, len int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "insert-text", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectInsertText), f)
 }
 
@@ -1438,7 +1438,7 @@ func (buffer *TextBuffer) Bounds() (start, end *TextIter) {
 //
 //    - gint: number of characters in the buffer.
 //
-func (buffer *TextBuffer) CharCount() int32 {
+func (buffer *TextBuffer) CharCount() int {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gint           // in
 
@@ -1447,9 +1447,9 @@ func (buffer *TextBuffer) CharCount() int32 {
 	_cret = C.gtk_text_buffer_get_char_count(_arg0)
 	runtime.KeepAlive(buffer)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1602,7 +1602,7 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 //
 //    - iter: iterator to initialize.
 //
-func (buffer *TextBuffer) IterAtLine(lineNumber int32) *TextIter {
+func (buffer *TextBuffer) IterAtLine(lineNumber int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -1640,7 +1640,7 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int32) *TextIter {
 //
 //    - iter: iterator to initialize.
 //
-func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int32) *TextIter {
+func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -1681,7 +1681,7 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int32) *TextIter
 //
 //    - iter: iterator to initialize.
 //
-func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int32) *TextIter {
+func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -1745,7 +1745,7 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 //
 //    - iter: iterator to initialize.
 //
-func (buffer *TextBuffer) IterAtOffset(charOffset int32) *TextIter {
+func (buffer *TextBuffer) IterAtOffset(charOffset int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
 	var _arg1 C.GtkTextIter    // in
 	var _arg2 C.gint           // out
@@ -1771,7 +1771,7 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int32) *TextIter {
 //
 //    - gint: number of lines in the buffer.
 //
-func (buffer *TextBuffer) LineCount() int32 {
+func (buffer *TextBuffer) LineCount() int {
 	var _arg0 *C.GtkTextBuffer // out
 	var _cret C.gint           // in
 
@@ -1780,9 +1780,9 @@ func (buffer *TextBuffer) LineCount() int32 {
 	_cret = C.gtk_text_buffer_get_line_count(_arg0)
 	runtime.KeepAlive(buffer)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

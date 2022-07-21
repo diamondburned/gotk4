@@ -39,7 +39,7 @@ type bitsetIter struct {
 //
 //    - guint: current value pointer to by iter.
 //
-func (iter *BitsetIter) Value() uint32 {
+func (iter *BitsetIter) Value() uint {
 	var _arg0 *C.GtkBitsetIter // out
 	var _cret C.guint          // in
 
@@ -48,9 +48,9 @@ func (iter *BitsetIter) Value() uint32 {
 	_cret = C.gtk_bitset_iter_get_value(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -89,7 +89,7 @@ func (iter *BitsetIter) IsValid() bool {
 //    - value (optional): set to the next value.
 //    - ok: TRUE if a next value existed.
 //
-func (iter *BitsetIter) Next() (uint32, bool) {
+func (iter *BitsetIter) Next() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
 	var _arg1 C.guint          // in
 	var _cret C.gboolean       // in
@@ -99,10 +99,10 @@ func (iter *BitsetIter) Next() (uint32, bool) {
 	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
 	runtime.KeepAlive(iter)
 
-	var _value uint32 // out
-	var _ok bool      // out
+	var _value uint // out
+	var _ok bool    // out
 
-	_value = uint32(_arg1)
+	_value = uint(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -120,7 +120,7 @@ func (iter *BitsetIter) Next() (uint32, bool) {
 //    - value (optional): set to the previous value.
 //    - ok: TRUE if a previous value existed.
 //
-func (iter *BitsetIter) Previous() (uint32, bool) {
+func (iter *BitsetIter) Previous() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter // out
 	var _arg1 C.guint          // in
 	var _cret C.gboolean       // in
@@ -130,10 +130,10 @@ func (iter *BitsetIter) Previous() (uint32, bool) {
 	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
 	runtime.KeepAlive(iter)
 
-	var _value uint32 // out
-	var _ok bool      // out
+	var _value uint // out
+	var _ok bool    // out
 
-	_value = uint32(_arg1)
+	_value = uint(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -157,7 +157,7 @@ func (iter *BitsetIter) Previous() (uint32, bool) {
 //    - value (optional): set to the found value in set.
 //    - ok: TRUE if a value was found.
 //
-func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
+func BitsetIterInitAt(set *Bitset, target uint) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
 	var _arg3 C.guint         // out
@@ -172,11 +172,11 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 	runtime.KeepAlive(target)
 
 	var _iter *BitsetIter // out
-	var _value uint32     // out
+	var _value uint       // out
 	var _ok bool          // out
 
 	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_value = uint32(_arg4)
+	_value = uint(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -199,7 +199,7 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 //    - value (optional): set to the first value in set.
 //    - ok: TRUE if set isn't empty.
 //
-func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
+func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
 	var _arg3 C.guint         // in
@@ -211,11 +211,11 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
 	runtime.KeepAlive(set)
 
 	var _iter *BitsetIter // out
-	var _value uint32     // out
+	var _value uint       // out
 	var _ok bool          // out
 
 	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_value = uint32(_arg3)
+	_value = uint(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -238,7 +238,7 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
 //    - value (optional): set to the last value in set.
 //    - ok: TRUE if set isn't empty.
 //
-func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
+func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint, bool) {
 	var _arg1 C.GtkBitsetIter // in
 	var _arg2 *C.GtkBitset    // out
 	var _arg3 C.guint         // in
@@ -250,11 +250,11 @@ func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
 	runtime.KeepAlive(set)
 
 	var _iter *BitsetIter // out
-	var _value uint32     // out
+	var _value uint       // out
 	var _ok bool          // out
 
 	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	_value = uint32(_arg3)
+	_value = uint(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}

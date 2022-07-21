@@ -98,7 +98,7 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_Statusbar_ConnectTextPopped
 func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(contextId uint32, text string)
+	var f func(contextId uint, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -106,13 +106,13 @@ func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(contextId uint32, text string))
+		f = closure.Func.(func(contextId uint, text string))
 	}
 
-	var _contextId uint32 // out
-	var _text string      // out
+	var _contextId uint // out
+	var _text string    // out
 
-	_contextId = uint32(arg1)
+	_contextId = uint(arg1)
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	f(_contextId, _text)
@@ -120,13 +120,13 @@ func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2
 
 // ConnectTextPopped is emitted whenever a new message is popped off a
 // statusbar's stack.
-func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint32, text string)) coreglib.SignalHandle {
+func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusbar, "text-popped", false, unsafe.Pointer(C._gotk4_gtk4_Statusbar_ConnectTextPopped), f)
 }
 
 //export _gotk4_gtk4_Statusbar_ConnectTextPushed
 func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(contextId uint32, text string)
+	var f func(contextId uint, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -134,13 +134,13 @@ func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(contextId uint32, text string))
+		f = closure.Func.(func(contextId uint, text string))
 	}
 
-	var _contextId uint32 // out
-	var _text string      // out
+	var _contextId uint // out
+	var _text string    // out
 
-	_contextId = uint32(arg1)
+	_contextId = uint(arg1)
 	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	f(_contextId, _text)
@@ -148,7 +148,7 @@ func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2
 
 // ConnectTextPushed is emitted whenever a new message gets pushed onto a
 // statusbar's stack.
-func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint32, text string)) coreglib.SignalHandle {
+func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint, text string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusbar, "text-pushed", false, unsafe.Pointer(C._gotk4_gtk4_Statusbar_ConnectTextPushed), f)
 }
 
@@ -184,7 +184,7 @@ func NewStatusbar() *Statusbar {
 //
 //    - guint: integer id.
 //
-func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
+func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 *C.char         // out
 	var _cret C.guint         // in
@@ -197,9 +197,9 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextDescription)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -214,7 +214,7 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 //
 //    - contextId: context identifier.
 //
-func (statusbar *Statusbar) Pop(contextId uint32) {
+func (statusbar *Statusbar) Pop(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 
@@ -238,7 +238,7 @@ func (statusbar *Statusbar) Pop(contextId uint32) {
 //
 //    - guint: message id that can be used with gtk.Statusbar.Remove().
 //
-func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
+func (statusbar *Statusbar) Push(contextId uint, text string) uint {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.char         // out
@@ -254,9 +254,9 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 	runtime.KeepAlive(contextId)
 	runtime.KeepAlive(text)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -269,7 +269,7 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 //    - contextId: context identifier.
 //    - messageId: message identifier, as returned by gtk.Statusbar.Push().
 //
-func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
+func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 	var _arg2 C.guint         // out
@@ -291,7 +291,7 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
 //
 //    - contextId: context identifier.
 //
-func (statusbar *Statusbar) RemoveAll(contextId uint32) {
+func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
 

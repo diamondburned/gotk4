@@ -751,7 +751,7 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //
 //    - utf8: string that should be freed with g_free().
 //
-func (message *DBusMessage) Print(indent uint32) string {
+func (message *DBusMessage) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
 	var _cret *C.gchar        // in

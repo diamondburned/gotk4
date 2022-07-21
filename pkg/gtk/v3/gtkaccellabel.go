@@ -141,7 +141,7 @@ func NewAccelLabel(str string) *AccelLabel {
 //    - acceleratorKey: return location for the keyval.
 //    - acceleratorMods: return location for the modifier mask.
 //
-func (accelLabel *AccelLabel) Accel() (uint32, gdk.ModifierType) {
+func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // in
 	var _arg2 C.GdkModifierType // in
@@ -151,10 +151,10 @@ func (accelLabel *AccelLabel) Accel() (uint32, gdk.ModifierType) {
 	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(accelLabel)
 
-	var _acceleratorKey uint32            // out
+	var _acceleratorKey uint              // out
 	var _acceleratorMods gdk.ModifierType // out
 
-	_acceleratorKey = uint32(_arg1)
+	_acceleratorKey = uint(_arg1)
 	_acceleratorMods = gdk.ModifierType(_arg2)
 
 	return _acceleratorKey, _acceleratorMods
@@ -206,7 +206,7 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 //
 //    - guint: width needed to display the accelerator key(s).
 //
-func (accelLabel *AccelLabel) AccelWidth() uint32 {
+func (accelLabel *AccelLabel) AccelWidth() uint {
 	var _arg0 *C.GtkAccelLabel // out
 	var _cret C.guint          // in
 
@@ -215,9 +215,9 @@ func (accelLabel *AccelLabel) AccelWidth() uint32 {
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 	runtime.KeepAlive(accelLabel)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -261,7 +261,7 @@ func (accelLabel *AccelLabel) Refetch() bool {
 //    - acceleratorKey: keyval, or 0.
 //    - acceleratorMods: modifier mask for the accel.
 //
-func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint32, acceleratorMods gdk.ModifierType) {
+func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

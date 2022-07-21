@@ -465,7 +465,7 @@ func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 //    - len: length of text, in bytes, or -1, in which case the length will be
 //      determined with strlen().
 //
-func (clipboard *Clipboard) SetText(text string, len int32) {
+func (clipboard *Clipboard) SetText(text string, len int) {
 	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.gchar        // out
 	var _arg2 C.gint          // out

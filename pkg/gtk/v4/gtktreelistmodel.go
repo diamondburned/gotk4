@@ -206,7 +206,7 @@ func (self *TreeListModel) Autoexpand() bool {
 //
 //    - treeListRow (optional): child in position.
 //
-func (self *TreeListModel) ChildRow(position uint32) *TreeListRow {
+func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
@@ -309,7 +309,7 @@ func (self *TreeListModel) Passthrough() bool {
 //
 //    - treeListRow (optional): row item.
 //
-func (self *TreeListModel) Row(position uint32) *TreeListRow {
+func (self *TreeListModel) Row(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
 	var _arg1 C.guint             // out
 	var _cret *C.GtkTreeListRow   // in
@@ -407,7 +407,7 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 //
 //    - treeListRow (optional): child in position.
 //
-func (self *TreeListRow) ChildRow(position uint32) *TreeListRow {
+func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkTreeListRow // in
@@ -474,7 +474,7 @@ func (self *TreeListRow) Children() *gio.ListModel {
 //
 //    - guint: depth of this row.
 //
-func (self *TreeListRow) Depth() uint32 {
+func (self *TreeListRow) Depth() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
@@ -483,9 +483,9 @@ func (self *TreeListRow) Depth() uint32 {
 	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -575,7 +575,7 @@ func (self *TreeListRow) Parent() *TreeListRow {
 //
 //    - guint: position in the model.
 //
-func (self *TreeListRow) Position() uint32 {
+func (self *TreeListRow) Position() uint {
 	var _arg0 *C.GtkTreeListRow // out
 	var _cret C.guint           // in
 
@@ -584,9 +584,9 @@ func (self *TreeListRow) Position() uint32 {
 	_cret = C.gtk_tree_list_row_get_position(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

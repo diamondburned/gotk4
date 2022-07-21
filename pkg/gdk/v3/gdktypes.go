@@ -952,29 +952,29 @@ type point struct {
 }
 
 // X: x coordinate of the point.
-func (p *Point) X() int32 {
+func (p *Point) X() int {
 	valptr := &p.native.x
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Y: y coordinate of the point.
-func (p *Point) Y() int32 {
+func (p *Point) Y() int {
 	valptr := &p.native.y
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // X: x coordinate of the point.
-func (p *Point) SetX(x int32) {
+func (p *Point) SetX(x int) {
 	valptr := &p.native.x
 	*valptr = C.gint(x)
 }
 
 // Y: y coordinate of the point.
-func (p *Point) SetY(y int32) {
+func (p *Point) SetY(y int) {
 	valptr := &p.native.y
 	*valptr = C.gint(y)
 }
@@ -997,50 +997,50 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
 }
 
-func (r *Rectangle) X() int32 {
+func (r *Rectangle) X() int {
 	valptr := &r.native.x
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (r *Rectangle) Y() int32 {
+func (r *Rectangle) Y() int {
 	valptr := &r.native.y
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (r *Rectangle) Width() int32 {
+func (r *Rectangle) Width() int {
 	valptr := &r.native.width
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (r *Rectangle) Height() int32 {
+func (r *Rectangle) Height() int {
 	valptr := &r.native.height
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (r *Rectangle) SetX(x int32) {
+func (r *Rectangle) SetX(x int) {
 	valptr := &r.native.x
 	*valptr = C.int(x)
 }
 
-func (r *Rectangle) SetY(y int32) {
+func (r *Rectangle) SetY(y int) {
 	valptr := &r.native.y
 	*valptr = C.int(y)
 }
 
-func (r *Rectangle) SetWidth(width int32) {
+func (r *Rectangle) SetWidth(width int) {
 	valptr := &r.native.width
 	*valptr = C.int(width)
 }
 
-func (r *Rectangle) SetHeight(height int32) {
+func (r *Rectangle) SetHeight(height int) {
 	valptr := &r.native.height
 	*valptr = C.int(height)
 }

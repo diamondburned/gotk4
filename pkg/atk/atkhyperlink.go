@@ -101,14 +101,14 @@ type HyperlinkOverrider interface {
 	//
 	//    - gint: index with the hypertext document at which this link ends.
 	//
-	EndIndex() int32
+	EndIndex() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	//
 	// The function returns the following values:
 	//
 	//    - gint: number of anchors associated with this hyperlink.
 	//
-	NAnchors() int32
+	NAnchors() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
 	// For instance, the returned Object will implement Text if link_ is a text
 	// hyperlink, Image if link_ is an image hyperlink etc.
@@ -123,7 +123,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - object associated with this hyperlinks i-th anchor.
 	//
-	GetObject(i int32) *ObjectClass
+	GetObject(i int) *ObjectClass
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	//
@@ -131,7 +131,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - gint: index with the hypertext document at which this link begins.
 	//
-	StartIndex() int32
+	StartIndex() int
 	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
@@ -144,7 +144,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - utf8: string specifying the URI.
 	//
-	URI(i int32) string
+	URI(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
 	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
@@ -167,7 +167,7 @@ type HyperlinkOverrider interface {
 	LinkActivated()
 	// The function returns the following values:
 	//
-	LinkState() uint32
+	LinkState() uint
 }
 
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
@@ -195,23 +195,23 @@ func classInitHyperlinker(gclassPtr, data C.gpointer) {
 	goval := gbox.Get(uintptr(data))
 	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(gclassPtr))
 
-	if _, ok := goval.(interface{ EndIndex() int32 }); ok {
+	if _, ok := goval.(interface{ EndIndex() int }); ok {
 		pclass.get_end_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_end_index)
 	}
 
-	if _, ok := goval.(interface{ NAnchors() int32 }); ok {
+	if _, ok := goval.(interface{ NAnchors() int }); ok {
 		pclass.get_n_anchors = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
 	}
 
-	if _, ok := goval.(interface{ GetObject(i int32) *ObjectClass }); ok {
+	if _, ok := goval.(interface{ GetObject(i int) *ObjectClass }); ok {
 		pclass.get_object = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_object)
 	}
 
-	if _, ok := goval.(interface{ StartIndex() int32 }); ok {
+	if _, ok := goval.(interface{ StartIndex() int }); ok {
 		pclass.get_start_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_start_index)
 	}
 
-	if _, ok := goval.(interface{ URI(i int32) string }); ok {
+	if _, ok := goval.(interface{ URI(i int) string }); ok {
 		pclass.get_uri = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_uri)
 	}
 
@@ -227,7 +227,7 @@ func classInitHyperlinker(gclassPtr, data C.gpointer) {
 		pclass.link_activated = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_activated)
 	}
 
-	if _, ok := goval.(interface{ LinkState() uint32 }); ok {
+	if _, ok := goval.(interface{ LinkState() uint }); ok {
 		pclass.link_state = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_state)
 	}
 }
@@ -235,7 +235,7 @@ func classInitHyperlinker(gclassPtr, data C.gpointer) {
 //export _gotk4_atk1_HyperlinkClass_get_end_index
 func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ EndIndex() int32 })
+	iface := goval.(interface{ EndIndex() int })
 
 	gint := iface.EndIndex()
 
@@ -247,7 +247,7 @@ func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint
 //export _gotk4_atk1_HyperlinkClass_get_n_anchors
 func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ NAnchors() int32 })
+	iface := goval.(interface{ NAnchors() int })
 
 	gint := iface.NAnchors()
 
@@ -259,11 +259,11 @@ func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint
 //export _gotk4_atk1_HyperlinkClass_get_object
 func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GetObject(i int32) *ObjectClass })
+	iface := goval.(interface{ GetObject(i int) *ObjectClass })
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	object := iface.GetObject(_i)
 
@@ -275,7 +275,7 @@ func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (c
 //export _gotk4_atk1_HyperlinkClass_get_start_index
 func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ StartIndex() int32 })
+	iface := goval.(interface{ StartIndex() int })
 
 	gint := iface.StartIndex()
 
@@ -287,11 +287,11 @@ func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gi
 //export _gotk4_atk1_HyperlinkClass_get_uri
 func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ URI(i int32) string })
+	iface := goval.(interface{ URI(i int) string })
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	utf8 := iface.URI(_i)
 
@@ -339,7 +339,7 @@ func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
 //export _gotk4_atk1_HyperlinkClass_link_state
 func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LinkState() uint32 })
+	iface := goval.(interface{ LinkState() uint })
 
 	guint := iface.LinkState()
 
@@ -389,7 +389,7 @@ func (link_ *Hyperlink) ConnectLinkActivated(f func()) coreglib.SignalHandle {
 //
 //    - gint: index with the hypertext document at which this link ends.
 //
-func (link_ *Hyperlink) EndIndex() int32 {
+func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -398,9 +398,9 @@ func (link_ *Hyperlink) EndIndex() int32 {
 	_cret = C.atk_hyperlink_get_end_index(_arg0)
 	runtime.KeepAlive(link_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -411,7 +411,7 @@ func (link_ *Hyperlink) EndIndex() int32 {
 //
 //    - gint: number of anchors associated with this hyperlink.
 //
-func (link_ *Hyperlink) NAnchors() int32 {
+func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -420,9 +420,9 @@ func (link_ *Hyperlink) NAnchors() int32 {
 	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
 	runtime.KeepAlive(link_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -441,7 +441,7 @@ func (link_ *Hyperlink) NAnchors() int32 {
 //
 //    - object associated with this hyperlinks i-th anchor.
 //
-func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
+func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -467,7 +467,7 @@ func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
 //
 //    - gint: index with the hypertext document at which this link begins.
 //
-func (link_ *Hyperlink) StartIndex() int32 {
+func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
 
@@ -476,9 +476,9 @@ func (link_ *Hyperlink) StartIndex() int32 {
 	_cret = C.atk_hyperlink_get_start_index(_arg0)
 	runtime.KeepAlive(link_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -495,7 +495,7 @@ func (link_ *Hyperlink) StartIndex() int32 {
 //
 //    - utf8: string specifying the URI.
 //
-func (link_ *Hyperlink) URI(i int32) string {
+func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.gchar        // in

@@ -25,7 +25,7 @@ import "C"
 //    - x11DeviceCore (optional) wrapping the device ID, or NULL if the given ID
 //      doesn’t currently represent a device.
 //
-func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int32) *X11DeviceCore {
+func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int) *X11DeviceCore {
 	var _arg1 *C.GdkDeviceManager // out
 	var _arg2 C.gint              // out
 	var _cret *C.GdkDevice        // in

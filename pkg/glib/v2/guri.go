@@ -590,7 +590,7 @@ func (uri *URI) Path() string {
 //
 //    - gint uri's port, or -1 if no port was specified.
 //
-func (uri *URI) Port() int32 {
+func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
 
@@ -599,9 +599,9 @@ func (uri *URI) Port() int32 {
 	_cret = C.g_uri_get_port(_arg0)
 	runtime.KeepAlive(uri)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -842,7 +842,7 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 //
 //    - uri: new #GUri.
 //
-func URIBuild(flags URIFlags, scheme, userinfo, host string, port int32, path, query, fragment string) *URI {
+func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -925,7 +925,7 @@ func URIBuild(flags URIFlags, scheme, userinfo, host string, port int32, path, q
 //
 //    - uri: new #GUri.
 //
-func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int32, path, query, fragment string) *URI {
+func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1157,7 +1157,7 @@ func URIIsValid(uriString string, flags URIFlags) error {
 //
 //    - utf8: absolute URI string.
 //
-func URIJoin(flags URIFlags, scheme, userinfo, host string, port int32, path, query, fragment string) string {
+func URIJoin(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1238,7 +1238,7 @@ func URIJoin(flags URIFlags, scheme, userinfo, host string, port int32, path, qu
 //
 //    - utf8: absolute URI string.
 //
-func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int32, path, query, fragment string) string {
+func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
 	var _arg3 *C.gchar    // out
@@ -1587,7 +1587,7 @@ func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, e
 //    - query (optional): on return, contains the query, or NULL.
 //    - fragment (optional): on return, contains the fragment, or NULL.
 //
-func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, port int32, path, query, fragment string, goerr error) {
+func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, port int, path, query, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1610,7 +1610,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, por
 	var _scheme string   // out
 	var _userinfo string // out
 	var _host string     // out
-	var _port int32      // out
+	var _port int        // out
 	var _path string     // out
 	var _query string    // out
 	var _fragment string // out
@@ -1628,7 +1628,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, por
 		_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
 		defer C.free(unsafe.Pointer(_arg5))
 	}
-	_port = int32(_arg6)
+	_port = int(_arg6)
 	if _arg7 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg7)))
 		defer C.free(unsafe.Pointer(_arg7))
@@ -1667,7 +1667,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, por
 //    - host (optional): on return, contains the host, or NULL.
 //    - port (optional): on return, contains the port, or -1.
 //
-func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, port int32, goerr error) {
+func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, port int, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1685,7 +1685,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, por
 
 	var _scheme string // out
 	var _host string   // out
-	var _port int32    // out
+	var _port int      // out
 	var _goerr error   // out
 
 	if _arg3 != nil {
@@ -1696,7 +1696,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, por
 		_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg4)))
 		defer C.free(unsafe.Pointer(_arg4))
 	}
-	_port = int32(_arg5)
+	_port = int(_arg5)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1733,7 +1733,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, por
 //    - query (optional): on return, contains the query, or NULL.
 //    - fragment (optional): on return, contains the fragment, or NULL.
 //
-func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, authParams, host string, port int32, path, query, fragment string, goerr error) {
+func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, authParams, host string, port int, path, query, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1760,7 +1760,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, au
 	var _password string   // out
 	var _authParams string // out
 	var _host string       // out
-	var _port int32        // out
+	var _port int          // out
 	var _path string       // out
 	var _query string      // out
 	var _fragment string   // out
@@ -1786,7 +1786,7 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, au
 		_host = C.GoString((*C.gchar)(unsafe.Pointer(_arg7)))
 		defer C.free(unsafe.Pointer(_arg7))
 	}
-	_port = int32(_arg8)
+	_port = int(_arg8)
 	if _arg9 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg9)))
 		defer C.free(unsafe.Pointer(_arg9))

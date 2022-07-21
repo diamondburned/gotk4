@@ -552,7 +552,7 @@ func (settings *PrintSettings) Finishings() string {
 //
 //    - gint: integer value of key.
 //
-func (settings *PrintSettings) Int(key string) int32 {
+func (settings *PrintSettings) Int(key string) int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
 	var _cret C.gint              // in
@@ -565,9 +565,9 @@ func (settings *PrintSettings) Int(key string) int32 {
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -584,7 +584,7 @@ func (settings *PrintSettings) Int(key string) int32 {
 //
 //    - gint: integer value of key.
 //
-func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
+func (settings *PrintSettings) IntWithDefault(key string, def int) int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gint              // out
@@ -600,9 +600,9 @@ func (settings *PrintSettings) IntWithDefault(key string, def int32) int32 {
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(def)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -672,7 +672,7 @@ func (settings *PrintSettings) MediaType() string {
 //
 //    - gint: number of copies to print.
 //
-func (settings *PrintSettings) NCopies() int32 {
+func (settings *PrintSettings) NCopies() int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.gint              // in
 
@@ -681,9 +681,9 @@ func (settings *PrintSettings) NCopies() int32 {
 	_cret = C.gtk_print_settings_get_n_copies(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -694,7 +694,7 @@ func (settings *PrintSettings) NCopies() int32 {
 //
 //    - gint: number of pages per sheet.
 //
-func (settings *PrintSettings) NumberUp() int32 {
+func (settings *PrintSettings) NumberUp() int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.gint              // in
 
@@ -703,9 +703,9 @@ func (settings *PrintSettings) NumberUp() int32 {
 	_cret = C.gtk_print_settings_get_number_up(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1020,7 +1020,7 @@ func (settings *PrintSettings) Quality() PrintQuality {
 //
 //    - gint: resolution in dpi.
 //
-func (settings *PrintSettings) Resolution() int32 {
+func (settings *PrintSettings) Resolution() int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.gint              // in
 
@@ -1029,9 +1029,9 @@ func (settings *PrintSettings) Resolution() int32 {
 	_cret = C.gtk_print_settings_get_resolution(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1042,7 +1042,7 @@ func (settings *PrintSettings) Resolution() int32 {
 //
 //    - gint: horizontal resolution in dpi.
 //
-func (settings *PrintSettings) ResolutionX() int32 {
+func (settings *PrintSettings) ResolutionX() int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.gint              // in
 
@@ -1051,9 +1051,9 @@ func (settings *PrintSettings) ResolutionX() int32 {
 	_cret = C.gtk_print_settings_get_resolution_x(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1064,7 +1064,7 @@ func (settings *PrintSettings) ResolutionX() int32 {
 //
 //    - gint: vertical resolution in dpi.
 //
-func (settings *PrintSettings) ResolutionY() int32 {
+func (settings *PrintSettings) ResolutionY() int {
 	var _arg0 *C.GtkPrintSettings // out
 	var _cret C.gint              // in
 
@@ -1073,9 +1073,9 @@ func (settings *PrintSettings) ResolutionY() int32 {
 	_cret = C.gtk_print_settings_get_resolution_y(_arg0)
 	runtime.KeepAlive(settings)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1425,7 +1425,7 @@ func (settings *PrintSettings) SetFinishings(finishings string) {
 //    - key: key.
 //    - value: integer.
 //
-func (settings *PrintSettings) SetInt(key string, value int32) {
+func (settings *PrintSettings) SetInt(key string, value int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.gchar            // out
 	var _arg2 C.gint              // out
@@ -1495,7 +1495,7 @@ func (settings *PrintSettings) SetMediaType(mediaType string) {
 //
 //    - numCopies: number of copies.
 //
-func (settings *PrintSettings) SetNCopies(numCopies int32) {
+func (settings *PrintSettings) SetNCopies(numCopies int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gint              // out
 
@@ -1513,7 +1513,7 @@ func (settings *PrintSettings) SetNCopies(numCopies int32) {
 //
 //    - numberUp: number of pages per sheet.
 //
-func (settings *PrintSettings) SetNumberUp(numberUp int32) {
+func (settings *PrintSettings) SetNumberUp(numberUp int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gint              // out
 
@@ -1769,7 +1769,7 @@ func (settings *PrintSettings) SetQuality(quality PrintQuality) {
 //
 //    - resolution in dpi.
 //
-func (settings *PrintSettings) SetResolution(resolution int32) {
+func (settings *PrintSettings) SetResolution(resolution int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gint              // out
 
@@ -1789,7 +1789,7 @@ func (settings *PrintSettings) SetResolution(resolution int32) {
 //    - resolutionX: horizontal resolution in dpi.
 //    - resolutionY: vertical resolution in dpi.
 //
-func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int32) {
+func (settings *PrintSettings) SetResolutionXY(resolutionX, resolutionY int) {
 	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 C.gint              // out
 	var _arg2 C.gint              // out
@@ -1980,29 +1980,29 @@ type pageRange struct {
 }
 
 // Start: start of page range.
-func (p *PageRange) Start() int32 {
+func (p *PageRange) Start() int {
 	valptr := &p.native.start
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // End: end of page range.
-func (p *PageRange) End() int32 {
+func (p *PageRange) End() int {
 	valptr := &p.native.end
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Start: start of page range.
-func (p *PageRange) SetStart(start int32) {
+func (p *PageRange) SetStart(start int) {
 	valptr := &p.native.start
 	*valptr = C.gint(start)
 }
 
 // End: end of page range.
-func (p *PageRange) SetEnd(end int32) {
+func (p *PageRange) SetEnd(end int) {
 	valptr := &p.native.end
 	*valptr = C.gint(end)
 }

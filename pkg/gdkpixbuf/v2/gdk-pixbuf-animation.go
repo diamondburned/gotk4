@@ -249,7 +249,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 //
 //    - gint: height of the bounding box of the animation.
 //
-func (animation *PixbufAnimation) Height() int32 {
+func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
@@ -258,9 +258,9 @@ func (animation *PixbufAnimation) Height() int32 {
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 	runtime.KeepAlive(animation)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -362,7 +362,7 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 //
 //    - gint: width of the bounding box of the animation.
 //
-func (animation *PixbufAnimation) Width() int32 {
+func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
 
@@ -371,9 +371,9 @@ func (animation *PixbufAnimation) Width() int32 {
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 	runtime.KeepAlive(animation)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -532,7 +532,7 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 //
 //    - gint: delay time in milliseconds (thousandths of a second).
 //
-func (iter *PixbufAnimationIter) DelayTime() int32 {
+func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
 
@@ -541,9 +541,9 @@ func (iter *PixbufAnimationIter) DelayTime() int32 {
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

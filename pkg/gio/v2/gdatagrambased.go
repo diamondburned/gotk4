@@ -191,7 +191,7 @@ type DatagramBasedOverrider interface {
 	//      num_messages was larger than UIO_MAXIOV (1024), in which case the
 	//      caller may re-try to receive the remaining messages.
 	//
-	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error)
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
 	//
@@ -251,7 +251,7 @@ type DatagramBasedOverrider interface {
 	//      or positive, or if num_messages was larger than UIO_MAXIOV (1024), in
 	//      which case the caller may re-try to send the remaining messages.
 	//
-	SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error)
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
 // DatagramBased is a networking interface for representing datagram-based
@@ -326,10 +326,10 @@ type DatagramBasedder interface {
 	CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source
 	// ReceiveMessages: receive one or more data messages from datagram_based in
 	// one go.
-	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error)
+	ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error)
 	// SendMessages: send one or more data messages from datagram_based in one
 	// go.
-	SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error)
+	SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error)
 }
 
 var _ DatagramBasedder = (*DatagramBased)(nil)
@@ -410,7 +410,7 @@ func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased,
 
 	var _cancellable context.Context // out
 	var _messages []InputMessage     // out
-	var _flags int32                 // out
+	var _flags int                   // out
 	var _timeout int64               // out
 
 	if arg5 != nil {
@@ -423,7 +423,7 @@ func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased,
 			_messages[i] = *(*InputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
 	}
-	_flags = int32(arg3)
+	_flags = int(arg3)
 	_timeout = int64(arg4)
 
 	gint, _goerr := iface.ReceiveMessages(_cancellable, _messages, _flags, _timeout)
@@ -443,7 +443,7 @@ func _gotk4_gio2_DatagramBasedInterface_send_messages(arg0 *C.GDatagramBased, ar
 
 	var _cancellable context.Context // out
 	var _messages []OutputMessage    // out
-	var _flags int32                 // out
+	var _flags int                   // out
 	var _timeout int64               // out
 
 	if arg5 != nil {
@@ -456,7 +456,7 @@ func _gotk4_gio2_DatagramBasedInterface_send_messages(arg0 *C.GDatagramBased, ar
 			_messages[i] = *(*OutputMessage)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
 	}
-	_flags = int32(arg3)
+	_flags = int(arg3)
 	_timeout = int64(arg4)
 
 	gint, _goerr := iface.SendMessages(_cancellable, _messages, _flags, _timeout)
@@ -708,7 +708,7 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 //      larger than UIO_MAXIOV (1024), in which case the caller may re-try to
 //      receive the remaining messages.
 //
-func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int32, timeout int64) (int32, error) {
+func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
 	var _arg1 *C.GInputMessage  // out
@@ -743,10 +743,10 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(timeout)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -809,7 +809,7 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 //      positive, or if num_messages was larger than UIO_MAXIOV (1024), in which
 //      case the caller may re-try to send the remaining messages.
 //
-func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int32, timeout int64) (int32, error) {
+func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
 	var _arg1 *C.GOutputMessage // out
@@ -844,10 +844,10 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(timeout)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

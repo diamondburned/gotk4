@@ -63,14 +63,14 @@ func DisableMultidevice() {
 //
 //    - gint: x error code or 0 on success.
 //
-func ErrorTrapPop() int32 {
+func ErrorTrapPop() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_error_trap_pop()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -471,7 +471,7 @@ func SetAllowedBackends(backends string) {
 //
 //    - msec: double click time in milliseconds (thousandths of a second).
 //
-func SetDoubleClickTime(msec uint32) {
+func SetDoubleClickTime(msec uint) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(msec)
@@ -511,14 +511,14 @@ func SetProgramClass(programClass string) {
 //
 //    - gint: height of the default screen in pixels.
 //
-func ScreenHeight() int32 {
+func ScreenHeight() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_height()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -533,14 +533,14 @@ func ScreenHeight() int32 {
 //    - gint: height of the default screen in millimeters, though it is not
 //      always correct.
 //
-func ScreenHeightMm() int32 {
+func ScreenHeightMm() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_height_mm()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -555,14 +555,14 @@ func ScreenHeightMm() int32 {
 //
 //    - gint: width of the default screen in pixels.
 //
-func ScreenWidth() int32 {
+func ScreenWidth() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_width()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -577,14 +577,14 @@ func ScreenWidth() int32 {
 //    - gint: width of the default screen in millimeters, though it is not always
 //      correct.
 //
-func ScreenWidthMm() int32 {
+func ScreenWidthMm() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_screen_width_mm()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

@@ -195,7 +195,7 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 //
 //    - gint: fixed with of the column.
 //
-func (self *ColumnViewColumn) FixedWidth() int32 {
+func (self *ColumnViewColumn) FixedWidth() int {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _cret C.int                  // in
 
@@ -204,9 +204,9 @@ func (self *ColumnViewColumn) FixedWidth() int32 {
 	_cret = C.gtk_column_view_column_get_fixed_width(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -399,7 +399,7 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 //
 //    - fixedWidth: new fixed width, or -1.
 //
-func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int32) {
+func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 	var _arg0 *C.GtkColumnViewColumn // out
 	var _arg1 C.int                  // out
 

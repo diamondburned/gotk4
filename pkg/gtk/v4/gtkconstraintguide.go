@@ -97,7 +97,7 @@ func NewConstraintGuide() *ConstraintGuide {
 //    - width (optional): return location for the maximum width, or NULL.
 //    - height (optional): return location for the maximum height, or NULL.
 //
-func (guide *ConstraintGuide) MaxSize(width, height *int32) {
+func (guide *ConstraintGuide) MaxSize(width, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
@@ -123,7 +123,7 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 //    - width (optional): return location for the minimum width, or NULL.
 //    - height (optional): return location for the minimum height, or NULL.
 //
-func (guide *ConstraintGuide) MinSize(width, height *int32) {
+func (guide *ConstraintGuide) MinSize(width, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
@@ -173,7 +173,7 @@ func (guide *ConstraintGuide) Name() string {
 //    - width (optional): return location for the natural width, or NULL.
 //    - height (optional): return location for the natural height, or NULL.
 //
-func (guide *ConstraintGuide) NatSize(width, height *int32) {
+func (guide *ConstraintGuide) NatSize(width, height *int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 *C.int                // out
 	var _arg2 *C.int                // out
@@ -225,7 +225,7 @@ func (guide *ConstraintGuide) Strength() ConstraintStrength {
 //    - width: new maximum width, or -1 to not change it.
 //    - height: new maximum height, or -1 to not change it.
 //
-func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
+func (guide *ConstraintGuide) SetMaxSize(width, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -250,7 +250,7 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 //    - width: new minimum width, or -1 to not change it.
 //    - height: new minimum height, or -1 to not change it.
 //
-func (guide *ConstraintGuide) SetMinSize(width, height int32) {
+func (guide *ConstraintGuide) SetMinSize(width, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out
@@ -298,7 +298,7 @@ func (guide *ConstraintGuide) SetName(name string) {
 //    - width: new natural width, or -1 to not change it.
 //    - height: new natural height, or -1 to not change it.
 //
-func (guide *ConstraintGuide) SetNatSize(width, height int32) {
+func (guide *ConstraintGuide) SetNatSize(width, height int) {
 	var _arg0 *C.GtkConstraintGuide // out
 	var _arg1 C.int                 // out
 	var _arg2 C.int                 // out

@@ -424,7 +424,7 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkContentProvider // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 *C.char               // out

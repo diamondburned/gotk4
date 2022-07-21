@@ -211,7 +211,7 @@ func (iter *TextIter) BackwardChar() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) BackwardChars(count int32) bool {
+func (iter *TextIter) BackwardChars(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -268,7 +268,7 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) BackwardCursorPositions(count int32) bool {
+func (iter *TextIter) BackwardCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -375,7 +375,7 @@ func (iter *TextIter) BackwardLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) BackwardLines(count int32) bool {
+func (iter *TextIter) BackwardLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -490,7 +490,7 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
+func (iter *TextIter) BackwardSentenceStarts(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -584,7 +584,7 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
+func (iter *TextIter) BackwardVisibleCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -651,7 +651,7 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) BackwardVisibleLines(count int32) bool {
+func (iter *TextIter) BackwardVisibleLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -711,7 +711,7 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
+func (iter *TextIter) BackwardVisibleWordStarts(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -770,7 +770,7 @@ func (iter *TextIter) BackwardWordStart() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) BackwardWordStarts(count int32) bool {
+func (iter *TextIter) BackwardWordStarts(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -884,7 +884,7 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 //    - gint: -1 if lhs is less than rhs, 1 if lhs is greater, 0 if they are
 //      equal.
 //
-func (lhs *TextIter) Compare(rhs *TextIter) int32 {
+func (lhs *TextIter) Compare(rhs *TextIter) int {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 *C.GtkTextIter // out
 	var _cret C.gint         // in
@@ -896,9 +896,9 @@ func (lhs *TextIter) Compare(rhs *TextIter) int32 {
 	runtime.KeepAlive(lhs)
 	runtime.KeepAlive(rhs)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1177,7 +1177,7 @@ func (iter *TextIter) ForwardChar() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) ForwardChars(count int32) bool {
+func (iter *TextIter) ForwardChars(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1241,7 +1241,7 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) ForwardCursorPositions(count int32) bool {
+func (iter *TextIter) ForwardCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1346,7 +1346,7 @@ func (iter *TextIter) ForwardLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) ForwardLines(count int32) bool {
+func (iter *TextIter) ForwardLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1464,7 +1464,7 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
+func (iter *TextIter) ForwardSentenceEnds(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1600,7 +1600,7 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 //
 //    - ok: TRUE if we moved and the new position is dereferenceable.
 //
-func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
+func (iter *TextIter) ForwardVisibleCursorPositions(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1663,7 +1663,7 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 //
 //    - ok: whether iter moved and is dereferenceable.
 //
-func (iter *TextIter) ForwardVisibleLines(count int32) bool {
+func (iter *TextIter) ForwardVisibleLines(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1722,7 +1722,7 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
+func (iter *TextIter) ForwardVisibleWordEnds(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1780,7 +1780,7 @@ func (iter *TextIter) ForwardWordEnd() bool {
 //
 //    - ok: TRUE if iter moved and is not the end iterator.
 //
-func (iter *TextIter) ForwardWordEnds(count int32) bool {
+func (iter *TextIter) ForwardWordEnds(count int) bool {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 	var _cret C.gboolean     // in
@@ -1872,7 +1872,7 @@ func (iter *TextIter) Buffer() *TextBuffer {
 //
 //    - gint: number of bytes in the line.
 //
-func (iter *TextIter) BytesInLine() int32 {
+func (iter *TextIter) BytesInLine() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -1881,9 +1881,9 @@ func (iter *TextIter) BytesInLine() int32 {
 	_cret = C.gtk_text_iter_get_bytes_in_line(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1922,7 +1922,7 @@ func (iter *TextIter) Char() uint32 {
 //
 //    - gint: number of characters in the line.
 //
-func (iter *TextIter) CharsInLine() int32 {
+func (iter *TextIter) CharsInLine() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -1931,9 +1931,9 @@ func (iter *TextIter) CharsInLine() int32 {
 	_cret = C.gtk_text_iter_get_chars_in_line(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1998,7 +1998,7 @@ func (iter *TextIter) Language() *pango.Language {
 //
 //    - gint: line number.
 //
-func (iter *TextIter) Line() int32 {
+func (iter *TextIter) Line() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -2007,9 +2007,9 @@ func (iter *TextIter) Line() int32 {
 	_cret = C.gtk_text_iter_get_line(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2022,7 +2022,7 @@ func (iter *TextIter) Line() int32 {
 //
 //    - gint: distance from start of line, in bytes.
 //
-func (iter *TextIter) LineIndex() int32 {
+func (iter *TextIter) LineIndex() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -2031,9 +2031,9 @@ func (iter *TextIter) LineIndex() int32 {
 	_cret = C.gtk_text_iter_get_line_index(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2046,7 +2046,7 @@ func (iter *TextIter) LineIndex() int32 {
 //
 //    - gint: offset from start of line.
 //
-func (iter *TextIter) LineOffset() int32 {
+func (iter *TextIter) LineOffset() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -2055,9 +2055,9 @@ func (iter *TextIter) LineOffset() int32 {
 	_cret = C.gtk_text_iter_get_line_offset(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2102,7 +2102,7 @@ func (iter *TextIter) Marks() []*TextMark {
 //
 //    - gint: character offset.
 //
-func (iter *TextIter) Offset() int32 {
+func (iter *TextIter) Offset() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -2111,9 +2111,9 @@ func (iter *TextIter) Offset() int32 {
 	_cret = C.gtk_text_iter_get_offset(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2299,7 +2299,7 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 //
 //    - gint: byte index of iter with respect to the start of the line.
 //
-func (iter *TextIter) VisibleLineIndex() int32 {
+func (iter *TextIter) VisibleLineIndex() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -2308,9 +2308,9 @@ func (iter *TextIter) VisibleLineIndex() int32 {
 	_cret = C.gtk_text_iter_get_visible_line_index(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2323,7 +2323,7 @@ func (iter *TextIter) VisibleLineIndex() int32 {
 //
 //    - gint: offset in visible characters from the start of the line.
 //
-func (iter *TextIter) VisibleLineOffset() int32 {
+func (iter *TextIter) VisibleLineOffset() int {
 	var _arg0 *C.GtkTextIter // out
 	var _cret C.gint         // in
 
@@ -2332,9 +2332,9 @@ func (iter *TextIter) VisibleLineOffset() int32 {
 	_cret = C.gtk_text_iter_get_visible_line_offset(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2636,7 +2636,7 @@ func (first *TextIter) Order(second *TextIter) {
 //
 //    - lineNumber: line number (counted from 0).
 //
-func (iter *TextIter) SetLine(lineNumber int32) {
+func (iter *TextIter) SetLine(lineNumber int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 
@@ -2656,7 +2656,7 @@ func (iter *TextIter) SetLine(lineNumber int32) {
 //
 //    - byteOnLine: byte index relative to the start of iter’s current line.
 //
-func (iter *TextIter) SetLineIndex(byteOnLine int32) {
+func (iter *TextIter) SetLineIndex(byteOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 
@@ -2679,7 +2679,7 @@ func (iter *TextIter) SetLineIndex(byteOnLine int32) {
 //    - charOnLine: character offset relative to the start of iter’s current
 //      line.
 //
-func (iter *TextIter) SetLineOffset(charOnLine int32) {
+func (iter *TextIter) SetLineOffset(charOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 
@@ -2698,7 +2698,7 @@ func (iter *TextIter) SetLineOffset(charOnLine int32) {
 //
 //    - charOffset: character number.
 //
-func (iter *TextIter) SetOffset(charOffset int32) {
+func (iter *TextIter) SetOffset(charOffset int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 
@@ -2718,7 +2718,7 @@ func (iter *TextIter) SetOffset(charOffset int32) {
 //
 //    - byteOnLine: byte index.
 //
-func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
+func (iter *TextIter) SetVisibleLineIndex(byteOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 
@@ -2738,7 +2738,7 @@ func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
 //
 //    - charOnLine: character offset.
 //
-func (iter *TextIter) SetVisibleLineOffset(charOnLine int32) {
+func (iter *TextIter) SetVisibleLineOffset(charOnLine int) {
 	var _arg0 *C.GtkTextIter // out
 	var _arg1 C.gint         // out
 

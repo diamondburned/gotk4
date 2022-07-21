@@ -214,7 +214,7 @@ func (clipboard *Clipboard) IsLocal() bool {
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 **C.char              // out
@@ -495,7 +495,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GType               // out
@@ -680,7 +680,7 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkClipboard       // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

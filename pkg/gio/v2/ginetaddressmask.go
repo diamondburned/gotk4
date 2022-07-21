@@ -78,7 +78,7 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 //
 //    - inetAddressMask: new AddressMask, or NULL on error.
 //
-func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, error) {
+func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
 	var _cret *C.GInetAddressMask // in
@@ -219,7 +219,7 @@ func (mask *InetAddressMask) Family() SocketFamily {
 //
 //    - guint mask's length.
 //
-func (mask *InetAddressMask) Length() uint32 {
+func (mask *InetAddressMask) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.guint             // in
 
@@ -228,9 +228,9 @@ func (mask *InetAddressMask) Length() uint32 {
 	_cret = C.g_inet_address_mask_get_length(_arg0)
 	runtime.KeepAlive(mask)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

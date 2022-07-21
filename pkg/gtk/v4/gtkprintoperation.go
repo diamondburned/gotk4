@@ -409,7 +409,7 @@ type PrintOperationOverrider interface {
 	//    - context
 	//    - pageNr
 	//
-	DrawPage(context *PrintContext, pageNr int32)
+	DrawPage(context *PrintContext, pageNr int)
 	// The function takes the following parameters:
 	//
 	EndPrint(context *PrintContext)
@@ -433,7 +433,7 @@ type PrintOperationOverrider interface {
 	//    - pageNr
 	//    - setup
 	//
-	RequestPageSetup(context *PrintContext, pageNr int32, setup *PageSetup)
+	RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	StatusChanged()
 	// The function takes the following parameters:
 	//
@@ -538,7 +538,7 @@ func classInitPrintOperationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		DrawPage(context *PrintContext, pageNr int32)
+		DrawPage(context *PrintContext, pageNr int)
 	}); ok {
 		pclass.draw_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_draw_page)
 	}
@@ -560,7 +560,7 @@ func classInitPrintOperationer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		RequestPageSetup(context *PrintContext, pageNr int32, setup *PageSetup)
+		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	}); ok {
 		pclass.request_page_setup = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_request_page_setup)
 	}
@@ -634,14 +634,14 @@ func _gotk4_gtk4_PrintOperationClass_done(arg0 *C.GtkPrintOperation, arg1 C.GtkP
 func _gotk4_gtk4_PrintOperationClass_draw_page(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawPage(context *PrintContext, pageNr int32)
+		DrawPage(context *PrintContext, pageNr int)
 	})
 
 	var _context *PrintContext // out
-	var _pageNr int32          // out
+	var _pageNr int            // out
 
 	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int32(arg2)
+	_pageNr = int(arg2)
 
 	iface.DrawPage(_context, _pageNr)
 }
@@ -722,15 +722,15 @@ func _gotk4_gtk4_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.
 func _gotk4_gtk4_PrintOperationClass_request_page_setup(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.int, arg3 *C.GtkPageSetup) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		RequestPageSetup(context *PrintContext, pageNr int32, setup *PageSetup)
+		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	})
 
 	var _context *PrintContext // out
-	var _pageNr int32          // out
+	var _pageNr int            // out
 	var _setup *PageSetup      // out
 
 	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int32(arg2)
+	_pageNr = int(arg2)
 	_setup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg3)))
 
 	iface.RequestPageSetup(_context, _pageNr, _setup)
@@ -935,7 +935,7 @@ func (op *PrintOperation) ConnectDone(f func(result PrintOperationResult)) coreg
 
 //export _gotk4_gtk4_PrintOperation_ConnectDrawPage
 func _gotk4_gtk4_PrintOperation_ConnectDrawPage(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 C.guintptr) {
-	var f func(context *PrintContext, pageNr int32)
+	var f func(context *PrintContext, pageNr int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -943,14 +943,14 @@ func _gotk4_gtk4_PrintOperation_ConnectDrawPage(arg0 C.gpointer, arg1 *C.GtkPrin
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *PrintContext, pageNr int32))
+		f = closure.Func.(func(context *PrintContext, pageNr int))
 	}
 
 	var _context *PrintContext // out
-	var _pageNr int32          // out
+	var _pageNr int            // out
 
 	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int32(arg2)
+	_pageNr = int(arg2)
 
 	f(_context, _pageNr)
 }
@@ -1003,7 +1003,7 @@ func _gotk4_gtk4_PrintOperation_ConnectDrawPage(arg0 C.gpointer, arg1 *C.GtkPrin
 // Use gtk.PrintOperation.SetUseFullPage() and gtk.PrintOperation.SetUnit()
 // before starting the print operation to set up the transformation of the cairo
 // context according to your needs.
-func (op *PrintOperation) ConnectDrawPage(f func(context *PrintContext, pageNr int32)) coreglib.SignalHandle {
+func (op *PrintOperation) ConnectDrawPage(f func(context *PrintContext, pageNr int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "draw-page", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectDrawPage), f)
 }
 
@@ -1149,7 +1149,7 @@ func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer,
 
 //export _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup
 func _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 *C.GtkPageSetup, arg4 C.guintptr) {
-	var f func(context *PrintContext, pageNr int32, setup *PageSetup)
+	var f func(context *PrintContext, pageNr int, setup *PageSetup)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -1157,15 +1157,15 @@ func _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(arg0 C.gpointer, arg1 *C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(context *PrintContext, pageNr int32, setup *PageSetup))
+		f = closure.Func.(func(context *PrintContext, pageNr int, setup *PageSetup))
 	}
 
 	var _context *PrintContext // out
-	var _pageNr int32          // out
+	var _pageNr int            // out
 	var _setup *PageSetup      // out
 
 	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int32(arg2)
+	_pageNr = int(arg2)
 	_setup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg3)))
 
 	f(_context, _pageNr, _setup)
@@ -1175,7 +1175,7 @@ func _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(arg0 C.gpointer, arg1 *C
 //
 // This gives the application a chance to modify the page setup. Any changes
 // done to setup will be in force only for printing this page.
-func (op *PrintOperation) ConnectRequestPageSetup(f func(context *PrintContext, pageNr int32, setup *PageSetup)) coreglib.SignalHandle {
+func (op *PrintOperation) ConnectRequestPageSetup(f func(context *PrintContext, pageNr int, setup *PageSetup)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "request-page-setup", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectRequestPageSetup), f)
 }
 
@@ -1409,7 +1409,7 @@ func (op *PrintOperation) HasSelection() bool {
 //
 //    - gint: number of pages that will be printed.
 //
-func (op *PrintOperation) NPagesToPrint() int32 {
+func (op *PrintOperation) NPagesToPrint() int {
 	var _arg0 *C.GtkPrintOperation // out
 	var _cret C.int                // in
 
@@ -1418,9 +1418,9 @@ func (op *PrintOperation) NPagesToPrint() int32 {
 	_cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
 	runtime.KeepAlive(op)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1693,7 +1693,7 @@ func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 //
 //    - currentPage: current page, 0-based.
 //
-func (op *PrintOperation) SetCurrentPage(currentPage int32) {
+func (op *PrintOperation) SetCurrentPage(currentPage int) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.int                // out
 
@@ -1878,7 +1878,7 @@ func (op *PrintOperation) SetJobName(jobName string) {
 //
 //    - nPages: number of pages.
 //
-func (op *PrintOperation) SetNPages(nPages int32) {
+func (op *PrintOperation) SetNPages(nPages int) {
 	var _arg0 *C.GtkPrintOperation // out
 	var _arg1 C.int                // out
 

@@ -215,7 +215,7 @@ func NewTimeZoneUTC() *TimeZone {
 //
 //    - gint: interval containing time_, never -1.
 //
-func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int32 {
+func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
 	var _arg2 *C.gint64    // out
@@ -230,9 +230,9 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int32 {
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(time_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -263,7 +263,7 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int32 {
 //
 //    - gint: interval containing time_, or -1 in case of failure.
 //
-func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int32 {
+func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
 	var _arg2 C.gint64     // out
@@ -278,9 +278,9 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int32 {
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(time_)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -299,7 +299,7 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int32 {
 //
 //    - utf8: time zone abbreviation, which belongs to tz.
 //
-func (tz *TimeZone) Abbreviation(interval int32) string {
+func (tz *TimeZone) Abbreviation(interval int) string {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -363,7 +363,7 @@ func (tz *TimeZone) Identifier() string {
 //    - gint32: number of seconds that should be added to UTC to get the local
 //      time in tz.
 //
-func (tz *TimeZone) Offset(interval int32) int32 {
+func (tz *TimeZone) Offset(interval int) int32 {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
 	var _cret C.gint32     // in
@@ -393,7 +393,7 @@ func (tz *TimeZone) Offset(interval int32) int32 {
 //
 //    - ok: TRUE if daylight savings time is in effect.
 //
-func (tz *TimeZone) IsDst(interval int32) bool {
+func (tz *TimeZone) IsDst(interval int) bool {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in

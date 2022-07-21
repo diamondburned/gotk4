@@ -139,7 +139,7 @@ func (self *NumerableIcon) BackgroundIconName() string {
 //
 //    - gint: currently displayed value.
 //
-func (self *NumerableIcon) Count() int32 {
+func (self *NumerableIcon) Count() int {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _cret C.gint              // in
 
@@ -148,9 +148,9 @@ func (self *NumerableIcon) Count() int32 {
 	_cret = C.gtk_numerable_icon_get_count(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -284,7 +284,7 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 //
 //    - count: number between -99 and 99.
 //
-func (self *NumerableIcon) SetCount(count int32) {
+func (self *NumerableIcon) SetCount(count int) {
 	var _arg0 *C.GtkNumerableIcon // out
 	var _arg1 C.gint              // out
 

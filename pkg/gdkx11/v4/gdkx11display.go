@@ -140,7 +140,7 @@ func (display *X11Display) ConnectXevent(f func(xevent unsafe.Pointer) (ok bool)
 //
 //    - gint: x error code or 0 on success.
 //
-func (display *X11Display) ErrorTrapPop() int32 {
+func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
@@ -149,9 +149,9 @@ func (display *X11Display) ErrorTrapPop() int32 {
 	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 	runtime.KeepAlive(display)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -355,7 +355,7 @@ func (display *X11Display) Grab() {
 //      previously set value.
 //    - size: cursor size to use, or 0 to keep the previous size.
 //
-func (display *X11Display) SetCursorTheme(theme string, size int32) {
+func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -416,7 +416,7 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 //
 //    - scale: new scale value.
 //
-func (display *X11Display) SetSurfaceScale(scale int32) {
+func (display *X11Display) SetSurfaceScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 

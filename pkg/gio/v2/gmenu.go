@@ -165,7 +165,7 @@ func (menu *Menu) Freeze() {
 //    - label (optional): section label, or NULL.
 //    - detailedAction (optional): detailed action string, or NULL.
 //
-func (menu *Menu) Insert(position int32, label, detailedAction string) {
+func (menu *Menu) Insert(position int, label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 	var _arg2 *C.gchar // out
@@ -211,7 +211,7 @@ func (menu *Menu) Insert(position int32, label, detailedAction string) {
 //    - position at which to insert the item.
 //    - item to insert.
 //
-func (menu *Menu) InsertItem(position int32, item *MenuItem) {
+func (menu *Menu) InsertItem(position int, item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.GMenuItem // out
@@ -236,7 +236,7 @@ func (menu *Menu) InsertItem(position int32, item *MenuItem) {
 //    - label (optional): section label, or NULL.
 //    - section with the items of the section.
 //
-func (menu *Menu) InsertSection(position int32, label string, section MenuModeller) {
+func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -267,7 +267,7 @@ func (menu *Menu) InsertSection(position int32, label string, section MenuModell
 //    - label (optional): section label, or NULL.
 //    - submenu with the items of the submenu.
 //
-func (menu *Menu) InsertSubmenu(position int32, label string, submenu MenuModeller) {
+func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
 	var _arg2 *C.gchar      // out
@@ -407,7 +407,7 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 //
 //    - position of the item to remove.
 //
-func (menu *Menu) Remove(position int32) {
+func (menu *Menu) Remove(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
 
@@ -486,7 +486,7 @@ func NewMenuItem(label, detailedAction string) *MenuItem {
 //
 //    - menuItem: new Item.
 //
-func NewMenuItemFromModel(model MenuModeller, itemIndex int32) *MenuItem {
+func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
 	var _cret *C.GMenuItem  // in

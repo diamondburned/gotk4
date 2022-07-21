@@ -46,7 +46,7 @@ import "C"
 //    - width of the region to draw.
 //    - height of the region to draw.
 //
-func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bufferScale, x, y, width, height int32) {
+func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bufferScale, x, y, width, height int) {
 	var _arg1 *C.cairo_t    // out
 	var _arg2 *C.GdkSurface // out
 	var _arg3 C.int         // out

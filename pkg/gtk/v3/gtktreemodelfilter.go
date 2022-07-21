@@ -40,7 +40,7 @@ func GTypeTreeModelFilter() coreglib.Type {
 //
 // Since this function is called for each data access, it’s not a particularly
 // efficient operation.
-type TreeModelFilterModifyFunc func(model TreeModeller, iter *TreeIter, column int32) (value coreglib.Value)
+type TreeModelFilterModifyFunc func(model TreeModeller, iter *TreeIter, column int) (value coreglib.Value)
 
 //export _gotk4_gtk3_TreeModelFilterModifyFunc
 func _gotk4_gtk3_TreeModelFilterModifyFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.gint, arg5 C.gpointer) {
@@ -55,7 +55,7 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTree
 
 	var _model TreeModeller // out
 	var _iter *TreeIter     // out
-	var _column int32       // out
+	var _column int         // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -75,7 +75,7 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTree
 		_model = rv
 	}
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_column = int32(arg4)
+	_column = int(arg4)
 
 	value := fn(_model, _iter, _column)
 
@@ -169,7 +169,7 @@ type TreeModelFilterOverrider interface {
 	//    - value
 	//    - column
 	//
-	Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
+	Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
 	// The function takes the following parameters:
 	//
 	//    - childModel
@@ -263,7 +263,7 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 	pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
-		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
+		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
 	}); ok {
 		pclass.modify = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterClass_modify)
 	}
@@ -279,13 +279,13 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
+		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
 	})
 
 	var _childModel TreeModeller // out
 	var _iter *TreeIter          // out
 	var _value *coreglib.Value   // out
-	var _column int32            // out
+	var _column int              // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -306,7 +306,7 @@ func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C
 	}
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	_value = coreglib.ValueFromNative(unsafe.Pointer(arg3))
-	_column = int32(arg4)
+	_column = int(arg4)
 
 	iface.Modify(_childModel, _iter, _value, _column)
 }
@@ -618,7 +618,7 @@ func (filter *TreeModelFilter) SetModifyFunc(types []coreglib.Type, fn TreeModel
 //
 //    - column which is the column containing the visible information.
 //
-func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
+func (filter *TreeModelFilter) SetVisibleColumn(column int) {
 	var _arg0 *C.GtkTreeModelFilter // out
 	var _arg1 C.gint                // out
 

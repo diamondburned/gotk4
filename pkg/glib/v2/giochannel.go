@@ -349,7 +349,7 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 }
 
 // NewIOChannelUnix constructs a struct IOChannel.
-func NewIOChannelUnix(fd int32) *IOChannel {
+func NewIOChannelUnix(fd int) *IOChannel {
 	var _arg1 C.int         // out
 	var _cret *C.GIOChannel // in
 
@@ -549,7 +549,7 @@ func (channel *IOChannel) Flags() IOFlags {
 //    - utf8: line termination string. This value is owned by GLib and must not
 //      be freed.
 //
-func (channel *IOChannel) LineTerm(length *int32) string {
+func (channel *IOChannel) LineTerm(length *int) string {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gint       // out
 	var _cret *C.gchar      // in
@@ -989,7 +989,7 @@ func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 //      to be nul-terminated. This option allows termination strings with
 //      embedded nuls.
 //
-func (channel *IOChannel) SetLineTerm(lineTerm string, length int32) {
+func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -1054,7 +1054,7 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 //
 //    - gint: file descriptor of the OChannel.
 //
-func (channel *IOChannel) UnixGetFd() int32 {
+func (channel *IOChannel) UnixGetFd() int {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gint        // in
 
@@ -1063,9 +1063,9 @@ func (channel *IOChannel) UnixGetFd() int32 {
 	_cret = C.g_io_channel_unix_get_fd(_arg0)
 	runtime.KeepAlive(channel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1208,7 +1208,7 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 //
 //    - ioChannelError error number, e.g. G_IO_CHANNEL_ERROR_INVAL.
 //
-func IOChannelErrorFromErrno(en int32) IOChannelError {
+func IOChannelErrorFromErrno(en int) IOChannelError {
 	var _arg1 C.gint            // out
 	var _cret C.GIOChannelError // in
 

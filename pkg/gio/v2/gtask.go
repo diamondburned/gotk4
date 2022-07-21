@@ -419,7 +419,7 @@ func (task *Task) Name() string {
 //
 //    - gint task's priority.
 //
-func (task *Task) Priority() int32 {
+func (task *Task) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
 
@@ -428,9 +428,9 @@ func (task *Task) Priority() int32 {
 	_cret = C.g_task_get_priority(_arg0)
 	runtime.KeepAlive(task)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -873,7 +873,7 @@ func (task *Task) SetName(name string) {
 //
 //    - priority: [priority][io-priority] of the request.
 //
-func (task *Task) SetPriority(priority int32) {
+func (task *Task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
 

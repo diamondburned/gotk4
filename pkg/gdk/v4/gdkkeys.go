@@ -25,7 +25,7 @@ import "C"
 //    - lower: return location for lowercase version of symbol.
 //    - upper: return location for uppercase version of symbol.
 //
-func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
+func KeyvalConvertCase(symbol uint) (lower, upper uint) {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // in
 	var _arg3 C.guint // in
@@ -35,11 +35,11 @@ func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
 	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(symbol)
 
-	var _lower uint32 // out
-	var _upper uint32 // out
+	var _lower uint // out
+	var _upper uint // out
 
-	_lower = uint32(_arg2)
-	_upper = uint32(_arg3)
+	_lower = uint(_arg2)
+	_upper = uint(_arg3)
 
 	return _lower, _upper
 }
@@ -58,7 +58,7 @@ func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
 //    - guint: corresponding key value, or GDK_KEY_VoidSymbol if the key name is
 //      not a valid key.
 //
-func KeyvalFromName(keyvalName string) uint32 {
+func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.char // out
 	var _cret C.guint // in
 
@@ -68,9 +68,9 @@ func KeyvalFromName(keyvalName string) uint32 {
 	_cret = C.gdk_keyval_from_name(_arg1)
 	runtime.KeepAlive(keyvalName)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -86,7 +86,7 @@ func KeyvalFromName(keyvalName string) uint32 {
 //    - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
 //      conversion.
 //
-func KeyvalIsLower(keyval uint32) bool {
+func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
@@ -115,7 +115,7 @@ func KeyvalIsLower(keyval uint32) bool {
 //    - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
 //      conversion.
 //
-func KeyvalIsUpper(keyval uint32) bool {
+func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
@@ -147,7 +147,7 @@ func KeyvalIsUpper(keyval uint32) bool {
 //    - utf8 (optional): string containing the name of the key, or NULL if keyval
 //      is not a valid key. The string should not be modified.
 //
-func KeyvalName(keyval uint32) string {
+func KeyvalName(keyval uint) string {
 	var _arg1 C.guint // out
 	var _cret *C.char // in
 
@@ -176,7 +176,7 @@ func KeyvalName(keyval uint32) string {
 //    - guint: lower case form of keyval, or keyval itself if it is already in
 //      lower case or it is not subject to case conversion.
 //
-func KeyvalToLower(keyval uint32) uint32 {
+func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
@@ -185,9 +185,9 @@ func KeyvalToLower(keyval uint32) uint32 {
 	_cret = C.gdk_keyval_to_lower(_arg1)
 	runtime.KeepAlive(keyval)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -207,7 +207,7 @@ func KeyvalToLower(keyval uint32) uint32 {
 //    - guint32: corresponding unicode character, or 0 if there is no
 //      corresponding character.
 //
-func KeyvalToUnicode(keyval uint32) uint32 {
+func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
 
@@ -234,7 +234,7 @@ func KeyvalToUnicode(keyval uint32) uint32 {
 //    - guint: upper case form of keyval, or keyval itself if it is already in
 //      upper case or it is not subject to case conversion.
 //
-func KeyvalToUpper(keyval uint32) uint32 {
+func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
@@ -243,9 +243,9 @@ func KeyvalToUpper(keyval uint32) uint32 {
 	_cret = C.gdk_keyval_to_upper(_arg1)
 	runtime.KeepAlive(keyval)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -261,7 +261,7 @@ func KeyvalToUpper(keyval uint32) uint32 {
 //    - guint: corresponding GDK key symbol, if one exists. or, if there is no
 //      corresponding symbol, wc | 0x01000000.
 //
-func UnicodeToKeyval(wc uint32) uint32 {
+func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
 	var _cret C.guint   // in
 
@@ -270,9 +270,9 @@ func UnicodeToKeyval(wc uint32) uint32 {
 	_cret = C.gdk_unicode_to_keyval(_arg1)
 	runtime.KeepAlive(wc)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

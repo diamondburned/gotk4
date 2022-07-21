@@ -89,7 +89,7 @@ func CairoCreate(window Windower) *cairo.Context {
 //    - width of the region to draw.
 //    - height of the region to draw.
 //
-func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, bufferScale, x, y, width, height int32) {
+func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, bufferScale, x, y, width, height int) {
 	var _arg1 *C.cairo_t   // out
 	var _arg2 *C.GdkWindow // out
 	var _arg3 C.int        // out
@@ -377,7 +377,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 //
 //    - surface: new cairo surface, must be freed with cairo_surface_destroy().
 //
-func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int32, forWindow Windower) *cairo.Surface {
+func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow Windower) *cairo.Surface {
 	var _arg1 *C.GdkPixbuf       // out
 	var _arg2 C.int              // out
 	var _arg3 *C.GdkWindow       // out

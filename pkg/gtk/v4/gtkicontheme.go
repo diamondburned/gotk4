@@ -187,7 +187,7 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 //    - iconPaintable: GtkIconPaintable containing for the icon. Unref with
 //      g_object_unref().
 //
-func NewIconPaintableForFile(file gio.Filer, size, scale int32) *IconPaintable {
+func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 	var _arg1 *C.GFile            // out
 	var _arg2 C.int               // out
 	var _arg3 C.int               // out
@@ -526,7 +526,7 @@ func (self *IconTheme) IconNames() []string {
 //      available. The array should be freed with g_free() when it is no longer
 //      needed.
 //
-func (self *IconTheme) IconSizes(iconName string) []int32 {
+func (self *IconTheme) IconSizes(iconName string) []int {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.char         // out
 	var _cret *C.int          // in
@@ -539,7 +539,7 @@ func (self *IconTheme) IconSizes(iconName string) []int32 {
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
@@ -550,9 +550,9 @@ func (self *IconTheme) IconSizes(iconName string) []int32 {
 		}
 
 		src := unsafe.Slice(_cret, i)
-		_gints = make([]int32, i)
+		_gints = make([]int, i)
 		for i := range src {
-			_gints[i] = int32(src[i])
+			_gints[i] = int(src[i])
 		}
 	}
 
@@ -746,7 +746,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //    - iconPaintable: GtkIconPaintable containing information about the icon.
 //      Unref with g_object_unref().
 //
-func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int32, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.int                // out
@@ -807,7 +807,7 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int32, direct
 //
 //    - iconPaintable: GtkIconPaintable object containing the icon.
 //
-func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, scale int32, direction TextDirection, flags IconLookupFlags) *IconPaintable {
+func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.char              // out
 	var _arg2 **C.char             // out

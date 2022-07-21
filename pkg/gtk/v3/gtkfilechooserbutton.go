@@ -281,7 +281,7 @@ func (button *FileChooserButton) Title() string {
 //    - gint: integer width (in characters) that the button will use to size
 //      itself.
 //
-func (button *FileChooserButton) WidthChars() int32 {
+func (button *FileChooserButton) WidthChars() int {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _cret C.gint                  // in
 
@@ -290,9 +290,9 @@ func (button *FileChooserButton) WidthChars() int32 {
 	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
 	runtime.KeepAlive(button)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -347,7 +347,7 @@ func (button *FileChooserButton) SetTitle(title string) {
 //
 //    - nChars: new width, in characters.
 //
-func (button *FileChooserButton) SetWidthChars(nChars int32) {
+func (button *FileChooserButton) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkFileChooserButton // out
 	var _arg1 C.gint                  // out
 

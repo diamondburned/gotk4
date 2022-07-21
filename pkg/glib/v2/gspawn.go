@@ -285,7 +285,7 @@ func _gotk4_glib2_SpawnChildSetupFunc(arg1 C.gpointer) {
 //
 //    - exitStatus: exit code as returned from g_spawn_sync().
 //
-func SpawnCheckExitStatus(exitStatus int32) error {
+func SpawnCheckExitStatus(exitStatus int) error {
 	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
 
@@ -368,7 +368,7 @@ func SpawnCommandLineAsync(commandLine string) error {
 //    - exitStatus (optional): return location for child exit status, as returned
 //      by waitpid().
 //
-func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []byte, exitStatus int32, goerr error) {
+func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _arg3 *C.gchar  // in
@@ -383,7 +383,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []b
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out
-	var _exitStatus int32      // out
+	var _exitStatus int        // out
 	var _goerr error           // out
 
 	if _arg2 != nil {
@@ -418,7 +418,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []b
 			}
 		}
 	}
-	_exitStatus = int32(_arg4)
+	_exitStatus = int(_arg4)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -462,7 +462,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []b
 //    - exitStatus (optional): return location for child exit status, as returned
 //      by waitpid(), or NULL.
 //
-func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput, standardError []byte, exitStatus int32, goerr error) {
+func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out
@@ -519,7 +519,7 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 
 	var _standardOutput []byte // out
 	var _standardError []byte  // out
-	var _exitStatus int32      // out
+	var _exitStatus int        // out
 	var _goerr error           // out
 
 	if _arg7 != nil {
@@ -554,7 +554,7 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 			}
 		}
 	}
-	_exitStatus = int32(_arg9)
+	_exitStatus = int(_arg9)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}

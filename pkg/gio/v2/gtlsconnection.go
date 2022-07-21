@@ -797,7 +797,7 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the handshake is complete.
 //
-func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsConnection     // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

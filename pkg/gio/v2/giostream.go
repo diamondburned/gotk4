@@ -347,7 +347,7 @@ func (stream *IOStream) Close(ctx context.Context) error {
 //    - ioPriority: io priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -560,7 +560,7 @@ func (stream *IOStream) SetPending() error {
 //    - ioPriority: io priority of the request.
 //    - callback (optional): ReadyCallback.
 //
-func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
 	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out

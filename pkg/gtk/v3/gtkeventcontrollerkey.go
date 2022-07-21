@@ -133,7 +133,7 @@ func (controller *EventControllerKey) ConnectIMUpdate(f func()) coreglib.SignalH
 
 //export _gotk4_gtk3_EventControllerKey_ConnectKeyPressed
 func _gotk4_gtk3_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(keyval, keycode uint32, state gdk.ModifierType) (ok bool)
+	var f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -141,15 +141,15 @@ func _gotk4_gtk3_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.gu
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(keyval, keycode uint32, state gdk.ModifierType) (ok bool))
+		f = closure.Func.(func(keyval, keycode uint, state gdk.ModifierType) (ok bool))
 	}
 
-	var _keyval uint32          // out
-	var _keycode uint32         // out
+	var _keyval uint            // out
+	var _keycode uint           // out
 	var _state gdk.ModifierType // out
 
-	_keyval = uint32(arg1)
-	_keycode = uint32(arg2)
+	_keyval = uint(arg1)
+	_keycode = uint(arg2)
 	_state = gdk.ModifierType(arg3)
 
 	ok := f(_keyval, _keycode, _state)
@@ -162,13 +162,13 @@ func _gotk4_gtk3_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.gu
 }
 
 // ConnectKeyPressed: this signal is emitted whenever a key is pressed.
-func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint32, state gdk.ModifierType) (ok bool)) coreglib.SignalHandle {
+func (controller *EventControllerKey) ConnectKeyPressed(f func(keyval, keycode uint, state gdk.ModifierType) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(controller, "key-pressed", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectKeyPressed), f)
 }
 
 //export _gotk4_gtk3_EventControllerKey_ConnectKeyReleased
 func _gotk4_gtk3_EventControllerKey_ConnectKeyReleased(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) {
-	var f func(keyval, keycode uint32, state gdk.ModifierType)
+	var f func(keyval, keycode uint, state gdk.ModifierType)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -176,22 +176,22 @@ func _gotk4_gtk3_EventControllerKey_ConnectKeyReleased(arg0 C.gpointer, arg1 C.g
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(keyval, keycode uint32, state gdk.ModifierType))
+		f = closure.Func.(func(keyval, keycode uint, state gdk.ModifierType))
 	}
 
-	var _keyval uint32          // out
-	var _keycode uint32         // out
+	var _keyval uint            // out
+	var _keycode uint           // out
 	var _state gdk.ModifierType // out
 
-	_keyval = uint32(arg1)
-	_keycode = uint32(arg2)
+	_keyval = uint(arg1)
+	_keycode = uint(arg2)
 	_state = gdk.ModifierType(arg3)
 
 	f(_keyval, _keycode, _state)
 }
 
 // ConnectKeyReleased: this signal is emitted whenever a key is released.
-func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint32, state gdk.ModifierType)) coreglib.SignalHandle {
+func (controller *EventControllerKey) ConnectKeyReleased(f func(keyval, keycode uint, state gdk.ModifierType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(controller, "key-released", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerKey_ConnectKeyReleased), f)
 }
 
@@ -272,7 +272,7 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 
 // The function returns the following values:
 //
-func (controller *EventControllerKey) Group() uint32 {
+func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
 	var _cret C.guint                  // in
 
@@ -281,9 +281,9 @@ func (controller *EventControllerKey) Group() uint32 {
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 	runtime.KeepAlive(controller)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

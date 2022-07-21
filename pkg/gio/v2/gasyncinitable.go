@@ -146,7 +146,7 @@ type AsyncInitabler interface {
 
 	// InitAsync starts asynchronous initialization of the object implementing
 	// the interface.
-	InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
 	// NewFinish finishes the async construction for the various
@@ -209,7 +209,7 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 //    - ioPriority: [I/O priority][io-priority] of the operation.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

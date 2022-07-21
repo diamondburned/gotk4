@@ -36,7 +36,7 @@ func GTypeDrawingArea() coreglib.Type {
 //
 // This function should exclusively redraw the contents of the drawing area and
 // must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int32)
+type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int)
 
 //export _gotk4_gtk4_DrawingAreaDrawFunc
 func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
@@ -51,8 +51,8 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, ar
 
 	var _drawingArea *DrawingArea // out
 	var _cr *cairo.Context        // out
-	var _width int32              // out
-	var _height int32             // out
+	var _width int                // out
+	var _height int               // out
 
 	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(arg1)))
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
@@ -60,8 +60,8 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, ar
 	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
 		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
 	})
-	_width = int32(arg3)
-	_height = int32(arg4)
+	_width = int(arg3)
+	_height = int(arg4)
 
 	fn(_drawingArea, _cr, _width, _height)
 }
@@ -73,7 +73,7 @@ type DrawingAreaOverrider interface {
 	//    - width
 	//    - height
 	//
-	Resize(width, height int32)
+	Resize(width, height int)
 }
 
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
@@ -171,7 +171,7 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 	goval := gbox.Get(uintptr(data))
 	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclassPtr))
 
-	if _, ok := goval.(interface{ Resize(width, height int32) }); ok {
+	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
 	}
 }
@@ -179,13 +179,13 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 //export _gotk4_gtk4_DrawingAreaClass_resize
 func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Resize(width, height int32) })
+	iface := goval.(interface{ Resize(width, height int) })
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	iface.Resize(_width, _height)
 }
@@ -216,7 +216,7 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_DrawingArea_ConnectResize
 func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int32)
+	var f func(width, height int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -224,14 +224,14 @@ func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(width, height int32))
+		f = closure.Func.(func(width, height int))
 	}
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	f(_width, _height)
 }
@@ -241,7 +241,7 @@ func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.
 //
 // This is useful in order to keep state up to date with the widget size, like
 // for instance a backing surface.
-func (self *DrawingArea) ConnectResize(f func(width, height int32)) coreglib.SignalHandle {
+func (self *DrawingArea) ConnectResize(f func(width, height int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "resize", false, unsafe.Pointer(C._gotk4_gtk4_DrawingArea_ConnectResize), f)
 }
 
@@ -269,7 +269,7 @@ func NewDrawingArea() *DrawingArea {
 //
 //    - gint: height requested for content of the drawing area.
 //
-func (self *DrawingArea) ContentHeight() int32 {
+func (self *DrawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
@@ -278,9 +278,9 @@ func (self *DrawingArea) ContentHeight() int32 {
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -291,7 +291,7 @@ func (self *DrawingArea) ContentHeight() int32 {
 //
 //    - gint: width requested for content of the drawing area.
 //
-func (self *DrawingArea) ContentWidth() int32 {
+func (self *DrawingArea) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
 	var _cret C.int             // in
 
@@ -300,9 +300,9 @@ func (self *DrawingArea) ContentWidth() int32 {
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 	runtime.KeepAlive(self)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -319,7 +319,7 @@ func (self *DrawingArea) ContentWidth() int32 {
 //
 //    - height of contents.
 //
-func (self *DrawingArea) SetContentHeight(height int32) {
+func (self *DrawingArea) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 
@@ -343,7 +343,7 @@ func (self *DrawingArea) SetContentHeight(height int32) {
 //
 //    - width of contents.
 //
-func (self *DrawingArea) SetContentWidth(width int32) {
+func (self *DrawingArea) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
 	var _arg1 C.int             // out
 

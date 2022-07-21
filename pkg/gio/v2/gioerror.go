@@ -26,7 +26,7 @@ import "C"
 //
 //    - ioErrorEnum value for the given errno.h error number.
 //
-func IOErrorFromErrno(errNo int32) IOErrorEnum {
+func IOErrorFromErrno(errNo int) IOErrorEnum {
 	var _arg1 C.gint         // out
 	var _cret C.GIOErrorEnum // in
 

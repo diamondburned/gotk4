@@ -165,7 +165,7 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 //
 //    - memoryTexture: newly-created GdkTexture.
 //
-func NewMemoryTexture(width, height int32, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture {
+func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture {
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
 	var _arg3 C.GdkMemoryFormat // out

@@ -393,7 +393,7 @@ func NewButton() *Button {
 //
 //    - button: new Button displaying the themed icon.
 //
-func NewButtonFromIconName(iconName string, size int32) *Button {
+func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out
 	var _cret *C.GtkWidget  // in

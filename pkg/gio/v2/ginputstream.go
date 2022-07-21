@@ -427,7 +427,7 @@ func (stream *InputStream) Close(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -681,7 +681,7 @@ func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, er
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.void         // out
@@ -790,7 +790,7 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
 	var _arg1 *C.void         // out
@@ -918,7 +918,7 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.gsize               // out
@@ -1128,7 +1128,7 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.gsize               // out

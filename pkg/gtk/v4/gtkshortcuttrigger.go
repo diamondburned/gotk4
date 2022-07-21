@@ -271,7 +271,7 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 //
 //    - keyvalTrigger: new GtkShortcutTrigger.
 //
-func NewKeyvalTrigger(keyval uint32, modifiers gdk.ModifierType) *KeyvalTrigger {
+func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger {
 	var _arg1 C.guint               // out
 	var _arg2 C.GdkModifierType     // out
 	var _cret *C.GtkShortcutTrigger // in
@@ -296,7 +296,7 @@ func NewKeyvalTrigger(keyval uint32, modifiers gdk.ModifierType) *KeyvalTrigger 
 //
 //    - guint: keyval.
 //
-func (self *KeyvalTrigger) Keyval() uint32 {
+func (self *KeyvalTrigger) Keyval() uint {
 	var _arg0 *C.GtkKeyvalTrigger // out
 	var _cret C.guint             // in
 
@@ -305,9 +305,9 @@ func (self *KeyvalTrigger) Keyval() uint32 {
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -386,7 +386,7 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 //
 //    - mnemonicTrigger: new GtkShortcutTrigger.
 //
-func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
+func NewMnemonicTrigger(keyval uint) *MnemonicTrigger {
 	var _arg1 C.guint               // out
 	var _cret *C.GtkShortcutTrigger // in
 
@@ -408,7 +408,7 @@ func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
 //
 //    - guint: keyval.
 //
-func (self *MnemonicTrigger) Keyval() uint32 {
+func (self *MnemonicTrigger) Keyval() uint {
 	var _arg0 *C.GtkMnemonicTrigger // out
 	var _cret C.guint               // in
 
@@ -417,9 +417,9 @@ func (self *MnemonicTrigger) Keyval() uint32 {
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -601,7 +601,7 @@ func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 //      found, respectively, to be less than, to match, or be greater than
 //      trigger2.
 //
-func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
+func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.int           // in
@@ -613,9 +613,9 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
 	runtime.KeepAlive(trigger1)
 	runtime.KeepAlive(trigger2)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -668,7 +668,7 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 //
 //    - guint: hash value corresponding to trigger.
 //
-func (trigger *ShortcutTrigger) Hash() uint32 {
+func (trigger *ShortcutTrigger) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -677,9 +677,9 @@ func (trigger *ShortcutTrigger) Hash() uint32 {
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 	runtime.KeepAlive(trigger)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

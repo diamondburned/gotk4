@@ -126,7 +126,7 @@ func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
 // CalendarDetailFunc: this kind of functions provide Pango markup with detail
 // information for the specified day. Examples for such details are holidays or
 // appointments. The function returns NULL when no information is available.
-type CalendarDetailFunc func(calendar *Calendar, year, month, day uint32) (utf8 string)
+type CalendarDetailFunc func(calendar *Calendar, year, month, day uint) (utf8 string)
 
 //export _gotk4_gtk3_CalendarDetailFunc
 func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.gchar) {
@@ -140,14 +140,14 @@ func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.gu
 	}
 
 	var _calendar *Calendar // out
-	var _year uint32        // out
-	var _month uint32       // out
-	var _day uint32         // out
+	var _year uint          // out
+	var _month uint         // out
+	var _day uint           // out
 
 	_calendar = wrapCalendar(coreglib.Take(unsafe.Pointer(arg1)))
-	_year = uint32(arg2)
-	_month = uint32(arg3)
-	_day = uint32(arg4)
+	_year = uint(arg2)
+	_month = uint(arg3)
+	_day = uint(arg4)
 
 	utf8 := fn(_calendar, _year, _month, _day)
 
@@ -500,7 +500,7 @@ func (calendar *Calendar) ClearMarks() {
 //    - day (optional): location to store the day number (between 1 and 31), or
 //      NULL.
 //
-func (calendar *Calendar) Date() (year, month, day uint32) {
+func (calendar *Calendar) Date() (year, month, day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // in
 	var _arg2 C.guint        // in
@@ -511,13 +511,13 @@ func (calendar *Calendar) Date() (year, month, day uint32) {
 	C.gtk_calendar_get_date(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(calendar)
 
-	var _year uint32  // out
-	var _month uint32 // out
-	var _day uint32   // out
+	var _year uint  // out
+	var _month uint // out
+	var _day uint   // out
 
-	_year = uint32(_arg1)
-	_month = uint32(_arg2)
-	_day = uint32(_arg3)
+	_year = uint(_arg1)
+	_month = uint(_arg2)
+	_day = uint(_arg3)
 
 	return _year, _month, _day
 }
@@ -532,7 +532,7 @@ func (calendar *Calendar) Date() (year, month, day uint32) {
 //
 //    - ok: whether the day is marked.
 //
-func (calendar *Calendar) DayIsMarked(day uint32) bool {
+func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
@@ -560,7 +560,7 @@ func (calendar *Calendar) DayIsMarked(day uint32) bool {
 //
 //    - gint: height of detail cells, in rows.
 //
-func (calendar *Calendar) DetailHeightRows() int32 {
+func (calendar *Calendar) DetailHeightRows() int {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gint         // in
 
@@ -569,9 +569,9 @@ func (calendar *Calendar) DetailHeightRows() int32 {
 	_cret = C.gtk_calendar_get_detail_height_rows(_arg0)
 	runtime.KeepAlive(calendar)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -583,7 +583,7 @@ func (calendar *Calendar) DetailHeightRows() int32 {
 //
 //    - gint: width of detail cells, in characters.
 //
-func (calendar *Calendar) DetailWidthChars() int32 {
+func (calendar *Calendar) DetailWidthChars() int {
 	var _arg0 *C.GtkCalendar // out
 	var _cret C.gint         // in
 
@@ -592,9 +592,9 @@ func (calendar *Calendar) DetailWidthChars() int32 {
 	_cret = C.gtk_calendar_get_detail_width_chars(_arg0)
 	runtime.KeepAlive(calendar)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -627,7 +627,7 @@ func (calendar *Calendar) DisplayOptions() CalendarDisplayOptions {
 //
 //    - day number to mark between 1 and 31.
 //
-func (calendar *Calendar) MarkDay(day uint32) {
+func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -645,7 +645,7 @@ func (calendar *Calendar) MarkDay(day uint32) {
 //
 //    - day number between 1 and 31, or 0 to unselect the currently selected day.
 //
-func (calendar *Calendar) SelectDay(day uint32) {
+func (calendar *Calendar) SelectDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -664,7 +664,7 @@ func (calendar *Calendar) SelectDay(day uint32) {
 //    - month number between 0 and 11.
 //    - year the month is in.
 //
-func (calendar *Calendar) SelectMonth(month, year uint32) {
+func (calendar *Calendar) SelectMonth(month, year uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _arg2 C.guint        // out
@@ -716,7 +716,7 @@ func (calendar *Calendar) SetDetailFunc(fn CalendarDetailFunc) {
 //
 //    - rows: detail height in rows.
 //
-func (calendar *Calendar) SetDetailHeightRows(rows int32) {
+func (calendar *Calendar) SetDetailHeightRows(rows int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
 
@@ -735,7 +735,7 @@ func (calendar *Calendar) SetDetailHeightRows(rows int32) {
 //
 //    - chars: detail width in characters.
 //
-func (calendar *Calendar) SetDetailWidthChars(chars int32) {
+func (calendar *Calendar) SetDetailWidthChars(chars int) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.gint         // out
 
@@ -772,7 +772,7 @@ func (calendar *Calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
 //
 //    - day number to unmark between 1 and 31.
 //
-func (calendar *Calendar) UnmarkDay(day uint32) {
+func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 

@@ -362,7 +362,7 @@ func (device *Device) Axes() AxisFlags {
 //
 //    - axisUse specifying how the axis is used.
 //
-func (device *Device) AxisUse(index_ uint32) AxisUse {
+func (device *Device) AxisUse(index_ uint) AxisUse {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
 	var _cret C.GdkAxisUse // in
@@ -463,7 +463,7 @@ func (device *Device) HasCursor() bool {
 //    - modifiers: return value for modifiers.
 //    - ok: TRUE if keyval is set for index.
 //
-func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
+func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // in
@@ -477,11 +477,11 @@ func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
 	runtime.KeepAlive(device)
 	runtime.KeepAlive(index_)
 
-	var _keyval uint32          // out
+	var _keyval uint            // out
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = uint32(_arg2)
+	_keyval = uint(_arg2)
 	_modifiers = ModifierType(_arg3)
 	if _cret != 0 {
 		_ok = true
@@ -559,7 +559,7 @@ func (device *Device) Mode() InputMode {
 //
 //    - gint: number of axes.
 //
-func (device *Device) NAxes() int32 {
+func (device *Device) NAxes() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
@@ -568,9 +568,9 @@ func (device *Device) NAxes() int32 {
 	_cret = C.gdk_device_get_n_axes(_arg0)
 	runtime.KeepAlive(device)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -581,7 +581,7 @@ func (device *Device) NAxes() int32 {
 //
 //    - gint: number of keys.
 //
-func (device *Device) NKeys() int32 {
+func (device *Device) NKeys() int {
 	var _arg0 *C.GdkDevice // out
 	var _cret C.gint       // in
 
@@ -590,9 +590,9 @@ func (device *Device) NKeys() int32 {
 	_cret = C.gdk_device_get_n_keys(_arg0)
 	runtime.KeepAlive(device)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -633,7 +633,7 @@ func (device *Device) Name() string {
 //    - y (optional): location to store root window Y coordinate of device, or
 //      NULL.
 //
-func (device *Device) Position() (screen *Screen, x, y int32) {
+func (device *Device) Position() (screen *Screen, x, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // in
 	var _arg2 C.gint       // in
@@ -645,14 +645,14 @@ func (device *Device) Position() (screen *Screen, x, y int32) {
 	runtime.KeepAlive(device)
 
 	var _screen *Screen // out
-	var _x int32        // out
-	var _y int32        // out
+	var _x int          // out
+	var _y int          // out
 
 	if _arg1 != nil {
 		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_arg1)))
 	}
-	_x = int32(_arg2)
-	_y = int32(_arg3)
+	_x = int(_arg2)
+	_y = int(_arg3)
 
 	return _screen, _x, _y
 }
@@ -844,7 +844,7 @@ func (device *Device) VendorID() string {
 //      location, relative to the window origin, or NULL.
 //    - window (optional) under the device position, or NULL.
 //
-func (device *Device) WindowAtPosition() (winX, winY int32, window Windower) {
+func (device *Device) WindowAtPosition() (winX, winY int, window Windower) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -855,12 +855,12 @@ func (device *Device) WindowAtPosition() (winX, winY int32, window Windower) {
 	_cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(device)
 
-	var _winX int32      // out
-	var _winY int32      // out
+	var _winX int        // out
+	var _winY int        // out
 	var _window Windower // out
 
-	_winX = int32(_arg1)
-	_winY = int32(_arg2)
+	_winX = int(_arg1)
+	_winY = int(_arg2)
 	if _cret != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
@@ -1077,7 +1077,7 @@ func (device *Device) ListSlaveDevices() []Devicer {
 //    - index_: index of the axis.
 //    - use specifies how the axis is used.
 //
-func (device *Device) SetAxisUse(index_ uint32, use AxisUse) {
+func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 C.guint      // out
 	var _arg2 C.GdkAxisUse // out
@@ -1101,7 +1101,7 @@ func (device *Device) SetAxisUse(index_ uint32, use AxisUse) {
 //    - keyval to generate.
 //    - modifiers to set.
 //
-func (device *Device) SetKey(index_, keyval uint32, modifiers ModifierType) {
+func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 	var _arg0 *C.GdkDevice      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.guint           // out
@@ -1191,7 +1191,7 @@ func (device *Device) Ungrab(time_ uint32) {
 //    - x: x coordinate of the destination.
 //    - y: y coordinate of the destination.
 //
-func (device *Device) Warp(screen *Screen, x, y int32) {
+func (device *Device) Warp(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDevice // out
 	var _arg1 *C.GdkScreen // out
 	var _arg2 C.gint       // out

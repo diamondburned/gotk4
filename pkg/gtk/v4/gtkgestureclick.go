@@ -75,7 +75,7 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_GestureClick_ConnectPressed
 func _gotk4_gtk4_GestureClick_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
-	var f func(nPress int32, x, y float64)
+	var f func(nPress int, x, y float64)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -83,14 +83,14 @@ func _gotk4_gtk4_GestureClick_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(nPress int32, x, y float64))
+		f = closure.Func.(func(nPress int, x, y float64))
 	}
 
-	var _nPress int32 // out
-	var _x float64    // out
-	var _y float64    // out
+	var _nPress int // out
+	var _x float64  // out
+	var _y float64  // out
 
-	_nPress = int32(arg1)
+	_nPress = int(arg1)
 	_x = float64(arg2)
 	_y = float64(arg3)
 
@@ -98,13 +98,13 @@ func _gotk4_gtk4_GestureClick_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 
 }
 
 // ConnectPressed is emitted whenever a button or touch press happens.
-func (v *GestureClick) ConnectPressed(f func(nPress int32, x, y float64)) coreglib.SignalHandle {
+func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "pressed", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectPressed), f)
 }
 
 //export _gotk4_gtk4_GestureClick_ConnectReleased
 func _gotk4_gtk4_GestureClick_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
-	var f func(nPress int32, x, y float64)
+	var f func(nPress int, x, y float64)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -112,14 +112,14 @@ func _gotk4_gtk4_GestureClick_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(nPress int32, x, y float64))
+		f = closure.Func.(func(nPress int, x, y float64))
 	}
 
-	var _nPress int32 // out
-	var _x float64    // out
-	var _y float64    // out
+	var _nPress int // out
+	var _x float64  // out
+	var _y float64  // out
 
-	_nPress = int32(arg1)
+	_nPress = int(arg1)
 	_x = float64(arg2)
 	_y = float64(arg3)
 
@@ -131,7 +131,7 @@ func _gotk4_gtk4_GestureClick_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2
 // n_press will report the number of press that is paired to this event, note
 // that gtk.GestureClick::stopped may have been emitted between the press and
 // its release, n_press will only start over at the next press.
-func (v *GestureClick) ConnectReleased(f func(nPress int32, x, y float64)) coreglib.SignalHandle {
+func (v *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "released", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectReleased), f)
 }
 
@@ -159,7 +159,7 @@ func (v *GestureClick) ConnectStopped(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk4_GestureClick_ConnectUnpairedRelease
 func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guint, arg4 *C.GdkEventSequence, arg5 C.guintptr) {
-	var f func(x, y float64, button uint32, sequence *gdk.EventSequence)
+	var f func(x, y float64, button uint, sequence *gdk.EventSequence)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -167,17 +167,17 @@ func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdo
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y float64, button uint32, sequence *gdk.EventSequence))
+		f = closure.Func.(func(x, y float64, button uint, sequence *gdk.EventSequence))
 	}
 
 	var _x float64                   // out
 	var _y float64                   // out
-	var _button uint32               // out
+	var _button uint                 // out
 	var _sequence *gdk.EventSequence // out
 
 	_x = float64(arg1)
 	_y = float64(arg2)
-	_button = uint32(arg3)
+	_button = uint(arg3)
 	_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
 	f(_x, _y, _button, _sequence)
@@ -189,7 +189,7 @@ func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdo
 // Due to implicit grabs, this can only happen on situations where input is
 // grabbed elsewhere mid-press or the pressed widget voluntarily relinquishes
 // its implicit grab.
-func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint32, sequence *gdk.EventSequence)) coreglib.SignalHandle {
+func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, sequence *gdk.EventSequence)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "unpaired-release", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectUnpairedRelease), f)
 }
 

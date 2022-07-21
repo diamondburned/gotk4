@@ -497,7 +497,7 @@ func (drag *Drag) Surface() Surfacer {
 //    - hotX: x coordinate of the drag surface hotspot.
 //    - hotY: y coordinate of the drag surface hotspot.
 //
-func (drag *Drag) SetHotspot(hotX, hotY int32) {
+func (drag *Drag) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDrag // out
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out

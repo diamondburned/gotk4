@@ -55,7 +55,7 @@ type PrintOperationPreviewOverrider interface {
 	//
 	//    - ok: TRUE if the page has been selected for printing.
 	//
-	IsSelected(pageNr int32) bool
+	IsSelected(pageNr int) bool
 	// The function takes the following parameters:
 	//
 	Ready(context *PrintContext)
@@ -74,7 +74,7 @@ type PrintOperationPreviewOverrider interface {
 	//
 	//    - pageNr: page to render.
 	//
-	RenderPage(pageNr int32)
+	RenderPage(pageNr int)
 }
 
 // PrintOperationPreview: GtkPrintOperationPreview is the interface that is used
@@ -102,9 +102,9 @@ type PrintOperationPreviewer interface {
 	EndPreview()
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
-	IsSelected(pageNr int32) bool
+	IsSelected(pageNr int) bool
 	// RenderPage renders a page to the preview.
-	RenderPage(pageNr int32)
+	RenderPage(pageNr int)
 
 	// Got-page-size is emitted once for each page that gets rendered to the
 	// preview.
@@ -152,9 +152,9 @@ func _gotk4_gtk4_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperatio
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
-	var _pageNr int32 // out
+	var _pageNr int // out
 
-	_pageNr = int32(arg1)
+	_pageNr = int(arg1)
 
 	ok := iface.IsSelected(_pageNr)
 
@@ -182,9 +182,9 @@ func _gotk4_gtk4_PrintOperationPreviewIface_render_page(arg0 *C.GtkPrintOperatio
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
-	var _pageNr int32 // out
+	var _pageNr int // out
 
-	_pageNr = int32(arg1)
+	_pageNr = int(arg1)
 
 	iface.RenderPage(_pageNr)
 }
@@ -282,7 +282,7 @@ func (preview *PrintOperationPreview) EndPreview() {
 //
 //    - ok: TRUE if the page has been selected for printing.
 //
-func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
+func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 	var _cret C.gboolean                  // in
@@ -318,7 +318,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 //
 //    - pageNr: page to render.
 //
-func (preview *PrintOperationPreview) RenderPage(pageNr int32) {
+func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
 	var _arg1 C.int                       // out
 

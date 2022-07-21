@@ -45,7 +45,7 @@ func X11FreeCompoundText(ctext *byte) {
 //    - ctext: location to store newly allocated data for the property.
 //    - gint: 0 upon success, non-zero upon failure.
 //
-func (display *X11Display) StringToCompoundText(str string) (encoding string, format int32, ctext []byte, gint int32) {
+func (display *X11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
@@ -63,16 +63,16 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	runtime.KeepAlive(str)
 
 	var _encoding string // out
-	var _format int32    // out
+	var _format int      // out
 	var _ctext []byte    // out
-	var _gint int32      // out
+	var _gint int        // out
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_format = int32(_arg3)
+	_format = int(_arg3)
 	defer C.free(unsafe.Pointer(_arg4))
 	_ctext = make([]byte, _arg5)
 	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _encoding, _format, _ctext, _gint
 }
@@ -90,7 +90,7 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 //    - ctext: location to store the data of the result.
 //    - ok: TRUE if the conversion succeeded, otherwise FALSE.
 //
-func (display *X11Display) UTF8ToCompoundText(str string) (string, int32, []byte, bool) {
+func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
 	var _arg2 *C.char       // in
@@ -108,12 +108,12 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int32, []byte
 	runtime.KeepAlive(str)
 
 	var _encoding string // out
-	var _format int32    // out
+	var _format int      // out
 	var _ctext []byte    // out
 	var _ok bool         // out
 
 	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_format = int32(_arg3)
+	_format = int(_arg3)
 	defer C.free(unsafe.Pointer(_arg4))
 	_ctext = make([]byte, _arg5)
 	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_arg4)), _arg5))

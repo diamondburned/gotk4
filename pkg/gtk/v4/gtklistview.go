@@ -177,7 +177,7 @@ func marshalListView(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_ListView_ConnectActivate
 func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
-	var f func(position uint32)
+	var f func(position uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -185,12 +185,12 @@ func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(position uint32))
+		f = closure.Func.(func(position uint))
 	}
 
-	var _position uint32 // out
+	var _position uint // out
 
-	_position = uint32(arg1)
+	_position = uint(arg1)
 
 	f(_position)
 }
@@ -200,7 +200,7 @@ func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 //
 // This allows for a convenient way to handle activation in a listview. See
 // gtk.ListItem.SetActivatable() for details on how to use this signal.
-func (self *ListView) ConnectActivate(f func(position uint32)) coreglib.SignalHandle {
+func (self *ListView) ConnectActivate(f func(position uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ListView_ConnectActivate), f)
 }
 

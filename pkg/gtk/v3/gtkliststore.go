@@ -198,7 +198,7 @@ func (listStore *ListStore) Clear() {
 //
 //    - iter: unset TreeIter to set to the new row.
 //
-func (listStore *ListStore) Insert(position int32) *TreeIter {
+func (listStore *ListStore) Insert(position int) *TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.gint          // out
@@ -300,7 +300,7 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 //
 //    - iter (optional): unset TreeIter to set to the new row, or NULL.
 //
-func (listStore *ListStore) InsertWithValuesv(position int32, columns []int32, values []coreglib.Value) *TreeIter {
+func (listStore *ListStore) InsertWithValuesv(position int, columns []int, values []coreglib.Value) *TreeIter {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 C.gint          // out
@@ -494,7 +494,7 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 //      old position before the re-ordering, i.e. new_order[newpos] = oldpos. It
 //      must have exactly as many items as the list store’s length.
 //
-func (store *ListStore) Reorder(newOrder []int32) {
+func (store *ListStore) Reorder(newOrder []int) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.gint         // out
 
@@ -556,7 +556,7 @@ func (listStore *ListStore) SetColumnTypes(types []coreglib.Type) {
 //    - column number to modify.
 //    - value: new value for the cell.
 //
-func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
+func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *coreglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.gint          // out
@@ -585,7 +585,7 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coregl
 //    - columns: array of column numbers.
 //    - values: array of GValues.
 //
-func (listStore *ListStore) Set(iter *TreeIter, columns []int32, values []coreglib.Value) {
+func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []coreglib.Value) {
 	var _arg0 *C.GtkListStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.gint         // out

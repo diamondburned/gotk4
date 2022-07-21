@@ -143,7 +143,7 @@ func (f FormatSizeFlags) Has(other FormatSizeFlags) bool {
 //    - gint: index of the first bit set which is higher than nth_bit, or -1 if
 //      no higher bits are set.
 //
-func BitNthLSF(mask uint32, nthBit int32) int32 {
+func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
@@ -155,9 +155,9 @@ func BitNthLSF(mask uint32, nthBit int32) int32 {
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(nthBit)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -177,7 +177,7 @@ func BitNthLSF(mask uint32, nthBit int32) int32 {
 //    - gint: index of the first bit set which is lower than nth_bit, or -1 if no
 //      lower bits are set.
 //
-func BitNthMSF(mask uint32, nthBit int32) int32 {
+func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
@@ -189,9 +189,9 @@ func BitNthMSF(mask uint32, nthBit int32) int32 {
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(nthBit)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -207,7 +207,7 @@ func BitNthMSF(mask uint32, nthBit int32) int32 {
 //
 //    - guint: number of bits used to hold number.
 //
-func BitStorage(number uint32) uint32 {
+func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
 	var _cret C.guint  // in
 
@@ -216,9 +216,9 @@ func BitStorage(number uint32) uint32 {
 	_cret = C.g_bit_storage(_arg1)
 	runtime.KeepAlive(number)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -907,7 +907,7 @@ func GetUserSpecialDir(directory UserDirectory) string {
 //
 //    - guint: combined set of bit flags.
 //
-func ParseDebugString(str string, keys []DebugKey) uint32 {
+func ParseDebugString(str string, keys []DebugKey) uint {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GDebugKey // out
 	var _arg3 C.guint
@@ -931,9 +931,9 @@ func ParseDebugString(str string, keys []DebugKey) uint32 {
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(keys)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1020,15 +1020,15 @@ func (d *DebugKey) Key() string {
 }
 
 // Value: flag.
-func (d *DebugKey) Value() uint32 {
+func (d *DebugKey) Value() uint {
 	valptr := &d.native.value
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Value: flag.
-func (d *DebugKey) SetValue(value uint32) {
+func (d *DebugKey) SetValue(value uint) {
 	valptr := &d.native.value
 	*valptr = C.guint(value)
 }

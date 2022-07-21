@@ -1037,7 +1037,7 @@ type ObjectClassOverrider interface {
 	//    - changeIndex
 	//    - changedChild (optional)
 	//
-	ChildrenChanged(changeIndex uint32, changedChild unsafe.Pointer)
+	ChildrenChanged(changeIndex uint, changedChild unsafe.Pointer)
 	// The function takes the following parameters:
 	//
 	FocusEvent(focusIn bool)
@@ -1056,7 +1056,7 @@ type ObjectClassOverrider interface {
 	//
 	//    - gint: integer which is the index of the accessible in its parent.
 	//
-	IndexInParent() int32
+	IndexInParent() int
 	// Layer gets the layer of the accessible.
 	//
 	// Deprecated: Use atk_component_get_layer instead.
@@ -1077,10 +1077,10 @@ type ObjectClassOverrider interface {
 	//      the component is shown in relation to other components in the same
 	//      container.
 	//
-	MDIZOrder() int32
+	MDIZOrder() int
 	// The function returns the following values:
 	//
-	NChildren() int32
+	NChildren() int
 	// Name gets the accessible name of the accessible.
 	//
 	// The function returns the following values:
@@ -1157,7 +1157,7 @@ type ObjectClassOverrider interface {
 	//
 	//    - handlerId: guint which identifies the handler to be removed.
 	//
-	RemovePropertyChangeHandler(handlerId uint32)
+	RemovePropertyChangeHandler(handlerId uint)
 	// SetDescription sets the accessible description of the accessible. You
 	// can't set the description to NULL. This is reserved for the initial
 	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
@@ -1242,7 +1242,7 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		ChildrenChanged(changeIndex uint32, changedChild unsafe.Pointer)
+		ChildrenChanged(changeIndex uint, changedChild unsafe.Pointer)
 	}); ok {
 		pclass.children_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_children_changed)
 	}
@@ -1255,7 +1255,7 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 		pclass.get_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_description)
 	}
 
-	if _, ok := goval.(interface{ IndexInParent() int32 }); ok {
+	if _, ok := goval.(interface{ IndexInParent() int }); ok {
 		pclass.get_index_in_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_index_in_parent)
 	}
 
@@ -1263,11 +1263,11 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 		pclass.get_layer = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_layer)
 	}
 
-	if _, ok := goval.(interface{ MDIZOrder() int32 }); ok {
+	if _, ok := goval.(interface{ MDIZOrder() int }); ok {
 		pclass.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
 	}
 
-	if _, ok := goval.(interface{ NChildren() int32 }); ok {
+	if _, ok := goval.(interface{ NChildren() int }); ok {
 		pclass.get_n_children = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_n_children)
 	}
 
@@ -1303,7 +1303,7 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 		pclass.ref_state_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_state_set)
 	}
 
-	if _, ok := goval.(interface{ RemovePropertyChangeHandler(handlerId uint32) }); ok {
+	if _, ok := goval.(interface{ RemovePropertyChangeHandler(handlerId uint) }); ok {
 		pclass.remove_property_change_handler = (*[0]byte)(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
 	}
 
@@ -1352,13 +1352,13 @@ func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *
 func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, arg2 C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		ChildrenChanged(changeIndex uint32, changedChild unsafe.Pointer)
+		ChildrenChanged(changeIndex uint, changedChild unsafe.Pointer)
 	})
 
-	var _changeIndex uint32          // out
+	var _changeIndex uint            // out
 	var _changedChild unsafe.Pointer // out
 
-	_changeIndex = uint32(arg1)
+	_changeIndex = uint(arg1)
 	_changedChild = (unsafe.Pointer)(unsafe.Pointer(arg2))
 
 	iface.ChildrenChanged(_changeIndex, _changedChild)
@@ -1394,7 +1394,7 @@ func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) 
 //export _gotk4_atk1_ObjectClass_get_index_in_parent
 func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ IndexInParent() int32 })
+	iface := goval.(interface{ IndexInParent() int })
 
 	gint := iface.IndexInParent()
 
@@ -1418,7 +1418,7 @@ func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
 //export _gotk4_atk1_ObjectClass_get_mdi_zorder
 func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MDIZOrder() int32 })
+	iface := goval.(interface{ MDIZOrder() int })
 
 	gint := iface.MDIZOrder()
 
@@ -1430,7 +1430,7 @@ func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
 //export _gotk4_atk1_ObjectClass_get_n_children
 func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ NChildren() int32 })
+	iface := goval.(interface{ NChildren() int })
 
 	gint := iface.NChildren()
 
@@ -1542,11 +1542,11 @@ func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateS
 //export _gotk4_atk1_ObjectClass_remove_property_change_handler
 func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, arg1 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ RemovePropertyChangeHandler(handlerId uint32) })
+	iface := goval.(interface{ RemovePropertyChangeHandler(handlerId uint) })
 
-	var _handlerId uint32 // out
+	var _handlerId uint // out
 
-	_handlerId = uint32(arg1)
+	_handlerId = uint(arg1)
 
 	iface.RemovePropertyChangeHandler(_handlerId)
 }
@@ -1665,7 +1665,7 @@ func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectCla
 
 //export _gotk4_atk1_Object_ConnectChildrenChanged
 func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.gpointer, arg3 C.guintptr) {
-	var f func(arg1 uint32, arg2 *ObjectClass)
+	var f func(arg1 uint, arg2 *ObjectClass)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -1673,13 +1673,13 @@ func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(arg1 uint32, arg2 *ObjectClass))
+		f = closure.Func.(func(arg1 uint, arg2 *ObjectClass))
 	}
 
-	var _arg1 uint32       // out
+	var _arg1 uint         // out
 	var _arg2 *ObjectClass // out
 
-	_arg1 = uint32(arg1)
+	_arg1 = uint(arg1)
 	_arg2 = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
 
 	f(_arg1, _arg2)
@@ -1687,7 +1687,7 @@ func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, ar
 
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
 // added or removed form an object. It supports two details: "add" and "remove".
-func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint32, arg2 *ObjectClass)) coreglib.SignalHandle {
+func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
 }
 
@@ -1895,7 +1895,7 @@ func (accessible *ObjectClass) Description() string {
 //
 //    - gint: integer which is the index of the accessible in its parent.
 //
-func (accessible *ObjectClass) IndexInParent() int32 {
+func (accessible *ObjectClass) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1904,9 +1904,9 @@ func (accessible *ObjectClass) IndexInParent() int32 {
 	_cret = C.atk_object_get_index_in_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1945,7 +1945,7 @@ func (accessible *ObjectClass) Layer() Layer {
 //    - gint which is the zorder of the accessible, i.e. the depth at which the
 //      component is shown in relation to other components in the same container.
 //
-func (accessible *ObjectClass) MDIZOrder() int32 {
+func (accessible *ObjectClass) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1954,9 +1954,9 @@ func (accessible *ObjectClass) MDIZOrder() int32 {
 	_cret = C.atk_object_get_mdi_zorder(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1968,7 +1968,7 @@ func (accessible *ObjectClass) MDIZOrder() int32 {
 //    - gint: integer representing the number of accessible children of the
 //      accessible.
 //
-func (accessible *ObjectClass) NAccessibleChildren() int32 {
+func (accessible *ObjectClass) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1977,9 +1977,9 @@ func (accessible *ObjectClass) NAccessibleChildren() int32 {
 	_cret = C.atk_object_get_n_accessible_children(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2170,7 +2170,7 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 //
 //    - object representing the specified accessible child of the accessible.
 //
-func (accessible *ObjectClass) RefAccessibleChild(i int32) *ObjectClass {
+func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -2243,7 +2243,7 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 //
 //    - handlerId: guint which identifies the handler to be removed.
 //
-func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint32) {
+func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 

@@ -34,7 +34,7 @@ import "C"
 //
 //    - gint: remainder of extra_space after redistributing space to sizes.
 //
-func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes *RequestedSize) int32 {
+func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
 	var _arg1 C.gint              // out
 	var _arg2 C.guint             // out
 	var _arg3 *C.GtkRequestedSize // out
@@ -49,9 +49,9 @@ func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes
 	runtime.KeepAlive(nRequestedSizes)
 	runtime.KeepAlive(sizes)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -79,29 +79,29 @@ func (r *RequestedSize) Data() unsafe.Pointer {
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
-func (r *RequestedSize) MinimumSize() int32 {
+func (r *RequestedSize) MinimumSize() int {
 	valptr := &r.native.minimum_size
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
-func (r *RequestedSize) NaturalSize() int32 {
+func (r *RequestedSize) NaturalSize() int {
 	valptr := &r.native.natural_size
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
-func (r *RequestedSize) SetMinimumSize(minimumSize int32) {
+func (r *RequestedSize) SetMinimumSize(minimumSize int) {
 	valptr := &r.native.minimum_size
 	*valptr = C.gint(minimumSize)
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
-func (r *RequestedSize) SetNaturalSize(naturalSize int32) {
+func (r *RequestedSize) SetNaturalSize(naturalSize int) {
 	valptr := &r.native.natural_size
 	*valptr = C.gint(naturalSize)
 }

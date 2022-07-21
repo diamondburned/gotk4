@@ -336,7 +336,7 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 //    - ok: whether all actions neccessary for the button click simulation were
 //      carried out successfully.
 //
-func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool {
+func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
 	var _arg2 C.guint          // out
 	var _arg3 C.gboolean       // out
@@ -437,7 +437,7 @@ func TestTextSet(widget Widgetter, str string) {
 //    - ok: whether all actions neccessary for the button click simulation were
 //      carried out successfully.
 //
-func TestWidgetClick(widget Widgetter, button uint32, modifiers gdk.ModifierType) bool {
+func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -480,7 +480,7 @@ func TestWidgetClick(widget Widgetter, button uint32, modifiers gdk.ModifierType
 //    - ok: whether all actions neccessary for the key event simulation were
 //      carried out successfully.
 //
-func TestWidgetSendKey(widget Widgetter, keyval uint32, modifiers gdk.ModifierType) bool {
+func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out

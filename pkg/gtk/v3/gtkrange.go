@@ -63,7 +63,7 @@ type RangeOverrider interface {
 	//    - minimum
 	//    - natural
 	//
-	RangeSizeRequest(orientation Orientation, minimum, natural *int32)
+	RangeSizeRequest(orientation Orientation, minimum, natural *int)
 	// The function takes the following parameters:
 	//
 	MoveSlider(scroll ScrollType)
@@ -125,7 +125,7 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		RangeSizeRequest(orientation Orientation, minimum, natural *int32)
+		RangeSizeRequest(orientation Orientation, minimum, natural *int)
 	}); ok {
 		pclass.get_range_size_request = (*[0]byte)(C._gotk4_gtk3_RangeClass_get_range_size_request)
 	}
@@ -189,16 +189,16 @@ func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder
 func _gotk4_gtk3_RangeClass_get_range_size_request(arg0 *C.GtkRange, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		RangeSizeRequest(orientation Orientation, minimum, natural *int32)
+		RangeSizeRequest(orientation Orientation, minimum, natural *int)
 	})
 
 	var _orientation Orientation // out
-	var _minimum *int32          // out
-	var _natural *int32          // out
+	var _minimum *int            // out
+	var _natural *int            // out
 
 	_orientation = Orientation(arg1)
-	_minimum = (*int32)(unsafe.Pointer(arg2))
-	_natural = (*int32)(unsafe.Pointer(arg3))
+	_minimum = (*int)(unsafe.Pointer(arg2))
+	_natural = (*int)(unsafe.Pointer(arg3))
 
 	iface.RangeSizeRequest(_orientation, _minimum, _natural)
 }
@@ -500,7 +500,7 @@ func (_range *Range) LowerStepperSensitivity() SensitivityType {
 //
 //    - gint: minimum size of the range’s slider.
 //
-func (_range *Range) MinSliderSize() int32 {
+func (_range *Range) MinSliderSize() int {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gint      // in
 
@@ -509,9 +509,9 @@ func (_range *Range) MinSliderSize() int32 {
 	_cret = C.gtk_range_get_min_slider_size(_arg0)
 	runtime.KeepAlive(_range)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -572,7 +572,7 @@ func (_range *Range) RestrictToFillLevel() bool {
 //
 //    - gint: number of digits to round to.
 //
-func (_range *Range) RoundDigits() int32 {
+func (_range *Range) RoundDigits() int {
 	var _arg0 *C.GtkRange // out
 	var _cret C.gint      // in
 
@@ -581,9 +581,9 @@ func (_range *Range) RoundDigits() int32 {
 	_cret = C.gtk_range_get_round_digits(_arg0)
 	runtime.KeepAlive(_range)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -622,7 +622,7 @@ func (_range *Range) ShowFillLevel() bool {
 //    - sliderStart (optional): return location for the slider's start, or NULL.
 //    - sliderEnd (optional): return location for the slider's end, or NULL.
 //
-func (_range *Range) SliderRange() (sliderStart, sliderEnd int32) {
+func (_range *Range) SliderRange() (sliderStart, sliderEnd int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -632,11 +632,11 @@ func (_range *Range) SliderRange() (sliderStart, sliderEnd int32) {
 	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(_range)
 
-	var _sliderStart int32 // out
-	var _sliderEnd int32   // out
+	var _sliderStart int // out
+	var _sliderEnd int   // out
 
-	_sliderStart = int32(_arg1)
-	_sliderEnd = int32(_arg2)
+	_sliderStart = int(_arg1)
+	_sliderEnd = int(_arg2)
 
 	return _sliderStart, _sliderEnd
 }
@@ -867,7 +867,7 @@ func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
 //
 //    - minSize slider’s minimum size.
 //
-func (_range *Range) SetMinSliderSize(minSize int32) {
+func (_range *Range) SetMinSliderSize(minSize int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gint      // out
 
@@ -932,7 +932,7 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 //
 //    - roundDigits: precision in digits, or -1.
 //
-func (_range *Range) SetRoundDigits(roundDigits int32) {
+func (_range *Range) SetRoundDigits(roundDigits int) {
 	var _arg0 *C.GtkRange // out
 	var _arg1 C.gint      // out
 

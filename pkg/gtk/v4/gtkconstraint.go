@@ -150,7 +150,7 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 //
 //    - constraint: newly created constraint.
 //
-func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int32) *Constraint {
+func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -206,7 +206,7 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 //
 //    - constraint: newly created constraint.
 //
-func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int32) *Constraint {
+func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
 	var _arg2 C.GtkConstraintAttribute // out
 	var _arg3 C.GtkConstraintRelation  // out
@@ -360,7 +360,7 @@ func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 //
 //    - gint: strength value.
 //
-func (constraint *Constraint) Strength() int32 {
+func (constraint *Constraint) Strength() int {
 	var _arg0 *C.GtkConstraint // out
 	var _cret C.int            // in
 
@@ -369,9 +369,9 @@ func (constraint *Constraint) Strength() int32 {
 	_cret = C.gtk_constraint_get_strength(_arg0)
 	runtime.KeepAlive(constraint)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

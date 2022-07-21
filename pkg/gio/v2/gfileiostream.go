@@ -475,7 +475,7 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 //    - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileIOStream      // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out

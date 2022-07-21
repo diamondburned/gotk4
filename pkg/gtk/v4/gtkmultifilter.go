@@ -282,7 +282,7 @@ func (self *MultiFilter) Append(filter *Filter) {
 //
 //    - position of filter to remove.
 //
-func (self *MultiFilter) Remove(position uint32) {
+func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out
 	var _arg1 C.guint           // out
 

@@ -591,7 +591,7 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 //    - ioPriority: io priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -695,7 +695,7 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 //    - ioPriority: io priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -906,7 +906,7 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 //    - ioPriority: io priority of the request.
 //    - callback (optional): ReadyCallback.
 //
-func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream           // out
 	var _arg4 *C.GCancellable            // out
 	var _arg1 *C.GInputStream            // out
@@ -1125,7 +1125,7 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 //    - ioPriority: io priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.void          // out
@@ -1243,7 +1243,7 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 //    - ioPriority: io priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.void          // out
@@ -1347,7 +1347,7 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 //    - ioPriority: io priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.GBytes             // out
@@ -1614,7 +1614,7 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GOutputVector // out
@@ -1733,7 +1733,7 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int32, callback AsyncReadyCallback) {
+func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
 	var _arg1 *C.GOutputVector // out

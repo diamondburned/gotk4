@@ -45,7 +45,7 @@ type ListModelOverrider interface {
 	//
 	//    - object (optional) at position.
 	//
-	Item(position uint32) *coreglib.Object
+	Item(position uint) *coreglib.Object
 	// ItemType gets the type of the items in list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
 	// implementation of that interface.
@@ -67,7 +67,7 @@ type ListModelOverrider interface {
 	//
 	//    - guint: number of items in list.
 	//
-	NItems() uint32
+	NItems() uint
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -131,15 +131,15 @@ type ListModeller interface {
 	// ItemType gets the type of the items in list.
 	ItemType() coreglib.Type
 	// NItems gets the number of items in list.
-	NItems() uint32
+	NItems() uint
 	// Item: get the item at position.
-	Item(position uint32) *coreglib.Object
+	Item(position uint) *coreglib.Object
 	// ItemsChanged emits the Model::items-changed signal on list.
-	ItemsChanged(position, removed, added uint32)
+	ItemsChanged(position, removed, added uint)
 
 	// Items-changed: this signal is emitted whenever items were added to or
 	// removed from list.
-	ConnectItemsChanged(func(position, removed, added uint32)) coreglib.SignalHandle
+	ConnectItemsChanged(func(position, removed, added uint)) coreglib.SignalHandle
 }
 
 var _ ListModeller = (*ListModel)(nil)
@@ -156,9 +156,9 @@ func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.GListModel, arg1 C.guint) (
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
-	var _position uint32 // out
+	var _position uint // out
 
-	_position = uint32(arg1)
+	_position = uint(arg1)
 
 	object := iface.Item(_position)
 
@@ -204,7 +204,7 @@ func marshalListModel(p uintptr) (interface{}, error) {
 
 //export _gotk4_gio2_ListModel_ConnectItemsChanged
 func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guint, arg4 C.guintptr) {
-	var f func(position, removed, added uint32)
+	var f func(position, removed, added uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -212,16 +212,16 @@ func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(position, removed, added uint32))
+		f = closure.Func.(func(position, removed, added uint))
 	}
 
-	var _position uint32 // out
-	var _removed uint32  // out
-	var _added uint32    // out
+	var _position uint // out
+	var _removed uint  // out
+	var _added uint    // out
 
-	_position = uint32(arg1)
-	_removed = uint32(arg2)
-	_added = uint32(arg3)
+	_position = uint(arg1)
+	_removed = uint(arg2)
+	_added = uint(arg3)
 
 	f(_position, _removed, _added)
 }
@@ -232,7 +232,7 @@ func _gotk4_gio2_ListModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.guint, ar
 //
 // Note: If removed != added, the positions of all later items in the model
 // change.
-func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint32)) coreglib.SignalHandle {
+func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
 }
 
@@ -272,7 +272,7 @@ func (list *ListModel) ItemType() coreglib.Type {
 //
 //    - guint: number of items in list.
 //
-func (list *ListModel) NItems() uint32 {
+func (list *ListModel) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
 
@@ -281,9 +281,9 @@ func (list *ListModel) NItems() uint32 {
 	_cret = C.g_list_model_get_n_items(_arg0)
 	runtime.KeepAlive(list)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -302,7 +302,7 @@ func (list *ListModel) NItems() uint32 {
 //
 //    - object (optional) at position.
 //
-func (list *ListModel) Item(position uint32) *coreglib.Object {
+func (list *ListModel) Item(position uint) *coreglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _cret *C.GObject    // in
@@ -348,7 +348,7 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 //    - removed: number of items removed.
 //    - added: number of items added.
 //
-func (list *ListModel) ItemsChanged(position, removed, added uint32) {
+func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
 	var _arg2 C.guint       // out

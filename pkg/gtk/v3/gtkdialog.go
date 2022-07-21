@@ -229,7 +229,7 @@ type DialogOverrider interface {
 	//
 	//    - responseId: response ID.
 	//
-	Response(responseId int32)
+	Response(responseId int)
 }
 
 // Dialog boxes are a convenient way to prompt the user for a small amount of
@@ -365,7 +365,7 @@ func classInitDialogger(gclassPtr, data C.gpointer) {
 		pclass.close = (*[0]byte)(C._gotk4_gtk3_DialogClass_close)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
+	if _, ok := goval.(interface{ Response(responseId int) }); ok {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_DialogClass_response)
 	}
 }
@@ -381,11 +381,11 @@ func _gotk4_gtk3_DialogClass_close(arg0 *C.GtkDialog) {
 //export _gotk4_gtk3_DialogClass_response
 func _gotk4_gtk3_DialogClass_response(arg0 *C.GtkDialog, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int32) })
+	iface := goval.(interface{ Response(responseId int) })
 
-	var _responseId int32 // out
+	var _responseId int // out
 
-	_responseId = int32(arg1)
+	_responseId = int(arg1)
 
 	iface.Response(_responseId)
 }
@@ -443,7 +443,7 @@ func (dialog *Dialog) ConnectClose(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_Dialog_ConnectResponse
 func _gotk4_gtk3_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int32)
+	var f func(responseId int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -451,12 +451,12 @@ func _gotk4_gtk3_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gui
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int32))
+		f = closure.Func.(func(responseId int))
 	}
 
-	var _responseId int32 // out
+	var _responseId int // out
 
-	_responseId = int32(arg1)
+	_responseId = int(arg1)
 
 	f(_responseId)
 }
@@ -466,7 +466,7 @@ func _gotk4_gtk3_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gui
 // gtk_dialog_response(). On a delete event, the response ID is
 // K_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
 // clicked.
-func (dialog *Dialog) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
+func (dialog *Dialog) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(dialog, "response", false, unsafe.Pointer(C._gotk4_gtk3_Dialog_ConnectResponse), f)
 }
 
@@ -502,7 +502,7 @@ func NewDialog() *Dialog {
 //    - child: activatable widget.
 //    - responseId: response ID for child.
 //
-func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
+func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -531,7 +531,7 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int32) {
 //
 //    - widget widget that was added.
 //
-func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
+func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
@@ -652,7 +652,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 //    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
 //      a response id set.
 //
-func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 *C.GtkWidget // out
 	var _cret C.gint       // in
@@ -664,9 +664,9 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -682,7 +682,7 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int32 {
 //
 //    - widget (optional) button that uses the given response_id, or NULL.
 //
-func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
+func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 	var _cret *C.GtkWidget // in
@@ -725,7 +725,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
 //
 //    - responseId: response ID.
 //
-func (dialog *Dialog) Response(responseId int32) {
+func (dialog *Dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
@@ -784,7 +784,7 @@ func (dialog *Dialog) Response(responseId int32) {
 //
 //    - gint: response ID.
 //
-func (dialog *Dialog) Run() int32 {
+func (dialog *Dialog) Run() int {
 	var _arg0 *C.GtkDialog // out
 	var _cret C.gint       // in
 
@@ -793,9 +793,9 @@ func (dialog *Dialog) Run() int32 {
 	_cret = C.gtk_dialog_run(_arg0)
 	runtime.KeepAlive(dialog)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -815,7 +815,7 @@ func (dialog *Dialog) Run() int32 {
 //
 //    - newOrder: array of response ids of dialog’s buttons.
 //
-func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
+func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg2 *C.gint      // out
 	var _arg1 C.gint
@@ -844,7 +844,7 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
 //
 //    - responseId: response ID.
 //
-func (dialog *Dialog) SetDefaultResponse(responseId int32) {
+func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 
@@ -865,7 +865,7 @@ func (dialog *Dialog) SetDefaultResponse(responseId int32) {
 //    - responseId: response ID.
 //    - setting: TRUE for sensitive.
 //
-func (dialog *Dialog) SetResponseSensitive(responseId int32, setting bool) {
+func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gboolean   // out

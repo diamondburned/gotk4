@@ -127,7 +127,7 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 //
 //    - position of sorter to remove.
 //
-func (self *MultiSorter) Remove(position uint32) {
+func (self *MultiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out
 	var _arg1 C.guint           // out
 

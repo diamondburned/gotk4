@@ -180,7 +180,7 @@ func marshalTable(p uintptr) (interface{}, error) {
 //
 //    - table: pointer to the newly created table widget.
 //
-func NewTable(rows, columns uint32, homogeneous bool) *Table {
+func NewTable(rows, columns uint, homogeneous bool) *Table {
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out
 	var _arg3 C.gboolean   // out
@@ -239,7 +239,7 @@ func NewTable(rows, columns uint32, homogeneous bool) *Table {
 //      the widget being added to the table.
 //    - ypadding: amount of padding above and below the child widget.
 //
-func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32, xoptions, yoptions AttachOptions, xpadding, ypadding uint32) {
+func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint, xoptions, yoptions AttachOptions, xpadding, ypadding uint) {
 	var _arg0 *C.GtkTable        // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.guint            // out
@@ -293,7 +293,7 @@ func (table *Table) Attach(child Widgetter, leftAttach, rightAttach, topAttach, 
 //    - topAttach: row number to attach the top of the child widget to.
 //    - bottomAttach: row number to attach the bottom of the child widget to.
 //
-func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint32) {
+func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
 	var _arg0 *C.GtkTable  // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.guint      // out
@@ -330,7 +330,7 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 //
 //    - guint: column spacing.
 //
-func (table *Table) ColSpacing(column uint32) uint32 {
+func (table *Table) ColSpacing(column uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -342,9 +342,9 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -359,7 +359,7 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 //
 //    - guint: default column spacing.
 //
-func (table *Table) DefaultColSpacing() uint32 {
+func (table *Table) DefaultColSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
@@ -368,9 +368,9 @@ func (table *Table) DefaultColSpacing() uint32 {
 	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 	runtime.KeepAlive(table)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -385,7 +385,7 @@ func (table *Table) DefaultColSpacing() uint32 {
 //
 //    - guint: default row spacing.
 //
-func (table *Table) DefaultRowSpacing() uint32 {
+func (table *Table) DefaultRowSpacing() uint {
 	var _arg0 *C.GtkTable // out
 	var _cret C.guint     // in
 
@@ -394,9 +394,9 @@ func (table *Table) DefaultRowSpacing() uint32 {
 	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 	runtime.KeepAlive(table)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -442,7 +442,7 @@ func (table *Table) Homogeneous() bool {
 //
 //    - guint: row spacing.
 //
-func (table *Table) RowSpacing(row uint32) uint32 {
+func (table *Table) RowSpacing(row uint) uint {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _cret C.guint     // in
@@ -454,9 +454,9 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -470,7 +470,7 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 //    - rows (optional): return location for the number of rows, or NULL.
 //    - columns (optional): return location for the number of columns, or NULL.
 //
-func (table *Table) Size() (rows, columns uint32) {
+func (table *Table) Size() (rows, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // in
 	var _arg2 C.guint     // in
@@ -480,11 +480,11 @@ func (table *Table) Size() (rows, columns uint32) {
 	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(table)
 
-	var _rows uint32    // out
-	var _columns uint32 // out
+	var _rows uint    // out
+	var _columns uint // out
 
-	_rows = uint32(_arg1)
-	_columns = uint32(_arg2)
+	_rows = uint(_arg1)
+	_columns = uint(_arg2)
 
 	return _rows, _columns
 }
@@ -499,7 +499,7 @@ func (table *Table) Size() (rows, columns uint32) {
 //    - rows: new number of rows.
 //    - columns: new number of columns.
 //
-func (table *Table) Resize(rows, columns uint32) {
+func (table *Table) Resize(rows, columns uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -526,7 +526,7 @@ func (table *Table) Resize(rows, columns uint32) {
 //    - column whose spacing should be changed.
 //    - spacing: number of pixels that the spacing should take up.
 //
-func (table *Table) SetColSpacing(column, spacing uint32) {
+func (table *Table) SetColSpacing(column, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -550,7 +550,7 @@ func (table *Table) SetColSpacing(column, spacing uint32) {
 //    - spacing: number of pixels of space to place between every column in the
 //      table.
 //
-func (table *Table) SetColSpacings(spacing uint32) {
+func (table *Table) SetColSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 
@@ -599,7 +599,7 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 //    - row number whose spacing will be changed.
 //    - spacing: number of pixels that the spacing should take up.
 //
-func (table *Table) SetRowSpacing(row, spacing uint32) {
+func (table *Table) SetRowSpacing(row, spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 	var _arg2 C.guint     // out
@@ -623,7 +623,7 @@ func (table *Table) SetRowSpacing(row, spacing uint32) {
 //    - spacing: number of pixels of space to place between every row in the
 //      table.
 //
-func (table *Table) SetRowSpacings(spacing uint32) {
+func (table *Table) SetRowSpacings(spacing uint) {
 	var _arg0 *C.GtkTable // out
 	var _arg1 C.guint     // out
 

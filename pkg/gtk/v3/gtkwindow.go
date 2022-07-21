@@ -656,7 +656,7 @@ func (window *Window) AddAccelGroup(accelGroup *AccelGroup) {
 //    - keyval: mnemonic.
 //    - target: widget that gets activated by the mnemonic.
 //
-func (window *Window) AddMnemonic(keyval uint32, target Widgetter) {
+func (window *Window) AddMnemonic(keyval uint, target Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GtkWidget // out
@@ -685,7 +685,7 @@ func (window *Window) AddMnemonic(keyval uint32, target Widgetter) {
 //    - rootY: y position where the user clicked to initiate the drag.
 //    - timestamp from the click event that initiated the drag.
 //
-func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32) {
+func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -722,7 +722,7 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32
 //    - rootY: y position where the user clicked to initiate the drag.
 //    - timestamp from the click event that initiated the drag.
 //
-func (window *Window) BeginResizeDrag(edge gdk.WindowEdge, button, rootX, rootY int32, timestamp uint32) {
+func (window *Window) BeginResizeDrag(edge gdk.WindowEdge, button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GtkWindow    // out
 	var _arg1 C.GdkWindowEdge // out
 	var _arg2 C.gint          // out
@@ -803,7 +803,7 @@ func (window *Window) Fullscreen() {
 //    - screen to draw to.
 //    - monitor: which monitor to go fullscreen on.
 //
-func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int32) {
+func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 *C.GdkScreen // out
 	var _arg2 C.gint       // out
@@ -939,7 +939,7 @@ func (window *Window) Decorated() bool {
 //    - width (optional): location to store the default width, or NULL.
 //    - height (optional): location to store the default height, or NULL.
 //
-func (window *Window) DefaultSize() (width, height int32) {
+func (window *Window) DefaultSize() (width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -949,11 +949,11 @@ func (window *Window) DefaultSize() (width, height int32) {
 	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -1472,7 +1472,7 @@ func (window *Window) Opacity() float64 {
 //    - rootY (optional): return location for Y coordinate of gravity-determined
 //      reference point, or NULL.
 //
-func (window *Window) Position() (rootX, rootY int32) {
+func (window *Window) Position() (rootX, rootY int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -1482,11 +1482,11 @@ func (window *Window) Position() (rootX, rootY int32) {
 	C.gtk_window_get_position(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _rootX int32 // out
-	var _rootY int32 // out
+	var _rootX int // out
+	var _rootY int // out
 
-	_rootX = int32(_arg1)
-	_rootY = int32(_arg2)
+	_rootX = int(_arg1)
+	_rootY = int(_arg2)
 
 	return _rootX, _rootY
 }
@@ -1646,7 +1646,7 @@ func (window *Window) Screen() *gdk.Screen {
 //    - width (optional): return location for width, or NULL.
 //    - height (optional): return location for height, or NULL.
 //
-func (window *Window) Size() (width, height int32) {
+func (window *Window) Size() (width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // in
 	var _arg2 C.gint       // in
@@ -1656,11 +1656,11 @@ func (window *Window) Size() (width, height int32) {
 	C.gtk_window_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -2033,7 +2033,7 @@ func (window *Window) Maximize() {
 //
 //    - ok: TRUE if the activation is done.
 //
-func (window *Window) MnemonicActivate(keyval uint32, modifier gdk.ModifierType) bool {
+func (window *Window) MnemonicActivate(keyval uint, modifier gdk.ModifierType) bool {
 	var _arg0 *C.GtkWindow      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -2095,7 +2095,7 @@ func (window *Window) MnemonicActivate(keyval uint32, modifier gdk.ModifierType)
 //    - x: x coordinate to move window to.
 //    - y: y coordinate to move window to.
 //
-func (window *Window) Move(x, y int32) {
+func (window *Window) Move(x, y int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2320,7 +2320,7 @@ func (window *Window) RemoveAccelGroup(accelGroup *AccelGroup) {
 //    - keyval: mnemonic.
 //    - target: widget that gets activated by the mnemonic.
 //
-func (window *Window) RemoveMnemonic(keyval uint32, target Widgetter) {
+func (window *Window) RemoveMnemonic(keyval uint, target Widgetter) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.guint      // out
 	var _arg2 *C.GtkWidget // out
@@ -2380,7 +2380,7 @@ func (window *Window) ReshowWithInitialSize() {
 //    - width in pixels to resize the window to.
 //    - height in pixels to resize the window to.
 //
-func (window *Window) Resize(width, height int32) {
+func (window *Window) Resize(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2434,7 +2434,7 @@ func (window *Window) ResizeGripIsVisible() bool {
 //    - width in resize increments to resize the window to.
 //    - height in resize increments to resize the window to.
 //
-func (window *Window) ResizeToGeometry(width, height int32) {
+func (window *Window) ResizeToGeometry(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2601,7 +2601,7 @@ func (window *Window) SetDefault(defaultWidget Widgetter) {
 //    - width in resize increments, or -1 to unset the default width.
 //    - height in resize increments, or -1 to unset the default height.
 //
-func (window *Window) SetDefaultGeometry(width, height int32) {
+func (window *Window) SetDefaultGeometry(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2654,7 +2654,7 @@ func (window *Window) SetDefaultGeometry(width, height int32) {
 //    - width in pixels, or -1 to unset the default width.
 //    - height in pixels, or -1 to unset the default height.
 //
-func (window *Window) SetDefaultSize(width, height int32) {
+func (window *Window) SetDefaultSize(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

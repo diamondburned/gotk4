@@ -26,7 +26,7 @@ import "C"
 //    - guint: smallest prime number from a built-in array of primes which is
 //      larger than num.
 //
-func SpacedPrimesClosest(num uint32) uint32 {
+func SpacedPrimesClosest(num uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
@@ -35,9 +35,9 @@ func SpacedPrimesClosest(num uint32) uint32 {
 	_cret = C.g_spaced_primes_closest(_arg1)
 	runtime.KeepAlive(num)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

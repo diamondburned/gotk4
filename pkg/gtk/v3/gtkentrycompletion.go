@@ -81,7 +81,7 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg1 *C.GtkEntryCompletion, arg2 *C.gc
 type EntryCompletionOverrider interface {
 	// The function takes the following parameters:
 	//
-	ActionActivated(index_ int32)
+	ActionActivated(index_ int)
 	// The function takes the following parameters:
 	//
 	//    - model
@@ -165,7 +165,7 @@ func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
 	goval := gbox.Get(uintptr(data))
 	pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(gclassPtr))
 
-	if _, ok := goval.(interface{ ActionActivated(index_ int32) }); ok {
+	if _, ok := goval.(interface{ ActionActivated(index_ int) }); ok {
 		pclass.action_activated = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_action_activated)
 	}
 
@@ -193,11 +193,11 @@ func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
 //export _gotk4_gtk3_EntryCompletionClass_action_activated
 func _gotk4_gtk3_EntryCompletionClass_action_activated(arg0 *C.GtkEntryCompletion, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActionActivated(index_ int32) })
+	iface := goval.(interface{ ActionActivated(index_ int) })
 
-	var _index_ int32 // out
+	var _index_ int // out
 
-	_index_ = int32(arg1)
+	_index_ = int(arg1)
 
 	iface.ActionActivated(_index_)
 }
@@ -322,7 +322,7 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk3_EntryCompletion_ConnectActionActivated
 func _gotk4_gtk3_EntryCompletion_ConnectActionActivated(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(index int32)
+	var f func(index int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -330,18 +330,18 @@ func _gotk4_gtk3_EntryCompletion_ConnectActionActivated(arg0 C.gpointer, arg1 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(index int32))
+		f = closure.Func.(func(index int))
 	}
 
-	var _index int32 // out
+	var _index int // out
 
-	_index = int32(arg1)
+	_index = int(arg1)
 
 	f(_index)
 }
 
 // ConnectActionActivated gets emitted when an action is activated.
-func (completion *EntryCompletion) ConnectActionActivated(f func(index int32)) coreglib.SignalHandle {
+func (completion *EntryCompletion) ConnectActionActivated(f func(index int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(completion, "action-activated", false, unsafe.Pointer(C._gotk4_gtk3_EntryCompletion_ConnectActionActivated), f)
 }
 
@@ -617,7 +617,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 //
 //    - index_: index of the item to delete.
 //
-func (completion *EntryCompletion) DeleteAction(index_ int32) {
+func (completion *EntryCompletion) DeleteAction(index_ int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 
@@ -745,7 +745,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 //
 //    - gint: currently used minimum key length.
 //
-func (completion *EntryCompletion) MinimumKeyLength() int32 {
+func (completion *EntryCompletion) MinimumKeyLength() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gint                // in
 
@@ -754,9 +754,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int32 {
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -868,7 +868,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 //
 //    - gint: column containing the strings.
 //
-func (completion *EntryCompletion) TextColumn() int32 {
+func (completion *EntryCompletion) TextColumn() int {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _cret C.gint                // in
 
@@ -877,9 +877,9 @@ func (completion *EntryCompletion) TextColumn() int32 {
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 	runtime.KeepAlive(completion)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -892,7 +892,7 @@ func (completion *EntryCompletion) TextColumn() int32 {
 //    - index_: index of the item to insert.
 //    - markup of the item to insert.
 //
-func (completion *EntryCompletion) InsertActionMarkup(index_ int32, markup string) {
+func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 	var _arg2 *C.gchar              // out
@@ -920,7 +920,7 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int32, markup strin
 //    - index_: index of the item to insert.
 //    - text of the item to insert.
 //
-func (completion *EntryCompletion) InsertActionText(index_ int32, text string) {
+func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 	var _arg2 *C.gchar              // out
@@ -1021,7 +1021,7 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 //
 //    - length: minimum length of the key in order to start completing.
 //
-func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
+func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 
@@ -1133,7 +1133,7 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 //
 //    - column in the model of completion to get strings from.
 //
-func (completion *EntryCompletion) SetTextColumn(column int32) {
+func (completion *EntryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
 	var _arg1 C.gint                // out
 

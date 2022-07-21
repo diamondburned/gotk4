@@ -215,7 +215,7 @@ type FontChooserer interface {
 	// it does not have one.
 	FontMap() pango.FontMapper
 	// FontSize: selected font size.
-	FontSize() int32
+	FontSize() int
 	// Language gets the language that is used for font features.
 	Language() string
 	// Level returns the current level of granularity for selecting fonts.
@@ -513,7 +513,7 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 //    - gint: n integer representing the selected font size, or -1 if no font
 //      size is selected.
 //
-func (fontchooser *FontChooser) FontSize() int32 {
+func (fontchooser *FontChooser) FontSize() int {
 	var _arg0 *C.GtkFontChooser // out
 	var _cret C.int             // in
 
@@ -522,9 +522,9 @@ func (fontchooser *FontChooser) FontSize() int32 {
 	_cret = C.gtk_font_chooser_get_font_size(_arg0)
 	runtime.KeepAlive(fontchooser)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

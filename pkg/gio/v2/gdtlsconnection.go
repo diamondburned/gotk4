@@ -73,7 +73,7 @@ type DTLSConnectioner interface {
 	// Close the DTLS connection.
 	Close(ctx context.Context) error
 	// CloseAsync: asynchronously close the DTLS connection.
-	CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish: finish an asynchronous TLS close operation.
 	CloseFinish(result AsyncResulter) error
 	// EmitAcceptCertificate: used by Connection implementations to emit the
@@ -107,7 +107,7 @@ type DTLSConnectioner interface {
 	// Handshake attempts a TLS handshake on conn.
 	Handshake(ctx context.Context) error
 	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
-	HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback)
+	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -132,7 +132,7 @@ type DTLSConnectioner interface {
 	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
 	// ShutdownAsync: asynchronously shut down part or all of the DTLS
 	// connection.
-	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int32, callback AsyncReadyCallback)
+	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
 
@@ -289,7 +289,7 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the close operation is complete.
 //
-func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -738,7 +738,7 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the handshake is complete.
 //
-func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -1050,7 +1050,7 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the shutdown operation is complete.
 //
-func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int32, callback AsyncReadyCallback) {
+func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg4 *C.GCancellable       // out
 	var _arg1 C.gboolean            // out

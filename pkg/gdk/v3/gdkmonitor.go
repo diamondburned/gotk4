@@ -193,7 +193,7 @@ func (monitor *Monitor) Geometry() *Rectangle {
 //
 //    - gint: physical height of the monitor.
 //
-func (monitor *Monitor) HeightMm() int32 {
+func (monitor *Monitor) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -202,9 +202,9 @@ func (monitor *Monitor) HeightMm() int32 {
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -270,7 +270,7 @@ func (monitor *Monitor) Model() string {
 //
 //    - gint: refresh rate in milli-Hertz, or 0.
 //
-func (monitor *Monitor) RefreshRate() int32 {
+func (monitor *Monitor) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -279,9 +279,9 @@ func (monitor *Monitor) RefreshRate() int32 {
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -298,7 +298,7 @@ func (monitor *Monitor) RefreshRate() int32 {
 //
 //    - gint: scale factor.
 //
-func (monitor *Monitor) ScaleFactor() int32 {
+func (monitor *Monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -307,9 +307,9 @@ func (monitor *Monitor) ScaleFactor() int32 {
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -343,7 +343,7 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 //
 //    - gint: physical width of the monitor.
 //
-func (monitor *Monitor) WidthMm() int32 {
+func (monitor *Monitor) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
 	var _cret C.int         // in
 
@@ -352,9 +352,9 @@ func (monitor *Monitor) WidthMm() int32 {
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 	runtime.KeepAlive(monitor)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

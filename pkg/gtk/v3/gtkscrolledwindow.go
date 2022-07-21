@@ -643,7 +643,7 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 //
 //    - gint: maximum content height, or -1.
 //
-func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
+func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gint               // in
 
@@ -652,9 +652,9 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
 	_cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -665,7 +665,7 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int32 {
 //
 //    - gint: maximum content width, or -1.
 //
-func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
+func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gint               // in
 
@@ -674,9 +674,9 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
 	_cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -688,7 +688,7 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int32 {
 //
 //    - gint: minimal content height.
 //
-func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
+func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gint               // in
 
@@ -697,9 +697,9 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
 	_cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -711,7 +711,7 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int32 {
 //
 //    - gint: minimum content width.
 //
-func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
+func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _cret C.gint               // in
 
@@ -720,9 +720,9 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int32 {
 	_cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
 	runtime.KeepAlive(scrolledWindow)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1025,7 +1025,7 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 //
 //    - height: maximum content height.
 //
-func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
+func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gint               // out
 
@@ -1048,7 +1048,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int32) {
 //
 //    - width: maximum content width.
 //
-func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
+func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gint               // out
 
@@ -1071,7 +1071,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int32) {
 //
 //    - height: minimal content height.
 //
-func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
+func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gint               // out
 
@@ -1094,7 +1094,7 @@ func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int32) {
 //
 //    - width: minimal content width.
 //
-func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int32) {
+func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
 	var _arg1 C.gint               // out
 

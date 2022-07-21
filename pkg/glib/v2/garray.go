@@ -39,16 +39,16 @@ func (a *Array) Data() string {
 
 // Len: number of elements in the #GArray not including the possible terminating
 // zero element.
-func (a *Array) Len() uint32 {
+func (a *Array) Len() uint {
 	valptr := &a.native.len
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Len: number of elements in the #GArray not including the possible terminating
 // zero element.
-func (a *Array) SetLen(len uint32) {
+func (a *Array) SetLen(len uint) {
 	valptr := &a.native.len
 	*valptr = C.guint(len)
 }
@@ -75,15 +75,15 @@ func (b *ByteArray) Data() *byte {
 }
 
 // Len: number of elements in the Array.
-func (b *ByteArray) Len() uint32 {
+func (b *ByteArray) Len() uint {
 	valptr := &b.native.len
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Len: number of elements in the Array.
-func (b *ByteArray) SetLen(len uint32) {
+func (b *ByteArray) SetLen(len uint) {
 	valptr := &b.native.len
 	*valptr = C.guint(len)
 }
@@ -168,7 +168,7 @@ func NewBytes(data []byte) *Bytes {
 //    - gint: negative value if bytes1 is less than bytes2, a positive value if
 //      bytes1 is greater than bytes2, and zero if bytes1 is equal to bytes2.
 //
-func (bytes1 *Bytes) Compare(bytes2 *Bytes) int32 {
+func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
@@ -180,9 +180,9 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int32 {
 	runtime.KeepAlive(bytes1)
 	runtime.KeepAlive(bytes2)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -285,7 +285,7 @@ func (bytes *Bytes) Size() uint {
 //
 //    - guint: hash value corresponding to the key.
 //
-func (bytes *Bytes) Hash() uint32 {
+func (bytes *Bytes) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -294,9 +294,9 @@ func (bytes *Bytes) Hash() uint32 {
 	_cret = C.g_bytes_hash(_arg0)
 	runtime.KeepAlive(bytes)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -372,15 +372,15 @@ func (p *PtrArray) Pdata() *unsafe.Pointer {
 }
 
 // Len: number of pointers in the array.
-func (p *PtrArray) Len() uint32 {
+func (p *PtrArray) Len() uint {
 	valptr := &p.native.len
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Len: number of pointers in the array.
-func (p *PtrArray) SetLen(len uint32) {
+func (p *PtrArray) SetLen(len uint) {
 	valptr := &p.native.len
 	*valptr = C.guint(len)
 }

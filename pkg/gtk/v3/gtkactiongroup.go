@@ -870,16 +870,16 @@ func (r *RadioActionEntry) Tooltip() string {
 
 // Value: value to set on the radio action. See
 // gtk_radio_action_get_current_value().
-func (r *RadioActionEntry) Value() int32 {
+func (r *RadioActionEntry) Value() int {
 	valptr := &r.native.value
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Value: value to set on the radio action. See
 // gtk_radio_action_get_current_value().
-func (r *RadioActionEntry) SetValue(value int32) {
+func (r *RadioActionEntry) SetValue(value int) {
 	valptr := &r.native.value
 	*valptr = C.gint(value)
 }

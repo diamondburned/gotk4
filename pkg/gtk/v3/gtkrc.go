@@ -752,7 +752,7 @@ func RCParse(filename string) {
 //    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
 //      expected but not found.
 //
-func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint32) {
+func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
 	var _arg2 C.GdkColor  // in
 	var _cret C.guint     // in
@@ -763,10 +763,10 @@ func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint32) {
 	runtime.KeepAlive(scanner)
 
 	var _color *gdk.Color // out
-	var _guint uint32     // out
+	var _guint uint       // out
 
 	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _color, _guint
 }
@@ -787,7 +787,7 @@ func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint32) {
 //    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
 //      expected but not found.
 //
-func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32) {
+func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out
 	var _arg2 *C.GtkRcStyle // out
 	var _arg3 C.GdkColor    // in
@@ -803,10 +803,10 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32
 	runtime.KeepAlive(style)
 
 	var _color *gdk.Color // out
-	var _guint uint32     // out
+	var _guint uint       // out
 
 	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _color, _guint
 }
@@ -827,7 +827,7 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32
 //    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
 //      expected but not found.
 //
-func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
+func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	var _arg1 *C.GScanner            // out
 	var _arg2 *C.GtkPathPriorityType // out
 	var _cret C.guint                // in
@@ -839,9 +839,9 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(priority)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -861,7 +861,7 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 //    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
 //      expected but not found.
 //
-func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
+func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg1 *C.GScanner    // out
 	var _arg2 C.GtkStateType // in
 	var _cret C.guint        // in
@@ -872,10 +872,10 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
 	runtime.KeepAlive(scanner)
 
 	var _state StateType // out
-	var _guint uint32    // out
+	var _guint uint      // out
 
 	_state = StateType(_arg2)
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _state, _guint
 }
@@ -1026,7 +1026,7 @@ type RCStyleOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Parse(settings *Settings, scanner *glib.Scanner) uint32
+	Parse(settings *Settings, scanner *glib.Scanner) uint
 }
 
 // RCStyle is used to represent a set of information about the appearance of a
@@ -1055,7 +1055,7 @@ func classInitRCStyler(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Parse(settings *Settings, scanner *glib.Scanner) uint32
+		Parse(settings *Settings, scanner *glib.Scanner) uint
 	}); ok {
 		pclass.parse = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_parse)
 	}
@@ -1077,7 +1077,7 @@ func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
 func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.GtkRcStyle, arg1 *C.GtkSettings, arg2 *C.GScanner) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Parse(settings *Settings, scanner *glib.Scanner) uint32
+		Parse(settings *Settings, scanner *glib.Scanner) uint
 	})
 
 	var _settings *Settings    // out

@@ -124,7 +124,7 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg1 *C.GdkPixbuf, arg2 *C.GdkPi
 // this as a hint that it will be closed soon and shouldn't allocate further
 // resources. This convention is used to implement gdk_pixbuf_get_file_info()
 // efficiently.
-type PixbufModuleSizeFunc func(width, height *int32)
+type PixbufModuleSizeFunc func(width, height *int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleSizeFunc
 func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg1 *C.gint, arg2 *C.gint, arg3 C.gpointer) {
@@ -137,11 +137,11 @@ func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg1 *C.gint, arg2 *C.gint, arg3 C.g
 		fn = v.(PixbufModuleSizeFunc)
 	}
 
-	var _width *int32  // out
-	var _height *int32 // out
+	var _width *int  // out
+	var _height *int // out
 
-	_width = (*int32)(unsafe.Pointer(arg1))
-	_height = (*int32)(unsafe.Pointer(arg2))
+	_width = (*int)(unsafe.Pointer(arg1))
+	_height = (*int)(unsafe.Pointer(arg2))
 
 	fn(_width, _height)
 }
@@ -151,7 +151,7 @@ func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg1 *C.gint, arg2 *C.gint, arg3 C.g
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
-type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x, y, width, height int32)
+type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x, y, width, height int)
 
 //export _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc
 func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int, arg6 C.gpointer) {
@@ -165,16 +165,16 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, ar
 	}
 
 	var _pixbuf *Pixbuf // out
-	var _x int32        // out
-	var _y int32        // out
-	var _width int32    // out
-	var _height int32   // out
+	var _x int          // out
+	var _y int          // out
+	var _width int      // out
+	var _height int     // out
 
 	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(arg1)))
-	_x = int32(arg2)
-	_y = int32(arg3)
-	_width = int32(arg4)
-	_height = int32(arg5)
+	_x = int(arg2)
+	_y = int(arg3)
+	_width = int(arg4)
+	_height = int(arg5)
 
 	fn(_pixbuf, _x, _y, _width, _height)
 }
@@ -193,7 +193,7 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, ar
 //    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //      the file.
 //
-func PixbufGetFileInfo(filename string) (width, height int32, pixbufFormat *PixbufFormat) {
+func PixbufGetFileInfo(filename string) (width, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in
@@ -205,12 +205,12 @@ func PixbufGetFileInfo(filename string) (width, height int32, pixbufFormat *Pixb
 	_cret = C.gdk_pixbuf_get_file_info(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(filename)
 
-	var _width int32                // out
-	var _height int32               // out
+	var _width int                  // out
+	var _height int                 // out
 	var _pixbufFormat *PixbufFormat // out
 
-	_width = int32(_arg2)
-	_height = int32(_arg3)
+	_width = int(_arg2)
+	_height = int(_arg3)
 	if _cret != nil {
 		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
@@ -273,7 +273,7 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 //    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //      the file.
 //
-func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int32, pixbufFormat *PixbufFormat, goerr error) {
+func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in
@@ -285,13 +285,13 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int32
 	_cret = C.gdk_pixbuf_get_file_info_finish(_arg1, &_arg2, &_arg3, &_cerr)
 	runtime.KeepAlive(asyncResult)
 
-	var _width int32                // out
-	var _height int32               // out
+	var _width int                  // out
+	var _height int                 // out
 	var _pixbufFormat *PixbufFormat // out
 	var _goerr error                // out
 
-	_width = int32(_arg2)
-	_height = int32(_arg3)
+	_width = int(_arg2)
+	_height = int(_arg3)
 	if _cret != nil {
 		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}

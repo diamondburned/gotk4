@@ -316,7 +316,7 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 //    - dx: return location for the delta X coordinate.
 //    - dy: return location for the delta Y coordinate.
 //
-func (layout *PopupLayout) Offset() (dx int32, dy int32) {
+func (layout *PopupLayout) Offset() (dx int, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // in
 	var _arg2 C.int             // in
@@ -326,11 +326,11 @@ func (layout *PopupLayout) Offset() (dx int32, dy int32) {
 	C.gdk_popup_layout_get_offset(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _dx int32 // out
-	var _dy int32 // out
+	var _dx int // out
+	var _dy int // out
 
-	_dx = int32(_arg1)
-	_dy = int32(_arg2)
+	_dx = int(_arg1)
+	_dy = int(_arg2)
 
 	return _dx, _dy
 }
@@ -366,7 +366,7 @@ func (layout *PopupLayout) RectAnchor() Gravity {
 //    - top: return location for the top shadow width.
 //    - bottom: return location for the bottom shadow width.
 //
-func (layout *PopupLayout) ShadowWidth() (left int32, right int32, top int32, bottom int32) {
+func (layout *PopupLayout) ShadowWidth() (left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // in
 	var _arg2 C.int             // in
@@ -378,15 +378,15 @@ func (layout *PopupLayout) ShadowWidth() (left int32, right int32, top int32, bo
 	C.gdk_popup_layout_get_shadow_width(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 	runtime.KeepAlive(layout)
 
-	var _left int32   // out
-	var _right int32  // out
-	var _top int32    // out
-	var _bottom int32 // out
+	var _left int   // out
+	var _right int  // out
+	var _top int    // out
+	var _bottom int // out
 
-	_left = int32(_arg1)
-	_right = int32(_arg2)
-	_top = int32(_arg3)
-	_bottom = int32(_arg4)
+	_left = int(_arg1)
+	_right = int(_arg2)
+	_top = int(_arg3)
+	_bottom = int(_arg4)
 
 	return _left, _right, _top, _bottom
 }
@@ -461,7 +461,7 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 //    - dx: x delta to offset the anchor rectangle with.
 //    - dy: y delta to offset the anchor rectangle with.
 //
-func (layout *PopupLayout) SetOffset(dx int32, dy int32) {
+func (layout *PopupLayout) SetOffset(dx int, dy int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out
@@ -507,7 +507,7 @@ func (layout *PopupLayout) SetRectAnchor(anchor Gravity) {
 //    - top: height of the top part of the shadow.
 //    - bottom: height of the bottom part of the shadow.
 //
-func (layout *PopupLayout) SetShadowWidth(left int32, right int32, top int32, bottom int32) {
+func (layout *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

@@ -123,7 +123,7 @@ func (a AssistantPageType) String() string {
 // “forward” button and for handling the behavior of the “last” button.
 //
 // See gtk.Assistant.SetForwardPageFunc().
-type AssistantPageFunc func(currentPage int32) (gint int32)
+type AssistantPageFunc func(currentPage int) (gint int)
 
 //export _gotk4_gtk4_AssistantPageFunc
 func _gotk4_gtk4_AssistantPageFunc(arg1 C.int, arg2 C.gpointer) (cret C.int) {
@@ -136,9 +136,9 @@ func _gotk4_gtk4_AssistantPageFunc(arg1 C.int, arg2 C.gpointer) (cret C.int) {
 		fn = v.(AssistantPageFunc)
 	}
 
-	var _currentPage int32 // out
+	var _currentPage int // out
 
-	_currentPage = int32(arg1)
+	_currentPage = int(arg1)
 
 	gint := fn(_currentPage)
 
@@ -429,7 +429,7 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 //
 //    - gint: index (starting at 0) of the inserted page.
 //
-func (assistant *Assistant) AppendPage(page Widgetter) int32 {
+func (assistant *Assistant) AppendPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -441,9 +441,9 @@ func (assistant *Assistant) AppendPage(page Widgetter) int32 {
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -473,7 +473,7 @@ func (assistant *Assistant) Commit() {
 //    - gint: index (starting from 0) of the current page in the assistant, or -1
 //      if the assistant has no pages, or no current page.
 //
-func (assistant *Assistant) CurrentPage() int32 {
+func (assistant *Assistant) CurrentPage() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
 
@@ -482,9 +482,9 @@ func (assistant *Assistant) CurrentPage() int32 {
 	_cret = C.gtk_assistant_get_current_page(_arg0)
 	runtime.KeepAlive(assistant)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -495,7 +495,7 @@ func (assistant *Assistant) CurrentPage() int32 {
 //
 //    - gint: number of pages in the assistant.
 //
-func (assistant *Assistant) NPages() int32 {
+func (assistant *Assistant) NPages() int {
 	var _arg0 *C.GtkAssistant // out
 	var _cret C.int           // in
 
@@ -504,9 +504,9 @@ func (assistant *Assistant) NPages() int32 {
 	_cret = C.gtk_assistant_get_n_pages(_arg0)
 	runtime.KeepAlive(assistant)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -521,7 +521,7 @@ func (assistant *Assistant) NPages() int32 {
 //
 //    - widget (optional): child widget, or NULL if page_num is out of bounds.
 //
-func (assistant *Assistant) NthPage(pageNum int32) Widgetter {
+func (assistant *Assistant) NthPage(pageNum int) Widgetter {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 	var _cret *C.GtkWidget    // in
@@ -712,7 +712,7 @@ func (assistant *Assistant) Pages() *gio.ListModel {
 //
 //    - gint: index (starting from 0) of the inserted page.
 //
-func (assistant *Assistant) InsertPage(page Widgetter, position int32) int32 {
+func (assistant *Assistant) InsertPage(page Widgetter, position int) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _arg2 C.int           // out
@@ -727,9 +727,9 @@ func (assistant *Assistant) InsertPage(page Widgetter, position int32) int32 {
 	runtime.KeepAlive(page)
 	runtime.KeepAlive(position)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -759,7 +759,7 @@ func (assistant *Assistant) NextPage() {
 //
 //    - gint: index (starting at 0) of the inserted page.
 //
-func (assistant *Assistant) PrependPage(page Widgetter) int32 {
+func (assistant *Assistant) PrependPage(page Widgetter) int {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 *C.GtkWidget    // out
 	var _cret C.int           // in
@@ -771,9 +771,9 @@ func (assistant *Assistant) PrependPage(page Widgetter) int32 {
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -818,7 +818,7 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 //
 //    - pageNum: index of a page in the assistant, or -1 to remove the last page.
 //
-func (assistant *Assistant) RemovePage(pageNum int32) {
+func (assistant *Assistant) RemovePage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 
@@ -841,7 +841,7 @@ func (assistant *Assistant) RemovePage(pageNum int32) {
 //      the last page will be used. If greater than the number of pages in the
 //      assistant, nothing will be done.
 //
-func (assistant *Assistant) SetCurrentPage(pageNum int32) {
+func (assistant *Assistant) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkAssistant // out
 	var _arg1 C.int           // out
 

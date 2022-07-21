@@ -112,7 +112,7 @@ type EntryOverrider interface {
 	//    - typ
 	//    - count
 	//
-	DeleteFromCursor(typ DeleteType, count int32)
+	DeleteFromCursor(typ DeleteType, count int)
 	// The function takes the following parameters:
 	//
 	//    - x
@@ -120,7 +120,7 @@ type EntryOverrider interface {
 	//    - width
 	//    - height
 	//
-	FrameSize(x, y, width, height *int32)
+	FrameSize(x, y, width, height *int)
 	// The function takes the following parameters:
 	//
 	//    - x
@@ -128,7 +128,7 @@ type EntryOverrider interface {
 	//    - width
 	//    - height
 	//
-	TextAreaSize(x, y, width, height *int32)
+	TextAreaSize(x, y, width, height *int)
 	// The function takes the following parameters:
 	//
 	InsertAtCursor(str string)
@@ -139,7 +139,7 @@ type EntryOverrider interface {
 	//    - count
 	//    - extendSelection
 	//
-	MoveCursor(step MovementStep, count int32, extendSelection bool)
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	PasteClipboard()
 	// The function takes the following parameters:
 	//
@@ -254,19 +254,19 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		DeleteFromCursor(typ DeleteType, count int32)
+		DeleteFromCursor(typ DeleteType, count int)
 	}); ok {
 		pclass.delete_from_cursor = (*[0]byte)(C._gotk4_gtk3_EntryClass_delete_from_cursor)
 	}
 
 	if _, ok := goval.(interface {
-		FrameSize(x, y, width, height *int32)
+		FrameSize(x, y, width, height *int)
 	}); ok {
 		pclass.get_frame_size = (*[0]byte)(C._gotk4_gtk3_EntryClass_get_frame_size)
 	}
 
 	if _, ok := goval.(interface {
-		TextAreaSize(x, y, width, height *int32)
+		TextAreaSize(x, y, width, height *int)
 	}); ok {
 		pclass.get_text_area_size = (*[0]byte)(C._gotk4_gtk3_EntryClass_get_text_area_size)
 	}
@@ -280,7 +280,7 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int32, extendSelection bool)
+		MoveCursor(step MovementStep, count int, extendSelection bool)
 	}); ok {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_EntryClass_move_cursor)
 	}
@@ -334,14 +334,14 @@ func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
 func _gotk4_gtk3_EntryClass_delete_from_cursor(arg0 *C.GtkEntry, arg1 C.GtkDeleteType, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DeleteFromCursor(typ DeleteType, count int32)
+		DeleteFromCursor(typ DeleteType, count int)
 	})
 
 	var _typ DeleteType // out
-	var _count int32    // out
+	var _count int      // out
 
 	_typ = DeleteType(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 
 	iface.DeleteFromCursor(_typ, _count)
 }
@@ -350,18 +350,18 @@ func _gotk4_gtk3_EntryClass_delete_from_cursor(arg0 *C.GtkEntry, arg1 C.GtkDelet
 func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		FrameSize(x, y, width, height *int32)
+		FrameSize(x, y, width, height *int)
 	})
 
-	var _x *int32      // out
-	var _y *int32      // out
-	var _width *int32  // out
-	var _height *int32 // out
+	var _x *int      // out
+	var _y *int      // out
+	var _width *int  // out
+	var _height *int // out
 
-	_x = (*int32)(unsafe.Pointer(arg1))
-	_y = (*int32)(unsafe.Pointer(arg2))
-	_width = (*int32)(unsafe.Pointer(arg3))
-	_height = (*int32)(unsafe.Pointer(arg4))
+	_x = (*int)(unsafe.Pointer(arg1))
+	_y = (*int)(unsafe.Pointer(arg2))
+	_width = (*int)(unsafe.Pointer(arg3))
+	_height = (*int)(unsafe.Pointer(arg4))
 
 	iface.FrameSize(_x, _y, _width, _height)
 }
@@ -370,18 +370,18 @@ func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 
 func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		TextAreaSize(x, y, width, height *int32)
+		TextAreaSize(x, y, width, height *int)
 	})
 
-	var _x *int32      // out
-	var _y *int32      // out
-	var _width *int32  // out
-	var _height *int32 // out
+	var _x *int      // out
+	var _y *int      // out
+	var _width *int  // out
+	var _height *int // out
 
-	_x = (*int32)(unsafe.Pointer(arg1))
-	_y = (*int32)(unsafe.Pointer(arg2))
-	_width = (*int32)(unsafe.Pointer(arg3))
-	_height = (*int32)(unsafe.Pointer(arg4))
+	_x = (*int)(unsafe.Pointer(arg1))
+	_y = (*int)(unsafe.Pointer(arg2))
+	_width = (*int)(unsafe.Pointer(arg3))
+	_height = (*int)(unsafe.Pointer(arg4))
 
 	iface.TextAreaSize(_x, _y, _width, _height)
 }
@@ -410,15 +410,15 @@ func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.GtkEntry) {
 func _gotk4_gtk3_EntryClass_move_cursor(arg0 *C.GtkEntry, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int32, extendSelection bool)
+		MoveCursor(step MovementStep, count int, extendSelection bool)
 	})
 
 	var _step MovementStep    // out
-	var _count int32          // out
+	var _count int            // out
 	var _extendSelection bool // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 	if arg3 != 0 {
 		_extendSelection = true
 	}
@@ -609,7 +609,7 @@ func (entry *Entry) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_Entry_ConnectDeleteFromCursor
 func _gotk4_gtk3_Entry_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
-	var f func(typ DeleteType, count int32)
+	var f func(typ DeleteType, count int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -617,14 +617,14 @@ func _gotk4_gtk3_Entry_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDelete
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(typ DeleteType, count int32))
+		f = closure.Func.(func(typ DeleteType, count int))
 	}
 
 	var _typ DeleteType // out
-	var _count int32    // out
+	var _count int      // out
 
 	_typ = DeleteType(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 
 	f(_typ, _count)
 }
@@ -637,7 +637,7 @@ func _gotk4_gtk3_Entry_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDelete
 //
 // The default bindings for this signal are Delete for deleting a character and
 // Ctrl-Delete for deleting a word.
-func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int32)) coreglib.SignalHandle {
+func (entry *Entry) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectDeleteFromCursor), f)
 }
 
@@ -759,7 +759,7 @@ func (entry *Entry) ConnectInsertEmoji(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_Entry_ConnectMoveCursor
 func _gotk4_gtk3_Entry_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int32, extendSelection bool)
+	var f func(step MovementStep, count int, extendSelection bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -767,15 +767,15 @@ func _gotk4_gtk3_Entry_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(step MovementStep, count int32, extendSelection bool))
+		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
 	}
 
 	var _step MovementStep    // out
-	var _count int32          // out
+	var _count int            // out
 	var _extendSelection bool // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 	if arg3 != 0 {
 		_extendSelection = true
 	}
@@ -799,7 +799,7 @@ func _gotk4_gtk3_Entry_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep
 // - Ctrl-arrow key combinations move by words/paragraphs
 //
 // - Home/End keys move to the ends of the buffer.
-func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int32, extendSelection bool)) coreglib.SignalHandle {
+func (entry *Entry) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectMoveCursor), f)
 }
 
@@ -1105,7 +1105,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 //    - gint: index of the icon which is the source of the current DND operation,
 //      or -1.
 //
-func (entry *Entry) CurrentIconDragSource() int32 {
+func (entry *Entry) CurrentIconDragSource() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -1114,9 +1114,9 @@ func (entry *Entry) CurrentIconDragSource() int32 {
 	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1252,7 +1252,7 @@ func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
 //
 //    - gint: index of the icon at the given position, or -1.
 //
-func (entry *Entry) IconAtPos(x, y int32) int32 {
+func (entry *Entry) IconAtPos(x, y int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -1267,9 +1267,9 @@ func (entry *Entry) IconAtPos(x, y int32) int32 {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1707,7 +1707,7 @@ func (entry *Entry) Layout() *pango.Layout {
 //    - x (optional): location to store X offset of layout, or NULL.
 //    - y (optional): location to store Y offset of layout, or NULL.
 //
-func (entry *Entry) LayoutOffsets() (x, y int32) {
+func (entry *Entry) LayoutOffsets() (x, y int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -1717,11 +1717,11 @@ func (entry *Entry) LayoutOffsets() (x, y int32) {
 	C.gtk_entry_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(entry)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -1737,7 +1737,7 @@ func (entry *Entry) LayoutOffsets() (x, y int32) {
 //    - gint: maximum allowed number of characters in Entry, or 0 if there is no
 //      maximum.
 //
-func (entry *Entry) MaxLength() int32 {
+func (entry *Entry) MaxLength() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -1746,9 +1746,9 @@ func (entry *Entry) MaxLength() int32 {
 	_cret = C.gtk_entry_get_max_length(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1760,7 +1760,7 @@ func (entry *Entry) MaxLength() int32 {
 //
 //    - gint: maximum width of the entry, in characters.
 //
-func (entry *Entry) MaxWidthChars() int32 {
+func (entry *Entry) MaxWidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -1769,9 +1769,9 @@ func (entry *Entry) MaxWidthChars() int32 {
 	_cret = C.gtk_entry_get_max_width_chars(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2007,7 +2007,7 @@ func (entry *Entry) Visibility() bool {
 //
 //    - gint: number of chars to request space for, or negative if unset.
 //
-func (entry *Entry) WidthChars() int32 {
+func (entry *Entry) WidthChars() int {
 	var _arg0 *C.GtkEntry // out
 	var _cret C.gint      // in
 
@@ -2016,9 +2016,9 @@ func (entry *Entry) WidthChars() int32 {
 	_cret = C.gtk_entry_get_width_chars(_arg0)
 	runtime.KeepAlive(entry)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2090,7 +2090,7 @@ func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
 //
 //    - gint: byte index into the entry contents.
 //
-func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
+func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
@@ -2102,9 +2102,9 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int32) int32 {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(layoutIndex)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2668,7 +2668,7 @@ func (entry *Entry) SetInvisibleChar(ch uint32) {
 //      maximum length of entries.) The value passed in will be clamped to the
 //      range 0-65536.
 //
-func (entry *Entry) SetMaxLength(max int32) {
+func (entry *Entry) SetMaxLength(max int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
@@ -2686,7 +2686,7 @@ func (entry *Entry) SetMaxLength(max int32) {
 //
 //    - nChars: new desired maximum width, in characters.
 //
-func (entry *Entry) SetMaxWidthChars(nChars int32) {
+func (entry *Entry) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
@@ -2867,7 +2867,7 @@ func (entry *Entry) SetVisibility(visible bool) {
 //
 //    - nChars: width in chars.
 //
-func (entry *Entry) SetWidthChars(nChars int32) {
+func (entry *Entry) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 
@@ -2892,7 +2892,7 @@ func (entry *Entry) SetWidthChars(nChars int32) {
 //
 //    - gint: byte index into the entry layout text.
 //
-func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
+func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 	var _arg0 *C.GtkEntry // out
 	var _arg1 C.gint      // out
 	var _cret C.gint      // in
@@ -2904,9 +2904,9 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int32) int32 {
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(textIndex)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

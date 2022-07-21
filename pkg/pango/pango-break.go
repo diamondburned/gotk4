@@ -27,7 +27,7 @@ import "C"
 //    - analysis structure from pango_itemize().
 //    - attrs: array to store character information in.
 //
-func Break(text string, length int32, analysis *Analysis, attrs []LogAttr) {
+func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out
@@ -70,7 +70,7 @@ func Break(text string, length int32, analysis *Analysis, attrs []LogAttr) {
 //    - attrs: logical attributes to fill in.
 //    - attrsLen: size of the array passed as attrs.
 //
-func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr, attrsLen int32) {
+func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out
@@ -116,7 +116,7 @@ func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr,
 //    - paragraphDelimiterIndex: return location for index of delimiter.
 //    - nextParagraphStart: return location for start of next paragraph.
 //
-func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, nextParagraphStart int32) {
+func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
 	var _arg3 C.gint   // in
@@ -130,11 +130,11 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 
-	var _paragraphDelimiterIndex int32 // out
-	var _nextParagraphStart int32      // out
+	var _paragraphDelimiterIndex int // out
+	var _nextParagraphStart int      // out
 
-	_paragraphDelimiterIndex = int32(_arg3)
-	_nextParagraphStart = int32(_arg4)
+	_paragraphDelimiterIndex = int(_arg3)
+	_nextParagraphStart = int(_arg4)
 
 	return _paragraphDelimiterIndex, _nextParagraphStart
 }
@@ -156,7 +156,7 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, 
 //    - logAttrs: array with one PangoLogAttr per character in text, plus one
 //      extra, to be filled in.
 //
-func GetLogAttrs(text string, length, level int32, language *Language, logAttrs []LogAttr) {
+func GetLogAttrs(text string, length, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 C.int            // out
@@ -204,7 +204,7 @@ func GetLogAttrs(text string, length, level int32, language *Language, logAttrs 
 //    - logAttrs: array with one PangoLogAttr per character in text, plus one
 //      extra, to be filled in.
 //
-func TailorBreak(text string, length int32, analysis *Analysis, offset int32, logAttrs []LogAttr) {
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
 	var _arg3 *C.PangoAnalysis // out

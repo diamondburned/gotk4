@@ -583,7 +583,7 @@ func (window *Window) Decorated() bool {
 //    - width (optional): location to store the default width, or NULL.
 //    - height (optional): location to store the default height, or NULL.
 //
-func (window *Window) DefaultSize() (width, height int32) {
+func (window *Window) DefaultSize() (width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.int        // in
 	var _arg2 C.int        // in
@@ -593,11 +593,11 @@ func (window *Window) DefaultSize() (width, height int32) {
 	C.gtk_window_get_default_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(window)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -1336,7 +1336,7 @@ func (window *Window) SetDecorated(setting bool) {
 //    - width in pixels, or -1 to unset the default width.
 //    - height in pixels, or -1 to unset the default height.
 //
-func (window *Window) SetDefaultSize(width, height int32) {
+func (window *Window) SetDefaultSize(width, height int) {
 	var _arg0 *C.GtkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

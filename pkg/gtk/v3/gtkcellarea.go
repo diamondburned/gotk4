@@ -230,7 +230,7 @@ type CellAreaOverrider interface {
 	//
 	//    - gint: TRUE if the event was handled by area.
 	//
-	Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32
+	Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
 	// Focus: this should be called by the area’s owning layout widget when
 	// focus is to be passed to area, or moved within area for a given direction
 	// and row data.
@@ -268,7 +268,7 @@ type CellAreaOverrider interface {
 	//    - naturalHeight (optional): location to store the natural height, or
 	//      NULL.
 	//
-	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
+	PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified width.
 	//
@@ -297,7 +297,7 @@ type CellAreaOverrider interface {
 	//    - naturalHeight (optional): location to store the natural height, or
 	//      NULL.
 	//
-	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
+	PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
 	//
 	// area will store some geometrical information in context along the way;
@@ -318,7 +318,7 @@ type CellAreaOverrider interface {
 	//    - naturalWidth (optional): location to store the natural width, or
 	//      NULL.
 	//
-	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
+	PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified height.
 	//
@@ -347,7 +347,7 @@ type CellAreaOverrider interface {
 	//    - naturalWidth (optional): location to store the natural width, or
 	//      NULL.
 	//
-	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+	PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	//
@@ -571,7 +571,7 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32
+		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
 	}); ok {
 		pclass.event = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_event)
 	}
@@ -583,25 +583,25 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
+		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
 	}); ok {
 		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
+		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	}); ok {
 		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
+		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
 	}); ok {
 		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	}); ok {
 		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_width_for_height)
 	}
@@ -775,7 +775,7 @@ func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkC
 func _gotk4_gtk3_CellAreaClass_event(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkEvent, arg4 *C.GdkRectangle, arg5 C.GtkCellRendererState) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32
+		Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
 	})
 
 	var _context *CellAreaContext // out
@@ -841,7 +841,7 @@ func _gotk4_gtk3_CellAreaClass_focus(arg0 *C.GtkCellArea, arg1 C.GtkDirectionTyp
 func _gotk4_gtk3_CellAreaClass_get_preferred_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
+		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
 	})
 
 	var _context *CellAreaContext // out
@@ -876,12 +876,12 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_height(arg0 *C.GtkCellArea, arg1 *C
 func _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.gint, arg4 *C.gint, arg5 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
+		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	})
 
 	var _context *CellAreaContext // out
 	var _widget Widgetter         // out
-	var _width int32              // out
+	var _width int                // out
 
 	_context = wrapCellAreaContext(coreglib.Take(unsafe.Pointer(arg1)))
 	{
@@ -901,7 +901,7 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellAre
 		}
 		_widget = rv
 	}
-	_width = int32(arg3)
+	_width = int(arg3)
 
 	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_context, _widget, _width)
 
@@ -913,7 +913,7 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellAre
 func _gotk4_gtk3_CellAreaClass_get_preferred_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
+		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
 	})
 
 	var _context *CellAreaContext // out
@@ -948,12 +948,12 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_width(arg0 *C.GtkCellArea, arg1 *C.
 func _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.gint, arg4 *C.gint, arg5 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	})
 
 	var _context *CellAreaContext // out
 	var _widget Widgetter         // out
-	var _height int32             // out
+	var _height int               // out
 
 	_context = wrapCellAreaContext(coreglib.Take(unsafe.Pointer(arg1)))
 	{
@@ -973,7 +973,7 @@ func _gotk4_gtk3_CellAreaClass_get_preferred_width_for_height(arg0 *C.GtkCellAre
 		}
 		_widget = rv
 	}
-	_height = int32(arg3)
+	_height = int(arg3)
 
 	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_context, _widget, _height)
 
@@ -1526,7 +1526,7 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 //    - attribute name.
 //    - column column to fetch attribute values from.
 //
-func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int32) {
+func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.gchar           // out
@@ -1581,7 +1581,7 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 //
 //    - gint: model column, or -1.
 //
-func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int32 {
+func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute string) int {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.gchar           // out
@@ -1597,9 +1597,9 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(attribute)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1736,7 +1736,7 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 //
 //    - gint: TRUE if the event was handled by area.
 //
-func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int32 {
+func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int {
 	var _arg0 *C.GtkCellArea         // out
 	var _arg1 *C.GtkCellAreaContext  // out
 	var _arg2 *C.GtkWidget           // out
@@ -1760,9 +1760,9 @@ func (area *CellArea) Event(context *CellAreaContext, widget Widgetter, event *g
 	runtime.KeepAlive(cellArea)
 	runtime.KeepAlive(flags)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1921,7 +1921,7 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 //      returned cell renderer, or NULL.
 //    - cellRenderer at x and y.
 //
-func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x, y int32) (*gdk.Rectangle, CellRendererer) {
+func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, x, y int) (*gdk.Rectangle, CellRendererer) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -2214,7 +2214,7 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 //    - minimumHeight (optional): location to store the minimum height, or NULL.
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
-func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32) {
+func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -2230,11 +2230,11 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg3)
-	_naturalHeight = int32(_arg4)
+	_minimumHeight = int(_arg3)
+	_naturalHeight = int(_arg4)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -2264,7 +2264,7 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 //    - minimumHeight (optional): location to store the minimum height, or NULL.
 //    - naturalHeight (optional): location to store the natural height, or NULL.
 //
-func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32) {
+func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -2283,11 +2283,11 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg4)
-	_naturalHeight = int32(_arg5)
+	_minimumHeight = int(_arg4)
+	_naturalHeight = int(_arg5)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -2309,7 +2309,7 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 //    - minimumWidth (optional): location to store the minimum width, or NULL.
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
-func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32) {
+func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -2325,11 +2325,11 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(widget)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg3)
-	_naturalWidth = int32(_arg4)
+	_minimumWidth = int(_arg3)
+	_naturalWidth = int(_arg4)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -2359,7 +2359,7 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 //    - minimumWidth (optional): location to store the minimum width, or NULL.
 //    - naturalWidth (optional): location to store the natural width, or NULL.
 //
-func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32) {
+func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int) {
 	var _arg0 *C.GtkCellArea        // out
 	var _arg1 *C.GtkCellAreaContext // out
 	var _arg2 *C.GtkWidget          // out
@@ -2378,11 +2378,11 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(height)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg4)
-	_naturalWidth = int32(_arg5)
+	_minimumWidth = int(_arg4)
+	_naturalWidth = int(_arg5)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -2643,7 +2643,7 @@ func (area *CellArea) Render(context *CellAreaContext, widget Widgetter, cr *cai
 //    - minimumSize (optional): location to store the minimum size, or NULL.
 //    - naturalSize (optional): location to store the natural size, or NULL.
 //
-func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int32) (minimumSize, naturalSize int32) {
+func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orientation, widget Widgetter, forSize int) (minimumSize, naturalSize int) {
 	var _arg0 *C.GtkCellArea     // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.GtkOrientation   // out
@@ -2665,11 +2665,11 @@ func (area *CellArea) RequestRenderer(renderer CellRendererer, orientation Orien
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(forSize)
 
-	var _minimumSize int32 // out
-	var _naturalSize int32 // out
+	var _minimumSize int // out
+	var _naturalSize int // out
 
-	_minimumSize = int32(_arg5)
-	_naturalSize = int32(_arg6)
+	_minimumSize = int(_arg5)
+	_naturalSize = int(_arg6)
 
 	return _minimumSize, _naturalSize
 }

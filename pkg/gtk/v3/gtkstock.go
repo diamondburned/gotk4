@@ -832,10 +832,10 @@ func (s *StockItem) Modifier() gdk.ModifierType {
 }
 
 // Keyval: keyboard accelerator.
-func (s *StockItem) Keyval() uint32 {
+func (s *StockItem) Keyval() uint {
 	valptr := &s.native.keyval
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -848,7 +848,7 @@ func (s *StockItem) TranslationDomain() string {
 }
 
 // Keyval: keyboard accelerator.
-func (s *StockItem) SetKeyval(keyval uint32) {
+func (s *StockItem) SetKeyval(keyval uint) {
 	valptr := &s.native.keyval
 	*valptr = C.guint(keyval)
 }

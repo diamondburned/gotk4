@@ -217,7 +217,7 @@ func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk
 func _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gint) {
-	var f func(actions int32) (gint int32)
+	var f func(actions int) (gint int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -225,12 +225,12 @@ func _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(arg0 C.gpointer, arg1 C.gint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(actions int32) (gint int32))
+		f = closure.Func.(func(actions int) (gint int))
 	}
 
-	var _actions int32 // out
+	var _actions int // out
 
-	_actions = int32(arg1)
+	_actions = int(arg1)
 
 	gint := f(_actions)
 
@@ -242,7 +242,7 @@ func _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(arg0 C.gpointer, arg1 C.gint
 // ConnectDragActionAsk places sidebar emits this signal when it needs to ask
 // the application to pop up a menu to ask the user for which drag action to
 // perform.
-func (sidebar *PlacesSidebar) ConnectDragActionAsk(f func(actions int32) (gint int32)) coreglib.SignalHandle {
+func (sidebar *PlacesSidebar) ConnectDragActionAsk(f func(actions int) (gint int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(sidebar, "drag-action-ask", false, unsafe.Pointer(C._gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk), f)
 }
 
@@ -742,7 +742,7 @@ func (sidebar *PlacesSidebar) Location() *gio.File {
 //      index exist. Note that the indices start at 0, even though the file
 //      chooser starts them with the keyboard shortcut "Alt-1".
 //
-func (sidebar *PlacesSidebar) NthBookmark(n int32) *gio.File {
+func (sidebar *PlacesSidebar) NthBookmark(n int) *gio.File {
 	var _arg0 *C.GtkPlacesSidebar // out
 	var _arg1 C.gint              // out
 	var _cret *C.GFile            // in

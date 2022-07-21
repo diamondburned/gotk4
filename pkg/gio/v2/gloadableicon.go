@@ -49,9 +49,9 @@ type LoadableIconner interface {
 	coreglib.Objector
 
 	// Load loads a loadable icon.
-	Load(ctx context.Context, size int32) (string, InputStreamer, error)
+	Load(ctx context.Context, size int) (string, InputStreamer, error)
 	// LoadAsync loads an icon asynchronously.
-	LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback)
+	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
 	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
@@ -85,7 +85,7 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 //      ignore.
 //    - inputStream to read the icon from.
 //
-func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputStreamer, error) {
+func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg3 *C.GCancellable  // out
 	var _arg1 C.int            // out
@@ -148,7 +148,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 //    - size: integer.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback) {
+func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out

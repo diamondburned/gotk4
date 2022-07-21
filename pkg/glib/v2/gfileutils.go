@@ -483,7 +483,7 @@ func CanonicalizeFilename(filename, relativeTo string) string {
 //
 //    - fileError corresponding to the given errno.
 //
-func FileErrorFromErrno(errNo int32) FileError {
+func FileErrorFromErrno(errNo int) FileError {
 	var _arg1 C.gint       // out
 	var _cret C.GFileError // in
 
@@ -573,7 +573,7 @@ func FileGetContents(filename string) ([]byte, error) {
 //      difference. The file handle should be closed with close(). In case of
 //      errors, -1 is returned and error will be set.
 //
-func FileOpenTmp(tmpl string) (string, int32, error) {
+func FileOpenTmp(tmpl string) (string, int, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _cret C.gint    // in
@@ -588,12 +588,12 @@ func FileOpenTmp(tmpl string) (string, int32, error) {
 	runtime.KeepAlive(tmpl)
 
 	var _nameUsed string // out
-	var _gint int32      // out
+	var _gint int        // out
 	var _goerr error     // out
 
 	_nameUsed = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 	defer C.free(unsafe.Pointer(_arg2))
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -738,7 +738,7 @@ func FileSetContents(filename, contents string) error {
 //    - flags controlling the safety vs speed of the operation.
 //    - mode: file mode, as passed to open(); typically this will be 0666.
 //
-func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, mode int32) error {
+func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, mode int) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
 	var _arg3 C.gssize
@@ -882,7 +882,7 @@ func GetCurrentDir() string {
 //    - gint: 0 if the directory already exists, or was successfully created.
 //      Returns -1 if an error occurred, with errno set.
 //
-func MkdirWithParents(pathname string, mode int32) int32 {
+func MkdirWithParents(pathname string, mode int) int {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
 	var _cret C.gint   // in
@@ -895,9 +895,9 @@ func MkdirWithParents(pathname string, mode int32) int32 {
 	runtime.KeepAlive(pathname)
 	runtime.KeepAlive(mode)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

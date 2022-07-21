@@ -234,7 +234,7 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg1 *C.gchar, arg2 C.gsize, arg3 **C.GErr
 //
 //    - pixbuf (optional): newly-created pixel buffer.
 //
-func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int32) *Pixbuf {
+func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) *Pixbuf {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.int           // out
@@ -287,7 +287,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, heigh
 //
 //    - pixbuf: newly-created pixbuf.
 //
-func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height, rowstride int32) *Pixbuf {
+func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height, rowstride int) *Pixbuf {
 	var _arg1 *C.GBytes       // out
 	var _arg2 C.GdkColorspace // out
 	var _arg3 C.gboolean      // out
@@ -402,7 +402,7 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 //
 //    - pixbuf (optional): newly-created pixbuf.
 //
-func NewPixbufFromFileAtScale(filename string, width, height int32, preserveAspectRatio bool) (*Pixbuf, error) {
+func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
@@ -465,7 +465,7 @@ func NewPixbufFromFileAtScale(filename string, width, height int32, preserveAspe
 //
 //    - pixbuf (optional): newly-created pixbuf.
 //
-func NewPixbufFromFileAtSize(filename string, width, height int32) (*Pixbuf, error) {
+func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
@@ -632,7 +632,7 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 //
 //    - pixbuf (optional): newly-created pixbuf.
 //
-func NewPixbufFromResourceAtScale(resourcePath string, width, height int32, preserveAspectRatio bool) (*Pixbuf, error) {
+func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
 	var _arg3 C.int        // out
@@ -753,7 +753,7 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 //
 //    - pixbuf (optional): newly-created pixbuf.
 //
-func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, width, height int32, preserveAspectRatio bool) (*Pixbuf, error) {
+func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gint          // out
@@ -1000,7 +1000,7 @@ func (pixbuf *Pixbuf) Copy() *Pixbuf {
 //    - destX: x coordinate within dest_pixbuf.
 //    - destY: y coordinate within dest_pixbuf.
 //
-func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int32, destPixbuf *Pixbuf, destX, destY int32) {
+func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pixbuf, destX, destY int) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -1095,7 +1095,7 @@ func (pixbuf *Pixbuf) Fill(pixel uint32) {
 //
 //    - gint: number of bits per color sample.
 //
-func (pixbuf *Pixbuf) BitsPerSample() int32 {
+func (pixbuf *Pixbuf) BitsPerSample() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1104,9 +1104,9 @@ func (pixbuf *Pixbuf) BitsPerSample() int32 {
 	_cret = C.gdk_pixbuf_get_bits_per_sample(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1185,7 +1185,7 @@ func (pixbuf *Pixbuf) HasAlpha() bool {
 //
 //    - gint: height in pixels.
 //
-func (pixbuf *Pixbuf) Height() int32 {
+func (pixbuf *Pixbuf) Height() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1194,9 +1194,9 @@ func (pixbuf *Pixbuf) Height() int32 {
 	_cret = C.gdk_pixbuf_get_height(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1207,7 +1207,7 @@ func (pixbuf *Pixbuf) Height() int32 {
 //
 //    - gint: number of channels.
 //
-func (pixbuf *Pixbuf) NChannels() int32 {
+func (pixbuf *Pixbuf) NChannels() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1216,9 +1216,9 @@ func (pixbuf *Pixbuf) NChannels() int32 {
 	_cret = C.gdk_pixbuf_get_n_channels(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1338,7 +1338,7 @@ func (pixbuf *Pixbuf) Pixels() []byte {
 //
 //    - gint: distance between row starts.
 //
-func (pixbuf *Pixbuf) Rowstride() int32 {
+func (pixbuf *Pixbuf) Rowstride() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1347,9 +1347,9 @@ func (pixbuf *Pixbuf) Rowstride() int32 {
 	_cret = C.gdk_pixbuf_get_rowstride(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1360,7 +1360,7 @@ func (pixbuf *Pixbuf) Rowstride() int32 {
 //
 //    - gint: width in pixels.
 //
-func (pixbuf *Pixbuf) Width() int32 {
+func (pixbuf *Pixbuf) Width() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
 
@@ -1369,9 +1369,9 @@ func (pixbuf *Pixbuf) Width() int32 {
 	_cret = C.gdk_pixbuf_get_width(_arg0)
 	runtime.KeepAlive(pixbuf)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1397,7 +1397,7 @@ func (pixbuf *Pixbuf) Width() int32 {
 //
 //    - pixbuf: new pixbuf.
 //
-func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int32) *Pixbuf {
+func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -1993,7 +1993,7 @@ func (pixbuf *Pixbuf) SetOption(key, value string) bool {
 //
 //    - gint: rowstride for the given values, or -1 in case of error.
 //
-func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int32) int32 {
+func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) int {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
 	var _arg3 C.int           // out
@@ -2016,9 +2016,9 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2083,7 +2083,7 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 //    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
 //      loaded.
 //
-func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width, height int32, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
+func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
 	var _arg2 C.gint                // out

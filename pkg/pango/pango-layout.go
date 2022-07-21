@@ -402,7 +402,7 @@ func (layout *Layout) AutoDir() bool {
 //
 //    - gint: baseline of first line, from top of layout.
 //
-func (layout *Layout) Baseline() int32 {
+func (layout *Layout) Baseline() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -411,9 +411,9 @@ func (layout *Layout) Baseline() int32 {
 	_cret = C.pango_layout_get_baseline(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -425,7 +425,7 @@ func (layout *Layout) Baseline() int32 {
 //
 //    - gint: number of Unicode characters in the text of layout.
 //
-func (layout *Layout) CharacterCount() int32 {
+func (layout *Layout) CharacterCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gint         // in
 
@@ -434,9 +434,9 @@ func (layout *Layout) CharacterCount() int32 {
 	_cret = C.pango_layout_get_character_count(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -485,7 +485,7 @@ func (layout *Layout) Context() *Context {
 //    - weakPos (optional): location to store the weak cursor position (may be
 //      NULL).
 //
-func (layout *Layout) CursorPos(index_ int32) (strongPos, weakPos *Rectangle) {
+func (layout *Layout) CursorPos(index_ int) (strongPos, weakPos *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
 	var _arg2 C.PangoRectangle // in
@@ -517,7 +517,7 @@ func (layout *Layout) CursorPos(index_ int32) (strongPos, weakPos *Rectangle) {
 //
 //    - direction: text direction at index.
 //
-func (layout *Layout) Direction(index int32) Direction {
+func (layout *Layout) Direction(index int) Direction {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
 	var _cret C.PangoDirection // in
@@ -634,7 +634,7 @@ func (layout *Layout) FontDescription() *FontDescription {
 //
 //    - gint: height, in Pango units if positive, or number of lines if negative.
 //
-func (layout *Layout) Height() int32 {
+func (layout *Layout) Height() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -643,9 +643,9 @@ func (layout *Layout) Height() int32 {
 	_cret = C.pango_layout_get_height(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -658,7 +658,7 @@ func (layout *Layout) Height() int32 {
 //
 //    - gint: indent in Pango units.
 //
-func (layout *Layout) Indent() int32 {
+func (layout *Layout) Indent() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -667,9 +667,9 @@ func (layout *Layout) Indent() int32 {
 	_cret = C.pango_layout_get_indent(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -744,7 +744,7 @@ func (layout *Layout) Justify() bool {
 //      out of range. This layout line can be ref'ed and retained, but will
 //      become invalid if changes are made to the PangoLayout.
 //
-func (layout *Layout) Line(line int32) *LayoutLine {
+func (layout *Layout) Line(line int) *LayoutLine {
 	var _arg0 *C.PangoLayout     // out
 	var _arg1 C.int              // out
 	var _cret *C.PangoLayoutLine // in
@@ -778,7 +778,7 @@ func (layout *Layout) Line(line int32) *LayoutLine {
 //
 //    - gint: line count.
 //
-func (layout *Layout) LineCount() int32 {
+func (layout *Layout) LineCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -787,9 +787,9 @@ func (layout *Layout) LineCount() int32 {
 	_cret = C.pango_layout_get_line_count(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -811,7 +811,7 @@ func (layout *Layout) LineCount() int32 {
 //      become invalid if changes are made to the PangoLayout. No changes should
 //      be made to the line.
 //
-func (layout *Layout) LineReadonly(line int32) *LayoutLine {
+func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	var _arg0 *C.PangoLayout     // out
 	var _arg1 C.int              // out
 	var _cret *C.PangoLayoutLine // in
@@ -1057,7 +1057,7 @@ func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
 //    - width (optional): location to store the logical width, or NULL.
 //    - height (optional): location to store the logical height, or NULL.
 //
-func (layout *Layout) PixelSize() (width, height int32) {
+func (layout *Layout) PixelSize() (width, height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
@@ -1067,11 +1067,11 @@ func (layout *Layout) PixelSize() (width, height int32) {
 	C.pango_layout_get_pixel_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -1092,7 +1092,7 @@ func (layout *Layout) PixelSize() (width, height int32) {
 //
 //    - guint: current serial number of layout.
 //
-func (layout *Layout) Serial() uint32 {
+func (layout *Layout) Serial() uint {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.guint        // in
 
@@ -1101,9 +1101,9 @@ func (layout *Layout) Serial() uint32 {
 	_cret = C.pango_layout_get_serial(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1144,7 +1144,7 @@ func (layout *Layout) SingleParagraphMode() bool {
 //    - width (optional): location to store the logical width, or NULL.
 //    - height (optional): location to store the logical height, or NULL.
 //
-func (layout *Layout) Size() (width, height int32) {
+func (layout *Layout) Size() (width, height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
@@ -1154,11 +1154,11 @@ func (layout *Layout) Size() (width, height int32) {
 	C.pango_layout_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -1169,7 +1169,7 @@ func (layout *Layout) Size() (width, height int32) {
 //
 //    - gint: spacing in Pango units.
 //
-func (layout *Layout) Spacing() int32 {
+func (layout *Layout) Spacing() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -1178,9 +1178,9 @@ func (layout *Layout) Spacing() int32 {
 	_cret = C.pango_layout_get_spacing(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1254,7 +1254,7 @@ func (layout *Layout) Text() string {
 //
 //    - gint: number of unknown glyphs in layout.
 //
-func (layout *Layout) UnknownGlyphsCount() int32 {
+func (layout *Layout) UnknownGlyphsCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -1263,9 +1263,9 @@ func (layout *Layout) UnknownGlyphsCount() int32 {
 	_cret = C.pango_layout_get_unknown_glyphs_count(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1276,7 +1276,7 @@ func (layout *Layout) UnknownGlyphsCount() int32 {
 //
 //    - gint: width in Pango units, or -1 if no width set.
 //
-func (layout *Layout) Width() int32 {
+func (layout *Layout) Width() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
 
@@ -1285,9 +1285,9 @@ func (layout *Layout) Width() int32 {
 	_cret = C.pango_layout_get_width(_arg0)
 	runtime.KeepAlive(layout)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1336,7 +1336,7 @@ func (layout *Layout) Wrap() WrapMode {
 //    - xPos (optional): location to store resulting position within line
 //      (PANGO_SCALE units per device unit), or NULL.
 //
-func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int32) {
+func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line, xPos int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.gboolean     // out
@@ -1354,11 +1354,11 @@ func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int3
 	runtime.KeepAlive(index_)
 	runtime.KeepAlive(trailing)
 
-	var _line int32 // out
-	var _xPos int32 // out
+	var _line int // out
+	var _xPos int // out
 
-	_line = int32(_arg3)
-	_xPos = int32(_arg4)
+	_line = int(_arg3)
+	_xPos = int(_arg4)
 
 	return _line, _xPos
 }
@@ -1379,7 +1379,7 @@ func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int3
 //
 //    - pos: rectangle in which to store the position of the grapheme.
 //
-func (layout *Layout) IndexToPos(index_ int32) *Rectangle {
+func (layout *Layout) IndexToPos(index_ int) *Rectangle {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
 	var _arg2 C.PangoRectangle // in
@@ -1492,7 +1492,7 @@ func (layout *Layout) IsWrapped() bool {
 //      one line from the position at the end of the preceding line. new_index is
 //      always on the line where the cursor should be displayed.
 //
-func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, direction int32) (newIndex, newTrailing int32) {
+func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, direction int) (newIndex, newTrailing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
 	var _arg2 C.int          // out
@@ -1516,11 +1516,11 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 	runtime.KeepAlive(oldTrailing)
 	runtime.KeepAlive(direction)
 
-	var _newIndex int32    // out
-	var _newTrailing int32 // out
+	var _newIndex int    // out
+	var _newTrailing int // out
 
-	_newIndex = int32(_arg5)
-	_newTrailing = int32(_arg6)
+	_newIndex = int(_arg5)
+	_newTrailing = int(_arg6)
 
 	return _newIndex, _newTrailing
 }
@@ -1681,7 +1681,7 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 //    - height: desired height of the layout in Pango units if positive, or
 //      desired number of lines if negative.
 //
-func (layout *Layout) SetHeight(height int32) {
+func (layout *Layout) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1706,7 +1706,7 @@ func (layout *Layout) SetHeight(height int32) {
 //
 //    - indent: amount by which to indent.
 //
-func (layout *Layout) SetIndent(indent int32) {
+func (layout *Layout) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1789,7 +1789,7 @@ func (layout *Layout) SetLineSpacing(factor float32) {
 //    - markup: marked-up text.
 //    - length of marked-up text in bytes, or -1 if markup is null-terminated.
 //
-func (layout *Layout) SetMarkup(markup string, length int32) {
+func (layout *Layout) SetMarkup(markup string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
@@ -1829,7 +1829,7 @@ func (layout *Layout) SetMarkup(markup string, length int32) {
 //    - accelChar (optional): return location for first located accelerator, or
 //      NULL.
 //
-func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarker uint32) uint32 {
+func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32 {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
@@ -1897,7 +1897,7 @@ func (layout *Layout) SetSingleParagraphMode(setting bool) {
 //
 //    - spacing: amount of spacing.
 //
-func (layout *Layout) SetSpacing(spacing int32) {
+func (layout *Layout) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -1950,7 +1950,7 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 //      nul-terminated and the length should be calculated. The text will also be
 //      truncated on encountering a nul-termination even when length is positive.
 //
-func (layout *Layout) SetText(text string, length int32) {
+func (layout *Layout) SetText(text string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
 	var _arg2 C.int          // out
@@ -1976,7 +1976,7 @@ func (layout *Layout) SetText(text string, length int32) {
 //    - width: desired width in Pango units, or -1 to indicate that no wrapping
 //      or ellipsization should be performed.
 //
-func (layout *Layout) SetWidth(width int32) {
+func (layout *Layout) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 
@@ -2032,7 +2032,7 @@ func (layout *Layout) SetWrap(wrap WrapMode) {
 //      the grapheme. 0 represents the leading edge of the grapheme.
 //    - ok: TRUE if the coordinates were inside text, FALSE otherwise.
 //
-func (layout *Layout) XYToIndex(x, y int32) (index_, trailing int32, ok bool) {
+func (layout *Layout) XYToIndex(x, y int) (index_, trailing int, ok bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -2049,12 +2049,12 @@ func (layout *Layout) XYToIndex(x, y int32) (index_, trailing int32, ok bool) {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _index_ int32   // out
-	var _trailing int32 // out
-	var _ok bool        // out
+	var _index_ int   // out
+	var _trailing int // out
+	var _ok bool      // out
 
-	_index_ = int32(_arg3)
-	_trailing = int32(_arg4)
+	_index_ = int(_arg3)
+	_trailing = int(_arg4)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2148,7 +2148,7 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 //
 //    - gint: baseline of current line.
 //
-func (iter *LayoutIter) Baseline() int32 {
+func (iter *LayoutIter) Baseline() int {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.int              // in
 
@@ -2157,9 +2157,9 @@ func (iter *LayoutIter) Baseline() int32 {
 	_cret = C.pango_layout_iter_get_baseline(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2225,7 +2225,7 @@ func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Recta
 //
 //    - gint: current byte index.
 //
-func (iter *LayoutIter) Index() int32 {
+func (iter *LayoutIter) Index() int {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.int              // in
 
@@ -2234,9 +2234,9 @@ func (iter *LayoutIter) Index() int32 {
 	_cret = C.pango_layout_iter_get_index(_arg0)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2399,7 +2399,7 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 //    - y0 (optional): start of line, or NULL.
 //    - y1 (optional): end of line, or NULL.
 //
-func (iter *LayoutIter) LineYrange() (y0 int32, y1 int32) {
+func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.int              // in
 	var _arg2 C.int              // in
@@ -2409,11 +2409,11 @@ func (iter *LayoutIter) LineYrange() (y0 int32, y1 int32) {
 	C.pango_layout_iter_get_line_yrange(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iter)
 
-	var _y0 int32 // out
-	var _y1 int32 // out
+	var _y0 int // out
+	var _y1 int // out
 
-	_y0 = int32(_arg1)
-	_y1 = int32(_arg2)
+	_y0 = int(_arg1)
+	_y1 = int(_arg2)
 
 	return _y0, _y1
 }
@@ -2636,29 +2636,29 @@ func (l *LayoutLine) Layout() *Layout {
 }
 
 // StartIndex: start of line as byte index into layout->text.
-func (l *LayoutLine) StartIndex() int32 {
+func (l *LayoutLine) StartIndex() int {
 	valptr := &l.native.start_index
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Length: length of line in bytes.
-func (l *LayoutLine) Length() int32 {
+func (l *LayoutLine) Length() int {
 	valptr := &l.native.length
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // StartIndex: start of line as byte index into layout->text.
-func (l *LayoutLine) SetStartIndex(startIndex int32) {
+func (l *LayoutLine) SetStartIndex(startIndex int) {
 	valptr := &l.native.start_index
 	*valptr = C.gint(startIndex)
 }
 
 // Length: length of line in bytes.
-func (l *LayoutLine) SetLength(length int32) {
+func (l *LayoutLine) SetLength(length int) {
 	valptr := &l.native.length
 	*valptr = C.gint(length)
 }
@@ -2700,7 +2700,7 @@ func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 //
 //    - height (optional): return location for the line height.
 //
-func (line *LayoutLine) Height() int32 {
+func (line *LayoutLine) Height() int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // in
 
@@ -2709,9 +2709,9 @@ func (line *LayoutLine) Height() int32 {
 	C.pango_layout_line_get_height(_arg0, &_arg1)
 	runtime.KeepAlive(line)
 
-	var _height int32 // out
+	var _height int // out
 
-	_height = int32(_arg1)
+	_height = int(_arg1)
 
 	return _height
 }
@@ -2775,7 +2775,7 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *R
 //      with g_free(). The coordinates are relative to the layout and are in
 //      Pango units.
 //
-func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
+func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -2791,14 +2791,14 @@ func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
 	runtime.KeepAlive(startIndex)
 	runtime.KeepAlive(endIndex)
 
-	var _ranges []int32 // out
+	var _ranges []int // out
 
 	defer C.free(unsafe.Pointer(_arg3))
 	{
 		src := unsafe.Slice((*C.int)(_arg3), _arg4)
-		_ranges = make([]int32, _arg4)
+		_ranges = make([]int, _arg4)
 		for i := 0; i < int(_arg4); i++ {
-			_ranges[i] = int32(src[i])
+			_ranges[i] = int(src[i])
 		}
 	}
 
@@ -2818,7 +2818,7 @@ func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
 //
 //    - xPos: location to store the x_offset (in Pango units).
 //
-func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
+func (line *LayoutLine) IndexToX(index_ int, trailing bool) int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
 	var _arg2 C.gboolean         // out
@@ -2835,9 +2835,9 @@ func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
 	runtime.KeepAlive(index_)
 	runtime.KeepAlive(trailing)
 
-	var _xPos int32 // out
+	var _xPos int // out
 
-	_xPos = int32(_arg3)
+	_xPos = int(_arg3)
 
 	return _xPos
 }
@@ -2865,7 +2865,7 @@ func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
 //      the grapheme. 0 represents the leading edge of the grapheme.
 //    - ok: FALSE if x_pos was outside the line, TRUE if inside.
 //
-func (line *LayoutLine) XToIndex(xPos int32) (index_ int32, trailing int32, ok bool) {
+func (line *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // in
@@ -2879,12 +2879,12 @@ func (line *LayoutLine) XToIndex(xPos int32) (index_ int32, trailing int32, ok b
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(xPos)
 
-	var _index_ int32   // out
-	var _trailing int32 // out
-	var _ok bool        // out
+	var _index_ int   // out
+	var _trailing int // out
+	var _ok bool      // out
 
-	_index_ = int32(_arg2)
-	_trailing = int32(_arg3)
+	_index_ = int(_arg2)
+	_trailing = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}

@@ -163,7 +163,7 @@ func NewCellRendererText() *CellRendererText {
 //    - numberOfRows: number of rows of text each cell renderer is allocated, or
 //      -1.
 //
-func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int32) {
+func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
 	var _arg1 C.gint                 // out
 

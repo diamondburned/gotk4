@@ -161,7 +161,7 @@ func (infoBar *InfoBar) ConnectClose(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk4_InfoBar_ConnectResponse
 func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int32)
+	var f func(responseId int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -169,12 +169,12 @@ func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int32))
+		f = closure.Func.(func(responseId int))
 	}
 
-	var _responseId int32 // out
+	var _responseId int // out
 
-	_responseId = int32(arg1)
+	_responseId = int(arg1)
 
 	f(_responseId)
 }
@@ -184,7 +184,7 @@ func _gotk4_gtk4_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 // The signal is also emitted when the application programmer calls
 // gtk.InfoBar.Response(). The response_id depends on which action widget was
 // clicked.
-func (infoBar *InfoBar) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk4_InfoBar_ConnectResponse), f)
 }
 
@@ -218,7 +218,7 @@ func NewInfoBar() *InfoBar {
 //    - child: activatable widget.
 //    - responseId: response ID for child.
 //
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out
@@ -248,7 +248,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
 //
 //    - button: GtkButton widget that was added.
 //
-func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
+func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.char       // out
 	var _arg2 C.int         // out
@@ -405,7 +405,7 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 //
 //    - responseId: response ID.
 //
-func (infoBar *InfoBar) Response(responseId int32) {
+func (infoBar *InfoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 
@@ -429,7 +429,7 @@ func (infoBar *InfoBar) Response(responseId int32) {
 //
 //    - responseId: response ID.
 //
-func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
+func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 
@@ -472,7 +472,7 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 //    - responseId: response ID.
 //    - setting: TRUE for sensitive.
 //
-func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
+func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.int         // out
 	var _arg2 C.gboolean    // out

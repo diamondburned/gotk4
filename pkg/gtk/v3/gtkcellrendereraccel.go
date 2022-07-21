@@ -85,7 +85,7 @@ type CellRendererAccelOverrider interface {
 	//    - accelMods
 	//    - hardwareKeycode
 	//
-	AccelEdited(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)
+	AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
 
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
@@ -116,7 +116,7 @@ func classInitCellRendererAcceller(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		AccelEdited(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)
+		AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 	}); ok {
 		pclass.accel_edited = (*[0]byte)(C._gotk4_gtk3_CellRendererAccelClass_accel_edited)
 	}
@@ -138,18 +138,18 @@ func _gotk4_gtk3_CellRendererAccelClass_accel_cleared(arg0 *C.GtkCellRendererAcc
 func _gotk4_gtk3_CellRendererAccelClass_accel_edited(arg0 *C.GtkCellRendererAccel, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		AccelEdited(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)
+		AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 	})
 
 	var _pathString string          // out
-	var _accelKey uint32            // out
+	var _accelKey uint              // out
 	var _accelMods gdk.ModifierType // out
-	var _hardwareKeycode uint32     // out
+	var _hardwareKeycode uint       // out
 
 	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_accelKey = uint32(arg2)
+	_accelKey = uint(arg2)
 	_accelMods = gdk.ModifierType(arg3)
-	_hardwareKeycode = uint32(arg4)
+	_hardwareKeycode = uint(arg4)
 
 	iface.AccelEdited(_pathString, _accelKey, _accelMods, _hardwareKeycode)
 }
@@ -197,7 +197,7 @@ func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) c
 
 //export _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited
 func _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint, arg5 C.guintptr) {
-	var f func(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)
+	var f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -205,24 +205,24 @@ func _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.g
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32))
+		f = closure.Func.(func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint))
 	}
 
 	var _pathString string          // out
-	var _accelKey uint32            // out
+	var _accelKey uint              // out
 	var _accelMods gdk.ModifierType // out
-	var _hardwareKeycode uint32     // out
+	var _hardwareKeycode uint       // out
 
 	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_accelKey = uint32(arg2)
+	_accelKey = uint(arg2)
 	_accelMods = gdk.ModifierType(arg3)
-	_hardwareKeycode = uint32(arg4)
+	_hardwareKeycode = uint(arg4)
 
 	f(_pathString, _accelKey, _accelMods, _hardwareKeycode)
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
-func (accel *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint32, accelMods gdk.ModifierType, hardwareKeycode uint32)) coreglib.SignalHandle {
+func (accel *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(accel, "accel-edited", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelEdited), f)
 }
 

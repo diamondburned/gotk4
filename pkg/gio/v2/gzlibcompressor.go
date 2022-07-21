@@ -73,7 +73,7 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 //
 //    - zlibCompressor: new Compressor.
 //
-func NewZlibCompressor(format ZlibCompressorFormat, level int32) *ZlibCompressor {
+func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out
 	var _cret *C.GZlibCompressor      // in

@@ -42,7 +42,7 @@ func GTypeKeymap() coreglib.Type {
 //    - lower: return location for lowercase version of symbol.
 //    - upper: return location for uppercase version of symbol.
 //
-func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
+func KeyvalConvertCase(symbol uint) (lower, upper uint) {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // in
 	var _arg3 C.guint // in
@@ -52,11 +52,11 @@ func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
 	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(symbol)
 
-	var _lower uint32 // out
-	var _upper uint32 // out
+	var _lower uint // out
+	var _upper uint // out
 
-	_lower = uint32(_arg2)
-	_upper = uint32(_arg3)
+	_lower = uint(_arg2)
+	_upper = uint(_arg3)
 
 	return _lower, _upper
 }
@@ -75,7 +75,7 @@ func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
 //    - guint: corresponding key value, or GDK_KEY_VoidSymbol if the key name is
 //      not a valid key.
 //
-func KeyvalFromName(keyvalName string) uint32 {
+func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.gchar // out
 	var _cret C.guint  // in
 
@@ -85,9 +85,9 @@ func KeyvalFromName(keyvalName string) uint32 {
 	_cret = C.gdk_keyval_from_name(_arg1)
 	runtime.KeepAlive(keyvalName)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -103,7 +103,7 @@ func KeyvalFromName(keyvalName string) uint32 {
 //    - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
 //      conversion.
 //
-func KeyvalIsLower(keyval uint32) bool {
+func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
@@ -132,7 +132,7 @@ func KeyvalIsLower(keyval uint32) bool {
 //    - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
 //      conversion.
 //
-func KeyvalIsUpper(keyval uint32) bool {
+func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
 	var _cret C.gboolean // in
 
@@ -164,7 +164,7 @@ func KeyvalIsUpper(keyval uint32) bool {
 //    - utf8 (optional): string containing the name of the key, or NULL if keyval
 //      is not a valid key. The string should not be modified.
 //
-func KeyvalName(keyval uint32) string {
+func KeyvalName(keyval uint) string {
 	var _arg1 C.guint  // out
 	var _cret *C.gchar // in
 
@@ -193,7 +193,7 @@ func KeyvalName(keyval uint32) string {
 //    - guint: lower case form of keyval, or keyval itself if it is already in
 //      lower case or it is not subject to case conversion.
 //
-func KeyvalToLower(keyval uint32) uint32 {
+func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
@@ -202,9 +202,9 @@ func KeyvalToLower(keyval uint32) uint32 {
 	_cret = C.gdk_keyval_to_lower(_arg1)
 	runtime.KeepAlive(keyval)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -221,7 +221,7 @@ func KeyvalToLower(keyval uint32) uint32 {
 //    - guint32: corresponding unicode character, or 0 if there is no
 //      corresponding character.
 //
-func KeyvalToUnicode(keyval uint32) uint32 {
+func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
 	var _cret C.guint32 // in
 
@@ -248,7 +248,7 @@ func KeyvalToUnicode(keyval uint32) uint32 {
 //    - guint: upper case form of keyval, or keyval itself if it is already in
 //      upper case or it is not subject to case conversion.
 //
-func KeyvalToUpper(keyval uint32) uint32 {
+func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
 
@@ -257,9 +257,9 @@ func KeyvalToUpper(keyval uint32) uint32 {
 	_cret = C.gdk_keyval_to_upper(_arg1)
 	runtime.KeepAlive(keyval)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -275,7 +275,7 @@ func KeyvalToUpper(keyval uint32) uint32 {
 //    - guint: corresponding GDK key symbol, if one exists. or, if there is no
 //      corresponding symbol, wc | 0x01000000.
 //
-func UnicodeToKeyval(wc uint32) uint32 {
+func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
 	var _cret C.guint   // in
 
@@ -284,9 +284,9 @@ func UnicodeToKeyval(wc uint32) uint32 {
 	_cret = C.gdk_unicode_to_keyval(_arg1)
 	runtime.KeepAlive(wc)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -445,7 +445,7 @@ func (keymap *Keymap) Direction() pango.Direction {
 //    - keyvals (optional): return location for array of keyvals, or NULL.
 //    - ok: TRUE if there were any entries.
 //
-func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []uint32, bool) {
+func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.GdkKeymapKey // in
@@ -461,7 +461,7 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []
 	runtime.KeepAlive(hardwareKeycode)
 
 	var _keys []KeymapKey // out
-	var _keyvals []uint32 // out
+	var _keyvals []uint   // out
 	var _ok bool          // out
 
 	if _arg2 != nil {
@@ -484,9 +484,9 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			src := unsafe.Slice((*C.guint)(_arg3), _arg4)
-			_keyvals = make([]uint32, _arg4)
+			_keyvals = make([]uint, _arg4)
 			for i := 0; i < int(_arg4); i++ {
-				_keyvals[i] = uint32(src[i])
+				_keyvals[i] = uint(src[i])
 			}
 		}
 	}
@@ -516,7 +516,7 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []
 //    - keys: return location for an array of KeymapKey.
 //    - ok: TRUE if keys were found and returned.
 //
-func (keymap *Keymap) EntriesForKeyval(keyval uint32) ([]KeymapKey, bool) {
+func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.GdkKeymapKey // in
@@ -596,7 +596,7 @@ func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 //
 //    - guint: current modifier state.
 //
-func (keymap *Keymap) ModifierState() uint32 {
+func (keymap *Keymap) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
 	var _cret C.guint      // in
 
@@ -605,9 +605,9 @@ func (keymap *Keymap) ModifierState() uint32 {
 	_cret = C.gdk_keymap_get_modifier_state(_arg0)
 	runtime.KeepAlive(keymap)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -698,7 +698,7 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 //
 //    - guint: keyval, or 0 if none was mapped to the given key.
 //
-func (keymap *Keymap) LookupKey(key *KeymapKey) uint32 {
+func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
 	var _arg1 *C.GdkKeymapKey // out
 	var _cret C.guint         // in
@@ -710,9 +710,9 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint32 {
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(key)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -760,7 +760,7 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint32 {
 //      used to determine the group or level, or NULL.
 //    - ok: TRUE if there was a keyval bound to the keycode/state/group.
 //
-func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint32, state ModifierType, group int32) (keyval uint32, effectiveGroup, level int32, consumedModifiers ModifierType, ok bool) {
+func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -782,15 +782,15 @@ func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint32, state Modif
 	runtime.KeepAlive(state)
 	runtime.KeepAlive(group)
 
-	var _keyval uint32                  // out
-	var _effectiveGroup int32           // out
-	var _level int32                    // out
+	var _keyval uint                    // out
+	var _effectiveGroup int             // out
+	var _level int                      // out
 	var _consumedModifiers ModifierType // out
 	var _ok bool                        // out
 
-	_keyval = uint32(_arg4)
-	_effectiveGroup = int32(_arg5)
-	_level = int32(_arg6)
+	_keyval = uint(_arg4)
+	_effectiveGroup = int(_arg5)
+	_level = int(_arg6)
 	_consumedModifiers = ModifierType(_arg7)
 	if _cret != 0 {
 		_ok = true
@@ -858,10 +858,10 @@ type keymapKey struct {
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
-func (k *KeymapKey) Keycode() uint32 {
+func (k *KeymapKey) Keycode() uint {
 	valptr := &k.native.keycode
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -869,10 +869,10 @@ func (k *KeymapKey) Keycode() uint32 {
 // for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
-func (k *KeymapKey) Group() int32 {
+func (k *KeymapKey) Group() int {
 	valptr := &k.native.group
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -882,15 +882,15 @@ func (k *KeymapKey) Group() int32 {
 // whether to use the “1” or the “!” symbol. The letter keys are considered to
 // have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
-func (k *KeymapKey) Level() int32 {
+func (k *KeymapKey) Level() int {
 	valptr := &k.native.level
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
-func (k *KeymapKey) SetKeycode(keycode uint32) {
+func (k *KeymapKey) SetKeycode(keycode uint) {
 	valptr := &k.native.keycode
 	*valptr = C.guint(keycode)
 }
@@ -899,7 +899,7 @@ func (k *KeymapKey) SetKeycode(keycode uint32) {
 // for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
-func (k *KeymapKey) SetGroup(group int32) {
+func (k *KeymapKey) SetGroup(group int) {
 	valptr := &k.native.group
 	*valptr = C.gint(group)
 }
@@ -910,7 +910,7 @@ func (k *KeymapKey) SetGroup(group int32) {
 // whether to use the “1” or the “!” symbol. The letter keys are considered to
 // have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
-func (k *KeymapKey) SetLevel(level int32) {
+func (k *KeymapKey) SetLevel(level int) {
 	valptr := &k.native.level
 	*valptr = C.gint(level)
 }

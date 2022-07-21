@@ -211,7 +211,7 @@ type TreeModelOverrider interface {
 	//
 	//    - gType: type of the column.
 	//
-	ColumnType(index_ int32) coreglib.Type
+	ColumnType(index_ int) coreglib.Type
 	// Flags returns a set of flags supported by this interface.
 	//
 	// The flags are a bitwise combination of TreeModelFlags. The flags
@@ -241,7 +241,7 @@ type TreeModelOverrider interface {
 	//
 	//    - gint: number of columns.
 	//
-	NColumns() int32
+	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	//
 	// This path should be freed with gtk_tree_path_free().
@@ -269,7 +269,7 @@ type TreeModelOverrider interface {
 	//
 	//    - value: empty #GValue to set.
 	//
-	Value(iter *TreeIter, column int32) coreglib.Value
+	Value(iter *TreeIter, column int) coreglib.Value
 	// IterChildren sets iter to point to the first child of parent.
 	//
 	// If parent has no children, FALSE is returned and iter is set to be
@@ -313,7 +313,7 @@ type TreeModelOverrider interface {
 	//
 	//    - gint: number of children of iter.
 	//
-	IterNChildren(iter *TreeIter) int32
+	IterNChildren(iter *TreeIter) int
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	//
@@ -346,7 +346,7 @@ type TreeModelOverrider interface {
 	//    - iter to set to the nth child.
 	//    - ok: TRUE, if parent has an n-th child.
 	//
-	IterNthChild(parent *TreeIter, n int32) (*TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (*TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
 	//
 	// If child is at the toplevel, and doesn’t have a parent, then iter is set
@@ -624,7 +624,7 @@ type TreeModeller interface {
 	// ForEach calls func on each node in model in a depth-first fashion.
 	ForEach(fn TreeModelForEachFunc)
 	// ColumnType returns the type of the column.
-	ColumnType(index_ int32) coreglib.Type
+	ColumnType(index_ int) coreglib.Type
 	// Flags returns a set of flags supported by this interface.
 	Flags() TreeModelFlags
 	// Iter sets iter to a valid iterator pointing to path.
@@ -636,24 +636,24 @@ type TreeModeller interface {
 	// it exists.
 	IterFromString(pathString string) (*TreeIter, bool)
 	// NColumns returns the number of columns supported by tree_model.
-	NColumns() int32
+	NColumns() int
 	// Path returns a newly-created TreePath-struct referenced by iter.
 	Path(iter *TreeIter) *TreePath
 	// StringFromIter generates a string representation of the iter.
 	StringFromIter(iter *TreeIter) string
 	// Value initializes and sets value to that at column.
-	Value(iter *TreeIter, column int32) coreglib.Value
+	Value(iter *TreeIter, column int) coreglib.Value
 	// IterChildren sets iter to point to the first child of parent.
 	IterChildren(parent *TreeIter) (*TreeIter, bool)
 	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
 	IterHasChild(iter *TreeIter) bool
 	// IterNChildren returns the number of children that iter has.
-	IterNChildren(iter *TreeIter) int32
+	IterNChildren(iter *TreeIter) int
 	// IterNext sets iter to point to the node following it at the current
 	// level.
 	IterNext(iter *TreeIter) bool
 	// IterNthChild sets iter to be the child of parent, using the given index.
-	IterNthChild(parent *TreeIter, n int32) (*TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (*TreeIter, bool)
 	// IterParent sets iter to be the parent of child.
 	IterParent(child *TreeIter) (*TreeIter, bool)
 	// IterPrevious sets iter to point to the previous node at the current
@@ -671,7 +671,7 @@ type TreeModeller interface {
 	// RowInserted emits the TreeModel::row-inserted signal on tree_model.
 	RowInserted(path *TreePath, iter *TreeIter)
 	// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
-	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32)
+	RowsReordered(path *TreePath, iter *TreeIter, newOrder []int)
 	// UnrefNode lets the tree unref the node.
 	UnrefNode(iter *TreeIter)
 
@@ -720,9 +720,9 @@ func _gotk4_gtk3_TreeModelIface_get_column_type(arg0 *C.GtkTreeModel, arg1 C.gin
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
-	var _index_ int32 // out
+	var _index_ int // out
 
-	_index_ = int32(arg1)
+	_index_ = int(arg1)
 
 	gType := iface.ColumnType(_index_)
 
@@ -797,10 +797,10 @@ func _gotk4_gtk3_TreeModelIface_get_value(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
-	var _column int32   // out
+	var _column int     // out
 
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_column = int32(arg2)
+	_column = int(arg2)
 
 	value := iface.Value(_iter, _column)
 
@@ -888,12 +888,12 @@ func _gotk4_gtk3_TreeModelIface_iter_nth_child(arg0 *C.GtkTreeModel, arg1 *C.Gtk
 	iface := goval.(TreeModelOverrider)
 
 	var _parent *TreeIter // out
-	var _n int32          // out
+	var _n int            // out
 
 	if arg2 != nil {
 		_parent = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	}
-	_n = int32(arg3)
+	_n = int(arg3)
 
 	iter, ok := iface.IterNthChild(_parent, _n)
 
@@ -1217,7 +1217,7 @@ func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 //
 //    - gType: type of the column.
 //
-func (treeModel *TreeModel) ColumnType(index_ int32) coreglib.Type {
+func (treeModel *TreeModel) ColumnType(index_ int) coreglib.Type {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.gint          // out
 	var _cret C.GType         // in
@@ -1369,7 +1369,7 @@ func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) 
 //
 //    - gint: number of columns.
 //
-func (treeModel *TreeModel) NColumns() int32 {
+func (treeModel *TreeModel) NColumns() int {
 	var _arg0 *C.GtkTreeModel // out
 	var _cret C.gint          // in
 
@@ -1378,9 +1378,9 @@ func (treeModel *TreeModel) NColumns() int32 {
 	_cret = C.gtk_tree_model_get_n_columns(_arg0)
 	runtime.KeepAlive(treeModel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1469,7 +1469,7 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 //
 //    - value: empty #GValue to set.
 //
-func (treeModel *TreeModel) Value(iter *TreeIter, column int32) coreglib.Value {
+func (treeModel *TreeModel) Value(iter *TreeIter, column int) coreglib.Value {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.gint          // out
@@ -1578,7 +1578,7 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 //
 //    - gint: number of children of iter.
 //
-func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
+func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.gint          // in
@@ -1592,9 +1592,9 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1649,7 +1649,7 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 //    - iter to set to the nth child.
 //    - ok: TRUE, if parent has an n-th child.
 //
-func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int32) (*TreeIter, bool) {
+func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -1891,7 +1891,7 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 //    - newOrder: array of integers mapping the current position of each child to
 //      its old position before the re-ordering, i.e. new_order[newpos] = oldpos.
 //
-func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32) {
+func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int) {
 	var _arg0 *C.GtkTreeModel // out
 	var _arg1 *C.GtkTreePath  // out
 	var _arg2 *C.GtkTreeIter  // out
@@ -1964,10 +1964,10 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 }
 
 // Stamp: unique stamp to catch invalid iterators.
-func (t *TreeIter) Stamp() int32 {
+func (t *TreeIter) Stamp() int {
 	valptr := &t.native.stamp
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -1996,7 +1996,7 @@ func (t *TreeIter) UserData3() unsafe.Pointer {
 }
 
 // Stamp: unique stamp to catch invalid iterators.
-func (t *TreeIter) SetStamp(stamp int32) {
+func (t *TreeIter) SetStamp(stamp int) {
 	valptr := &t.native.stamp
 	*valptr = C.gint(stamp)
 }
@@ -2087,7 +2087,7 @@ func NewTreePathFirst() *TreePath {
 }
 
 // NewTreePathFromIndices constructs a struct TreePath.
-func NewTreePathFromIndices(indices []int32) *TreePath {
+func NewTreePathFromIndices(indices []int) *TreePath {
 	var _arg1 *C.gint // out
 	var _arg2 C.gsize
 	var _cret *C.GtkTreePath // in
@@ -2150,7 +2150,7 @@ func NewTreePathFromString(path string) *TreePath {
 //
 //    - index_: index.
 //
-func (path *TreePath) AppendIndex(index_ int32) {
+func (path *TreePath) AppendIndex(index_ int) {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 C.gint         // out
 
@@ -2175,7 +2175,7 @@ func (path *TreePath) AppendIndex(index_ int32) {
 //
 //    - gint: relative positions of a and b.
 //
-func (a *TreePath) Compare(b *TreePath) int32 {
+func (a *TreePath) Compare(b *TreePath) int {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 *C.GtkTreePath // out
 	var _cret C.gint         // in
@@ -2187,9 +2187,9 @@ func (a *TreePath) Compare(b *TreePath) int32 {
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2238,7 +2238,7 @@ func (path *TreePath) Down() {
 //
 //    - gint: depth of path.
 //
-func (path *TreePath) Depth() int32 {
+func (path *TreePath) Depth() int {
 	var _arg0 *C.GtkTreePath // out
 	var _cret C.gint         // in
 
@@ -2247,9 +2247,9 @@ func (path *TreePath) Depth() int32 {
 	_cret = C.gtk_tree_path_get_depth(_arg0)
 	runtime.KeepAlive(path)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2263,7 +2263,7 @@ func (path *TreePath) Depth() int32 {
 //
 //    - gints: current indices, or NULL.
 //
-func (path *TreePath) Indices() []int32 {
+func (path *TreePath) Indices() []int {
 	var _arg0 *C.GtkTreePath // out
 	var _cret *C.gint        // in
 	var _arg1 C.gint         // in
@@ -2273,13 +2273,13 @@ func (path *TreePath) Indices() []int32 {
 	_cret = C.gtk_tree_path_get_indices_with_depth(_arg0, &_arg1)
 	runtime.KeepAlive(path)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
 	{
 		src := unsafe.Slice((*C.gint)(_cret), _arg1)
-		_gints = make([]int32, _arg1)
+		_gints = make([]int, _arg1)
 		for i := 0; i < int(_arg1); i++ {
-			_gints[i] = int32(src[i])
+			_gints[i] = int(src[i])
 		}
 	}
 
@@ -2366,7 +2366,7 @@ func (path *TreePath) Next() {
 //
 //    - index_: index.
 //
-func (path *TreePath) PrependIndex(index_ int32) {
+func (path *TreePath) PrependIndex(index_ int) {
 	var _arg0 *C.GtkTreePath // out
 	var _arg1 C.gint         // out
 

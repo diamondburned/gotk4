@@ -42,7 +42,7 @@ type InfoBarOverrider interface {
 	//
 	//    - responseId: response ID.
 	//
-	Response(responseId int32)
+	Response(responseId int)
 }
 
 // InfoBar is a widget that can be used to show messages to the user without
@@ -138,7 +138,7 @@ func classInitInfoBarrer(gclassPtr, data C.gpointer) {
 		pclass.close = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_close)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
+	if _, ok := goval.(interface{ Response(responseId int) }); ok {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_response)
 	}
 }
@@ -154,11 +154,11 @@ func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
 //export _gotk4_gtk3_InfoBarClass_response
 func _gotk4_gtk3_InfoBarClass_response(arg0 *C.GtkInfoBar, arg1 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int32) })
+	iface := goval.(interface{ Response(responseId int) })
 
-	var _responseId int32 // out
+	var _responseId int // out
 
-	_responseId = int32(arg1)
+	_responseId = int(arg1)
 
 	iface.Response(_responseId)
 }
@@ -218,7 +218,7 @@ func (infoBar *InfoBar) ConnectClose(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_InfoBar_ConnectResponse
 func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int32)
+	var f func(responseId int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -226,12 +226,12 @@ func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(responseId int32))
+		f = closure.Func.(func(responseId int))
 	}
 
-	var _responseId int32 // out
+	var _responseId int // out
 
-	_responseId = int32(arg1)
+	_responseId = int(arg1)
 
 	f(_responseId)
 }
@@ -239,7 +239,7 @@ func _gotk4_gtk3_InfoBar_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.gu
 // ConnectResponse is emitted when an action widget is clicked or the
 // application programmer calls gtk_dialog_response(). The response_id depends
 // on which action widget was clicked.
-func (infoBar *InfoBar) ConnectResponse(f func(responseId int32)) coreglib.SignalHandle {
+func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(infoBar, "response", false, unsafe.Pointer(C._gotk4_gtk3_InfoBar_ConnectResponse), f)
 }
 
@@ -271,7 +271,7 @@ func NewInfoBar() *InfoBar {
 //    - child: activatable widget.
 //    - responseId: response ID for child.
 //
-func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
+func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -300,7 +300,7 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
 //
 //    - button widget that was added.
 //
-func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
+func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.gint        // out
@@ -442,7 +442,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 //    - responseId: response ID.
 //
-func (infoBar *InfoBar) Response(responseId int32) {
+func (infoBar *InfoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
 
@@ -465,7 +465,7 @@ func (infoBar *InfoBar) Response(responseId int32) {
 //
 //    - responseId: response ID.
 //
-func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
+func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
 
@@ -506,7 +506,7 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 //    - responseId: response ID.
 //    - setting: TRUE for sensitive.
 //
-func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
+func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gboolean    // out

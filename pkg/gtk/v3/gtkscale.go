@@ -55,7 +55,7 @@ type ScaleOverrider interface {
 	//    - x (optional): location to store X offset of layout, or NULL.
 	//    - y (optional): location to store Y offset of layout, or NULL.
 	//
-	LayoutOffsets() (x, y int32)
+	LayoutOffsets() (x, y int)
 }
 
 // Scale is a slider control used to select a numeric value. To use it, you’ll
@@ -153,7 +153,7 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 		pclass.format_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_format_value)
 	}
 
-	if _, ok := goval.(interface{ LayoutOffsets() (x, y int32) }); ok {
+	if _, ok := goval.(interface{ LayoutOffsets() (x, y int) }); ok {
 		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk3_ScaleClass_get_layout_offsets)
 	}
 }
@@ -185,7 +185,7 @@ func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.GtkScale, arg1 C.gdouble) (cret
 //export _gotk4_gtk3_ScaleClass_get_layout_offsets
 func _gotk4_gtk3_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LayoutOffsets() (x, y int32) })
+	iface := goval.(interface{ LayoutOffsets() (x, y int) })
 
 	x, y := iface.LayoutOffsets()
 
@@ -402,7 +402,7 @@ func (scale *Scale) ClearMarks() {
 //
 //    - gint: number of decimal places that are displayed.
 //
-func (scale *Scale) Digits() int32 {
+func (scale *Scale) Digits() int {
 	var _arg0 *C.GtkScale // out
 	var _cret C.gint      // in
 
@@ -411,9 +411,9 @@ func (scale *Scale) Digits() int32 {
 	_cret = C.gtk_scale_get_digits(_arg0)
 	runtime.KeepAlive(scale)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -509,7 +509,7 @@ func (scale *Scale) Layout() *pango.Layout {
 //    - x (optional): location to store X offset of layout, or NULL.
 //    - y (optional): location to store Y offset of layout, or NULL.
 //
-func (scale *Scale) LayoutOffsets() (x, y int32) {
+func (scale *Scale) LayoutOffsets() (x, y int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -519,11 +519,11 @@ func (scale *Scale) LayoutOffsets() (x, y int32) {
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(scale)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -565,7 +565,7 @@ func (scale *Scale) ValuePos() PositionType {
 //    - digits: number of decimal places to display, e.g. use 1 to display 1.0, 2
 //      to display 1.00, etc.
 //
-func (scale *Scale) SetDigits(digits int32) {
+func (scale *Scale) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
 	var _arg1 C.gint      // out
 

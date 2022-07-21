@@ -246,7 +246,7 @@ func NewRecentFilter() *RecentFilter {
 //
 //    - days: number of days.
 //
-func (filter *RecentFilter) AddAge(days int32) {
+func (filter *RecentFilter) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
 	var _arg1 C.gint             // out
 
@@ -579,15 +579,15 @@ func (r *RecentFilterInfo) Groups() []string {
 }
 
 // Age: number of days elapsed since the file has been registered.
-func (r *RecentFilterInfo) Age() int32 {
+func (r *RecentFilterInfo) Age() int {
 	valptr := &r.native.age
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Age: number of days elapsed since the file has been registered.
-func (r *RecentFilterInfo) SetAge(age int32) {
+func (r *RecentFilterInfo) SetAge(age int) {
 	valptr := &r.native.age
 	*valptr = C.gint(age)
 }

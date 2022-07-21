@@ -353,7 +353,7 @@ func (monitor *FileMonitor) IsCancelled() bool {
 //    - limitMsecs: non-negative integer with the limit in milliseconds to poll
 //      for changes.
 //
-func (monitor *FileMonitor) SetRateLimit(limitMsecs int32) {
+func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
 

@@ -346,7 +346,7 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
+func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.int                 // out
@@ -671,7 +671,7 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 //    - ioPriority: [I/O priority][io-priority] of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, ioPriority int32, callback AsyncReadyCallback) {
+func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.int                 // out

@@ -37,7 +37,7 @@ import "C"
 //    - pixbuf (optional): newly-created pixbuf with a reference count of 1, or
 //      NULL on error.
 //
-func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
+func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.gint             // out
 	var _arg3 C.gint             // out
@@ -116,7 +116,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 //    - pixbuf (optional): newly-created pixbuf with a reference count of 1, or
 //      NULL on error.
 //
-func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int32) *gdkpixbuf.Pixbuf {
+func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkWindow // out
 	var _arg2 C.gint       // out
 	var _arg3 C.gint       // out

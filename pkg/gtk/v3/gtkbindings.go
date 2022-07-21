@@ -32,7 +32,7 @@ import "C"
 //
 //    - ok: TRUE if a binding was found and activated.
 //
-func BindingsActivate(object *coreglib.Object, keyval uint32, modifiers gdk.ModifierType) bool {
+func BindingsActivate(object *coreglib.Object, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -124,10 +124,10 @@ type bindingEntry struct {
 }
 
 // Keyval: key value to match.
-func (b *BindingEntry) Keyval() uint32 {
+func (b *BindingEntry) Keyval() uint {
 	valptr := &b.native.keyval
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -172,7 +172,7 @@ func (b *BindingEntry) Signals() *BindingSignal {
 }
 
 // Keyval: key value to match.
-func (b *BindingEntry) SetKeyval(keyval uint32) {
+func (b *BindingEntry) SetKeyval(keyval uint) {
 	valptr := &b.native.keyval
 	*valptr = C.guint(keyval)
 }
@@ -235,7 +235,7 @@ func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) 
 //    - signalName: signal name to be bound.
 //    - bindingArgs: list of BindingArg signal arguments.
 //
-func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType, signalName string, bindingArgs []*BindingArg) {
+func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []*BindingArg) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -272,7 +272,7 @@ func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint32, modifiers gdk
 //    - keyval: key value of binding to remove.
 //    - modifiers: key modifier of binding to remove.
 //
-func BindingEntryRemove(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType) {
+func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -296,7 +296,7 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint32, modifiers gdk.Mod
 //    - keyval: key value of binding to skip.
 //    - modifiers: key modifier of binding to skip.
 //
-func BindingEntrySkip(bindingSet *BindingSet, keyval uint32, modifiers gdk.ModifierType) {
+func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
 	var _arg2 C.guint           // out
 	var _arg3 C.GdkModifierType // out
@@ -336,10 +336,10 @@ func (b *BindingSet) SetName() string {
 }
 
 // Priority: unused.
-func (b *BindingSet) Priority() int32 {
+func (b *BindingSet) Priority() int {
 	valptr := &b.native.priority
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -360,7 +360,7 @@ func (b *BindingSet) Current() *BindingEntry {
 }
 
 // Priority: unused.
-func (b *BindingSet) SetPriority(priority int32) {
+func (b *BindingSet) SetPriority(priority int) {
 	valptr := &b.native.priority
 	*valptr = C.gint(priority)
 }
@@ -378,7 +378,7 @@ func (b *BindingSet) SetPriority(priority int32) {
 //
 //    - ok: TRUE if a binding was found and activated.
 //
-func (bindingSet *BindingSet) Activate(keyval uint32, modifiers gdk.ModifierType, object *coreglib.Object) bool {
+func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object *coreglib.Object) bool {
 	var _arg0 *C.GtkBindingSet  // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out

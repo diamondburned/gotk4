@@ -332,14 +332,14 @@ func MainCurrentSource() *Source {
 //
 //    - gint: main loop recursion level in the current thread.
 //
-func MainDepth() int32 {
+func MainDepth() int {
 	var _cret C.gint // in
 
 	_cret = C.g_main_depth()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -360,7 +360,7 @@ func MainDepth() int32 {
 //
 //    - source: newly-created timeout source.
 //
-func NewTimeoutSource(interval uint32) *Source {
+func NewTimeoutSource(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
 
@@ -401,7 +401,7 @@ func NewTimeoutSource(interval uint32) *Source {
 //
 //    - source: newly-created timeout source.
 //
-func TimeoutSourceNewSeconds(interval uint32) *Source {
+func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
 
@@ -570,7 +570,7 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 //
 //    - source: #GSource.
 //
-func (context *MainContext) FindSourceByID(sourceId uint32) *Source {
+func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.guint         // out
 	var _cret *C.GSource      // in
@@ -651,7 +651,7 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 //    - priority at which to run function.
 //    - function to call.
 //
-func (context *MainContext) InvokeFull(priority int32, function SourceFunc) {
+func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // out
 	var _arg2 C.GSourceFunc   // out
@@ -794,7 +794,7 @@ func (context *MainContext) PopThreadDefault() {
 //      source already ready.
 //    - ok: TRUE if some source is ready to be dispatched prior to polling.
 //
-func (context *MainContext) Prepare() (int32, bool) {
+func (context *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // in
 	var _cret C.gboolean      // in
@@ -804,10 +804,10 @@ func (context *MainContext) Prepare() (int32, bool) {
 	_cret = C.g_main_context_prepare(_arg0, &_arg1)
 	runtime.KeepAlive(context)
 
-	var _priority int32 // out
-	var _ok bool        // out
+	var _priority int // out
+	var _ok bool      // out
 
-	_priority = int32(_arg1)
+	_priority = int(_arg1)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -1136,7 +1136,7 @@ func marshalSource(p uintptr) (interface{}, error) {
 }
 
 // NewSource constructs a struct Source.
-func NewSource(sourceFuncs *SourceFuncs, structSize uint32) *Source {
+func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.guint         // out
 	var _cret *C.GSource      // in
@@ -1208,7 +1208,7 @@ func (source *Source) AddChildSource(childSource *Source) {
 //
 //    - guint: ID (greater than 0) for the source within the Context.
 //
-func (source *Source) Attach(context *MainContext) uint32 {
+func (source *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
 	var _cret C.guint         // in
@@ -1222,9 +1222,9 @@ func (source *Source) Attach(context *MainContext) uint32 {
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(context)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1345,7 +1345,7 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 //
 //    - guint: ID (greater than 0) for the source.
 //
-func (source *Source) ID() uint32 {
+func (source *Source) ID() uint {
 	var _arg0 *C.GSource // out
 	var _cret C.guint    // in
 
@@ -1354,9 +1354,9 @@ func (source *Source) ID() uint32 {
 	_cret = C.g_source_get_id(_arg0)
 	runtime.KeepAlive(source)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1392,7 +1392,7 @@ func (source *Source) Name() string {
 //
 //    - gint: priority of the source.
 //
-func (source *Source) Priority() int32 {
+func (source *Source) Priority() int {
 	var _arg0 *C.GSource // out
 	var _cret C.gint     // in
 
@@ -1401,9 +1401,9 @@ func (source *Source) Priority() int32 {
 	_cret = C.g_source_get_priority(_arg0)
 	runtime.KeepAlive(source)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1687,7 +1687,7 @@ func (source *Source) SetName(name string) {
 //
 //    - priority: new priority.
 //
-func (source *Source) SetPriority(priority int32) {
+func (source *Source) SetPriority(priority int) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint     // out
 
@@ -1822,7 +1822,7 @@ func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 //    - tag: #GSource ID.
 //    - name: debug name for the source.
 //
-func SourceSetNameByID(tag uint32, name string) {
+func SourceSetNameByID(tag uint, name string) {
 	var _arg1 C.guint // out
 	var _arg2 *C.char // out
 

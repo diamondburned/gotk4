@@ -1089,10 +1089,10 @@ type keymapKey struct {
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
-func (k *KeymapKey) Keycode() uint32 {
+func (k *KeymapKey) Keycode() uint {
 	valptr := &k.native.keycode
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
@@ -1100,10 +1100,10 @@ func (k *KeymapKey) Keycode() uint32 {
 // for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
-func (k *KeymapKey) Group() int32 {
+func (k *KeymapKey) Group() int {
 	valptr := &k.native.group
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -1113,15 +1113,15 @@ func (k *KeymapKey) Group() int32 {
 // whether to use the “1” or the “!” symbol. The letter keys are considered to
 // have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
-func (k *KeymapKey) Level() int32 {
+func (k *KeymapKey) Level() int {
 	valptr := &k.native.level
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
-func (k *KeymapKey) SetKeycode(keycode uint32) {
+func (k *KeymapKey) SetKeycode(keycode uint) {
 	valptr := &k.native.keycode
 	*valptr = C.guint(keycode)
 }
@@ -1130,7 +1130,7 @@ func (k *KeymapKey) SetKeycode(keycode uint32) {
 // for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
-func (k *KeymapKey) SetGroup(group int32) {
+func (k *KeymapKey) SetGroup(group int) {
 	valptr := &k.native.group
 	*valptr = C.int(group)
 }
@@ -1141,7 +1141,7 @@ func (k *KeymapKey) SetGroup(group int32) {
 // whether to use the “1” or the “!” symbol. The letter keys are considered to
 // have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
-func (k *KeymapKey) SetLevel(level int32) {
+func (k *KeymapKey) SetLevel(level int) {
 	valptr := &k.native.level
 	*valptr = C.int(level)
 }
@@ -1178,57 +1178,57 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 }
 
 // X: x coordinate of the top left corner.
-func (r *Rectangle) X() int32 {
+func (r *Rectangle) X() int {
 	valptr := &r.native.x
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Y: y coordinate of the top left corner.
-func (r *Rectangle) Y() int32 {
+func (r *Rectangle) Y() int {
 	valptr := &r.native.y
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Width: width of the rectangle.
-func (r *Rectangle) Width() int32 {
+func (r *Rectangle) Width() int {
 	valptr := &r.native.width
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Height: height of the rectangle.
-func (r *Rectangle) Height() int32 {
+func (r *Rectangle) Height() int {
 	valptr := &r.native.height
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // X: x coordinate of the top left corner.
-func (r *Rectangle) SetX(x int32) {
+func (r *Rectangle) SetX(x int) {
 	valptr := &r.native.x
 	*valptr = C.int(x)
 }
 
 // Y: y coordinate of the top left corner.
-func (r *Rectangle) SetY(y int32) {
+func (r *Rectangle) SetY(y int) {
 	valptr := &r.native.y
 	*valptr = C.int(y)
 }
 
 // Width: width of the rectangle.
-func (r *Rectangle) SetWidth(width int32) {
+func (r *Rectangle) SetWidth(width int) {
 	valptr := &r.native.width
 	*valptr = C.int(width)
 }
 
 // Height: height of the rectangle.
-func (r *Rectangle) SetHeight(height int32) {
+func (r *Rectangle) SetHeight(height int) {
 	valptr := &r.native.height
 	*valptr = C.int(height)
 }
@@ -1244,7 +1244,7 @@ func (r *Rectangle) SetHeight(height int32) {
 //
 //    - ok if rect contains the point.
 //
-func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
+func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out

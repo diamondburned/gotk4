@@ -158,7 +158,7 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 //
 //    - guint: spacing of the layout.
 //
-func (boxLayout *BoxLayout) Spacing() uint32 {
+func (boxLayout *BoxLayout) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
 	var _cret C.guint         // in
 
@@ -167,9 +167,9 @@ func (boxLayout *BoxLayout) Spacing() uint32 {
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
 	runtime.KeepAlive(boxLayout)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -224,7 +224,7 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 //
 //    - spacing to apply between children.
 //
-func (boxLayout *BoxLayout) SetSpacing(spacing uint32) {
+func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out
 	var _arg1 C.guint         // out
 

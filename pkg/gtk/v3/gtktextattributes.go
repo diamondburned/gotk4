@@ -57,15 +57,15 @@ func (t *TextAppearance) FgColor() *gdk.Color {
 }
 
 // Rise: super/subscript rise, can be negative.
-func (t *TextAppearance) Rise() int32 {
+func (t *TextAppearance) Rise() int {
 	valptr := &t.native.rise
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Rise: super/subscript rise, can be negative.
-func (t *TextAppearance) SetRise(rise int32) {
+func (t *TextAppearance) SetRise(rise int) {
 	valptr := &t.native.rise
 	*valptr = C.gint(rise)
 }
@@ -150,50 +150,50 @@ func (t *TextAttributes) FontScale() float64 {
 }
 
 // LeftMargin: width of the left margin in pixels.
-func (t *TextAttributes) LeftMargin() int32 {
+func (t *TextAttributes) LeftMargin() int {
 	valptr := &t.native.left_margin
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // RightMargin: width of the right margin in pixels.
-func (t *TextAttributes) RightMargin() int32 {
+func (t *TextAttributes) RightMargin() int {
 	valptr := &t.native.right_margin
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Indent: amount to indent the paragraph, in pixels.
-func (t *TextAttributes) Indent() int32 {
+func (t *TextAttributes) Indent() int {
 	valptr := &t.native.indent
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // PixelsAboveLines pixels of blank space above paragraphs.
-func (t *TextAttributes) PixelsAboveLines() int32 {
+func (t *TextAttributes) PixelsAboveLines() int {
 	valptr := &t.native.pixels_above_lines
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // PixelsBelowLines pixels of blank space below paragraphs.
-func (t *TextAttributes) PixelsBelowLines() int32 {
+func (t *TextAttributes) PixelsBelowLines() int {
 	valptr := &t.native.pixels_below_lines
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
-func (t *TextAttributes) PixelsInsideWrap() int32 {
+func (t *TextAttributes) PixelsInsideWrap() int {
 	valptr := &t.native.pixels_inside_wrap
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -222,10 +222,10 @@ func (t *TextAttributes) Language() *pango.Language {
 }
 
 // LetterSpacing: extra space to insert between graphemes, in Pango units.
-func (t *TextAttributes) LetterSpacing() int32 {
+func (t *TextAttributes) LetterSpacing() int {
 	valptr := &t.native.letter_spacing
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -236,43 +236,43 @@ func (t *TextAttributes) SetFontScale(fontScale float64) {
 }
 
 // LeftMargin: width of the left margin in pixels.
-func (t *TextAttributes) SetLeftMargin(leftMargin int32) {
+func (t *TextAttributes) SetLeftMargin(leftMargin int) {
 	valptr := &t.native.left_margin
 	*valptr = C.gint(leftMargin)
 }
 
 // RightMargin: width of the right margin in pixels.
-func (t *TextAttributes) SetRightMargin(rightMargin int32) {
+func (t *TextAttributes) SetRightMargin(rightMargin int) {
 	valptr := &t.native.right_margin
 	*valptr = C.gint(rightMargin)
 }
 
 // Indent: amount to indent the paragraph, in pixels.
-func (t *TextAttributes) SetIndent(indent int32) {
+func (t *TextAttributes) SetIndent(indent int) {
 	valptr := &t.native.indent
 	*valptr = C.gint(indent)
 }
 
 // PixelsAboveLines pixels of blank space above paragraphs.
-func (t *TextAttributes) SetPixelsAboveLines(pixelsAboveLines int32) {
+func (t *TextAttributes) SetPixelsAboveLines(pixelsAboveLines int) {
 	valptr := &t.native.pixels_above_lines
 	*valptr = C.gint(pixelsAboveLines)
 }
 
 // PixelsBelowLines pixels of blank space below paragraphs.
-func (t *TextAttributes) SetPixelsBelowLines(pixelsBelowLines int32) {
+func (t *TextAttributes) SetPixelsBelowLines(pixelsBelowLines int) {
 	valptr := &t.native.pixels_below_lines
 	*valptr = C.gint(pixelsBelowLines)
 }
 
 // PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
-func (t *TextAttributes) SetPixelsInsideWrap(pixelsInsideWrap int32) {
+func (t *TextAttributes) SetPixelsInsideWrap(pixelsInsideWrap int) {
 	valptr := &t.native.pixels_inside_wrap
 	*valptr = C.gint(pixelsInsideWrap)
 }
 
 // LetterSpacing: extra space to insert between graphemes, in Pango units.
-func (t *TextAttributes) SetLetterSpacing(letterSpacing int32) {
+func (t *TextAttributes) SetLetterSpacing(letterSpacing int) {
 	valptr := &t.native.letter_spacing
 	*valptr = C.gint(letterSpacing)
 }

@@ -227,7 +227,7 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 // matches a search key string entered by the user. Note the return value is
 // reversed from what you would normally expect, though it has some similarity
 // to strcmp() returning 0 for equal strings.
-type TreeViewSearchEqualFunc func(model TreeModeller, column int32, key string, iter *TreeIter) (ok bool)
+type TreeViewSearchEqualFunc func(model TreeModeller, column int, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_TreeViewSearchEqualFunc
 func _gotk4_gtk4_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.int, arg3 *C.char, arg4 *C.GtkTreeIter, arg5 C.gpointer) (cret C.gboolean) {
@@ -241,7 +241,7 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.int, arg3 
 	}
 
 	var _model TreeModeller // out
-	var _column int32       // out
+	var _column int         // out
 	var _key string         // out
 	var _iter *TreeIter     // out
 
@@ -262,7 +262,7 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.int, arg3 
 		}
 		_model = rv
 	}
-	_column = int32(arg2)
+	_column = int(arg2)
 	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
@@ -297,7 +297,7 @@ type TreeViewOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	MoveCursor(step MovementStep, count int32, extend, modify bool) bool
+	MoveCursor(step MovementStep, count int, extend, modify bool) bool
 	// RowActivated activates the cell determined by path and column.
 	//
 	// The function takes the following parameters:
@@ -482,7 +482,7 @@ func classInitTreeViewer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int32, extend, modify bool) bool
+		MoveCursor(step MovementStep, count int, extend, modify bool) bool
 	}); ok {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_move_cursor)
 	}
@@ -592,16 +592,16 @@ func _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(arg0 *C.GtkTreeView, a
 func _gotk4_gtk4_TreeViewClass_move_cursor(arg0 *C.GtkTreeView, arg1 C.GtkMovementStep, arg2 C.int, arg3 C.gboolean, arg4 C.gboolean) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int32, extend, modify bool) bool
+		MoveCursor(step MovementStep, count int, extend, modify bool) bool
 	})
 
 	var _step MovementStep // out
-	var _count int32       // out
+	var _count int         // out
 	var _extend bool       // out
 	var _modify bool       // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 	if arg3 != 0 {
 		_extend = true
 	}
@@ -912,7 +912,7 @@ func (treeView *TreeView) ConnectExpandCollapseCursorRow(f func(object, p0, p1 b
 
 //export _gotk4_gtk4_TreeView_ConnectMoveCursor
 func _gotk4_gtk4_TreeView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(step MovementStep, direction int32, extend, modify bool) (ok bool)
+	var f func(step MovementStep, direction int, extend, modify bool) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -920,16 +920,16 @@ func _gotk4_gtk4_TreeView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementS
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(step MovementStep, direction int32, extend, modify bool) (ok bool))
+		f = closure.Func.(func(step MovementStep, direction int, extend, modify bool) (ok bool))
 	}
 
 	var _step MovementStep // out
-	var _direction int32   // out
+	var _direction int     // out
 	var _extend bool       // out
 	var _modify bool       // out
 
 	_step = MovementStep(arg1)
-	_direction = int32(arg2)
+	_direction = int(arg2)
 	if arg3 != 0 {
 		_extend = true
 	}
@@ -954,7 +954,7 @@ func _gotk4_gtk4_TreeView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementS
 // In contrast to gtk_tree_view_set_cursor() and
 // gtk_tree_view_set_cursor_on_cell() when moving horizontally
 // TreeView::move-cursor does not reset the current selection.
-func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction int32, extend, modify bool) (ok bool)) coreglib.SignalHandle {
+func (treeView *TreeView) ConnectMoveCursor(f func(step MovementStep, direction int, extend, modify bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(treeView, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_TreeView_ConnectMoveCursor), f)
 }
 
@@ -1336,7 +1336,7 @@ func NewTreeViewWithModel(model TreeModeller) *TreeView {
 //
 //    - gint: number of columns in tree_view after appending.
 //
-func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int32 {
+func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
@@ -1348,9 +1348,9 @@ func (treeView *TreeView) AppendColumn(column *TreeViewColumn) int32 {
 	runtime.KeepAlive(treeView)
 	runtime.KeepAlive(column)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1420,7 +1420,7 @@ func (treeView *TreeView) ColumnsAutosize() {
 //    - tx: return location for tree X coordinate.
 //    - ty: return location for tree Y coordinate.
 //
-func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx, by int32) (tx, ty int32) {
+func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx, by int) (tx, ty int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -1436,11 +1436,11 @@ func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx, by int32) (tx, ty int
 	runtime.KeepAlive(bx)
 	runtime.KeepAlive(by)
 
-	var _tx int32 // out
-	var _ty int32 // out
+	var _tx int // out
+	var _ty int // out
 
-	_tx = int32(_arg3)
-	_ty = int32(_arg4)
+	_tx = int(_arg3)
+	_ty = int(_arg4)
 
 	return _tx, _ty
 }
@@ -1458,7 +1458,7 @@ func (treeView *TreeView) ConvertBinWindowToTreeCoords(bx, by int32) (tx, ty int
 //    - wx: return location for widget X coordinate.
 //    - wy: return location for widget Y coordinate.
 //
-func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx, by int32) (wx, wy int32) {
+func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx, by int) (wx, wy int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -1474,11 +1474,11 @@ func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx, by int32) (wx, wy i
 	runtime.KeepAlive(bx)
 	runtime.KeepAlive(by)
 
-	var _wx int32 // out
-	var _wy int32 // out
+	var _wx int // out
+	var _wy int // out
 
-	_wx = int32(_arg3)
-	_wy = int32(_arg4)
+	_wx = int(_arg3)
+	_wy = int(_arg4)
 
 	return _wx, _wy
 }
@@ -1496,7 +1496,7 @@ func (treeView *TreeView) ConvertBinWindowToWidgetCoords(bx, by int32) (wx, wy i
 //    - bx: return location for X coordinate relative to bin_window.
 //    - by: return location for Y coordinate relative to bin_window.
 //
-func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx, ty int32) (bx, by int32) {
+func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx, ty int) (bx, by int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -1512,11 +1512,11 @@ func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx, ty int32) (bx, by int
 	runtime.KeepAlive(tx)
 	runtime.KeepAlive(ty)
 
-	var _bx int32 // out
-	var _by int32 // out
+	var _bx int // out
+	var _by int // out
 
-	_bx = int32(_arg3)
-	_by = int32(_arg4)
+	_bx = int(_arg3)
+	_by = int(_arg4)
 
 	return _bx, _by
 }
@@ -1534,7 +1534,7 @@ func (treeView *TreeView) ConvertTreeToBinWindowCoords(tx, ty int32) (bx, by int
 //    - wx: return location for widget X coordinate.
 //    - wy: return location for widget Y coordinate.
 //
-func (treeView *TreeView) ConvertTreeToWidgetCoords(tx, ty int32) (wx, wy int32) {
+func (treeView *TreeView) ConvertTreeToWidgetCoords(tx, ty int) (wx, wy int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -1550,11 +1550,11 @@ func (treeView *TreeView) ConvertTreeToWidgetCoords(tx, ty int32) (wx, wy int32)
 	runtime.KeepAlive(tx)
 	runtime.KeepAlive(ty)
 
-	var _wx int32 // out
-	var _wy int32 // out
+	var _wx int // out
+	var _wy int // out
 
-	_wx = int32(_arg3)
-	_wy = int32(_arg4)
+	_wx = int(_arg3)
+	_wy = int(_arg4)
 
 	return _wx, _wy
 }
@@ -1572,7 +1572,7 @@ func (treeView *TreeView) ConvertTreeToWidgetCoords(tx, ty int32) (wx, wy int32)
 //    - bx: return location for bin_window X coordinate.
 //    - by: return location for bin_window Y coordinate.
 //
-func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx, by int32) {
+func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx, wy int) (bx, by int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -1588,11 +1588,11 @@ func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx, by i
 	runtime.KeepAlive(wx)
 	runtime.KeepAlive(wy)
 
-	var _bx int32 // out
-	var _by int32 // out
+	var _bx int // out
+	var _by int // out
 
-	_bx = int32(_arg3)
-	_by = int32(_arg4)
+	_bx = int(_arg3)
+	_by = int(_arg4)
 
 	return _bx, _by
 }
@@ -1610,7 +1610,7 @@ func (treeView *TreeView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx, by i
 //    - tx: return location for tree X coordinate.
 //    - ty: return location for tree Y coordinate.
 //
-func (treeView *TreeView) ConvertWidgetToTreeCoords(wx, wy int32) (tx, ty int32) {
+func (treeView *TreeView) ConvertWidgetToTreeCoords(wx, wy int) (tx, ty int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -1626,11 +1626,11 @@ func (treeView *TreeView) ConvertWidgetToTreeCoords(wx, wy int32) (tx, ty int32)
 	runtime.KeepAlive(wx)
 	runtime.KeepAlive(wy)
 
-	var _tx int32 // out
-	var _ty int32 // out
+	var _tx int // out
+	var _ty int // out
 
-	_tx = int32(_arg3)
-	_ty = int32(_arg4)
+	_tx = int(_arg3)
+	_ty = int(_arg4)
 
 	return _tx, _ty
 }
@@ -1917,7 +1917,7 @@ func (treeView *TreeView) CellArea(path *TreePath, column *TreeViewColumn) *gdk.
 //    - treeViewColumn (optional) or NULL if the position is outside the range of
 //      columns.
 //
-func (treeView *TreeView) Column(n int32) *TreeViewColumn {
+func (treeView *TreeView) Column(n int) *TreeViewColumn {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 C.int                // out
 	var _cret *C.GtkTreeViewColumn // in
@@ -2028,7 +2028,7 @@ func (treeView *TreeView) Cursor() (*TreePath, *TreeViewColumn) {
 //    - ok: whether there is a row at the given position, TRUE if this is indeed
 //      the case.
 //
-func (treeView *TreeView) DestRowAtPos(dragX, dragY int32) (*TreePath, TreeViewDropPosition, bool) {
+func (treeView *TreeView) DestRowAtPos(dragX, dragY int) (*TreePath, TreeViewDropPosition, bool) {
 	var _arg0 *C.GtkTreeView            // out
 	var _arg1 C.int                     // out
 	var _arg2 C.int                     // out
@@ -2327,7 +2327,7 @@ func (treeView *TreeView) HoverSelection() bool {
 //    - gint: amount of extra indentation for child levels in tree_view. A return
 //      value of 0 means that this feature is disabled.
 //
-func (treeView *TreeView) LevelIndentation() int32 {
+func (treeView *TreeView) LevelIndentation() int {
 	var _arg0 *C.GtkTreeView // out
 	var _cret C.int          // in
 
@@ -2336,9 +2336,9 @@ func (treeView *TreeView) LevelIndentation() int32 {
 	_cret = C.gtk_tree_view_get_level_indentation(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2374,7 +2374,7 @@ func (treeView *TreeView) Model() *TreeModel {
 //
 //    - guint: number of columns in the tree_view.
 //
-func (treeView *TreeView) NColumns() uint32 {
+func (treeView *TreeView) NColumns() uint {
 	var _arg0 *C.GtkTreeView // out
 	var _cret C.guint        // in
 
@@ -2383,9 +2383,9 @@ func (treeView *TreeView) NColumns() uint32 {
 	_cret = C.gtk_tree_view_get_n_columns(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2423,7 +2423,7 @@ func (treeView *TreeView) NColumns() uint32 {
 //      be placed, or NULL.
 //    - ok: TRUE if a row exists at that coordinate.
 //
-func (treeView *TreeView) PathAtPos(x, y int32) (path *TreePath, column *TreeViewColumn, cellX, cellY int32, ok bool) {
+func (treeView *TreeView) PathAtPos(x, y int) (path *TreePath, column *TreeViewColumn, cellX, cellY int, ok bool) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 C.int                // out
 	var _arg2 C.int                // out
@@ -2444,8 +2444,8 @@ func (treeView *TreeView) PathAtPos(x, y int32) (path *TreePath, column *TreeVie
 
 	var _path *TreePath         // out
 	var _column *TreeViewColumn // out
-	var _cellX int32            // out
-	var _cellY int32            // out
+	var _cellX int              // out
+	var _cellY int              // out
 	var _ok bool                // out
 
 	if _arg3 != nil {
@@ -2460,8 +2460,8 @@ func (treeView *TreeView) PathAtPos(x, y int32) (path *TreePath, column *TreeVie
 	if _arg4 != nil {
 		_column = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(_arg4)))
 	}
-	_cellX = int32(_arg5)
-	_cellY = int32(_arg6)
+	_cellX = int(_arg5)
+	_cellY = int(_arg6)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -2526,7 +2526,7 @@ func (treeView *TreeView) RubberBanding() bool {
 //
 //    - gint: column the interactive search code searches in.
 //
-func (treeView *TreeView) SearchColumn() int32 {
+func (treeView *TreeView) SearchColumn() int {
 	var _arg0 *C.GtkTreeView // out
 	var _cret C.int          // in
 
@@ -2535,9 +2535,9 @@ func (treeView *TreeView) SearchColumn() int32 {
 	_cret = C.gtk_tree_view_get_search_column(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2622,7 +2622,7 @@ func (treeView *TreeView) ShowExpanders() bool {
 //    - gint: index of the tooltip column that is currently being used, or -1 if
 //      this is disabled.
 //
-func (treeView *TreeView) TooltipColumn() int32 {
+func (treeView *TreeView) TooltipColumn() int {
 	var _arg0 *C.GtkTreeView // out
 	var _cret C.int          // in
 
@@ -2631,9 +2631,9 @@ func (treeView *TreeView) TooltipColumn() int32 {
 	_cret = C.gtk_tree_view_get_tooltip_column(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2663,7 +2663,7 @@ func (treeView *TreeView) TooltipColumn() int32 {
 //    - iter (optional): pointer to receive a TreeIter or NULL.
 //    - ok: whether or not the given tooltip context points to a row.
 //
-func (treeView *TreeView) TooltipContext(x, y int32, keyboardTip bool) (*TreeModel, *TreePath, *TreeIter, bool) {
+func (treeView *TreeView) TooltipContext(x, y int, keyboardTip bool) (*TreeModel, *TreePath, *TreeIter, bool) {
 	var _arg0 *C.GtkTreeView  // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -2801,7 +2801,7 @@ func (treeView *TreeView) VisibleRect() *gdk.Rectangle {
 //
 //    - gint: number of columns in tree_view after insertion.
 //
-func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int32) int32 {
+func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int) int {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
 	var _arg2 C.int                // out
@@ -2816,9 +2816,9 @@ func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int32) i
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(position)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2841,7 +2841,7 @@ func (treeView *TreeView) InsertColumn(column *TreeViewColumn, position int32) i
 //
 //    - gint: number of columns in the tree view post-insert.
 //
-func (treeView *TreeView) InsertColumnWithDataFunc(position int32, title string, cell CellRendererer, fn TreeCellDataFunc) int32 {
+func (treeView *TreeView) InsertColumnWithDataFunc(position int, title string, cell CellRendererer, fn TreeCellDataFunc) int {
 	var _arg0 *C.GtkTreeView        // out
 	var _arg1 C.int                 // out
 	var _arg2 *C.char               // out
@@ -2867,9 +2867,9 @@ func (treeView *TreeView) InsertColumnWithDataFunc(position int32, title string,
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(fn)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2908,7 +2908,7 @@ func (treeView *TreeView) InsertColumnWithDataFunc(position int32, title string,
 //      be placed, or NULL.
 //    - ok: TRUE if the area at the given coordinates is blank, FALSE otherwise.
 //
-func (treeView *TreeView) IsBlankAtPos(x, y int32) (path *TreePath, column *TreeViewColumn, cellX, cellY int32, ok bool) {
+func (treeView *TreeView) IsBlankAtPos(x, y int) (path *TreePath, column *TreeViewColumn, cellX, cellY int, ok bool) {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 C.int                // out
 	var _arg2 C.int                // out
@@ -2929,8 +2929,8 @@ func (treeView *TreeView) IsBlankAtPos(x, y int32) (path *TreePath, column *Tree
 
 	var _path *TreePath         // out
 	var _column *TreeViewColumn // out
-	var _cellX int32            // out
-	var _cellY int32            // out
+	var _cellX int              // out
+	var _cellY int              // out
 	var _ok bool                // out
 
 	if _arg3 != nil {
@@ -2945,8 +2945,8 @@ func (treeView *TreeView) IsBlankAtPos(x, y int32) (path *TreePath, column *Tree
 	if _arg4 != nil {
 		_column = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(_arg4)))
 	}
-	_cellX = int32(_arg5)
-	_cellY = int32(_arg6)
+	_cellX = int(_arg5)
+	_cellY = int(_arg6)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -3036,7 +3036,7 @@ func (treeView *TreeView) MoveColumnAfter(column, baseColumn *TreeViewColumn) {
 //
 //    - gint: number of columns in tree_view after removing.
 //
-func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int32 {
+func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int {
 	var _arg0 *C.GtkTreeView       // out
 	var _arg1 *C.GtkTreeViewColumn // out
 	var _cret C.int                // in
@@ -3048,9 +3048,9 @@ func (treeView *TreeView) RemoveColumn(column *TreeViewColumn) int32 {
 	runtime.KeepAlive(treeView)
 	runtime.KeepAlive(column)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3176,7 +3176,7 @@ func (treeView *TreeView) ScrollToCell(path *TreePath, column *TreeViewColumn, u
 //    - treeX: x coordinate of new top-left pixel of visible area, or -1.
 //    - treeY: y coordinate of new top-left pixel of visible area, or -1.
 //
-func (treeView *TreeView) ScrollToPoint(treeX, treeY int32) {
+func (treeView *TreeView) ScrollToPoint(treeX, treeY int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -3563,7 +3563,7 @@ func (treeView *TreeView) SetHoverSelection(hover bool) {
 //
 //    - indentation: amount, in pixels, of extra indentation in tree_view.
 //
-func (treeView *TreeView) SetLevelIndentation(indentation int32) {
+func (treeView *TreeView) SetLevelIndentation(indentation int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 
@@ -3691,7 +3691,7 @@ func (treeView *TreeView) SetRubberBanding(enable bool) {
 //
 //    - column of the model to search in, or -1 to disable searching.
 //
-func (treeView *TreeView) SetSearchColumn(column int32) {
+func (treeView *TreeView) SetSearchColumn(column int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 
@@ -3837,7 +3837,7 @@ func (treeView *TreeView) SetTooltipCell(tooltip *Tooltip, path *TreePath, colum
 //
 //    - column: integer, which is a valid column number for tree_view’s model.
 //
-func (treeView *TreeView) SetTooltipColumn(column int32) {
+func (treeView *TreeView) SetTooltipColumn(column int) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 C.int          // out
 

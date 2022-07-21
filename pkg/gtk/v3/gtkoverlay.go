@@ -306,7 +306,7 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 //    - index_: new index for child in the list of overlay children of overlay,
 //      starting from 0. If negative, indicates the end of the list.
 //
-func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int32) {
+func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg0 *C.GtkOverlay // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.int         // out

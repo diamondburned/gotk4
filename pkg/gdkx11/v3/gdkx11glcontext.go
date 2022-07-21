@@ -38,7 +38,7 @@ func GTypeX11GLContext() coreglib.Type {
 //    - minor: return location for the GLX minor version.
 //    - ok: TRUE if GLX is available.
 //
-func X11DisplayGetGLXVersion(display *gdk.Display) (major, minor int32, ok bool) {
+func X11DisplayGetGLXVersion(display *gdk.Display) (major, minor int, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // in
 	var _arg3 C.gint        // in
@@ -49,12 +49,12 @@ func X11DisplayGetGLXVersion(display *gdk.Display) (major, minor int32, ok bool)
 	_cret = C.gdk_x11_display_get_glx_version(_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(display)
 
-	var _major int32 // out
-	var _minor int32 // out
-	var _ok bool     // out
+	var _major int // out
+	var _minor int // out
+	var _ok bool   // out
 
-	_major = int32(_arg2)
-	_minor = int32(_arg3)
+	_major = int(_arg2)
+	_minor = int(_arg3)
 	if _cret != 0 {
 		_ok = true
 	}

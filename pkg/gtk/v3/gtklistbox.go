@@ -151,7 +151,7 @@ func _gotk4_gtk3_ListBoxForEachFunc(arg1 *C.GtkListBox, arg2 *C.GtkListBoxRow, a
 }
 
 // ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int32)
+type ListBoxSortFunc func(row1, row2 *ListBoxRow) (gint int)
 
 //export _gotk4_gtk3_ListBoxSortFunc
 func _gotk4_gtk3_ListBoxSortFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, arg3 C.gpointer) (cret C.gint) {
@@ -213,7 +213,7 @@ type ListBoxOverrider interface {
 	//    - step
 	//    - count
 	//
-	MoveCursor(step MovementStep, count int32)
+	MoveCursor(step MovementStep, count int)
 	// The function takes the following parameters:
 	//
 	RowActivated(row *ListBoxRow)
@@ -287,7 +287,7 @@ func classInitListBoxer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int32)
+		MoveCursor(step MovementStep, count int)
 	}); ok {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_move_cursor)
 	}
@@ -329,14 +329,14 @@ func _gotk4_gtk3_ListBoxClass_activate_cursor_row(arg0 *C.GtkListBox) {
 func _gotk4_gtk3_ListBoxClass_move_cursor(arg0 *C.GtkListBox, arg1 C.GtkMovementStep, arg2 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int32)
+		MoveCursor(step MovementStep, count int)
 	})
 
 	var _step MovementStep // out
-	var _count int32       // out
+	var _count int         // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 
 	iface.MoveCursor(_step, _count)
 }
@@ -442,7 +442,7 @@ func (box *ListBox) ConnectActivateCursorRow(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_ListBox_ConnectMoveCursor
 func _gotk4_gtk3_ListBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.guintptr) {
-	var f func(object MovementStep, p0 int32)
+	var f func(object MovementStep, p0 int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -450,19 +450,19 @@ func _gotk4_gtk3_ListBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementSt
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object MovementStep, p0 int32))
+		f = closure.Func.(func(object MovementStep, p0 int))
 	}
 
 	var _object MovementStep // out
-	var _p0 int32            // out
+	var _p0 int              // out
 
 	_object = MovementStep(arg1)
-	_p0 = int32(arg2)
+	_p0 = int(arg2)
 
 	f(_object, _p0)
 }
 
-func (box *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int32)) coreglib.SignalHandle {
+func (box *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectMoveCursor), f)
 }
 
@@ -768,7 +768,7 @@ func (box *ListBox) Adjustment() *Adjustment {
 //
 //    - listBoxRow (optional): child Widget or NULL.
 //
-func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
+func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GtkListBoxRow // in
@@ -800,7 +800,7 @@ func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
 //    - listBoxRow (optional): row or NULL in case no row exists for the given y
 //      coordinate.
 //
-func (box *ListBox) RowAtY(y int32) *ListBoxRow {
+func (box *ListBox) RowAtY(y int) *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
 	var _arg1 C.gint           // out
 	var _cret *C.GtkListBoxRow // in
@@ -909,7 +909,7 @@ func (box *ListBox) SelectionMode() SelectionMode {
 //    - child to add.
 //    - position to insert child in.
 //
-func (box *ListBox) Insert(child Widgetter, position int32) {
+func (box *ListBox) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkListBox // out
 	var _arg1 *C.GtkWidget  // out
 	var _arg2 C.gint        // out
@@ -1475,7 +1475,7 @@ func (row *ListBoxRow) Header() Widgetter {
 //
 //    - gint: index of the row, or -1 if the row is not in a listbox.
 //
-func (row *ListBoxRow) Index() int32 {
+func (row *ListBoxRow) Index() int {
 	var _arg0 *C.GtkListBoxRow // out
 	var _cret C.gint           // in
 
@@ -1484,9 +1484,9 @@ func (row *ListBoxRow) Index() int32 {
 	_cret = C.gtk_list_box_row_get_index(_arg0)
 	runtime.KeepAlive(row)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

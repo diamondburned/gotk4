@@ -715,7 +715,7 @@ func (display *Display) ListSeats() []Seater {
 //    - keyvals (optional): return location for array of keyvals, or NULL.
 //    - ok: TRUE if there were any entries.
 //
-func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool) {
+func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay   // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.GdkKeymapKey // in
@@ -731,7 +731,7 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 	runtime.KeepAlive(keycode)
 
 	var _keys []KeymapKey // out
-	var _keyvals []uint32 // out
+	var _keyvals []uint   // out
 	var _ok bool          // out
 
 	if _arg2 != nil {
@@ -754,9 +754,9 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 		defer C.free(unsafe.Pointer(_arg3))
 		{
 			src := unsafe.Slice((*C.guint)(_arg3), _arg4)
-			_keyvals = make([]uint32, _arg4)
+			_keyvals = make([]uint, _arg4)
 			for i := 0; i < int(_arg4); i++ {
-				_keyvals[i] = uint32(src[i])
+				_keyvals[i] = uint(src[i])
 			}
 		}
 	}
@@ -792,7 +792,7 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 //    - keys: return location for an array of GdkKeymapKey.
 //    - ok: TRUE if keys were found and returned.
 //
-func (display *Display) MapKeyval(keyval uint32) ([]KeymapKey, bool) {
+func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay   // out
 	var _arg1 C.guint         // out
 	var _arg2 *C.GdkKeymapKey // in
@@ -959,7 +959,7 @@ func (display *Display) Sync() {
 //      determine the group or level, or NULL.
 //    - ok: TRUE if there was a keyval bound to keycode/state/group.
 //
-func (display *Display) TranslateKey(keycode uint32, state ModifierType, group int32) (keyval uint32, effectiveGroup, level int32, consumed ModifierType, ok bool) {
+func (display *Display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 C.guint           // out
 	var _arg2 C.GdkModifierType // out
@@ -981,15 +981,15 @@ func (display *Display) TranslateKey(keycode uint32, state ModifierType, group i
 	runtime.KeepAlive(state)
 	runtime.KeepAlive(group)
 
-	var _keyval uint32         // out
-	var _effectiveGroup int32  // out
-	var _level int32           // out
+	var _keyval uint           // out
+	var _effectiveGroup int    // out
+	var _level int             // out
 	var _consumed ModifierType // out
 	var _ok bool               // out
 
-	_keyval = uint32(_arg4)
-	_effectiveGroup = int32(_arg5)
-	_level = int32(_arg6)
+	_keyval = uint(_arg4)
+	_effectiveGroup = int(_arg5)
+	_level = int(_arg6)
 	_consumed = ModifierType(_arg7)
 	if _cret != 0 {
 		_ok = true

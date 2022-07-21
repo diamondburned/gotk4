@@ -82,7 +82,7 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 //
 //    - sliceListModel: new GtkSliceListModel.
 //
-func NewSliceListModel(model gio.ListModeller, offset, size uint32) *SliceListModel {
+func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
 	var _arg2 C.guint              // out
 	var _arg3 C.guint              // out
@@ -142,7 +142,7 @@ func (self *SliceListModel) Model() *gio.ListModel {
 //
 //    - guint: offset.
 //
-func (self *SliceListModel) Offset() uint32 {
+func (self *SliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -151,9 +151,9 @@ func (self *SliceListModel) Offset() uint32 {
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -164,7 +164,7 @@ func (self *SliceListModel) Offset() uint32 {
 //
 //    - guint: size.
 //
-func (self *SliceListModel) Size() uint32 {
+func (self *SliceListModel) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
 	var _cret C.guint              // in
 
@@ -173,9 +173,9 @@ func (self *SliceListModel) Size() uint32 {
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -210,7 +210,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 //
 //    - offset: new offset to use.
 //
-func (self *SliceListModel) SetOffset(offset uint32) {
+func (self *SliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 
@@ -231,7 +231,7 @@ func (self *SliceListModel) SetOffset(offset uint32) {
 //
 //    - size: maximum size.
 //
-func (self *SliceListModel) SetSize(size uint32) {
+func (self *SliceListModel) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out
 	var _arg1 C.guint              // out
 

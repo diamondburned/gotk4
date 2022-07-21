@@ -791,7 +791,7 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 //    - guint: filter identifier that can be used with
 //      g_dbus_connection_remove_filter().
 //
-func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint32 {
+func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
 	var _arg0 *C.GDBusConnection           // out
 	var _arg1 C.GDBusMessageFilterFunction // out
 	var _arg2 C.gpointer
@@ -807,9 +807,9 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(filterFunction)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -874,7 +874,7 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //    - callback (optional) to call when the request is satisfied or NULL if you
 //      don't care about the result of the method invocation.
 //
-func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int32, callback AsyncReadyCallback) {
+func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg9 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
@@ -1024,7 +1024,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //    - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
 //      with return values. Free with g_variant_unref().
 //
-func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int32) (*glib.Variant, error) {
+func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg9 *C.GCancellable    // out
 	var _arg1 *C.gchar           // out
@@ -1627,7 +1627,7 @@ func (connection *DBusConnection) IsClosed() bool {
 //    - guint: 0 if error is set, otherwise a registration ID (never 0) that can
 //      be used with g_dbus_connection_unregister_object() .
 //
-func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint32, error) {
+func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint, error) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.GDBusInterfaceInfo // out
@@ -1653,10 +1653,10 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 	runtime.KeepAlive(getPropertyClosure)
 	runtime.KeepAlive(setPropertyClosure)
 
-	var _guint uint32 // out
-	var _goerr error  // out
+	var _guint uint  // out
+	var _goerr error // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -1677,7 +1677,7 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 //
 //    - filterId: identifier obtained from g_dbus_connection_add_filter().
 //
-func (connection *DBusConnection) RemoveFilter(filterId uint32) {
+func (connection *DBusConnection) RemoveFilter(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -1792,7 +1792,7 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 //    - outSerial (optional): return location for serial number assigned to
 //      message when sending it or NULL.
 //
-func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int32, callback AsyncReadyCallback) uint32 {
+func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
 	var _arg1 *C.GDBusMessage         // out
@@ -1920,7 +1920,7 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //    - dBusMessage: locked BusMessage that is the reply to message or NULL if
 //      error is set.
 //
-func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int32) (uint32, *DBusMessage, error) {
+func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
 	var _arg1 *C.GDBusMessage         // out
@@ -2056,7 +2056,7 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 //    - guint: subscription identifier that can be used with
 //      g_dbus_connection_signal_unsubscribe().
 //
-func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint32 {
+func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -2105,9 +2105,9 @@ func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member,
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(callback)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -2126,7 +2126,7 @@ func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member,
 //    - subscriptionId: subscription id obtained from
 //      g_dbus_connection_signal_subscribe().
 //
-func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint32) {
+func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 
@@ -2162,7 +2162,7 @@ func (connection *DBusConnection) StartMessageProcessing() {
 //
 //    - ok: TRUE if the object was unregistered, FALSE otherwise.
 //
-func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
+func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in
@@ -2194,7 +2194,7 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 //
 //    - ok: TRUE if the subtree was unregistered, FALSE otherwise.
 //
-func (connection *DBusConnection) UnregisterSubtree(registrationId uint32) bool {
+func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 	var _cret C.gboolean         // in

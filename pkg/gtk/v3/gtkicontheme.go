@@ -307,7 +307,7 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 //
 //    - gint: base scale.
 //
-func (iconInfo *IconInfo) BaseScale() int32 {
+func (iconInfo *IconInfo) BaseScale() int {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret C.gint         // in
 
@@ -316,9 +316,9 @@ func (iconInfo *IconInfo) BaseScale() int32 {
 	_cret = C.gtk_icon_info_get_base_scale(_arg0)
 	runtime.KeepAlive(iconInfo)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -335,7 +335,7 @@ func (iconInfo *IconInfo) BaseScale() int32 {
 //
 //    - gint: base size, or 0, if no base size is known for the icon.
 //
-func (iconInfo *IconInfo) BaseSize() int32 {
+func (iconInfo *IconInfo) BaseSize() int {
 	var _arg0 *C.GtkIconInfo // out
 	var _cret C.gint         // in
 
@@ -344,9 +344,9 @@ func (iconInfo *IconInfo) BaseSize() int32 {
 	_cret = C.gtk_icon_info_get_base_size(_arg0)
 	runtime.KeepAlive(iconInfo)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1352,7 +1352,7 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 //    - iconInfo (optional) object containing information about the icon, or NULL
 //      if the icon wasn’t found.
 //
-func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int32, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 **C.gchar            // out
 	var _arg2 C.gint               // out
@@ -1412,7 +1412,7 @@ func (iconTheme *IconTheme) ChooseIcon(iconNames []string, size int32, flags Ico
 //    - iconInfo (optional) object containing information about the icon, or NULL
 //      if the icon wasn’t found.
 //
-func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size, scale int32, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) ChooseIconForScale(iconNames []string, size, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 **C.gchar            // out
 	var _arg2 C.gint               // out
@@ -1495,7 +1495,7 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 //      available. The array should be freed with g_free() when it is no longer
 //      needed.
 //
-func (iconTheme *IconTheme) IconSizes(iconName string) []int32 {
+func (iconTheme *IconTheme) IconSizes(iconName string) []int {
 	var _arg0 *C.GtkIconTheme // out
 	var _arg1 *C.gchar        // out
 	var _cret *C.gint         // in
@@ -1508,7 +1508,7 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int32 {
 	runtime.KeepAlive(iconTheme)
 	runtime.KeepAlive(iconName)
 
-	var _gints []int32 // out
+	var _gints []int // out
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
@@ -1519,9 +1519,9 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int32 {
 		}
 
 		src := unsafe.Slice(_cret, i)
-		_gints = make([]int32, i)
+		_gints = make([]int, i)
 		for i := range src {
-			_gints[i] = int32(src[i])
+			_gints[i] = int(src[i])
 		}
 	}
 
@@ -1703,7 +1703,7 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 //      g_object_unref() to release your reference to the icon. NULL if the icon
 //      isn’t found.
 //
-func (iconTheme *IconTheme) LoadIcon(iconName string, size int32, flags IconLookupFlags) (*gdkpixbuf.Pixbuf, error) {
+func (iconTheme *IconTheme) LoadIcon(iconName string, size int, flags IconLookupFlags) (*gdkpixbuf.Pixbuf, error) {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -1773,7 +1773,7 @@ func (iconTheme *IconTheme) LoadIcon(iconName string, size int32, flags IconLook
 //      g_object_unref() to release your reference to the icon. NULL if the icon
 //      isn’t found.
 //
-func (iconTheme *IconTheme) LoadIconForScale(iconName string, size, scale int32, flags IconLookupFlags) (*gdkpixbuf.Pixbuf, error) {
+func (iconTheme *IconTheme) LoadIconForScale(iconName string, size, scale int, flags IconLookupFlags) (*gdkpixbuf.Pixbuf, error) {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -1843,7 +1843,7 @@ func (iconTheme *IconTheme) LoadIconForScale(iconName string, size, scale int32,
 //      cairo_surface_destroy() to release your reference to the icon. NULL if
 //      the icon isn’t found.
 //
-func (iconTheme *IconTheme) LoadSurface(iconName string, size, scale int32, forWindow gdk.Windower, flags IconLookupFlags) (*cairo.Surface, error) {
+func (iconTheme *IconTheme) LoadSurface(iconName string, size, scale int, forWindow gdk.Windower, flags IconLookupFlags) (*cairo.Surface, error) {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -1908,7 +1908,7 @@ func (iconTheme *IconTheme) LoadSurface(iconName string, size, scale int32, forW
 //    - iconInfo (optional) containing information about the icon, or NULL if the
 //      icon wasn’t found. Unref with g_object_unref().
 //
-func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int32, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -1951,7 +1951,7 @@ func (iconTheme *IconTheme) LookupByGIcon(icon gio.Iconner, size int32, flags Ic
 //    - iconInfo (optional) containing information about the icon, or NULL if the
 //      icon wasn’t found. Unref with g_object_unref().
 //
-func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size, scale int32, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.GIcon             // out
 	var _arg2 C.gint               // out
@@ -2003,7 +2003,7 @@ func (iconTheme *IconTheme) LookupByGIconForScale(icon gio.Iconner, size, scale 
 //    - iconInfo (optional) object containing information about the icon, or NULL
 //      if the icon wasn’t found.
 //
-func (iconTheme *IconTheme) LookupIcon(iconName string, size int32, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupIcon(iconName string, size int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -2049,7 +2049,7 @@ func (iconTheme *IconTheme) LookupIcon(iconName string, size int32, flags IconLo
 //    - iconInfo (optional) object containing information about the icon, or NULL
 //      if the icon wasn’t found.
 //
-func (iconTheme *IconTheme) LookupIconForScale(iconName string, size, scale int32, flags IconLookupFlags) *IconInfo {
+func (iconTheme *IconTheme) LookupIconForScale(iconName string, size, scale int, flags IconLookupFlags) *IconInfo {
 	var _arg0 *C.GtkIconTheme      // out
 	var _arg1 *C.gchar             // out
 	var _arg2 C.gint               // out
@@ -2232,7 +2232,7 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 //      registered for the same icon name at different sizes.).
 //    - pixbuf that contains the image to use for icon_name.
 //
-func IconThemeAddBuiltinIcon(iconName string, size int32, pixbuf *gdkpixbuf.Pixbuf) {
+func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.gint       // out
 	var _arg3 *C.GdkPixbuf // out

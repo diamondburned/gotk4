@@ -102,7 +102,7 @@ func (context *AppLaunchContext) Display() *Display {
 //
 //    - desktop: number of a workspace, or -1.
 //
-func (context *AppLaunchContext) SetDesktop(desktop int32) {
+func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 C.int                  // out
 

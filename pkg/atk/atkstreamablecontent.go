@@ -45,14 +45,14 @@ type StreamableContentOverrider interface {
 	//    - utf8: gchar* representing the specified mime type; the caller should
 	//      not free the character string.
 	//
-	MIMEType(i int32) string
+	MIMEType(i int) string
 	// NMIMETypes gets the number of mime types supported by this object.
 	//
 	// The function returns the following values:
 	//
 	//    - gint which is the number of mime types supported by the object.
 	//
-	NMIMETypes() int32
+	NMIMETypes() int
 	// Stream gets the content in the specified mime type.
 	//
 	// The function takes the following parameters:
@@ -118,9 +118,9 @@ type StreamableContenter interface {
 	coreglib.Objector
 
 	// MIMEType gets the character string of the specified mime type.
-	MIMEType(i int32) string
+	MIMEType(i int) string
 	// NMIMETypes gets the number of mime types supported by this object.
-	NMIMETypes() int32
+	NMIMETypes() int
 	// Stream gets the content in the specified mime type.
 	Stream(mimeType string) *glib.IOChannel
 	// URI: get a string representing a URI in IETF standard format (see
@@ -144,9 +144,9 @@ func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.AtkStreamableConte
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	utf8 := iface.MIMEType(_i)
 
@@ -225,7 +225,7 @@ func marshalStreamableContent(p uintptr) (interface{}, error) {
 //    - utf8: gchar* representing the specified mime type; the caller should not
 //      free the character string.
 //
-func (streamable *StreamableContent) MIMEType(i int32) string {
+func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
 	var _cret *C.gchar                // in
@@ -250,7 +250,7 @@ func (streamable *StreamableContent) MIMEType(i int32) string {
 //
 //    - gint which is the number of mime types supported by the object.
 //
-func (streamable *StreamableContent) NMIMETypes() int32 {
+func (streamable *StreamableContent) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
 
@@ -259,9 +259,9 @@ func (streamable *StreamableContent) NMIMETypes() int32 {
 	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
 	runtime.KeepAlive(streamable)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

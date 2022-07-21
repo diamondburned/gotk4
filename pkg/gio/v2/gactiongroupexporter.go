@@ -44,7 +44,7 @@ import "C"
 //
 //    - guint: ID of the export (never zero), or 0 in case of failure.
 //
-func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint32, error) {
+func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.GActionGroup    // out
@@ -61,10 +61,10 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(actionGroup)
 
-	var _guint uint32 // out
-	var _goerr error  // out
+	var _guint uint  // out
+	var _goerr error // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -83,7 +83,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 //    - exportId: ID from g_dbus_connection_export_action_group().
 //
-func (connection *DBusConnection) UnexportActionGroup(exportId uint32) {
+func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
 

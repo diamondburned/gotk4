@@ -200,7 +200,7 @@ func NewTextureFromResource(resourcePath string) *Texture {
 //
 //    - gint: height of the GdkTexture.
 //
-func (texture *Texture) Height() int32 {
+func (texture *Texture) Height() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
@@ -209,9 +209,9 @@ func (texture *Texture) Height() int32 {
 	_cret = C.gdk_texture_get_height(_arg0)
 	runtime.KeepAlive(texture)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -222,7 +222,7 @@ func (texture *Texture) Height() int32 {
 //
 //    - gint: width of the GdkTexture.
 //
-func (texture *Texture) Width() int32 {
+func (texture *Texture) Width() int {
 	var _arg0 *C.GdkTexture // out
 	var _cret C.int         // in
 
@@ -231,9 +231,9 @@ func (texture *Texture) Width() int32 {
 	_cret = C.gdk_texture_get_width(_arg0)
 	runtime.KeepAlive(texture)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

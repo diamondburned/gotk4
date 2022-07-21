@@ -204,7 +204,7 @@ func (layout *Layout) HAdjustment() *Adjustment {
 //    - width (optional): location to store the width set on layout, or NULL.
 //    - height (optional): location to store the height set on layout, or NULL.
 //
-func (layout *Layout) Size() (width, height uint32) {
+func (layout *Layout) Size() (width, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // in
 	var _arg2 C.guint      // in
@@ -214,11 +214,11 @@ func (layout *Layout) Size() (width, height uint32) {
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(layout)
 
-	var _width uint32  // out
-	var _height uint32 // out
+	var _width uint  // out
+	var _height uint // out
 
-	_width = uint32(_arg1)
-	_height = uint32(_arg2)
+	_width = uint(_arg1)
+	_height = uint(_arg2)
 
 	return _width, _height
 }
@@ -260,7 +260,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 //    - x: x position to move to.
 //    - y: y position to move to.
 //
-func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
+func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -287,7 +287,7 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
 //    - x: x position of child widget.
 //    - y: y position of child widget.
 //
-func (layout *Layout) Put(childWidget Widgetter, x, y int32) {
+func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 *C.GtkWidget // out
 	var _arg2 C.gint       // out
@@ -336,7 +336,7 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 //    - width of entire scrollable area.
 //    - height of entire scrollable area.
 //
-func (layout *Layout) SetSize(width, height uint32) {
+func (layout *Layout) SetSize(width, height uint) {
 	var _arg0 *C.GtkLayout // out
 	var _arg1 C.guint      // out
 	var _arg2 C.guint      // out

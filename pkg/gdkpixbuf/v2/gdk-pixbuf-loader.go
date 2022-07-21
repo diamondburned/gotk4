@@ -47,14 +47,14 @@ type PixbufLoaderOverrider interface {
 	//    - width
 	//    - height
 	//
-	AreaUpdated(x, y, width, height int32)
+	AreaUpdated(x, y, width, height int)
 	Closed()
 	// The function takes the following parameters:
 	//
 	//    - width
 	//    - height
 	//
-	SizePrepared(width, height int32)
+	SizePrepared(width, height int)
 }
 
 // PixbufLoader: incremental image loader.
@@ -124,9 +124,7 @@ func classInitPixbufLoaderer(gclassPtr, data C.gpointer) {
 		pclass.area_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared)
 	}
 
-	if _, ok := goval.(interface {
-		AreaUpdated(x, y, width, height int32)
-	}); ok {
+	if _, ok := goval.(interface{ AreaUpdated(x, y, width, height int) }); ok {
 		pclass.area_updated = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated)
 	}
 
@@ -134,7 +132,7 @@ func classInitPixbufLoaderer(gclassPtr, data C.gpointer) {
 		pclass.closed = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_closed)
 	}
 
-	if _, ok := goval.(interface{ SizePrepared(width, height int32) }); ok {
+	if _, ok := goval.(interface{ SizePrepared(width, height int) }); ok {
 		pclass.size_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared)
 	}
 }
@@ -150,19 +148,17 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) 
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		AreaUpdated(x, y, width, height int32)
-	})
+	iface := goval.(interface{ AreaUpdated(x, y, width, height int) })
 
-	var _x int32      // out
-	var _y int32      // out
-	var _width int32  // out
-	var _height int32 // out
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
-	_width = int32(arg3)
-	_height = int32(arg4)
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
 
 	iface.AreaUpdated(_x, _y, _width, _height)
 }
@@ -178,13 +174,13 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SizePrepared(width, height int32) })
+	iface := goval.(interface{ SizePrepared(width, height int) })
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	iface.SizePrepared(_width, _height)
 }
@@ -226,7 +222,7 @@ func (loader *PixbufLoader) ConnectAreaPrepared(f func()) coreglib.SignalHandle 
 
 //export _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated
 func _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.gint, arg5 C.guintptr) {
-	var f func(x, y, width, height int32)
+	var f func(x, y, width, height int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -234,18 +230,18 @@ func _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated(arg0 C.gpointer, arg1 C.g
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y, width, height int32))
+		f = closure.Func.(func(x, y, width, height int))
 	}
 
-	var _x int32      // out
-	var _y int32      // out
-	var _width int32  // out
-	var _height int32 // out
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
-	_width = int32(arg3)
-	_height = int32(arg4)
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
 
 	f(_x, _y, _width, _height)
 }
@@ -258,7 +254,7 @@ func _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated(arg0 C.gpointer, arg1 C.g
 //
 // Applications can use this signal to know when to repaint areas of an image
 // that is being loaded.
-func (loader *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int32)) coreglib.SignalHandle {
+func (loader *PixbufLoader) ConnectAreaUpdated(f func(x, y, width, height int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(loader, "area-updated", false, unsafe.Pointer(C._gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated), f)
 }
 
@@ -289,7 +285,7 @@ func (loader *PixbufLoader) ConnectClosed(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared
 func _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int32)
+	var f func(width, height int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -297,14 +293,14 @@ func _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(arg0 C.gpointer, arg1 C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(width, height int32))
+		f = closure.Func.(func(width, height int))
 	}
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	f(_width, _height)
 }
@@ -315,7 +311,7 @@ func _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(arg0 C.gpointer, arg1 C.
 //
 // Applications can call gdk_pixbuf_loader_set_size() in response to this signal
 // to set the desired size to which the image should be scaled.
-func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int32)) coreglib.SignalHandle {
+func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(loader, "size-prepared", false, unsafe.Pointer(C._gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared), f)
 }
 
@@ -567,7 +563,7 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 //    - width: desired width of the image being loaded.
 //    - height: desired height of the image being loaded.
 //
-func (loader *PixbufLoader) SetSize(width, height int32) {
+func (loader *PixbufLoader) SetSize(width, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out

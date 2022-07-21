@@ -169,7 +169,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 //
 //    - guint: hash value for p.
 //
-func (p *RGBA) Hash() uint32 {
+func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
@@ -178,9 +178,9 @@ func (p *RGBA) Hash() uint32 {
 	_cret = C.gdk_rgba_hash(_arg0)
 	runtime.KeepAlive(p)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

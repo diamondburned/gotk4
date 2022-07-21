@@ -224,7 +224,7 @@ func (context *DragContext) ConnectDNDFinished(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gdk3_DragContext_ConnectDropPerformed
 func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(time int32)
+	var f func(time int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -232,12 +232,12 @@ func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(time int32))
+		f = closure.Func.(func(time int))
 	}
 
-	var _time int32 // out
+	var _time int // out
 
-	_time = int32(arg1)
+	_time = int(arg1)
 
 	f(_time)
 }
@@ -247,6 +247,6 @@ func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, 
 //
 // This signal will only be emitted if the DragContext manages the drag and drop
 // operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectDropPerformed(f func(time int32)) coreglib.SignalHandle {
+func (context *DragContext) ConnectDropPerformed(f func(time int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
 }

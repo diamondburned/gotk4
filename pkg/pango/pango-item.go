@@ -195,26 +195,26 @@ func NewItem() *Item {
 }
 
 // Offset: byte offset of the start of this item in text.
-func (i *Item) Offset() int32 {
+func (i *Item) Offset() int {
 	valptr := &i.native.offset
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Length: length of this item in bytes.
-func (i *Item) Length() int32 {
+func (i *Item) Length() int {
 	valptr := &i.native.length
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // NumChars: number of Unicode characters in the item.
-func (i *Item) NumChars() int32 {
+func (i *Item) NumChars() int {
 	valptr := &i.native.num_chars
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -227,19 +227,19 @@ func (i *Item) Analysis() *Analysis {
 }
 
 // Offset: byte offset of the start of this item in text.
-func (i *Item) SetOffset(offset int32) {
+func (i *Item) SetOffset(offset int) {
 	valptr := &i.native.offset
 	*valptr = C.gint(offset)
 }
 
 // Length: length of this item in bytes.
-func (i *Item) SetLength(length int32) {
+func (i *Item) SetLength(length int) {
 	valptr := &i.native.length
 	*valptr = C.gint(length)
 }
 
 // NumChars: number of Unicode characters in the item.
-func (i *Item) SetNumChars(numChars int32) {
+func (i *Item) SetNumChars(numChars int) {
 	valptr := &i.native.num_chars
 	*valptr = C.gint(numChars)
 }
@@ -326,7 +326,7 @@ func (item *Item) Copy() *Item {
 //    - item: new item representing text before split_index, which should be
 //      freed with pango.Item.Free().
 //
-func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
+func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

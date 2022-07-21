@@ -129,7 +129,7 @@ func (e ExpanderStyle) String() string {
 //    - width of the rectangle to draw the arrow in.
 //    - height of the rectangle to draw the arrow in.
 //
-func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int32) {
+func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -195,7 +195,7 @@ func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType
 //    - width of the box.
 //    - height of the box.
 //
-func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -257,7 +257,7 @@ func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 //    - gapX: starting position of the gap.
 //    - gapWidth: width of the gap.
 //
-func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32) {
+func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -325,7 +325,7 @@ func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - width of the rectangle to draw the check in.
 //    - height of the rectangle to draw the check in.
 //
-func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -384,7 +384,7 @@ func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType
 //    - width of the rectangle to draw the diamond in.
 //    - height of the rectangle to draw the diamond in.
 //
-func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -448,7 +448,7 @@ func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 //    - expanderStyle: style to draw the expander in; determines whether the
 //      expander is collapsed, expanded, or in an intermediate state.
 //
-func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int32, expanderStyle ExpanderStyle) {
+func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -501,7 +501,7 @@ func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget 
 //    - height: width of the extension.
 //    - gapSide: side on to which the extension is attached.
 //
-func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType) {
+func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -562,7 +562,7 @@ func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadow
 //    - width of the box.
 //    - height of the box.
 //
-func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -620,7 +620,7 @@ func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowTy
 //    - width of the rectangle around which to draw a focus indicator.
 //    - height of the rectangle around which to draw a focus indicator.
 //
-func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -676,7 +676,7 @@ func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 //    - height of the handle.
 //    - orientation of the handle.
 //
-func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation) {
+func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation) {
 	var _arg1 *C.GtkStyle       // out
 	var _arg2 *C.cairo_t        // out
 	var _arg3 C.GtkStateType    // out
@@ -736,7 +736,7 @@ func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - x2: ending x coordinate.
 //    - y coordinate.
 //
-func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int32) {
+func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -787,7 +787,7 @@ func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget Wid
 //    - y origin.
 //    - layout to draw.
 //
-func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int32, layout *pango.Layout) {
+func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -845,7 +845,7 @@ func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText b
 //    - width of the rectangle to draw the option in.
 //    - height of the rectangle to draw the option in.
 //
-func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -904,7 +904,7 @@ func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - width of the rectangle in which to draw the resize grip.
 //    - height of the rectangle in which to draw the resize grip.
 //
-func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int32) {
+func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -963,7 +963,7 @@ func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widge
 //    - width of the rectangle.
 //    - height: width of the rectangle.
 //
-func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -1025,7 +1025,7 @@ func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - gapX: starting position of the gap.
 //    - gapWidth: width of the gap.
 //
-func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32) {
+func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int) {
 	var _arg1 *C.GtkStyle        // out
 	var _arg2 *C.cairo_t         // out
 	var _arg3 C.GtkStateType     // out
@@ -1094,7 +1094,7 @@ func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadow
 //    - height of the rectangle in which to draw a slider.
 //    - orientation to be used.
 //
-func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation) {
+func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation) {
 	var _arg1 *C.GtkStyle       // out
 	var _arg2 *C.cairo_t        // out
 	var _arg3 C.GtkStateType    // out
@@ -1156,7 +1156,7 @@ func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowTyp
 //    - width of the rectangle in which to draw the spinner.
 //    - height of the rectangle in which to draw the spinner.
 //
-func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint32, x, y, width, height int32) {
+func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -1215,7 +1215,7 @@ func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget W
 //    - width of the rectangle to draw the tab in.
 //    - height of the rectangle to draw the tab in.
 //
-func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32) {
+func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
 	var _arg1 *C.GtkStyle     // out
 	var _arg2 *C.cairo_t      // out
 	var _arg3 C.GtkStateType  // out
@@ -1272,7 +1272,7 @@ func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType S
 //    - y2: ending y coordinate.
 //    - x coordinate.
 //
-func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int32) {
+func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int) {
 	var _arg1 *C.GtkStyle    // out
 	var _arg2 *C.cairo_t     // out
 	var _arg3 C.GtkStateType // out
@@ -1326,7 +1326,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int32)
+	DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1339,7 +1339,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1355,7 +1355,7 @@ type StyleOverrider interface {
 	//    - gapX
 	//    - gapWidth
 	//
-	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32)
+	DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1368,7 +1368,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1381,7 +1381,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1392,7 +1392,7 @@ type StyleOverrider interface {
 	//    - y
 	//    - expanderStyle
 	//
-	DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int32, expanderStyle ExpanderStyle)
+	DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1406,7 +1406,7 @@ type StyleOverrider interface {
 	//    - height
 	//    - gapSide
 	//
-	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType)
+	DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1419,7 +1419,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1431,7 +1431,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1445,7 +1445,7 @@ type StyleOverrider interface {
 	//    - height
 	//    - orientation
 	//
-	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation)
+	DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1456,7 +1456,7 @@ type StyleOverrider interface {
 	//    - x2
 	//    - y
 	//
-	DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int32)
+	DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1468,7 +1468,7 @@ type StyleOverrider interface {
 	//    - y
 	//    - layout
 	//
-	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int32, layout *pango.Layout)
+	DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1481,7 +1481,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1494,7 +1494,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int32)
+	DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1507,7 +1507,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1523,7 +1523,7 @@ type StyleOverrider interface {
 	//    - gapX
 	//    - gapWidth
 	//
-	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32)
+	DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1537,7 +1537,7 @@ type StyleOverrider interface {
 	//    - height
 	//    - orientation
 	//
-	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation)
+	DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1550,7 +1550,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint32, x, y, width, height int32)
+	DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1563,7 +1563,7 @@ type StyleOverrider interface {
 	//    - width
 	//    - height
 	//
-	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+	DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -1574,7 +1574,7 @@ type StyleOverrider interface {
 	//    - y2
 	//    - x
 	//
-	DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int32)
+	DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
 	// The function takes the following parameters:
 	//
 	InitFromRC(rcStyle *RCStyle)
@@ -1598,7 +1598,7 @@ type StyleOverrider interface {
 	//
 	//    - pixbuf: newly-created Pixbuf containing the rendered icon.
 	//
-	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int32, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
+	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
 	// SetBackground sets the background of window to the background color or
 	// pixmap specified by style for the given state.
 	//
@@ -1650,121 +1650,121 @@ func classInitStyler(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int32)
+		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
 	}); ok {
 		pclass.draw_arrow = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_arrow)
 	}
 
 	if _, ok := goval.(interface {
-		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_box = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_box)
 	}
 
 	if _, ok := goval.(interface {
-		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32)
+		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	}); ok {
 		pclass.draw_box_gap = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_box_gap)
 	}
 
 	if _, ok := goval.(interface {
-		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_check = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_check)
 	}
 
 	if _, ok := goval.(interface {
-		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_diamond = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_diamond)
 	}
 
 	if _, ok := goval.(interface {
-		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int32, expanderStyle ExpanderStyle)
+		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
 	}); ok {
 		pclass.draw_expander = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_expander)
 	}
 
 	if _, ok := goval.(interface {
-		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType)
+		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
 	}); ok {
 		pclass.draw_extension = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_extension)
 	}
 
 	if _, ok := goval.(interface {
-		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_flat_box = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_flat_box)
 	}
 
 	if _, ok := goval.(interface {
-		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_focus = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_focus)
 	}
 
 	if _, ok := goval.(interface {
-		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation)
+		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	}); ok {
 		pclass.draw_handle = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_handle)
 	}
 
 	if _, ok := goval.(interface {
-		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int32)
+		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
 	}); ok {
 		pclass.draw_hline = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_hline)
 	}
 
 	if _, ok := goval.(interface {
-		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int32, layout *pango.Layout)
+		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
 	}); ok {
 		pclass.draw_layout = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_layout)
 	}
 
 	if _, ok := goval.(interface {
-		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_option = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_option)
 	}
 
 	if _, ok := goval.(interface {
-		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int32)
+		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
 	}); ok {
 		pclass.draw_resize_grip = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_resize_grip)
 	}
 
 	if _, ok := goval.(interface {
-		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_shadow = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_shadow)
 	}
 
 	if _, ok := goval.(interface {
-		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32)
+		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	}); ok {
 		pclass.draw_shadow_gap = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_shadow_gap)
 	}
 
 	if _, ok := goval.(interface {
-		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation)
+		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	}); ok {
 		pclass.draw_slider = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_slider)
 	}
 
 	if _, ok := goval.(interface {
-		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint32, x, y, width, height int32)
+		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
 	}); ok {
 		pclass.draw_spinner = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_spinner)
 	}
 
 	if _, ok := goval.(interface {
-		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	}); ok {
 		pclass.draw_tab = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_tab)
 	}
 
 	if _, ok := goval.(interface {
-		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int32)
+		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
 	}); ok {
 		pclass.draw_vline = (*[0]byte)(C._gotk4_gtk3_StyleClass_draw_vline)
 	}
@@ -1778,7 +1778,7 @@ func classInitStyler(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int32, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
+		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
 	}); ok {
 		pclass.render_icon = (*[0]byte)(C._gotk4_gtk3_StyleClass_render_icon)
 	}
@@ -1810,7 +1810,7 @@ func _gotk4_gtk3_StyleClass_copy(arg0 *C.GtkStyle, arg1 *C.GtkStyle) {
 func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.GtkArrowType, arg7 C.gboolean, arg8 C.gint, arg9 C.gint, arg10 C.gint, arg11 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int32)
+		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -1820,10 +1820,10 @@ func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 	var _detail string         // out
 	var _arrowType ArrowType   // out
 	var _fill bool             // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -1854,10 +1854,10 @@ func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 	if arg7 != 0 {
 		_fill = true
 	}
-	_x = int32(arg8)
-	_y = int32(arg9)
-	_width = int32(arg10)
-	_height = int32(arg11)
+	_x = int(arg8)
+	_y = int(arg9)
+	_width = int(arg10)
+	_height = int(arg11)
 
 	iface.DrawArrow(_cr, _stateType, _shadowType, _widget, _detail, _arrowType, _fill, _x, _y, _width, _height)
 }
@@ -1866,7 +1866,7 @@ func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -1874,10 +1874,10 @@ func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -1904,10 +1904,10 @@ func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawBox(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -1916,7 +1916,7 @@ func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType, arg11 C.gint, arg12 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32)
+		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -1924,13 +1924,13 @@ func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 	var _gapSide PositionType  // out
-	var _gapX int32            // out
-	var _gapWidth int32        // out
+	var _gapX int              // out
+	var _gapWidth int          // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -1957,13 +1957,13 @@ func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 	_gapSide = PositionType(arg10)
-	_gapX = int32(arg11)
-	_gapWidth = int32(arg12)
+	_gapX = int(arg11)
+	_gapWidth = int(arg12)
 
 	iface.DrawBoxGap(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _gapSide, _gapX, _gapWidth)
 }
@@ -1972,7 +1972,7 @@ func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -1980,10 +1980,10 @@ func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2010,10 +2010,10 @@ func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawCheck(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2022,7 +2022,7 @@ func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2030,10 +2030,10 @@ func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2060,10 +2060,10 @@ func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawDiamond(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2072,15 +2072,15 @@ func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.GtkExpanderStyle) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int32, expanderStyle ExpanderStyle)
+		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
 	})
 
 	var _cr *cairo.Context           // out
 	var _stateType StateType         // out
 	var _widget Widgetter            // out
 	var _detail string               // out
-	var _x int32                     // out
-	var _y int32                     // out
+	var _x int                       // out
+	var _y int                       // out
 	var _expanderStyle ExpanderStyle // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
@@ -2107,8 +2107,8 @@ func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_x = int32(arg5)
-	_y = int32(arg6)
+	_x = int(arg5)
+	_y = int(arg6)
 	_expanderStyle = ExpanderStyle(arg7)
 
 	iface.DrawExpander(_cr, _stateType, _widget, _detail, _x, _y, _expanderStyle)
@@ -2118,7 +2118,7 @@ func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType)
+		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2126,10 +2126,10 @@ func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, ar
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 	var _gapSide PositionType  // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
@@ -2157,10 +2157,10 @@ func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, ar
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 	_gapSide = PositionType(arg10)
 
 	iface.DrawExtension(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _gapSide)
@@ -2170,7 +2170,7 @@ func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, ar
 func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2178,10 +2178,10 @@ func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2208,10 +2208,10 @@ func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawFlatBox(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2220,17 +2220,17 @@ func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint, arg8 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context   // out
 	var _stateType StateType // out
 	var _widget Widgetter    // out
 	var _detail string       // out
-	var _x int32             // out
-	var _y int32             // out
-	var _width int32         // out
-	var _height int32        // out
+	var _x int               // out
+	var _y int               // out
+	var _width int           // out
+	var _height int          // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2256,10 +2256,10 @@ func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_x = int32(arg5)
-	_y = int32(arg6)
-	_width = int32(arg7)
-	_height = int32(arg8)
+	_x = int(arg5)
+	_y = int(arg6)
+	_width = int(arg7)
+	_height = int(arg8)
 
 	iface.DrawFocus(_cr, _stateType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2268,7 +2268,7 @@ func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkOrientation) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation)
+		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	})
 
 	var _cr *cairo.Context       // out
@@ -2276,10 +2276,10 @@ func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 	var _shadowType ShadowType   // out
 	var _widget Widgetter        // out
 	var _detail string           // out
-	var _x int32                 // out
-	var _y int32                 // out
-	var _width int32             // out
-	var _height int32            // out
+	var _x int                   // out
+	var _y int                   // out
+	var _width int               // out
+	var _height int              // out
 	var _orientation Orientation // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
@@ -2307,10 +2307,10 @@ func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 	_orientation = Orientation(arg10)
 
 	iface.DrawHandle(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _orientation)
@@ -2320,16 +2320,16 @@ func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int32)
+		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
 	})
 
 	var _cr *cairo.Context   // out
 	var _stateType StateType // out
 	var _widget Widgetter    // out
 	var _detail string       // out
-	var _x1 int32            // out
-	var _x2 int32            // out
-	var _y int32             // out
+	var _x1 int              // out
+	var _x2 int              // out
+	var _y int               // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2355,9 +2355,9 @@ func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_x1 = int32(arg5)
-	_x2 = int32(arg6)
-	_y = int32(arg7)
+	_x1 = int(arg5)
+	_x2 = int(arg6)
+	_y = int(arg7)
 
 	iface.DrawHline(_cr, _stateType, _widget, _detail, _x1, _x2, _y)
 }
@@ -2366,7 +2366,7 @@ func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.gboolean, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 *C.PangoLayout) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int32, layout *pango.Layout)
+		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
 	})
 
 	var _cr *cairo.Context    // out
@@ -2374,8 +2374,8 @@ func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 	var _useText bool         // out
 	var _widget Widgetter     // out
 	var _detail string        // out
-	var _x int32              // out
-	var _y int32              // out
+	var _x int                // out
+	var _y int                // out
 	var _layout *pango.Layout // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
@@ -2405,8 +2405,8 @@ func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
+	_x = int(arg6)
+	_y = int(arg7)
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg8))
 		_layout = &pango.Layout{
@@ -2421,7 +2421,7 @@ func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2429,10 +2429,10 @@ func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2459,10 +2459,10 @@ func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawOption(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2471,7 +2471,7 @@ func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.GdkWindowEdge, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int32)
+		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context   // out
@@ -2479,10 +2479,10 @@ func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, 
 	var _widget Widgetter    // out
 	var _detail string       // out
 	var _edge gdk.WindowEdge // out
-	var _x int32             // out
-	var _y int32             // out
-	var _width int32         // out
-	var _height int32        // out
+	var _x int               // out
+	var _y int               // out
+	var _width int           // out
+	var _height int          // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2509,10 +2509,10 @@ func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, 
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	_edge = gdk.WindowEdge(arg5)
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawResizeGrip(_cr, _stateType, _widget, _detail, _edge, _x, _y, _width, _height)
 }
@@ -2521,7 +2521,7 @@ func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, 
 func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2529,10 +2529,10 @@ func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2559,10 +2559,10 @@ func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawShadow(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2571,7 +2571,7 @@ func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType, arg11 C.gint, arg12 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, gapSide PositionType, gapX, gapWidth int32)
+		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2579,13 +2579,13 @@ func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, a
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 	var _gapSide PositionType  // out
-	var _gapX int32            // out
-	var _gapWidth int32        // out
+	var _gapX int              // out
+	var _gapWidth int          // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2612,13 +2612,13 @@ func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, a
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 	_gapSide = PositionType(arg10)
-	_gapX = int32(arg11)
-	_gapWidth = int32(arg12)
+	_gapX = int(arg11)
+	_gapWidth = int(arg12)
 
 	iface.DrawShadowGap(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _gapSide, _gapX, _gapWidth)
 }
@@ -2627,7 +2627,7 @@ func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, a
 func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkOrientation) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32, orientation Orientation)
+		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	})
 
 	var _cr *cairo.Context       // out
@@ -2635,10 +2635,10 @@ func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 	var _shadowType ShadowType   // out
 	var _widget Widgetter        // out
 	var _detail string           // out
-	var _x int32                 // out
-	var _y int32                 // out
-	var _width int32             // out
-	var _height int32            // out
+	var _x int                   // out
+	var _y int                   // out
+	var _width int               // out
+	var _height int              // out
 	var _orientation Orientation // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
@@ -2666,10 +2666,10 @@ func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 	_orientation = Orientation(arg10)
 
 	iface.DrawSlider(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height, _orientation)
@@ -2679,18 +2679,18 @@ func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.guint, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint32, x, y, width, height int32)
+		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context   // out
 	var _stateType StateType // out
 	var _widget Widgetter    // out
 	var _detail string       // out
-	var _step uint32         // out
-	var _x int32             // out
-	var _y int32             // out
-	var _width int32         // out
-	var _height int32        // out
+	var _step uint           // out
+	var _x int               // out
+	var _y int               // out
+	var _width int           // out
+	var _height int          // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2716,11 +2716,11 @@ func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_step = uint32(arg5)
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_step = uint(arg5)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawSpinner(_cr, _stateType, _widget, _detail, _step, _x, _y, _width, _height)
 }
@@ -2729,7 +2729,7 @@ func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int32)
+		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
 
 	var _cr *cairo.Context     // out
@@ -2737,10 +2737,10 @@ func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 	var _shadowType ShadowType // out
 	var _widget Widgetter      // out
 	var _detail string         // out
-	var _x int32               // out
-	var _y int32               // out
-	var _width int32           // out
-	var _height int32          // out
+	var _x int                 // out
+	var _y int                 // out
+	var _width int             // out
+	var _height int            // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2767,10 +2767,10 @@ func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
-	_x = int32(arg6)
-	_y = int32(arg7)
-	_width = int32(arg8)
-	_height = int32(arg9)
+	_x = int(arg6)
+	_y = int(arg7)
+	_width = int(arg8)
+	_height = int(arg9)
 
 	iface.DrawTab(_cr, _stateType, _shadowType, _widget, _detail, _x, _y, _width, _height)
 }
@@ -2779,16 +2779,16 @@ func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 func _gotk4_gtk3_StyleClass_draw_vline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int32)
+		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
 	})
 
 	var _cr *cairo.Context   // out
 	var _stateType StateType // out
 	var _widget Widgetter    // out
 	var _detail string       // out
-	var _y1 int32            // out
-	var _y2 int32            // out
-	var _x int32             // out
+	var _y1 int              // out
+	var _y2 int              // out
+	var _x int               // out
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
@@ -2814,9 +2814,9 @@ func _gotk4_gtk3_StyleClass_draw_vline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 		_widget = rv
 	}
 	_detail = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
-	_y1 = int32(arg5)
-	_y2 = int32(arg6)
-	_x = int32(arg7)
+	_y1 = int(arg5)
+	_y2 = int(arg6)
+	_x = int(arg7)
 
 	iface.DrawVline(_cr, _stateType, _widget, _detail, _y1, _y2, _x)
 }
@@ -2845,20 +2845,20 @@ func _gotk4_gtk3_StyleClass_realize(arg0 *C.GtkStyle) {
 func _gotk4_gtk3_StyleClass_render_icon(arg0 *C.GtkStyle, arg1 *C.GtkIconSource, arg2 C.GtkTextDirection, arg3 C.GtkStateType, arg4 C.GtkIconSize, arg5 *C.GtkWidget, arg6 *C.gchar) (cret *C.GdkPixbuf) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int32, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
+		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
 	})
 
 	var _source *IconSource      // out
 	var _direction TextDirection // out
 	var _state StateType         // out
-	var _size int32              // out
+	var _size int                // out
 	var _widget Widgetter        // out
 	var _detail string           // out
 
 	_source = (*IconSource)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	_direction = TextDirection(arg2)
 	_state = StateType(arg3)
-	_size = int32(arg4)
+	_size = int(arg4)
 	if arg5 != nil {
 		{
 			objptr := unsafe.Pointer(arg5)
@@ -3017,7 +3017,7 @@ func NewStyle() *Style {
 //    - width
 //    - height
 //
-func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windower, stateType StateType, x, y, width, height int32) {
+func (style *Style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Windower, stateType StateType, x, y, width, height int) {
 	var _arg0 *C.GtkStyle    // out
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.GdkWindow   // out
@@ -3243,7 +3243,7 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 //
 //    - pixbuf: newly-created Pixbuf containing the rendered icon.
 //
-func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int32, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
+func (style *Style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStyle        // out
 	var _arg1 *C.GtkIconSource   // out
 	var _arg2 C.GtkTextDirection // out
@@ -3331,7 +3331,7 @@ func (style *Style) SetBackground(window gdk.Windower, stateType StateType) {
 //    - pathReversed (optional): location to store the reverse class path as an
 //      allocated string, or NULL.
 //
-func (widget *Widget) ClassPath() (pathLength uint32, path, pathReversed string) {
+func (widget *Widget) ClassPath() (pathLength uint, path, pathReversed string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // in
 	var _arg2 *C.gchar     // in
@@ -3342,11 +3342,11 @@ func (widget *Widget) ClassPath() (pathLength uint32, path, pathReversed string)
 	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(widget)
 
-	var _pathLength uint32   // out
+	var _pathLength uint     // out
 	var _path string         // out
 	var _pathReversed string // out
 
-	_pathLength = uint32(_arg1)
+	_pathLength = uint(_arg1)
 	if _arg2 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -3717,7 +3717,7 @@ func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
 //    - pathReversed (optional): location to store allocated reverse path string,
 //      or NULL.
 //
-func (widget *Widget) Path() (pathLength uint32, path, pathReversed string) {
+func (widget *Widget) Path() (pathLength uint, path, pathReversed string) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // in
 	var _arg2 *C.gchar     // in
@@ -3728,11 +3728,11 @@ func (widget *Widget) Path() (pathLength uint32, path, pathReversed string) {
 	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(widget)
 
-	var _pathLength uint32   // out
+	var _pathLength uint     // out
 	var _path string         // out
 	var _pathReversed string // out
 
-	_pathLength = uint32(_arg1)
+	_pathLength = uint(_arg1)
 	if _arg2 != nil {
 		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
 		defer C.free(unsafe.Pointer(_arg2))
@@ -3770,7 +3770,7 @@ func (widget *Widget) Path() (pathLength uint32, path, pathReversed string) {
 //
 //    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
 //
-func (widget *Widget) RenderIcon(stockId string, size int32, detail string) *gdkpixbuf.Pixbuf {
+func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkWidget  // out
 	var _arg1 *C.gchar      // out
 	var _arg2 C.GtkIconSize // out

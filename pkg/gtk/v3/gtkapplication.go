@@ -735,7 +735,7 @@ func (application *Application) Menubar() gio.MenuModeller {
 //
 //    - window (optional) with ID id, or NULL if there is no window with this ID.
 //
-func (application *Application) WindowByID(id uint32) *Window {
+func (application *Application) WindowByID(id uint) *Window {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 	var _cret *C.GtkWindow      // in
@@ -826,7 +826,7 @@ func (application *Application) Windows() []*Window {
 //      remove the request. If the platform does not support inhibiting or the
 //      request failed for some reason, 0 is returned.
 //
-func (application *Application) Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint32 {
+func (application *Application) Inhibit(window *Window, flags ApplicationInhibitFlags, reason string) uint {
 	var _arg0 *C.GtkApplication            // out
 	var _arg1 *C.GtkWindow                 // out
 	var _arg2 C.GtkApplicationInhibitFlags // out
@@ -849,9 +849,9 @@ func (application *Application) Inhibit(window *Window, flags ApplicationInhibit
 	runtime.KeepAlive(flags)
 	runtime.KeepAlive(reason)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1157,7 +1157,7 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 //
 //    - cookie that was returned by gtk_application_inhibit().
 //
-func (application *Application) Uninhibit(cookie uint32) {
+func (application *Application) Uninhibit(cookie uint) {
 	var _arg0 *C.GtkApplication // out
 	var _arg1 C.guint           // out
 

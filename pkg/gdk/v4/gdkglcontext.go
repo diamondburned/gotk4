@@ -203,7 +203,7 @@ func (context *GLContext) ForwardCompatible() bool {
 //    - major (optional): return location for the major version to request.
 //    - minor (optional): return location for the minor version to request.
 //
-func (context *GLContext) RequiredVersion() (major, minor int32) {
+func (context *GLContext) RequiredVersion() (major, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
@@ -213,11 +213,11 @@ func (context *GLContext) RequiredVersion() (major, minor int32) {
 	C.gdk_gl_context_get_required_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _major int32 // out
-	var _minor int32 // out
+	var _major int // out
+	var _minor int // out
 
-	_major = int32(_arg1)
-	_minor = int32(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -329,7 +329,7 @@ func (context *GLContext) UseES() bool {
 //    - major: return location for the major version.
 //    - minor: return location for the minor version.
 //
-func (context *GLContext) Version() (major, minor int32) {
+func (context *GLContext) Version() (major, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // in
 	var _arg2 C.int           // in
@@ -339,11 +339,11 @@ func (context *GLContext) Version() (major, minor int32) {
 	C.gdk_gl_context_get_version(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(context)
 
-	var _major int32 // out
-	var _minor int32 // out
+	var _major int // out
+	var _minor int // out
 
-	_major = int32(_arg1)
-	_minor = int32(_arg2)
+	_major = int(_arg1)
+	_minor = int(_arg2)
 
 	return _major, _minor
 }
@@ -485,7 +485,7 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //    - major version to request.
 //    - minor version to request.
 //
-func (context *GLContext) SetRequiredVersion(major, minor int32) {
+func (context *GLContext) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -519,7 +519,7 @@ func (context *GLContext) SetRequiredVersion(major, minor int32) {
 //    - useEs: whether the context should use OpenGL ES instead of OpenGL, or -1
 //      to allow auto-detection.
 //
-func (context *GLContext) SetUseES(useEs int32) {
+func (context *GLContext) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
 	var _arg1 C.int           // out
 

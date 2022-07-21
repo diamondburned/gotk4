@@ -266,7 +266,7 @@ func (comboBox *ComboBoxText) ActiveText() string {
 //    - id (optional): string ID for this value, or NULL.
 //    - text: string to display.
 //
-func (comboBox *ComboBoxText) Insert(position int32, id, text string) {
+func (comboBox *ComboBoxText) Insert(position int, id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 	var _arg2 *C.char            // out
@@ -300,7 +300,7 @@ func (comboBox *ComboBoxText) Insert(position int32, id, text string) {
 //    - position: index to insert text.
 //    - text: string.
 //
-func (comboBox *ComboBoxText) InsertText(position int32, text string) {
+func (comboBox *ComboBoxText) InsertText(position int, text string) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 	var _arg2 *C.char            // out
@@ -374,7 +374,7 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 //
 //    - position: index of the item to remove.
 //
-func (comboBox *ComboBoxText) Remove(position int32) {
+func (comboBox *ComboBoxText) Remove(position int) {
 	var _arg0 *C.GtkComboBoxText // out
 	var _arg1 C.int              // out
 

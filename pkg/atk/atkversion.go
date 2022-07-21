@@ -51,14 +51,14 @@ const VERSION_MIN_REQUIRED = 2
 //
 //    - guint: binary age of the ATK library.
 //
-func GetBinaryAge() uint32 {
+func GetBinaryAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_binary_age()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -70,14 +70,14 @@ func GetBinaryAge() uint32 {
 //
 //    - guint: interface age of the ATK library.
 //
-func GetInterfaceAge() uint32 {
+func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_interface_age()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -93,14 +93,14 @@ func GetInterfaceAge() uint32 {
 //
 //    - guint: major version number of the ATK library.
 //
-func GetMajorVersion() uint32 {
+func GetMajorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_major_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -116,14 +116,14 @@ func GetMajorVersion() uint32 {
 //
 //    - guint: micro version number of the ATK library.
 //
-func GetMicroVersion() uint32 {
+func GetMicroVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_micro_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -139,14 +139,14 @@ func GetMicroVersion() uint32 {
 //
 //    - guint: minor version number of the ATK library.
 //
-func GetMinorVersion() uint32 {
+func GetMinorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.atk_get_minor_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

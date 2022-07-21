@@ -362,7 +362,7 @@ func (connection *SocketConnection) IsConnected() bool {
 //
 //    - gType: #GType.
 //
-func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int32) coreglib.Type {
+func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) coreglib.Type {
 	var _arg1 C.GSocketFamily // out
 	var _arg2 C.GSocketType   // out
 	var _arg3 C.gint          // out
@@ -397,7 +397,7 @@ func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, prot
 //    - typ: Type.
 //    - protocol id.
 //
-func SocketConnectionFactoryRegisterType(gType coreglib.Type, family SocketFamily, typ SocketType, protocol int32) {
+func SocketConnectionFactoryRegisterType(gType coreglib.Type, family SocketFamily, typ SocketType, protocol int) {
 	var _arg1 C.GType         // out
 	var _arg2 C.GSocketFamily // out
 	var _arg3 C.GSocketType   // out

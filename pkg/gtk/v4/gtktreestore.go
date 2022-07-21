@@ -199,7 +199,7 @@ func (treeStore *TreeStore) Clear() {
 //
 //    - iter: unset TreeIter to set to the new row.
 //
-func (treeStore *TreeStore) Insert(parent *TreeIter, position int32) *TreeIter {
+func (treeStore *TreeStore) Insert(parent *TreeIter, position int) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -328,7 +328,7 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) *TreeIter {
 //
 //    - iter (optional): unset TreeIter to set the new row, or NULL.
 //
-func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, columns []int32, values []coreglib.Value) *TreeIter {
+func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int, columns []int, values []coreglib.Value) *TreeIter {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 C.GtkTreeIter   // in
 	var _arg2 *C.GtkTreeIter  // out
@@ -422,7 +422,7 @@ func (treeStore *TreeStore) IsAncestor(iter, descendant *TreeIter) bool {
 //
 //    - gint: depth of iter.
 //
-func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
+func (treeStore *TreeStore) IterDepth(iter *TreeIter) int {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _cret C.int           // in
@@ -434,9 +434,9 @@ func (treeStore *TreeStore) IterDepth(iter *TreeIter) int32 {
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(iter)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -636,7 +636,7 @@ func (treeStore *TreeStore) SetColumnTypes(types []coreglib.Type) {
 //    - column number to modify.
 //    - value: new value for the cell.
 //
-func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
+func (treeStore *TreeStore) SetValue(iter *TreeIter, column int, value *coreglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 C.int           // out
@@ -665,7 +665,7 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coregl
 //    - columns: array of column numbers.
 //    - values: array of GValues.
 //
-func (treeStore *TreeStore) Set(iter *TreeIter, columns []int32, values []coreglib.Value) {
+func (treeStore *TreeStore) Set(iter *TreeIter, columns []int, values []coreglib.Value) {
 	var _arg0 *C.GtkTreeStore // out
 	var _arg1 *C.GtkTreeIter  // out
 	var _arg2 *C.int          // out

@@ -58,7 +58,7 @@ type ColorChooserOverrider interface {
 	//    - colorsPerLine: number of colors to show in each row/column.
 	//    - colors (optional) of the palette, or NULL.
 	//
-	AddPalette(orientation Orientation, colorsPerLine int32, colors []gdk.RGBA)
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	// The function takes the following parameters:
 	//
 	ColorActivated(color *gdk.RGBA)
@@ -103,7 +103,7 @@ type ColorChooserer interface {
 	coreglib.Objector
 
 	// AddPalette adds a palette to the color chooser.
-	AddPalette(orientation Orientation, colorsPerLine int32, colors []gdk.RGBA)
+	AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA)
 	// RGBA gets the currently-selected color.
 	RGBA() *gdk.RGBA
 	// UseAlpha returns whether the color chooser shows the alpha channel.
@@ -135,11 +135,11 @@ func _gotk4_gtk4_ColorChooserInterface_add_palette(arg0 *C.GtkColorChooser, arg1
 	iface := goval.(ColorChooserOverrider)
 
 	var _orientation Orientation // out
-	var _colorsPerLine int32     // out
+	var _colorsPerLine int       // out
 	var _colors []gdk.RGBA       // out
 
 	_orientation = Orientation(arg1)
-	_colorsPerLine = int32(arg2)
+	_colorsPerLine = int(arg2)
 	if arg4 != nil {
 		{
 			src := unsafe.Slice((*C.GdkRGBA)(arg4), arg3)
@@ -251,7 +251,7 @@ func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) core
 //    - colorsPerLine: number of colors to show in each row/column.
 //    - colors (optional) of the palette, or NULL.
 //
-func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int32, colors []gdk.RGBA) {
+func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
 	var _arg1 C.GtkOrientation   // out
 	var _arg2 C.int              // out

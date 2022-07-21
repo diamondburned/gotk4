@@ -44,7 +44,7 @@ type ActionOverrider interface {
 	//
 	//    - ok: TRUE if success, FALSE otherwise.
 	//
-	DoAction(i int32) bool
+	DoAction(i int) bool
 	// Description returns a description of the specified action of the object.
 	//
 	// The function takes the following parameters:
@@ -56,7 +56,7 @@ type ActionOverrider interface {
 	//    - utf8 (optional): description string, or NULL if action does not
 	//      implement this interface.
 	//
-	Description(i int32) string
+	Description(i int) string
 	// Keybinding gets the keybinding which can be used to activate this action,
 	// if one exists. The string returned should contain localized,
 	// human-readable, key sequences as they would appear when displayed on
@@ -92,7 +92,7 @@ type ActionOverrider interface {
 	//    - utf8 (optional): keybinding which can be used to activate this
 	//      action, or NULL if there is no keybinding for this action.
 	//
-	Keybinding(i int32) string
+	Keybinding(i int) string
 	// LocalizedName returns the localized name of the specified action of the
 	// object.
 	//
@@ -105,7 +105,7 @@ type ActionOverrider interface {
 	//    - utf8 (optional): name string, or NULL if action does not implement
 	//      this interface.
 	//
-	LocalizedName(i int32) string
+	LocalizedName(i int) string
 	// NActions gets the number of accessible actions available on the object.
 	// If there are more than one, the first one is considered the "default"
 	// action of the object.
@@ -115,7 +115,7 @@ type ActionOverrider interface {
 	//    - gint: the number of actions, or 0 if action does not implement this
 	//      interface.
 	//
-	NActions() int32
+	NActions() int
 	// Name returns a non-localized string naming the specified action of the
 	// object. This name is generally not descriptive of the end result of the
 	// action, but instead names the 'interaction type' which the object
@@ -138,7 +138,7 @@ type ActionOverrider interface {
 	//    - utf8 (optional): name string, or NULL if action does not implement
 	//      this interface.
 	//
-	Name(i int32) string
+	Name(i int) string
 	// SetDescription sets a description of the specified action of the object.
 	//
 	// The function takes the following parameters:
@@ -150,7 +150,7 @@ type ActionOverrider interface {
 	//
 	//    - ok: gboolean representing if the description was successfully set;.
 	//
-	SetDescription(i int32, desc string) bool
+	SetDescription(i int, desc string) bool
 }
 
 // Action should be implemented by instances of Object classes with which the
@@ -184,22 +184,22 @@ type Actioner interface {
 	coreglib.Objector
 
 	// DoAction: perform the specified action on the object.
-	DoAction(i int32) bool
+	DoAction(i int) bool
 	// Description returns a description of the specified action of the object.
-	Description(i int32) string
+	Description(i int) string
 	// Keybinding gets the keybinding which can be used to activate this action,
 	// if one exists.
-	Keybinding(i int32) string
+	Keybinding(i int) string
 	// LocalizedName returns the localized name of the specified action of the
 	// object.
-	LocalizedName(i int32) string
+	LocalizedName(i int) string
 	// NActions gets the number of accessible actions available on the object.
-	NActions() int32
+	NActions() int
 	// Name returns a non-localized string naming the specified action of the
 	// object.
-	Name(i int32) string
+	Name(i int) string
 	// SetDescription sets a description of the specified action of the object.
-	SetDescription(i int32, desc string) bool
+	SetDescription(i int, desc string) bool
 }
 
 var _ Actioner = (*Action)(nil)
@@ -220,9 +220,9 @@ func _gotk4_atk1_ActionIface_do_action(arg0 *C.AtkAction, arg1 C.gint) (cret C.g
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	ok := iface.DoAction(_i)
 
@@ -238,9 +238,9 @@ func _gotk4_atk1_ActionIface_get_description(arg0 *C.AtkAction, arg1 C.gint) (cr
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	utf8 := iface.Description(_i)
 
@@ -257,9 +257,9 @@ func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.AtkAction, arg1 C.gint) (cre
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	utf8 := iface.Keybinding(_i)
 
@@ -276,9 +276,9 @@ func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.AtkAction, arg1 C.gint) 
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	utf8 := iface.LocalizedName(_i)
 
@@ -307,9 +307,9 @@ func _gotk4_atk1_ActionIface_get_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.g
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
-	var _i int32 // out
+	var _i int // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 
 	utf8 := iface.Name(_i)
 
@@ -326,10 +326,10 @@ func _gotk4_atk1_ActionIface_set_description(arg0 *C.AtkAction, arg1 C.gint, arg
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
-	var _i int32     // out
+	var _i int       // out
 	var _desc string // out
 
-	_i = int32(arg1)
+	_i = int(arg1)
 	_desc = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	ok := iface.SetDescription(_i, _desc)
@@ -361,7 +361,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 //    - ok: TRUE if success, FALSE otherwise.
 //
-func (action *Action) DoAction(i int32) bool {
+func (action *Action) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret C.gboolean   // in
@@ -393,7 +393,7 @@ func (action *Action) DoAction(i int32) bool {
 //    - utf8 (optional): description string, or NULL if action does not implement
 //      this interface.
 //
-func (action *Action) Description(i int32) string {
+func (action *Action) Description(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -448,7 +448,7 @@ func (action *Action) Description(i int32) string {
 //    - utf8 (optional): keybinding which can be used to activate this action, or
 //      NULL if there is no keybinding for this action.
 //
-func (action *Action) Keybinding(i int32) string {
+func (action *Action) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -481,7 +481,7 @@ func (action *Action) Keybinding(i int32) string {
 //    - utf8 (optional): name string, or NULL if action does not implement this
 //      interface.
 //
-func (action *Action) LocalizedName(i int32) string {
+func (action *Action) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -511,7 +511,7 @@ func (action *Action) LocalizedName(i int32) string {
 //    - gint: the number of actions, or 0 if action does not implement this
 //      interface.
 //
-func (action *Action) NActions() int32 {
+func (action *Action) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
 
@@ -520,9 +520,9 @@ func (action *Action) NActions() int32 {
 	_cret = C.atk_action_get_n_actions(_arg0)
 	runtime.KeepAlive(action)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -549,7 +549,7 @@ func (action *Action) NActions() int32 {
 //    - utf8 (optional): name string, or NULL if action does not implement this
 //      interface.
 //
-func (action *Action) Name(i int32) string {
+func (action *Action) Name(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _cret *C.gchar     // in
@@ -581,7 +581,7 @@ func (action *Action) Name(i int32) string {
 //
 //    - ok: gboolean representing if the description was successfully set;.
 //
-func (action *Action) SetDescription(i int32, desc string) bool {
+func (action *Action) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.gchar     // out

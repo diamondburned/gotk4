@@ -47,7 +47,7 @@ type DragSurfacer interface {
 	coreglib.Objector
 
 	// Present drag_surface.
-	Present(width, height int32) bool
+	Present(width, height int) bool
 }
 
 var _ DragSurfacer = (*DragSurface)(nil)
@@ -78,7 +78,7 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 //
 //    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
-func (dragSurface *DragSurface) Present(width, height int32) bool {
+func (dragSurface *DragSurface) Present(width, height int) bool {
 	var _arg0 *C.GdkDragSurface // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

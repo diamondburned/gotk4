@@ -148,7 +148,7 @@ func DragSetIconDefault(context *gdk.DragContext) {
 //    - hotX: x offset of the hotspot within the icon.
 //    - hotY: y offset of the hotspot within the icon.
 //
-func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int32) {
+func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GIcon          // out
 	var _arg3 C.gint            // out
@@ -179,7 +179,7 @@ func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int
 //    - hotX: x offset of the hotspot within the icon.
 //    - hotY: y offset of the hotspot within the icon.
 //
-func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int32) {
+func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out
 	var _arg3 C.gint            // out
@@ -208,7 +208,7 @@ func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int32
 //    - hotX: x offset within widget of the hotspot.
 //    - hotY: y offset within widget of the hotspot.
 //
-func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX, hotY int32) {
+func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkPixbuf      // out
 	var _arg3 C.gint            // out
@@ -238,7 +238,7 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX,
 //    - hotX: x offset within the icon of the hotspot.
 //    - hotY: y offset within the icon of the hotspot.
 //
-func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int32) {
+func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.gchar          // out
 	var _arg3 C.gint            // out
@@ -295,7 +295,7 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 //    - hotX: x offset within widget of the hotspot.
 //    - hotY: y offset within widget of the hotspot.
 //
-func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY int32) {
+func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GtkWidget      // out
 	var _arg3 C.gint            // out
@@ -330,7 +330,7 @@ func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY in
 //
 //    - dragContext: context for this drag.
 //
-func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, button int32, event *gdk.Event) *gdk.DragContext {
+func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event) *gdk.DragContext {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkTargetList  // out
 	var _arg2 C.GdkDragAction   // out
@@ -409,7 +409,7 @@ func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, but
 //
 //    - dragContext: context for this drag.
 //
-func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.DragAction, button int32, event *gdk.Event, x, y int32) *gdk.DragContext {
+func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event, x, y int) *gdk.DragContext {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 *C.GtkTargetList  // out
 	var _arg2 C.GdkDragAction   // out
@@ -466,7 +466,7 @@ func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.
 //
 //    - ok: TRUE if the drag threshold has been passed.
 //
-func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int32) bool {
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out

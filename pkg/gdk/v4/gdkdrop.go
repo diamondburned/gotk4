@@ -320,7 +320,7 @@ func (self *Drop) Surface() Surfacer {
 //    - callback (optional): GAsyncReadyCallback to call when the request is
 //      satisfied.
 //
-func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 **C.char              // out
@@ -439,7 +439,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 //    - ioPriority: i/O priority of the request.
 //    - callback (optional) to call when the request is satisfied.
 //
-func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
+func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
 	var _arg3 *C.GCancellable       // out
 	var _arg1 C.GType               // out

@@ -352,7 +352,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 //
 //    - guint: default cursor size.
 //
-func (display *Display) DefaultCursorSize() uint32 {
+func (display *Display) DefaultCursorSize() uint {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint       // in
 
@@ -361,9 +361,9 @@ func (display *Display) DefaultCursorSize() uint32 {
 	_cret = C.gdk_display_get_default_cursor_size(_arg0)
 	runtime.KeepAlive(display)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -544,7 +544,7 @@ func (display *Display) Event() *Event {
 //    - width: return location for the maximal cursor width.
 //    - height: return location for the maximal cursor height.
 //
-func (display *Display) MaximalCursorSize() (width, height uint32) {
+func (display *Display) MaximalCursorSize() (width, height uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // in
 	var _arg2 C.guint       // in
@@ -554,11 +554,11 @@ func (display *Display) MaximalCursorSize() (width, height uint32) {
 	C.gdk_display_get_maximal_cursor_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)
 
-	var _width uint32  // out
-	var _height uint32 // out
+	var _width uint  // out
+	var _height uint // out
 
-	_width = uint32(_arg1)
-	_height = uint32(_arg2)
+	_width = uint(_arg1)
+	_height = uint(_arg2)
 
 	return _width, _height
 }
@@ -573,7 +573,7 @@ func (display *Display) MaximalCursorSize() (width, height uint32) {
 //
 //    - monitor (optional) or NULL if monitor_num is not a valid monitor number.
 //
-func (display *Display) Monitor(monitorNum int32) *Monitor {
+func (display *Display) Monitor(monitorNum int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 	var _cret *C.GdkMonitor // in
@@ -606,7 +606,7 @@ func (display *Display) Monitor(monitorNum int32) *Monitor {
 //
 //    - monitor containing the point.
 //
-func (display *Display) MonitorAtPoint(x, y int32) *Monitor {
+func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out
@@ -667,7 +667,7 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 //
 //    - gint: number of monitors.
 //
-func (display *Display) NMonitors() int32 {
+func (display *Display) NMonitors() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.int         // in
 
@@ -676,9 +676,9 @@ func (display *Display) NMonitors() int32 {
 	_cret = C.gdk_display_get_n_monitors(_arg0)
 	runtime.KeepAlive(display)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -691,7 +691,7 @@ func (display *Display) NMonitors() int32 {
 //
 //    - gint: number of screens.
 //
-func (display *Display) NScreens() int32 {
+func (display *Display) NScreens() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
 
@@ -700,9 +700,9 @@ func (display *Display) NScreens() int32 {
 	_cret = C.gdk_display_get_n_screens(_arg0)
 	runtime.KeepAlive(display)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -745,7 +745,7 @@ func (display *Display) Name() string {
 //      NULL.
 //    - mask (optional): location to store current modifier mask, or NULL.
 //
-func (display *Display) Pointer() (screen *Screen, x, y int32, mask ModifierType) {
+func (display *Display) Pointer() (screen *Screen, x, y int, mask ModifierType) {
 	var _arg0 *C.GdkDisplay     // out
 	var _arg1 *C.GdkScreen      // in
 	var _arg2 C.gint            // in
@@ -758,15 +758,15 @@ func (display *Display) Pointer() (screen *Screen, x, y int32, mask ModifierType
 	runtime.KeepAlive(display)
 
 	var _screen *Screen    // out
-	var _x int32           // out
-	var _y int32           // out
+	var _x int             // out
+	var _y int             // out
 	var _mask ModifierType // out
 
 	if _arg1 != nil {
 		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_arg1)))
 	}
-	_x = int32(_arg2)
-	_y = int32(_arg3)
+	_x = int(_arg2)
+	_y = int(_arg3)
 	_mask = ModifierType(_arg4)
 
 	return _screen, _x, _y, _mask
@@ -815,7 +815,7 @@ func (display *Display) PrimaryMonitor() *Monitor {
 //
 //    - screen: Screen object.
 //
-func (display *Display) Screen(screenNum int32) *Screen {
+func (display *Display) Screen(screenNum int) *Screen {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
 	var _cret *C.GdkScreen  // in
@@ -849,7 +849,7 @@ func (display *Display) Screen(screenNum int32) *Screen {
 //      relative & to the window origin, or NULL.
 //    - window (optional) under the mouse pointer, or NULL.
 //
-func (display *Display) WindowAtPointer() (winX, winY int32, window Windower) {
+func (display *Display) WindowAtPointer() (winX, winY int, window Windower) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // in
 	var _arg2 C.gint        // in
@@ -860,12 +860,12 @@ func (display *Display) WindowAtPointer() (winX, winY int32, window Windower) {
 	_cret = C.gdk_display_get_window_at_pointer(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(display)
 
-	var _winX int32      // out
-	var _winY int32      // out
+	var _winX int        // out
+	var _winY int        // out
 	var _window Windower // out
 
-	_winX = int32(_arg1)
-	_winY = int32(_arg2)
+	_winX = int(_arg1)
+	_winY = int(_arg2)
 	if _cret != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
@@ -1177,7 +1177,7 @@ func (display *Display) PutEvent(event *Event) {
 //
 //    - distance in pixels.
 //
-func (display *Display) SetDoubleClickDistance(distance uint32) {
+func (display *Display) SetDoubleClickDistance(distance uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 
@@ -1197,7 +1197,7 @@ func (display *Display) SetDoubleClickDistance(distance uint32) {
 //
 //    - msec: double click time in milliseconds (thousandths of a second).
 //
-func (display *Display) SetDoubleClickTime(msec uint32) {
+func (display *Display) SetDoubleClickTime(msec uint) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.guint       // out
 
@@ -1426,7 +1426,7 @@ func (display *Display) Sync() {
 //    - x coordinate of the destination.
 //    - y coordinate of the destination.
 //
-func (display *Display) WarpPointer(screen *Screen, x, y int32) {
+func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkScreen  // out
 	var _arg2 C.gint        // out

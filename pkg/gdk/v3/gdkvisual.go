@@ -135,19 +135,19 @@ func ListVisuals() []*Visual {
 //
 //    - depths: return location for available depths.
 //
-func QueryDepths() []int32 {
+func QueryDepths() []int {
 	var _arg1 *C.gint // in
 	var _arg2 C.gint  // in
 
 	C.gdk_query_depths(&_arg1, &_arg2)
 
-	var _depths []int32 // out
+	var _depths []int // out
 
 	{
 		src := unsafe.Slice((*C.gint)(_arg1), _arg2)
-		_depths = make([]int32, _arg2)
+		_depths = make([]int, _arg2)
 		for i := 0; i < int(_arg2); i++ {
-			_depths[i] = int32(src[i])
+			_depths[i] = int(src[i])
 		}
 	}
 
@@ -213,7 +213,7 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //
 //    - gint: number of significant bits per color value for visual.
 //
-func (visual *Visual) BitsPerRGB() int32 {
+func (visual *Visual) BitsPerRGB() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -222,9 +222,9 @@ func (visual *Visual) BitsPerRGB() int32 {
 	_cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 	runtime.KeepAlive(visual)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -242,7 +242,7 @@ func (visual *Visual) BitsPerRGB() int32 {
 //    - shift (optional): pointer to a #gint to be filled in, or NULL.
 //    - precision (optional): pointer to a #gint to be filled in, or NULL.
 //
-func (visual *Visual) BluePixelDetails() (mask uint32, shift, precision int32) {
+func (visual *Visual) BluePixelDetails() (mask uint32, shift, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -253,13 +253,13 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift, precision int32) {
 	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
 
-	var _mask uint32     // out
-	var _shift int32     // out
-	var _precision int32 // out
+	var _mask uint32   // out
+	var _shift int     // out
+	var _precision int // out
 
 	_mask = uint32(_arg1)
-	_shift = int32(_arg2)
-	_precision = int32(_arg3)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -302,7 +302,7 @@ func (visual *Visual) ByteOrder() ByteOrder {
 //
 //    - gint: size of a colormap that is suitable for visual.
 //
-func (visual *Visual) ColormapSize() int32 {
+func (visual *Visual) ColormapSize() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -311,9 +311,9 @@ func (visual *Visual) ColormapSize() int32 {
 	_cret = C.gdk_visual_get_colormap_size(_arg0)
 	runtime.KeepAlive(visual)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -324,7 +324,7 @@ func (visual *Visual) ColormapSize() int32 {
 //
 //    - gint: bit depth of this visual.
 //
-func (visual *Visual) Depth() int32 {
+func (visual *Visual) Depth() int {
 	var _arg0 *C.GdkVisual // out
 	var _cret C.gint       // in
 
@@ -333,9 +333,9 @@ func (visual *Visual) Depth() int32 {
 	_cret = C.gdk_visual_get_depth(_arg0)
 	runtime.KeepAlive(visual)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -353,7 +353,7 @@ func (visual *Visual) Depth() int32 {
 //    - shift (optional): pointer to a #gint to be filled in, or NULL.
 //    - precision (optional): pointer to a #gint to be filled in, or NULL.
 //
-func (visual *Visual) GreenPixelDetails() (mask uint32, shift, precision int32) {
+func (visual *Visual) GreenPixelDetails() (mask uint32, shift, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -364,13 +364,13 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift, precision int32) 
 	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
 
-	var _mask uint32     // out
-	var _shift int32     // out
-	var _precision int32 // out
+	var _mask uint32   // out
+	var _shift int     // out
+	var _precision int // out
 
 	_mask = uint32(_arg1)
-	_shift = int32(_arg2)
-	_precision = int32(_arg3)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -387,7 +387,7 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift, precision int32) 
 //    - shift (optional): pointer to a #gint to be filled in, or NULL.
 //    - precision (optional): pointer to a #gint to be filled in, or NULL.
 //
-func (visual *Visual) RedPixelDetails() (mask uint32, shift, precision int32) {
+func (visual *Visual) RedPixelDetails() (mask uint32, shift, precision int) {
 	var _arg0 *C.GdkVisual // out
 	var _arg1 C.guint32    // in
 	var _arg2 C.gint       // in
@@ -398,13 +398,13 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift, precision int32) {
 	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(visual)
 
-	var _mask uint32     // out
-	var _shift int32     // out
-	var _precision int32 // out
+	var _mask uint32   // out
+	var _shift int     // out
+	var _precision int // out
 
 	_mask = uint32(_arg1)
-	_shift = int32(_arg2)
-	_precision = int32(_arg3)
+	_shift = int(_arg2)
+	_precision = int(_arg3)
 
 	return _mask, _shift, _precision
 }
@@ -486,14 +486,14 @@ func VisualGetBest() *Visual {
 //
 //    - gint: best available depth.
 //
-func VisualGetBestDepth() int32 {
+func VisualGetBestDepth() int {
 	var _cret C.gint // in
 
 	_cret = C.gdk_visual_get_best_depth()
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -536,7 +536,7 @@ func VisualGetBestType() VisualType {
 //    - visual (optional): best visual with both depth and visual_type, or NULL
 //      if none.
 //
-func VisualGetBestWithBoth(depth int32, visualType VisualType) *Visual {
+func VisualGetBestWithBoth(depth int, visualType VisualType) *Visual {
 	var _arg1 C.gint          // out
 	var _arg2 C.GdkVisualType // out
 	var _cret *C.GdkVisual    // in
@@ -573,7 +573,7 @@ func VisualGetBestWithBoth(depth int32, visualType VisualType) *Visual {
 //
 //    - visual: best visual for the given depth.
 //
-func VisualGetBestWithDepth(depth int32) *Visual {
+func VisualGetBestWithDepth(depth int) *Visual {
 	var _arg1 C.gint       // out
 	var _cret *C.GdkVisual // in
 

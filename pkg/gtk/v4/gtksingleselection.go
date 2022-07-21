@@ -185,7 +185,7 @@ func (self *SingleSelection) Model() *gio.ListModel {
 //
 //    - guint: position of the selected item.
 //
-func (self *SingleSelection) Selected() uint32 {
+func (self *SingleSelection) Selected() uint {
 	var _arg0 *C.GtkSingleSelection // out
 	var _cret C.guint               // in
 
@@ -194,9 +194,9 @@ func (self *SingleSelection) Selected() uint32 {
 	_cret = C.gtk_single_selection_get_selected(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -308,7 +308,7 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 //
 //    - position: item to select or GTK_INVALID_LIST_POSITION.
 //
-func (self *SingleSelection) SetSelected(position uint32) {
+func (self *SingleSelection) SetSelected(position uint) {
 	var _arg0 *C.GtkSingleSelection // out
 	var _arg1 C.guint               // out
 

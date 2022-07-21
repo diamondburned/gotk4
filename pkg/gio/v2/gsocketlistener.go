@@ -659,7 +659,7 @@ func (listener *SocketListener) Close() {
 //
 //    - listenBacklog: integer.
 //
-func (listener *SocketListener) SetBacklog(listenBacklog int32) {
+func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
 

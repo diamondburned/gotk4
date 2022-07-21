@@ -190,7 +190,7 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
-func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
+func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.guint           // out
 	var _arg3 C.guint           // out
@@ -228,25 +228,25 @@ func (t *TargetEntry) Target() string {
 }
 
 // Flags for DND.
-func (t *TargetEntry) Flags() uint32 {
+func (t *TargetEntry) Flags() uint {
 	valptr := &t.native.flags
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Info: application-assigned integer ID which will get passed as a parameter to
 // e.g the Widget::selection-get signal. It allows the application to identify
 // the target type without extensive string compares.
-func (t *TargetEntry) Info() uint32 {
+func (t *TargetEntry) Info() uint {
 	valptr := &t.native.info
-	var v uint32 // out
-	v = uint32(*valptr)
+	var v uint // out
+	v = uint(*valptr)
 	return v
 }
 
 // Flags for DND.
-func (t *TargetEntry) SetFlags(flags uint32) {
+func (t *TargetEntry) SetFlags(flags uint) {
 	valptr := &t.native.flags
 	*valptr = C.guint(flags)
 }
@@ -254,7 +254,7 @@ func (t *TargetEntry) SetFlags(flags uint32) {
 // Info: application-assigned integer ID which will get passed as a parameter to
 // e.g the Widget::selection-get signal. It allows the application to identify
 // the target type without extensive string compares.
-func (t *TargetEntry) SetInfo(info uint32) {
+func (t *TargetEntry) SetInfo(info uint) {
 	valptr := &t.native.info
 	*valptr = C.guint(info)
 }
@@ -347,7 +347,7 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 //    - writable: whether to add only targets for which GTK+ knows how to convert
 //      a pixbuf into the format.
 //
-func (list *TargetList) AddImageTargets(info uint32, writable bool) {
+func (list *TargetList) AddImageTargets(info uint, writable bool) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -376,7 +376,7 @@ func (list *TargetList) AddImageTargets(info uint32, writable bool) {
 //      added, serializable formats otherwise.
 //    - buffer: TextBuffer.
 //
-func (list *TargetList) AddRichTextTargets(info uint32, deserializable bool, buffer *TextBuffer) {
+func (list *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer *TextBuffer) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 	var _arg2 C.gboolean       // out
@@ -430,7 +430,7 @@ func (list *TargetList) AddTable(targets []TargetEntry) {
 //
 //    - info: ID that will be passed back to the application.
 //
-func (list *TargetList) AddTextTargets(info uint32) {
+func (list *TargetList) AddTextTargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 
@@ -449,7 +449,7 @@ func (list *TargetList) AddTextTargets(info uint32) {
 //
 //    - info: ID that will be passed back to the application.
 //
-func (list *TargetList) AddURITargets(info uint32) {
+func (list *TargetList) AddURITargets(info uint) {
 	var _arg0 *C.GtkTargetList // out
 	var _arg1 C.guint          // out
 

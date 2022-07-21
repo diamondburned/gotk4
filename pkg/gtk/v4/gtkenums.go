@@ -2314,7 +2314,7 @@ func (o Ordering) String() string {
 //
 //    - ordering: corresponding GtkOrdering.
 //
-func OrderingFromCmpfunc(cmpfuncResult int32) Ordering {
+func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	var _arg1 C.int         // out
 	var _cret C.GtkOrdering // in
 

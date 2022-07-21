@@ -69,7 +69,7 @@ const MINOR_VERSION = 2
 //      version, or a string describing the version mismatch. The returned string
 //      is owned by GTK and should not be modified or freed.
 //
-func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
+func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint // out
 	var _arg2 C.guint // out
 	var _arg3 C.guint // out
@@ -101,14 +101,14 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 //
 //    - guint: binary age of the GTK library.
 //
-func GetBinaryAge() uint32 {
+func GetBinaryAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_binary_age()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -121,14 +121,14 @@ func GetBinaryAge() uint32 {
 //
 //    - guint: interface age of the GTK library.
 //
-func GetInterfaceAge() uint32 {
+func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_interface_age()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -146,14 +146,14 @@ func GetInterfaceAge() uint32 {
 //
 //    - guint: major version number of the GTK library.
 //
-func GetMajorVersion() uint32 {
+func GetMajorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_major_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -171,14 +171,14 @@ func GetMajorVersion() uint32 {
 //
 //    - guint: micro version number of the GTK library.
 //
-func GetMicroVersion() uint32 {
+func GetMicroVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_micro_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -196,14 +196,14 @@ func GetMicroVersion() uint32 {
 //
 //    - guint: minor version number of the GTK library.
 //
-func GetMinorVersion() uint32 {
+func GetMinorVersion() uint {
 	var _cret C.guint // in
 
 	_cret = C.gtk_get_minor_version()
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

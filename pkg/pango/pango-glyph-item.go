@@ -193,7 +193,7 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 //    - glyphItem: newly allocated item representing text before split_index,
 //      which should be freed with pango_glyph_item_free().
 //
-func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
+func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
 	var _arg2 C.int             // out
@@ -289,74 +289,74 @@ func (g *GlyphItemIter) Text() string {
 	return v
 }
 
-func (g *GlyphItemIter) StartGlyph() int32 {
+func (g *GlyphItemIter) StartGlyph() int {
 	valptr := &g.native.start_glyph
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (g *GlyphItemIter) StartIndex() int32 {
+func (g *GlyphItemIter) StartIndex() int {
 	valptr := &g.native.start_index
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (g *GlyphItemIter) StartChar() int32 {
+func (g *GlyphItemIter) StartChar() int {
 	valptr := &g.native.start_char
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (g *GlyphItemIter) EndGlyph() int32 {
+func (g *GlyphItemIter) EndGlyph() int {
 	valptr := &g.native.end_glyph
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (g *GlyphItemIter) EndIndex() int32 {
+func (g *GlyphItemIter) EndIndex() int {
 	valptr := &g.native.end_index
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (g *GlyphItemIter) EndChar() int32 {
+func (g *GlyphItemIter) EndChar() int {
 	valptr := &g.native.end_char
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
-func (g *GlyphItemIter) SetStartGlyph(startGlyph int32) {
+func (g *GlyphItemIter) SetStartGlyph(startGlyph int) {
 	valptr := &g.native.start_glyph
 	*valptr = C.int(startGlyph)
 }
 
-func (g *GlyphItemIter) SetStartIndex(startIndex int32) {
+func (g *GlyphItemIter) SetStartIndex(startIndex int) {
 	valptr := &g.native.start_index
 	*valptr = C.int(startIndex)
 }
 
-func (g *GlyphItemIter) SetStartChar(startChar int32) {
+func (g *GlyphItemIter) SetStartChar(startChar int) {
 	valptr := &g.native.start_char
 	*valptr = C.int(startChar)
 }
 
-func (g *GlyphItemIter) SetEndGlyph(endGlyph int32) {
+func (g *GlyphItemIter) SetEndGlyph(endGlyph int) {
 	valptr := &g.native.end_glyph
 	*valptr = C.int(endGlyph)
 }
 
-func (g *GlyphItemIter) SetEndIndex(endIndex int32) {
+func (g *GlyphItemIter) SetEndIndex(endIndex int) {
 	valptr := &g.native.end_index
 	*valptr = C.int(endIndex)
 }
 
-func (g *GlyphItemIter) SetEndChar(endChar int32) {
+func (g *GlyphItemIter) SetEndChar(endChar int) {
 	valptr := &g.native.end_char
 	*valptr = C.int(endChar)
 }

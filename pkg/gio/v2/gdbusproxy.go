@@ -522,7 +522,7 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 //    - callback (optional) to call when the request is satisfied or NULL if you
 //      don't care about the result of the method invocation.
 //
-func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int32, callback AsyncReadyCallback) {
+func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -648,7 +648,7 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 //    - variant: NULL if error is set. Otherwise a #GVariant tuple with return
 //      values. Free with g_variant_unref().
 //
-func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int32) (*glib.Variant, error) {
+func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.gchar         // out
@@ -813,7 +813,7 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 //
 //    - gint: timeout to use for proxy.
 //
-func (proxy *DBusProxy) DefaultTimeout() int32 {
+func (proxy *DBusProxy) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
 
@@ -822,9 +822,9 @@ func (proxy *DBusProxy) DefaultTimeout() int32 {
 	_cret = C.g_dbus_proxy_get_default_timeout(_arg0)
 	runtime.KeepAlive(proxy)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1044,7 +1044,7 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 //
 //    - timeoutMsec: timeout in milliseconds.
 //
-func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int32) {
+func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
 

@@ -151,7 +151,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 //
 //    - cursor: new GdkCursor.
 //
-func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *Cursor) *Cursor {
+func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int, fallback *Cursor) *Cursor {
 	var _arg1 *C.GdkTexture // out
 	var _arg2 C.int         // out
 	var _arg3 C.int         // out
@@ -221,7 +221,7 @@ func (cursor *Cursor) Fallback() *Cursor {
 //
 //    - gint: horizontal offset of the hotspot or 0 for named cursors.
 //
-func (cursor *Cursor) HotspotX() int32 {
+func (cursor *Cursor) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
@@ -230,9 +230,9 @@ func (cursor *Cursor) HotspotX() int32 {
 	_cret = C.gdk_cursor_get_hotspot_x(_arg0)
 	runtime.KeepAlive(cursor)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -249,7 +249,7 @@ func (cursor *Cursor) HotspotX() int32 {
 //
 //    - gint: vertical offset of the hotspot or 0 for named cursors.
 //
-func (cursor *Cursor) HotspotY() int32 {
+func (cursor *Cursor) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
 	var _cret C.int        // in
 
@@ -258,9 +258,9 @@ func (cursor *Cursor) HotspotY() int32 {
 	_cret = C.gdk_cursor_get_hotspot_y(_arg0)
 	runtime.KeepAlive(cursor)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

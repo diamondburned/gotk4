@@ -326,7 +326,7 @@ func DragDropSucceeded(context *DragContext) bool {
 //    - destWindow: location to store the destination window in.
 //    - protocol: location to store the DND protocol in.
 //
-func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int32) (Windower, DragProtocol) {
+func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int) (Windower, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 *C.GdkScreen      // out
@@ -394,7 +394,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 //
 // The function returns the following values:
 //
-func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol, xRoot, yRoot int32, suggestedAction, possibleActions DragAction, time_ uint32) bool {
+func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol, xRoot, yRoot int, suggestedAction, possibleActions DragAction, time_ uint32) bool {
 	var _arg1 *C.GdkDragContext // out
 	var _arg2 *C.GdkWindow      // out
 	var _arg3 C.GdkDragProtocol // out
@@ -841,7 +841,7 @@ func (context *DragContext) SetDevice(device Devicer) {
 //    - hotX: x coordinate of the drag window hotspot.
 //    - hotY: y coordinate of the drag window hotspot.
 //
-func (context *DragContext) SetHotspot(hotX, hotY int32) {
+func (context *DragContext) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDragContext // out
 	var _arg1 C.gint            // out
 	var _arg2 C.gint            // out

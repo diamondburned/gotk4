@@ -89,7 +89,7 @@ type ToolbarOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	PopupContextMenu(x, y, buttonNumber int32) bool
+	PopupContextMenu(x, y, buttonNumber int) bool
 	// The function takes the following parameters:
 	//
 	StyleChanged(style ToolbarStyle)
@@ -152,7 +152,7 @@ func classInitToolbarrer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PopupContextMenu(x, y, buttonNumber int32) bool
+		PopupContextMenu(x, y, buttonNumber int) bool
 	}); ok {
 		pclass.popup_context_menu = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_popup_context_menu)
 	}
@@ -178,16 +178,16 @@ func _gotk4_gtk3_ToolbarClass_orientation_changed(arg0 *C.GtkToolbar, arg1 C.Gtk
 func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.GtkToolbar, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PopupContextMenu(x, y, buttonNumber int32) bool
+		PopupContextMenu(x, y, buttonNumber int) bool
 	})
 
-	var _x int32            // out
-	var _y int32            // out
-	var _buttonNumber int32 // out
+	var _x int            // out
+	var _y int            // out
+	var _buttonNumber int // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
-	_buttonNumber = int32(arg3)
+	_x = int(arg1)
+	_y = int(arg2)
+	_buttonNumber = int(arg3)
 
 	ok := iface.PopupContextMenu(_x, _y, _buttonNumber)
 
@@ -334,7 +334,7 @@ func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation
 
 //export _gotk4_gtk3_Toolbar_ConnectPopupContextMenu
 func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(x, y, button int32) (ok bool)
+	var f func(x, y, button int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -342,16 +342,16 @@ func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, a
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y, button int32) (ok bool))
+		f = closure.Func.(func(x, y, button int) (ok bool))
 	}
 
-	var _x int32      // out
-	var _y int32      // out
-	var _button int32 // out
+	var _x int      // out
+	var _y int      // out
+	var _button int // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
-	_button = int32(arg3)
+	_x = int(arg1)
+	_y = int(arg2)
+	_button = int(arg3)
 
 	ok := f(_x, _y, _button)
 
@@ -369,7 +369,7 @@ func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, a
 // context menu on the toolbar. The context-menu should appear at the
 // coordinates given by x and y. The mouse button number is given by the button
 // parameter. If the menu was popped up using the keybaord, button is -1.
-func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int32) (ok bool)) coreglib.SignalHandle {
+func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(toolbar, "popup-context-menu", false, unsafe.Pointer(C._gotk4_gtk3_Toolbar_ConnectPopupContextMenu), f)
 }
 
@@ -431,7 +431,7 @@ func NewToolbar() *Toolbar {
 //
 //    - gint: position corresponding to the point (x, y) on the toolbar.
 //
-func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
+func (toolbar *Toolbar) DropIndex(x, y int) int {
 	var _arg0 *C.GtkToolbar // out
 	var _arg1 C.gint        // out
 	var _arg2 C.gint        // out
@@ -446,9 +446,9 @@ func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -487,7 +487,7 @@ func (toolbar *Toolbar) IconSize() IconSize {
 //
 //    - gint: position of item on the toolbar.
 //
-func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
+func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _cret C.gint         // in
@@ -499,9 +499,9 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -512,7 +512,7 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 //
 //    - gint: number of items on the toolbar.
 //
-func (toolbar *Toolbar) NItems() int32 {
+func (toolbar *Toolbar) NItems() int {
 	var _arg0 *C.GtkToolbar // out
 	var _cret C.gint        // in
 
@@ -521,9 +521,9 @@ func (toolbar *Toolbar) NItems() int32 {
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
 	runtime.KeepAlive(toolbar)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -540,7 +540,7 @@ func (toolbar *Toolbar) NItems() int32 {
 //    - toolItem (optional): n'th ToolItem on toolbar, or NULL if there isn’t an
 //      n'th item.
 //
-func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
+func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 C.gint         // out
 	var _cret *C.GtkToolItem // in
@@ -641,7 +641,7 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 //    - item: ToolItem.
 //    - pos: position of the new item.
 //
-func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
+func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out
@@ -669,7 +669,7 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 //    - toolItem (optional) or NULL to turn of highlighting.
 //    - index_: position on toolbar.
 //
-func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
+func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	var _arg0 *C.GtkToolbar  // out
 	var _arg1 *C.GtkToolItem // out
 	var _arg2 C.gint         // out

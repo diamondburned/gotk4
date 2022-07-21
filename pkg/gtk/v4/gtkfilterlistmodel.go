@@ -206,7 +206,7 @@ func (self *FilterListModel) Model() *gio.ListModel {
 //
 //    - guint: number of items not yet filtered.
 //
-func (self *FilterListModel) Pending() uint32 {
+func (self *FilterListModel) Pending() uint {
 	var _arg0 *C.GtkFilterListModel // out
 	var _cret C.guint               // in
 
@@ -215,9 +215,9 @@ func (self *FilterListModel) Pending() uint32 {
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

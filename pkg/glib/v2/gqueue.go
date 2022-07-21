@@ -42,7 +42,7 @@ func (queue *Queue) Clear() {
 //
 //    - guint: number of items in queue.
 //
-func (queue *Queue) Length() uint32 {
+func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
 
@@ -51,9 +51,9 @@ func (queue *Queue) Length() uint32 {
 	_cret = C.g_queue_get_length(_arg0)
 	runtime.KeepAlive(queue)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -69,7 +69,7 @@ func (queue *Queue) Length() uint32 {
 //    - gint: position of the first element in queue which contains data, or -1
 //      if no element in queue contains data.
 //
-func (queue *Queue) Index(data unsafe.Pointer) int32 {
+func (queue *Queue) Index(data unsafe.Pointer) int {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
@@ -81,9 +81,9 @@ func (queue *Queue) Index(data unsafe.Pointer) int32 {
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -158,7 +158,7 @@ func (queue *Queue) PeekHead() unsafe.Pointer {
 //    - gpointer (optional): data for the n'th element of queue, or NULL if n is
 //      off the end of queue.
 //
-func (queue *Queue) PeekNth(n uint32) unsafe.Pointer {
+func (queue *Queue) PeekNth(n uint) unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
@@ -233,7 +233,7 @@ func (queue *Queue) PopHead() unsafe.Pointer {
 //
 //    - gpointer (optional) element's data, or NULL if n is off the end of queue.
 //
-func (queue *Queue) PopNth(n uint32) unsafe.Pointer {
+func (queue *Queue) PopNth(n uint) unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
 	var _cret C.gpointer // in
@@ -301,7 +301,7 @@ func (queue *Queue) PushHead(data unsafe.Pointer) {
 //    - n to insert the new element. If n is negative or larger than the number
 //      of elements in the queue, the element is added to the end of the queue.
 //
-func (queue *Queue) PushNth(data unsafe.Pointer, n int32) {
+func (queue *Queue) PushNth(data unsafe.Pointer, n int) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
 	var _arg2 C.gint     // out
@@ -375,7 +375,7 @@ func (queue *Queue) Remove(data unsafe.Pointer) bool {
 //
 //    - guint: number of elements removed from queue.
 //
-func (queue *Queue) RemoveAll(data unsafe.Pointer) uint32 {
+func (queue *Queue) RemoveAll(data unsafe.Pointer) uint {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -387,9 +387,9 @@ func (queue *Queue) RemoveAll(data unsafe.Pointer) uint32 {
 	runtime.KeepAlive(queue)
 	runtime.KeepAlive(data)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

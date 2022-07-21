@@ -80,7 +80,7 @@ func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 //
 //    - watcherId: identifier obtained from g_bus_watch_name().
 //
-func BusUnwatchName(watcherId uint32) {
+func BusUnwatchName(watcherId uint) {
 	var _arg1 C.guint // out
 
 	_arg1 = C.guint(watcherId)

@@ -167,7 +167,7 @@ func (surface *Surface) ConnectEvent(f func(event Eventer) (ok bool)) coreglib.S
 
 //export _gotk4_gdk4_Surface_ConnectLayout
 func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int32)
+	var f func(width, height int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -175,14 +175,14 @@ func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(width, height int32))
+		f = closure.Func.(func(width, height int))
 	}
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
+	_width = int(arg1)
+	_height = int(arg2)
 
 	f(_width, _height)
 }
@@ -192,7 +192,7 @@ func _gotk4_gdk4_Surface_ConnectLayout(arg0 C.gpointer, arg1 C.gint, arg2 C.gint
 //
 // Surface size is reported in ”application pixels”, not ”device pixels” (see
 // gdk_surface_get_scale_factor()).
-func (surface *Surface) ConnectLayout(f func(width, height int32)) coreglib.SignalHandle {
+func (surface *Surface) ConnectLayout(f func(width, height int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(surface, "layout", false, unsafe.Pointer(C._gotk4_gdk4_Surface_ConnectLayout), f)
 }
 
@@ -446,7 +446,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 //    - ret: pointer to the newly allocated surface. The caller owns the surface
 //      and should call cairo_surface_destroy() when done with it.
 //
-func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, height int32) *cairo.Surface {
+func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
 	var _arg1 C.cairo_content_t  // out
 	var _arg2 C.int              // out
@@ -721,7 +721,7 @@ func (surface *Surface) FrameClock() FrameClocker {
 //
 //    - gint: height of surface.
 //
-func (surface *Surface) Height() int32 {
+func (surface *Surface) Height() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
@@ -730,9 +730,9 @@ func (surface *Surface) Height() int32 {
 	_cret = C.gdk_surface_get_height(_arg0)
 	runtime.KeepAlive(surface)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -779,7 +779,7 @@ func (surface *Surface) Mapped() bool {
 //
 //    - gint: scale factor.
 //
-func (surface *Surface) ScaleFactor() int32 {
+func (surface *Surface) ScaleFactor() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
@@ -788,9 +788,9 @@ func (surface *Surface) ScaleFactor() int32 {
 	_cret = C.gdk_surface_get_scale_factor(_arg0)
 	runtime.KeepAlive(surface)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -804,7 +804,7 @@ func (surface *Surface) ScaleFactor() int32 {
 //
 //    - gint: width of surface.
 //
-func (surface *Surface) Width() int32 {
+func (surface *Surface) Width() int {
 	var _arg0 *C.GdkSurface // out
 	var _cret C.int         // in
 
@@ -813,9 +813,9 @@ func (surface *Surface) Width() int32 {
 	_cret = C.gdk_surface_get_width(_arg0)
 	runtime.KeepAlive(surface)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

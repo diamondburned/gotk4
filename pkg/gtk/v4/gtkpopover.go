@@ -411,7 +411,7 @@ func (popover *Popover) MnemonicsVisible() bool {
 //    - xOffset (optional): location for the x_offset.
 //    - yOffset (optional): location for the y_offset.
 //
-func (popover *Popover) Offset() (xOffset, yOffset int32) {
+func (popover *Popover) Offset() (xOffset, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // in
 	var _arg2 C.int         // in
@@ -421,11 +421,11 @@ func (popover *Popover) Offset() (xOffset, yOffset int32) {
 	C.gtk_popover_get_offset(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(popover)
 
-	var _xOffset int32 // out
-	var _yOffset int32 // out
+	var _xOffset int // out
+	var _yOffset int // out
 
-	_xOffset = int32(_arg1)
-	_yOffset = int32(_arg2)
+	_xOffset = int(_arg1)
+	_yOffset = int(_arg2)
 
 	return _xOffset, _yOffset
 }
@@ -668,7 +668,7 @@ func (popover *Popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 //    - xOffset: x offset to adjust the position by.
 //    - yOffset: y offset to adjust the position by.
 //
-func (popover *Popover) SetOffset(xOffset, yOffset int32) {
+func (popover *Popover) SetOffset(xOffset, yOffset int) {
 	var _arg0 *C.GtkPopover // out
 	var _arg1 C.int         // out
 	var _arg2 C.int         // out

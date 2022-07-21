@@ -109,7 +109,7 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //    - inetSocketAddress (optional): new SocketAddress, or NULL if address
 //      cannot be parsed.
 //
-func NewInetSocketAddressFromString(address string, port uint32) *InetSocketAddress {
+func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
 	var _cret *C.GSocketAddress // in

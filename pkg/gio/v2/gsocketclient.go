@@ -1039,7 +1039,7 @@ func (client *SocketClient) SocketType() SocketType {
 //
 //    - guint: timeout in seconds.
 //
-func (client *SocketClient) Timeout() uint32 {
+func (client *SocketClient) Timeout() uint {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.guint          // in
 
@@ -1048,9 +1048,9 @@ func (client *SocketClient) Timeout() uint32 {
 	_cret = C.g_socket_client_get_timeout(_arg0)
 	runtime.KeepAlive(client)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1258,7 +1258,7 @@ func (client *SocketClient) SetSocketType(typ SocketType) {
 //
 //    - timeout: timeout.
 //
-func (client *SocketClient) SetTimeout(timeout uint32) {
+func (client *SocketClient) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.guint          // out
 

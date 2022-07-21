@@ -505,7 +505,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 //    - gint: integer which is the index of the currently active item, or -1 if
 //      there’s no active item.
 //
-func (comboBox *ComboBox) Active() int32 {
+func (comboBox *ComboBox) Active() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
@@ -514,9 +514,9 @@ func (comboBox *ComboBox) Active() int32 {
 	_cret = C.gtk_combo_box_get_active(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -641,7 +641,7 @@ func (comboBox *ComboBox) ButtonSensitivity() SensitivityType {
 //
 //    - gint: column span column.
 //
-func (comboBox *ComboBox) ColumnSpanColumn() int32 {
+func (comboBox *ComboBox) ColumnSpanColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
@@ -650,9 +650,9 @@ func (comboBox *ComboBox) ColumnSpanColumn() int32 {
 	_cret = C.gtk_combo_box_get_column_span_column(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -664,7 +664,7 @@ func (comboBox *ComboBox) ColumnSpanColumn() int32 {
 //
 //    - gint: column in the data source model of combo_box.
 //
-func (comboBox *ComboBox) EntryTextColumn() int32 {
+func (comboBox *ComboBox) EntryTextColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
@@ -673,9 +673,9 @@ func (comboBox *ComboBox) EntryTextColumn() int32 {
 	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -738,7 +738,7 @@ func (comboBox *ComboBox) HasEntry() bool {
 //
 //    - gint: column in the data source model of combo_box.
 //
-func (comboBox *ComboBox) IDColumn() int32 {
+func (comboBox *ComboBox) IDColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
@@ -747,9 +747,9 @@ func (comboBox *ComboBox) IDColumn() int32 {
 	_cret = C.gtk_combo_box_get_id_column(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -838,7 +838,7 @@ func (comboBox *ComboBox) PopupFixedWidth() bool {
 //
 //    - gint: row span column.
 //
-func (comboBox *ComboBox) RowSpanColumn() int32 {
+func (comboBox *ComboBox) RowSpanColumn() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
@@ -847,9 +847,9 @@ func (comboBox *ComboBox) RowSpanColumn() int32 {
 	_cret = C.gtk_combo_box_get_row_span_column(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -888,7 +888,7 @@ func (comboBox *ComboBox) Title() string {
 //
 //    - gint: wrap width.
 //
-func (comboBox *ComboBox) WrapWidth() int32 {
+func (comboBox *ComboBox) WrapWidth() int {
 	var _arg0 *C.GtkComboBox // out
 	var _cret C.gint         // in
 
@@ -897,9 +897,9 @@ func (comboBox *ComboBox) WrapWidth() int32 {
 	_cret = C.gtk_combo_box_get_wrap_width(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -959,7 +959,7 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 //    - index_: index in the model passed during construction, or -1 to have no
 //      active item.
 //
-func (comboBox *ComboBox) SetActive(index_ int32) {
+func (comboBox *ComboBox) SetActive(index_ int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -1083,7 +1083,7 @@ func (comboBox *ComboBox) SetButtonSensitivity(sensitivity SensitivityType) {
 //
 //    - columnSpan: column in the model passed during construction.
 //
-func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int32) {
+func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -1107,7 +1107,7 @@ func (comboBox *ComboBox) SetColumnSpanColumn(columnSpan int32) {
 //    - textColumn: column in model to get the strings from for the internal
 //      entry.
 //
-func (comboBox *ComboBox) SetEntryTextColumn(textColumn int32) {
+func (comboBox *ComboBox) SetEntryTextColumn(textColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -1153,7 +1153,7 @@ func (combo *ComboBox) SetFocusOnClick(focusOnClick bool) {
 //
 //    - idColumn: column in model to get string IDs for values from.
 //
-func (comboBox *ComboBox) SetIDColumn(idColumn int32) {
+func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -1244,7 +1244,7 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 //
 //    - rowSpan: column in the model passed during construction.
 //
-func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int32) {
+func (comboBox *ComboBox) SetRowSpanColumn(rowSpan int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 
@@ -1285,7 +1285,7 @@ func (comboBox *ComboBox) SetTitle(title string) {
 //
 //    - width: preferred number of columns.
 //
-func (comboBox *ComboBox) SetWrapWidth(width int32) {
+func (comboBox *ComboBox) SetWrapWidth(width int) {
 	var _arg0 *C.GtkComboBox // out
 	var _arg1 C.gint         // out
 

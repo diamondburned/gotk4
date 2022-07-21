@@ -54,7 +54,7 @@ type LabelOverrider interface {
 	//    - count
 	//    - extendSelection
 	//
-	MoveCursor(step MovementStep, count int32, extendSelection bool)
+	MoveCursor(step MovementStep, count int, extendSelection bool)
 	// The function takes the following parameters:
 	//
 	PopulatePopup(menu *Menu)
@@ -102,7 +102,7 @@ func classInitLabeller(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int32, extendSelection bool)
+		MoveCursor(step MovementStep, count int, extendSelection bool)
 	}); ok {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_LabelClass_move_cursor)
 	}
@@ -142,15 +142,15 @@ func _gotk4_gtk3_LabelClass_copy_clipboard(arg0 *C.GtkLabel) {
 func _gotk4_gtk3_LabelClass_move_cursor(arg0 *C.GtkLabel, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int32, extendSelection bool)
+		MoveCursor(step MovementStep, count int, extendSelection bool)
 	})
 
 	var _step MovementStep    // out
-	var _count int32          // out
+	var _count int            // out
 	var _extendSelection bool // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 	if arg3 != 0 {
 		_extendSelection = true
 	}
@@ -279,7 +279,7 @@ func (label *Label) ConnectCopyClipboard(f func()) coreglib.SignalHandle {
 
 //export _gotk4_gtk3_Label_ConnectMoveCursor
 func _gotk4_gtk3_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int32, extendSelection bool)
+	var f func(step MovementStep, count int, extendSelection bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -287,15 +287,15 @@ func _gotk4_gtk3_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(step MovementStep, count int32, extendSelection bool))
+		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
 	}
 
 	var _step MovementStep    // out
-	var _count int32          // out
+	var _count int            // out
 	var _extendSelection bool // out
 
 	_step = MovementStep(arg1)
-	_count = int32(arg2)
+	_count = int(arg2)
 	if arg3 != 0 {
 		_extendSelection = true
 	}
@@ -319,7 +319,7 @@ func _gotk4_gtk3_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep
 // - Ctrl-arrow key combinations move by words/paragraphs
 //
 // - Home/End keys move to the ends of the buffer.
-func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int32, extendSelection bool)) coreglib.SignalHandle {
+func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(label, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectMoveCursor), f)
 }
 
@@ -623,7 +623,7 @@ func (label *Label) Layout() *pango.Layout {
 //    - x (optional): location to store X offset of layout, or NULL.
 //    - y (optional): location to store Y offset of layout, or NULL.
 //
-func (label *Label) LayoutOffsets() (x, y int32) {
+func (label *Label) LayoutOffsets() (x, y int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -633,11 +633,11 @@ func (label *Label) LayoutOffsets() (x, y int32) {
 	C.gtk_label_get_layout_offsets(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(label)
 
-	var _x int32 // out
-	var _y int32 // out
+	var _x int // out
+	var _y int // out
 
-	_x = int32(_arg1)
-	_y = int32(_arg2)
+	_x = int(_arg1)
+	_y = int(_arg2)
 
 	return _x, _y
 }
@@ -697,7 +697,7 @@ func (label *Label) LineWrapMode() pango.WrapMode {
 //
 //    - gint: number of lines.
 //
-func (label *Label) Lines() int32 {
+func (label *Label) Lines() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gint      // in
 
@@ -706,9 +706,9 @@ func (label *Label) Lines() int32 {
 	_cret = C.gtk_label_get_lines(_arg0)
 	runtime.KeepAlive(label)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -720,7 +720,7 @@ func (label *Label) Lines() int32 {
 //
 //    - gint: maximum width of the label in characters.
 //
-func (label *Label) MaxWidthChars() int32 {
+func (label *Label) MaxWidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gint      // in
 
@@ -729,9 +729,9 @@ func (label *Label) MaxWidthChars() int32 {
 	_cret = C.gtk_label_get_max_width_chars(_arg0)
 	runtime.KeepAlive(label)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -744,7 +744,7 @@ func (label *Label) MaxWidthChars() int32 {
 //
 //    - guint: GDK keyval usable for accelerators, or K_KEY_VoidSymbol.
 //
-func (label *Label) MnemonicKeyval() uint32 {
+func (label *Label) MnemonicKeyval() uint {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.guint     // in
 
@@ -753,9 +753,9 @@ func (label *Label) MnemonicKeyval() uint32 {
 	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
 	runtime.KeepAlive(label)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -832,7 +832,7 @@ func (label *Label) Selectable() bool {
 //    - end: return location for end of selection, as a character offset.
 //    - ok: TRUE if selection is non-empty.
 //
-func (label *Label) SelectionBounds() (start, end int32, ok bool) {
+func (label *Label) SelectionBounds() (start, end int, ok bool) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // in
 	var _arg2 C.gint      // in
@@ -843,12 +843,12 @@ func (label *Label) SelectionBounds() (start, end int32, ok bool) {
 	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(label)
 
-	var _start int32 // out
-	var _end int32   // out
-	var _ok bool     // out
+	var _start int // out
+	var _end int   // out
+	var _ok bool   // out
 
-	_start = int32(_arg1)
-	_end = int32(_arg2)
+	_start = int(_arg1)
+	_end = int(_arg2)
 	if _cret != 0 {
 		_ok = true
 	}
@@ -989,7 +989,7 @@ func (label *Label) UseUnderline() bool {
 //
 //    - gint: width of the label in characters.
 //
-func (label *Label) WidthChars() int32 {
+func (label *Label) WidthChars() int {
 	var _arg0 *C.GtkLabel // out
 	var _cret C.gint      // in
 
@@ -998,9 +998,9 @@ func (label *Label) WidthChars() int32 {
 	_cret = C.gtk_label_get_width_chars(_arg0)
 	runtime.KeepAlive(label)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1059,7 +1059,7 @@ func (label *Label) YAlign() float32 {
 //    - startOffset: start offset (in characters not bytes).
 //    - endOffset: end offset (in characters not bytes).
 //
-func (label *Label) SelectRegion(startOffset, endOffset int32) {
+func (label *Label) SelectRegion(startOffset, endOffset int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 	var _arg2 C.gint      // out
@@ -1241,7 +1241,7 @@ func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
 //
 //    - lines: desired number of lines, or -1.
 //
-func (label *Label) SetLines(lines int32) {
+func (label *Label) SetLines(lines int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 
@@ -1327,7 +1327,7 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 //
 //    - nChars: new desired maximum width, in characters.
 //
-func (label *Label) SetMaxWidthChars(nChars int32) {
+func (label *Label) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 
@@ -1553,7 +1553,7 @@ func (label *Label) SetUseUnderline(setting bool) {
 //
 //    - nChars: new desired width, in characters.
 //
-func (label *Label) SetWidthChars(nChars int32) {
+func (label *Label) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkLabel // out
 	var _arg1 C.gint      // out
 

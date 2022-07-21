@@ -275,7 +275,7 @@ type WidgetOverrider interface {
 	//    - naturalBaseline (optional): location to store the baseline position
 	//      for the natural size, or NULL.
 	//
-	Measure(orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32)
+	Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	// MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
 	//
 	// The function takes the following parameters:
@@ -299,7 +299,7 @@ type WidgetOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// Realize creates the GDK resources associated with a widget.
 	//
 	// Normally realization happens implicitly; if you show a widget and all its
@@ -347,7 +347,7 @@ type WidgetOverrider interface {
 	//    - height
 	//    - baseline
 	//
-	SizeAllocate(width, height, baseline int32)
+	SizeAllocate(width, height, baseline int)
 	// The function takes the following parameters:
 	//
 	Snapshot(snapshot *Snapshot)
@@ -789,7 +789,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Measure(orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32)
+		Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	}); ok {
 		pclass.measure = (*[0]byte)(C._gotk4_gtk4_WidgetClass_measure)
 	}
@@ -803,7 +803,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	}); ok {
 		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk4_WidgetClass_query_tooltip)
 	}
@@ -825,7 +825,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SizeAllocate(width, height, baseline int32)
+		SizeAllocate(width, height, baseline int)
 	}); ok {
 		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_size_allocate)
 	}
@@ -977,14 +977,14 @@ func _gotk4_gtk4_WidgetClass_map(arg0 *C.GtkWidget) {
 func _gotk4_gtk4_WidgetClass_measure(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 C.int, arg3 *C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Measure(orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32)
+		Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	})
 
 	var _orientation Orientation // out
-	var _forSize int32           // out
+	var _forSize int             // out
 
 	_orientation = Orientation(arg1)
-	_forSize = int32(arg2)
+	_forSize = int(arg2)
 
 	minimum, natural, minimumBaseline, naturalBaseline := iface.Measure(_orientation, _forSize)
 
@@ -1030,16 +1030,16 @@ func _gotk4_gtk4_WidgetClass_move_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionTy
 func _gotk4_gtk4_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
+		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	})
 
-	var _x int32              // out
-	var _y int32              // out
+	var _x int                // out
+	var _y int                // out
 	var _keyboardTooltip bool // out
 	var _tooltip *Tooltip     // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
+	_x = int(arg1)
+	_y = int(arg2)
 	if arg3 != 0 {
 		_keyboardTooltip = true
 	}
@@ -1109,16 +1109,16 @@ func _gotk4_gtk4_WidgetClass_show(arg0 *C.GtkWidget) {
 func _gotk4_gtk4_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SizeAllocate(width, height, baseline int32)
+		SizeAllocate(width, height, baseline int)
 	})
 
-	var _width int32    // out
-	var _height int32   // out
-	var _baseline int32 // out
+	var _width int    // out
+	var _height int   // out
+	var _baseline int // out
 
-	_width = int32(arg1)
-	_height = int32(arg2)
-	_baseline = int32(arg3)
+	_width = int(arg1)
+	_height = int(arg2)
+	_baseline = int(arg3)
 
 	iface.SizeAllocate(_width, _height, _baseline)
 }
@@ -1414,7 +1414,7 @@ func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) coreglib
 
 //export _gotk4_gtk4_Widget_ConnectQueryTooltip
 func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)
+	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -1422,16 +1422,16 @@ func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool))
+		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
 	}
 
-	var _x int32           // out
-	var _y int32           // out
+	var _x int             // out
+	var _y int             // out
 	var _keyboardMode bool // out
 	var _tooltip *Tooltip  // out
 
-	_x = int32(arg1)
-	_y = int32(arg2)
+	_x = int(arg1)
+	_y = int(arg2)
 	if arg3 != 0 {
 		_keyboardMode = true
 	}
@@ -1459,7 +1459,7 @@ func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 //
 // The signal handler is free to manipulate tooltip with the therefore destined
 // function calls.
-func (widget *Widget) ConnectQueryTooltip(f func(x, y int32, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
+func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectQueryTooltip), f)
 }
 
@@ -1807,7 +1807,7 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 //      passing the id returned from this function to
 //      gtk.Widget.RemoveTickCallback().
 //
-func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
+func (widget *Widget) AddTickCallback(callback TickCallback) uint {
 	var _arg0 *C.GtkWidget      // out
 	var _arg1 C.GtkTickCallback // out
 	var _arg2 C.gpointer
@@ -1823,9 +1823,9 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(callback)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }
@@ -1846,7 +1846,7 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 //    - baseline: new baseline of widget, or -1.
 //    - transform (optional): transformation to be applied to widget.
 //
-func (widget *Widget) Allocate(width, height, baseline int32, transform *gsk.Transform) {
+func (widget *Widget) Allocate(width, height, baseline int, transform *gsk.Transform) {
 	var _arg0 *C.GtkWidget    // out
 	var _arg1 C.int           // out
 	var _arg2 C.int           // out
@@ -2229,7 +2229,7 @@ func (widget *Widget) ErrorBell() {
 //
 //    - gint: baseline of the widget, or -1 if none.
 //
-func (widget *Widget) AllocatedBaseline() int32 {
+func (widget *Widget) AllocatedBaseline() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2238,9 +2238,9 @@ func (widget *Widget) AllocatedBaseline() int32 {
 	_cret = C.gtk_widget_get_allocated_baseline(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2252,7 +2252,7 @@ func (widget *Widget) AllocatedBaseline() int32 {
 //
 //    - gint: height of the widget.
 //
-func (widget *Widget) AllocatedHeight() int32 {
+func (widget *Widget) AllocatedHeight() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2261,9 +2261,9 @@ func (widget *Widget) AllocatedHeight() int32 {
 	_cret = C.gtk_widget_get_allocated_height(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2274,7 +2274,7 @@ func (widget *Widget) AllocatedHeight() int32 {
 //
 //    - gint: width of the widget.
 //
-func (widget *Widget) AllocatedWidth() int32 {
+func (widget *Widget) AllocatedWidth() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2283,9 +2283,9 @@ func (widget *Widget) AllocatedWidth() int32 {
 	_cret = C.gtk_widget_get_allocated_width(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -2951,7 +2951,7 @@ func (widget *Widget) HasTooltip() bool {
 //
 //    - gint: height of widget.
 //
-func (widget *Widget) Height() int32 {
+func (widget *Widget) Height() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -2960,9 +2960,9 @@ func (widget *Widget) Height() int32 {
 	_cret = C.gtk_widget_get_height(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3144,7 +3144,7 @@ func (widget *Widget) Mapped() bool {
 //
 //    - gint: bottom margin of widget.
 //
-func (widget *Widget) MarginBottom() int32 {
+func (widget *Widget) MarginBottom() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -3153,9 +3153,9 @@ func (widget *Widget) MarginBottom() int32 {
 	_cret = C.gtk_widget_get_margin_bottom(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3166,7 +3166,7 @@ func (widget *Widget) MarginBottom() int32 {
 //
 //    - gint: end margin of widget.
 //
-func (widget *Widget) MarginEnd() int32 {
+func (widget *Widget) MarginEnd() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -3175,9 +3175,9 @@ func (widget *Widget) MarginEnd() int32 {
 	_cret = C.gtk_widget_get_margin_end(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3188,7 +3188,7 @@ func (widget *Widget) MarginEnd() int32 {
 //
 //    - gint: start margin of widget.
 //
-func (widget *Widget) MarginStart() int32 {
+func (widget *Widget) MarginStart() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -3197,9 +3197,9 @@ func (widget *Widget) MarginStart() int32 {
 	_cret = C.gtk_widget_get_margin_start(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3210,7 +3210,7 @@ func (widget *Widget) MarginStart() int32 {
 //
 //    - gint: top margin of widget.
 //
-func (widget *Widget) MarginTop() int32 {
+func (widget *Widget) MarginTop() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -3219,9 +3219,9 @@ func (widget *Widget) MarginTop() int32 {
 	_cret = C.gtk_widget_get_margin_top(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3667,7 +3667,7 @@ func (widget *Widget) Root() *Root {
 //
 //    - gint: scale factor for widget.
 //
-func (widget *Widget) ScaleFactor() int32 {
+func (widget *Widget) ScaleFactor() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -3676,9 +3676,9 @@ func (widget *Widget) ScaleFactor() int32 {
 	_cret = C.gtk_widget_get_scale_factor(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3758,7 +3758,7 @@ func (widget *Widget) Settings() *Settings {
 //
 //    - gint: size of widget in orientation.
 //
-func (widget *Widget) Size(orientation Orientation) int32 {
+func (widget *Widget) Size(orientation Orientation) int {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
 	var _cret C.int            // in
@@ -3770,9 +3770,9 @@ func (widget *Widget) Size(orientation Orientation) int32 {
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(orientation)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -3790,7 +3790,7 @@ func (widget *Widget) Size(orientation Orientation) int32 {
 //    - width (optional): return location for width, or NULL.
 //    - height (optional): return location for height, or NULL.
 //
-func (widget *Widget) SizeRequest() (width, height int32) {
+func (widget *Widget) SizeRequest() (width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // in
 	var _arg2 C.int        // in
@@ -3800,11 +3800,11 @@ func (widget *Widget) SizeRequest() (width, height int32) {
 	C.gtk_widget_get_size_request(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(widget)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -4078,7 +4078,7 @@ func (widget *Widget) Visible() bool {
 //
 //    - gint: width of widget.
 //
-func (widget *Widget) Width() int32 {
+func (widget *Widget) Width() int {
 	var _arg0 *C.GtkWidget // out
 	var _cret C.int        // in
 
@@ -4087,9 +4087,9 @@ func (widget *Widget) Width() int32 {
 	_cret = C.gtk_widget_get_width(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -4709,7 +4709,7 @@ func (widget *Widget) Map() {
 //    - naturalBaseline (optional): location to store the baseline position for
 //      the natural size, or NULL.
 //
-func (widget *Widget) Measure(orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32) {
+func (widget *Widget) Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 C.GtkOrientation // out
 	var _arg2 C.int            // out
@@ -4727,15 +4727,15 @@ func (widget *Widget) Measure(orientation Orientation, forSize int32) (minimum, 
 	runtime.KeepAlive(orientation)
 	runtime.KeepAlive(forSize)
 
-	var _minimum int32         // out
-	var _natural int32         // out
-	var _minimumBaseline int32 // out
-	var _naturalBaseline int32 // out
+	var _minimum int         // out
+	var _natural int         // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
 
-	_minimum = int32(_arg3)
-	_natural = int32(_arg4)
-	_minimumBaseline = int32(_arg5)
-	_naturalBaseline = int32(_arg6)
+	_minimum = int(_arg3)
+	_natural = int(_arg4)
+	_minimumBaseline = int(_arg5)
+	_naturalBaseline = int(_arg6)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
 }
@@ -5058,7 +5058,7 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 //
 //    - id returned by gtk.Widget.AddTickCallback().
 //
-func (widget *Widget) RemoveTickCallback(id uint32) {
+func (widget *Widget) RemoveTickCallback(id uint) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.guint      // out
 
@@ -5541,7 +5541,7 @@ func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 //
 //    - margin: bottom margin.
 //
-func (widget *Widget) SetMarginBottom(margin int32) {
+func (widget *Widget) SetMarginBottom(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 
@@ -5559,7 +5559,7 @@ func (widget *Widget) SetMarginBottom(margin int32) {
 //
 //    - margin: end margin.
 //
-func (widget *Widget) SetMarginEnd(margin int32) {
+func (widget *Widget) SetMarginEnd(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 
@@ -5577,7 +5577,7 @@ func (widget *Widget) SetMarginEnd(margin int32) {
 //
 //    - margin: start margin.
 //
-func (widget *Widget) SetMarginStart(margin int32) {
+func (widget *Widget) SetMarginStart(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 
@@ -5595,7 +5595,7 @@ func (widget *Widget) SetMarginStart(margin int32) {
 //
 //    - margin: top margin.
 //
-func (widget *Widget) SetMarginTop(margin int32) {
+func (widget *Widget) SetMarginTop(margin int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 
@@ -5801,7 +5801,7 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 //    - width widget should request, or -1 to unset.
 //    - height widget should request, or -1 to unset.
 //
-func (widget *Widget) SetSizeRequest(width, height int32) {
+func (widget *Widget) SetSizeRequest(width, height int) {
 	var _arg0 *C.GtkWidget // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out
@@ -6049,7 +6049,7 @@ func (widget *Widget) Show() {
 //    - allocation: position and size to be allocated to widget.
 //    - baseline of the child, or -1.
 //
-func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int32) {
+func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
 	var _arg0 *C.GtkWidget     // out
 	var _arg1 *C.GtkAllocation // out
 	var _arg2 C.int            // out
@@ -6295,29 +6295,29 @@ func NewRequisition() *Requisition {
 }
 
 // Width widget’s desired width.
-func (r *Requisition) Width() int32 {
+func (r *Requisition) Width() int {
 	valptr := &r.native.width
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Height widget’s desired height.
-func (r *Requisition) Height() int32 {
+func (r *Requisition) Height() int {
 	valptr := &r.native.height
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
 // Width widget’s desired width.
-func (r *Requisition) SetWidth(width int32) {
+func (r *Requisition) SetWidth(width int) {
 	valptr := &r.native.width
 	*valptr = C.int(width)
 }
 
 // Height widget’s desired height.
-func (r *Requisition) SetHeight(height int32) {
+func (r *Requisition) SetHeight(height int) {
 	valptr := &r.native.height
 	*valptr = C.int(height)
 }

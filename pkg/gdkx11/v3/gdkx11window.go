@@ -155,7 +155,7 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 //    - top extent.
 //    - bottom extent.
 //
-func (window *X11Window) SetFrameExtents(left, right, top, bottom int32) {
+func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
 	var _arg2 C.int        // out

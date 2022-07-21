@@ -215,7 +215,7 @@ func (hsv *HSV) Color() (h, s, v float64) {
 //    - size: return value for the diameter of the hue ring.
 //    - ringWidth: return value for the width of the hue ring.
 //
-func (hsv *HSV) Metrics() (size, ringWidth int32) {
+func (hsv *HSV) Metrics() (size, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // in
 	var _arg2 C.gint    // in
@@ -225,11 +225,11 @@ func (hsv *HSV) Metrics() (size, ringWidth int32) {
 	C.gtk_hsv_get_metrics(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(hsv)
 
-	var _size int32      // out
-	var _ringWidth int32 // out
+	var _size int      // out
+	var _ringWidth int // out
 
-	_size = int32(_arg1)
-	_ringWidth = int32(_arg2)
+	_size = int(_arg1)
+	_ringWidth = int(_arg2)
 
 	return _size, _ringWidth
 }
@@ -297,7 +297,7 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 //    - size: diameter for the hue ring.
 //    - ringWidth: width of the hue ring.
 //
-func (hsv *HSV) SetMetrics(size, ringWidth int32) {
+func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
 	var _arg1 C.gint    // out
 	var _arg2 C.gint    // out

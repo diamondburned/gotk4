@@ -284,7 +284,7 @@ func (self *Calendar) Date() *glib.DateTime {
 //
 //    - ok: whether the day is marked.
 //
-func (calendar *Calendar) DayIsMarked(day uint32) bool {
+func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 	var _cret C.gboolean     // in
@@ -390,7 +390,7 @@ func (self *Calendar) ShowWeekNumbers() bool {
 //
 //    - day number to mark between 1 and 31.
 //
-func (calendar *Calendar) MarkDay(day uint32) {
+func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 
@@ -489,7 +489,7 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 //
 //    - day number to unmark between 1 and 31.
 //
-func (calendar *Calendar) UnmarkDay(day uint32) {
+func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
 	var _arg1 C.guint        // out
 

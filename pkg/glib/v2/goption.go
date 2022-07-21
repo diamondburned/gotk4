@@ -241,10 +241,10 @@ func (o *OptionEntry) ShortName() byte {
 }
 
 // Flags from Flags.
-func (o *OptionEntry) Flags() int32 {
+func (o *OptionEntry) Flags() int {
 	valptr := &o.native.flags
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -304,7 +304,7 @@ func (o *OptionEntry) SetShortName(shortName byte) {
 }
 
 // Flags from Flags.
-func (o *OptionEntry) SetFlags(flags int32) {
+func (o *OptionEntry) SetFlags(flags int) {
 	valptr := &o.native.flags
 	*valptr = C.gint(flags)
 }

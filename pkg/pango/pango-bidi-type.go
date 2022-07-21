@@ -169,7 +169,7 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 //    - direction corresponding to the first strong character. If no such
 //      character is found, then PANGO_DIRECTION_NEUTRAL is returned.
 //
-func FindBaseDir(text string, length int32) Direction {
+func FindBaseDir(text string, length int) Direction {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out
 	var _cret C.PangoDirection // in

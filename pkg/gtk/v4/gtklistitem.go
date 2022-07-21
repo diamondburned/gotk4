@@ -165,7 +165,7 @@ func (self *ListItem) Item() *coreglib.Object {
 //
 //    - guint: position of this item.
 //
-func (self *ListItem) Position() uint32 {
+func (self *ListItem) Position() uint {
 	var _arg0 *C.GtkListItem // out
 	var _cret C.guint        // in
 
@@ -174,9 +174,9 @@ func (self *ListItem) Position() uint32 {
 	_cret = C.gtk_list_item_get_position(_arg0)
 	runtime.KeepAlive(self)
 
-	var _guint uint32 // out
+	var _guint uint // out
 
-	_guint = uint32(_cret)
+	_guint = uint(_cret)
 
 	return _guint
 }

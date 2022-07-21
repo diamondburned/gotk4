@@ -509,7 +509,7 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 //    - gint: number of items that have been removed from the recently used
 //      resources list.
 //
-func (manager *RecentManager) PurgeItems() (int32, error) {
+func (manager *RecentManager) PurgeItems() (int, error) {
 	var _arg0 *C.GtkRecentManager // out
 	var _cret C.int               // in
 	var _cerr *C.GError           // in
@@ -519,10 +519,10 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
 	runtime.KeepAlive(manager)
 
-	var _gint int32  // out
+	var _gint int    // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -804,7 +804,7 @@ func (info *RecentInfo) Added() *glib.DateTime {
 //    - gint: positive integer containing the number of days elapsed since the
 //      time this resource was last modified.
 //
-func (info *RecentInfo) Age() int32 {
+func (info *RecentInfo) Age() int {
 	var _arg0 *C.GtkRecentInfo // out
 	var _cret C.int            // in
 
@@ -813,9 +813,9 @@ func (info *RecentInfo) Age() int32 {
 	_cret = C.gtk_recent_info_get_age(_arg0)
 	runtime.KeepAlive(info)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -840,7 +840,7 @@ func (info *RecentInfo) Age() int32 {
 //      inside the recently used list, or FALSE otherwise. The app_exec string is
 //      owned by the GtkRecentInfo and should not be modified or freed.
 //
-func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, *glib.DateTime, bool) {
+func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.DateTime, bool) {
 	var _arg0 *C.GtkRecentInfo // out
 	var _arg1 *C.char          // out
 	var _arg2 *C.char          // in
@@ -857,12 +857,12 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, *glib.D
 	runtime.KeepAlive(appName)
 
 	var _appExec string       // out
-	var _count uint32         // out
+	var _count uint           // out
 	var _stamp *glib.DateTime // out
 	var _ok bool              // out
 
 	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	_count = uint32(_arg3)
+	_count = uint(_arg3)
 	_stamp = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
 	C.g_date_time_ref(_arg4)
 	runtime.SetFinalizer(

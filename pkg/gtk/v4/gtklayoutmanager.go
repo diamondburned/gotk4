@@ -45,7 +45,7 @@ type LayoutManagerOverrider interface {
 	//    - height: new height of the widget.
 	//    - baseline position of the widget, or -1.
 	//
-	Allocate(widget Widgetter, width, height, baseline int32)
+	Allocate(widget Widgetter, width, height, baseline int)
 	// CreateLayoutChild: create a LayoutChild instance for the given for_child
 	// widget.
 	//
@@ -88,7 +88,7 @@ type LayoutManagerOverrider interface {
 	//    - minimumBaseline (optional): baseline position for the minimum size.
 	//    - naturalBaseline (optional): baseline position for the natural size.
 	//
-	Measure(widget Widgetter, orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32)
+	Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	Root()
 	Unroot()
 }
@@ -170,7 +170,7 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(gclassPtr))
 
 	if _, ok := goval.(interface {
-		Allocate(widget Widgetter, width, height, baseline int32)
+		Allocate(widget Widgetter, width, height, baseline int)
 	}); ok {
 		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_allocate)
 	}
@@ -188,7 +188,7 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		Measure(widget Widgetter, orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32)
+		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	}); ok {
 		pclass.measure = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_measure)
 	}
@@ -206,13 +206,13 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.int, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Allocate(widget Widgetter, width, height, baseline int32)
+		Allocate(widget Widgetter, width, height, baseline int)
 	})
 
 	var _widget Widgetter // out
-	var _width int32      // out
-	var _height int32     // out
-	var _baseline int32   // out
+	var _width int        // out
+	var _height int       // out
+	var _baseline int     // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -231,9 +231,9 @@ func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.G
 		}
 		_widget = rv
 	}
-	_width = int32(arg2)
-	_height = int32(arg3)
-	_baseline = int32(arg4)
+	_width = int(arg2)
+	_height = int(arg3)
+	_baseline = int(arg4)
 
 	iface.Allocate(_widget, _width, _height, _baseline)
 }
@@ -329,12 +329,12 @@ func _gotk4_gtk4_LayoutManagerClass_get_request_mode(arg0 *C.GtkLayoutManager, a
 func _gotk4_gtk4_LayoutManagerClass_measure(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.GtkOrientation, arg3 C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int, arg7 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		Measure(widget Widgetter, orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32)
+		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	})
 
 	var _widget Widgetter        // out
 	var _orientation Orientation // out
-	var _forSize int32           // out
+	var _forSize int             // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -354,7 +354,7 @@ func _gotk4_gtk4_LayoutManagerClass_measure(arg0 *C.GtkLayoutManager, arg1 *C.Gt
 		_widget = rv
 	}
 	_orientation = Orientation(arg2)
-	_forSize = int32(arg3)
+	_forSize = int(arg3)
 
 	minimum, natural, minimumBaseline, naturalBaseline := iface.Measure(_widget, _orientation, _forSize)
 
@@ -410,7 +410,7 @@ func BaseLayoutManager(obj LayoutManagerer) *LayoutManager {
 //    - height: new height of the widget.
 //    - baseline position of the widget, or -1.
 //
-func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline int32) {
+func (manager *LayoutManager) Allocate(widget Widgetter, width, height, baseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.int               // out
@@ -578,7 +578,7 @@ func (manager *LayoutManager) LayoutChanged() {
 //    - minimumBaseline (optional): baseline position for the minimum size.
 //    - naturalBaseline (optional): baseline position for the natural size.
 //
-func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation, forSize int32) (minimum, natural, minimumBaseline, naturalBaseline int32) {
+func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) {
 	var _arg0 *C.GtkLayoutManager // out
 	var _arg1 *C.GtkWidget        // out
 	var _arg2 C.GtkOrientation    // out
@@ -599,15 +599,15 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	runtime.KeepAlive(orientation)
 	runtime.KeepAlive(forSize)
 
-	var _minimum int32         // out
-	var _natural int32         // out
-	var _minimumBaseline int32 // out
-	var _naturalBaseline int32 // out
+	var _minimum int         // out
+	var _natural int         // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
 
-	_minimum = int32(_arg4)
-	_natural = int32(_arg5)
-	_minimumBaseline = int32(_arg6)
-	_naturalBaseline = int32(_arg7)
+	_minimum = int(_arg4)
+	_natural = int(_arg5)
+	_minimumBaseline = int(_arg6)
+	_naturalBaseline = int(_arg7)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
 }

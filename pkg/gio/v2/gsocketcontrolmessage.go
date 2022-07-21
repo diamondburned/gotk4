@@ -39,7 +39,7 @@ type SocketControlMessageOverrider interface {
 	//
 	//    - gint: integer describing the level.
 	//
-	Level() int32
+	Level() int
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	//
@@ -50,7 +50,7 @@ type SocketControlMessageOverrider interface {
 	Size() uint
 	// The function returns the following values:
 	//
-	Type() int32
+	Type() int
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
 	//
@@ -111,7 +111,7 @@ func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
 	goval := gbox.Get(uintptr(data))
 	pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(gclassPtr))
 
-	if _, ok := goval.(interface{ Level() int32 }); ok {
+	if _, ok := goval.(interface{ Level() int }); ok {
 		pclass.get_level = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_level)
 	}
 
@@ -119,7 +119,7 @@ func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
 		pclass.get_size = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_size)
 	}
 
-	if _, ok := goval.(interface{ Type() int32 }); ok {
+	if _, ok := goval.(interface{ Type() int }); ok {
 		pclass.get_type = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_type)
 	}
 
@@ -131,7 +131,7 @@ func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
 //export _gotk4_gio2_SocketControlMessageClass_get_level
 func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessage) (cret C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Level() int32 })
+	iface := goval.(interface{ Level() int })
 
 	gint := iface.Level()
 
@@ -155,7 +155,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessag
 //export _gotk4_gio2_SocketControlMessageClass_get_type
 func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessage) (cret C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Type() int32 })
+	iface := goval.(interface{ Type() int })
 
 	gint := iface.Type()
 
@@ -202,7 +202,7 @@ func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 //
 //    - gint: integer describing the level.
 //
-func (message *SocketControlMessage) Level() int32 {
+func (message *SocketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -211,9 +211,9 @@ func (message *SocketControlMessage) Level() int32 {
 	_cret = C.g_socket_control_message_get_level(_arg0)
 	runtime.KeepAlive(message)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -225,7 +225,7 @@ func (message *SocketControlMessage) Level() int32 {
 //
 //    - gint: integer describing the type of control message.
 //
-func (message *SocketControlMessage) MsgType() int32 {
+func (message *SocketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
@@ -234,9 +234,9 @@ func (message *SocketControlMessage) MsgType() int32 {
 	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 	runtime.KeepAlive(message)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -303,7 +303,7 @@ func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 //
 //    - socketControlMessage: deserialized message or NULL.
 //
-func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketControlMessager {
+func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlMessager {
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
 	var _arg4 C.gpointer // out

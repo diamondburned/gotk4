@@ -196,7 +196,7 @@ func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 //
 //    - ok: TRUE if the association was created, FALSE if it already exists.
 //
-func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int32, dbusErrorName string) bool {
+func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
 	var _arg3 *C.gchar   // out
@@ -306,7 +306,7 @@ func DBusErrorStripRemoteError(err error) bool {
 //
 //    - ok: TRUE if the association was destroyed, FALSE if it wasn't found.
 //
-func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int32, dbusErrorName string) bool {
+func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
 	var _arg3 *C.gchar   // out
@@ -344,10 +344,10 @@ type dBusErrorEntry struct {
 }
 
 // ErrorCode: error code.
-func (d *DBusErrorEntry) ErrorCode() int32 {
+func (d *DBusErrorEntry) ErrorCode() int {
 	valptr := &d.native.error_code
-	var v int32 // out
-	v = int32(*valptr)
+	var v int // out
+	v = int(*valptr)
 	return v
 }
 
@@ -360,7 +360,7 @@ func (d *DBusErrorEntry) DBusErrorName() string {
 }
 
 // ErrorCode: error code.
-func (d *DBusErrorEntry) SetErrorCode(errorCode int32) {
+func (d *DBusErrorEntry) SetErrorCode(errorCode int) {
 	valptr := &d.native.error_code
 	*valptr = C.gint(errorCode)
 }

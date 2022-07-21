@@ -57,15 +57,15 @@ type Popupper interface {
 	// Parent returns the parent surface of a popup.
 	Parent() Surfacer
 	// PositionX obtains the position of the popup relative to its parent.
-	PositionX() int32
+	PositionX() int
 	// PositionY obtains the position of the popup relative to its parent.
-	PositionY() int32
+	PositionY() int
 	// RectAnchor gets the current popup rectangle anchor.
 	RectAnchor() Gravity
 	// SurfaceAnchor gets the current popup surface anchor.
 	SurfaceAnchor() Gravity
 	// Present popup after having processed the PopupLayout rules.
-	Present(width, height int32, layout *PopupLayout) bool
+	Present(width, height int, layout *PopupLayout) bool
 }
 
 var _ Popupper = (*Popup)(nil)
@@ -153,7 +153,7 @@ func (popup *Popup) Parent() Surfacer {
 //
 //    - gint: x coordinate of popup position.
 //
-func (popup *Popup) PositionX() int32 {
+func (popup *Popup) PositionX() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
@@ -162,9 +162,9 @@ func (popup *Popup) PositionX() int32 {
 	_cret = C.gdk_popup_get_position_x(_arg0)
 	runtime.KeepAlive(popup)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -175,7 +175,7 @@ func (popup *Popup) PositionX() int32 {
 //
 //    - gint: y coordinate of popup position.
 //
-func (popup *Popup) PositionY() int32 {
+func (popup *Popup) PositionY() int {
 	var _arg0 *C.GdkPopup // out
 	var _cret C.int       // in
 
@@ -184,9 +184,9 @@ func (popup *Popup) PositionY() int32 {
 	_cret = C.gdk_popup_get_position_y(_arg0)
 	runtime.KeepAlive(popup)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -267,7 +267,7 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 //
 //    - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
-func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
+func (popup *Popup) Present(width, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out
 	var _arg1 C.int             // out
 	var _arg2 C.int             // out

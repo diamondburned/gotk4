@@ -162,7 +162,7 @@ func (service *ThreadedSocketService) ConnectRun(f func(connection *SocketConnec
 //
 //    - threadedSocketService: new Service.
 //
-func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
+func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
 

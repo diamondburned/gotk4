@@ -118,7 +118,7 @@ func marshalVBox(p uintptr) (interface{}, error) {
 //
 //    - vBox: new VBox.
 //
-func NewVBox(homogeneous bool, spacing int32) *VBox {
+func NewVBox(homogeneous bool, spacing int) *VBox {
 	var _arg1 C.gboolean   // out
 	var _arg2 C.gint       // out
 	var _cret *C.GtkWidget // in

@@ -384,7 +384,7 @@ func (fontsel *FontSelection) PreviewText() string {
 //    - gint: n integer representing the selected font size, or -1 if no font
 //      size is selected.
 //
-func (fontsel *FontSelection) Size() int32 {
+func (fontsel *FontSelection) Size() int {
 	var _arg0 *C.GtkFontSelection // out
 	var _cret C.gint              // in
 
@@ -393,9 +393,9 @@ func (fontsel *FontSelection) Size() int32 {
 	_cret = C.gtk_font_selection_get_size(_arg0)
 	runtime.KeepAlive(fontsel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

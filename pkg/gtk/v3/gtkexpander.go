@@ -360,7 +360,7 @@ func (expander *Expander) ResizeToplevel() bool {
 //
 //    - gint: spacing between the expander and child.
 //
-func (expander *Expander) Spacing() int32 {
+func (expander *Expander) Spacing() int {
 	var _arg0 *C.GtkExpander // out
 	var _cret C.gint         // in
 
@@ -369,9 +369,9 @@ func (expander *Expander) Spacing() int32 {
 	_cret = C.gtk_expander_get_spacing(_arg0)
 	runtime.KeepAlive(expander)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -548,7 +548,7 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 //
 //    - spacing: distance between the expander and child in pixels.
 //
-func (expander *Expander) SetSpacing(spacing int32) {
+func (expander *Expander) SetSpacing(spacing int) {
 	var _arg0 *C.GtkExpander // out
 	var _arg1 C.gint         // out
 

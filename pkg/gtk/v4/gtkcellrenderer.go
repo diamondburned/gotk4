@@ -223,7 +223,7 @@ type CellRendererOverrider interface {
 	//    - minimumSize (optional): location to store the minimum size, or NULL.
 	//    - naturalSize (optional): location to store the natural size, or NULL.
 	//
-	PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
+	PreferredHeight(widget Widgetter) (minimumSize, naturalSize int)
 	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
 	// height if it were rendered to widget with the specified width.
 	//
@@ -239,7 +239,7 @@ type CellRendererOverrider interface {
 	//    - naturalHeight (optional): location for storing the preferred size, or
 	//      NULL.
 	//
-	PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
+	PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	// PreferredWidth retrieves a renderer’s natural size when rendered to
 	// widget.
 	//
@@ -252,7 +252,7 @@ type CellRendererOverrider interface {
 	//    - minimumSize (optional): location to store the minimum size, or NULL.
 	//    - naturalSize (optional): location to store the natural size, or NULL.
 	//
-	PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
+	PreferredWidth(widget Widgetter) (minimumSize, naturalSize int)
 	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
 	// width if it were rendered to widget with the specified height.
 	//
@@ -268,7 +268,7 @@ type CellRendererOverrider interface {
 	//    - naturalWidth (optional): location for storing the preferred size, or
 	//      NULL.
 	//
-	PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+	PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	// RequestMode gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
 	//
@@ -402,25 +402,25 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
+		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int)
 	}); ok {
 		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
+		PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	}); ok {
 		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
+		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int)
 	}); ok {
 		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+		PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	}); ok {
 		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_width_for_height)
 	}
@@ -584,7 +584,7 @@ func _gotk4_gtk4_CellRendererClass_get_aligned_area(arg0 *C.GtkCellRenderer, arg
 func _gotk4_gtk4_CellRendererClass_get_preferred_height(arg0 *C.GtkCellRenderer, arg1 *C.GtkWidget, arg2 *C.int, arg3 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
+		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int)
 	})
 
 	var _widget Widgetter // out
@@ -617,11 +617,11 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_height(arg0 *C.GtkCellRenderer,
 func _gotk4_gtk4_CellRendererClass_get_preferred_height_for_width(arg0 *C.GtkCellRenderer, arg1 *C.GtkWidget, arg2 C.int, arg3 *C.int, arg4 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
+		PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	})
 
 	var _widget Widgetter // out
-	var _width int32      // out
+	var _width int        // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -640,7 +640,7 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_height_for_width(arg0 *C.GtkCel
 		}
 		_widget = rv
 	}
-	_width = int32(arg2)
+	_width = int(arg2)
 
 	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_widget, _width)
 
@@ -652,7 +652,7 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_height_for_width(arg0 *C.GtkCel
 func _gotk4_gtk4_CellRendererClass_get_preferred_width(arg0 *C.GtkCellRenderer, arg1 *C.GtkWidget, arg2 *C.int, arg3 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
+		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int)
 	})
 
 	var _widget Widgetter // out
@@ -685,11 +685,11 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_width(arg0 *C.GtkCellRenderer, 
 func _gotk4_gtk4_CellRendererClass_get_preferred_width_for_height(arg0 *C.GtkCellRenderer, arg1 *C.GtkWidget, arg2 C.int, arg3 *C.int, arg4 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
+		PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	})
 
 	var _widget Widgetter // out
-	var _height int32     // out
+	var _height int       // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -708,7 +708,7 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_width_for_height(arg0 *C.GtkCel
 		}
 		_widget = rv
 	}
-	_height = int32(arg2)
+	_height = int(arg2)
 
 	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_widget, _height)
 
@@ -1073,7 +1073,7 @@ func (cell *CellRenderer) Alignment() (xalign, yalign float32) {
 //    - height (optional): location to fill in with the fixed height of the cell,
 //      or NULL.
 //
-func (cell *CellRenderer) FixedSize() (width, height int32) {
+func (cell *CellRenderer) FixedSize() (width, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // in
 	var _arg2 C.int              // in
@@ -1083,11 +1083,11 @@ func (cell *CellRenderer) FixedSize() (width, height int32) {
 	C.gtk_cell_renderer_get_fixed_size(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(cell)
 
-	var _width int32  // out
-	var _height int32 // out
+	var _width int  // out
+	var _height int // out
 
-	_width = int32(_arg1)
-	_height = int32(_arg2)
+	_width = int(_arg1)
+	_height = int(_arg2)
 
 	return _width, _height
 }
@@ -1149,7 +1149,7 @@ func (cell *CellRenderer) IsExpander() bool {
 //    - ypad (optional): location to fill in with the y padding of the cell, or
 //      NULL.
 //
-func (cell *CellRenderer) Padding() (xpad, ypad int32) {
+func (cell *CellRenderer) Padding() (xpad, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // in
 	var _arg2 C.int              // in
@@ -1159,11 +1159,11 @@ func (cell *CellRenderer) Padding() (xpad, ypad int32) {
 	C.gtk_cell_renderer_get_padding(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(cell)
 
-	var _xpad int32 // out
-	var _ypad int32 // out
+	var _xpad int // out
+	var _ypad int // out
 
-	_xpad = int32(_arg1)
-	_ypad = int32(_arg2)
+	_xpad = int(_arg1)
+	_ypad = int(_arg2)
 
 	return _xpad, _ypad
 }
@@ -1179,7 +1179,7 @@ func (cell *CellRenderer) Padding() (xpad, ypad int32) {
 //    - minimumSize (optional): location to store the minimum size, or NULL.
 //    - naturalSize (optional): location to store the natural size, or NULL.
 //
-func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32) {
+func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // in
@@ -1192,11 +1192,11 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, natura
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
 
-	var _minimumSize int32 // out
-	var _naturalSize int32 // out
+	var _minimumSize int // out
+	var _naturalSize int // out
 
-	_minimumSize = int32(_arg2)
-	_naturalSize = int32(_arg3)
+	_minimumSize = int(_arg2)
+	_naturalSize = int(_arg3)
 
 	return _minimumSize, _naturalSize
 }
@@ -1215,7 +1215,7 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, natura
 //    - naturalHeight (optional): location for storing the preferred size, or
 //      NULL.
 //
-func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32) {
+func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int) (minimumHeight, naturalHeight int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // out
@@ -1231,11 +1231,11 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(width)
 
-	var _minimumHeight int32 // out
-	var _naturalHeight int32 // out
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
-	_minimumHeight = int32(_arg3)
-	_naturalHeight = int32(_arg4)
+	_minimumHeight = int(_arg3)
+	_naturalHeight = int(_arg4)
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1285,7 +1285,7 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize, naturalS
 //    - minimumSize (optional): location to store the minimum size, or NULL.
 //    - naturalSize (optional): location to store the natural size, or NULL.
 //
-func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32) {
+func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, naturalSize int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // in
@@ -1298,11 +1298,11 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, natural
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
 
-	var _minimumSize int32 // out
-	var _naturalSize int32 // out
+	var _minimumSize int // out
+	var _naturalSize int // out
 
-	_minimumSize = int32(_arg2)
-	_naturalSize = int32(_arg3)
+	_minimumSize = int(_arg2)
+	_naturalSize = int(_arg3)
 
 	return _minimumSize, _naturalSize
 }
@@ -1321,7 +1321,7 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, natural
 //    - naturalWidth (optional): location for storing the preferred size, or
 //      NULL.
 //
-func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32) {
+func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int) (minimumWidth, naturalWidth int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 *C.GtkWidget       // out
 	var _arg2 C.int              // out
@@ -1337,11 +1337,11 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(height)
 
-	var _minimumWidth int32 // out
-	var _naturalWidth int32 // out
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
-	_minimumWidth = int32(_arg3)
-	_naturalWidth = int32(_arg4)
+	_minimumWidth = int(_arg3)
+	_naturalWidth = int(_arg4)
 
 	return _minimumWidth, _naturalWidth
 }
@@ -1510,7 +1510,7 @@ func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 //    - width of the cell renderer, or -1.
 //    - height of the cell renderer, or -1.
 //
-func (cell *CellRenderer) SetFixedSize(width, height int32) {
+func (cell *CellRenderer) SetFixedSize(width, height int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out
@@ -1572,7 +1572,7 @@ func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 //    - xpad: x padding of the cell renderer.
 //    - ypad: y padding of the cell renderer.
 //
-func (cell *CellRenderer) SetPadding(xpad, ypad int32) {
+func (cell *CellRenderer) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkCellRenderer // out
 	var _arg1 C.int              // out
 	var _arg2 C.int              // out

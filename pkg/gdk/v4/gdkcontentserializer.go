@@ -50,7 +50,7 @@ func GTypeContentSerializer() coreglib.Type {
 //    - ioPriority: i/O priority of the operation.
 //    - callback (optional) to call when the operation is done.
 //
-func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *coreglib.Value, ioPriority int32, callback gio.AsyncReadyCallback) {
+func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *coreglib.Value, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GOutputStream      // out
 	var _arg2 *C.char               // out
@@ -264,7 +264,7 @@ func (serializer *ContentSerializer) OutputStream() gio.OutputStreamer {
 //
 //    - gint: i/O priority for the current operation.
 //
-func (serializer *ContentSerializer) Priority() int32 {
+func (serializer *ContentSerializer) Priority() int {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret C.int                   // in
 
@@ -273,9 +273,9 @@ func (serializer *ContentSerializer) Priority() int32 {
 	_cret = C.gdk_content_serializer_get_priority(_arg0)
 	runtime.KeepAlive(serializer)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }

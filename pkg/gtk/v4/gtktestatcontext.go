@@ -24,7 +24,7 @@ import "C"
 //    - expectedRole
 //    - actualRole
 //
-func TestAccessibleAssertionMessageRole(domain, file string, line int32, fn, expr string, accessible Accessibler, expectedRole, actualRole AccessibleRole) {
+func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr string, accessible Accessibler, expectedRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
 	var _arg3 C.int               // out

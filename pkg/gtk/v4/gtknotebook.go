@@ -210,7 +210,7 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 
 //export _gotk4_gtk4_Notebook_ConnectChangeCurrentPage
 func _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object int32) (ok bool)
+	var f func(object int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -218,12 +218,12 @@ func _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object int32) (ok bool))
+		f = closure.Func.(func(object int) (ok bool))
 	}
 
-	var _object int32 // out
+	var _object int // out
 
-	_object = int32(arg1)
+	_object = int(arg1)
 
 	ok := f(_object)
 
@@ -234,7 +234,7 @@ func _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint,
 	return cret
 }
 
-func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int32) (ok bool)) coreglib.SignalHandle {
+func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectChangeCurrentPage), f)
 }
 
@@ -345,7 +345,7 @@ func (notebook *Notebook) ConnectMoveFocusOut(f func(object DirectionType)) core
 
 //export _gotk4_gtk4_Notebook_ConnectPageAdded
 func _gotk4_gtk4_Notebook_ConnectPageAdded(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(child Widgetter, pageNum uint32)
+	var f func(child Widgetter, pageNum uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -353,11 +353,11 @@ func _gotk4_gtk4_Notebook_ConnectPageAdded(arg0 C.gpointer, arg1 *C.GtkWidget, a
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(child Widgetter, pageNum uint32))
+		f = closure.Func.(func(child Widgetter, pageNum uint))
 	}
 
 	var _child Widgetter // out
-	var _pageNum uint32  // out
+	var _pageNum uint    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -376,20 +376,20 @@ func _gotk4_gtk4_Notebook_ConnectPageAdded(arg0 C.gpointer, arg1 *C.GtkWidget, a
 		}
 		_child = rv
 	}
-	_pageNum = uint32(arg2)
+	_pageNum = uint(arg2)
 
 	f(_child, _pageNum)
 }
 
 // ConnectPageAdded signal is emitted in the notebook right after a page is
 // added to the notebook.
-func (notebook *Notebook) ConnectPageAdded(f func(child Widgetter, pageNum uint32)) coreglib.SignalHandle {
+func (notebook *Notebook) ConnectPageAdded(f func(child Widgetter, pageNum uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "page-added", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageAdded), f)
 }
 
 //export _gotk4_gtk4_Notebook_ConnectPageRemoved
 func _gotk4_gtk4_Notebook_ConnectPageRemoved(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(child Widgetter, pageNum uint32)
+	var f func(child Widgetter, pageNum uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -397,11 +397,11 @@ func _gotk4_gtk4_Notebook_ConnectPageRemoved(arg0 C.gpointer, arg1 *C.GtkWidget,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(child Widgetter, pageNum uint32))
+		f = closure.Func.(func(child Widgetter, pageNum uint))
 	}
 
 	var _child Widgetter // out
-	var _pageNum uint32  // out
+	var _pageNum uint    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -420,20 +420,20 @@ func _gotk4_gtk4_Notebook_ConnectPageRemoved(arg0 C.gpointer, arg1 *C.GtkWidget,
 		}
 		_child = rv
 	}
-	_pageNum = uint32(arg2)
+	_pageNum = uint(arg2)
 
 	f(_child, _pageNum)
 }
 
 // ConnectPageRemoved signal is emitted in the notebook right after a page is
 // removed from the notebook.
-func (notebook *Notebook) ConnectPageRemoved(f func(child Widgetter, pageNum uint32)) coreglib.SignalHandle {
+func (notebook *Notebook) ConnectPageRemoved(f func(child Widgetter, pageNum uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "page-removed", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageRemoved), f)
 }
 
 //export _gotk4_gtk4_Notebook_ConnectPageReordered
 func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(child Widgetter, pageNum uint32)
+	var f func(child Widgetter, pageNum uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -441,11 +441,11 @@ func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.GtkWidge
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(child Widgetter, pageNum uint32))
+		f = closure.Func.(func(child Widgetter, pageNum uint))
 	}
 
 	var _child Widgetter // out
-	var _pageNum uint32  // out
+	var _pageNum uint    // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -464,14 +464,14 @@ func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.GtkWidge
 		}
 		_child = rv
 	}
-	_pageNum = uint32(arg2)
+	_pageNum = uint(arg2)
 
 	f(_child, _pageNum)
 }
 
 // ConnectPageReordered signal is emitted in the notebook right after a page has
 // been reordered.
-func (notebook *Notebook) ConnectPageReordered(f func(child Widgetter, pageNum uint32)) coreglib.SignalHandle {
+func (notebook *Notebook) ConnectPageReordered(f func(child Widgetter, pageNum uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "page-reordered", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageReordered), f)
 }
 
@@ -543,7 +543,7 @@ func (notebook *Notebook) ConnectSelectPage(f func(object bool) (ok bool)) coreg
 
 //export _gotk4_gtk4_Notebook_ConnectSwitchPage
 func _gotk4_gtk4_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(page Widgetter, pageNum uint32)
+	var f func(page Widgetter, pageNum uint)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -551,11 +551,11 @@ func _gotk4_gtk4_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.GtkWidget, 
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(page Widgetter, pageNum uint32))
+		f = closure.Func.(func(page Widgetter, pageNum uint))
 	}
 
 	var _page Widgetter // out
-	var _pageNum uint32 // out
+	var _pageNum uint   // out
 
 	{
 		objptr := unsafe.Pointer(arg1)
@@ -574,14 +574,14 @@ func _gotk4_gtk4_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.GtkWidget, 
 		}
 		_page = rv
 	}
-	_pageNum = uint32(arg2)
+	_pageNum = uint(arg2)
 
 	f(_page, _pageNum)
 }
 
 // ConnectSwitchPage is emitted when the user or a function changes the current
 // page.
-func (notebook *Notebook) ConnectSwitchPage(f func(page Widgetter, pageNum uint32)) coreglib.SignalHandle {
+func (notebook *Notebook) ConnectSwitchPage(f func(page Widgetter, pageNum uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "switch-page", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectSwitchPage), f)
 }
 
@@ -616,7 +616,7 @@ func NewNotebook() *Notebook {
 //    - gint: index (starting from 0) of the appended page in the notebook, or -1
 //      if function fails.
 //
-func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int32 {
+func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -633,9 +633,9 @@ func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int32 {
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(tabLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -659,7 +659,7 @@ func (notebook *Notebook) AppendPage(child, tabLabel Widgetter) int32 {
 //    - gint: index (starting from 0) of the appended page in the notebook, or -1
 //      if function fails.
 //
-func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) int32 {
+func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -681,9 +681,9 @@ func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) i
 	runtime.KeepAlive(tabLabel)
 	runtime.KeepAlive(menuLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -764,7 +764,7 @@ func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
 //    - gint: index (starting from 0) of the current page in the notebook. If the
 //      notebook has no pages, then -1 will be returned.
 //
-func (notebook *Notebook) CurrentPage() int32 {
+func (notebook *Notebook) CurrentPage() int {
 	var _arg0 *C.GtkNotebook // out
 	var _cret C.int          // in
 
@@ -773,9 +773,9 @@ func (notebook *Notebook) CurrentPage() int32 {
 	_cret = C.gtk_notebook_get_current_page(_arg0)
 	runtime.KeepAlive(notebook)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -890,7 +890,7 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 //
 //    - gint: number of pages in the notebook.
 //
-func (notebook *Notebook) NPages() int32 {
+func (notebook *Notebook) NPages() int {
 	var _arg0 *C.GtkNotebook // out
 	var _cret C.int          // in
 
@@ -899,9 +899,9 @@ func (notebook *Notebook) NPages() int32 {
 	_cret = C.gtk_notebook_get_n_pages(_arg0)
 	runtime.KeepAlive(notebook)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -916,7 +916,7 @@ func (notebook *Notebook) NPages() int32 {
 //
 //    - widget (optional): child widget, or NULL if page_num is out of bounds.
 //
-func (notebook *Notebook) NthPage(pageNum int32) Widgetter {
+func (notebook *Notebook) NthPage(pageNum int) Widgetter {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.int          // out
 	var _cret *C.GtkWidget   // in
@@ -1261,7 +1261,7 @@ func (notebook *Notebook) TabReorderable(child Widgetter) bool {
 //    - gint: index (starting from 0) of the inserted page in the notebook, or -1
 //      if function fails.
 //
-func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int32) int32 {
+func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -1281,9 +1281,9 @@ func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int32) 
 	runtime.KeepAlive(tabLabel)
 	runtime.KeepAlive(position)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1308,7 +1308,7 @@ func (notebook *Notebook) InsertPage(child, tabLabel Widgetter, position int32) 
 //
 //    - gint: index (starting from 0) of the inserted page in the notebook.
 //
-func (notebook *Notebook) InsertPageMenu(child, tabLabel, menuLabel Widgetter, position int32) int32 {
+func (notebook *Notebook) InsertPageMenu(child, tabLabel, menuLabel Widgetter, position int) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -1333,9 +1333,9 @@ func (notebook *Notebook) InsertPageMenu(child, tabLabel, menuLabel Widgetter, p
 	runtime.KeepAlive(menuLabel)
 	runtime.KeepAlive(position)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1363,7 +1363,7 @@ func (notebook *Notebook) NextPage() {
 //    - gint: index of the page containing child, or -1 if child is not in the
 //      notebook.
 //
-func (notebook *Notebook) PageNum(child Widgetter) int32 {
+func (notebook *Notebook) PageNum(child Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _cret C.int          // in
@@ -1375,9 +1375,9 @@ func (notebook *Notebook) PageNum(child Widgetter) int32 {
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1418,7 +1418,7 @@ func (notebook *Notebook) PopupEnable() {
 //    - gint: index (starting from 0) of the prepended page in the notebook, or
 //      -1 if function fails.
 //
-func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int32 {
+func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -1435,9 +1435,9 @@ func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int32 {
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(tabLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1461,7 +1461,7 @@ func (notebook *Notebook) PrependPage(child, tabLabel Widgetter) int32 {
 //    - gint: index (starting from 0) of the prepended page in the notebook, or
 //      -1 if function fails.
 //
-func (notebook *Notebook) PrependPageMenu(child, tabLabel, menuLabel Widgetter) int32 {
+func (notebook *Notebook) PrependPageMenu(child, tabLabel, menuLabel Widgetter) int {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 *C.GtkWidget   // out
@@ -1483,9 +1483,9 @@ func (notebook *Notebook) PrependPageMenu(child, tabLabel, menuLabel Widgetter) 
 	runtime.KeepAlive(tabLabel)
 	runtime.KeepAlive(menuLabel)
 
-	var _gint int32 // out
+	var _gint int // out
 
-	_gint = int32(_cret)
+	_gint = int(_cret)
 
 	return _gint
 }
@@ -1509,7 +1509,7 @@ func (notebook *Notebook) PrevPage() {
 //    - pageNum: index of a notebook page, starting from 0. If -1, the last page
 //      will be removed.
 //
-func (notebook *Notebook) RemovePage(pageNum int32) {
+func (notebook *Notebook) RemovePage(pageNum int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.int          // out
 
@@ -1532,7 +1532,7 @@ func (notebook *Notebook) RemovePage(pageNum int32) {
 //    - child to move.
 //    - position: new position, or -1 to move to the end.
 //
-func (notebook *Notebook) ReorderChild(child Widgetter, position int32) {
+func (notebook *Notebook) ReorderChild(child Widgetter, position int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 *C.GtkWidget   // out
 	var _arg2 C.int          // out
@@ -1585,7 +1585,7 @@ func (notebook *Notebook) SetActionWidget(widget Widgetter, packType PackType) {
 //      the last page will be used. If greater than the number of pages in the
 //      notebook, nothing will be done.
 //
-func (notebook *Notebook) SetCurrentPage(pageNum int32) {
+func (notebook *Notebook) SetCurrentPage(pageNum int) {
 	var _arg0 *C.GtkNotebook // out
 	var _arg1 C.int          // out
 

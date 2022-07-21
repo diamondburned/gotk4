@@ -218,7 +218,7 @@ type CellLayouter interface {
 	coreglib.Objector
 
 	// AddAttribute adds an attribute mapping to the list in cell_layout.
-	AddAttribute(cell CellRendererer, attribute string, column int32)
+	AddAttribute(cell CellRendererer, attribute string, column int)
 	// Clear unsets all the mappings on all renderers on cell_layout and removes
 	// all renderers from cell_layout.
 	Clear()
@@ -235,7 +235,7 @@ type CellLayouter interface {
 	// PackStart packs the cell into the beginning of cell_layout.
 	PackStart(cell CellRendererer, expand bool)
 	// Reorder re-inserts cell at position.
-	Reorder(cell CellRendererer, position int32)
+	Reorder(cell CellRendererer, position int)
 	// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
 	SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc)
 }
@@ -265,7 +265,7 @@ func marshalCellLayout(p uintptr) (interface{}, error) {
 //    - attribute on the renderer.
 //    - column position on the model to get the attribute from.
 //
-func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int32) {
+func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 *C.char            // out
@@ -465,7 +465,7 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 //    - cell to reorder.
 //    - position: new position to insert cell at.
 //
-func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
+func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	var _arg0 *C.GtkCellLayout   // out
 	var _arg1 *C.GtkCellRenderer // out
 	var _arg2 C.int              // out

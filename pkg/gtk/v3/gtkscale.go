@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -136,14 +136,19 @@ var (
 	_ Ranger = (*Scale)(nil)
 )
 
-func classInitScaler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeScale,
+		GoType:       reflect.TypeOf((*Scale)(nil)),
+		InitClass:    initClassScale,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkScale{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkScaleClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassScale(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ DrawValue() }); ok {
 		pclass.draw_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_draw_value)
@@ -160,7 +165,7 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ScaleClass_draw_value
 func _gotk4_gtk3_ScaleClass_draw_value(arg0 *C.GtkScale) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawValue() })
 
 	iface.DrawValue()
@@ -168,7 +173,7 @@ func _gotk4_gtk3_ScaleClass_draw_value(arg0 *C.GtkScale) {
 
 //export _gotk4_gtk3_ScaleClass_format_value
 func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.GtkScale, arg1 C.gdouble) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FormatValue(value float64) string })
 
 	var _value float64 // out
@@ -184,7 +189,7 @@ func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.GtkScale, arg1 C.gdouble) (cret
 
 //export _gotk4_gtk3_ScaleClass_get_layout_offsets
 func _gotk4_gtk3_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.gint, arg2 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LayoutOffsets() (x, y int) })
 
 	x, y := iface.LayoutOffsets()

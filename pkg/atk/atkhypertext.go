@@ -116,7 +116,7 @@ func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_HypertextIface_get_link
 func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cret *C.AtkHyperlink) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	var _linkIndex int // out
@@ -132,7 +132,7 @@ func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cre
 
 //export _gotk4_atk1_HypertextIface_get_link_index
 func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	var _charIndex int // out
@@ -148,7 +148,7 @@ func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint
 
 //export _gotk4_atk1_HypertextIface_get_n_links
 func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	gint := iface.NLinks()
@@ -160,7 +160,7 @@ func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) 
 
 //export _gotk4_atk1_HypertextIface_link_selected
 func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
 	var _linkIndex int // out

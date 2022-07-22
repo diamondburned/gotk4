@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -80,14 +80,19 @@ var (
 	_ Containerer       = (*FileChooserButton)(nil)
 )
 
-func classInitFileChooserButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFileChooserButton,
+		GoType:       reflect.TypeOf((*FileChooserButton)(nil)),
+		InitClass:    initClassFileChooserButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkFileChooserButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkFileChooserButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFileChooserButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFileChooserButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkFileChooserButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ FileSet() }); ok {
 		pclass.file_set = (*[0]byte)(C._gotk4_gtk3_FileChooserButtonClass_file_set)
@@ -96,7 +101,7 @@ func classInitFileChooserButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_FileChooserButtonClass_file_set
 func _gotk4_gtk3_FileChooserButtonClass_file_set(arg0 *C.GtkFileChooserButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FileSet() })
 
 	iface.FileSet()

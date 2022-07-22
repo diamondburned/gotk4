@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -84,14 +84,19 @@ var (
 	_ Miscer = (*Label)(nil)
 )
 
-func classInitLabeller(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeLabel,
+		GoType:       reflect.TypeOf((*Label)(nil)),
+		InitClass:    initClassLabel,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkLabel{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkLabelClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassLabel(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkLabelClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkLabelClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActivateLink(uri string) bool }); ok {
 		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LabelClass_activate_link)
@@ -114,7 +119,7 @@ func classInitLabeller(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_LabelClass_activate_link
 func _gotk4_gtk3_LabelClass_activate_link(arg0 *C.GtkLabel, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateLink(uri string) bool })
 
 	var _uri string // out
@@ -132,7 +137,7 @@ func _gotk4_gtk3_LabelClass_activate_link(arg0 *C.GtkLabel, arg1 *C.gchar) (cret
 
 //export _gotk4_gtk3_LabelClass_copy_clipboard
 func _gotk4_gtk3_LabelClass_copy_clipboard(arg0 *C.GtkLabel) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CopyClipboard() })
 
 	iface.CopyClipboard()
@@ -140,7 +145,7 @@ func _gotk4_gtk3_LabelClass_copy_clipboard(arg0 *C.GtkLabel) {
 
 //export _gotk4_gtk3_LabelClass_move_cursor
 func _gotk4_gtk3_LabelClass_move_cursor(arg0 *C.GtkLabel, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MoveCursor(step MovementStep, count int, extendSelection bool)
 	})
@@ -160,7 +165,7 @@ func _gotk4_gtk3_LabelClass_move_cursor(arg0 *C.GtkLabel, arg1 C.GtkMovementStep
 
 //export _gotk4_gtk3_LabelClass_populate_popup
 func _gotk4_gtk3_LabelClass_populate_popup(arg0 *C.GtkLabel, arg1 *C.GtkMenu) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PopulatePopup(menu *Menu) })
 
 	var _menu *Menu // out

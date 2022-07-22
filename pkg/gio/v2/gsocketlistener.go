@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -64,14 +65,19 @@ var (
 	_ coreglib.Objector = (*SocketListener)(nil)
 )
 
-func classInitSocketListenerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocketListener,
+		GoType:       reflect.TypeOf((*SocketListener)(nil)),
+		InitClass:    initClassSocketListener,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSocketListener{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSocketListenerClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocketListener(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketListenerClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSocketListenerClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_SocketListenerClass_changed)
@@ -86,7 +92,7 @@ func classInitSocketListenerer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketListenerClass_changed
 func _gotk4_gio2_SocketListenerClass_changed(arg0 *C.GSocketListener) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
@@ -94,7 +100,7 @@ func _gotk4_gio2_SocketListenerClass_changed(arg0 *C.GSocketListener) {
 
 //export _gotk4_gio2_SocketListenerClass_event
 func _gotk4_gio2_SocketListenerClass_event(arg0 *C.GSocketListener, arg1 C.GSocketListenerEvent, arg2 *C.GSocket) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(event SocketListenerEvent, socket *Socket)
 	})

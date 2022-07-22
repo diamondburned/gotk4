@@ -47,12 +47,7 @@ var (
 	_ MultiFilterer = (*AnyFilter)(nil)
 )
 
-func classInitAnyFilterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassAnyFilter(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapAnyFilter(obj *coreglib.Object) *AnyFilter {
@@ -116,12 +111,7 @@ var (
 	_ MultiFilterer = (*EveryFilter)(nil)
 )
 
-func classInitEveryFilterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassEveryFilter(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapEveryFilter(obj *coreglib.Object) *EveryFilter {
@@ -199,12 +189,7 @@ type MultiFilterer interface {
 
 var _ MultiFilterer = (*MultiFilter)(nil)
 
-func classInitMultiFilterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassMultiFilter(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapMultiFilter(obj *coreglib.Object) *MultiFilter {

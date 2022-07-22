@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -102,14 +102,19 @@ type SocketControlMessager interface {
 
 var _ SocketControlMessager = (*SocketControlMessage)(nil)
 
-func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocketControlMessage,
+		GoType:       reflect.TypeOf((*SocketControlMessage)(nil)),
+		InitClass:    initClassSocketControlMessage,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSocketControlMessage{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSocketControlMessageClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocketControlMessage(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Level() int }); ok {
 		pclass.get_level = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_level)
@@ -130,7 +135,7 @@ func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketControlMessageClass_get_level
 func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessage) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Level() int })
 
 	gint := iface.Level()
@@ -142,7 +147,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessa
 
 //export _gotk4_gio2_SocketControlMessageClass_get_size
 func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessage) (cret C.gsize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Size() uint })
 
 	gsize := iface.Size()
@@ -154,7 +159,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessag
 
 //export _gotk4_gio2_SocketControlMessageClass_get_type
 func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessage) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Type() int })
 
 	gint := iface.Type()
@@ -166,7 +171,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessag
 
 //export _gotk4_gio2_SocketControlMessageClass_serialize
 func _gotk4_gio2_SocketControlMessageClass_serialize(arg0 *C.GSocketControlMessage, arg1 C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Serialize(data unsafe.Pointer) })
 
 	var _data unsafe.Pointer // out

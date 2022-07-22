@@ -345,7 +345,7 @@ func ifaceInitDatagramBasedder(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_DatagramBasedInterface_condition_check
 func _gotk4_gio2_DatagramBasedInterface_condition_check(arg0 *C.GDatagramBased, arg1 C.GIOCondition) (cret C.GIOCondition) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
 	var _condition glib.IOCondition // out
@@ -361,7 +361,7 @@ func _gotk4_gio2_DatagramBasedInterface_condition_check(arg0 *C.GDatagramBased, 
 
 //export _gotk4_gio2_DatagramBasedInterface_condition_wait
 func _gotk4_gio2_DatagramBasedInterface_condition_wait(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gint64, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
 	var _cancellable context.Context // out
@@ -385,7 +385,7 @@ func _gotk4_gio2_DatagramBasedInterface_condition_wait(arg0 *C.GDatagramBased, a
 
 //export _gotk4_gio2_DatagramBasedInterface_create_source
 func _gotk4_gio2_DatagramBasedInterface_create_source(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 *C.GCancellable) (cret *C.GSource) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
 	var _cancellable context.Context // out
@@ -405,7 +405,7 @@ func _gotk4_gio2_DatagramBasedInterface_create_source(arg0 *C.GDatagramBased, ar
 
 //export _gotk4_gio2_DatagramBasedInterface_receive_messages
 func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased, arg1 *C.GInputMessage, arg2 C.guint, arg3 C.gint, arg4 C.gint64, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
 	var _cancellable context.Context // out
@@ -438,7 +438,7 @@ func _gotk4_gio2_DatagramBasedInterface_receive_messages(arg0 *C.GDatagramBased,
 
 //export _gotk4_gio2_DatagramBasedInterface_send_messages
 func _gotk4_gio2_DatagramBasedInterface_send_messages(arg0 *C.GDatagramBased, arg1 *C.GOutputMessage, arg2 C.guint, arg3 C.gint, arg4 C.gint64, arg5 *C.GCancellable, _cerr **C.GError) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DatagramBasedOverrider)
 
 	var _cancellable context.Context // out

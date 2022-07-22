@@ -40,12 +40,7 @@ var (
 	_ coreglib.Objector = (*X11Monitor)(nil)
 )
 
-func classInitX11Monitorrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassX11Monitor(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapX11Monitor(obj *coreglib.Object) *X11Monitor {

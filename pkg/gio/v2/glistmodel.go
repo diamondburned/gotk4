@@ -153,7 +153,7 @@ func ifaceInitListModeller(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_ListModelInterface_get_item
 func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.GListModel, arg1 C.guint) (cret C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
 	var _position uint // out
@@ -170,7 +170,7 @@ func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.GListModel, arg1 C.guint) (
 
 //export _gotk4_gio2_ListModelInterface_get_item_type
 func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.GListModel) (cret C.GType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
 	gType := iface.ItemType()
@@ -182,7 +182,7 @@ func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.GListModel) (cret C.GT
 
 //export _gotk4_gio2_ListModelInterface_get_n_items
 func _gotk4_gio2_ListModelInterface_get_n_items(arg0 *C.GListModel) (cret C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ListModelOverrider)
 
 	guint := iface.NItems()

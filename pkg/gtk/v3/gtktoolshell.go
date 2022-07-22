@@ -173,7 +173,7 @@ func ifaceInitToolSheller(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToolShellIface_get_ellipsize_mode
 func _gotk4_gtk3_ToolShellIface_get_ellipsize_mode(arg0 *C.GtkToolShell) (cret C.PangoEllipsizeMode) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	ellipsizeMode := iface.EllipsizeMode()
@@ -185,7 +185,7 @@ func _gotk4_gtk3_ToolShellIface_get_ellipsize_mode(arg0 *C.GtkToolShell) (cret C
 
 //export _gotk4_gtk3_ToolShellIface_get_icon_size
 func _gotk4_gtk3_ToolShellIface_get_icon_size(arg0 *C.GtkToolShell) (cret C.GtkIconSize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	iconSize := iface.IconSize()
@@ -197,7 +197,7 @@ func _gotk4_gtk3_ToolShellIface_get_icon_size(arg0 *C.GtkToolShell) (cret C.GtkI
 
 //export _gotk4_gtk3_ToolShellIface_get_orientation
 func _gotk4_gtk3_ToolShellIface_get_orientation(arg0 *C.GtkToolShell) (cret C.GtkOrientation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	orientation := iface.Orientation()
@@ -209,7 +209,7 @@ func _gotk4_gtk3_ToolShellIface_get_orientation(arg0 *C.GtkToolShell) (cret C.Gt
 
 //export _gotk4_gtk3_ToolShellIface_get_relief_style
 func _gotk4_gtk3_ToolShellIface_get_relief_style(arg0 *C.GtkToolShell) (cret C.GtkReliefStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	reliefStyle := iface.ReliefStyle()
@@ -221,7 +221,7 @@ func _gotk4_gtk3_ToolShellIface_get_relief_style(arg0 *C.GtkToolShell) (cret C.G
 
 //export _gotk4_gtk3_ToolShellIface_get_style
 func _gotk4_gtk3_ToolShellIface_get_style(arg0 *C.GtkToolShell) (cret C.GtkToolbarStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	toolbarStyle := iface.Style()
@@ -233,7 +233,7 @@ func _gotk4_gtk3_ToolShellIface_get_style(arg0 *C.GtkToolShell) (cret C.GtkToolb
 
 //export _gotk4_gtk3_ToolShellIface_get_text_alignment
 func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.GtkToolShell) (cret C.gfloat) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	gfloat := iface.TextAlignment()
@@ -245,7 +245,7 @@ func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.GtkToolShell) (cret C
 
 //export _gotk4_gtk3_ToolShellIface_get_text_orientation
 func _gotk4_gtk3_ToolShellIface_get_text_orientation(arg0 *C.GtkToolShell) (cret C.GtkOrientation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	orientation := iface.TextOrientation()
@@ -257,7 +257,7 @@ func _gotk4_gtk3_ToolShellIface_get_text_orientation(arg0 *C.GtkToolShell) (cret
 
 //export _gotk4_gtk3_ToolShellIface_get_text_size_group
 func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.GtkToolShell) (cret *C.GtkSizeGroup) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	sizeGroup := iface.TextSizeGroup()
@@ -269,7 +269,7 @@ func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.GtkToolShell) (cret 
 
 //export _gotk4_gtk3_ToolShellIface_rebuild_menu
 func _gotk4_gtk3_ToolShellIface_rebuild_menu(arg0 *C.GtkToolShell) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
 	iface.RebuildMenu()

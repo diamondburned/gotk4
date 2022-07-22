@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -475,14 +476,19 @@ var (
 	_ coreglib.Objector = (*PrintOperation)(nil)
 )
 
-func classInitPrintOperationer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypePrintOperation,
+		GoType:       reflect.TypeOf((*PrintOperation)(nil)),
+		InitClass:    initClassPrintOperation,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkPrintOperation{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkPrintOperationClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassPrintOperation(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ BeginPrint(context *PrintContext) }); ok {
 		pclass.begin_print = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_begin_print)
@@ -539,7 +545,7 @@ func classInitPrintOperationer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_PrintOperationClass_begin_print
 func _gotk4_gtk3_PrintOperationClass_begin_print(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ BeginPrint(context *PrintContext) })
 
 	var _context *PrintContext // out
@@ -551,7 +557,7 @@ func _gotk4_gtk3_PrintOperationClass_begin_print(arg0 *C.GtkPrintOperation, arg1
 
 //export _gotk4_gtk3_PrintOperationClass_custom_widget_apply
 func _gotk4_gtk3_PrintOperationClass_custom_widget_apply(arg0 *C.GtkPrintOperation, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CustomWidgetApply(widget Widgetter) })
 
 	var _widget Widgetter // out
@@ -579,7 +585,7 @@ func _gotk4_gtk3_PrintOperationClass_custom_widget_apply(arg0 *C.GtkPrintOperati
 
 //export _gotk4_gtk3_PrintOperationClass_done
 func _gotk4_gtk3_PrintOperationClass_done(arg0 *C.GtkPrintOperation, arg1 C.GtkPrintOperationResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Done(result PrintOperationResult)
 	})
@@ -593,7 +599,7 @@ func _gotk4_gtk3_PrintOperationClass_done(arg0 *C.GtkPrintOperation, arg1 C.GtkP
 
 //export _gotk4_gtk3_PrintOperationClass_draw_page
 func _gotk4_gtk3_PrintOperationClass_draw_page(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawPage(context *PrintContext, pageNr int)
 	})
@@ -609,7 +615,7 @@ func _gotk4_gtk3_PrintOperationClass_draw_page(arg0 *C.GtkPrintOperation, arg1 *
 
 //export _gotk4_gtk3_PrintOperationClass_end_print
 func _gotk4_gtk3_PrintOperationClass_end_print(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ EndPrint(context *PrintContext) })
 
 	var _context *PrintContext // out
@@ -621,7 +627,7 @@ func _gotk4_gtk3_PrintOperationClass_end_print(arg0 *C.GtkPrintOperation, arg1 *
 
 //export _gotk4_gtk3_PrintOperationClass_paginate
 func _gotk4_gtk3_PrintOperationClass_paginate(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Paginate(context *PrintContext) bool
 	})
@@ -641,7 +647,7 @@ func _gotk4_gtk3_PrintOperationClass_paginate(arg0 *C.GtkPrintOperation, arg1 *C
 
 //export _gotk4_gtk3_PrintOperationClass_preview
 func _gotk4_gtk3_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	})
@@ -681,7 +687,7 @@ func _gotk4_gtk3_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.
 
 //export _gotk4_gtk3_PrintOperationClass_request_page_setup
 func _gotk4_gtk3_PrintOperationClass_request_page_setup(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 *C.GtkPageSetup) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
 	})
@@ -699,7 +705,7 @@ func _gotk4_gtk3_PrintOperationClass_request_page_setup(arg0 *C.GtkPrintOperatio
 
 //export _gotk4_gtk3_PrintOperationClass_status_changed
 func _gotk4_gtk3_PrintOperationClass_status_changed(arg0 *C.GtkPrintOperation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StatusChanged() })
 
 	iface.StatusChanged()
@@ -707,7 +713,7 @@ func _gotk4_gtk3_PrintOperationClass_status_changed(arg0 *C.GtkPrintOperation) {
 
 //export _gotk4_gtk3_PrintOperationClass_update_custom_widget
 func _gotk4_gtk3_PrintOperationClass_update_custom_widget(arg0 *C.GtkPrintOperation, arg1 *C.GtkWidget, arg2 *C.GtkPageSetup, arg3 *C.GtkPrintSettings) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 	})

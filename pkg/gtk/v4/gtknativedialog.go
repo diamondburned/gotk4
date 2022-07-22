@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -86,14 +86,19 @@ type NativeDialogger interface {
 
 var _ NativeDialogger = (*NativeDialog)(nil)
 
-func classInitNativeDialogger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeNativeDialog,
+		GoType:       reflect.TypeOf((*NativeDialog)(nil)),
+		InitClass:    initClassNativeDialog,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkNativeDialog{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkNativeDialogClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassNativeDialog(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Hide() }); ok {
 		pclass.hide = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_hide)
@@ -110,7 +115,7 @@ func classInitNativeDialogger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_NativeDialogClass_hide
 func _gotk4_gtk4_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Hide() })
 
 	iface.Hide()
@@ -118,7 +123,7 @@ func _gotk4_gtk4_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
 
 //export _gotk4_gtk4_NativeDialogClass_response
 func _gotk4_gtk4_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Response(responseId int) })
 
 	var _responseId int // out
@@ -130,7 +135,7 @@ func _gotk4_gtk4_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.int)
 
 //export _gotk4_gtk4_NativeDialogClass_show
 func _gotk4_gtk4_NativeDialogClass_show(arg0 *C.GtkNativeDialog) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Show() })
 
 	iface.Show()

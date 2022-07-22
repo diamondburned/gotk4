@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -101,14 +101,19 @@ var (
 	_ coreglib.Objector = (*Button)(nil)
 )
 
-func classInitButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeButton,
+		GoType:       reflect.TypeOf((*Button)(nil)),
+		InitClass:    initClassButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ButtonClass_activate)
@@ -137,7 +142,7 @@ func classInitButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ButtonClass_activate
 func _gotk4_gtk3_ButtonClass_activate(arg0 *C.GtkButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -145,7 +150,7 @@ func _gotk4_gtk3_ButtonClass_activate(arg0 *C.GtkButton) {
 
 //export _gotk4_gtk3_ButtonClass_clicked
 func _gotk4_gtk3_ButtonClass_clicked(arg0 *C.GtkButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Clicked() })
 
 	iface.Clicked()
@@ -153,7 +158,7 @@ func _gotk4_gtk3_ButtonClass_clicked(arg0 *C.GtkButton) {
 
 //export _gotk4_gtk3_ButtonClass_enter
 func _gotk4_gtk3_ButtonClass_enter(arg0 *C.GtkButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Enter() })
 
 	iface.Enter()
@@ -161,7 +166,7 @@ func _gotk4_gtk3_ButtonClass_enter(arg0 *C.GtkButton) {
 
 //export _gotk4_gtk3_ButtonClass_leave
 func _gotk4_gtk3_ButtonClass_leave(arg0 *C.GtkButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Leave() })
 
 	iface.Leave()
@@ -169,7 +174,7 @@ func _gotk4_gtk3_ButtonClass_leave(arg0 *C.GtkButton) {
 
 //export _gotk4_gtk3_ButtonClass_pressed
 func _gotk4_gtk3_ButtonClass_pressed(arg0 *C.GtkButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Pressed() })
 
 	iface.Pressed()
@@ -177,7 +182,7 @@ func _gotk4_gtk3_ButtonClass_pressed(arg0 *C.GtkButton) {
 
 //export _gotk4_gtk3_ButtonClass_released
 func _gotk4_gtk3_ButtonClass_released(arg0 *C.GtkButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Released() })
 
 	iface.Released()

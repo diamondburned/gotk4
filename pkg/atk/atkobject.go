@@ -4,6 +4,7 @@ package atk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1201,14 +1202,19 @@ var (
 	_ coreglib.Objector = (*ObjectClass)(nil)
 )
 
-func classInitObjectClasser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeObjectClass,
+		GoType:       reflect.TypeOf((*ObjectClass)(nil)),
+		InitClass:    initClassObjectClass,
+		ClassSize:    uint16(unsafe.Sizeof(C.AtkObject{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.AtkObjectClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassObjectClass(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkObjectClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.AtkObjectClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActiveDescendantChanged(child *unsafe.Pointer) }); ok {
 		pclass.active_descendant_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_active_descendant_changed)
@@ -1309,7 +1315,7 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 
 //export _gotk4_atk1_ObjectClass_active_descendant_changed
 func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActiveDescendantChanged(child *unsafe.Pointer) })
 
 	var _child *unsafe.Pointer // out
@@ -1323,7 +1329,7 @@ func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *
 
 //export _gotk4_atk1_ObjectClass_children_changed
 func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, arg2 C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChildrenChanged(changeIndex uint, changedChild unsafe.Pointer)
 	})
@@ -1339,7 +1345,7 @@ func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, a
 
 //export _gotk4_atk1_ObjectClass_focus_event
 func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusEvent(focusIn bool) })
 
 	var _focusIn bool // out
@@ -1353,7 +1359,7 @@ func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
 
 //export _gotk4_atk1_ObjectClass_get_description
 func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Description() string })
 
 	utf8 := iface.Description()
@@ -1366,7 +1372,7 @@ func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) 
 
 //export _gotk4_atk1_ObjectClass_get_index_in_parent
 func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IndexInParent() int })
 
 	gint := iface.IndexInParent()
@@ -1378,7 +1384,7 @@ func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint
 
 //export _gotk4_atk1_ObjectClass_get_layer
 func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Layer() Layer })
 
 	layer := iface.Layer()
@@ -1390,7 +1396,7 @@ func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
 
 //export _gotk4_atk1_ObjectClass_get_mdi_zorder
 func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MDIZOrder() int })
 
 	gint := iface.MDIZOrder()
@@ -1402,7 +1408,7 @@ func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
 
 //export _gotk4_atk1_ObjectClass_get_n_children
 func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NChildren() int })
 
 	gint := iface.NChildren()
@@ -1414,7 +1420,7 @@ func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
 
 //export _gotk4_atk1_ObjectClass_get_name
 func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Name() string })
 
 	utf8 := iface.Name()
@@ -1427,7 +1433,7 @@ func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
 
 //export _gotk4_atk1_ObjectClass_get_object_locale
 func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ObjectLocale() string })
 
 	utf8 := iface.ObjectLocale()
@@ -1440,7 +1446,7 @@ func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar
 
 //export _gotk4_atk1_ObjectClass_get_parent
 func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Parent() *ObjectClass })
 
 	object := iface.Parent()
@@ -1452,7 +1458,7 @@ func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
 
 //export _gotk4_atk1_ObjectClass_get_role
 func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Role() Role })
 
 	role := iface.Role()
@@ -1464,7 +1470,7 @@ func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
 
 //export _gotk4_atk1_ObjectClass_initialize
 func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Initialize(data unsafe.Pointer) })
 
 	var _data unsafe.Pointer // out
@@ -1476,7 +1482,7 @@ func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
 
 //export _gotk4_atk1_ObjectClass_property_change
 func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPropertyValues) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PropertyChange(values *PropertyValues) })
 
 	var _values *PropertyValues // out
@@ -1488,7 +1494,7 @@ func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPrope
 
 //export _gotk4_atk1_ObjectClass_ref_relation_set
 func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRelationSet) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefRelationSet() *RelationSet })
 
 	relationSet := iface.RefRelationSet()
@@ -1501,7 +1507,7 @@ func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRel
 
 //export _gotk4_atk1_ObjectClass_ref_state_set
 func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateSet) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefStateSet() *StateSet })
 
 	stateSet := iface.RefStateSet()
@@ -1514,7 +1520,7 @@ func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateS
 
 //export _gotk4_atk1_ObjectClass_remove_property_change_handler
 func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, arg1 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RemovePropertyChangeHandler(handlerId uint) })
 
 	var _handlerId uint // out
@@ -1526,7 +1532,7 @@ func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, a
 
 //export _gotk4_atk1_ObjectClass_set_description
 func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetDescription(description string) })
 
 	var _description string // out
@@ -1538,7 +1544,7 @@ func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
 
 //export _gotk4_atk1_ObjectClass_set_name
 func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetName(name string) })
 
 	var _name string // out
@@ -1550,7 +1556,7 @@ func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
 
 //export _gotk4_atk1_ObjectClass_set_parent
 func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetParent(parent *ObjectClass) })
 
 	var _parent *ObjectClass // out
@@ -1562,7 +1568,7 @@ func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
 
 //export _gotk4_atk1_ObjectClass_set_role
 func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetRole(role Role) })
 
 	var _role Role // out
@@ -1574,7 +1580,7 @@ func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
 
 //export _gotk4_atk1_ObjectClass_state_change
 func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		StateChange(name string, stateSet bool)
 	})
@@ -1592,7 +1598,7 @@ func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2
 
 //export _gotk4_atk1_ObjectClass_visible_data_changed
 func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VisibleDataChanged() })
 
 	iface.VisibleDataChanged()

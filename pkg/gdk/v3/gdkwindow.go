@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -890,14 +891,19 @@ type Windower interface {
 
 var _ Windower = (*Window)(nil)
 
-func classInitWindower(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeWindow,
+		GoType:       reflect.TypeOf((*Window)(nil)),
+		InitClass:    initClassWindow,
+		ClassSize:    uint16(unsafe.Sizeof(C.GdkWindow{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GdkWindowClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassWindow(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GdkWindowClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GdkWindowClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		CreateSurface(width, height int) *cairo.Surface
@@ -920,7 +926,7 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gdk3_WindowClass_create_surface
 func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateSurface(width, height int) *cairo.Surface
 	})
@@ -940,7 +946,7 @@ func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2
 
 //export _gotk4_gdk3_WindowClass_from_embedder
 func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
 	})
@@ -960,7 +966,7 @@ func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, ar
 
 //export _gotk4_gdk3_WindowClass_to_embedder
 func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 	})

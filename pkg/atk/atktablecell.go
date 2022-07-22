@@ -131,7 +131,7 @@ func ifaceInitTableCeller(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_TableCellIface_get_column_span
 func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	gint := iface.ColumnSpan()
@@ -143,7 +143,7 @@ func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gi
 
 //export _gotk4_atk1_TableCellIface_get_position
 func _gotk4_atk1_TableCellIface_get_position(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	row, column, ok := iface.Position()
@@ -159,7 +159,7 @@ func _gotk4_atk1_TableCellIface_get_position(arg0 *C.AtkTableCell, arg1 *C.gint,
 
 //export _gotk4_atk1_TableCellIface_get_row_column_span
 func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	row, column, rowSpan, columnSpan, ok := iface.RowColumnSpan()
@@ -177,7 +177,7 @@ func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.AtkTableCell, arg1 *
 
 //export _gotk4_atk1_TableCellIface_get_row_span
 func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	gint := iface.RowSpan()
@@ -189,7 +189,7 @@ func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint)
 
 //export _gotk4_atk1_TableCellIface_get_table
 func _gotk4_atk1_TableCellIface_get_table(arg0 *C.AtkTableCell) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	object := iface.Table()

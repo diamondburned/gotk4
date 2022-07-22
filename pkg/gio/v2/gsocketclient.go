@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -64,14 +65,19 @@ var (
 	_ coreglib.Objector = (*SocketClient)(nil)
 )
 
-func classInitSocketClienter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocketClient,
+		GoType:       reflect.TypeOf((*SocketClient)(nil)),
+		InitClass:    initClassSocketClient,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSocketClient{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSocketClientClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocketClient(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketClientClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSocketClientClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
@@ -82,7 +88,7 @@ func classInitSocketClienter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketClientClass_event
 func _gotk4_gio2_SocketClientClass_event(arg0 *C.GSocketClient, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
 	})

@@ -5,6 +5,7 @@ package gio
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -314,14 +315,19 @@ type Resolverer interface {
 
 var _ Resolverer = (*Resolver)(nil)
 
-func classInitResolverer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeResolver,
+		GoType:       reflect.TypeOf((*Resolver)(nil)),
+		InitClass:    initClassResolver,
+		ClassSize:    uint16(unsafe.Sizeof(C.GResolver{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GResolverClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassResolver(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GResolverClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GResolverClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
@@ -384,7 +390,7 @@ func classInitResolverer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_ResolverClass_lookup_by_address
 func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.GResolver, arg1 *C.GInetAddress, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
 	})
@@ -409,7 +415,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.GResolver, arg1 *C.GIne
 
 //export _gotk4_gio2_ResolverClass_lookup_by_address_finish
 func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByAddressFinish(result AsyncResulter) (string, error)
 	})
@@ -446,7 +452,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.GResolver, arg1 
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name
 func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
 	})
@@ -477,7 +483,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, 
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name_finish
 func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error)
 	})
@@ -520,7 +526,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name_with_flags
 func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1 *C.gchar, arg2 C.GResolverNameLookupFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error)
 	})
@@ -553,7 +559,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish
 func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error)
 	})
@@ -596,7 +602,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolve
 
 //export _gotk4_gio2_ResolverClass_lookup_records
 func _gotk4_gio2_ResolverClass_lookup_records(arg0 *C.GResolver, arg1 *C.gchar, arg2 C.GResolverRecordType, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error)
 	})
@@ -628,7 +634,7 @@ func _gotk4_gio2_ResolverClass_lookup_records(arg0 *C.GResolver, arg1 *C.gchar, 
 
 //export _gotk4_gio2_ResolverClass_lookup_records_finish
 func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
 	})
@@ -670,7 +676,7 @@ func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.GResolver, arg1 *C.
 
 //export _gotk4_gio2_ResolverClass_lookup_service_finish
 func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
 	})
@@ -713,7 +719,7 @@ func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.GResolver, arg1 *C.
 
 //export _gotk4_gio2_ResolverClass_reload
 func _gotk4_gio2_ResolverClass_reload(arg0 *C.GResolver) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Reload() })
 
 	iface.Reload()

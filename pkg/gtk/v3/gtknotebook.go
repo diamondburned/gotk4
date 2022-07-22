@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -198,14 +198,19 @@ var (
 	_ Containerer = (*Notebook)(nil)
 )
 
-func classInitNotebooker(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeNotebook,
+		GoType:       reflect.TypeOf((*Notebook)(nil)),
+		InitClass:    initClassNotebook,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkNotebook{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkNotebookClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassNotebook(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkNotebookClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkNotebookClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ChangeCurrentPage(offset int) bool }); ok {
 		pclass.change_current_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_change_current_page)
@@ -262,7 +267,7 @@ func classInitNotebooker(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_NotebookClass_change_current_page
 func _gotk4_gtk3_NotebookClass_change_current_page(arg0 *C.GtkNotebook, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChangeCurrentPage(offset int) bool })
 
 	var _offset int // out
@@ -280,7 +285,7 @@ func _gotk4_gtk3_NotebookClass_change_current_page(arg0 *C.GtkNotebook, arg1 C.g
 
 //export _gotk4_gtk3_NotebookClass_focus_tab
 func _gotk4_gtk3_NotebookClass_focus_tab(arg0 *C.GtkNotebook, arg1 C.GtkNotebookTab) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusTab(typ NotebookTab) bool })
 
 	var _typ NotebookTab // out
@@ -298,7 +303,7 @@ func _gotk4_gtk3_NotebookClass_focus_tab(arg0 *C.GtkNotebook, arg1 C.GtkNotebook
 
 //export _gotk4_gtk3_NotebookClass_insert_page
 func _gotk4_gtk3_NotebookClass_insert_page(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 *C.GtkWidget, arg3 *C.GtkWidget, arg4 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertPage(child, tabLabel, menuLabel Widgetter, position int) int
 	})
@@ -370,7 +375,7 @@ func _gotk4_gtk3_NotebookClass_insert_page(arg0 *C.GtkNotebook, arg1 *C.GtkWidge
 
 //export _gotk4_gtk3_NotebookClass_move_focus_out
 func _gotk4_gtk3_NotebookClass_move_focus_out(arg0 *C.GtkNotebook, arg1 C.GtkDirectionType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MoveFocusOut(direction DirectionType) })
 
 	var _direction DirectionType // out
@@ -382,7 +387,7 @@ func _gotk4_gtk3_NotebookClass_move_focus_out(arg0 *C.GtkNotebook, arg1 C.GtkDir
 
 //export _gotk4_gtk3_NotebookClass_page_added
 func _gotk4_gtk3_NotebookClass_page_added(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PageAdded(child Widgetter, pageNum uint)
 	})
@@ -414,7 +419,7 @@ func _gotk4_gtk3_NotebookClass_page_added(arg0 *C.GtkNotebook, arg1 *C.GtkWidget
 
 //export _gotk4_gtk3_NotebookClass_page_removed
 func _gotk4_gtk3_NotebookClass_page_removed(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PageRemoved(child Widgetter, pageNum uint)
 	})
@@ -446,7 +451,7 @@ func _gotk4_gtk3_NotebookClass_page_removed(arg0 *C.GtkNotebook, arg1 *C.GtkWidg
 
 //export _gotk4_gtk3_NotebookClass_page_reordered
 func _gotk4_gtk3_NotebookClass_page_reordered(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PageReordered(child Widgetter, pageNum uint)
 	})
@@ -478,7 +483,7 @@ func _gotk4_gtk3_NotebookClass_page_reordered(arg0 *C.GtkNotebook, arg1 *C.GtkWi
 
 //export _gotk4_gtk3_NotebookClass_reorder_tab
 func _gotk4_gtk3_NotebookClass_reorder_tab(arg0 *C.GtkNotebook, arg1 C.GtkDirectionType, arg2 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ReorderTab(direction DirectionType, moveToLast bool) bool
 	})
@@ -502,7 +507,7 @@ func _gotk4_gtk3_NotebookClass_reorder_tab(arg0 *C.GtkNotebook, arg1 C.GtkDirect
 
 //export _gotk4_gtk3_NotebookClass_select_page
 func _gotk4_gtk3_NotebookClass_select_page(arg0 *C.GtkNotebook, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectPage(moveFocus bool) bool })
 
 	var _moveFocus bool // out
@@ -522,7 +527,7 @@ func _gotk4_gtk3_NotebookClass_select_page(arg0 *C.GtkNotebook, arg1 C.gboolean)
 
 //export _gotk4_gtk3_NotebookClass_switch_page
 func _gotk4_gtk3_NotebookClass_switch_page(arg0 *C.GtkNotebook, arg1 *C.GtkWidget, arg2 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SwitchPage(page Widgetter, pageNum uint)
 	})

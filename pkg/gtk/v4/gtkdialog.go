@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -296,14 +296,19 @@ var (
 	_ coreglib.Objector = (*Dialog)(nil)
 )
 
-func classInitDialogger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeDialog,
+		GoType:       reflect.TypeOf((*Dialog)(nil)),
+		InitClass:    initClassDialog,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkDialog{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkDialogClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassDialog(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkDialogClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkDialogClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Close() }); ok {
 		pclass.close = (*[0]byte)(C._gotk4_gtk4_DialogClass_close)
@@ -316,7 +321,7 @@ func classInitDialogger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_DialogClass_close
 func _gotk4_gtk4_DialogClass_close(arg0 *C.GtkDialog) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
 	iface.Close()
@@ -324,7 +329,7 @@ func _gotk4_gtk4_DialogClass_close(arg0 *C.GtkDialog) {
 
 //export _gotk4_gtk4_DialogClass_response
 func _gotk4_gtk4_DialogClass_response(arg0 *C.GtkDialog, arg1 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Response(responseId int) })
 
 	var _responseId int // out

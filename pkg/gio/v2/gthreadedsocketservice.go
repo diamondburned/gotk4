@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -62,14 +62,19 @@ var (
 	_ coreglib.Objector = (*ThreadedSocketService)(nil)
 )
 
-func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeThreadedSocketService,
+		GoType:       reflect.TypeOf((*ThreadedSocketService)(nil)),
+		InitClass:    initClassThreadedSocketService,
+		ClassSize:    uint16(unsafe.Sizeof(C.GThreadedSocketService{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GThreadedSocketServiceClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassThreadedSocketService(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
@@ -80,7 +85,7 @@ func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_ThreadedSocketServiceClass_run
 func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.GThreadedSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	})

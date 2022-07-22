@@ -4,10 +4,10 @@ package pango
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -240,14 +240,19 @@ type Rendererer interface {
 
 var _ Rendererer = (*Renderer)(nil)
 
-func classInitRendererer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeRenderer,
+		GoType:       reflect.TypeOf((*Renderer)(nil)),
+		InitClass:    initClassRenderer,
+		ClassSize:    uint16(unsafe.Sizeof(C.PangoRenderer{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.PangoRendererClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassRenderer(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoRendererClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.PangoRendererClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Begin() }); ok {
 		pclass.begin = (*[0]byte)(C._gotk4_pango1_RendererClass_begin)
@@ -308,7 +313,7 @@ func classInitRendererer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_RendererClass_begin
 func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Begin() })
 
 	iface.Begin()
@@ -316,7 +321,7 @@ func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
 
 //export _gotk4_pango1_RendererClass_draw_error_underline
 func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DrawErrorUnderline(x, y, width, height int) })
 
 	var _x int      // out
@@ -334,7 +339,7 @@ func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg
 
 //export _gotk4_pango1_RendererClass_draw_glyph
 func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 C.PangoGlyph, arg3 C.double, arg4 C.double) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	})
@@ -370,7 +375,7 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.Pango
 
 //export _gotk4_pango1_RendererClass_draw_glyph_item
 func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.char, arg2 *C.PangoGlyphItem, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int)
 	})
@@ -392,7 +397,7 @@ func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.
 
 //export _gotk4_pango1_RendererClass_draw_glyphs
 func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 *C.PangoGlyphString, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 	})
@@ -428,7 +433,7 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.Pang
 
 //export _gotk4_pango1_RendererClass_draw_rectangle
 func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawRectangle(part RenderPart, x, y, width, height int)
 	})
@@ -450,7 +455,7 @@ func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.Pa
 
 //export _gotk4_pango1_RendererClass_draw_shape
 func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.PangoAttrShape, arg2 C.int, arg3 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawShape(attr *AttrShape, x, y int)
 	})
@@ -468,7 +473,7 @@ func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.Pango
 
 //export _gotk4_pango1_RendererClass_draw_trapezoid
 func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.double, arg3 C.double, arg4 C.double, arg5 C.double, arg6 C.double, arg7 C.double) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	})
@@ -494,7 +499,7 @@ func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.Pa
 
 //export _gotk4_pango1_RendererClass_end
 func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ End() })
 
 	iface.End()
@@ -502,7 +507,7 @@ func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
 
 //export _gotk4_pango1_RendererClass_part_changed
 func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PartChanged(part RenderPart) })
 
 	var _part RenderPart // out
@@ -514,7 +519,7 @@ func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.Pang
 
 //export _gotk4_pango1_RendererClass_prepare_run
 func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.PangoRenderer, arg1 *C.PangoLayoutRun) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrepareRun(run *LayoutRun) })
 
 	var _run *LayoutRun // out

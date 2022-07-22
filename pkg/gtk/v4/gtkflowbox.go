@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1197,14 +1198,19 @@ var (
 	_ Widgetter = (*FlowBoxChild)(nil)
 )
 
-func classInitFlowBoxChilder(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFlowBoxChild,
+		GoType:       reflect.TypeOf((*FlowBoxChild)(nil)),
+		InitClass:    initClassFlowBoxChild,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkFlowBoxChild{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkFlowBoxChildClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_FlowBoxChildClass_activate)
@@ -1213,7 +1219,7 @@ func classInitFlowBoxChilder(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_FlowBoxChildClass_activate
 func _gotk4_gtk4_FlowBoxChildClass_activate(arg0 *C.GtkFlowBoxChild) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()

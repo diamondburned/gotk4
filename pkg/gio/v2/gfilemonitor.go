@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -78,14 +78,19 @@ type FileMonitorrer interface {
 
 var _ FileMonitorrer = (*FileMonitor)(nil)
 
-func classInitFileMonitorrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFileMonitor,
+		GoType:       reflect.TypeOf((*FileMonitor)(nil)),
+		InitClass:    initClassFileMonitor,
+		ClassSize:    uint16(unsafe.Sizeof(C.GFileMonitor{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GFileMonitorClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFileMonitor(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileMonitorClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GFileMonitorClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Cancel() bool }); ok {
 		pclass.cancel = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_cancel)
@@ -100,7 +105,7 @@ func classInitFileMonitorrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_FileMonitorClass_cancel
 func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancel() bool })
 
 	ok := iface.Cancel()
@@ -114,7 +119,7 @@ func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean)
 
 //export _gotk4_gio2_FileMonitorClass_changed
 func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Changed(file, otherFile Filer, eventType FileMonitorEvent)
 	})

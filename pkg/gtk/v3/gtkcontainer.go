@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -314,14 +315,19 @@ type Containerer interface {
 
 var _ Containerer = (*Container)(nil)
 
-func classInitContainerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeContainer,
+		GoType:       reflect.TypeOf((*Container)(nil)),
+		InitClass:    initClassContainer,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkContainer{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkContainerClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassContainer(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkContainerClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkContainerClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Add(widget Widgetter) }); ok {
 		pclass.add = (*[0]byte)(C._gotk4_gtk3_ContainerClass_add)
@@ -356,7 +362,7 @@ func classInitContainerer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ContainerClass_add
 func _gotk4_gtk3_ContainerClass_add(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Add(widget Widgetter) })
 
 	var _widget Widgetter // out
@@ -384,7 +390,7 @@ func _gotk4_gtk3_ContainerClass_add(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
 
 //export _gotk4_gtk3_ContainerClass_check_resize
 func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.GtkContainer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CheckResize() })
 
 	iface.CheckResize()
@@ -392,7 +398,7 @@ func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.GtkContainer) {
 
 //export _gotk4_gtk3_ContainerClass_child_type
 func _gotk4_gtk3_ContainerClass_child_type(arg0 *C.GtkContainer) (cret C.GType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChildType() coreglib.Type })
 
 	gType := iface.ChildType()
@@ -404,7 +410,7 @@ func _gotk4_gtk3_ContainerClass_child_type(arg0 *C.GtkContainer) (cret C.GType) 
 
 //export _gotk4_gtk3_ContainerClass_composite_name
 func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CompositeName(child Widgetter) string })
 
 	var _child Widgetter // out
@@ -436,7 +442,7 @@ func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.GtkContainer, arg1 *C.Gtk
 
 //export _gotk4_gtk3_ContainerClass_get_path_for_child
 func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.GtkWidgetPath) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PathForChild(child Widgetter) *WidgetPath
 	})
@@ -470,7 +476,7 @@ func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.GtkContainer, arg1 *C
 
 //export _gotk4_gtk3_ContainerClass_remove
 func _gotk4_gtk3_ContainerClass_remove(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Remove(widget Widgetter) })
 
 	var _widget Widgetter // out
@@ -498,7 +504,7 @@ func _gotk4_gtk3_ContainerClass_remove(arg0 *C.GtkContainer, arg1 *C.GtkWidget) 
 
 //export _gotk4_gtk3_ContainerClass_set_focus_child
 func _gotk4_gtk3_ContainerClass_set_focus_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetFocusChild(child Widgetter) })
 
 	var _child Widgetter // out

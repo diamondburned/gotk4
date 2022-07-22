@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -174,14 +174,19 @@ var (
 	_ coreglib.Objector = (*VolumeMonitor)(nil)
 )
 
-func classInitVolumeMonitorrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeVolumeMonitor,
+		GoType:       reflect.TypeOf((*VolumeMonitor)(nil)),
+		InitClass:    initClassVolumeMonitor,
+		ClassSize:    uint16(unsafe.Sizeof(C.GVolumeMonitor{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GVolumeMonitorClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassVolumeMonitor(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GVolumeMonitorClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GVolumeMonitorClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ DriveChanged(drive Driver) }); ok {
 		pclass.drive_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_changed)
@@ -254,7 +259,7 @@ func classInitVolumeMonitorrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_VolumeMonitorClass_drive_changed
 func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DriveChanged(drive Driver) })
 
 	var _drive Driver // out
@@ -282,7 +287,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *
 
 //export _gotk4_gio2_VolumeMonitorClass_drive_connected
 func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DriveConnected(drive Driver) })
 
 	var _drive Driver // out
@@ -310,7 +315,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1
 
 //export _gotk4_gio2_VolumeMonitorClass_drive_disconnected
 func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DriveDisconnected(drive Driver) })
 
 	var _drive Driver // out
@@ -338,7 +343,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, a
 
 //export _gotk4_gio2_VolumeMonitorClass_drive_eject_button
 func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DriveEjectButton(drive Driver) })
 
 	var _drive Driver // out
@@ -366,7 +371,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, a
 
 //export _gotk4_gio2_VolumeMonitorClass_drive_stop_button
 func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DriveStopButton(drive Driver) })
 
 	var _drive Driver // out
@@ -394,7 +399,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, ar
 
 //export _gotk4_gio2_VolumeMonitorClass_get_connected_drives
 func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectedDrives() []*Drive })
 
 	list := iface.ConnectedDrives()
@@ -412,7 +417,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor)
 
 //export _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid
 func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, arg1 *C.char) (cret *C.GMount) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountForUUID(uuid string) *Mount })
 
 	var _uuid string // out
@@ -431,7 +436,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, a
 
 //export _gotk4_gio2_VolumeMonitorClass_get_mounts
 func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Mounts() []*Mount })
 
 	list := iface.Mounts()
@@ -449,7 +454,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.
 
 //export _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid
 func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, arg1 *C.char) (cret *C.GVolume) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VolumeForUUID(uuid string) *Volume })
 
 	var _uuid string // out
@@ -468,7 +473,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, 
 
 //export _gotk4_gio2_VolumeMonitorClass_get_volumes
 func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Volumes() []*Volume })
 
 	list := iface.Volumes()
@@ -486,7 +491,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C
 
 //export _gotk4_gio2_VolumeMonitorClass_mount_added
 func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountAdded(mount Mounter) })
 
 	var _mount Mounter // out
@@ -514,7 +519,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.
 
 //export _gotk4_gio2_VolumeMonitorClass_mount_changed
 func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountChanged(mount Mounter) })
 
 	var _mount Mounter // out
@@ -542,7 +547,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *
 
 //export _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount
 func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountPreUnmount(mount Mounter) })
 
 	var _mount Mounter // out
@@ -570,7 +575,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, ar
 
 //export _gotk4_gio2_VolumeMonitorClass_mount_removed
 func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountRemoved(mount Mounter) })
 
 	var _mount Mounter // out
@@ -598,7 +603,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *
 
 //export _gotk4_gio2_VolumeMonitorClass_volume_added
 func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VolumeAdded(volume Volumer) })
 
 	var _volume Volumer // out
@@ -626,7 +631,7 @@ func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C
 
 //export _gotk4_gio2_VolumeMonitorClass_volume_changed
 func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VolumeChanged(volume Volumer) })
 
 	var _volume Volumer // out
@@ -654,7 +659,7 @@ func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 
 
 //export _gotk4_gio2_VolumeMonitorClass_volume_removed
 func _gotk4_gio2_VolumeMonitorClass_volume_removed(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VolumeRemoved(volume Volumer) })
 
 	var _volume Volumer // out

@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -129,14 +129,19 @@ var (
 	_ Widgetter         = (*Toolbar)(nil)
 )
 
-func classInitToolbarrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeToolbar,
+		GoType:       reflect.TypeOf((*Toolbar)(nil)),
+		InitClass:    initClassToolbar,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkToolbar{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkToolbarClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassToolbar(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToolbarClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkToolbarClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ OrientationChanged(orientation Orientation) }); ok {
 		pclass.orientation_changed = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_orientation_changed)
@@ -155,7 +160,7 @@ func classInitToolbarrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToolbarClass_orientation_changed
 func _gotk4_gtk3_ToolbarClass_orientation_changed(arg0 *C.GtkToolbar, arg1 C.GtkOrientation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ OrientationChanged(orientation Orientation) })
 
 	var _orientation Orientation // out
@@ -167,7 +172,7 @@ func _gotk4_gtk3_ToolbarClass_orientation_changed(arg0 *C.GtkToolbar, arg1 C.Gtk
 
 //export _gotk4_gtk3_ToolbarClass_popup_context_menu
 func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.GtkToolbar, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PopupContextMenu(x, y, buttonNumber int) bool
 	})
@@ -191,7 +196,7 @@ func _gotk4_gtk3_ToolbarClass_popup_context_menu(arg0 *C.GtkToolbar, arg1 C.gint
 
 //export _gotk4_gtk3_ToolbarClass_style_changed
 func _gotk4_gtk3_ToolbarClass_style_changed(arg0 *C.GtkToolbar, arg1 C.GtkToolbarStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StyleChanged(style ToolbarStyle) })
 
 	var _style ToolbarStyle // out

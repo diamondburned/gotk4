@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -133,14 +133,19 @@ var (
 	_ coreglib.Objector = (*CellAreaContext)(nil)
 )
 
-func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCellAreaContext,
+		GoType:       reflect.TypeOf((*CellAreaContext)(nil)),
+		InitClass:    initClassCellAreaContext,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellAreaContext{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellAreaContextClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCellAreaContext(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Allocate(width, height int) }); ok {
 		pclass.allocate = (*[0]byte)(C._gotk4_gtk3_CellAreaContextClass_allocate)
@@ -165,7 +170,7 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellAreaContextClass_allocate
 func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Allocate(width, height int) })
 
 	var _width int  // out
@@ -179,7 +184,7 @@ func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 
 
 //export _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width
 func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
 	})
@@ -196,7 +201,7 @@ func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.Gtk
 
 //export _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height
 func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.GtkCellAreaContext, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
 	})
@@ -213,7 +218,7 @@ func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.Gtk
 
 //export _gotk4_gtk3_CellAreaContextClass_reset
 func _gotk4_gtk3_CellAreaContextClass_reset(arg0 *C.GtkCellAreaContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Reset() })
 
 	iface.Reset()

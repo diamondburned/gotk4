@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -533,14 +534,19 @@ type CellAreaer interface {
 
 var _ CellAreaer = (*CellArea)(nil)
 
-func classInitCellAreaer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCellArea,
+		GoType:       reflect.TypeOf((*CellArea)(nil)),
+		InitClass:    initClassCellArea,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellArea{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellAreaClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCellArea(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
@@ -625,7 +631,7 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_CellAreaClass_activate
 func _gotk4_gtk4_CellAreaClass_activate(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkRectangle, arg4 C.GtkCellRendererState, arg5 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
 	})
@@ -671,7 +677,7 @@ func _gotk4_gtk4_CellAreaClass_activate(arg0 *C.GtkCellArea, arg1 *C.GtkCellArea
 
 //export _gotk4_gtk4_CellAreaClass_add
 func _gotk4_gtk4_CellAreaClass_add(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Add(renderer CellRendererer) })
 
 	var _renderer CellRendererer // out
@@ -699,7 +705,7 @@ func _gotk4_gtk4_CellAreaClass_add(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer)
 
 //export _gotk4_gtk4_CellAreaClass_apply_attributes
 func _gotk4_gtk4_CellAreaClass_apply_attributes(arg0 *C.GtkCellArea, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 C.gboolean, arg4 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
 	})
@@ -739,7 +745,7 @@ func _gotk4_gtk4_CellAreaClass_apply_attributes(arg0 *C.GtkCellArea, arg1 *C.Gtk
 
 //export _gotk4_gtk4_CellAreaClass_copy_context
 func _gotk4_gtk4_CellAreaClass_copy_context(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext) (cret *C.GtkCellAreaContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CopyContext(context *CellAreaContext) *CellAreaContext
 	})
@@ -758,7 +764,7 @@ func _gotk4_gtk4_CellAreaClass_copy_context(arg0 *C.GtkCellArea, arg1 *C.GtkCell
 
 //export _gotk4_gtk4_CellAreaClass_create_context
 func _gotk4_gtk4_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkCellAreaContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateContext() *CellAreaContext })
 
 	cellAreaContext := iface.CreateContext()
@@ -771,7 +777,7 @@ func _gotk4_gtk4_CellAreaClass_create_context(arg0 *C.GtkCellArea) (cret *C.GtkC
 
 //export _gotk4_gtk4_CellAreaClass_event
 func _gotk4_gtk4_CellAreaClass_event(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GdkEvent, arg4 *C.GdkRectangle, arg5 C.GtkCellRendererState) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int
 	})
@@ -829,7 +835,7 @@ func _gotk4_gtk4_CellAreaClass_event(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaCon
 
 //export _gotk4_gtk4_CellAreaClass_focus
 func _gotk4_gtk4_CellAreaClass_focus(arg0 *C.GtkCellArea, arg1 C.GtkDirectionType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Focus(direction DirectionType) bool
 	})
@@ -849,7 +855,7 @@ func _gotk4_gtk4_CellAreaClass_focus(arg0 *C.GtkCellArea, arg1 C.GtkDirectionTyp
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_height
 func _gotk4_gtk4_CellAreaClass_get_preferred_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.int, arg4 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
 	})
@@ -884,7 +890,7 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_height(arg0 *C.GtkCellArea, arg1 *C
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width
 func _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.int, arg4 *C.int, arg5 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
 	})
@@ -921,7 +927,7 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(arg0 *C.GtkCellAre
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_width
 func _gotk4_gtk4_CellAreaClass_get_preferred_width(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.int, arg4 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
 	})
@@ -956,7 +962,7 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_width(arg0 *C.GtkCellArea, arg1 *C.
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height
 func _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 C.int, arg4 *C.int, arg5 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
 	})
@@ -993,7 +999,7 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(arg0 *C.GtkCellAre
 
 //export _gotk4_gtk4_CellAreaClass_get_request_mode
 func _gotk4_gtk4_CellAreaClass_get_request_mode(arg0 *C.GtkCellArea) (cret C.GtkSizeRequestMode) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RequestMode() SizeRequestMode })
 
 	sizeRequestMode := iface.RequestMode()
@@ -1005,7 +1011,7 @@ func _gotk4_gtk4_CellAreaClass_get_request_mode(arg0 *C.GtkCellArea) (cret C.Gtk
 
 //export _gotk4_gtk4_CellAreaClass_is_activatable
 func _gotk4_gtk4_CellAreaClass_is_activatable(arg0 *C.GtkCellArea) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsActivatable() bool })
 
 	ok := iface.IsActivatable()
@@ -1019,7 +1025,7 @@ func _gotk4_gtk4_CellAreaClass_is_activatable(arg0 *C.GtkCellArea) (cret C.gbool
 
 //export _gotk4_gtk4_CellAreaClass_remove
 func _gotk4_gtk4_CellAreaClass_remove(arg0 *C.GtkCellArea, arg1 *C.GtkCellRenderer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Remove(renderer CellRendererer) })
 
 	var _renderer CellRendererer // out
@@ -1047,7 +1053,7 @@ func _gotk4_gtk4_CellAreaClass_remove(arg0 *C.GtkCellArea, arg1 *C.GtkCellRender
 
 //export _gotk4_gtk4_CellAreaClass_snapshot
 func _gotk4_gtk4_CellAreaClass_snapshot(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaContext, arg2 *C.GtkWidget, arg3 *C.GtkSnapshot, arg4 *C.GdkRectangle, arg5 *C.GdkRectangle, arg6 C.GtkCellRendererState, arg7 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 	})

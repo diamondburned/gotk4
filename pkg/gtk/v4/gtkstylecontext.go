@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -146,14 +146,19 @@ var (
 	_ coreglib.Objector = (*StyleContext)(nil)
 )
 
-func classInitStyleContexter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeStyleContext,
+		GoType:       reflect.TypeOf((*StyleContext)(nil)),
+		InitClass:    initClassStyleContext,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkStyleContext{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkStyleContextClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassStyleContext(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStyleContextClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkStyleContextClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_StyleContextClass_changed)
@@ -162,7 +167,7 @@ func classInitStyleContexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_StyleContextClass_changed
 func _gotk4_gtk4_StyleContextClass_changed(arg0 *C.GtkStyleContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()

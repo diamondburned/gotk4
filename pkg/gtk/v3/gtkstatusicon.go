@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -130,14 +130,19 @@ var (
 	_ coreglib.Objector = (*StatusIcon)(nil)
 )
 
-func classInitStatusIconner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeStatusIcon,
+		GoType:       reflect.TypeOf((*StatusIcon)(nil)),
+		InitClass:    initClassStatusIcon,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkStatusIcon{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkStatusIconClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassStatusIcon(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStatusIconClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkStatusIconClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_activate)
@@ -180,7 +185,7 @@ func classInitStatusIconner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_StatusIconClass_activate
 func _gotk4_gtk3_StatusIconClass_activate(arg0 *C.GtkStatusIcon) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -188,7 +193,7 @@ func _gotk4_gtk3_StatusIconClass_activate(arg0 *C.GtkStatusIcon) {
 
 //export _gotk4_gtk3_StatusIconClass_button_press_event
 func _gotk4_gtk3_StatusIconClass_button_press_event(arg0 *C.GtkStatusIcon, arg1 *C.GdkEventButton) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ButtonPressEvent(event *gdk.EventButton) bool
 	})
@@ -208,7 +213,7 @@ func _gotk4_gtk3_StatusIconClass_button_press_event(arg0 *C.GtkStatusIcon, arg1 
 
 //export _gotk4_gtk3_StatusIconClass_button_release_event
 func _gotk4_gtk3_StatusIconClass_button_release_event(arg0 *C.GtkStatusIcon, arg1 *C.GdkEventButton) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ButtonReleaseEvent(event *gdk.EventButton) bool
 	})
@@ -228,7 +233,7 @@ func _gotk4_gtk3_StatusIconClass_button_release_event(arg0 *C.GtkStatusIcon, arg
 
 //export _gotk4_gtk3_StatusIconClass_popup_menu
 func _gotk4_gtk3_StatusIconClass_popup_menu(arg0 *C.GtkStatusIcon, arg1 C.guint, arg2 C.guint32) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PopupMenu(button uint, activateTime uint32)
 	})
@@ -244,7 +249,7 @@ func _gotk4_gtk3_StatusIconClass_popup_menu(arg0 *C.GtkStatusIcon, arg1 C.guint,
 
 //export _gotk4_gtk3_StatusIconClass_query_tooltip
 func _gotk4_gtk3_StatusIconClass_query_tooltip(arg0 *C.GtkStatusIcon, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryTooltip(x, y int, keyboardMode bool, tooltip *Tooltip) bool
 	})
@@ -272,7 +277,7 @@ func _gotk4_gtk3_StatusIconClass_query_tooltip(arg0 *C.GtkStatusIcon, arg1 C.gin
 
 //export _gotk4_gtk3_StatusIconClass_scroll_event
 func _gotk4_gtk3_StatusIconClass_scroll_event(arg0 *C.GtkStatusIcon, arg1 *C.GdkEventScroll) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ScrollEvent(event *gdk.EventScroll) bool
 	})
@@ -292,7 +297,7 @@ func _gotk4_gtk3_StatusIconClass_scroll_event(arg0 *C.GtkStatusIcon, arg1 *C.Gdk
 
 //export _gotk4_gtk3_StatusIconClass_size_changed
 func _gotk4_gtk3_StatusIconClass_size_changed(arg0 *C.GtkStatusIcon, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SizeChanged(size int) bool })
 
 	var _size int // out

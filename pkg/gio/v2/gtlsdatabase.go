@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -290,14 +291,19 @@ type TLSDatabaser interface {
 
 var _ TLSDatabaser = (*TLSDatabase)(nil)
 
-func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTLSDatabase,
+		GoType:       reflect.TypeOf((*TLSDatabase)(nil)),
+		InitClass:    initClassTLSDatabase,
+		ClassSize:    uint16(unsafe.Sizeof(C.GTlsDatabase{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GTlsDatabaseClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTLSDatabase(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsDatabaseClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GTlsDatabaseClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		CreateCertificateHandle(certificate TLSCertificater) string
@@ -356,7 +362,7 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsDatabaseClass_create_certificate_handle
 func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateCertificateHandle(certificate TLSCertificater) string
 	})
@@ -392,7 +398,7 @@ func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.GTlsDatabase
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle(arg0 *C.GTlsDatabase, arg1 *C.gchar, arg2 *C.GTlsInteraction, arg3 C.GTlsDatabaseLookupFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GTlsCertificate) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificateForHandle(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
 	})
@@ -426,7 +432,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle(arg0 *C.GTlsData
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
 	})
@@ -464,7 +470,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.G
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate, arg2 *C.GTlsInteraction, arg3 C.GTlsDatabaseLookupFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GTlsCertificate) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificateIssuer(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
 	})
@@ -512,7 +518,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer(arg0 *C.GTlsDatabase
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
 	})
@@ -550,7 +556,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsD
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by(arg0 *C.GTlsDatabase, arg1 *C.GByteArray, arg2 *C.GTlsInteraction, arg3 C.GTlsDatabaseLookupFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error)
 	})
@@ -588,7 +594,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by(arg0 *C.GTlsData
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
 	})
@@ -631,7 +637,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.G
 
 //export _gotk4_gio2_TlsDatabaseClass_verify_chain
 func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate, arg2 *C.gchar, arg3 *C.GSocketConnectable, arg4 *C.GTlsInteraction, arg5 C.GTlsDatabaseVerifyFlags, arg6 *C.GCancellable, _cerr **C.GError) (cret C.GTlsCertificateFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
 	})
@@ -697,7 +703,7 @@ func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTl
 
 //export _gotk4_gio2_TlsDatabaseClass_verify_chain_finish
 func _gotk4_gio2_TlsDatabaseClass_verify_chain_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsCertificateFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 	})

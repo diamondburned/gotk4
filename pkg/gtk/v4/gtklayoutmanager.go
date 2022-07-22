@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -160,14 +160,19 @@ type LayoutManagerer interface {
 
 var _ LayoutManagerer = (*LayoutManager)(nil)
 
-func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeLayoutManager,
+		GoType:       reflect.TypeOf((*LayoutManager)(nil)),
+		InitClass:    initClassLayoutManager,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkLayoutManager{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkLayoutManagerClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassLayoutManager(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Allocate(widget Widgetter, width, height, baseline int)
@@ -204,7 +209,7 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_LayoutManagerClass_allocate
 func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.int, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Allocate(widget Widgetter, width, height, baseline int)
 	})
@@ -240,7 +245,7 @@ func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.G
 
 //export _gotk4_gtk4_LayoutManagerClass_create_layout_child
 func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 *C.GtkWidget) (cret *C.GtkLayoutChild) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
 	})
@@ -293,7 +298,7 @@ func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager
 
 //export _gotk4_gtk4_LayoutManagerClass_get_request_mode
 func _gotk4_gtk4_LayoutManagerClass_get_request_mode(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RequestMode(widget Widgetter) SizeRequestMode
 	})
@@ -327,7 +332,7 @@ func _gotk4_gtk4_LayoutManagerClass_get_request_mode(arg0 *C.GtkLayoutManager, a
 
 //export _gotk4_gtk4_LayoutManagerClass_measure
 func _gotk4_gtk4_LayoutManagerClass_measure(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.GtkOrientation, arg3 C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int, arg7 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	})
@@ -366,7 +371,7 @@ func _gotk4_gtk4_LayoutManagerClass_measure(arg0 *C.GtkLayoutManager, arg1 *C.Gt
 
 //export _gotk4_gtk4_LayoutManagerClass_root
 func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.GtkLayoutManager) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Root() })
 
 	iface.Root()
@@ -374,7 +379,7 @@ func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.GtkLayoutManager) {
 
 //export _gotk4_gtk4_LayoutManagerClass_unroot
 func _gotk4_gtk4_LayoutManagerClass_unroot(arg0 *C.GtkLayoutManager) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unroot() })
 
 	iface.Unroot()

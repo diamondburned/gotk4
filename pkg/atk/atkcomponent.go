@@ -410,7 +410,7 @@ func ifaceInitComponenter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_ComponentIface_bounds_changed
 func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.AtkRectangle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _bounds *Rectangle // out
@@ -422,7 +422,7 @@ func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.Atk
 
 //export _gotk4_atk1_ComponentIface_contains
 func _gotk4_atk1_ComponentIface_contains(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _x int               // out
@@ -444,7 +444,7 @@ func _gotk4_atk1_ComponentIface_contains(arg0 *C.AtkComponent, arg1 C.gint, arg2
 
 //export _gotk4_atk1_ComponentIface_get_alpha
 func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	gdouble := iface.Alpha()
@@ -456,7 +456,7 @@ func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble)
 
 //export _gotk4_atk1_ComponentIface_get_extents
 func _gotk4_atk1_ComponentIface_get_extents(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 C.AtkCoordType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _coordType CoordType // out
@@ -473,7 +473,7 @@ func _gotk4_atk1_ComponentIface_get_extents(arg0 *C.AtkComponent, arg1 *C.gint, 
 
 //export _gotk4_atk1_ComponentIface_get_layer
 func _gotk4_atk1_ComponentIface_get_layer(arg0 *C.AtkComponent) (cret C.AtkLayer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	layer := iface.Layer()
@@ -485,7 +485,7 @@ func _gotk4_atk1_ComponentIface_get_layer(arg0 *C.AtkComponent) (cret C.AtkLayer
 
 //export _gotk4_atk1_ComponentIface_get_mdi_zorder
 func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	gint := iface.MDIZOrder()
@@ -497,7 +497,7 @@ func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gin
 
 //export _gotk4_atk1_ComponentIface_get_position
 func _gotk4_atk1_ComponentIface_get_position(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _coordType CoordType // out
@@ -512,7 +512,7 @@ func _gotk4_atk1_ComponentIface_get_position(arg0 *C.AtkComponent, arg1 *C.gint,
 
 //export _gotk4_atk1_ComponentIface_get_size
 func _gotk4_atk1_ComponentIface_get_size(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	width, height := iface.Size()
@@ -523,7 +523,7 @@ func _gotk4_atk1_ComponentIface_get_size(arg0 *C.AtkComponent, arg1 *C.gint, arg
 
 //export _gotk4_atk1_ComponentIface_grab_focus
 func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	ok := iface.GrabFocus()
@@ -537,7 +537,7 @@ func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolea
 
 //export _gotk4_atk1_ComponentIface_ref_accessible_at_point
 func _gotk4_atk1_ComponentIface_ref_accessible_at_point(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _x int               // out
@@ -560,7 +560,7 @@ func _gotk4_atk1_ComponentIface_ref_accessible_at_point(arg0 *C.AtkComponent, ar
 
 //export _gotk4_atk1_ComponentIface_remove_focus_handler
 func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _handlerId uint // out
@@ -572,7 +572,7 @@ func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 
 
 //export _gotk4_atk1_ComponentIface_scroll_to
 func _gotk4_atk1_ComponentIface_scroll_to(arg0 *C.AtkComponent, arg1 C.AtkScrollType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _typ ScrollType // out
@@ -590,7 +590,7 @@ func _gotk4_atk1_ComponentIface_scroll_to(arg0 *C.AtkComponent, arg1 C.AtkScroll
 
 //export _gotk4_atk1_ComponentIface_scroll_to_point
 func _gotk4_atk1_ComponentIface_scroll_to_point(arg0 *C.AtkComponent, arg1 C.AtkCoordType, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _coords CoordType // out
@@ -612,7 +612,7 @@ func _gotk4_atk1_ComponentIface_scroll_to_point(arg0 *C.AtkComponent, arg1 C.Atk
 
 //export _gotk4_atk1_ComponentIface_set_extents
 func _gotk4_atk1_ComponentIface_set_extents(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.gint, arg5 C.AtkCoordType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _x int               // out
@@ -638,7 +638,7 @@ func _gotk4_atk1_ComponentIface_set_extents(arg0 *C.AtkComponent, arg1 C.gint, a
 
 //export _gotk4_atk1_ComponentIface_set_position
 func _gotk4_atk1_ComponentIface_set_position(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _x int               // out
@@ -660,7 +660,7 @@ func _gotk4_atk1_ComponentIface_set_position(arg0 *C.AtkComponent, arg1 C.gint, 
 
 //export _gotk4_atk1_ComponentIface_set_size
 func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	var _width int  // out

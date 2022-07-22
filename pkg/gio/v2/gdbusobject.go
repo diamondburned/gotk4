@@ -118,7 +118,7 @@ func ifaceInitDBusObjector(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusObjectIface_get_interface
 func _gotk4_gio2_DBusObjectIface_get_interface(arg0 *C.GDBusObject, arg1 *C.gchar) (cret *C.GDBusInterface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
 	var _interfaceName string // out
@@ -137,7 +137,7 @@ func _gotk4_gio2_DBusObjectIface_get_interface(arg0 *C.GDBusObject, arg1 *C.gcha
 
 //export _gotk4_gio2_DBusObjectIface_get_interfaces
 func _gotk4_gio2_DBusObjectIface_get_interfaces(arg0 *C.GDBusObject) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
 	list := iface.Interfaces()
@@ -155,7 +155,7 @@ func _gotk4_gio2_DBusObjectIface_get_interfaces(arg0 *C.GDBusObject) (cret *C.GL
 
 //export _gotk4_gio2_DBusObjectIface_get_object_path
 func _gotk4_gio2_DBusObjectIface_get_object_path(arg0 *C.GDBusObject) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
 	utf8 := iface.ObjectPath()
@@ -168,7 +168,7 @@ func _gotk4_gio2_DBusObjectIface_get_object_path(arg0 *C.GDBusObject) (cret *C.g
 
 //export _gotk4_gio2_DBusObjectIface_interface_added
 func _gotk4_gio2_DBusObjectIface_interface_added(arg0 *C.GDBusObject, arg1 *C.GDBusInterface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
 	var _interface_ DBusInterfacer // out
@@ -196,7 +196,7 @@ func _gotk4_gio2_DBusObjectIface_interface_added(arg0 *C.GDBusObject, arg1 *C.GD
 
 //export _gotk4_gio2_DBusObjectIface_interface_removed
 func _gotk4_gio2_DBusObjectIface_interface_removed(arg0 *C.GDBusObject, arg1 *C.GDBusInterface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
 	var _interface_ DBusInterfacer // out

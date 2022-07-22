@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -89,14 +89,19 @@ type SocketAddresser interface {
 
 var _ SocketAddresser = (*SocketAddress)(nil)
 
-func classInitSocketAddresser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocketAddress,
+		GoType:       reflect.TypeOf((*SocketAddress)(nil)),
+		InitClass:    initClassSocketAddress,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSocketAddress{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSocketAddressClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocketAddress(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketAddressClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSocketAddressClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Family() SocketFamily }); ok {
 		pclass.get_family = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_get_family)
@@ -115,7 +120,7 @@ func classInitSocketAddresser(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketAddressClass_get_family
 func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.GSocketFamily) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Family() SocketFamily })
 
 	socketFamily := iface.Family()
@@ -127,7 +132,7 @@ func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.G
 
 //export _gotk4_gio2_SocketAddressClass_get_native_size
 func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.GSocketAddress) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NativeSize() int })
 
 	gssize := iface.NativeSize()
@@ -139,7 +144,7 @@ func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.GSocketAddress) (cre
 
 //export _gotk4_gio2_SocketAddressClass_to_native
 func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.GSocketAddress, arg1 C.gpointer, arg2 C.gsize, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ToNative(dest unsafe.Pointer, destlen uint) error
 	})

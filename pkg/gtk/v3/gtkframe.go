@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -87,14 +87,19 @@ var (
 	_ Binner = (*Frame)(nil)
 )
 
-func classInitFramer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFrame,
+		GoType:       reflect.TypeOf((*Frame)(nil)),
+		InitClass:    initClassFrame,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkFrame{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkFrameClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFrame(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFrameClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkFrameClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ComputeChildAllocation(allocation *Allocation) }); ok {
 		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk3_FrameClass_compute_child_allocation)
@@ -103,7 +108,7 @@ func classInitFramer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_FrameClass_compute_child_allocation
 func _gotk4_gtk3_FrameClass_compute_child_allocation(arg0 *C.GtkFrame, arg1 *C.GtkAllocation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ComputeChildAllocation(allocation *Allocation) })
 
 	var _allocation *Allocation // out

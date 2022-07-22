@@ -168,7 +168,7 @@ func ifaceInitBuildabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk4_BuildableIface_add_child
 func _gotk4_gtk4_BuildableIface_add_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder       // out
@@ -186,7 +186,7 @@ func _gotk4_gtk4_BuildableIface_add_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuild
 
 //export _gotk4_gtk4_BuildableIface_custom_finished
 func _gotk4_gtk4_BuildableIface_custom_finished(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.char, arg4 C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder       // out
@@ -206,7 +206,7 @@ func _gotk4_gtk4_BuildableIface_custom_finished(arg0 *C.GtkBuildable, arg1 *C.Gt
 
 //export _gotk4_gtk4_BuildableIface_custom_tag_end
 func _gotk4_gtk4_BuildableIface_custom_tag_end(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.char, arg4 C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder       // out
@@ -226,7 +226,7 @@ func _gotk4_gtk4_BuildableIface_custom_tag_end(arg0 *C.GtkBuildable, arg1 *C.Gtk
 
 //export _gotk4_gtk4_BuildableIface_custom_tag_start
 func _gotk4_gtk4_BuildableIface_custom_tag_start(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.GObject, arg3 *C.char, arg4 *C.GtkBuildableParser, arg5 *C.gpointer) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder       // out
@@ -252,7 +252,7 @@ func _gotk4_gtk4_BuildableIface_custom_tag_start(arg0 *C.GtkBuildable, arg1 *C.G
 
 //export _gotk4_gtk4_BuildableIface_get_id
 func _gotk4_gtk4_BuildableIface_get_id(arg0 *C.GtkBuildable) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	utf8 := iface.ID()
@@ -265,7 +265,7 @@ func _gotk4_gtk4_BuildableIface_get_id(arg0 *C.GtkBuildable) (cret *C.char) {
 
 //export _gotk4_gtk4_BuildableIface_get_internal_child
 func _gotk4_gtk4_BuildableIface_get_internal_child(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.char) (cret *C.GObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder // out
@@ -283,7 +283,7 @@ func _gotk4_gtk4_BuildableIface_get_internal_child(arg0 *C.GtkBuildable, arg1 *C
 
 //export _gotk4_gtk4_BuildableIface_parser_finished
 func _gotk4_gtk4_BuildableIface_parser_finished(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder // out
@@ -295,7 +295,7 @@ func _gotk4_gtk4_BuildableIface_parser_finished(arg0 *C.GtkBuildable, arg1 *C.Gt
 
 //export _gotk4_gtk4_BuildableIface_set_buildable_property
 func _gotk4_gtk4_BuildableIface_set_buildable_property(arg0 *C.GtkBuildable, arg1 *C.GtkBuilder, arg2 *C.char, arg3 *C.GValue) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _builder *Builder      // out
@@ -311,7 +311,7 @@ func _gotk4_gtk4_BuildableIface_set_buildable_property(arg0 *C.GtkBuildable, arg
 
 //export _gotk4_gtk4_BuildableIface_set_id
 func _gotk4_gtk4_BuildableIface_set_id(arg0 *C.GtkBuildable, arg1 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
 	var _id string // out

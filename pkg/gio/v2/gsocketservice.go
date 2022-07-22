@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -71,14 +71,19 @@ var (
 	_ coreglib.Objector = (*SocketService)(nil)
 )
 
-func classInitSocketServicer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocketService,
+		GoType:       reflect.TypeOf((*SocketService)(nil)),
+		InitClass:    initClassSocketService,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSocketService{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSocketServiceClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocketService(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketServiceClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSocketServiceClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
@@ -89,7 +94,7 @@ func classInitSocketServicer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketServiceClass_incoming
 func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.GSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	})

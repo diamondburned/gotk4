@@ -4,10 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -171,14 +171,19 @@ var (
 	_ coreglib.Objector = (*Entry)(nil)
 )
 
-func classInitEntrier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeEntry,
+		GoType:       reflect.TypeOf((*Entry)(nil)),
+		InitClass:    initClassEntry,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkEntry{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkEntryClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassEntry(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_EntryClass_activate)
@@ -187,7 +192,7 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_EntryClass_activate
 func _gotk4_gtk4_EntryClass_activate(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()

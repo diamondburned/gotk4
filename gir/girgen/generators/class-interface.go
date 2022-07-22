@@ -90,26 +90,36 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .GLibTypeStruct }}
 	{{ if .IsClass }}
-	func classInit{{ .InterfaceName }}(gclassPtr, data C.gpointer) {
-		C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
 
-		goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-		*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+	{{ if .GLibTypeStruct.Methods }}
+	func init() {
+		{{ if .IsRuntimeLinkMode -}}
+		// TODO
+		{{ else -}}
+		coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+			GType:        GType{{ .StructName }},
+			GoType:       reflect.TypeOf((*{{ .StructName }})(nil)),
+			InitClass:    initClass{{ .StructName }},
+			ClassSize:    uint16(unsafe.Sizeof(C.{{ .CType }}{})),
+			InstanceSize: uint16(unsafe.Sizeof(C.{{ .GLibTypeStruct.CType }}{})),
+		})
+		{{ end -}}
+	}
+	{{ end }}
 
+	func initClass{{ .StructName }}(gclass unsafe.Pointer, goval any) {
 		{{ if .GLibTypeStruct.Methods }}
-		goval := gbox.Get(uintptr(data))
-
 		{{- if .IsRuntimeLinkMode }}
 			pclass := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
 
 			{{ range .GLibTypeStruct.Methods }}
 			if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
 				o := pclass.StructFieldOffset({{ Quote .FieldName }})
-				*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C.{{ .C.Name }})
+				*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclass), o)) = unsafe.Pointer(C.{{ .C.Name }})
 			}
 			{{ end -}}
 		{{- else }}
-			pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gclassPtr))
+			pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gclass))
 
 			{{ range .GLibTypeStruct.Methods }}
 			if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
@@ -256,7 +266,8 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 
 	// These conditions should follow what's in the template.
 	if igen.IsClass() && igen.GLibTypeStruct != nil && len(igen.GLibTypeStruct.Methods) > 0 {
-		writer.Header().ImportCore("gbox")
+		writer.Header().NeedsExternGLib()
+		writer.Header().Import("reflect")
 
 		if gen.LinkMode() == types.RuntimeLinkMode {
 			writer.Header().ImportCore("girepository")

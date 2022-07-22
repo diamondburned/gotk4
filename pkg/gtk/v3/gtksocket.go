@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -97,14 +97,19 @@ var (
 	_ Containerer = (*Socket)(nil)
 )
 
-func classInitSocketter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocket,
+		GoType:       reflect.TypeOf((*Socket)(nil)),
+		InitClass:    initClassSocket,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkSocket{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkSocketClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocket(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSocketClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkSocketClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ PlugAdded() }); ok {
 		pclass.plug_added = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_added)
@@ -117,7 +122,7 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_SocketClass_plug_added
 func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugAdded() })
 
 	iface.PlugAdded()
@@ -125,7 +130,7 @@ func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
 
 //export _gotk4_gtk3_SocketClass_plug_removed
 func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PlugRemoved() bool })
 
 	ok := iface.PlugRemoved()

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -253,14 +254,19 @@ var (
 	_ coreglib.Objector = (*TreeModelFilter)(nil)
 )
 
-func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTreeModelFilter,
+		GoType:       reflect.TypeOf((*TreeModelFilter)(nil)),
+		InitClass:    initClassTreeModelFilter,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkTreeModelFilter{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkTreeModelFilterClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTreeModelFilter(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
@@ -277,7 +283,7 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TreeModelFilterClass_modify
 func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, arg3 *C.GValue, arg4 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
 	})
@@ -313,7 +319,7 @@ func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.GtkTreeModelFilter, arg1 *C
 
 //export _gotk4_gtk3_TreeModelFilterClass_visible
 func _gotk4_gtk3_TreeModelFilterClass_visible(arg0 *C.GtkTreeModelFilter, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Visible(childModel TreeModeller, iter *TreeIter) bool
 	})

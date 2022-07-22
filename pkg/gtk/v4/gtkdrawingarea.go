@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -162,14 +163,19 @@ var (
 	_ Widgetter = (*DrawingArea)(nil)
 )
 
-func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeDrawingArea,
+		GoType:       reflect.TypeOf((*DrawingArea)(nil)),
+		InitClass:    initClassDrawingArea,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkDrawingArea{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkDrawingAreaClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassDrawingArea(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
@@ -178,7 +184,7 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_DrawingAreaClass_resize
 func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Resize(width, height int) })
 
 	var _width int  // out

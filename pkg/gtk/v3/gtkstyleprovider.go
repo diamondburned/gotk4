@@ -131,7 +131,7 @@ func ifaceInitStyleProviderer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_StyleProviderIface_get_icon_factory
 func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkIconFactory) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(StyleProviderOverrider)
 
 	var _path *WidgetPath // out
@@ -156,7 +156,7 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, a
 
 //export _gotk4_gtk3_StyleProviderIface_get_style
 func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.GtkWidgetPath) (cret *C.GtkStyleProperties) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(StyleProviderOverrider)
 
 	var _path *WidgetPath // out

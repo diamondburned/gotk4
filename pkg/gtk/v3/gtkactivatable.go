@@ -333,7 +333,7 @@ func ifaceInitActivatabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActivatableIface_sync_action_properties
 func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable, arg1 *C.GtkAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
 	var _action *Action // out
@@ -347,7 +347,7 @@ func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.GtkActivatable,
 
 //export _gotk4_gtk3_ActivatableIface_update
 func _gotk4_gtk3_ActivatableIface_update(arg0 *C.GtkActivatable, arg1 *C.GtkAction, arg2 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
 	var _action *Action      // out

@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -51,14 +51,19 @@ var (
 	_ coreglib.Objector = (*CellAccessible)(nil)
 )
 
-func classInitCellAccessibler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCellAccessible,
+		GoType:       reflect.TypeOf((*CellAccessible)(nil)),
+		InitClass:    initClassCellAccessible,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellAccessible{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellAccessibleClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCellAccessible(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellAccessibleClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCellAccessibleClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ UpdateCache(emitSignal bool) }); ok {
 		pclass.update_cache = (*[0]byte)(C._gotk4_gtk3_CellAccessibleClass_update_cache)
@@ -67,7 +72,7 @@ func classInitCellAccessibler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellAccessibleClass_update_cache
 func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg1 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UpdateCache(emitSignal bool) })
 
 	var _emitSignal bool // out

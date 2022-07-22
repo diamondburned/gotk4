@@ -3,10 +3,10 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -61,14 +61,19 @@ var (
 	_ coreglib.Objector = (*Misc)(nil)
 )
 
-func classInitMiscer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMisc,
+		GoType:       reflect.TypeOf((*Misc)(nil)),
+		InitClass:    initClassMisc,
+		ClassSize:    uint16(unsafe.Sizeof(C.AtkMisc{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.AtkMiscClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMisc(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkMiscClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.AtkMiscClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ThreadsEnter() }); ok {
 		pclass.threads_enter = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_enter)
@@ -81,7 +86,7 @@ func classInitMiscer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_atk1_MiscClass_threads_enter
 func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsEnter() })
 
 	iface.ThreadsEnter()
@@ -89,7 +94,7 @@ func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
 
 //export _gotk4_atk1_MiscClass_threads_leave
 func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ThreadsLeave() })
 
 	iface.ThreadsLeave()

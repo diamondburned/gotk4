@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -85,14 +85,19 @@ type TLSCertificater interface {
 
 var _ TLSCertificater = (*TLSCertificate)(nil)
 
-func classInitTLSCertificater(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTLSCertificate,
+		GoType:       reflect.TypeOf((*TLSCertificate)(nil)),
+		InitClass:    initClassTLSCertificate,
+		ClassSize:    uint16(unsafe.Sizeof(C.GTlsCertificate{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GTlsCertificateClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTLSCertificate(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsCertificateClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GTlsCertificateClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
@@ -103,7 +108,7 @@ func classInitTLSCertificater(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsCertificateClass_verify
 func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSocketConnectable, arg2 *C.GTlsCertificate) (cret C.GTlsCertificateFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 	})

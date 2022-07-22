@@ -131,7 +131,7 @@ func ifaceInitColorChooserer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ColorChooserInterface_add_palette
 func _gotk4_gtk3_ColorChooserInterface_add_palette(arg0 *C.GtkColorChooser, arg1 C.GtkOrientation, arg2 C.gint, arg3 C.gint, arg4 *C.GdkRGBA) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ColorChooserOverrider)
 
 	var _orientation Orientation // out
@@ -155,7 +155,7 @@ func _gotk4_gtk3_ColorChooserInterface_add_palette(arg0 *C.GtkColorChooser, arg1
 
 //export _gotk4_gtk3_ColorChooserInterface_color_activated
 func _gotk4_gtk3_ColorChooserInterface_color_activated(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ColorChooserOverrider)
 
 	var _color *gdk.RGBA // out
@@ -167,7 +167,7 @@ func _gotk4_gtk3_ColorChooserInterface_color_activated(arg0 *C.GtkColorChooser, 
 
 //export _gotk4_gtk3_ColorChooserInterface_get_rgba
 func _gotk4_gtk3_ColorChooserInterface_get_rgba(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ColorChooserOverrider)
 
 	color := iface.RGBA()
@@ -177,7 +177,7 @@ func _gotk4_gtk3_ColorChooserInterface_get_rgba(arg0 *C.GtkColorChooser, arg1 *C
 
 //export _gotk4_gtk3_ColorChooserInterface_set_rgba
 func _gotk4_gtk3_ColorChooserInterface_set_rgba(arg0 *C.GtkColorChooser, arg1 *C.GdkRGBA) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ColorChooserOverrider)
 
 	var _color *gdk.RGBA // out

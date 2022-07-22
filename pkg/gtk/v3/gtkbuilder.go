@@ -4,10 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -315,14 +315,19 @@ var (
 	_ coreglib.Objector = (*Builder)(nil)
 )
 
-func classInitBuilderer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeBuilder,
+		GoType:       reflect.TypeOf((*Builder)(nil)),
+		InitClass:    initClassBuilder,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkBuilder{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkBuilderClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassBuilder(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkBuilderClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkBuilderClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		TypeFromName(typeName string) coreglib.Type
@@ -333,7 +338,7 @@ func classInitBuilderer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_BuilderClass_get_type_from_name
 func _gotk4_gtk3_BuilderClass_get_type_from_name(arg0 *C.GtkBuilder, arg1 *C.char) (cret C.GType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TypeFromName(typeName string) coreglib.Type
 	})

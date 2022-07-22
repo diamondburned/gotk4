@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -198,14 +198,19 @@ var (
 	_ Widgetter         = (*SpinButton)(nil)
 )
 
-func classInitSpinButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSpinButton,
+		GoType:       reflect.TypeOf((*SpinButton)(nil)),
+		InitClass:    initClassSpinButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkSpinButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkSpinButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSpinButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ChangeValue(scroll ScrollType) }); ok {
 		pclass.change_value = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_change_value)
@@ -230,7 +235,7 @@ func classInitSpinButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_SpinButtonClass_change_value
 func _gotk4_gtk3_SpinButtonClass_change_value(arg0 *C.GtkSpinButton, arg1 C.GtkScrollType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ChangeValue(scroll ScrollType) })
 
 	var _scroll ScrollType // out
@@ -242,7 +247,7 @@ func _gotk4_gtk3_SpinButtonClass_change_value(arg0 *C.GtkSpinButton, arg1 C.GtkS
 
 //export _gotk4_gtk3_SpinButtonClass_input
 func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Input(newValue *float64) int })
 
 	var _newValue *float64 // out
@@ -258,7 +263,7 @@ func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (
 
 //export _gotk4_gtk3_SpinButtonClass_output
 func _gotk4_gtk3_SpinButtonClass_output(arg0 *C.GtkSpinButton) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Output() int })
 
 	gint := iface.Output()
@@ -270,7 +275,7 @@ func _gotk4_gtk3_SpinButtonClass_output(arg0 *C.GtkSpinButton) (cret C.gint) {
 
 //export _gotk4_gtk3_SpinButtonClass_value_changed
 func _gotk4_gtk3_SpinButtonClass_value_changed(arg0 *C.GtkSpinButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged() })
 
 	iface.ValueChanged()
@@ -278,7 +283,7 @@ func _gotk4_gtk3_SpinButtonClass_value_changed(arg0 *C.GtkSpinButton) {
 
 //export _gotk4_gtk3_SpinButtonClass_wrapped
 func _gotk4_gtk3_SpinButtonClass_wrapped(arg0 *C.GtkSpinButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Wrapped() })
 
 	iface.Wrapped()

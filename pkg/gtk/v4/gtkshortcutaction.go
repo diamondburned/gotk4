@@ -161,12 +161,7 @@ var (
 	_ ShortcutActioner = (*ActivateAction)(nil)
 )
 
-func classInitActivateActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassActivateAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapActivateAction(obj *coreglib.Object) *ActivateAction {
@@ -216,12 +211,7 @@ var (
 	_ ShortcutActioner = (*CallbackAction)(nil)
 )
 
-func classInitCallbackActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassCallbackAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapCallbackAction(obj *coreglib.Object) *CallbackAction {
@@ -283,12 +273,7 @@ var (
 	_ ShortcutActioner = (*MnemonicAction)(nil)
 )
 
-func classInitMnemonicActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassMnemonicAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapMnemonicAction(obj *coreglib.Object) *MnemonicAction {
@@ -338,12 +323,7 @@ var (
 	_ ShortcutActioner = (*NamedAction)(nil)
 )
 
-func classInitNamedActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassNamedAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapNamedAction(obj *coreglib.Object) *NamedAction {
@@ -426,12 +406,7 @@ var (
 	_ ShortcutActioner = (*NothingAction)(nil)
 )
 
-func classInitNothingActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassNothingAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapNothingAction(obj *coreglib.Object) *NothingAction {
@@ -517,12 +492,7 @@ type ShortcutActioner interface {
 
 var _ ShortcutActioner = (*ShortcutAction)(nil)
 
-func classInitShortcutActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassShortcutAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapShortcutAction(obj *coreglib.Object) *ShortcutAction {
@@ -678,12 +648,7 @@ var (
 	_ ShortcutActioner = (*SignalAction)(nil)
 )
 
-func classInitSignalActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassSignalAction(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapSignalAction(obj *coreglib.Object) *SignalAction {

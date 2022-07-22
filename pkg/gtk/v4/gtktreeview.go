@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -449,14 +450,19 @@ var (
 	_ coreglib.Objector = (*TreeView)(nil)
 )
 
-func classInitTreeViewer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTreeView,
+		GoType:       reflect.TypeOf((*TreeView)(nil)),
+		InitClass:    initClassTreeView,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkTreeView{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkTreeViewClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTreeView(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ColumnsChanged() }); ok {
 		pclass.columns_changed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_columns_changed)
@@ -535,7 +541,7 @@ func classInitTreeViewer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_TreeViewClass_columns_changed
 func _gotk4_gtk4_TreeViewClass_columns_changed(arg0 *C.GtkTreeView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ColumnsChanged() })
 
 	iface.ColumnsChanged()
@@ -543,7 +549,7 @@ func _gotk4_gtk4_TreeViewClass_columns_changed(arg0 *C.GtkTreeView) {
 
 //export _gotk4_gtk4_TreeViewClass_cursor_changed
 func _gotk4_gtk4_TreeViewClass_cursor_changed(arg0 *C.GtkTreeView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CursorChanged() })
 
 	iface.CursorChanged()
@@ -551,7 +557,7 @@ func _gotk4_gtk4_TreeViewClass_cursor_changed(arg0 *C.GtkTreeView) {
 
 //export _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row
 func _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(arg0 *C.GtkTreeView, arg1 C.gboolean, arg2 C.gboolean, arg3 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ExpandCollapseCursorRow(logical, expand, openAll bool) bool
 	})
@@ -581,7 +587,7 @@ func _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(arg0 *C.GtkTreeView, a
 
 //export _gotk4_gtk4_TreeViewClass_move_cursor
 func _gotk4_gtk4_TreeViewClass_move_cursor(arg0 *C.GtkTreeView, arg1 C.GtkMovementStep, arg2 C.int, arg3 C.gboolean, arg4 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MoveCursor(step MovementStep, count int, extend, modify bool) bool
 	})
@@ -611,7 +617,7 @@ func _gotk4_gtk4_TreeViewClass_move_cursor(arg0 *C.GtkTreeView, arg1 C.GtkMoveme
 
 //export _gotk4_gtk4_TreeViewClass_row_activated
 func _gotk4_gtk4_TreeViewClass_row_activated(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 *C.GtkTreeViewColumn) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RowActivated(path *TreePath, column *TreeViewColumn)
 	})
@@ -627,7 +633,7 @@ func _gotk4_gtk4_TreeViewClass_row_activated(arg0 *C.GtkTreeView, arg1 *C.GtkTre
 
 //export _gotk4_gtk4_TreeViewClass_row_collapsed
 func _gotk4_gtk4_TreeViewClass_row_collapsed(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RowCollapsed(iter *TreeIter, path *TreePath)
 	})
@@ -643,7 +649,7 @@ func _gotk4_gtk4_TreeViewClass_row_collapsed(arg0 *C.GtkTreeView, arg1 *C.GtkTre
 
 //export _gotk4_gtk4_TreeViewClass_row_expanded
 func _gotk4_gtk4_TreeViewClass_row_expanded(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RowExpanded(iter *TreeIter, path *TreePath)
 	})
@@ -659,7 +665,7 @@ func _gotk4_gtk4_TreeViewClass_row_expanded(arg0 *C.GtkTreeView, arg1 *C.GtkTree
 
 //export _gotk4_gtk4_TreeViewClass_select_all
 func _gotk4_gtk4_TreeViewClass_select_all(arg0 *C.GtkTreeView) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectAll() bool })
 
 	ok := iface.SelectAll()
@@ -673,7 +679,7 @@ func _gotk4_gtk4_TreeViewClass_select_all(arg0 *C.GtkTreeView) (cret C.gboolean)
 
 //export _gotk4_gtk4_TreeViewClass_select_cursor_parent
 func _gotk4_gtk4_TreeViewClass_select_cursor_parent(arg0 *C.GtkTreeView) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectCursorParent() bool })
 
 	ok := iface.SelectCursorParent()
@@ -687,7 +693,7 @@ func _gotk4_gtk4_TreeViewClass_select_cursor_parent(arg0 *C.GtkTreeView) (cret C
 
 //export _gotk4_gtk4_TreeViewClass_select_cursor_row
 func _gotk4_gtk4_TreeViewClass_select_cursor_row(arg0 *C.GtkTreeView, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectCursorRow(startEditing bool) bool })
 
 	var _startEditing bool // out
@@ -707,7 +713,7 @@ func _gotk4_gtk4_TreeViewClass_select_cursor_row(arg0 *C.GtkTreeView, arg1 C.gbo
 
 //export _gotk4_gtk4_TreeViewClass_start_interactive_search
 func _gotk4_gtk4_TreeViewClass_start_interactive_search(arg0 *C.GtkTreeView) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StartInteractiveSearch() bool })
 
 	ok := iface.StartInteractiveSearch()
@@ -721,7 +727,7 @@ func _gotk4_gtk4_TreeViewClass_start_interactive_search(arg0 *C.GtkTreeView) (cr
 
 //export _gotk4_gtk4_TreeViewClass_test_collapse_row
 func _gotk4_gtk4_TreeViewClass_test_collapse_row(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TestCollapseRow(iter *TreeIter, path *TreePath) bool
 	})
@@ -743,7 +749,7 @@ func _gotk4_gtk4_TreeViewClass_test_collapse_row(arg0 *C.GtkTreeView, arg1 *C.Gt
 
 //export _gotk4_gtk4_TreeViewClass_test_expand_row
 func _gotk4_gtk4_TreeViewClass_test_expand_row(arg0 *C.GtkTreeView, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TestExpandRow(iter *TreeIter, path *TreePath) bool
 	})
@@ -765,7 +771,7 @@ func _gotk4_gtk4_TreeViewClass_test_expand_row(arg0 *C.GtkTreeView, arg1 *C.GtkT
 
 //export _gotk4_gtk4_TreeViewClass_toggle_cursor_row
 func _gotk4_gtk4_TreeViewClass_toggle_cursor_row(arg0 *C.GtkTreeView) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleCursorRow() bool })
 
 	ok := iface.ToggleCursorRow()
@@ -779,7 +785,7 @@ func _gotk4_gtk4_TreeViewClass_toggle_cursor_row(arg0 *C.GtkTreeView) (cret C.gb
 
 //export _gotk4_gtk4_TreeViewClass_unselect_all
 func _gotk4_gtk4_TreeViewClass_unselect_all(arg0 *C.GtkTreeView) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UnselectAll() bool })
 
 	ok := iface.UnselectAll()

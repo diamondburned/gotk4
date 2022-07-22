@@ -117,7 +117,7 @@ func ifaceInitTLSBackender(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsBackendInterface_get_default_database
 func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.GTlsBackend) (cret *C.GTlsDatabase) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
 	tlsDatabase := iface.DefaultDatabase()
@@ -130,7 +130,7 @@ func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.GTlsBackend) (
 
 //export _gotk4_gio2_TlsBackendInterface_supports_dtls
 func _gotk4_gio2_TlsBackendInterface_supports_dtls(arg0 *C.GTlsBackend) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
 	ok := iface.SupportsDTLS()
@@ -144,7 +144,7 @@ func _gotk4_gio2_TlsBackendInterface_supports_dtls(arg0 *C.GTlsBackend) (cret C.
 
 //export _gotk4_gio2_TlsBackendInterface_supports_tls
 func _gotk4_gio2_TlsBackendInterface_supports_tls(arg0 *C.GTlsBackend) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
 	ok := iface.SupportsTLS()

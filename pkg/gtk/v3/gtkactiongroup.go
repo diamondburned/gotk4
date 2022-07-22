@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -113,14 +114,19 @@ var (
 	_ coreglib.Objector = (*ActionGroup)(nil)
 )
 
-func classInitActionGrouper(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeActionGroup,
+		GoType:       reflect.TypeOf((*ActionGroup)(nil)),
+		InitClass:    initClassActionGroup,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkActionGroup{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkActionGroupClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassActionGroup(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Action(actionName string) *Action
@@ -131,7 +137,7 @@ func classInitActionGrouper(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActionGroupClass_get_action
 func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.GtkActionGroup, arg1 *C.gchar) (cret *C.GtkAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Action(actionName string) *Action
 	})

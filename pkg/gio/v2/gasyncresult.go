@@ -179,7 +179,7 @@ func ifaceInitAsyncResulter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_AsyncResultIface_get_source_object
 func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.GAsyncResult) (cret *C.GObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(AsyncResultOverrider)
 
 	object := iface.SourceObject()
@@ -194,7 +194,7 @@ func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.GAsyncResult) (cret 
 
 //export _gotk4_gio2_AsyncResultIface_get_user_data
 func _gotk4_gio2_AsyncResultIface_get_user_data(arg0 *C.GAsyncResult) (cret C.gpointer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(AsyncResultOverrider)
 
 	gpointer := iface.UserData()
@@ -206,7 +206,7 @@ func _gotk4_gio2_AsyncResultIface_get_user_data(arg0 *C.GAsyncResult) (cret C.gp
 
 //export _gotk4_gio2_AsyncResultIface_is_tagged
 func _gotk4_gio2_AsyncResultIface_is_tagged(arg0 *C.GAsyncResult, arg1 C.gpointer) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(AsyncResultOverrider)
 
 	var _sourceTag unsafe.Pointer // out

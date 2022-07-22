@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -67,14 +67,19 @@ var (
 	_ coreglib.Objector = (*ToolItem)(nil)
 )
 
-func classInitToolItemmer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeToolItem,
+		GoType:       reflect.TypeOf((*ToolItem)(nil)),
+		InitClass:    initClassToolItem,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkToolItem{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkToolItemClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassToolItem(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToolItemClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkToolItemClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ CreateMenuProxy() bool }); ok {
 		pclass.create_menu_proxy = (*[0]byte)(C._gotk4_gtk3_ToolItemClass_create_menu_proxy)
@@ -87,7 +92,7 @@ func classInitToolItemmer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToolItemClass_create_menu_proxy
 func _gotk4_gtk3_ToolItemClass_create_menu_proxy(arg0 *C.GtkToolItem) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateMenuProxy() bool })
 
 	ok := iface.CreateMenuProxy()
@@ -101,7 +106,7 @@ func _gotk4_gtk3_ToolItemClass_create_menu_proxy(arg0 *C.GtkToolItem) (cret C.gb
 
 //export _gotk4_gtk3_ToolItemClass_toolbar_reconfigured
 func _gotk4_gtk3_ToolItemClass_toolbar_reconfigured(arg0 *C.GtkToolItem) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToolbarReconfigured() })
 
 	iface.ToolbarReconfigured()

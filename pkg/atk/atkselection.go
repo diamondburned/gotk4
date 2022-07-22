@@ -195,7 +195,7 @@ func ifaceInitSelectioner(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_SelectionIface_add_selection
 func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	var _i int // out
@@ -213,7 +213,7 @@ func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.AtkSelection, arg1 C.gint)
 
 //export _gotk4_atk1_SelectionIface_clear_selection
 func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	ok := iface.ClearSelection()
@@ -227,7 +227,7 @@ func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.AtkSelection) (cret C.gb
 
 //export _gotk4_atk1_SelectionIface_get_selection_count
 func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.AtkSelection) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	gint := iface.SelectionCount()
@@ -239,7 +239,7 @@ func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.AtkSelection) (cret 
 
 //export _gotk4_atk1_SelectionIface_is_child_selected
 func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	var _i int // out
@@ -257,7 +257,7 @@ func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.AtkSelection, arg1 C.g
 
 //export _gotk4_atk1_SelectionIface_ref_selection
 func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	var _i int // out
@@ -276,7 +276,7 @@ func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint)
 
 //export _gotk4_atk1_SelectionIface_remove_selection
 func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	var _i int // out
@@ -294,7 +294,7 @@ func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.AtkSelection, arg1 C.gi
 
 //export _gotk4_atk1_SelectionIface_select_all_selection
 func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	ok := iface.SelectAllSelection()
@@ -308,7 +308,7 @@ func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.AtkSelection) (cret
 
 //export _gotk4_atk1_SelectionIface_selection_changed
 func _gotk4_atk1_SelectionIface_selection_changed(arg0 *C.AtkSelection) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
 	iface.SelectionChanged()

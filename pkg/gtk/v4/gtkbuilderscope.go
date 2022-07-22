@@ -145,7 +145,7 @@ func ifaceInitBuilderScoper(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk4_BuilderScopeInterface_get_type_from_function
 func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuilderScopeOverrider)
 
 	var _builder *Builder    // out
@@ -163,7 +163,7 @@ func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.GtkBuilder
 
 //export _gotk4_gtk4_BuilderScopeInterface_get_type_from_name
 func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(BuilderScopeOverrider)
 
 	var _builder *Builder // out
@@ -227,12 +227,7 @@ var (
 	_ coreglib.Objector = (*BuilderCScope)(nil)
 )
 
-func classInitBuilderCScoper(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassBuilderCScope(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapBuilderCScope(obj *coreglib.Object) *BuilderCScope {

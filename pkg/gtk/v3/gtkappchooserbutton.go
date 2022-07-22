@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -73,14 +73,19 @@ var (
 	_ Binner            = (*AppChooserButton)(nil)
 )
 
-func classInitAppChooserButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAppChooserButton,
+		GoType:       reflect.TypeOf((*AppChooserButton)(nil)),
+		InitClass:    initClassAppChooserButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkAppChooserButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkAppChooserButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAppChooserButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAppChooserButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkAppChooserButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ CustomItemActivated(itemName string) }); ok {
 		pclass.custom_item_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserButtonClass_custom_item_activated)
@@ -89,7 +94,7 @@ func classInitAppChooserButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AppChooserButtonClass_custom_item_activated
 func _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(arg0 *C.GtkAppChooserButton, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CustomItemActivated(itemName string) })
 
 	var _itemName string // out

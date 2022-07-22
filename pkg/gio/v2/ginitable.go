@@ -128,7 +128,7 @@ func ifaceInitInitabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_InitableIface_init
 func _gotk4_gio2_InitableIface_init(arg0 *C.GInitable, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(InitableOverrider)
 
 	var _cancellable context.Context // out

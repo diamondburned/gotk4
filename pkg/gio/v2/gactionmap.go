@@ -111,7 +111,7 @@ func ifaceInitActionMapper(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_ActionMapInterface_add_action
 func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
 	var _action Actioner // out
@@ -139,7 +139,7 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.GActionMap, arg1 *C.GActi
 
 //export _gotk4_gio2_ActionMapInterface_lookup_action
 func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gchar) (cret *C.GAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
 	var _actionName string // out
@@ -157,7 +157,7 @@ func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.GActionMap, arg1 *C.gc
 
 //export _gotk4_gio2_ActionMapInterface_remove_action
 func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.GActionMap, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
 	var _actionName string // out

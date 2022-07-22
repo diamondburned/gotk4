@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -122,14 +122,19 @@ var (
 	_ coreglib.Objector = (*Paned)(nil)
 )
 
-func classInitPanedder(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypePaned,
+		GoType:       reflect.TypeOf((*Paned)(nil)),
+		InitClass:    initClassPaned,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkPaned{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkPanedClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassPaned(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPanedClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkPanedClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ AcceptPosition() bool }); ok {
 		pclass.accept_position = (*[0]byte)(C._gotk4_gtk3_PanedClass_accept_position)
@@ -158,7 +163,7 @@ func classInitPanedder(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_PanedClass_accept_position
 func _gotk4_gtk3_PanedClass_accept_position(arg0 *C.GtkPaned) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AcceptPosition() bool })
 
 	ok := iface.AcceptPosition()
@@ -172,7 +177,7 @@ func _gotk4_gtk3_PanedClass_accept_position(arg0 *C.GtkPaned) (cret C.gboolean) 
 
 //export _gotk4_gtk3_PanedClass_cancel_position
 func _gotk4_gtk3_PanedClass_cancel_position(arg0 *C.GtkPaned) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CancelPosition() bool })
 
 	ok := iface.CancelPosition()
@@ -186,7 +191,7 @@ func _gotk4_gtk3_PanedClass_cancel_position(arg0 *C.GtkPaned) (cret C.gboolean) 
 
 //export _gotk4_gtk3_PanedClass_cycle_child_focus
 func _gotk4_gtk3_PanedClass_cycle_child_focus(arg0 *C.GtkPaned, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CycleChildFocus(reverse bool) bool })
 
 	var _reverse bool // out
@@ -206,7 +211,7 @@ func _gotk4_gtk3_PanedClass_cycle_child_focus(arg0 *C.GtkPaned, arg1 C.gboolean)
 
 //export _gotk4_gtk3_PanedClass_cycle_handle_focus
 func _gotk4_gtk3_PanedClass_cycle_handle_focus(arg0 *C.GtkPaned, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CycleHandleFocus(reverse bool) bool })
 
 	var _reverse bool // out
@@ -226,7 +231,7 @@ func _gotk4_gtk3_PanedClass_cycle_handle_focus(arg0 *C.GtkPaned, arg1 C.gboolean
 
 //export _gotk4_gtk3_PanedClass_move_handle
 func _gotk4_gtk3_PanedClass_move_handle(arg0 *C.GtkPaned, arg1 C.GtkScrollType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MoveHandle(scroll ScrollType) bool })
 
 	var _scroll ScrollType // out
@@ -244,7 +249,7 @@ func _gotk4_gtk3_PanedClass_move_handle(arg0 *C.GtkPaned, arg1 C.GtkScrollType) 
 
 //export _gotk4_gtk3_PanedClass_toggle_handle_focus
 func _gotk4_gtk3_PanedClass_toggle_handle_focus(arg0 *C.GtkPaned) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleHandleFocus() bool })
 
 	ok := iface.ToggleHandleFocus()

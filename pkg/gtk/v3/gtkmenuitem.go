@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -110,14 +110,19 @@ var (
 	_ coreglib.Objector = (*MenuItem)(nil)
 )
 
-func classInitMenuItemmer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMenuItem,
+		GoType:       reflect.TypeOf((*MenuItem)(nil)),
+		InitClass:    initClassMenuItem,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkMenuItem{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkMenuItemClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMenuItem(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate)
@@ -150,7 +155,7 @@ func classInitMenuItemmer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_MenuItemClass_activate
 func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -158,7 +163,7 @@ func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.GtkMenuItem) {
 
 //export _gotk4_gtk3_MenuItemClass_activate_item
 func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateItem() })
 
 	iface.ActivateItem()
@@ -166,7 +171,7 @@ func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.GtkMenuItem) {
 
 //export _gotk4_gtk3_MenuItemClass_deselect
 func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Deselect() })
 
 	iface.Deselect()
@@ -174,7 +179,7 @@ func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.GtkMenuItem) {
 
 //export _gotk4_gtk3_MenuItemClass_get_label
 func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.GtkMenuItem) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Label() string })
 
 	utf8 := iface.Label()
@@ -187,7 +192,7 @@ func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.GtkMenuItem) (cret *C.gchar) {
 
 //export _gotk4_gtk3_MenuItemClass_select
 func _gotk4_gtk3_MenuItemClass_select(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Select() })
 
 	iface.Select()
@@ -195,7 +200,7 @@ func _gotk4_gtk3_MenuItemClass_select(arg0 *C.GtkMenuItem) {
 
 //export _gotk4_gtk3_MenuItemClass_set_label
 func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetLabel(label string) })
 
 	var _label string // out
@@ -207,7 +212,7 @@ func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
 
 //export _gotk4_gtk3_MenuItemClass_toggle_size_allocate
 func _gotk4_gtk3_MenuItemClass_toggle_size_allocate(arg0 *C.GtkMenuItem, arg1 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleSizeAllocate(allocation int) })
 
 	var _allocation int // out

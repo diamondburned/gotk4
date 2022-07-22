@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -1005,14 +1005,19 @@ var (
 	_ coreglib.Objector = (*RCStyle)(nil)
 )
 
-func classInitRCStyler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeRCStyle,
+		GoType:       reflect.TypeOf((*RCStyle)(nil)),
+		InitClass:    initClassRCStyle,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkRcStyle{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkRcStyleClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassRCStyle(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Merge(src *RCStyle) }); ok {
 		pclass.merge = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_merge)
@@ -1027,7 +1032,7 @@ func classInitRCStyler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_RcStyleClass_merge
 func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Merge(src *RCStyle) })
 
 	var _src *RCStyle // out
@@ -1039,7 +1044,7 @@ func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
 
 //export _gotk4_gtk3_RcStyleClass_parse
 func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.GtkRcStyle, arg1 *C.GtkSettings, arg2 *C.GScanner) (cret C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Parse(settings *Settings, scanner *glib.Scanner) uint
 	})

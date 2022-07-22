@@ -170,7 +170,7 @@ func ifaceInitConverterer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_ConverterIface_convert
 func _gotk4_gio2_ConverterIface_convert(arg0 *C.GConverter, arg1 *C.void, arg2 C.gsize, arg3 *C.void, arg4 C.gsize, arg5 C.GConverterFlags, arg6 *C.gsize, arg7 *C.gsize, _cerr **C.GError) (cret C.GConverterResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ConverterOverrider)
 
 	var _inbuf []byte         // out
@@ -201,7 +201,7 @@ func _gotk4_gio2_ConverterIface_convert(arg0 *C.GConverter, arg1 *C.void, arg2 C
 
 //export _gotk4_gio2_ConverterIface_reset
 func _gotk4_gio2_ConverterIface_reset(arg0 *C.GConverter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ConverterOverrider)
 
 	iface.Reset()

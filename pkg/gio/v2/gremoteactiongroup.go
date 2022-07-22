@@ -114,7 +114,7 @@ func ifaceInitRemoteActionGrouper(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_RemoteActionGroupInterface_activate_action_full
 func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemoteActionGroup, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(RemoteActionGroupOverrider)
 
 	var _actionName string          // out
@@ -146,7 +146,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemote
 
 //export _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full
 func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.GRemoteActionGroup, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(RemoteActionGroupOverrider)
 
 	var _actionName string          // out

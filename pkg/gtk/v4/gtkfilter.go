@@ -4,10 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -166,14 +166,19 @@ var (
 	_ coreglib.Objector = (*Filter)(nil)
 )
 
-func classInitFilterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFilter,
+		GoType:       reflect.TypeOf((*Filter)(nil)),
+		InitClass:    initClassFilter,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkFilter{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkFilterClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFilter(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Strictness() FilterMatch }); ok {
 		pclass.get_strictness = (*[0]byte)(C._gotk4_gtk4_FilterClass_get_strictness)
@@ -188,7 +193,7 @@ func classInitFilterer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_FilterClass_get_strictness
 func _gotk4_gtk4_FilterClass_get_strictness(arg0 *C.GtkFilter) (cret C.GtkFilterMatch) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Strictness() FilterMatch })
 
 	filterMatch := iface.Strictness()
@@ -200,7 +205,7 @@ func _gotk4_gtk4_FilterClass_get_strictness(arg0 *C.GtkFilter) (cret C.GtkFilter
 
 //export _gotk4_gtk4_FilterClass_match
 func _gotk4_gtk4_FilterClass_match(arg0 *C.GtkFilter, arg1 C.gpointer) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Match(item *coreglib.Object) bool
 	})

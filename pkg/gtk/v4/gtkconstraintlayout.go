@@ -205,12 +205,7 @@ var (
 	_ coreglib.Objector = (*ConstraintLayout)(nil)
 )
 
-func classInitConstraintLayouter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassConstraintLayout(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapConstraintLayout(obj *coreglib.Object) *ConstraintLayout {
@@ -583,12 +578,7 @@ var (
 	_ LayoutChilder = (*ConstraintLayoutChild)(nil)
 )
 
-func classInitConstraintLayoutChilder(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassConstraintLayoutChild(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapConstraintLayoutChild(obj *coreglib.Object) *ConstraintLayoutChild {

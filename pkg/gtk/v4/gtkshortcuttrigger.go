@@ -52,12 +52,7 @@ var (
 	_ ShortcutTriggerer = (*AlternativeTrigger)(nil)
 )
 
-func classInitAlternativeTriggerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassAlternativeTrigger(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapAlternativeTrigger(obj *coreglib.Object) *AlternativeTrigger {
@@ -203,12 +198,7 @@ var (
 	_ ShortcutTriggerer = (*KeyvalTrigger)(nil)
 )
 
-func classInitKeyvalTriggerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassKeyvalTrigger(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapKeyvalTrigger(obj *coreglib.Object) *KeyvalTrigger {
@@ -316,12 +306,7 @@ var (
 	_ ShortcutTriggerer = (*MnemonicTrigger)(nil)
 )
 
-func classInitMnemonicTriggerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassMnemonicTrigger(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapMnemonicTrigger(obj *coreglib.Object) *MnemonicTrigger {
@@ -402,12 +387,7 @@ var (
 	_ ShortcutTriggerer = (*NeverTrigger)(nil)
 )
 
-func classInitNeverTriggerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassNeverTrigger(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapNeverTrigger(obj *coreglib.Object) *NeverTrigger {
@@ -479,12 +459,7 @@ type ShortcutTriggerer interface {
 
 var _ ShortcutTriggerer = (*ShortcutTrigger)(nil)
 
-func classInitShortcutTriggerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassShortcutTrigger(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapShortcutTrigger(obj *coreglib.Object) *ShortcutTrigger {

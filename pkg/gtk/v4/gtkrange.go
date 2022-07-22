@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -80,14 +80,19 @@ var (
 	_ coreglib.Objector = (*Range)(nil)
 )
 
-func classInitRanger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeRange,
+		GoType:       reflect.TypeOf((*Range)(nil)),
+		InitClass:    initClassRange,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkRange{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkRangeClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassRange(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkRangeClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkRangeClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ AdjustBounds(newValue float64) }); ok {
 		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk4_RangeClass_adjust_bounds)
@@ -114,7 +119,7 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_RangeClass_adjust_bounds
 func _gotk4_gtk4_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.double) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AdjustBounds(newValue float64) })
 
 	var _newValue float64 // out
@@ -126,7 +131,7 @@ func _gotk4_gtk4_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.double) {
 
 //export _gotk4_gtk4_RangeClass_change_value
 func _gotk4_gtk4_RangeClass_change_value(arg0 *C.GtkRange, arg1 C.GtkScrollType, arg2 C.double) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChangeValue(scroll ScrollType, newValue float64) bool
 	})
@@ -148,7 +153,7 @@ func _gotk4_gtk4_RangeClass_change_value(arg0 *C.GtkRange, arg1 C.GtkScrollType,
 
 //export _gotk4_gtk4_RangeClass_get_range_border
 func _gotk4_gtk4_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RangeBorder(border_ *Border) })
 
 	var _border_ *Border // out
@@ -160,7 +165,7 @@ func _gotk4_gtk4_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder
 
 //export _gotk4_gtk4_RangeClass_move_slider
 func _gotk4_gtk4_RangeClass_move_slider(arg0 *C.GtkRange, arg1 C.GtkScrollType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MoveSlider(scroll ScrollType) })
 
 	var _scroll ScrollType // out
@@ -172,7 +177,7 @@ func _gotk4_gtk4_RangeClass_move_slider(arg0 *C.GtkRange, arg1 C.GtkScrollType) 
 
 //export _gotk4_gtk4_RangeClass_value_changed
 func _gotk4_gtk4_RangeClass_value_changed(arg0 *C.GtkRange) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged() })
 
 	iface.ValueChanged()

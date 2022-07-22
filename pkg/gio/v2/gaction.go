@@ -233,7 +233,7 @@ func ifaceInitActioner(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_ActionInterface_activate
 func _gotk4_gio2_ActionInterface_activate(arg0 *C.GAction, arg1 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	var _parameter *glib.Variant // out
@@ -254,7 +254,7 @@ func _gotk4_gio2_ActionInterface_activate(arg0 *C.GAction, arg1 *C.GVariant) {
 
 //export _gotk4_gio2_ActionInterface_change_state
 func _gotk4_gio2_ActionInterface_change_state(arg0 *C.GAction, arg1 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	var _value *glib.Variant // out
@@ -273,7 +273,7 @@ func _gotk4_gio2_ActionInterface_change_state(arg0 *C.GAction, arg1 *C.GVariant)
 
 //export _gotk4_gio2_ActionInterface_get_enabled
 func _gotk4_gio2_ActionInterface_get_enabled(arg0 *C.GAction) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	ok := iface.Enabled()
@@ -287,7 +287,7 @@ func _gotk4_gio2_ActionInterface_get_enabled(arg0 *C.GAction) (cret C.gboolean) 
 
 //export _gotk4_gio2_ActionInterface_get_name
 func _gotk4_gio2_ActionInterface_get_name(arg0 *C.GAction) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	utf8 := iface.Name()
@@ -300,7 +300,7 @@ func _gotk4_gio2_ActionInterface_get_name(arg0 *C.GAction) (cret *C.gchar) {
 
 //export _gotk4_gio2_ActionInterface_get_parameter_type
 func _gotk4_gio2_ActionInterface_get_parameter_type(arg0 *C.GAction) (cret *C.GVariantType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	variantType := iface.ParameterType()
@@ -314,7 +314,7 @@ func _gotk4_gio2_ActionInterface_get_parameter_type(arg0 *C.GAction) (cret *C.GV
 
 //export _gotk4_gio2_ActionInterface_get_state
 func _gotk4_gio2_ActionInterface_get_state(arg0 *C.GAction) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	variant := iface.State()
@@ -328,7 +328,7 @@ func _gotk4_gio2_ActionInterface_get_state(arg0 *C.GAction) (cret *C.GVariant) {
 
 //export _gotk4_gio2_ActionInterface_get_state_hint
 func _gotk4_gio2_ActionInterface_get_state_hint(arg0 *C.GAction) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	variant := iface.StateHint()
@@ -342,7 +342,7 @@ func _gotk4_gio2_ActionInterface_get_state_hint(arg0 *C.GAction) (cret *C.GVaria
 
 //export _gotk4_gio2_ActionInterface_get_state_type
 func _gotk4_gio2_ActionInterface_get_state_type(arg0 *C.GAction) (cret *C.GVariantType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
 	variantType := iface.StateType()

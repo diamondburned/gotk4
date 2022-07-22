@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -1627,14 +1627,19 @@ var (
 	_ coreglib.Objector = (*Style)(nil)
 )
 
-func classInitStyler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeStyle,
+		GoType:       reflect.TypeOf((*Style)(nil)),
+		InitClass:    initClassStyle,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkStyle{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkStyleClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassStyle(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStyleClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkStyleClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Copy(src *Style) }); ok {
 		pclass.copy = (*[0]byte)(C._gotk4_gtk3_StyleClass_copy)
@@ -1787,7 +1792,7 @@ func classInitStyler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_StyleClass_copy
 func _gotk4_gtk3_StyleClass_copy(arg0 *C.GtkStyle, arg1 *C.GtkStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Copy(src *Style) })
 
 	var _src *Style // out
@@ -1799,7 +1804,7 @@ func _gotk4_gtk3_StyleClass_copy(arg0 *C.GtkStyle, arg1 *C.GtkStyle) {
 
 //export _gotk4_gtk3_StyleClass_draw_arrow
 func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.GtkArrowType, arg7 C.gboolean, arg8 C.gint, arg9 C.gint, arg10 C.gint, arg11 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int)
 	})
@@ -1855,7 +1860,7 @@ func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 //export _gotk4_gtk3_StyleClass_draw_box
 func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -1905,7 +1910,7 @@ func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 
 //export _gotk4_gtk3_StyleClass_draw_box_gap
 func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType, arg11 C.gint, arg12 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	})
@@ -1961,7 +1966,7 @@ func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 
 //export _gotk4_gtk3_StyleClass_draw_check
 func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2011,7 +2016,7 @@ func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 //export _gotk4_gtk3_StyleClass_draw_diamond
 func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2061,7 +2066,7 @@ func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 
 //export _gotk4_gtk3_StyleClass_draw_expander
 func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.GtkExpanderStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle)
 	})
@@ -2107,7 +2112,7 @@ func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 
 //export _gotk4_gtk3_StyleClass_draw_extension
 func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType)
 	})
@@ -2159,7 +2164,7 @@ func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, ar
 
 //export _gotk4_gtk3_StyleClass_draw_flat_box
 func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2209,7 +2214,7 @@ func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 
 //export _gotk4_gtk3_StyleClass_draw_focus
 func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint, arg8 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2257,7 +2262,7 @@ func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 //export _gotk4_gtk3_StyleClass_draw_handle
 func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkOrientation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	})
@@ -2309,7 +2314,7 @@ func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 //export _gotk4_gtk3_StyleClass_draw_hline
 func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int)
 	})
@@ -2355,7 +2360,7 @@ func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 //export _gotk4_gtk3_StyleClass_draw_layout
 func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.gboolean, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 *C.PangoLayout) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout)
 	})
@@ -2410,7 +2415,7 @@ func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 //export _gotk4_gtk3_StyleClass_draw_option
 func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2460,7 +2465,7 @@ func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 //export _gotk4_gtk3_StyleClass_draw_resize_grip
 func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.GdkWindowEdge, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int)
 	})
@@ -2510,7 +2515,7 @@ func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, 
 
 //export _gotk4_gtk3_StyleClass_draw_shadow
 func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2560,7 +2565,7 @@ func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 //export _gotk4_gtk3_StyleClass_draw_shadow_gap
 func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkPositionType, arg11 C.gint, arg12 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int)
 	})
@@ -2616,7 +2621,7 @@ func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, a
 
 //export _gotk4_gtk3_StyleClass_draw_slider
 func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint, arg10 C.GtkOrientation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation)
 	})
@@ -2668,7 +2673,7 @@ func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 //export _gotk4_gtk3_StyleClass_draw_spinner
 func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.guint, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int)
 	})
@@ -2718,7 +2723,7 @@ func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 
 //export _gotk4_gtk3_StyleClass_draw_tab
 func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 C.GtkShadowType, arg4 *C.GtkWidget, arg5 *C.gchar, arg6 C.gint, arg7 C.gint, arg8 C.gint, arg9 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int)
 	})
@@ -2768,7 +2773,7 @@ func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 
 //export _gotk4_gtk3_StyleClass_draw_vline
 func _gotk4_gtk3_StyleClass_draw_vline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.GtkStateType, arg3 *C.GtkWidget, arg4 *C.gchar, arg5 C.gint, arg6 C.gint, arg7 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int)
 	})
@@ -2814,7 +2819,7 @@ func _gotk4_gtk3_StyleClass_draw_vline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 //export _gotk4_gtk3_StyleClass_init_from_rc
 func _gotk4_gtk3_StyleClass_init_from_rc(arg0 *C.GtkStyle, arg1 *C.GtkRcStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InitFromRC(rcStyle *RCStyle) })
 
 	var _rcStyle *RCStyle // out
@@ -2826,7 +2831,7 @@ func _gotk4_gtk3_StyleClass_init_from_rc(arg0 *C.GtkStyle, arg1 *C.GtkRcStyle) {
 
 //export _gotk4_gtk3_StyleClass_realize
 func _gotk4_gtk3_StyleClass_realize(arg0 *C.GtkStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Realize() })
 
 	iface.Realize()
@@ -2834,7 +2839,7 @@ func _gotk4_gtk3_StyleClass_realize(arg0 *C.GtkStyle) {
 
 //export _gotk4_gtk3_StyleClass_render_icon
 func _gotk4_gtk3_StyleClass_render_icon(arg0 *C.GtkStyle, arg1 *C.GtkIconSource, arg2 C.GtkTextDirection, arg3 C.GtkStateType, arg4 C.GtkIconSize, arg5 *C.GtkWidget, arg6 *C.gchar) (cret *C.GdkPixbuf) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
 	})
@@ -2880,7 +2885,7 @@ func _gotk4_gtk3_StyleClass_render_icon(arg0 *C.GtkStyle, arg1 *C.GtkIconSource,
 
 //export _gotk4_gtk3_StyleClass_set_background
 func _gotk4_gtk3_StyleClass_set_background(arg0 *C.GtkStyle, arg1 *C.GdkWindow, arg2 C.GtkStateType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SetBackground(window gdk.Windower, stateType StateType)
 	})
@@ -2912,7 +2917,7 @@ func _gotk4_gtk3_StyleClass_set_background(arg0 *C.GtkStyle, arg1 *C.GdkWindow, 
 
 //export _gotk4_gtk3_StyleClass_unrealize
 func _gotk4_gtk3_StyleClass_unrealize(arg0 *C.GtkStyle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unrealize() })
 
 	iface.Unrealize()

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -95,14 +96,19 @@ var (
 	_ coreglib.Objector = (*DBusProxy)(nil)
 )
 
-func classInitDBusProxier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeDBusProxy,
+		GoType:       reflect.TypeOf((*DBusProxy)(nil)),
+		InitClass:    initClassDBusProxy,
+		ClassSize:    uint16(unsafe.Sizeof(C.GDBusProxy{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GDBusProxyClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassDBusProxy(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GDBusProxyClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GDBusProxyClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		GSignal(senderName, signalName string, parameters *glib.Variant)
@@ -113,7 +119,7 @@ func classInitDBusProxier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusProxyClass_g_signal
 func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.GDBusProxy, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		GSignal(senderName, signalName string, parameters *glib.Variant)
 	})

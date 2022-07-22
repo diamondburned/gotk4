@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -113,14 +114,19 @@ var (
 	_ coreglib.Objector = (*ContentProvider)(nil)
 )
 
-func classInitContentProviderer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeContentProvider,
+		GoType:       reflect.TypeOf((*ContentProvider)(nil)),
+		InitClass:    initClassContentProvider,
+		ClassSize:    uint16(unsafe.Sizeof(C.GdkContentProvider{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GdkContentProviderClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassContentProvider(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GdkContentProviderClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GdkContentProviderClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ AttachClipboard(clipboard *Clipboard) }); ok {
 		pclass.attach_clipboard = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_attach_clipboard)
@@ -157,7 +163,7 @@ func classInitContentProviderer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gdk4_ContentProviderClass_attach_clipboard
 func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AttachClipboard(clipboard *Clipboard) })
 
 	var _clipboard *Clipboard // out
@@ -169,7 +175,7 @@ func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvide
 
 //export _gotk4_gdk4_ContentProviderClass_content_changed
 func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ContentChanged() })
 
 	iface.ContentChanged()
@@ -177,7 +183,7 @@ func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider
 
 //export _gotk4_gdk4_ContentProviderClass_detach_clipboard
 func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DetachClipboard(clipboard *Clipboard) })
 
 	var _clipboard *Clipboard // out
@@ -189,7 +195,7 @@ func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvide
 
 //export _gotk4_gdk4_ContentProviderClass_get_value
 func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1 *C.GValue, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Value(value *coreglib.Value) error
 	})
@@ -209,7 +215,7 @@ func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1
 
 //export _gotk4_gdk4_ContentProviderClass_ref_formats
 func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefFormats() *ContentFormats })
 
 	contentFormats := iface.RefFormats()
@@ -221,7 +227,7 @@ func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (c
 
 //export _gotk4_gdk4_ContentProviderClass_ref_storable_formats
 func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RefStorableFormats() *ContentFormats })
 
 	contentFormats := iface.RefStorableFormats()
@@ -233,7 +239,7 @@ func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentPro
 
 //export _gotk4_gdk4_ContentProviderClass_write_mime_type_finish
 func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.GdkContentProvider, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		WriteMIMETypeFinish(result gio.AsyncResulter) error
 	})

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1433,14 +1434,19 @@ var (
 	_ coreglib.Objector = (*AppLaunchContext)(nil)
 )
 
-func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAppLaunchContext,
+		GoType:       reflect.TypeOf((*AppLaunchContext)(nil)),
+		InitClass:    initClassAppLaunchContext,
+		ClassSize:    uint16(unsafe.Sizeof(C.GAppLaunchContext{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GAppLaunchContextClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAppLaunchContext(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Display(info AppInfor, files []Filer) string
@@ -1467,7 +1473,7 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_AppLaunchContextClass_get_display
 func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Display(info AppInfor, files []Filer) string
 	})
@@ -1527,7 +1533,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, ar
 
 //export _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id
 func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		StartupNotifyID(info AppInfor, files []Filer) string
 	})
@@ -1587,7 +1593,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 
 //export _gotk4_gio2_AppLaunchContextClass_launch_failed
 func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, arg1 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LaunchFailed(startupNotifyId string) })
 
 	var _startupNotifyId string // out
@@ -1599,7 +1605,7 @@ func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, 
 
 //export _gotk4_gio2_AppLaunchContextClass_launched
 func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Launched(info AppInfor, platformData *glib.Variant)
 	})

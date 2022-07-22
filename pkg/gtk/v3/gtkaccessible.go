@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -61,14 +61,19 @@ var (
 	_ coreglib.Objector = (*Accessible)(nil)
 )
 
-func classInitAccessibler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAccessible,
+		GoType:       reflect.TypeOf((*Accessible)(nil)),
+		InitClass:    initClassAccessible,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkAccessible{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkAccessibleClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAccessible(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ConnectWidgetDestroyed() }); ok {
 		pclass.connect_widget_destroyed = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
@@ -85,7 +90,7 @@ func classInitAccessibler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AccessibleClass_connect_widget_destroyed
 func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectWidgetDestroyed() })
 
 	iface.ConnectWidgetDestroyed()
@@ -93,7 +98,7 @@ func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible)
 
 //export _gotk4_gtk3_AccessibleClass_widget_set
 func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetSet() })
 
 	iface.WidgetSet()
@@ -101,7 +106,7 @@ func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
 
 //export _gotk4_gtk3_AccessibleClass_widget_unset
 func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WidgetUnset() })
 
 	iface.WidgetUnset()

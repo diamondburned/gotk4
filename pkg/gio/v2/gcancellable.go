@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -47,14 +47,19 @@ var (
 	_ coreglib.Objector = (*Cancellable)(nil)
 )
 
-func classInitCancellabler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCancellable,
+		GoType:       reflect.TypeOf((*Cancellable)(nil)),
+		InitClass:    initClassCancellable,
+		ClassSize:    uint16(unsafe.Sizeof(C.GCancellable{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GCancellableClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCancellable(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GCancellableClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GCancellableClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Cancelled() }); ok {
 		pclass.cancelled = (*[0]byte)(C._gotk4_gio2_CancellableClass_cancelled)
@@ -63,7 +68,7 @@ func classInitCancellabler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_CancellableClass_cancelled
 func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.GCancellable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancelled() })
 
 	iface.Cancelled()

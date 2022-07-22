@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -156,14 +157,19 @@ var (
 	_ coreglib.Objector = (*EntryCompletion)(nil)
 )
 
-func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeEntryCompletion,
+		GoType:       reflect.TypeOf((*EntryCompletion)(nil)),
+		InitClass:    initClassEntryCompletion,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkEntryCompletion{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkEntryCompletionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassEntryCompletion(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActionActivated(index_ int) }); ok {
 		pclass.action_activated = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_action_activated)
@@ -192,7 +198,7 @@ func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_EntryCompletionClass_action_activated
 func _gotk4_gtk3_EntryCompletionClass_action_activated(arg0 *C.GtkEntryCompletion, arg1 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActionActivated(index_ int) })
 
 	var _index_ int // out
@@ -204,7 +210,7 @@ func _gotk4_gtk3_EntryCompletionClass_action_activated(arg0 *C.GtkEntryCompletio
 
 //export _gotk4_gtk3_EntryCompletionClass_cursor_on_match
 func _gotk4_gtk3_EntryCompletionClass_cursor_on_match(arg0 *C.GtkEntryCompletion, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CursorOnMatch(model TreeModeller, iter *TreeIter) bool
 	})
@@ -242,7 +248,7 @@ func _gotk4_gtk3_EntryCompletionClass_cursor_on_match(arg0 *C.GtkEntryCompletion
 
 //export _gotk4_gtk3_EntryCompletionClass_insert_prefix
 func _gotk4_gtk3_EntryCompletionClass_insert_prefix(arg0 *C.GtkEntryCompletion, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertPrefix(prefix string) bool })
 
 	var _prefix string // out
@@ -260,7 +266,7 @@ func _gotk4_gtk3_EntryCompletionClass_insert_prefix(arg0 *C.GtkEntryCompletion, 
 
 //export _gotk4_gtk3_EntryCompletionClass_match_selected
 func _gotk4_gtk3_EntryCompletionClass_match_selected(arg0 *C.GtkEntryCompletion, arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MatchSelected(model TreeModeller, iter *TreeIter) bool
 	})
@@ -298,7 +304,7 @@ func _gotk4_gtk3_EntryCompletionClass_match_selected(arg0 *C.GtkEntryCompletion,
 
 //export _gotk4_gtk3_EntryCompletionClass_no_matches
 func _gotk4_gtk3_EntryCompletionClass_no_matches(arg0 *C.GtkEntryCompletion) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NoMatches() })
 
 	iface.NoMatches()

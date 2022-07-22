@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -134,14 +134,19 @@ type MenuAttributeIterer interface {
 
 var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
 
-func classInitMenuAttributeIterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMenuAttributeIter,
+		GoType:       reflect.TypeOf((*MenuAttributeIter)(nil)),
+		InitClass:    initClassMenuAttributeIter,
+		ClassSize:    uint16(unsafe.Sizeof(C.GMenuAttributeIter{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GMenuAttributeIterClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMenuAttributeIter(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMenuAttributeIterClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GMenuAttributeIterClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Next() (string, *glib.Variant, bool)
@@ -152,7 +157,7 @@ func classInitMenuAttributeIterer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_MenuAttributeIterClass_get_next
 func _gotk4_gio2_MenuAttributeIterClass_get_next(arg0 *C.GMenuAttributeIter, arg1 **C.gchar, arg2 **C.GVariant) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next() (string, *glib.Variant, bool)
 	})
@@ -381,14 +386,19 @@ type MenuLinkIterer interface {
 
 var _ MenuLinkIterer = (*MenuLinkIter)(nil)
 
-func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMenuLinkIter,
+		GoType:       reflect.TypeOf((*MenuLinkIter)(nil)),
+		InitClass:    initClassMenuLinkIter,
+		ClassSize:    uint16(unsafe.Sizeof(C.GMenuLinkIter{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GMenuLinkIterClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMenuLinkIter(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Next() (string, MenuModeller, bool)
@@ -399,7 +409,7 @@ func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_MenuLinkIterClass_get_next
 func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.GMenuLinkIter, arg1 **C.gchar, arg2 **C.GMenuModel) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next() (string, MenuModeller, bool)
 	})
@@ -851,14 +861,19 @@ type MenuModeller interface {
 
 var _ MenuModeller = (*MenuModel)(nil)
 
-func classInitMenuModeller(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMenuModel,
+		GoType:       reflect.TypeOf((*MenuModel)(nil)),
+		InitClass:    initClassMenuModel,
+		ClassSize:    uint16(unsafe.Sizeof(C.GMenuModel{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GMenuModelClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMenuModel(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMenuModelClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GMenuModelClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
@@ -907,7 +922,7 @@ func classInitMenuModeller(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_MenuModelClass_get_item_attribute_value
 func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GVariantType) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	})
@@ -933,7 +948,7 @@ func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg
 
 //export _gotk4_gio2_MenuModelClass_get_item_attributes
 func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemAttributes(itemIndex int) map[string]*glib.Variant
 	})
@@ -957,7 +972,7 @@ func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.g
 
 //export _gotk4_gio2_MenuModelClass_get_item_link
 func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar) (cret *C.GMenuModel) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemLink(itemIndex int, link string) MenuModeller
 	})
@@ -980,7 +995,7 @@ func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, a
 
 //export _gotk4_gio2_MenuModelClass_get_item_links
 func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ItemLinks(itemIndex int) map[string]MenuModeller
 	})
@@ -1004,7 +1019,7 @@ func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, 
 
 //export _gotk4_gio2_MenuModelClass_get_n_items
 func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NItems() int })
 
 	gint := iface.NItems()
@@ -1016,7 +1031,7 @@ func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
 
 //export _gotk4_gio2_MenuModelClass_is_mutable
 func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsMutable() bool })
 
 	ok := iface.IsMutable()
@@ -1030,7 +1045,7 @@ func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean)
 
 //export _gotk4_gio2_MenuModelClass_iterate_item_attributes
 func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuAttributeIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		IterateItemAttributes(itemIndex int) MenuAttributeIterer
 	})
@@ -1049,7 +1064,7 @@ func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1
 
 //export _gotk4_gio2_MenuModelClass_iterate_item_links
 func _gotk4_gio2_MenuModelClass_iterate_item_links(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuLinkIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		IterateItemLinks(itemIndex int) MenuLinkIterer
 	})

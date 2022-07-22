@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -187,14 +187,19 @@ var (
 	_ Binner = (*AboutDialog)(nil)
 )
 
-func classInitAboutDialogger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAboutDialog,
+		GoType:       reflect.TypeOf((*AboutDialog)(nil)),
+		InitClass:    initClassAboutDialog,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkAboutDialog{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkAboutDialogClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAboutDialog(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAboutDialogClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkAboutDialogClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActivateLink(uri string) bool }); ok {
 		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_AboutDialogClass_activate_link)
@@ -203,7 +208,7 @@ func classInitAboutDialogger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AboutDialogClass_activate_link
 func _gotk4_gtk3_AboutDialogClass_activate_link(arg0 *C.GtkAboutDialog, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateLink(uri string) bool })
 
 	var _uri string // out

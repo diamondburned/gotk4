@@ -40,12 +40,7 @@ var (
 	_ coreglib.Objector = (*FlowBoxChildAccessible)(nil)
 )
 
-func classInitFlowBoxChildAccessibler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassFlowBoxChildAccessible(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapFlowBoxChildAccessible(obj *coreglib.Object) *FlowBoxChildAccessible {

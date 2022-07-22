@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -121,14 +122,19 @@ type TLSConnectioner interface {
 
 var _ TLSConnectioner = (*TLSConnection)(nil)
 
-func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTLSConnection,
+		GoType:       reflect.TypeOf((*TLSConnection)(nil)),
+		InitClass:    initClassTLSConnection,
+		ClassSize:    uint16(unsafe.Sizeof(C.GTlsConnection{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GTlsConnectionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTLSConnection(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
@@ -157,7 +163,7 @@ func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsConnectionClass_accept_certificate
 func _gotk4_gio2_TlsConnectionClass_accept_certificate(arg0 *C.GTlsConnection, arg1 *C.GTlsCertificate, arg2 C.GTlsCertificateFlags) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool
 	})
@@ -195,7 +201,7 @@ func _gotk4_gio2_TlsConnectionClass_accept_certificate(arg0 *C.GTlsConnection, a
 
 //export _gotk4_gio2_TlsConnectionClass_get_binding_data
 func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg1 C.GTlsChannelBindingType, arg2 *C.GByteArray, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		BindingData(typ TLSChannelBindingType, data []byte) error
 	})
@@ -218,7 +224,7 @@ func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg
 
 //export _gotk4_gio2_TlsConnectionClass_handshake
 func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Handshake(ctx context.Context) error
 	})
@@ -240,7 +246,7 @@ func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GC
 
 //export _gotk4_gio2_TlsConnectionClass_handshake_finish
 func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		HandshakeFinish(result AsyncResulter) error
 	})

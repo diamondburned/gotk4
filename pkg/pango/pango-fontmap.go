@@ -3,10 +3,10 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -135,14 +135,19 @@ type FontMapper interface {
 
 var _ FontMapper = (*FontMap)(nil)
 
-func classInitFontMapper(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFontMap,
+		GoType:       reflect.TypeOf((*FontMap)(nil)),
+		InitClass:    initClassFontMap,
+		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontMap{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontMapClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFontMap(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontMapClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.PangoFontMapClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_pango1_FontMapClass_changed)
@@ -177,7 +182,7 @@ func classInitFontMapper(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_FontMapClass_changed
 func _gotk4_pango1_FontMapClass_changed(arg0 *C.PangoFontMap) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
@@ -185,7 +190,7 @@ func _gotk4_pango1_FontMapClass_changed(arg0 *C.PangoFontMap) {
 
 //export _gotk4_pango1_FontMapClass_get_family
 func _gotk4_pango1_FontMapClass_get_family(arg0 *C.PangoFontMap, arg1 *C.char) (cret *C.PangoFontFamily) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Family(name string) FontFamilier
 	})
@@ -203,7 +208,7 @@ func _gotk4_pango1_FontMapClass_get_family(arg0 *C.PangoFontMap, arg1 *C.char) (
 
 //export _gotk4_pango1_FontMapClass_get_serial
 func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Serial() uint })
 
 	guint := iface.Serial()
@@ -215,7 +220,7 @@ func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) 
 
 //export _gotk4_pango1_FontMapClass_list_families
 func _gotk4_pango1_FontMapClass_list_families(arg0 *C.PangoFontMap, arg1 ***C.PangoFontFamily, arg2 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ListFamilies() []FontFamilier })
 
 	families := iface.ListFamilies()
@@ -232,7 +237,7 @@ func _gotk4_pango1_FontMapClass_list_families(arg0 *C.PangoFontMap, arg1 ***C.Pa
 
 //export _gotk4_pango1_FontMapClass_load_font
 func _gotk4_pango1_FontMapClass_load_font(arg0 *C.PangoFontMap, arg1 *C.PangoContext, arg2 *C.PangoFontDescription) (cret *C.PangoFont) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LoadFont(context *Context, desc *FontDescription) Fonter
 	})
@@ -255,7 +260,7 @@ func _gotk4_pango1_FontMapClass_load_font(arg0 *C.PangoFontMap, arg1 *C.PangoCon
 
 //export _gotk4_pango1_FontMapClass_load_fontset
 func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.PangoFontMap, arg1 *C.PangoContext, arg2 *C.PangoFontDescription, arg3 *C.PangoLanguage) (cret *C.PangoFontset) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
 	})

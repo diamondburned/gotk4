@@ -292,7 +292,7 @@ func ifaceInitPaintabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gdk4_PaintableInterface_get_current_image
 func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.GdkPaintable) (cret *C.GdkPaintable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	ret := iface.CurrentImage()
@@ -305,7 +305,7 @@ func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.GdkPaintable) (cre
 
 //export _gotk4_gdk4_PaintableInterface_get_flags
 func _gotk4_gdk4_PaintableInterface_get_flags(arg0 *C.GdkPaintable) (cret C.GdkPaintableFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	paintableFlags := iface.Flags()
@@ -317,7 +317,7 @@ func _gotk4_gdk4_PaintableInterface_get_flags(arg0 *C.GdkPaintable) (cret C.GdkP
 
 //export _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio
 func _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(arg0 *C.GdkPaintable) (cret C.double) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	gdouble := iface.IntrinsicAspectRatio()
@@ -329,7 +329,7 @@ func _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(arg0 *C.GdkPainta
 
 //export _gotk4_gdk4_PaintableInterface_get_intrinsic_height
 func _gotk4_gdk4_PaintableInterface_get_intrinsic_height(arg0 *C.GdkPaintable) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	gint := iface.IntrinsicHeight()
@@ -341,7 +341,7 @@ func _gotk4_gdk4_PaintableInterface_get_intrinsic_height(arg0 *C.GdkPaintable) (
 
 //export _gotk4_gdk4_PaintableInterface_get_intrinsic_width
 func _gotk4_gdk4_PaintableInterface_get_intrinsic_width(arg0 *C.GdkPaintable) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	gint := iface.IntrinsicWidth()
@@ -353,7 +353,7 @@ func _gotk4_gdk4_PaintableInterface_get_intrinsic_width(arg0 *C.GdkPaintable) (c
 
 //export _gotk4_gdk4_PaintableInterface_snapshot
 func _gotk4_gdk4_PaintableInterface_snapshot(arg0 *C.GdkPaintable, arg1 *C.GdkSnapshot, arg2 C.double, arg3 C.double) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
 	var _snapshot Snapshotter // out

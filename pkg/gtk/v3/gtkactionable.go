@@ -150,7 +150,7 @@ func ifaceInitActionabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActionableInterface_get_action_name
 func _gotk4_gtk3_ActionableInterface_get_action_name(arg0 *C.GtkActionable) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
 	utf8 := iface.ActionName()
@@ -165,7 +165,7 @@ func _gotk4_gtk3_ActionableInterface_get_action_name(arg0 *C.GtkActionable) (cre
 
 //export _gotk4_gtk3_ActionableInterface_get_action_target_value
 func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.GtkActionable) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
 	variant := iface.ActionTargetValue()
@@ -177,7 +177,7 @@ func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.GtkActionab
 
 //export _gotk4_gtk3_ActionableInterface_set_action_name
 func _gotk4_gtk3_ActionableInterface_set_action_name(arg0 *C.GtkActionable, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
 	var _actionName string // out
@@ -191,7 +191,7 @@ func _gotk4_gtk3_ActionableInterface_set_action_name(arg0 *C.GtkActionable, arg1
 
 //export _gotk4_gtk3_ActionableInterface_set_action_target_value
 func _gotk4_gtk3_ActionableInterface_set_action_target_value(arg0 *C.GtkActionable, arg1 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
 	var _targetValue *glib.Variant // out

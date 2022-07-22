@@ -1007,7 +1007,7 @@ func ifaceInitTexter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_TextIface_add_selection
 func _gotk4_atk1_TextIface_add_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _startOffset int // out
@@ -1027,7 +1027,7 @@ func _gotk4_atk1_TextIface_add_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gi
 
 //export _gotk4_atk1_TextIface_get_bounded_ranges
 func _gotk4_atk1_TextIface_get_bounded_ranges(arg0 *C.AtkText, arg1 *C.AtkTextRectangle, arg2 C.AtkCoordType, arg3 C.AtkTextClipType, arg4 C.AtkTextClipType) (cret **C.AtkTextRange) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _rect *TextRectangle    // out
@@ -1060,7 +1060,7 @@ func _gotk4_atk1_TextIface_get_bounded_ranges(arg0 *C.AtkText, arg1 *C.AtkTextRe
 
 //export _gotk4_atk1_TextIface_get_caret_offset
 func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.AtkText) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	gint := iface.CaretOffset()
@@ -1072,7 +1072,7 @@ func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.AtkText) (cret C.gint) {
 
 //export _gotk4_atk1_TextIface_get_character_at_offset
 func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gunichar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int // out
@@ -1088,7 +1088,7 @@ func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.AtkText, arg1 C.gint)
 
 //export _gotk4_atk1_TextIface_get_character_count
 func _gotk4_atk1_TextIface_get_character_count(arg0 *C.AtkText) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	gint := iface.CharacterCount()
@@ -1100,7 +1100,7 @@ func _gotk4_atk1_TextIface_get_character_count(arg0 *C.AtkText) (cret C.gint) {
 
 //export _gotk4_atk1_TextIface_get_character_extents
 func _gotk4_atk1_TextIface_get_character_extents(arg0 *C.AtkText, arg1 C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint, arg6 C.AtkCoordType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int       // out
@@ -1119,7 +1119,7 @@ func _gotk4_atk1_TextIface_get_character_extents(arg0 *C.AtkText, arg1 C.gint, a
 
 //export _gotk4_atk1_TextIface_get_n_selections
 func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.AtkText) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	gint := iface.NSelections()
@@ -1131,7 +1131,7 @@ func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.AtkText) (cret C.gint) {
 
 //export _gotk4_atk1_TextIface_get_offset_at_point
 func _gotk4_atk1_TextIface_get_offset_at_point(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _x int            // out
@@ -1151,7 +1151,7 @@ func _gotk4_atk1_TextIface_get_offset_at_point(arg0 *C.AtkText, arg1 C.gint, arg
 
 //export _gotk4_atk1_TextIface_get_range_extents
 func _gotk4_atk1_TextIface_get_range_extents(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType, arg4 *C.AtkTextRectangle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _startOffset int     // out
@@ -1169,7 +1169,7 @@ func _gotk4_atk1_TextIface_get_range_extents(arg0 *C.AtkText, arg1 C.gint, arg2 
 
 //export _gotk4_atk1_TextIface_get_selection
 func _gotk4_atk1_TextIface_get_selection(arg0 *C.AtkText, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _selectionNum int // out
@@ -1187,7 +1187,7 @@ func _gotk4_atk1_TextIface_get_selection(arg0 *C.AtkText, arg1 C.gint, arg2 *C.g
 
 //export _gotk4_atk1_TextIface_get_string_at_offset
 func _gotk4_atk1_TextIface_get_string_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextGranularity, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int                  // out
@@ -1209,7 +1209,7 @@ func _gotk4_atk1_TextIface_get_string_at_offset(arg0 *C.AtkText, arg1 C.gint, ar
 
 //export _gotk4_atk1_TextIface_get_text
 func _gotk4_atk1_TextIface_get_text(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _startOffset int // out
@@ -1227,7 +1227,7 @@ func _gotk4_atk1_TextIface_get_text(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (
 
 //export _gotk4_atk1_TextIface_get_text_after_offset
 func _gotk4_atk1_TextIface_get_text_after_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int                // out
@@ -1247,7 +1247,7 @@ func _gotk4_atk1_TextIface_get_text_after_offset(arg0 *C.AtkText, arg1 C.gint, a
 
 //export _gotk4_atk1_TextIface_get_text_at_offset
 func _gotk4_atk1_TextIface_get_text_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int                // out
@@ -1267,7 +1267,7 @@ func _gotk4_atk1_TextIface_get_text_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2
 
 //export _gotk4_atk1_TextIface_get_text_before_offset
 func _gotk4_atk1_TextIface_get_text_before_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int                // out
@@ -1287,7 +1287,7 @@ func _gotk4_atk1_TextIface_get_text_before_offset(arg0 *C.AtkText, arg1 C.gint, 
 
 //export _gotk4_atk1_TextIface_remove_selection
 func _gotk4_atk1_TextIface_remove_selection(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _selectionNum int // out
@@ -1305,7 +1305,7 @@ func _gotk4_atk1_TextIface_remove_selection(arg0 *C.AtkText, arg1 C.gint) (cret 
 
 //export _gotk4_atk1_TextIface_scroll_substring_to
 func _gotk4_atk1_TextIface_scroll_substring_to(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkScrollType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _startOffset int // out
@@ -1327,7 +1327,7 @@ func _gotk4_atk1_TextIface_scroll_substring_to(arg0 *C.AtkText, arg1 C.gint, arg
 
 //export _gotk4_atk1_TextIface_scroll_substring_to_point
 func _gotk4_atk1_TextIface_scroll_substring_to_point(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType, arg4 C.gint, arg5 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _startOffset int  // out
@@ -1353,7 +1353,7 @@ func _gotk4_atk1_TextIface_scroll_substring_to_point(arg0 *C.AtkText, arg1 C.gin
 
 //export _gotk4_atk1_TextIface_set_caret_offset
 func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _offset int // out
@@ -1371,7 +1371,7 @@ func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.AtkText, arg1 C.gint) (cret 
 
 //export _gotk4_atk1_TextIface_set_selection
 func _gotk4_atk1_TextIface_set_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _selectionNum int // out
@@ -1393,7 +1393,7 @@ func _gotk4_atk1_TextIface_set_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gi
 
 //export _gotk4_atk1_TextIface_text_attributes_changed
 func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.AtkText) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	iface.TextAttributesChanged()
@@ -1401,7 +1401,7 @@ func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.AtkText) {
 
 //export _gotk4_atk1_TextIface_text_caret_moved
 func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.AtkText, arg1 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _location int // out
@@ -1413,7 +1413,7 @@ func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.AtkText, arg1 C.gint) {
 
 //export _gotk4_atk1_TextIface_text_changed
 func _gotk4_atk1_TextIface_text_changed(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	var _position int // out
@@ -1427,7 +1427,7 @@ func _gotk4_atk1_TextIface_text_changed(arg0 *C.AtkText, arg1 C.gint, arg2 C.gin
 
 //export _gotk4_atk1_TextIface_text_selection_changed
 func _gotk4_atk1_TextIface_text_selection_changed(arg0 *C.AtkText) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
 	iface.TextSelectionChanged()

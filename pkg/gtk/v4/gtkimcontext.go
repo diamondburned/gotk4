@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -321,14 +321,19 @@ type IMContexter interface {
 
 var _ IMContexter = (*IMContext)(nil)
 
-func classInitIMContexter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeIMContext,
+		GoType:       reflect.TypeOf((*IMContext)(nil)),
+		InitClass:    initClassIMContext,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkIMContext{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkIMContextClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassIMContext(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkIMContextClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkIMContextClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Commit(str string) }); ok {
 		pclass.commit = (*[0]byte)(C._gotk4_gtk4_IMContextClass_commit)
@@ -413,7 +418,7 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_IMContextClass_commit
 func _gotk4_gtk4_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Commit(str string) })
 
 	var _str string // out
@@ -425,7 +430,7 @@ func _gotk4_gtk4_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.char) {
 
 //export _gotk4_gtk4_IMContextClass_delete_surrounding
 func _gotk4_gtk4_IMContextClass_delete_surrounding(arg0 *C.GtkIMContext, arg1 C.int, arg2 C.int) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DeleteSurrounding(offset, nChars int) bool })
 
 	var _offset int // out
@@ -445,7 +450,7 @@ func _gotk4_gtk4_IMContextClass_delete_surrounding(arg0 *C.GtkIMContext, arg1 C.
 
 //export _gotk4_gtk4_IMContextClass_filter_keypress
 func _gotk4_gtk4_IMContextClass_filter_keypress(arg0 *C.GtkIMContext, arg1 *C.GdkEvent) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FilterKeypress(event gdk.Eventer) bool })
 
 	var _event gdk.Eventer // out
@@ -479,7 +484,7 @@ func _gotk4_gtk4_IMContextClass_filter_keypress(arg0 *C.GtkIMContext, arg1 *C.Gd
 
 //export _gotk4_gtk4_IMContextClass_focus_in
 func _gotk4_gtk4_IMContextClass_focus_in(arg0 *C.GtkIMContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusIn() })
 
 	iface.FocusIn()
@@ -487,7 +492,7 @@ func _gotk4_gtk4_IMContextClass_focus_in(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk4_IMContextClass_focus_out
 func _gotk4_gtk4_IMContextClass_focus_out(arg0 *C.GtkIMContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FocusOut() })
 
 	iface.FocusOut()
@@ -495,7 +500,7 @@ func _gotk4_gtk4_IMContextClass_focus_out(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk4_IMContextClass_get_preedit_string
 func _gotk4_gtk4_IMContextClass_get_preedit_string(arg0 *C.GtkIMContext, arg1 **C.char, arg2 **C.PangoAttrList, arg3 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreeditString() (string, *pango.AttrList, int)
 	})
@@ -509,7 +514,7 @@ func _gotk4_gtk4_IMContextClass_get_preedit_string(arg0 *C.GtkIMContext, arg1 **
 
 //export _gotk4_gtk4_IMContextClass_get_surrounding
 func _gotk4_gtk4_IMContextClass_get_surrounding(arg0 *C.GtkIMContext, arg1 **C.char, arg2 *C.int) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Surrounding() (string, int, bool) })
 
 	text, cursorIndex, ok := iface.Surrounding()
@@ -525,7 +530,7 @@ func _gotk4_gtk4_IMContextClass_get_surrounding(arg0 *C.GtkIMContext, arg1 **C.c
 
 //export _gotk4_gtk4_IMContextClass_get_surrounding_with_selection
 func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.GtkIMContext, arg1 **C.char, arg2 *C.int, arg3 *C.int) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SurroundingWithSelection() (text string, cursorIndex, anchorIndex int, ok bool)
 	})
@@ -544,7 +549,7 @@ func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.GtkIMCont
 
 //export _gotk4_gtk4_IMContextClass_preedit_changed
 func _gotk4_gtk4_IMContextClass_preedit_changed(arg0 *C.GtkIMContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreeditChanged() })
 
 	iface.PreeditChanged()
@@ -552,7 +557,7 @@ func _gotk4_gtk4_IMContextClass_preedit_changed(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk4_IMContextClass_preedit_end
 func _gotk4_gtk4_IMContextClass_preedit_end(arg0 *C.GtkIMContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreeditEnd() })
 
 	iface.PreeditEnd()
@@ -560,7 +565,7 @@ func _gotk4_gtk4_IMContextClass_preedit_end(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk4_IMContextClass_preedit_start
 func _gotk4_gtk4_IMContextClass_preedit_start(arg0 *C.GtkIMContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreeditStart() })
 
 	iface.PreeditStart()
@@ -568,7 +573,7 @@ func _gotk4_gtk4_IMContextClass_preedit_start(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk4_IMContextClass_reset
 func _gotk4_gtk4_IMContextClass_reset(arg0 *C.GtkIMContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Reset() })
 
 	iface.Reset()
@@ -576,7 +581,7 @@ func _gotk4_gtk4_IMContextClass_reset(arg0 *C.GtkIMContext) {
 
 //export _gotk4_gtk4_IMContextClass_retrieve_surrounding
 func _gotk4_gtk4_IMContextClass_retrieve_surrounding(arg0 *C.GtkIMContext) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RetrieveSurrounding() bool })
 
 	ok := iface.RetrieveSurrounding()
@@ -590,7 +595,7 @@ func _gotk4_gtk4_IMContextClass_retrieve_surrounding(arg0 *C.GtkIMContext) (cret
 
 //export _gotk4_gtk4_IMContextClass_set_client_widget
 func _gotk4_gtk4_IMContextClass_set_client_widget(arg0 *C.GtkIMContext, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetClientWidget(widget Widgetter) })
 
 	var _widget Widgetter // out
@@ -617,7 +622,7 @@ func _gotk4_gtk4_IMContextClass_set_client_widget(arg0 *C.GtkIMContext, arg1 *C.
 
 //export _gotk4_gtk4_IMContextClass_set_cursor_location
 func _gotk4_gtk4_IMContextClass_set_cursor_location(arg0 *C.GtkIMContext, arg1 *C.GdkRectangle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetCursorLocation(area *gdk.Rectangle) })
 
 	var _area *gdk.Rectangle // out
@@ -629,7 +634,7 @@ func _gotk4_gtk4_IMContextClass_set_cursor_location(arg0 *C.GtkIMContext, arg1 *
 
 //export _gotk4_gtk4_IMContextClass_set_surrounding
 func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.char, arg2 C.int, arg3 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SetSurrounding(text string, len, cursorIndex int)
 	})
@@ -647,7 +652,7 @@ func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.ch
 
 //export _gotk4_gtk4_IMContextClass_set_surrounding_with_selection
 func _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(arg0 *C.GtkIMContext, arg1 *C.char, arg2 C.int, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int)
 	})
@@ -667,7 +672,7 @@ func _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(arg0 *C.GtkIMCont
 
 //export _gotk4_gtk4_IMContextClass_set_use_preedit
 func _gotk4_gtk4_IMContextClass_set_use_preedit(arg0 *C.GtkIMContext, arg1 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetUsePreedit(usePreedit bool) })
 
 	var _usePreedit bool // out

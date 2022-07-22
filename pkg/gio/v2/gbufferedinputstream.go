@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -108,14 +109,19 @@ var (
 	_ FilterInputStreamer = (*BufferedInputStream)(nil)
 )
 
-func classInitBufferedInputStreamer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeBufferedInputStream,
+		GoType:       reflect.TypeOf((*BufferedInputStream)(nil)),
+		InitClass:    initClassBufferedInputStream,
+		ClassSize:    uint16(unsafe.Sizeof(C.GBufferedInputStream{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GBufferedInputStreamClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassBufferedInputStream(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Fill(ctx context.Context, count int) (int, error)
@@ -132,7 +138,7 @@ func classInitBufferedInputStreamer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_BufferedInputStreamClass_fill
 func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg1 C.gssize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Fill(ctx context.Context, count int) (int, error)
 	})
@@ -157,7 +163,7 @@ func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg
 
 //export _gotk4_gio2_BufferedInputStreamClass_fill_finish
 func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FillFinish(result AsyncResulter) (int, error)
 	})

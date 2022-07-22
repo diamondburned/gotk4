@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -64,14 +64,19 @@ var (
 	_ Binner            = (*ScaleButton)(nil)
 )
 
-func classInitScaleButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeScaleButton,
+		GoType:       reflect.TypeOf((*ScaleButton)(nil)),
+		InitClass:    initClassScaleButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkScaleButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkScaleButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassScaleButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkScaleButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkScaleButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ValueChanged(value float64) }); ok {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_ScaleButtonClass_value_changed)
@@ -80,7 +85,7 @@ func classInitScaleButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ScaleButtonClass_value_changed
 func _gotk4_gtk3_ScaleButtonClass_value_changed(arg0 *C.GtkScaleButton, arg1 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ValueChanged(value float64) })
 
 	var _value float64 // out

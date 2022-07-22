@@ -265,8 +265,8 @@ func init() {
 		GType:        GTypeIMContext,
 		GoType:       reflect.TypeOf((*IMContext)(nil)),
 		InitClass:    initClassIMContext,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkIMContext{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkIMContextClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkIMContext{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkIMContextClass{})),
 	})
 }
 

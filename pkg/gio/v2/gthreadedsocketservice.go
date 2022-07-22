@@ -67,8 +67,8 @@ func init() {
 		GType:        GTypeThreadedSocketService,
 		GoType:       reflect.TypeOf((*ThreadedSocketService)(nil)),
 		InitClass:    initClassThreadedSocketService,
-		ClassSize:    uint16(unsafe.Sizeof(C.GThreadedSocketService{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GThreadedSocketServiceClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GThreadedSocketService{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GThreadedSocketServiceClass{})),
 	})
 }
 

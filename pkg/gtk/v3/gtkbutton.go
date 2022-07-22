@@ -106,8 +106,8 @@ func init() {
 		GType:        GTypeButton,
 		GoType:       reflect.TypeOf((*Button)(nil)),
 		InitClass:    initClassButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkButtonClass{})),
 	})
 }
 

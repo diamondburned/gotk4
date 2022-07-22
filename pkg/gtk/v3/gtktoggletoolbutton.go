@@ -59,8 +59,8 @@ func init() {
 		GType:        GTypeToggleToolButton,
 		GoType:       reflect.TypeOf((*ToggleToolButton)(nil)),
 		InitClass:    initClassToggleToolButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkToggleToolButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkToggleToolButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkToggleToolButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkToggleToolButtonClass{})),
 	})
 }
 

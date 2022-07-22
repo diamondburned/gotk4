@@ -77,8 +77,8 @@ func init() {
 		GType:        GTypeExpander,
 		GoType:       reflect.TypeOf((*Expander)(nil)),
 		InitClass:    initClassExpander,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkExpander{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkExpanderClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkExpander{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkExpanderClass{})),
 	})
 }
 

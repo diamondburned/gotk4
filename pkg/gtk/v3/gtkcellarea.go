@@ -541,8 +541,8 @@ func init() {
 		GType:        GTypeCellArea,
 		GoType:       reflect.TypeOf((*CellArea)(nil)),
 		InitClass:    initClassCellArea,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellArea{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellAreaClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellArea{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellAreaClass{})),
 	})
 }
 

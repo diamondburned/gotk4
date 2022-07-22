@@ -536,8 +536,8 @@ func init() {
 		GType:        GTypeSettings,
 		GoType:       reflect.TypeOf((*Settings)(nil)),
 		InitClass:    initClassSettings,
-		ClassSize:    uint16(unsafe.Sizeof(C.GSettings{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GSettingsClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GSettings{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GSettingsClass{})),
 	})
 }
 

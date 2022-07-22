@@ -56,8 +56,8 @@ func init() {
 		GType:        GTypeCellAccessible,
 		GoType:       reflect.TypeOf((*CellAccessible)(nil)),
 		InitClass:    initClassCellAccessible,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellAccessible{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellAccessibleClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellAccessible{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellAccessibleClass{})),
 	})
 }
 

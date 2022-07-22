@@ -245,8 +245,8 @@ func init() {
 		GType:        GTypeRenderer,
 		GoType:       reflect.TypeOf((*Renderer)(nil)),
 		InitClass:    initClassRenderer,
-		ClassSize:    uint16(unsafe.Sizeof(C.PangoRenderer{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.PangoRendererClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.PangoRenderer{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.PangoRendererClass{})),
 	})
 }
 

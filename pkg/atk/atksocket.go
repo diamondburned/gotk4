@@ -82,8 +82,8 @@ func init() {
 		GType:        GTypeSocket,
 		GoType:       reflect.TypeOf((*Socket)(nil)),
 		InitClass:    initClassSocket,
-		ClassSize:    uint16(unsafe.Sizeof(C.AtkSocket{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.AtkSocketClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.AtkSocket{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.AtkSocketClass{})),
 	})
 }
 

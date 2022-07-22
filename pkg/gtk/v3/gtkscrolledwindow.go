@@ -224,8 +224,8 @@ func init() {
 		GType:        GTypeScrolledWindow,
 		GoType:       reflect.TypeOf((*ScrolledWindow)(nil)),
 		InitClass:    initClassScrolledWindow,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkScrolledWindow{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkScrolledWindowClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkScrolledWindow{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkScrolledWindowClass{})),
 	})
 }
 

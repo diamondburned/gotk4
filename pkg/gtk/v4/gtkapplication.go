@@ -183,8 +183,8 @@ func init() {
 		GType:        GTypeApplication,
 		GoType:       reflect.TypeOf((*Application)(nil)),
 		InitClass:    initClassApplication,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkApplication{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkApplicationClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkApplication{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkApplicationClass{})),
 	})
 }
 

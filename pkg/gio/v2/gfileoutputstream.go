@@ -143,8 +143,8 @@ func init() {
 		GType:        GTypeFileOutputStream,
 		GoType:       reflect.TypeOf((*FileOutputStream)(nil)),
 		InitClass:    initClassFileOutputStream,
-		ClassSize:    uint16(unsafe.Sizeof(C.GFileOutputStream{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GFileOutputStreamClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GFileOutputStream{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GFileOutputStreamClass{})),
 	})
 }
 

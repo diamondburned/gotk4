@@ -61,8 +61,8 @@ func init() {
 		GType:        GTypeHSV,
 		GoType:       reflect.TypeOf((*HSV)(nil)),
 		InitClass:    initClassHSV,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkHSV{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkHSVClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkHSV{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkHSVClass{})),
 	})
 }
 

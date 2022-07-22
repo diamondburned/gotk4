@@ -192,8 +192,8 @@ func init() {
 		GType:        GTypeAboutDialog,
 		GoType:       reflect.TypeOf((*AboutDialog)(nil)),
 		InitClass:    initClassAboutDialog,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkAboutDialog{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkAboutDialogClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkAboutDialog{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkAboutDialogClass{})),
 	})
 }
 

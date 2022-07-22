@@ -150,8 +150,8 @@ func init() {
 		GType:        GTypeRecentManager,
 		GoType:       reflect.TypeOf((*RecentManager)(nil)),
 		InitClass:    initClassRecentManager,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkRecentManager{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkRecentManagerClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkRecentManager{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkRecentManagerClass{})),
 	})
 }
 

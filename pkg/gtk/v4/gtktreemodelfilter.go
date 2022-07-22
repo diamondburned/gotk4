@@ -259,8 +259,8 @@ func init() {
 		GType:        GTypeTreeModelFilter,
 		GoType:       reflect.TypeOf((*TreeModelFilter)(nil)),
 		InitClass:    initClassTreeModelFilter,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkTreeModelFilter{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkTreeModelFilterClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeModelFilter{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeModelFilterClass{})),
 	})
 }
 

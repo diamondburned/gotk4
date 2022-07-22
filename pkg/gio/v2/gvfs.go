@@ -174,8 +174,8 @@ func init() {
 		GType:        GTypeVFS,
 		GoType:       reflect.TypeOf((*VFS)(nil)),
 		InitClass:    initClassVFS,
-		ClassSize:    uint16(unsafe.Sizeof(C.GVfs{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GVfsClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GVfs{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GVfsClass{})),
 	})
 }
 

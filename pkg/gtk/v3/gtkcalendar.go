@@ -195,8 +195,8 @@ func init() {
 		GType:        GTypeCalendar,
 		GoType:       reflect.TypeOf((*Calendar)(nil)),
 		InitClass:    initClassCalendar,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCalendar{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCalendarClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCalendar{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCalendarClass{})),
 	})
 }
 

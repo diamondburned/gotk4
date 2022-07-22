@@ -70,8 +70,8 @@ func init() {
 		GType:        GTypeSocketListener,
 		GoType:       reflect.TypeOf((*SocketListener)(nil)),
 		InitClass:    initClassSocketListener,
-		ClassSize:    uint16(unsafe.Sizeof(C.GSocketListener{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GSocketListenerClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GSocketListener{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GSocketListenerClass{})),
 	})
 }
 

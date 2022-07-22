@@ -67,8 +67,8 @@ func init() {
 		GType:        GTypePlug,
 		GoType:       reflect.TypeOf((*Plug)(nil)),
 		InitClass:    initClassPlug,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkPlug{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkPlugClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkPlug{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkPlugClass{})),
 	})
 }
 

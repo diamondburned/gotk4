@@ -89,8 +89,8 @@ func init() {
 		GType:        GTypeLabel,
 		GoType:       reflect.TypeOf((*Label)(nil)),
 		InitClass:    initClassLabel,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkLabel{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkLabelClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkLabel{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkLabelClass{})),
 	})
 }
 

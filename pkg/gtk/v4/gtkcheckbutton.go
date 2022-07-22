@@ -106,8 +106,8 @@ func init() {
 		GType:        GTypeCheckButton,
 		GoType:       reflect.TypeOf((*CheckButton)(nil)),
 		InitClass:    initClassCheckButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCheckButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCheckButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCheckButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCheckButtonClass{})),
 	})
 }
 

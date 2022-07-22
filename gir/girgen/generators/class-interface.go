@@ -93,17 +93,15 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .GLibTypeStruct.Methods }}
 	func init() {
-		{{ if .IsRuntimeLinkMode -}}
-		// TODO
-		{{ else -}}
 		coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-			GType:        GType{{ .StructName }},
-			GoType:       reflect.TypeOf((*{{ .StructName }})(nil)),
-			InitClass:    initClass{{ .StructName }},
-			ClassSize:    uint16(unsafe.Sizeof(C.{{ .CType }}{})),
-			InstanceSize: uint16(unsafe.Sizeof(C.{{ .GLibTypeStruct.CType }}{})),
+			GType:     GType{{ .StructName }},
+			GoType:    reflect.TypeOf((*{{ .StructName }})(nil)),
+			InitClass: initClass{{ .StructName }},
+			{{ if not .IsRuntimeLinkMode -}}
+			ClassSize:    uint32(unsafe.Sizeof(C.{{ .CType }}{})),
+			InstanceSize: uint32(unsafe.Sizeof(C.{{ .GLibTypeStruct.CType }}{})),
+			{{ end -}}
 		})
-		{{ end -}}
 	}
 	{{ end }}
 

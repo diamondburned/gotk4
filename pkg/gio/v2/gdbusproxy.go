@@ -101,8 +101,8 @@ func init() {
 		GType:        GTypeDBusProxy,
 		GoType:       reflect.TypeOf((*DBusProxy)(nil)),
 		InitClass:    initClassDBusProxy,
-		ClassSize:    uint16(unsafe.Sizeof(C.GDBusProxy{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GDBusProxyClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GDBusProxy{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GDBusProxyClass{})),
 	})
 }
 

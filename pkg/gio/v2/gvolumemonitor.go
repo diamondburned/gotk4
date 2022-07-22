@@ -179,8 +179,8 @@ func init() {
 		GType:        GTypeVolumeMonitor,
 		GoType:       reflect.TypeOf((*VolumeMonitor)(nil)),
 		InitClass:    initClassVolumeMonitor,
-		ClassSize:    uint16(unsafe.Sizeof(C.GVolumeMonitor{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GVolumeMonitorClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GVolumeMonitor{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GVolumeMonitorClass{})),
 	})
 }
 

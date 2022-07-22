@@ -437,8 +437,8 @@ func init() {
 		GType:        GTypeUIManager,
 		GoType:       reflect.TypeOf((*UIManager)(nil)),
 		InitClass:    initClassUIManager,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkUIManager{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkUIManagerClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkUIManager{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkUIManagerClass{})),
 	})
 }
 

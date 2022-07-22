@@ -1147,8 +1147,8 @@ func init() {
 		GType:        GTypeWidget,
 		GoType:       reflect.TypeOf((*Widget)(nil)),
 		InitClass:    initClassWidget,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkWidget{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkWidgetClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkWidget{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkWidgetClass{})),
 	})
 }
 

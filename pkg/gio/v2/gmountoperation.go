@@ -105,8 +105,8 @@ func init() {
 		GType:        GTypeMountOperation,
 		GoType:       reflect.TypeOf((*MountOperation)(nil)),
 		InitClass:    initClassMountOperation,
-		ClassSize:    uint16(unsafe.Sizeof(C.GMountOperation{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GMountOperationClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GMountOperation{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GMountOperationClass{})),
 	})
 }
 

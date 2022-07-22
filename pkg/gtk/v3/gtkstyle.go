@@ -1632,8 +1632,8 @@ func init() {
 		GType:        GTypeStyle,
 		GoType:       reflect.TypeOf((*Style)(nil)),
 		InitClass:    initClassStyle,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkStyle{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkStyleClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkStyle{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkStyleClass{})),
 	})
 }
 

@@ -320,8 +320,8 @@ func init() {
 		GType:        GTypeBuilder,
 		GoType:       reflect.TypeOf((*Builder)(nil)),
 		InitClass:    initClassBuilder,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkBuilder{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkBuilderClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkBuilder{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkBuilderClass{})),
 	})
 }
 

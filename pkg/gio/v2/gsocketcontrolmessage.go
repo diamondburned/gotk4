@@ -107,8 +107,8 @@ func init() {
 		GType:        GTypeSocketControlMessage,
 		GoType:       reflect.TypeOf((*SocketControlMessage)(nil)),
 		InitClass:    initClassSocketControlMessage,
-		ClassSize:    uint16(unsafe.Sizeof(C.GSocketControlMessage{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GSocketControlMessageClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GSocketControlMessage{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GSocketControlMessageClass{})),
 	})
 }
 

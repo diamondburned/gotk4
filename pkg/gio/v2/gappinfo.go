@@ -1439,8 +1439,8 @@ func init() {
 		GType:        GTypeAppLaunchContext,
 		GoType:       reflect.TypeOf((*AppLaunchContext)(nil)),
 		InitClass:    initClassAppLaunchContext,
-		ClassSize:    uint16(unsafe.Sizeof(C.GAppLaunchContext{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GAppLaunchContextClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GAppLaunchContext{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GAppLaunchContextClass{})),
 	})
 }
 

@@ -141,8 +141,8 @@ func init() {
 		GType:        GTypePermission,
 		GoType:       reflect.TypeOf((*Permission)(nil)),
 		InitClass:    initClassPermission,
-		ClassSize:    uint16(unsafe.Sizeof(C.GPermission{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GPermissionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GPermission{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GPermissionClass{})),
 	})
 }
 

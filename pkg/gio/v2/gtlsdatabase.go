@@ -296,8 +296,8 @@ func init() {
 		GType:        GTypeTLSDatabase,
 		GoType:       reflect.TypeOf((*TLSDatabase)(nil)),
 		InitClass:    initClassTLSDatabase,
-		ClassSize:    uint16(unsafe.Sizeof(C.GTlsDatabase{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GTlsDatabaseClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GTlsDatabase{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GTlsDatabaseClass{})),
 	})
 }
 

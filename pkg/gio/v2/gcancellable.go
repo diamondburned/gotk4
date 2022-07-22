@@ -52,8 +52,8 @@ func init() {
 		GType:        GTypeCancellable,
 		GoType:       reflect.TypeOf((*Cancellable)(nil)),
 		InitClass:    initClassCancellable,
-		ClassSize:    uint16(unsafe.Sizeof(C.GCancellable{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GCancellableClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GCancellable{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GCancellableClass{})),
 	})
 }
 

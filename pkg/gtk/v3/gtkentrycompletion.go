@@ -162,8 +162,8 @@ func init() {
 		GType:        GTypeEntryCompletion,
 		GoType:       reflect.TypeOf((*EntryCompletion)(nil)),
 		InitClass:    initClassEntryCompletion,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkEntryCompletion{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkEntryCompletionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkEntryCompletion{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkEntryCompletionClass{})),
 	})
 }
 

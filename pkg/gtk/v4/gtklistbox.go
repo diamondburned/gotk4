@@ -1242,8 +1242,8 @@ func init() {
 		GType:        GTypeListBoxRow,
 		GoType:       reflect.TypeOf((*ListBoxRow)(nil)),
 		InitClass:    initClassListBoxRow,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkListBoxRow{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkListBoxRowClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkListBoxRow{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkListBoxRowClass{})),
 	})
 }
 

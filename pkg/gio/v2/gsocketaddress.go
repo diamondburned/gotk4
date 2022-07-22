@@ -94,8 +94,8 @@ func init() {
 		GType:        GTypeSocketAddress,
 		GoType:       reflect.TypeOf((*SocketAddress)(nil)),
 		InitClass:    initClassSocketAddress,
-		ClassSize:    uint16(unsafe.Sizeof(C.GSocketAddress{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GSocketAddressClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GSocketAddress{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GSocketAddressClass{})),
 	})
 }
 

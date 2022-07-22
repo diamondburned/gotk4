@@ -140,8 +140,8 @@ func init() {
 		GType:        GTypeFontMap,
 		GoType:       reflect.TypeOf((*FontMap)(nil)),
 		InitClass:    initClassFontMap,
-		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontMap{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontMapClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontMap{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontMapClass{})),
 	})
 }
 

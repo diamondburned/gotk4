@@ -66,8 +66,8 @@ func init() {
 		GType:        GTypeMisc,
 		GoType:       reflect.TypeOf((*Misc)(nil)),
 		InitClass:    initClassMisc,
-		ClassSize:    uint16(unsafe.Sizeof(C.AtkMisc{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.AtkMiscClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.AtkMisc{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.AtkMiscClass{})),
 	})
 }
 

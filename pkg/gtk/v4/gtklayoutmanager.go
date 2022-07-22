@@ -165,8 +165,8 @@ func init() {
 		GType:        GTypeLayoutManager,
 		GoType:       reflect.TypeOf((*LayoutManager)(nil)),
 		InitClass:    initClassLayoutManager,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkLayoutManager{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkLayoutManagerClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkLayoutManager{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkLayoutManagerClass{})),
 	})
 }
 

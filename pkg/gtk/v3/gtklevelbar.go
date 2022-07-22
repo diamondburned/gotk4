@@ -101,8 +101,8 @@ func init() {
 		GType:        GTypeLevelBar,
 		GoType:       reflect.TypeOf((*LevelBar)(nil)),
 		InitClass:    initClassLevelBar,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkLevelBar{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkLevelBarClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkLevelBar{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkLevelBarClass{})),
 	})
 }
 

@@ -138,8 +138,8 @@ func init() {
 		GType:        GTypeMenuShell,
 		GoType:       reflect.TypeOf((*MenuShell)(nil)),
 		InitClass:    initClassMenuShell,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkMenuShell{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkMenuShellClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkMenuShell{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkMenuShellClass{})),
 	})
 }
 

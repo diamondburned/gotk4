@@ -53,8 +53,8 @@ func init() {
 		GType:        GTypeColorSelection,
 		GoType:       reflect.TypeOf((*ColorSelection)(nil)),
 		InitClass:    initClassColorSelection,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkColorSelection{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkColorSelectionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkColorSelection{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkColorSelectionClass{})),
 	})
 }
 

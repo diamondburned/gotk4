@@ -162,8 +162,8 @@ func init() {
 		GType:        GTypeGLArea,
 		GoType:       reflect.TypeOf((*GLArea)(nil)),
 		InitClass:    initClassGLArea,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkGLArea{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkGLAreaClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkGLArea{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkGLAreaClass{})),
 	})
 }
 

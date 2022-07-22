@@ -1207,8 +1207,8 @@ func init() {
 		GType:        GTypeObjectClass,
 		GoType:       reflect.TypeOf((*ObjectClass)(nil)),
 		InitClass:    initClassObjectClass,
-		ClassSize:    uint16(unsafe.Sizeof(C.AtkObject{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.AtkObjectClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.AtkObject{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.AtkObjectClass{})),
 	})
 }
 

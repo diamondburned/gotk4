@@ -203,8 +203,8 @@ func init() {
 		GType:        GTypeNotebook,
 		GoType:       reflect.TypeOf((*Notebook)(nil)),
 		InitClass:    initClassNotebook,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkNotebook{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkNotebookClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkNotebook{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkNotebookClass{})),
 	})
 }
 

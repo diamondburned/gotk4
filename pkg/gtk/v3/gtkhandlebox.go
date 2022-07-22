@@ -79,8 +79,8 @@ func init() {
 		GType:        GTypeHandleBox,
 		GoType:       reflect.TypeOf((*HandleBox)(nil)),
 		InitClass:    initClassHandleBox,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkHandleBox{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkHandleBoxClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkHandleBox{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkHandleBoxClass{})),
 	})
 }
 

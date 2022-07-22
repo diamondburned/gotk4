@@ -90,8 +90,8 @@ func init() {
 		GType:        GTypeTLSCertificate,
 		GoType:       reflect.TypeOf((*TLSCertificate)(nil)),
 		InitClass:    initClassTLSCertificate,
-		ClassSize:    uint16(unsafe.Sizeof(C.GTlsCertificate{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GTlsCertificateClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GTlsCertificate{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GTlsCertificateClass{})),
 	})
 }
 

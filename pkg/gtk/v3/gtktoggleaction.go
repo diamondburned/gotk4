@@ -54,8 +54,8 @@ func init() {
 		GType:        GTypeToggleAction,
 		GoType:       reflect.TypeOf((*ToggleAction)(nil)),
 		InitClass:    initClassToggleAction,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkToggleAction{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkToggleActionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkToggleAction{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkToggleActionClass{})),
 	})
 }
 

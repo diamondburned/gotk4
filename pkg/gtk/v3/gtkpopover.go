@@ -111,8 +111,8 @@ func init() {
 		GType:        GTypePopover,
 		GoType:       reflect.TypeOf((*Popover)(nil)),
 		InitClass:    initClassPopover,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkPopover{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkPopoverClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkPopover{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkPopoverClass{})),
 	})
 }
 

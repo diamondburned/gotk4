@@ -386,8 +386,8 @@ func init() {
 		GType:        GTypeCellRenderer,
 		GoType:       reflect.TypeOf((*CellRenderer)(nil)),
 		InitClass:    initClassCellRenderer,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellRenderer{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellRendererClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRenderer{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererClass{})),
 	})
 }
 

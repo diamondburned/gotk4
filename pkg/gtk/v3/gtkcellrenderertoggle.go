@@ -54,8 +54,8 @@ func init() {
 		GType:        GTypeCellRendererToggle,
 		GoType:       reflect.TypeOf((*CellRendererToggle)(nil)),
 		InitClass:    initClassCellRendererToggle,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellRendererToggle{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellRendererToggleClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRendererToggle{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererToggleClass{})),
 	})
 }
 

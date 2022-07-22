@@ -203,8 +203,8 @@ func init() {
 		GType:        GTypeSpinButton,
 		GoType:       reflect.TypeOf((*SpinButton)(nil)),
 		InitClass:    initClassSpinButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkSpinButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkSpinButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkSpinButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkSpinButtonClass{})),
 	})
 }
 

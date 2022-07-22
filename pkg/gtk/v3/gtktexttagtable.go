@@ -105,8 +105,8 @@ func init() {
 		GType:        GTypeTextTagTable,
 		GoType:       reflect.TypeOf((*TextTagTable)(nil)),
 		InitClass:    initClassTextTagTable,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkTextTagTable{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkTextTagTableClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextTagTable{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextTagTableClass{})),
 	})
 }
 

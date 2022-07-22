@@ -1184,8 +1184,8 @@ func init() {
 		GType:        GTypeIconTheme,
 		GoType:       reflect.TypeOf((*IconTheme)(nil)),
 		InitClass:    initClassIconTheme,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkIconTheme{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkIconThemeClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkIconTheme{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkIconThemeClass{})),
 	})
 }
 

@@ -129,8 +129,8 @@ func init() {
 		GType:        GTypeEntryBuffer,
 		GoType:       reflect.TypeOf((*EntryBuffer)(nil)),
 		InitClass:    initClassEntryBuffer,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkEntryBuffer{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkEntryBufferClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkEntryBuffer{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkEntryBufferClass{})),
 	})
 }
 

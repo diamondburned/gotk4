@@ -111,8 +111,8 @@ func init() {
 		GType:        GTypeSocketAddressEnumerator,
 		GoType:       reflect.TypeOf((*SocketAddressEnumerator)(nil)),
 		InitClass:    initClassSocketAddressEnumerator,
-		ClassSize:    uint16(unsafe.Sizeof(C.GSocketAddressEnumerator{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GSocketAddressEnumeratorClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GSocketAddressEnumerator{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GSocketAddressEnumeratorClass{})),
 	})
 }
 

@@ -85,8 +85,8 @@ func init() {
 		GType:        GTypeRange,
 		GoType:       reflect.TypeOf((*Range)(nil)),
 		InitClass:    initClassRange,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkRange{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkRangeClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkRange{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkRangeClass{})),
 	})
 }
 

@@ -132,8 +132,8 @@ func init() {
 		GType:        GTypeFileEnumerator,
 		GoType:       reflect.TypeOf((*FileEnumerator)(nil)),
 		InitClass:    initClassFileEnumerator,
-		ClassSize:    uint16(unsafe.Sizeof(C.GFileEnumerator{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GFileEnumeratorClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GFileEnumerator{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GFileEnumeratorClass{})),
 	})
 }
 

@@ -183,8 +183,8 @@ func init() {
 		GType:        GTypeAssistant,
 		GoType:       reflect.TypeOf((*Assistant)(nil)),
 		InitClass:    initClassAssistant,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkAssistant{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkAssistantClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkAssistant{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkAssistantClass{})),
 	})
 }
 

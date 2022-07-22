@@ -89,8 +89,8 @@ func init() {
 		GType:        GTypeAppChooserWidget,
 		GoType:       reflect.TypeOf((*AppChooserWidget)(nil)),
 		InitClass:    initClassAppChooserWidget,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkAppChooserWidget{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkAppChooserWidgetClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkAppChooserWidget{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkAppChooserWidgetClass{})),
 	})
 }
 

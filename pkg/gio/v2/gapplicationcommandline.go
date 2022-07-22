@@ -141,8 +141,8 @@ func init() {
 		GType:        GTypeApplicationCommandLine,
 		GoType:       reflect.TypeOf((*ApplicationCommandLine)(nil)),
 		InitClass:    initClassApplicationCommandLine,
-		ClassSize:    uint16(unsafe.Sizeof(C.GApplicationCommandLine{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GApplicationCommandLineClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GApplicationCommandLine{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GApplicationCommandLineClass{})),
 	})
 }
 

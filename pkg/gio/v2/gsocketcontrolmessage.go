@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -104,11 +105,9 @@ var _ SocketControlMessager = (*SocketControlMessage)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocketControlMessage,
-		GoType:       reflect.TypeOf((*SocketControlMessage)(nil)),
-		InitClass:    initClassSocketControlMessage,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSocketControlMessage{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSocketControlMessageClass{})),
+		GType:     GTypeSocketControlMessage,
+		GoType:    reflect.TypeOf((*SocketControlMessage)(nil)),
+		InitClass: initClassSocketControlMessage,
 	})
 }
 
@@ -130,6 +129,12 @@ func initClassSocketControlMessage(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Serialize(data unsafe.Pointer) }); ok {
 		pclass.serialize = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_serialize)
+	}
+	if goval, ok := goval.(interface {
+		InitSocketControlMessage(*SocketControlMessageClass)
+	}); ok {
+		klass := (*SocketControlMessageClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketControlMessage(klass)
 	}
 }
 
@@ -348,4 +353,16 @@ func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlM
 	}
 
 	return _socketControlMessage
+}
+
+// SocketControlMessageClass class structure for ControlMessage.
+//
+// An instance of this type is always passed by reference.
+type SocketControlMessageClass struct {
+	*socketControlMessageClass
+}
+
+// socketControlMessageClass is the struct that's finalized.
+type socketControlMessageClass struct {
+	native *C.GSocketControlMessageClass
 }

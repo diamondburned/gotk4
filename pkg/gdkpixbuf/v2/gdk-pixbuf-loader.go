@@ -113,11 +113,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePixbufLoader,
-		GoType:       reflect.TypeOf((*PixbufLoader)(nil)),
-		InitClass:    initClassPixbufLoader,
-		ClassSize:    uint32(unsafe.Sizeof(C.GdkPixbufLoader{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GdkPixbufLoaderClass{})),
+		GType:     GTypePixbufLoader,
+		GoType:    reflect.TypeOf((*PixbufLoader)(nil)),
+		InitClass: initClassPixbufLoader,
 	})
 }
 
@@ -139,6 +137,10 @@ func initClassPixbufLoader(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ SizePrepared(width, height int) }); ok {
 		pclass.size_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared)
+	}
+	if goval, ok := goval.(interface{ InitPixbufLoader(*PixbufLoaderClass) }); ok {
+		klass := (*PixbufLoaderClass)(gextras.NewStructNative(gclass))
+		goval.InitPixbufLoader(klass)
 	}
 }
 
@@ -639,4 +641,14 @@ func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	}
 
 	return _goerr
+}
+
+// PixbufLoaderClass: instance of this type is always passed by reference.
+type PixbufLoaderClass struct {
+	*pixbufLoaderClass
+}
+
+// pixbufLoaderClass is the struct that's finalized.
+type pixbufLoaderClass struct {
+	native *C.GdkPixbufLoaderClass
 }

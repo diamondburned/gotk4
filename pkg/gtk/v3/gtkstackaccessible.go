@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ coreglib.Objector = (*StackAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStackAccessible,
+		GoType:    reflect.TypeOf((*StackAccessible)(nil)),
+		InitClass: initClassStackAccessible,
+	})
+}
+
 func initClassStackAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStackAccessible(*StackAccessibleClass) }); ok {
+		klass := (*StackAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitStackAccessible(klass)
+	}
 }
 
 func wrapStackAccessible(obj *coreglib.Object) *StackAccessible {
@@ -48,7 +62,7 @@ func wrapStackAccessible(obj *coreglib.Object) *StackAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -62,4 +76,21 @@ func wrapStackAccessible(obj *coreglib.Object) *StackAccessible {
 
 func marshalStackAccessible(p uintptr) (interface{}, error) {
 	return wrapStackAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// StackAccessibleClass: instance of this type is always passed by reference.
+type StackAccessibleClass struct {
+	*stackAccessibleClass
+}
+
+// stackAccessibleClass is the struct that's finalized.
+type stackAccessibleClass struct {
+	native *C.GtkStackAccessibleClass
+}
+
+func (s *StackAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

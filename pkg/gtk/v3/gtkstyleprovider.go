@@ -258,3 +258,13 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 
 	return _styleProperties
 }
+
+// StyleProviderIface: instance of this type is always passed by reference.
+type StyleProviderIface struct {
+	*styleProviderIface
+}
+
+// styleProviderIface is the struct that's finalized.
+type styleProviderIface struct {
+	native *C.GtkStyleProviderIface
+}

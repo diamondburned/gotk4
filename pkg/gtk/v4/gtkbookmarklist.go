@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -48,7 +50,19 @@ var (
 	_ coreglib.Objector = (*BookmarkList)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBookmarkList,
+		GoType:    reflect.TypeOf((*BookmarkList)(nil)),
+		InitClass: initClassBookmarkList,
+	})
+}
+
 func initClassBookmarkList(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBookmarkList(*BookmarkListClass) }); ok {
+		klass := (*BookmarkListClass)(gextras.NewStructNative(gclass))
+		goval.InitBookmarkList(klass)
+	}
 }
 
 func wrapBookmarkList(obj *coreglib.Object) *BookmarkList {
@@ -238,4 +252,14 @@ func (self *BookmarkList) SetIOPriority(ioPriority int) {
 	C.gtk_bookmark_list_set_io_priority(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ioPriority)
+}
+
+// BookmarkListClass: instance of this type is always passed by reference.
+type BookmarkListClass struct {
+	*bookmarkListClass
+}
+
+// bookmarkListClass is the struct that's finalized.
+type bookmarkListClass struct {
+	native *C.GtkBookmarkListClass
 }

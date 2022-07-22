@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ coreglib.Objector = (*ScaleAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeScaleAccessible,
+		GoType:    reflect.TypeOf((*ScaleAccessible)(nil)),
+		InitClass: initClassScaleAccessible,
+	})
+}
+
 func initClassScaleAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitScaleAccessible(*ScaleAccessibleClass) }); ok {
+		klass := (*ScaleAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitScaleAccessible(klass)
+	}
 }
 
 func wrapScaleAccessible(obj *coreglib.Object) *ScaleAccessible {
@@ -48,7 +62,7 @@ func wrapScaleAccessible(obj *coreglib.Object) *ScaleAccessible {
 		RangeAccessible: RangeAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -65,4 +79,21 @@ func wrapScaleAccessible(obj *coreglib.Object) *ScaleAccessible {
 
 func marshalScaleAccessible(p uintptr) (interface{}, error) {
 	return wrapScaleAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ScaleAccessibleClass: instance of this type is always passed by reference.
+type ScaleAccessibleClass struct {
+	*scaleAccessibleClass
+}
+
+// scaleAccessibleClass is the struct that's finalized.
+type scaleAccessibleClass struct {
+	native *C.GtkScaleAccessibleClass
+}
+
+func (s *ScaleAccessibleClass) ParentClass() *RangeAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *RangeAccessibleClass // out
+	v = (*RangeAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

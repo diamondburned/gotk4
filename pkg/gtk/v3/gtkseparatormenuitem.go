@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -49,7 +51,19 @@ var (
 	_ coreglib.Objector = (*SeparatorMenuItem)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSeparatorMenuItem,
+		GoType:    reflect.TypeOf((*SeparatorMenuItem)(nil)),
+		InitClass: initClassSeparatorMenuItem,
+	})
+}
+
 func initClassSeparatorMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSeparatorMenuItem(*SeparatorMenuItemClass) }); ok {
+		klass := (*SeparatorMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.InitSeparatorMenuItem(klass)
+	}
 }
 
 func wrapSeparatorMenuItem(obj *coreglib.Object) *SeparatorMenuItem {
@@ -113,4 +127,22 @@ func NewSeparatorMenuItem() *SeparatorMenuItem {
 	_separatorMenuItem = wrapSeparatorMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _separatorMenuItem
+}
+
+// SeparatorMenuItemClass: instance of this type is always passed by reference.
+type SeparatorMenuItemClass struct {
+	*separatorMenuItemClass
+}
+
+// separatorMenuItemClass is the struct that's finalized.
+type separatorMenuItemClass struct {
+	native *C.GtkSeparatorMenuItemClass
+}
+
+// ParentClass: parent class.
+func (s *SeparatorMenuItemClass) ParentClass() *MenuItemClass {
+	valptr := &s.native.parent_class
+	var v *MenuItemClass // out
+	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

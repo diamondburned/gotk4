@@ -218,11 +218,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeThemingEngine,
-		GoType:       reflect.TypeOf((*ThemingEngine)(nil)),
-		InitClass:    initClassThemingEngine,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkThemingEngine{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkThemingEngineClass{})),
+		GType:     GTypeThemingEngine,
+		GoType:    reflect.TypeOf((*ThemingEngine)(nil)),
+		InitClass: initClassThemingEngine,
 	})
 }
 
@@ -324,6 +322,10 @@ func initClassThemingEngine(gclass unsafe.Pointer, goval any) {
 		RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
 	}); ok {
 		pclass.render_slider = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_slider)
+	}
+	if goval, ok := goval.(interface{ InitThemingEngine(*ThemingEngineClass) }); ok {
+		klass := (*ThemingEngineClass)(gextras.NewStructNative(gclass))
+		goval.InitThemingEngine(klass)
 	}
 }
 
@@ -1391,4 +1393,16 @@ func ThemingEngineLoad(name string) *ThemingEngine {
 	}
 
 	return _themingEngine
+}
+
+// ThemingEngineClass: base class for theming engines.
+//
+// An instance of this type is always passed by reference.
+type ThemingEngineClass struct {
+	*themingEngineClass
+}
+
+// themingEngineClass is the struct that's finalized.
+type themingEngineClass struct {
+	native *C.GtkThemingEngineClass
 }

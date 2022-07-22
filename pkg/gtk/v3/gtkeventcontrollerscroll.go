@@ -99,10 +99,6 @@ func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
 	return (e & other) == other
 }
 
-// EventControllerScrollOverrider contains methods that are overridable.
-type EventControllerScrollOverrider interface {
-}
-
 // EventControllerScroll is an event controller meant to handle scroll events
 // from mice and touchpads. It is capable of handling both discrete and
 // continuous scroll events, abstracting them both on the
@@ -145,9 +141,6 @@ type EventControllerScroll struct {
 var (
 	_ EventControllerer = (*EventControllerScroll)(nil)
 )
-
-func initClassEventControllerScroll(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventControllerScroll(obj *coreglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{

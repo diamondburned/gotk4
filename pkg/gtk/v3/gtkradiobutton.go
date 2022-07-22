@@ -109,11 +109,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRadioButton,
-		GoType:       reflect.TypeOf((*RadioButton)(nil)),
-		InitClass:    initClassRadioButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkRadioButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkRadioButtonClass{})),
+		GType:     GTypeRadioButton,
+		GoType:    reflect.TypeOf((*RadioButton)(nil)),
+		InitClass: initClassRadioButton,
 	})
 }
 
@@ -123,6 +121,10 @@ func initClassRadioButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ GroupChanged() }); ok {
 		pclass.group_changed = (*[0]byte)(C._gotk4_gtk3_RadioButtonClass_group_changed)
+	}
+	if goval, ok := goval.(interface{ InitRadioButton(*RadioButtonClass) }); ok {
+		klass := (*RadioButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitRadioButton(klass)
 	}
 }
 
@@ -524,4 +526,21 @@ func (radioButton *RadioButton) SetGroup(group []*RadioButton) {
 	C.gtk_radio_button_set_group(_arg0, _arg1)
 	runtime.KeepAlive(radioButton)
 	runtime.KeepAlive(group)
+}
+
+// RadioButtonClass: instance of this type is always passed by reference.
+type RadioButtonClass struct {
+	*radioButtonClass
+}
+
+// radioButtonClass is the struct that's finalized.
+type radioButtonClass struct {
+	native *C.GtkRadioButtonClass
+}
+
+func (r *RadioButtonClass) ParentClass() *CheckButtonClass {
+	valptr := &r.native.parent_class
+	var v *CheckButtonClass // out
+	v = (*CheckButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

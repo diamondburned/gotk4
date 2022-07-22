@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// GestureRotateOverrider contains methods that are overridable.
-type GestureRotateOverrider interface {
-}
-
 // GestureRotate: GtkGestureRotate is a GtkGesture for 2-finger rotations.
 //
 // Whenever the angle between both handled sequences changes, the
@@ -42,9 +38,6 @@ type GestureRotate struct {
 var (
 	_ Gesturer = (*GestureRotate)(nil)
 )
-
-func initClassGestureRotate(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureRotate(obj *coreglib.Object) *GestureRotate {
 	return &GestureRotate{

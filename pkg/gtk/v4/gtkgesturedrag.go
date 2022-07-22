@@ -28,10 +28,6 @@ func init() {
 	})
 }
 
-// GestureDragOverrider contains methods that are overridable.
-type GestureDragOverrider interface {
-}
-
 // GestureDrag: GtkGestureDrag is a GtkGesture implementation for drags.
 //
 // The drag operation itself can be tracked throughout the
@@ -47,9 +43,6 @@ type GestureDrag struct {
 var (
 	_ Gesturer = (*GestureDrag)(nil)
 )
-
-func initClassGestureDrag(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureDrag(obj *coreglib.Object) *GestureDrag {
 	return &GestureDrag{

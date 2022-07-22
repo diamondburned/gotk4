@@ -781,11 +781,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeStyleContext,
-		GoType:       reflect.TypeOf((*StyleContext)(nil)),
-		InitClass:    initClassStyleContext,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkStyleContext{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkStyleContextClass{})),
+		GType:     GTypeStyleContext,
+		GoType:    reflect.TypeOf((*StyleContext)(nil)),
+		InitClass: initClassStyleContext,
 	})
 }
 
@@ -795,6 +793,10 @@ func initClassStyleContext(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_StyleContextClass_changed)
+	}
+	if goval, ok := goval.(interface{ InitStyleContext(*StyleContextClass) }); ok {
+		klass := (*StyleContextClass)(gextras.NewStructNative(gclass))
+		goval.InitStyleContext(klass)
 	}
 }
 
@@ -2367,4 +2369,14 @@ func StyleContextResetWidgets(screen *gdk.Screen) {
 
 	C.gtk_style_context_reset_widgets(_arg1)
 	runtime.KeepAlive(screen)
+}
+
+// StyleContextClass: instance of this type is always passed by reference.
+type StyleContextClass struct {
+	*styleContextClass
+}
+
+// styleContextClass is the struct that's finalized.
+type styleContextClass struct {
+	native *C.GtkStyleContextClass
 }

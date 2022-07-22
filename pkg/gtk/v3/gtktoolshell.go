@@ -501,3 +501,15 @@ func (shell *ToolShell) RebuildMenu() {
 	C.gtk_tool_shell_rebuild_menu(_arg0)
 	runtime.KeepAlive(shell)
 }
+
+// ToolShellIface: virtual function table for the ToolShell interface.
+//
+// An instance of this type is always passed by reference.
+type ToolShellIface struct {
+	*toolShellIface
+}
+
+// toolShellIface is the struct that's finalized.
+type toolShellIface struct {
+	native *C.GtkToolShellIface
+}

@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// ListItemFactoryOverrider contains methods that are overridable.
-type ListItemFactoryOverrider interface {
-}
-
 // ListItemFactory: GtkListItemFactory creates widgets for the items taken from
 // a GListModel.
 //
@@ -84,9 +80,6 @@ type ListItemFactory struct {
 var (
 	_ coreglib.Objector = (*ListItemFactory)(nil)
 )
-
-func initClassListItemFactory(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapListItemFactory(obj *coreglib.Object) *ListItemFactory {
 	return &ListItemFactory{

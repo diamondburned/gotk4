@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -165,11 +166,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTLSInteraction,
-		GoType:       reflect.TypeOf((*TLSInteraction)(nil)),
-		InitClass:    initClassTLSInteraction,
-		ClassSize:    uint32(unsafe.Sizeof(C.GTlsInteraction{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GTlsInteractionClass{})),
+		GType:     GTypeTLSInteraction,
+		GoType:    reflect.TypeOf((*TLSInteraction)(nil)),
+		InitClass: initClassTLSInteraction,
 	})
 }
 
@@ -199,6 +198,10 @@ func initClassTLSInteraction(gclass unsafe.Pointer, goval any) {
 		RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 	}); ok {
 		pclass.request_certificate_finish = (*[0]byte)(C._gotk4_gio2_TlsInteractionClass_request_certificate_finish)
+	}
+	if goval, ok := goval.(interface{ InitTLSInteraction(*TLSInteractionClass) }); ok {
+		klass := (*TLSInteractionClass)(gextras.NewStructNative(gclass))
+		goval.InitTLSInteraction(klass)
 	}
 }
 
@@ -774,4 +777,29 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 	}
 
 	return _tlsInteractionResult, _goerr
+}
+
+// TLSInteractionClass class for Interaction. Derived classes implement the
+// various virtual interaction methods to handle TLS interactions.
+//
+// Derived classes can choose to implement whichever interactions methods they'd
+// like to support by overriding those virtual methods in their class
+// initialization function. If a derived class implements an async method, it
+// must also implement the corresponding finish method.
+//
+// The synchronous interaction methods should implement to display modal
+// dialogs, and the asynchronous methods to display modeless dialogs.
+//
+// If the user cancels an interaction, then the result should be
+// G_TLS_INTERACTION_FAILED and the error should be set with a domain of
+// G_IO_ERROR and code of G_IO_ERROR_CANCELLED.
+//
+// An instance of this type is always passed by reference.
+type TLSInteractionClass struct {
+	*tlsInteractionClass
+}
+
+// tlsInteractionClass is the struct that's finalized.
+type tlsInteractionClass struct {
+	native *C.GTlsInteractionClass
 }

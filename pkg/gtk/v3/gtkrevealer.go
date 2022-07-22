@@ -4,10 +4,12 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -101,7 +103,19 @@ var (
 	_ Binner = (*Revealer)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRevealer,
+		GoType:    reflect.TypeOf((*Revealer)(nil)),
+		InitClass: initClassRevealer,
+	})
+}
+
 func initClassRevealer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRevealer(*RevealerClass) }); ok {
+		klass := (*RevealerClass)(gextras.NewStructNative(gclass))
+		goval.InitRevealer(klass)
+	}
 }
 
 func wrapRevealer(obj *coreglib.Object) *Revealer {
@@ -305,4 +319,22 @@ func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 	C.gtk_revealer_set_transition_type(_arg0, _arg1)
 	runtime.KeepAlive(revealer)
 	runtime.KeepAlive(transition)
+}
+
+// RevealerClass: instance of this type is always passed by reference.
+type RevealerClass struct {
+	*revealerClass
+}
+
+// revealerClass is the struct that's finalized.
+type revealerClass struct {
+	native *C.GtkRevealerClass
+}
+
+// ParentClass: parent class.
+func (r *RevealerClass) ParentClass() *BinClass {
+	valptr := &r.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -46,7 +48,19 @@ var (
 	_ coreglib.Objector = (*FlattenListModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFlattenListModel,
+		GoType:    reflect.TypeOf((*FlattenListModel)(nil)),
+		InitClass: initClassFlattenListModel,
+	})
+}
+
 func initClassFlattenListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFlattenListModel(*FlattenListModelClass) }); ok {
+		klass := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
+		goval.InitFlattenListModel(klass)
+	}
 }
 
 func wrapFlattenListModel(obj *coreglib.Object) *FlattenListModel {
@@ -172,4 +186,14 @@ func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	C.gtk_flatten_list_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// FlattenListModelClass: instance of this type is always passed by reference.
+type FlattenListModelClass struct {
+	*flattenListModelClass
+}
+
+// flattenListModelClass is the struct that's finalized.
+type flattenListModelClass struct {
+	native *C.GtkFlattenListModelClass
 }

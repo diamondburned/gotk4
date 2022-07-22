@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// GestureLongPressOverrider contains methods that are overridable.
-type GestureLongPressOverrider interface {
-}
-
 // GestureLongPress: GtkGestureLongPress is a GtkGesture for long presses.
 //
 // This gesture is also known as “Press and Hold”.
@@ -53,9 +49,6 @@ type GestureLongPress struct {
 var (
 	_ Gesturer = (*GestureLongPress)(nil)
 )
-
-func initClassGestureLongPress(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureLongPress(obj *coreglib.Object) *GestureLongPress {
 	return &GestureLongPress{

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -95,7 +96,19 @@ var (
 	_ coreglib.Objector = (*Socket)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSocket,
+		GoType:    reflect.TypeOf((*Socket)(nil)),
+		InitClass: initClassSocket,
+	})
+}
+
 func initClassSocket(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSocket(*SocketClass) }); ok {
+		klass := (*SocketClass)(gextras.NewStructNative(gclass))
+		goval.InitSocket(klass)
+	}
 }
 
 func wrapSocket(obj *coreglib.Object) *Socket {
@@ -2442,4 +2455,14 @@ func (socket *Socket) SpeaksIPv4() bool {
 	}
 
 	return _ok
+}
+
+// SocketClass: instance of this type is always passed by reference.
+type SocketClass struct {
+	*socketClass
+}
+
+// socketClass is the struct that's finalized.
+type socketClass struct {
+	native *C.GSocketClass
 }

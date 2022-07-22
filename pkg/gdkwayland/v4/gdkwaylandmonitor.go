@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// WaylandMonitorOverrider contains methods that are overridable.
-type WaylandMonitorOverrider interface {
-}
-
 // WaylandMonitor: wayland implementation of GdkMonitor.
 //
 // Beyond the gdk.Monitor API, the Wayland implementation offers access to the
@@ -41,9 +37,6 @@ type WaylandMonitor struct {
 var (
 	_ coreglib.Objector = (*WaylandMonitor)(nil)
 )
-
-func initClassWaylandMonitor(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapWaylandMonitor(obj *coreglib.Object) *WaylandMonitor {
 	return &WaylandMonitor{

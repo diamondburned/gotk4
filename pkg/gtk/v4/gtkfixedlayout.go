@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -71,7 +72,19 @@ var (
 	_ LayoutManagerer = (*FixedLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFixedLayout,
+		GoType:    reflect.TypeOf((*FixedLayout)(nil)),
+		InitClass: initClassFixedLayout,
+	})
+}
+
 func initClassFixedLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFixedLayout(*FixedLayoutClass) }); ok {
+		klass := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitFixedLayout(klass)
+	}
 }
 
 func wrapFixedLayout(obj *coreglib.Object) *FixedLayout {
@@ -118,7 +131,19 @@ var (
 	_ LayoutChilder = (*FixedLayoutChild)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFixedLayoutChild,
+		GoType:    reflect.TypeOf((*FixedLayoutChild)(nil)),
+		InitClass: initClassFixedLayoutChild,
+	})
+}
+
 func initClassFixedLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFixedLayoutChild(*FixedLayoutChildClass) }); ok {
+		klass := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.InitFixedLayoutChild(klass)
+	}
 }
 
 func wrapFixedLayoutChild(obj *coreglib.Object) *FixedLayoutChild {
@@ -180,4 +205,38 @@ func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(transform)
+}
+
+// FixedLayoutChildClass: instance of this type is always passed by reference.
+type FixedLayoutChildClass struct {
+	*fixedLayoutChildClass
+}
+
+// fixedLayoutChildClass is the struct that's finalized.
+type fixedLayoutChildClass struct {
+	native *C.GtkFixedLayoutChildClass
+}
+
+func (f *FixedLayoutChildClass) ParentClass() *LayoutChildClass {
+	valptr := &f.native.parent_class
+	var v *LayoutChildClass // out
+	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// FixedLayoutClass: instance of this type is always passed by reference.
+type FixedLayoutClass struct {
+	*fixedLayoutClass
+}
+
+// fixedLayoutClass is the struct that's finalized.
+type fixedLayoutClass struct {
+	native *C.GtkFixedLayoutClass
+}
+
+func (f *FixedLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &f.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

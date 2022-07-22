@@ -89,10 +89,6 @@ func (s ShortcutType) String() string {
 	}
 }
 
-// ShortcutsShortcutOverrider contains methods that are overridable.
-type ShortcutsShortcutOverrider interface {
-}
-
 // ShortcutsShortcut represents a single keyboard shortcut or gesture with a
 // short text. This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsShortcut struct {
@@ -104,9 +100,6 @@ var (
 	_ Containerer       = (*ShortcutsShortcut)(nil)
 	_ coreglib.Objector = (*ShortcutsShortcut)(nil)
 )
-
-func initClassShortcutsShortcut(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutsShortcut(obj *coreglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{

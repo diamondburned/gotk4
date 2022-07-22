@@ -1441,3 +1441,15 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 
 	return _enabled, _parameterType, _stateType, _stateHint, _state, _ok
 }
+
+// ActionGroupInterface: virtual function table for Group.
+//
+// An instance of this type is always passed by reference.
+type ActionGroupInterface struct {
+	*actionGroupInterface
+}
+
+// actionGroupInterface is the struct that's finalized.
+type actionGroupInterface struct {
+	native *C.GActionGroupInterface
+}

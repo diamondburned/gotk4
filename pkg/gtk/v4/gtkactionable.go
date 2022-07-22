@@ -377,3 +377,15 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(detailedActionName)
 }
+
+// ActionableInterface: interface vtable for GtkActionable.
+//
+// An instance of this type is always passed by reference.
+type ActionableInterface struct {
+	*actionableInterface
+}
+
+// actionableInterface is the struct that's finalized.
+type actionableInterface struct {
+	native *C.GtkActionableInterface
+}

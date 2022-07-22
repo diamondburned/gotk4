@@ -4,12 +4,14 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -81,7 +83,19 @@ var (
 	_ IOStreamer = (*SocketConnection)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSocketConnection,
+		GoType:    reflect.TypeOf((*SocketConnection)(nil)),
+		InitClass: initClassSocketConnection,
+	})
+}
+
 func initClassSocketConnection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSocketConnection(*SocketConnectionClass) }); ok {
+		klass := (*SocketConnectionClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketConnection(klass)
+	}
 }
 
 func wrapSocketConnection(obj *coreglib.Object) *SocketConnection {
@@ -408,4 +422,21 @@ func SocketConnectionFactoryRegisterType(gType coreglib.Type, family SocketFamil
 	runtime.KeepAlive(family)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(protocol)
+}
+
+// SocketConnectionClass: instance of this type is always passed by reference.
+type SocketConnectionClass struct {
+	*socketConnectionClass
+}
+
+// socketConnectionClass is the struct that's finalized.
+type socketConnectionClass struct {
+	native *C.GSocketConnectionClass
+}
+
+func (s *SocketConnectionClass) ParentClass() *IOStreamClass {
+	valptr := &s.native.parent_class
+	var v *IOStreamClass // out
+	v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

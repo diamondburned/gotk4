@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// WaylandDeviceOverrider contains methods that are overridable.
-type WaylandDeviceOverrider interface {
-}
-
 // WaylandDevice: wayland implementation of GdkDevice.
 //
 // Beyond the regular gdk.Device API, the Wayland implementation provides access
@@ -45,9 +41,6 @@ type WaylandDevice struct {
 var (
 	_ gdk.Devicer = (*WaylandDevice)(nil)
 )
-
-func initClassWaylandDevice(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapWaylandDevice(obj *coreglib.Object) *WaylandDevice {
 	return &WaylandDevice{

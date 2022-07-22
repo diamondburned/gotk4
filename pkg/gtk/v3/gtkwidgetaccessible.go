@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,13 +44,25 @@ var (
 	_ coreglib.Objector = (*WidgetAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeWidgetAccessible,
+		GoType:    reflect.TypeOf((*WidgetAccessible)(nil)),
+		InitClass: initClassWidgetAccessible,
+	})
+}
+
 func initClassWidgetAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitWidgetAccessible(*WidgetAccessibleClass) }); ok {
+		klass := (*WidgetAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitWidgetAccessible(klass)
+	}
 }
 
 func wrapWidgetAccessible(obj *coreglib.Object) *WidgetAccessible {
 	return &WidgetAccessible{
 		Accessible: Accessible{
-			ObjectClass: atk.ObjectClass{
+			AtkObject: atk.AtkObject{
 				Object: obj,
 			},
 		},
@@ -60,4 +74,21 @@ func wrapWidgetAccessible(obj *coreglib.Object) *WidgetAccessible {
 
 func marshalWidgetAccessible(p uintptr) (interface{}, error) {
 	return wrapWidgetAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// WidgetAccessibleClass: instance of this type is always passed by reference.
+type WidgetAccessibleClass struct {
+	*widgetAccessibleClass
+}
+
+// widgetAccessibleClass is the struct that's finalized.
+type widgetAccessibleClass struct {
+	native *C.GtkWidgetAccessibleClass
+}
+
+func (w *WidgetAccessibleClass) ParentClass() *AccessibleClass {
+	valptr := &w.native.parent_class
+	var v *AccessibleClass // out
+	v = (*AccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

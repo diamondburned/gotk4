@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -105,11 +106,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFileInputStream,
-		GoType:       reflect.TypeOf((*FileInputStream)(nil)),
-		InitClass:    initClassFileInputStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GFileInputStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GFileInputStreamClass{})),
+		GType:     GTypeFileInputStream,
+		GoType:    reflect.TypeOf((*FileInputStream)(nil)),
+		InitClass: initClassFileInputStream,
 	})
 }
 
@@ -141,6 +140,10 @@ func initClassFileInputStream(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Tell() int64 }); ok {
 		pclass.tell = (*[0]byte)(C._gotk4_gio2_FileInputStreamClass_tell)
+	}
+	if goval, ok := goval.(interface{ InitFileInputStream(*FileInputStreamClass) }); ok {
+		klass := (*FileInputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitFileInputStream(klass)
 	}
 }
 
@@ -403,4 +406,21 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	}
 
 	return _fileInfo, _goerr
+}
+
+// FileInputStreamClass: instance of this type is always passed by reference.
+type FileInputStreamClass struct {
+	*fileInputStreamClass
+}
+
+// fileInputStreamClass is the struct that's finalized.
+type fileInputStreamClass struct {
+	native *C.GFileInputStreamClass
+}
+
+func (f *FileInputStreamClass) ParentClass() *InputStreamClass {
+	valptr := &f.native.parent_class
+	var v *InputStreamClass // out
+	v = (*InputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

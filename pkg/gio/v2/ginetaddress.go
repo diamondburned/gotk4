@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -57,11 +58,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeInetAddress,
-		GoType:       reflect.TypeOf((*InetAddress)(nil)),
-		InitClass:    initClassInetAddress,
-		ClassSize:    uint32(unsafe.Sizeof(C.GInetAddress{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GInetAddressClass{})),
+		GType:     GTypeInetAddress,
+		GoType:    reflect.TypeOf((*InetAddress)(nil)),
+		InitClass: initClassInetAddress,
 	})
 }
 
@@ -71,6 +70,10 @@ func initClassInetAddress(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ String() string }); ok {
 		pclass.to_string = (*[0]byte)(C._gotk4_gio2_InetAddressClass_to_string)
+	}
+	if goval, ok := goval.(interface{ InitInetAddress(*InetAddressClass) }); ok {
+		klass := (*InetAddressClass)(gextras.NewStructNative(gclass))
+		goval.InitInetAddress(klass)
 	}
 }
 
@@ -526,4 +529,14 @@ func (address *InetAddress) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// InetAddressClass: instance of this type is always passed by reference.
+type InetAddressClass struct {
+	*inetAddressClass
+}
+
+// inetAddressClass is the struct that's finalized.
+type inetAddressClass struct {
+	native *C.GInetAddressClass
 }

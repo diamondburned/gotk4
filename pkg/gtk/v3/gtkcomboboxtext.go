@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -89,7 +91,19 @@ var (
 	_ coreglib.Objector = (*ComboBoxText)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeComboBoxText,
+		GoType:    reflect.TypeOf((*ComboBoxText)(nil)),
+		InitClass: initClassComboBoxText,
+	})
+}
+
 func initClassComboBoxText(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitComboBoxText(*ComboBoxTextClass) }); ok {
+		klass := (*ComboBoxTextClass)(gextras.NewStructNative(gclass))
+		goval.InitComboBoxText(klass)
+	}
 }
 
 func wrapComboBoxText(obj *coreglib.Object) *ComboBoxText {
@@ -393,4 +407,21 @@ func (comboBox *ComboBoxText) RemoveAll() {
 
 	C.gtk_combo_box_text_remove_all(_arg0)
 	runtime.KeepAlive(comboBox)
+}
+
+// ComboBoxTextClass: instance of this type is always passed by reference.
+type ComboBoxTextClass struct {
+	*comboBoxTextClass
+}
+
+// comboBoxTextClass is the struct that's finalized.
+type comboBoxTextClass struct {
+	native *C.GtkComboBoxTextClass
+}
+
+func (c *ComboBoxTextClass) ParentClass() *ComboBoxClass {
+	valptr := &c.native.parent_class
+	var v *ComboBoxClass // out
+	v = (*ComboBoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

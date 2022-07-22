@@ -242,11 +242,9 @@ var _ Rendererer = (*Renderer)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRenderer,
-		GoType:       reflect.TypeOf((*Renderer)(nil)),
-		InitClass:    initClassRenderer,
-		ClassSize:    uint32(unsafe.Sizeof(C.PangoRenderer{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.PangoRendererClass{})),
+		GType:     GTypeRenderer,
+		GoType:    reflect.TypeOf((*Renderer)(nil)),
+		InitClass: initClassRenderer,
 	})
 }
 
@@ -308,6 +306,10 @@ func initClassRenderer(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ PrepareRun(run *LayoutRun) }); ok {
 		pclass.prepare_run = (*[0]byte)(C._gotk4_pango1_RendererClass_prepare_run)
+	}
+	if goval, ok := goval.(interface{ InitRenderer(*RendererClass) }); ok {
+		klass := (*RendererClass)(gextras.NewStructNative(gclass))
+		goval.InitRenderer(klass)
 	}
 }
 
@@ -1118,4 +1120,38 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	C.pango_renderer_set_matrix(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(matrix)
+}
+
+// RendererClass class structure for Renderer.
+//
+// The following vfuncs take user space coordinates in Pango units and have
+// default implementations:
+//
+// - draw_glyphs
+//
+// - draw_rectangle
+//
+// - draw_error_underline
+//
+// - draw_shape
+//
+// - draw_glyph_item
+//
+// The default draw_shape implementation draws nothing.
+//
+// The following vfuncs take device space coordinates as doubles and must be
+// implemented:
+//
+// - draw_trapezoid
+//
+// - draw_glyph
+//
+// An instance of this type is always passed by reference.
+type RendererClass struct {
+	*rendererClass
+}
+
+// rendererClass is the struct that's finalized.
+type rendererClass struct {
+	native *C.PangoRendererClass
 }

@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// X11DragContextOverrider contains methods that are overridable.
-type X11DragContextOverrider interface {
-}
-
 type X11DragContext struct {
 	_ [0]func() // equal guard
 	gdk.DragContext
@@ -37,9 +33,6 @@ type X11DragContext struct {
 var (
 	_ coreglib.Objector = (*X11DragContext)(nil)
 )
-
-func initClassX11DragContext(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11DragContext(obj *coreglib.Object) *X11DragContext {
 	return &X11DragContext{

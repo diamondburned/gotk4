@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ IMContexter = (*IMMulticontext)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeIMMulticontext,
+		GoType:    reflect.TypeOf((*IMMulticontext)(nil)),
+		InitClass: initClassIMMulticontext,
+	})
+}
+
 func initClassIMMulticontext(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitIMMulticontext(*IMMulticontextClass) }); ok {
+		klass := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
+		goval.InitIMMulticontext(klass)
+	}
 }
 
 func wrapIMMulticontext(obj *coreglib.Object) *IMMulticontext {
@@ -139,4 +153,21 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(contextId)
+}
+
+// IMMulticontextClass: instance of this type is always passed by reference.
+type IMMulticontextClass struct {
+	*imMulticontextClass
+}
+
+// imMulticontextClass is the struct that's finalized.
+type imMulticontextClass struct {
+	native *C.GtkIMMulticontextClass
+}
+
+func (i *IMMulticontextClass) ParentClass() *IMContextClass {
+	valptr := &i.native.parent_class
+	var v *IMContextClass // out
+	v = (*IMContextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

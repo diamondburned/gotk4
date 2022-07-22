@@ -4,6 +4,7 @@ package atk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -136,7 +137,7 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret 
 //
 //    - object: Object.
 //
-func FocusTrackerNotify(object *ObjectClass) {
+func FocusTrackerNotify(object *AtkObject) {
 	var _arg1 *C.AtkObject // out
 
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
@@ -151,12 +152,12 @@ func FocusTrackerNotify(object *ObjectClass) {
 //
 //    - object: currently focused object for the current application.
 //
-func GetFocusObject() *ObjectClass {
+func GetFocusObject() *AtkObject {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_focus_object()
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
@@ -169,12 +170,12 @@ func GetFocusObject() *ObjectClass {
 //
 //    - object: root accessible container for the current application.
 //
-func GetRoot() *ObjectClass {
+func GetRoot() *AtkObject {
 	var _cret *C.AtkObject // in
 
 	_cret = C.atk_get_root()
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
@@ -319,7 +320,19 @@ var (
 	_ coreglib.Objector = (*Util)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeUtil,
+		GoType:    reflect.TypeOf((*Util)(nil)),
+		InitClass: initClassUtil,
+	})
+}
+
 func initClassUtil(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitUtil(*UtilClass) }); ok {
+		klass := (*UtilClass)(gextras.NewStructNative(gclass))
+		goval.InitUtil(klass)
+	}
 }
 
 func wrapUtil(obj *coreglib.Object) *Util {
@@ -456,4 +469,14 @@ func (k *KeyEventStruct) SetKeycode(keycode uint16) {
 func (k *KeyEventStruct) SetTimestamp(timestamp uint32) {
 	valptr := &k.native.timestamp
 	*valptr = C.guint32(timestamp)
+}
+
+// UtilClass: instance of this type is always passed by reference.
+type UtilClass struct {
+	*utilClass
+}
+
+// utilClass is the struct that's finalized.
+type utilClass struct {
+	native *C.AtkUtilClass
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,21 @@ var (
 	_ coreglib.Objector = (*MenuShellAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMenuShellAccessible,
+		GoType:    reflect.TypeOf((*MenuShellAccessible)(nil)),
+		InitClass: initClassMenuShellAccessible,
+	})
+}
+
 func initClassMenuShellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitMenuShellAccessible(*MenuShellAccessibleClass)
+	}); ok {
+		klass := (*MenuShellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuShellAccessible(klass)
+	}
 }
 
 func wrapMenuShellAccessible(obj *coreglib.Object) *MenuShellAccessible {
@@ -50,7 +66,7 @@ func wrapMenuShellAccessible(obj *coreglib.Object) *MenuShellAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +83,22 @@ func wrapMenuShellAccessible(obj *coreglib.Object) *MenuShellAccessible {
 
 func marshalMenuShellAccessible(p uintptr) (interface{}, error) {
 	return wrapMenuShellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// MenuShellAccessibleClass: instance of this type is always passed by
+// reference.
+type MenuShellAccessibleClass struct {
+	*menuShellAccessibleClass
+}
+
+// menuShellAccessibleClass is the struct that's finalized.
+type menuShellAccessibleClass struct {
+	native *C.GtkMenuShellAccessibleClass
+}
+
+func (m *MenuShellAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &m.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

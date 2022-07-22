@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -54,7 +56,19 @@ var (
 	_ LayoutManagerer = (*GridLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeGridLayout,
+		GoType:    reflect.TypeOf((*GridLayout)(nil)),
+		InitClass: initClassGridLayout,
+	})
+}
+
 func initClassGridLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitGridLayout(*GridLayoutClass) }); ok {
+		klass := (*GridLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitGridLayout(klass)
+	}
 }
 
 func wrapGridLayout(obj *coreglib.Object) *GridLayout {
@@ -372,7 +386,19 @@ var (
 	_ LayoutChilder = (*GridLayoutChild)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeGridLayoutChild,
+		GoType:    reflect.TypeOf((*GridLayoutChild)(nil)),
+		InitClass: initClassGridLayoutChild,
+	})
+}
+
 func initClassGridLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitGridLayoutChild(*GridLayoutChildClass) }); ok {
+		klass := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.InitGridLayoutChild(klass)
+	}
 }
 
 func wrapGridLayoutChild(obj *coreglib.Object) *GridLayoutChild {
@@ -545,4 +571,38 @@ func (child *GridLayoutChild) SetRowSpan(span int) {
 	C.gtk_grid_layout_child_set_row_span(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(span)
+}
+
+// GridLayoutChildClass: instance of this type is always passed by reference.
+type GridLayoutChildClass struct {
+	*gridLayoutChildClass
+}
+
+// gridLayoutChildClass is the struct that's finalized.
+type gridLayoutChildClass struct {
+	native *C.GtkGridLayoutChildClass
+}
+
+func (g *GridLayoutChildClass) ParentClass() *LayoutChildClass {
+	valptr := &g.native.parent_class
+	var v *LayoutChildClass // out
+	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// GridLayoutClass: instance of this type is always passed by reference.
+type GridLayoutClass struct {
+	*gridLayoutClass
+}
+
+// gridLayoutClass is the struct that's finalized.
+type gridLayoutClass struct {
+	native *C.GtkGridLayoutClass
+}
+
+func (g *GridLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &g.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

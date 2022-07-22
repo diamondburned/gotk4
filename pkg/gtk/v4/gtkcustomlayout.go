@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,19 @@ var (
 	_ LayoutManagerer = (*CustomLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCustomLayout,
+		GoType:    reflect.TypeOf((*CustomLayout)(nil)),
+		InitClass: initClassCustomLayout,
+	})
+}
+
 func initClassCustomLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCustomLayout(*CustomLayoutClass) }); ok {
+		klass := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitCustomLayout(klass)
+	}
 }
 
 func wrapCustomLayout(obj *coreglib.Object) *CustomLayout {
@@ -55,4 +69,21 @@ func wrapCustomLayout(obj *coreglib.Object) *CustomLayout {
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
 	return wrapCustomLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// CustomLayoutClass: instance of this type is always passed by reference.
+type CustomLayoutClass struct {
+	*customLayoutClass
+}
+
+// customLayoutClass is the struct that's finalized.
+type customLayoutClass struct {
+	native *C.GtkCustomLayoutClass
+}
+
+func (c *CustomLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &c.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

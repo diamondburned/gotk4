@@ -14,12 +14,13 @@ import (
 	"text/template"
 
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
+	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 )
 
 func NewGoTemplate(block string) *template.Template {
-	_, file, _, _ := runtime.Caller(1)
-	base := filepath.Base(file)
+	_, srcFile, _, _ := runtime.Caller(1)
+	base := filepath.Base(srcFile)
 
 	t := template.New(base)
 	t.Funcs(template.FuncMap{
@@ -42,9 +43,21 @@ func NewGoTemplate(block string) *template.Template {
 		"Quote": func(strs ...interface{}) string {
 			return strconv.Quote(fmt.Sprint(strs...))
 		},
+
+		"Import":             importFunc((*file.Header).Import),
+		"ImportCore":         importFunc((*file.Header).ImportCore),
+		"ImportResolvedType": importFunc((*file.Header).ImportResolvedType),
+		"DashImport":         importFunc((*file.Header).DashImport),
 	})
 	t = template.Must(t.Parse(block))
 	return t
+}
+
+func importFunc[ArgT any](method func(*file.Header, ArgT)) func(file.Headerer, ArgT) string {
+	return func(headerer file.Headerer, arg ArgT) string {
+		method(headerer.Header(), arg)
+		return ""
+	}
 }
 
 var (

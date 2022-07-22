@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -74,7 +76,19 @@ var (
 	_ coreglib.Objector = (*CustomFilter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCustomFilter,
+		GoType:    reflect.TypeOf((*CustomFilter)(nil)),
+		InitClass: initClassCustomFilter,
+	})
+}
+
 func initClassCustomFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCustomFilter(*CustomFilterClass) }); ok {
+		klass := (*CustomFilterClass)(gextras.NewStructNative(gclass))
+		goval.InitCustomFilter(klass)
+	}
 }
 
 func wrapCustomFilter(obj *coreglib.Object) *CustomFilter {
@@ -156,4 +170,21 @@ func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	C.gtk_custom_filter_set_filter_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(matchFunc)
+}
+
+// CustomFilterClass: instance of this type is always passed by reference.
+type CustomFilterClass struct {
+	*customFilterClass
+}
+
+// customFilterClass is the struct that's finalized.
+type customFilterClass struct {
+	native *C.GtkCustomFilterClass
+}
+
+func (c *CustomFilterClass) ParentClass() *FilterClass {
+	valptr := &c.native.parent_class
+	var v *FilterClass // out
+	v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

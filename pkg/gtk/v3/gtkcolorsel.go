@@ -50,11 +50,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeColorSelection,
-		GoType:       reflect.TypeOf((*ColorSelection)(nil)),
-		InitClass:    initClassColorSelection,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkColorSelection{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkColorSelectionClass{})),
+		GType:     GTypeColorSelection,
+		GoType:    reflect.TypeOf((*ColorSelection)(nil)),
+		InitClass: initClassColorSelection,
 	})
 }
 
@@ -64,6 +62,10 @@ func initClassColorSelection(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ColorChanged() }); ok {
 		pclass.color_changed = (*[0]byte)(C._gotk4_gtk3_ColorSelectionClass_color_changed)
+	}
+	if goval, ok := goval.(interface{ InitColorSelection(*ColorSelectionClass) }); ok {
+		klass := (*ColorSelectionClass)(gextras.NewStructNative(gclass))
+		goval.InitColorSelection(klass)
 	}
 }
 
@@ -613,4 +615,22 @@ func ColorSelectionPaletteToString(colors []gdk.Color) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// ColorSelectionClass: instance of this type is always passed by reference.
+type ColorSelectionClass struct {
+	*colorSelectionClass
+}
+
+// colorSelectionClass is the struct that's finalized.
+type colorSelectionClass struct {
+	native *C.GtkColorSelectionClass
+}
+
+// ParentClass: parent class.
+func (c *ColorSelectionClass) ParentClass() *BoxClass {
+	valptr := &c.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

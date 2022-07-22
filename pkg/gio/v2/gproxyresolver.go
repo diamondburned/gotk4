@@ -284,3 +284,15 @@ func ProxyResolverGetDefault() *ProxyResolver {
 
 	return _proxyResolver
 }
+
+// ProxyResolverInterface: virtual function table for Resolver.
+//
+// An instance of this type is always passed by reference.
+type ProxyResolverInterface struct {
+	*proxyResolverInterface
+}
+
+// proxyResolverInterface is the struct that's finalized.
+type proxyResolverInterface struct {
+	native *C.GProxyResolverInterface
+}

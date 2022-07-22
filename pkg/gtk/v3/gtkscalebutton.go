@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -66,11 +67,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeScaleButton,
-		GoType:       reflect.TypeOf((*ScaleButton)(nil)),
-		InitClass:    initClassScaleButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkScaleButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkScaleButtonClass{})),
+		GType:     GTypeScaleButton,
+		GoType:    reflect.TypeOf((*ScaleButton)(nil)),
+		InitClass: initClassScaleButton,
 	})
 }
 
@@ -80,6 +79,10 @@ func initClassScaleButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ValueChanged(value float64) }); ok {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_ScaleButtonClass_value_changed)
+	}
+	if goval, ok := goval.(interface{ InitScaleButton(*ScaleButtonClass) }); ok {
+		klass := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitScaleButton(klass)
 	}
 }
 
@@ -470,4 +473,21 @@ func (button *ScaleButton) SetValue(value float64) {
 	C.gtk_scale_button_set_value(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(value)
+}
+
+// ScaleButtonClass: instance of this type is always passed by reference.
+type ScaleButtonClass struct {
+	*scaleButtonClass
+}
+
+// scaleButtonClass is the struct that's finalized.
+type scaleButtonClass struct {
+	native *C.GtkScaleButtonClass
+}
+
+func (s *ScaleButtonClass) ParentClass() *ButtonClass {
+	valptr := &s.native.parent_class
+	var v *ButtonClass // out
+	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

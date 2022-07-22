@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -98,11 +99,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeLevelBar,
-		GoType:       reflect.TypeOf((*LevelBar)(nil)),
-		InitClass:    initClassLevelBar,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkLevelBar{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkLevelBarClass{})),
+		GType:     GTypeLevelBar,
+		GoType:    reflect.TypeOf((*LevelBar)(nil)),
+		InitClass: initClassLevelBar,
 	})
 }
 
@@ -112,6 +111,10 @@ func initClassLevelBar(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ OffsetChanged(name string) }); ok {
 		pclass.offset_changed = (*[0]byte)(C._gotk4_gtk3_LevelBarClass_offset_changed)
+	}
+	if goval, ok := goval.(interface{ InitLevelBar(*LevelBarClass) }); ok {
+		klass := (*LevelBarClass)(gextras.NewStructNative(gclass))
+		goval.InitLevelBar(klass)
 	}
 }
 
@@ -529,4 +532,14 @@ func (self *LevelBar) SetValue(value float64) {
 	C.gtk_level_bar_set_value(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
+}
+
+// LevelBarClass: instance of this type is always passed by reference.
+type LevelBarClass struct {
+	*levelBarClass
+}
+
+// levelBarClass is the struct that's finalized.
+type levelBarClass struct {
+	native *C.GtkLevelBarClass
 }

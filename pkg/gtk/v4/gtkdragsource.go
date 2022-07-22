@@ -30,10 +30,6 @@ func init() {
 	})
 }
 
-// DragSourceOverrider contains methods that are overridable.
-type DragSourceOverrider interface {
-}
-
 // DragSource: GtkDragSource is an event controller to initiate Drag-And-Drop
 // operations.
 //
@@ -112,9 +108,6 @@ type DragSource struct {
 var (
 	_ Gesturer = (*DragSource)(nil)
 )
-
-func initClassDragSource(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapDragSource(obj *coreglib.Object) *DragSource {
 	return &DragSource{

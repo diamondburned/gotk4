@@ -342,3 +342,13 @@ func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(policy)
 }
+
+// ScrollableInterface: instance of this type is always passed by reference.
+type ScrollableInterface struct {
+	*scrollableInterface
+}
+
+// scrollableInterface is the struct that's finalized.
+type scrollableInterface struct {
+	native *C.GtkScrollableInterface
+}

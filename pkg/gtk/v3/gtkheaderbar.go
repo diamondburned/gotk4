@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,7 +57,19 @@ var (
 	_ Containerer = (*HeaderBar)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeHeaderBar,
+		GoType:    reflect.TypeOf((*HeaderBar)(nil)),
+		InitClass: initClassHeaderBar,
+	})
+}
+
 func initClassHeaderBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitHeaderBar(*HeaderBarClass) }); ok {
+		klass := (*HeaderBarClass)(gextras.NewStructNative(gclass))
+		goval.InitHeaderBar(klass)
+	}
 }
 
 func wrapHeaderBar(obj *coreglib.Object) *HeaderBar {
@@ -452,4 +466,21 @@ func (bar *HeaderBar) SetTitle(title string) {
 	C.gtk_header_bar_set_title(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(title)
+}
+
+// HeaderBarClass: instance of this type is always passed by reference.
+type HeaderBarClass struct {
+	*headerBarClass
+}
+
+// headerBarClass is the struct that's finalized.
+type headerBarClass struct {
+	native *C.GtkHeaderBarClass
+}
+
+func (h *HeaderBarClass) ParentClass() *ContainerClass {
+	valptr := &h.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

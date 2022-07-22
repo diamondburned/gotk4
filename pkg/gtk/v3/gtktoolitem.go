@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -69,11 +70,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeToolItem,
-		GoType:       reflect.TypeOf((*ToolItem)(nil)),
-		InitClass:    initClassToolItem,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkToolItem{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkToolItemClass{})),
+		GType:     GTypeToolItem,
+		GoType:    reflect.TypeOf((*ToolItem)(nil)),
+		InitClass: initClassToolItem,
 	})
 }
 
@@ -87,6 +86,10 @@ func initClassToolItem(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ToolbarReconfigured() }); ok {
 		pclass.toolbar_reconfigured = (*[0]byte)(C._gotk4_gtk3_ToolItemClass_toolbar_reconfigured)
+	}
+	if goval, ok := goval.(interface{ InitToolItem(*ToolItemClass) }); ok {
+		klass := (*ToolItemClass)(gextras.NewStructNative(gclass))
+		goval.InitToolItem(klass)
 	}
 }
 
@@ -916,4 +919,22 @@ func (toolItem *ToolItem) ToolbarReconfigured() {
 
 	C.gtk_tool_item_toolbar_reconfigured(_arg0)
 	runtime.KeepAlive(toolItem)
+}
+
+// ToolItemClass: instance of this type is always passed by reference.
+type ToolItemClass struct {
+	*toolItemClass
+}
+
+// toolItemClass is the struct that's finalized.
+type toolItemClass struct {
+	native *C.GtkToolItemClass
+}
+
+// ParentClass: parent class.
+func (t *ToolItemClass) ParentClass() *BinClass {
+	valptr := &t.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

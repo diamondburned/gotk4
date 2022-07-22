@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// X11MonitorOverrider contains methods that are overridable.
-type X11MonitorOverrider interface {
-}
-
 type X11Monitor struct {
 	_ [0]func() // equal guard
 	gdk.Monitor
@@ -39,9 +35,6 @@ type X11Monitor struct {
 var (
 	_ coreglib.Objector = (*X11Monitor)(nil)
 )
-
-func initClassX11Monitor(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11Monitor(obj *coreglib.Object) *X11Monitor {
 	return &X11Monitor{

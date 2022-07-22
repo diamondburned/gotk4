@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -138,11 +139,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeScale,
-		GoType:       reflect.TypeOf((*Scale)(nil)),
-		InitClass:    initClassScale,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkScale{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkScaleClass{})),
+		GType:     GTypeScale,
+		GoType:    reflect.TypeOf((*Scale)(nil)),
+		InitClass: initClassScale,
 	})
 }
 
@@ -160,6 +159,10 @@ func initClassScale(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ LayoutOffsets() (x, y int) }); ok {
 		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk3_ScaleClass_get_layout_offsets)
+	}
+	if goval, ok := goval.(interface{ InitScale(*ScaleClass) }); ok {
+		klass := (*ScaleClass)(gextras.NewStructNative(gclass))
+		goval.InitScale(klass)
 	}
 }
 
@@ -641,4 +644,21 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(pos)
+}
+
+// ScaleClass: instance of this type is always passed by reference.
+type ScaleClass struct {
+	*scaleClass
+}
+
+// scaleClass is the struct that's finalized.
+type scaleClass struct {
+	native *C.GtkScaleClass
+}
+
+func (s *ScaleClass) ParentClass() *RangeClass {
+	valptr := &s.native.parent_class
+	var v *RangeClass // out
+	v = (*RangeClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

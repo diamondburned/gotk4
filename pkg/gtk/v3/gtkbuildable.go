@@ -730,3 +730,16 @@ func (buildable *Buildable) SetName(name string) {
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(name)
 }
+
+// BuildableIface interface contains method that are necessary to allow Builder
+// to construct an object from a Builder UI definition.
+//
+// An instance of this type is always passed by reference.
+type BuildableIface struct {
+	*buildableIface
+}
+
+// buildableIface is the struct that's finalized.
+type buildableIface struct {
+	native *C.GtkBuildableIface
+}

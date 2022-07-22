@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -111,11 +112,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeBufferedInputStream,
-		GoType:       reflect.TypeOf((*BufferedInputStream)(nil)),
-		InitClass:    initClassBufferedInputStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GBufferedInputStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GBufferedInputStreamClass{})),
+		GType:     GTypeBufferedInputStream,
+		GoType:    reflect.TypeOf((*BufferedInputStream)(nil)),
+		InitClass: initClassBufferedInputStream,
 	})
 }
 
@@ -133,6 +132,12 @@ func initClassBufferedInputStream(gclass unsafe.Pointer, goval any) {
 		FillFinish(result AsyncResulter) (int, error)
 	}); ok {
 		pclass.fill_finish = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
+	}
+	if goval, ok := goval.(interface {
+		InitBufferedInputStream(*BufferedInputStreamClass)
+	}); ok {
+		klass := (*BufferedInputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitBufferedInputStream(klass)
 	}
 }
 
@@ -592,4 +597,22 @@ func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)
+}
+
+// BufferedInputStreamClass: instance of this type is always passed by
+// reference.
+type BufferedInputStreamClass struct {
+	*bufferedInputStreamClass
+}
+
+// bufferedInputStreamClass is the struct that's finalized.
+type bufferedInputStreamClass struct {
+	native *C.GBufferedInputStreamClass
+}
+
+func (b *BufferedInputStreamClass) ParentClass() *FilterInputStreamClass {
+	valptr := &b.native.parent_class
+	var v *FilterInputStreamClass // out
+	v = (*FilterInputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

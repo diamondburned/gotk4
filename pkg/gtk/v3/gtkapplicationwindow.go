@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -154,7 +156,19 @@ var (
 	_ Binner            = (*ApplicationWindow)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeApplicationWindow,
+		GoType:    reflect.TypeOf((*ApplicationWindow)(nil)),
+		InitClass: initClassApplicationWindow,
+	})
+}
+
 func initClassApplicationWindow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitApplicationWindow(*ApplicationWindowClass) }); ok {
+		klass := (*ApplicationWindowClass)(gextras.NewStructNative(gclass))
+		goval.InitApplicationWindow(klass)
+	}
 }
 
 func wrapApplicationWindow(obj *coreglib.Object) *ApplicationWindow {
@@ -333,4 +347,22 @@ func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	C.gtk_application_window_set_show_menubar(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(showMenubar)
+}
+
+// ApplicationWindowClass: instance of this type is always passed by reference.
+type ApplicationWindowClass struct {
+	*applicationWindowClass
+}
+
+// applicationWindowClass is the struct that's finalized.
+type applicationWindowClass struct {
+	native *C.GtkApplicationWindowClass
+}
+
+// ParentClass: parent class.
+func (a *ApplicationWindowClass) ParentClass() *WindowClass {
+	valptr := &a.native.parent_class
+	var v *WindowClass // out
+	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

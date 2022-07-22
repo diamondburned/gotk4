@@ -4,9 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -85,7 +87,19 @@ var (
 	_ coreglib.Objector = (*StringFilter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStringFilter,
+		GoType:    reflect.TypeOf((*StringFilter)(nil)),
+		InitClass: initClassStringFilter,
+	})
+}
+
 func initClassStringFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStringFilter(*StringFilterClass) }); ok {
+		klass := (*StringFilterClass)(gextras.NewStructNative(gclass))
+		goval.InitStringFilter(klass)
+	}
 }
 
 func wrapStringFilter(obj *coreglib.Object) *StringFilter {
@@ -320,4 +334,21 @@ func (self *StringFilter) SetSearch(search string) {
 	C.gtk_string_filter_set_search(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(search)
+}
+
+// StringFilterClass: instance of this type is always passed by reference.
+type StringFilterClass struct {
+	*stringFilterClass
+}
+
+// stringFilterClass is the struct that's finalized.
+type stringFilterClass struct {
+	native *C.GtkStringFilterClass
+}
+
+func (s *StringFilterClass) ParentClass() *FilterClass {
+	valptr := &s.native.parent_class
+	var v *FilterClass // out
+	v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

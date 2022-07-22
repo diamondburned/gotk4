@@ -383,11 +383,9 @@ var _ CellRendererer = (*CellRenderer)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellRenderer,
-		GoType:       reflect.TypeOf((*CellRenderer)(nil)),
-		InitClass:    initClassCellRenderer,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRenderer{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererClass{})),
+		GType:     GTypeCellRenderer,
+		GoType:    reflect.TypeOf((*CellRenderer)(nil)),
+		InitClass: initClassCellRenderer,
 	})
 }
 
@@ -461,6 +459,10 @@ func initClassCellRenderer(gclass unsafe.Pointer, goval any) {
 		StartEditing(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
 	}); ok {
 		pclass.start_editing = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_start_editing)
+	}
+	if goval, ok := goval.(interface{ InitCellRenderer(*CellRendererClass) }); ok {
+		klass := (*CellRendererClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRenderer(klass)
 	}
 }
 
@@ -1764,4 +1766,38 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 	C.gtk_cell_renderer_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(canceled)
+}
+
+// CellRendererClass: instance of this type is always passed by reference.
+type CellRendererClass struct {
+	*cellRendererClass
+}
+
+// cellRendererClass is the struct that's finalized.
+type cellRendererClass struct {
+	native *C.GtkCellRendererClass
+}
+
+// SetAccessibleType sets the type to be used for creating accessibles for cells
+// rendered by cell renderers of renderer_class. Note that multiple accessibles
+// will be created.
+//
+// This function should only be called from class init functions of cell
+// renderers.
+//
+// The function takes the following parameters:
+//
+//    - typ: object type that implements the accessible for widget_class. The
+//      type must be a subtype of RendererCellAccessible.
+//
+func (rendererClass *CellRendererClass) SetAccessibleType(typ coreglib.Type) {
+	var _arg0 *C.GtkCellRendererClass // out
+	var _arg1 C.GType                 // out
+
+	_arg0 = (*C.GtkCellRendererClass)(gextras.StructNative(unsafe.Pointer(rendererClass)))
+	_arg1 = C.GType(typ)
+
+	C.gtk_cell_renderer_class_set_accessible_type(_arg0, _arg1)
+	runtime.KeepAlive(rendererClass)
+	runtime.KeepAlive(typ)
 }

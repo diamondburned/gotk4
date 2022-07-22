@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -52,7 +54,19 @@ var (
 	_ coreglib.Objector = (*MountOperation)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMountOperation,
+		GoType:    reflect.TypeOf((*MountOperation)(nil)),
+		InitClass: initClassMountOperation,
+	})
+}
+
 func initClassMountOperation(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMountOperation(*MountOperationClass) }); ok {
+		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
+		goval.InitMountOperation(klass)
+	}
 }
 
 func wrapMountOperation(obj *coreglib.Object) *MountOperation {
@@ -207,4 +221,22 @@ func (op *MountOperation) SetParent(parent *Window) {
 	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(parent)
+}
+
+// MountOperationClass: instance of this type is always passed by reference.
+type MountOperationClass struct {
+	*mountOperationClass
+}
+
+// mountOperationClass is the struct that's finalized.
+type mountOperationClass struct {
+	native *C.GtkMountOperationClass
+}
+
+// ParentClass: parent class.
+func (m *MountOperationClass) ParentClass() *gio.MountOperationClass {
+	valptr := &m.native.parent_class
+	var v *gio.MountOperationClass // out
+	v = (*gio.MountOperationClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

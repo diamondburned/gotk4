@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -200,11 +201,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSpinButton,
-		GoType:       reflect.TypeOf((*SpinButton)(nil)),
-		InitClass:    initClassSpinButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkSpinButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkSpinButtonClass{})),
+		GType:     GTypeSpinButton,
+		GoType:    reflect.TypeOf((*SpinButton)(nil)),
+		InitClass: initClassSpinButton,
 	})
 }
 
@@ -230,6 +229,10 @@ func initClassSpinButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Wrapped() }); ok {
 		pclass.wrapped = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_wrapped)
+	}
+	if goval, ok := goval.(interface{ InitSpinButton(*SpinButtonClass) }); ok {
+		klass := (*SpinButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitSpinButton(klass)
 	}
 }
 
@@ -1024,4 +1027,21 @@ func (spinButton *SpinButton) Update() {
 
 	C.gtk_spin_button_update(_arg0)
 	runtime.KeepAlive(spinButton)
+}
+
+// SpinButtonClass: instance of this type is always passed by reference.
+type SpinButtonClass struct {
+	*spinButtonClass
+}
+
+// spinButtonClass is the struct that's finalized.
+type spinButtonClass struct {
+	native *C.GtkSpinButtonClass
+}
+
+func (s *SpinButtonClass) ParentClass() *EntryClass {
+	valptr := &s.native.parent_class
+	var v *EntryClass // out
+	v = (*EntryClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

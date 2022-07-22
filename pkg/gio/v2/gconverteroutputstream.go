@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -48,7 +50,21 @@ var (
 	_ OutputStreamer       = (*ConverterOutputStream)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeConverterOutputStream,
+		GoType:    reflect.TypeOf((*ConverterOutputStream)(nil)),
+		InitClass: initClassConverterOutputStream,
+	})
+}
+
 func initClassConverterOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitConverterOutputStream(*ConverterOutputStreamClass)
+	}); ok {
+		klass := (*ConverterOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitConverterOutputStream(klass)
+	}
 }
 
 func wrapConverterOutputStream(obj *coreglib.Object) *ConverterOutputStream {
@@ -125,4 +141,22 @@ func (converterStream *ConverterOutputStream) Converter() *Converter {
 	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _converter
+}
+
+// ConverterOutputStreamClass: instance of this type is always passed by
+// reference.
+type ConverterOutputStreamClass struct {
+	*converterOutputStreamClass
+}
+
+// converterOutputStreamClass is the struct that's finalized.
+type converterOutputStreamClass struct {
+	native *C.GConverterOutputStreamClass
+}
+
+func (c *ConverterOutputStreamClass) ParentClass() *FilterOutputStreamClass {
+	valptr := &c.native.parent_class
+	var v *FilterOutputStreamClass // out
+	v = (*FilterOutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

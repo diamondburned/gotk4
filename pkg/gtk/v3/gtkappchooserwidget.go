@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -86,11 +87,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAppChooserWidget,
-		GoType:       reflect.TypeOf((*AppChooserWidget)(nil)),
-		InitClass:    initClassAppChooserWidget,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAppChooserWidget{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkAppChooserWidgetClass{})),
+		GType:     GTypeAppChooserWidget,
+		GoType:    reflect.TypeOf((*AppChooserWidget)(nil)),
+		InitClass: initClassAppChooserWidget,
 	})
 }
 
@@ -110,6 +109,10 @@ func initClassAppChooserWidget(gclass unsafe.Pointer, goval any) {
 		PopulatePopup(menu *Menu, appInfo gio.AppInfor)
 	}); ok {
 		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_populate_popup)
+	}
+	if goval, ok := goval.(interface{ InitAppChooserWidget(*AppChooserWidgetClass) }); ok {
+		klass := (*AppChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitAppChooserWidget(klass)
 	}
 }
 
@@ -677,4 +680,22 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
+}
+
+// AppChooserWidgetClass: instance of this type is always passed by reference.
+type AppChooserWidgetClass struct {
+	*appChooserWidgetClass
+}
+
+// appChooserWidgetClass is the struct that's finalized.
+type appChooserWidgetClass struct {
+	native *C.GtkAppChooserWidgetClass
+}
+
+// ParentClass: parent class.
+func (a *AppChooserWidgetClass) ParentClass() *BoxClass {
+	valptr := &a.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

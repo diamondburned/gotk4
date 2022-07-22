@@ -53,10 +53,6 @@ func X11GetServerTime(window *X11Window) uint32 {
 	return _guint32
 }
 
-// X11WindowOverrider contains methods that are overridable.
-type X11WindowOverrider interface {
-}
-
 type X11Window struct {
 	_ [0]func() // equal guard
 	gdk.Window
@@ -65,9 +61,6 @@ type X11Window struct {
 var (
 	_ gdk.Windower = (*X11Window)(nil)
 )
-
-func initClassX11Window(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11Window(obj *coreglib.Object) *X11Window {
 	return &X11Window{

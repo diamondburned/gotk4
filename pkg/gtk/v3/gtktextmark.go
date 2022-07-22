@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,7 +69,19 @@ var (
 	_ coreglib.Objector = (*TextMark)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTextMark,
+		GoType:    reflect.TypeOf((*TextMark)(nil)),
+		InitClass: initClassTextMark,
+	})
+}
+
 func initClassTextMark(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTextMark(*TextMarkClass) }); ok {
+		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
+		goval.InitTextMark(klass)
+	}
 }
 
 func wrapTextMark(obj *coreglib.Object) *TextMark {
@@ -266,4 +280,14 @@ func (mark *TextMark) SetVisible(setting bool) {
 	C.gtk_text_mark_set_visible(_arg0, _arg1)
 	runtime.KeepAlive(mark)
 	runtime.KeepAlive(setting)
+}
+
+// TextMarkClass: instance of this type is always passed by reference.
+type TextMarkClass struct {
+	*textMarkClass
+}
+
+// textMarkClass is the struct that's finalized.
+type textMarkClass struct {
+	native *C.GtkTextMarkClass
 }

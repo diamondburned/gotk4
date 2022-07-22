@@ -183,11 +183,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeIconView,
-		GoType:       reflect.TypeOf((*IconView)(nil)),
-		InitClass:    initClassIconView,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkIconView{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkIconViewClass{})),
+		GType:     GTypeIconView,
+		GoType:    reflect.TypeOf((*IconView)(nil)),
+		InitClass: initClassIconView,
 	})
 }
 
@@ -227,6 +225,10 @@ func initClassIconView(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ UnselectAll() }); ok {
 		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_IconViewClass_unselect_all)
+	}
+	if goval, ok := goval.(interface{ InitIconView(*IconViewClass) }); ok {
+		klass := (*IconViewClass)(gextras.NewStructNative(gclass))
+		goval.InitIconView(klass)
 	}
 }
 
@@ -2267,4 +2269,21 @@ func (iconView *IconView) UnsetModelDragSource() {
 
 	C.gtk_icon_view_unset_model_drag_source(_arg0)
 	runtime.KeepAlive(iconView)
+}
+
+// IconViewClass: instance of this type is always passed by reference.
+type IconViewClass struct {
+	*iconViewClass
+}
+
+// iconViewClass is the struct that's finalized.
+type iconViewClass struct {
+	native *C.GtkIconViewClass
+}
+
+func (i *IconViewClass) ParentClass() *ContainerClass {
+	valptr := &i.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

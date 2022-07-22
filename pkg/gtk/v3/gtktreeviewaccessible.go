@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,21 @@ var (
 	_ coreglib.Objector = (*TreeViewAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTreeViewAccessible,
+		GoType:    reflect.TypeOf((*TreeViewAccessible)(nil)),
+		InitClass: initClassTreeViewAccessible,
+	})
+}
+
 func initClassTreeViewAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitTreeViewAccessible(*TreeViewAccessibleClass)
+	}); ok {
+		klass := (*TreeViewAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeViewAccessible(klass)
+	}
 }
 
 func wrapTreeViewAccessible(obj *coreglib.Object) *TreeViewAccessible {
@@ -53,7 +69,7 @@ func wrapTreeViewAccessible(obj *coreglib.Object) *TreeViewAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -77,4 +93,21 @@ func wrapTreeViewAccessible(obj *coreglib.Object) *TreeViewAccessible {
 
 func marshalTreeViewAccessible(p uintptr) (interface{}, error) {
 	return wrapTreeViewAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// TreeViewAccessibleClass: instance of this type is always passed by reference.
+type TreeViewAccessibleClass struct {
+	*treeViewAccessibleClass
+}
+
+// treeViewAccessibleClass is the struct that's finalized.
+type treeViewAccessibleClass struct {
+	native *C.GtkTreeViewAccessibleClass
+}
+
+func (t *TreeViewAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &t.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -54,7 +56,21 @@ var (
 	_ FilterOutputStreamer = (*BufferedOutputStream)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBufferedOutputStream,
+		GoType:    reflect.TypeOf((*BufferedOutputStream)(nil)),
+		InitClass: initClassBufferedOutputStream,
+	})
+}
+
 func initClassBufferedOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitBufferedOutputStream(*BufferedOutputStreamClass)
+	}); ok {
+		klass := (*BufferedOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitBufferedOutputStream(klass)
+	}
 }
 
 func wrapBufferedOutputStream(obj *coreglib.Object) *BufferedOutputStream {
@@ -217,4 +233,22 @@ func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	C.g_buffered_output_stream_set_buffer_size(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)
+}
+
+// BufferedOutputStreamClass: instance of this type is always passed by
+// reference.
+type BufferedOutputStreamClass struct {
+	*bufferedOutputStreamClass
+}
+
+// bufferedOutputStreamClass is the struct that's finalized.
+type bufferedOutputStreamClass struct {
+	native *C.GBufferedOutputStreamClass
+}
+
+func (b *BufferedOutputStreamClass) ParentClass() *FilterOutputStreamClass {
+	valptr := &b.native.parent_class
+	var v *FilterOutputStreamClass // out
+	v = (*FilterOutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

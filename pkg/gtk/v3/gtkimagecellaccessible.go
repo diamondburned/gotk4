@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -36,15 +38,29 @@ type ImageCellAccessible struct {
 	RendererCellAccessible
 
 	*coreglib.Object
+	atk.AtkObject
 	atk.Image
-	atk.ObjectClass
 }
 
 var (
 	_ coreglib.Objector = (*ImageCellAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeImageCellAccessible,
+		GoType:    reflect.TypeOf((*ImageCellAccessible)(nil)),
+		InitClass: initClassImageCellAccessible,
+	})
+}
+
 func initClassImageCellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitImageCellAccessible(*ImageCellAccessibleClass)
+	}); ok {
+		klass := (*ImageCellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitImageCellAccessible(klass)
+	}
 }
 
 func wrapImageCellAccessible(obj *coreglib.Object) *ImageCellAccessible {
@@ -52,7 +68,7 @@ func wrapImageCellAccessible(obj *coreglib.Object) *ImageCellAccessible {
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -60,24 +76,24 @@ func wrapImageCellAccessible(obj *coreglib.Object) *ImageCellAccessible {
 				Action: atk.Action{
 					Object: obj,
 				},
+				AtkObject: atk.AtkObject{
+					Object: obj,
+				},
 				Component: atk.Component{
 					Object: obj,
 				},
-				ObjectClass: atk.ObjectClass{
-					Object: obj,
-				},
 				TableCell: atk.TableCell{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
 			},
 		},
 		Object: obj,
-		Image: atk.Image{
+		AtkObject: atk.AtkObject{
 			Object: obj,
 		},
-		ObjectClass: atk.ObjectClass{
+		Image: atk.Image{
 			Object: obj,
 		},
 	}
@@ -85,4 +101,22 @@ func wrapImageCellAccessible(obj *coreglib.Object) *ImageCellAccessible {
 
 func marshalImageCellAccessible(p uintptr) (interface{}, error) {
 	return wrapImageCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ImageCellAccessibleClass: instance of this type is always passed by
+// reference.
+type ImageCellAccessibleClass struct {
+	*imageCellAccessibleClass
+}
+
+// imageCellAccessibleClass is the struct that's finalized.
+type imageCellAccessibleClass struct {
+	native *C.GtkImageCellAccessibleClass
+}
+
+func (i *ImageCellAccessibleClass) ParentClass() *RendererCellAccessibleClass {
+	valptr := &i.native.parent_class
+	var v *RendererCellAccessibleClass // out
+	v = (*RendererCellAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

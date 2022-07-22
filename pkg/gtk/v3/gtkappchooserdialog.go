@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -55,7 +57,19 @@ var (
 	_ Binner            = (*AppChooserDialog)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeAppChooserDialog,
+		GoType:    reflect.TypeOf((*AppChooserDialog)(nil)),
+		InitClass: initClassAppChooserDialog,
+	})
+}
+
 func initClassAppChooserDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitAppChooserDialog(*AppChooserDialogClass) }); ok {
+		klass := (*AppChooserDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitAppChooserDialog(klass)
+	}
 }
 
 func wrapAppChooserDialog(obj *coreglib.Object) *AppChooserDialog {
@@ -258,4 +272,22 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 	C.gtk_app_chooser_dialog_set_heading(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(heading)
+}
+
+// AppChooserDialogClass: instance of this type is always passed by reference.
+type AppChooserDialogClass struct {
+	*appChooserDialogClass
+}
+
+// appChooserDialogClass is the struct that's finalized.
+type appChooserDialogClass struct {
+	native *C.GtkAppChooserDialogClass
+}
+
+// ParentClass: parent class.
+func (a *AppChooserDialogClass) ParentClass() *DialogClass {
+	valptr := &a.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

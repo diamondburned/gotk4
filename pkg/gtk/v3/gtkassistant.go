@@ -10,6 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -180,11 +181,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAssistant,
-		GoType:       reflect.TypeOf((*Assistant)(nil)),
-		InitClass:    initClassAssistant,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAssistant{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkAssistantClass{})),
+		GType:     GTypeAssistant,
+		GoType:    reflect.TypeOf((*Assistant)(nil)),
+		InitClass: initClassAssistant,
 	})
 }
 
@@ -206,6 +205,10 @@ func initClassAssistant(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Prepare(page Widgetter) }); ok {
 		pclass.prepare = (*[0]byte)(C._gotk4_gtk3_AssistantClass_prepare)
+	}
+	if goval, ok := goval.(interface{ InitAssistant(*AssistantClass) }); ok {
+		klass := (*AssistantClass)(gextras.NewStructNative(gclass))
+		goval.InitAssistant(klass)
 	}
 }
 
@@ -1158,4 +1161,22 @@ func (assistant *Assistant) UpdateButtonsState() {
 
 	C.gtk_assistant_update_buttons_state(_arg0)
 	runtime.KeepAlive(assistant)
+}
+
+// AssistantClass: instance of this type is always passed by reference.
+type AssistantClass struct {
+	*assistantClass
+}
+
+// assistantClass is the struct that's finalized.
+type assistantClass struct {
+	native *C.GtkAssistantClass
+}
+
+// ParentClass: parent class.
+func (a *AssistantClass) ParentClass() *WindowClass {
+	valptr := &a.native.parent_class
+	var v *WindowClass // out
+	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

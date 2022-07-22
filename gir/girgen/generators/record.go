@@ -20,35 +20,7 @@ import (
 // otherwise they are skipped. This is mostly because these types shouldn't
 // be implemented in Go like they're described.
 var recordIgnoreSuffixes = []string{
-	// TODO: these interfaces shouldn't actually be ignored. Instead, they
-	// should contain callback functions, because it seems like they're meant
-	// to be called by GTK.
-	//
-	// It seems like GCallback (GObject.Callback) can be interface{}, since GLib
-	// can do lazy type cast on call.
-	"Interface",
-	"Iface",
-	// No idea why these are here.
-	"Class",
 	"Private",
-}
-
-var recordNeedCDeclSuffixes = []string{
-	"Interface",
-	"Iface",
-	"Class",
-}
-
-// RecordIsTypeStruct returns true if the record is a record specifically made
-// to implement a class or interface. It is exposed as an implementation detail
-// for GLib's type system.
-func RecordIsTypeStruct(name string) bool {
-	for _, suffix := range recordNeedCDeclSuffixes {
-		if strings.HasSuffix(name, suffix) {
-			return true
-		}
-	}
-	return false
 }
 
 var recordTmpl = gotmpl.NewGoTemplate(`
@@ -120,10 +92,8 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 		return false
 	}
 
-	// GLibIsGTypeStructFor seems to be records used in addition to classes due
-	// to C? Not sure, but we likely don't need it.
-	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
-		log("IsGTypeStructFor or has underscore prefixed")
+	if strings.HasPrefix(rec.Name, "_") {
+		log("has underscore prefixed")
 		return false
 	}
 
@@ -133,6 +103,9 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 			return false
 		}
 	}
+
+	// Special hack: if we're generating a TypeStruct, then we should rename the
+	// prefix from -Class to -TypeClass and -Interface to -TypeInterface.
 
 	// Ignore non-type/array fields.
 	for _, field := range rec.Fields {
@@ -173,6 +146,18 @@ func mustIgnoreAny(gen FileGenerator, any gir.AnyType) bool {
 
 // GenerateRecord generates the records.
 func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
+	// if record.GLibIsGTypeStructFor != "" {
+	// 	for suffix, replace := range typeStructNamer {
+	// 		if strings.HasSuffix(record.Name, suffix) {
+	// 			// Shallow copy and bodge the name.
+	// 			rec := *record
+	// 			rec.Name = strings.TrimSuffix(record.Name, suffix) + replace
+	// 			record = &rec
+	// 			break
+	// 		}
+	// 	}
+	// }
+
 	recordGen := NewRecordGenerator(gen)
 	if !recordGen.Use(record) {
 		return false

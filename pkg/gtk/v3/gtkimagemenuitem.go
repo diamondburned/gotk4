@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -66,7 +68,19 @@ var (
 	_ coreglib.Objector = (*ImageMenuItem)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeImageMenuItem,
+		GoType:    reflect.TypeOf((*ImageMenuItem)(nil)),
+		InitClass: initClassImageMenuItem,
+	})
+}
+
 func initClassImageMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitImageMenuItem(*ImageMenuItemClass) }); ok {
+		klass := (*ImageMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.InitImageMenuItem(klass)
+	}
 }
 
 func wrapImageMenuItem(obj *coreglib.Object) *ImageMenuItem {
@@ -431,4 +445,22 @@ func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
 	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(useStock)
+}
+
+// ImageMenuItemClass: instance of this type is always passed by reference.
+type ImageMenuItemClass struct {
+	*imageMenuItemClass
+}
+
+// imageMenuItemClass is the struct that's finalized.
+type imageMenuItemClass struct {
+	native *C.GtkImageMenuItemClass
+}
+
+// ParentClass: parent class.
+func (i *ImageMenuItemClass) ParentClass() *MenuItemClass {
+	valptr := &i.native.parent_class
+	var v *MenuItemClass // out
+	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

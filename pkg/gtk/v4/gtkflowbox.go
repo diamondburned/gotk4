@@ -1200,11 +1200,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFlowBoxChild,
-		GoType:       reflect.TypeOf((*FlowBoxChild)(nil)),
-		InitClass:    initClassFlowBoxChild,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFlowBoxChild{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFlowBoxChildClass{})),
+		GType:     GTypeFlowBoxChild,
+		GoType:    reflect.TypeOf((*FlowBoxChild)(nil)),
+		InitClass: initClassFlowBoxChild,
 	})
 }
 
@@ -1214,6 +1212,10 @@ func initClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_FlowBoxChildClass_activate)
+	}
+	if goval, ok := goval.(interface{ InitFlowBoxChild(*FlowBoxChildClass) }); ok {
+		klass := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
+		goval.InitFlowBoxChild(klass)
 	}
 }
 
@@ -1428,4 +1430,14 @@ func (self *FlowBoxChild) SetChild(child Widgetter) {
 	C.gtk_flow_box_child_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
+}
+
+// FlowBoxChildClass: instance of this type is always passed by reference.
+type FlowBoxChildClass struct {
+	*flowBoxChildClass
+}
+
+// flowBoxChildClass is the struct that's finalized.
+type flowBoxChildClass struct {
+	native *C.GtkFlowBoxChildClass
 }

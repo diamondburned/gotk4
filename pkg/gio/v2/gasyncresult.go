@@ -336,3 +336,15 @@ func (res *AsyncResult) LegacyPropagateError() error {
 
 	return _goerr
 }
+
+// AsyncResultIface: interface definition for Result.
+//
+// An instance of this type is always passed by reference.
+type AsyncResultIface struct {
+	*asyncResultIface
+}
+
+// asyncResultIface is the struct that's finalized.
+type asyncResultIface struct {
+	native *C.GAsyncResultIface
+}

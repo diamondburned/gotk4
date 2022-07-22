@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -51,11 +52,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeToggleAction,
-		GoType:       reflect.TypeOf((*ToggleAction)(nil)),
-		InitClass:    initClassToggleAction,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkToggleAction{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkToggleActionClass{})),
+		GType:     GTypeToggleAction,
+		GoType:    reflect.TypeOf((*ToggleAction)(nil)),
+		InitClass: initClassToggleAction,
 	})
 }
 
@@ -65,6 +64,10 @@ func initClassToggleAction(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleActionClass_toggled)
+	}
+	if goval, ok := goval.(interface{ InitToggleAction(*ToggleActionClass) }); ok {
+		klass := (*ToggleActionClass)(gextras.NewStructNative(gclass))
+		goval.InitToggleAction(klass)
 	}
 }
 
@@ -274,4 +277,21 @@ func (action *ToggleAction) Toggled() {
 
 	C.gtk_toggle_action_toggled(_arg0)
 	runtime.KeepAlive(action)
+}
+
+// ToggleActionClass: instance of this type is always passed by reference.
+type ToggleActionClass struct {
+	*toggleActionClass
+}
+
+// toggleActionClass is the struct that's finalized.
+type toggleActionClass struct {
+	native *C.GtkToggleActionClass
+}
+
+func (t *ToggleActionClass) ParentClass() *ActionClass {
+	valptr := &t.native.parent_class
+	var v *ActionClass // out
+	v = (*ActionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

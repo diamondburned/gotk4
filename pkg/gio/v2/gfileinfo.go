@@ -527,10 +527,6 @@ const FILE_ATTRIBUTE_UNIX_RDEV = "unix::rdev"
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_UID = "unix::uid"
 
-// FileInfoOverrider contains methods that are overridable.
-type FileInfoOverrider interface {
-}
-
 // FileInfo: functionality for manipulating basic metadata for files. Info
 // implements methods for getting information that all files should contain, and
 // allows for manipulation of extended attributes.
@@ -562,9 +558,6 @@ type FileInfo struct {
 var (
 	_ coreglib.Objector = (*FileInfo)(nil)
 )
-
-func initClassFileInfo(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapFileInfo(obj *coreglib.Object) *FileInfo {
 	return &FileInfo{

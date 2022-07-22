@@ -8,18 +8,20 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callback"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
 type TypeStruct struct {
 	*gir.Record
-	Methods []TypeStructMethod
+	Name           string          // TODO
+	VirtualMethods []VirtualMethod // TODO: move this out
 
 	ns   *gir.NamespaceFindResult
 	igen *Generator
 }
 
-type TypeStructMethod struct {
+type VirtualMethod struct {
 	Header    file.Header
 	FieldName string
 
@@ -37,12 +39,19 @@ type TypeStructMethod struct {
 func newTypeStruct(g *Generator, result *gir.TypeFindResult) *TypeStruct {
 	record, ok := result.Type.(*gir.Record)
 	if !ok {
-		g.Logln(logger.Skip, "type-struct skipped since not *gir.Record")
+		g.Logln(logger.Skip, "TypeStruct", result.Name, "skipped since not *gir.Record")
+		return nil
+	}
+
+	// We're usually in the same namespace.
+	if !g.gen.CanGenerate(types.TypeFromResult(g.gen, record)) {
+		g.Logln(logger.Skip, "TypeStruct", result.Name, "skipped since cannot generate")
 		return nil
 	}
 
 	ts := &TypeStruct{
 		Record: record,
+		Name:   strcases.PascalToGo(record.Name),
 		ns:     result.NamespaceFindResult,
 		igen:   g,
 	}
@@ -59,13 +68,13 @@ func (ts *TypeStruct) WrapperFuncName(field string) string {
 }
 
 func (ts *TypeStruct) init() bool {
-	for i := range ts.igen.Virtuals {
+	for i := range ts.igen.VirtualMethods {
 		virtual := &ts.igen.virtuals[i]
-		vmethod := &ts.igen.Virtuals[i]
+		vmethod := &ts.igen.VirtualMethods[i]
 
-		method, ok := ts.newTypeStructMethod(virtual, vmethod)
+		method, ok := ts.virtualMethod(virtual, vmethod)
 		if ok {
-			ts.Methods = append(ts.Methods, method)
+			ts.VirtualMethods = append(ts.VirtualMethods, method)
 			ts.igen.header.ApplyFrom(&method.Header)
 		} else {
 			ts.Logln(logger.Skip, "virtual method", virtual.Name)
@@ -74,20 +83,20 @@ func (ts *TypeStruct) init() bool {
 
 	// If this is an interface, then we must implement all methods. If any of
 	// them cannot be converted, then we failed.
-	if ts.igen.IsInterface() && len(ts.igen.virtuals) != len(ts.Methods) {
+	if ts.igen.IsInterface() && len(ts.igen.virtuals) != len(ts.VirtualMethods) {
 		return false
 	}
 
 	return true
 }
 
-func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *Method) (TypeStructMethod, bool) {
+func (ts *TypeStruct) virtualMethod(virtual *gir.VirtualMethod, vmethod *Method) (VirtualMethod, bool) {
 	field := ts.findTypeStructField(virtual)
 	if field == nil {
-		return TypeStructMethod{}, false
+		return VirtualMethod{}, false
 	}
 
-	method := TypeStructMethod{
+	method := VirtualMethod{
 		FieldName: field.Name,
 		Go:        vmethod,
 	}
@@ -114,7 +123,7 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	}
 
 	if !cbgen.Use(&virtual.CallableAttrs) {
-		return TypeStructMethod{}, false
+		return VirtualMethod{}, false
 	}
 
 	method.C.Block = cbgen.Block

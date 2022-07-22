@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -135,11 +136,9 @@ var _ MenuSheller = (*MenuShell)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMenuShell,
-		GoType:       reflect.TypeOf((*MenuShell)(nil)),
-		InitClass:    initClassMenuShell,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkMenuShell{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkMenuShellClass{})),
+		GType:     GTypeMenuShell,
+		GoType:    reflect.TypeOf((*MenuShell)(nil)),
+		InitClass: initClassMenuShell,
 	})
 }
 
@@ -185,6 +184,10 @@ func initClassMenuShell(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ SelectionDone() }); ok {
 		pclass.selection_done = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_selection_done)
+	}
+	if goval, ok := goval.(interface{ InitMenuShell(*MenuShellClass) }); ok {
+		klass := (*MenuShellClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuShell(klass)
 	}
 }
 
@@ -950,4 +953,21 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(takeFocus)
+}
+
+// MenuShellClass: instance of this type is always passed by reference.
+type MenuShellClass struct {
+	*menuShellClass
+}
+
+// menuShellClass is the struct that's finalized.
+type menuShellClass struct {
+	native *C.GtkMenuShellClass
+}
+
+func (m *MenuShellClass) ParentClass() *ContainerClass {
+	valptr := &m.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -44,7 +46,21 @@ var (
 	_ coreglib.Objector = (*ComboBoxAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeComboBoxAccessible,
+		GoType:    reflect.TypeOf((*ComboBoxAccessible)(nil)),
+		InitClass: initClassComboBoxAccessible,
+	})
+}
+
 func initClassComboBoxAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitComboBoxAccessible(*ComboBoxAccessibleClass)
+	}); ok {
+		klass := (*ComboBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitComboBoxAccessible(klass)
+	}
 }
 
 func wrapComboBoxAccessible(obj *coreglib.Object) *ComboBoxAccessible {
@@ -52,7 +68,7 @@ func wrapComboBoxAccessible(obj *coreglib.Object) *ComboBoxAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -73,4 +89,21 @@ func wrapComboBoxAccessible(obj *coreglib.Object) *ComboBoxAccessible {
 
 func marshalComboBoxAccessible(p uintptr) (interface{}, error) {
 	return wrapComboBoxAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ComboBoxAccessibleClass: instance of this type is always passed by reference.
+type ComboBoxAccessibleClass struct {
+	*comboBoxAccessibleClass
+}
+
+// comboBoxAccessibleClass is the struct that's finalized.
+type comboBoxAccessibleClass struct {
+	native *C.GtkComboBoxAccessibleClass
+}
+
+func (c *ComboBoxAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &c.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

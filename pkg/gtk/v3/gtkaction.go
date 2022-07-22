@@ -145,11 +145,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAction,
-		GoType:       reflect.TypeOf((*Action)(nil)),
-		InitClass:    initClassAction,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAction{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkActionClass{})),
+		GType:     GTypeAction,
+		GoType:    reflect.TypeOf((*Action)(nil)),
+		InitClass: initClassAction,
 	})
 }
 
@@ -179,6 +177,10 @@ func initClassAction(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ DisconnectProxy(proxy Widgetter) }); ok {
 		pclass.disconnect_proxy = (*[0]byte)(C._gotk4_gtk3_ActionClass_disconnect_proxy)
+	}
+	if goval, ok := goval.(interface{ InitAction(*ActionClass) }); ok {
+		klass := (*ActionClass)(gextras.NewStructNative(gclass))
+		goval.InitAction(klass)
 	}
 }
 
@@ -1422,4 +1424,14 @@ func (action *Action) UnblockActivate() {
 
 	C.gtk_action_unblock_activate(_arg0)
 	runtime.KeepAlive(action)
+}
+
+// ActionClass: instance of this type is always passed by reference.
+type ActionClass struct {
+	*actionClass
+}
+
+// actionClass is the struct that's finalized.
+type actionClass struct {
+	native *C.GtkActionClass
 }

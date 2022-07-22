@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -48,7 +50,19 @@ var (
 	_ coreglib.Objector = (*SingleSelection)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSingleSelection,
+		GoType:    reflect.TypeOf((*SingleSelection)(nil)),
+		InitClass: initClassSingleSelection,
+	})
+}
+
 func initClassSingleSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSingleSelection(*SingleSelectionClass) }); ok {
+		klass := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
+		goval.InitSingleSelection(klass)
+	}
 }
 
 func wrapSingleSelection(obj *coreglib.Object) *SingleSelection {
@@ -313,4 +327,14 @@ func (self *SingleSelection) SetSelected(position uint) {
 	C.gtk_single_selection_set_selected(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
+}
+
+// SingleSelectionClass: instance of this type is always passed by reference.
+type SingleSelectionClass struct {
+	*singleSelectionClass
+}
+
+// singleSelectionClass is the struct that's finalized.
+type singleSelectionClass struct {
+	native *C.GtkSingleSelectionClass
 }

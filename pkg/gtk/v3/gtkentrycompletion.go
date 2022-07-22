@@ -159,11 +159,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeEntryCompletion,
-		GoType:       reflect.TypeOf((*EntryCompletion)(nil)),
-		InitClass:    initClassEntryCompletion,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkEntryCompletion{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkEntryCompletionClass{})),
+		GType:     GTypeEntryCompletion,
+		GoType:    reflect.TypeOf((*EntryCompletion)(nil)),
+		InitClass: initClassEntryCompletion,
 	})
 }
 
@@ -193,6 +191,10 @@ func initClassEntryCompletion(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ NoMatches() }); ok {
 		pclass.no_matches = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_no_matches)
+	}
+	if goval, ok := goval.(interface{ InitEntryCompletion(*EntryCompletionClass) }); ok {
+		klass := (*EntryCompletionClass)(gextras.NewStructNative(gclass))
+		goval.InitEntryCompletion(klass)
 	}
 }
 
@@ -1149,4 +1151,14 @@ func (completion *EntryCompletion) SetTextColumn(column int) {
 	C.gtk_entry_completion_set_text_column(_arg0, _arg1)
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(column)
+}
+
+// EntryCompletionClass: instance of this type is always passed by reference.
+type EntryCompletionClass struct {
+	*entryCompletionClass
+}
+
+// entryCompletionClass is the struct that's finalized.
+type entryCompletionClass struct {
+	native *C.GtkEntryCompletionClass
 }

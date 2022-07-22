@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -88,7 +90,19 @@ var (
 	_ Widgetter = (*Picture)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypePicture,
+		GoType:    reflect.TypeOf((*Picture)(nil)),
+		InitClass: initClassPicture,
+	})
+}
+
 func initClassPicture(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitPicture(*PictureClass) }); ok {
+		klass := (*PictureClass)(gextras.NewStructNative(gclass))
+		goval.InitPicture(klass)
+	}
 }
 
 func wrapPicture(obj *coreglib.Object) *Picture {
@@ -633,4 +647,21 @@ func (self *Picture) SetResource(resourcePath string) {
 	C.gtk_picture_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
+}
+
+// PictureClass: instance of this type is always passed by reference.
+type PictureClass struct {
+	*pictureClass
+}
+
+// pictureClass is the struct that's finalized.
+type pictureClass struct {
+	native *C.GtkPictureClass
+}
+
+func (p *PictureClass) ParentClass() *WidgetClass {
+	valptr := &p.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

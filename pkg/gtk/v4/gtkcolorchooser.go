@@ -362,3 +362,13 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)
 }
+
+// ColorChooserInterface: instance of this type is always passed by reference.
+type ColorChooserInterface struct {
+	*colorChooserInterface
+}
+
+// colorChooserInterface is the struct that's finalized.
+type colorChooserInterface struct {
+	native *C.GtkColorChooserInterface
+}

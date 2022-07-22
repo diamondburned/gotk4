@@ -65,10 +65,6 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 	runtime.KeepAlive(err)
 }
 
-// SimpleAsyncResultOverrider contains methods that are overridable.
-type SimpleAsyncResultOverrider interface {
-}
-
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
 // #GTask, which provides a simpler API.
 //
@@ -236,9 +232,6 @@ type SimpleAsyncResult struct {
 var (
 	_ coreglib.Objector = (*SimpleAsyncResult)(nil)
 )
-
-func initClassSimpleAsyncResult(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapSimpleAsyncResult(obj *coreglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -53,7 +55,19 @@ var (
 	_ Binner = (*ActionBar)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeActionBar,
+		GoType:    reflect.TypeOf((*ActionBar)(nil)),
+		InitClass: initClassActionBar,
+	})
+}
+
 func initClassActionBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitActionBar(*ActionBarClass) }); ok {
+		klass := (*ActionBarClass)(gextras.NewStructNative(gclass))
+		goval.InitActionBar(klass)
+	}
 }
 
 func wrapActionBar(obj *coreglib.Object) *ActionBar {
@@ -192,4 +206,14 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(centerWidget)
+}
+
+// ActionBarClass: instance of this type is always passed by reference.
+type ActionBarClass struct {
+	*actionBarClass
+}
+
+// actionBarClass is the struct that's finalized.
+type actionBarClass struct {
+	native *C.GtkActionBarClass
 }

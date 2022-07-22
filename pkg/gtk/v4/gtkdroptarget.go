@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// DropTargetOverrider contains methods that are overridable.
-type DropTargetOverrider interface {
-}
-
 // DropTarget: GtkDropTarget is an event controller to receive Drag-and-Drop
 // operations.
 //
@@ -113,9 +109,6 @@ type DropTarget struct {
 var (
 	_ EventControllerer = (*DropTarget)(nil)
 )
-
-func initClassDropTarget(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapDropTarget(obj *coreglib.Object) *DropTarget {
 	return &DropTarget{

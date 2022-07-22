@@ -3,6 +3,7 @@
 package gsk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -146,7 +147,19 @@ var (
 	_ coreglib.Objector = (*GLShader)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeGLShader,
+		GoType:    reflect.TypeOf((*GLShader)(nil)),
+		InitClass: initClassGLShader,
+	})
+}
+
 func initClassGLShader(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitGLShader(*GLShaderClass) }); ok {
+		klass := (*GLShaderClass)(gextras.NewStructNative(gclass))
+		goval.InitGLShader(klass)
+	}
 }
 
 func wrapGLShader(obj *coreglib.Object) *GLShader {
@@ -719,6 +732,16 @@ func (shader *GLShader) UniformType(idx int) GLUniformType {
 	_glUniformType = GLUniformType(_cret)
 
 	return _glUniformType
+}
+
+// GLShaderClass: instance of this type is always passed by reference.
+type GLShaderClass struct {
+	*glShaderClass
+}
+
+// glShaderClass is the struct that's finalized.
+type glShaderClass struct {
+	native *C.GskGLShaderClass
 }
 
 // ShaderArgsBuilder: object to build the uniforms data for a GLShader.

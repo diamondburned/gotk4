@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -92,11 +93,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeShortcutsWindow,
-		GoType:       reflect.TypeOf((*ShortcutsWindow)(nil)),
-		InitClass:    initClassShortcutsWindow,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkShortcutsWindow{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkShortcutsWindowClass{})),
+		GType:     GTypeShortcutsWindow,
+		GoType:    reflect.TypeOf((*ShortcutsWindow)(nil)),
+		InitClass: initClassShortcutsWindow,
 	})
 }
 
@@ -110,6 +109,10 @@ func initClassShortcutsWindow(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Search() }); ok {
 		pclass.search = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_search)
+	}
+	if goval, ok := goval.(interface{ InitShortcutsWindow(*ShortcutsWindowClass) }); ok {
+		klass := (*ShortcutsWindowClass)(gextras.NewStructNative(gclass))
+		goval.InitShortcutsWindow(klass)
 	}
 }
 
@@ -176,8 +179,8 @@ func _gotk4_gtk3_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) 
 // emitted when the user uses a keybinding to close the window.
 //
 // The default binding for this signal is the Escape key.
-func (self *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(self, "close", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectClose), f)
+func (v *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "close", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectClose), f)
 }
 
 //export _gotk4_gtk3_ShortcutsWindow_ConnectSearch
@@ -200,6 +203,23 @@ func _gotk4_gtk3_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr)
 // emitted when the user uses a keybinding to start a search.
 //
 // The default binding for this signal is Control-F.
-func (self *ShortcutsWindow) ConnectSearch(f func()) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(self, "search", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectSearch), f)
+func (v *ShortcutsWindow) ConnectSearch(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "search", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectSearch), f)
+}
+
+// ShortcutsWindowClass: instance of this type is always passed by reference.
+type ShortcutsWindowClass struct {
+	*shortcutsWindowClass
+}
+
+// shortcutsWindowClass is the struct that's finalized.
+type shortcutsWindowClass struct {
+	native *C.GtkShortcutsWindowClass
+}
+
+func (s *ShortcutsWindowClass) ParentClass() *WindowClass {
+	valptr := &s.native.parent_class
+	var v *WindowClass // out
+	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

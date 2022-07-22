@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -49,7 +51,19 @@ var (
 	_ MenuSheller = (*MenuBar)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMenuBar,
+		GoType:    reflect.TypeOf((*MenuBar)(nil)),
+		InitClass: initClassMenuBar,
+	})
+}
+
 func initClassMenuBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMenuBar(*MenuBarClass) }); ok {
+		klass := (*MenuBarClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuBar(klass)
+	}
 }
 
 func wrapMenuBar(obj *coreglib.Object) *MenuBar {
@@ -207,4 +221,21 @@ func (menubar *MenuBar) SetPackDirection(packDir PackDirection) {
 	C.gtk_menu_bar_set_pack_direction(_arg0, _arg1)
 	runtime.KeepAlive(menubar)
 	runtime.KeepAlive(packDir)
+}
+
+// MenuBarClass: instance of this type is always passed by reference.
+type MenuBarClass struct {
+	*menuBarClass
+}
+
+// menuBarClass is the struct that's finalized.
+type menuBarClass struct {
+	native *C.GtkMenuBarClass
+}
+
+func (m *MenuBarClass) ParentClass() *MenuShellClass {
+	valptr := &m.native.parent_class
+	var v *MenuShellClass // out
+	v = (*MenuShellClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

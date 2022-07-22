@@ -317,11 +317,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeBuilder,
-		GoType:       reflect.TypeOf((*Builder)(nil)),
-		InitClass:    initClassBuilder,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkBuilder{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkBuilderClass{})),
+		GType:     GTypeBuilder,
+		GoType:    reflect.TypeOf((*Builder)(nil)),
+		InitClass: initClassBuilder,
 	})
 }
 
@@ -333,6 +331,10 @@ func initClassBuilder(gclass unsafe.Pointer, goval any) {
 		TypeFromName(typeName string) coreglib.Type
 	}); ok {
 		pclass.get_type_from_name = (*[0]byte)(C._gotk4_gtk3_BuilderClass_get_type_from_name)
+	}
+	if goval, ok := goval.(interface{ InitBuilder(*BuilderClass) }); ok {
+		klass := (*BuilderClass)(gextras.NewStructNative(gclass))
+		goval.InitBuilder(klass)
 	}
 }
 
@@ -1166,4 +1168,14 @@ func (builder *Builder) ValueFromStringType(typ coreglib.Type, str string) (core
 	}
 
 	return _value, _goerr
+}
+
+// BuilderClass: instance of this type is always passed by reference.
+type BuilderClass struct {
+	*builderClass
+}
+
+// builderClass is the struct that's finalized.
+type builderClass struct {
+	native *C.GtkBuilderClass
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -42,14 +43,28 @@ var (
 	_ coreglib.Objector = (*ContainerCellAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeContainerCellAccessible,
+		GoType:    reflect.TypeOf((*ContainerCellAccessible)(nil)),
+		InitClass: initClassContainerCellAccessible,
+	})
+}
+
 func initClassContainerCellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitContainerCellAccessible(*ContainerCellAccessibleClass)
+	}); ok {
+		klass := (*ContainerCellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitContainerCellAccessible(klass)
+	}
 }
 
 func wrapContainerCellAccessible(obj *coreglib.Object) *ContainerCellAccessible {
 	return &ContainerCellAccessible{
 		CellAccessible: CellAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -57,14 +72,14 @@ func wrapContainerCellAccessible(obj *coreglib.Object) *ContainerCellAccessible 
 			Action: atk.Action{
 				Object: obj,
 			},
+			AtkObject: atk.AtkObject{
+				Object: obj,
+			},
 			Component: atk.Component{
 				Object: obj,
 			},
-			ObjectClass: atk.ObjectClass{
-				Object: obj,
-			},
 			TableCell: atk.TableCell{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -142,4 +157,22 @@ func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
+}
+
+// ContainerCellAccessibleClass: instance of this type is always passed by
+// reference.
+type ContainerCellAccessibleClass struct {
+	*containerCellAccessibleClass
+}
+
+// containerCellAccessibleClass is the struct that's finalized.
+type containerCellAccessibleClass struct {
+	native *C.GtkContainerCellAccessibleClass
+}
+
+func (c *ContainerCellAccessibleClass) ParentClass() *CellAccessibleClass {
+	valptr := &c.native.parent_class
+	var v *CellAccessibleClass // out
+	v = (*CellAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

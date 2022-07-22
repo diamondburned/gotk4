@@ -3,9 +3,11 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*StateSet)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStateSet,
+		GoType:    reflect.TypeOf((*StateSet)(nil)),
+		InitClass: initClassStateSet,
+	})
+}
+
 func initClassStateSet(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStateSet(*StateSetClass) }); ok {
+		klass := (*StateSetClass)(gextras.NewStructNative(gclass))
+		goval.InitStateSet(klass)
+	}
 }
 
 func wrapStateSet(obj *coreglib.Object) *StateSet {
@@ -366,4 +380,14 @@ func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _stateSet
+}
+
+// StateSetClass: instance of this type is always passed by reference.
+type StateSetClass struct {
+	*stateSetClass
+}
+
+// stateSetClass is the struct that's finalized.
+type stateSetClass struct {
+	native *C.AtkStateSetClass
 }

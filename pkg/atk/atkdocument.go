@@ -405,3 +405,13 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 
 	return _ok
 }
+
+// DocumentIface: instance of this type is always passed by reference.
+type DocumentIface struct {
+	*documentIface
+}
+
+// documentIface is the struct that's finalized.
+type documentIface struct {
+	native *C.AtkDocumentIface
+}

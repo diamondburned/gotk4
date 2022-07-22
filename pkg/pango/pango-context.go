@@ -173,10 +173,6 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 	return _list
 }
 
-// ContextOverrider contains methods that are overridable.
-type ContextOverrider interface {
-}
-
 // Context: PangoContext stores global information used to control the
 // itemization process.
 //
@@ -193,9 +189,6 @@ type Context struct {
 var (
 	_ coreglib.Objector = (*Context)(nil)
 )
-
-func initClassContext(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapContext(obj *coreglib.Object) *Context {
 	return &Context{

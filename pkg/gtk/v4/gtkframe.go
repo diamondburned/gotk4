@@ -89,11 +89,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFrame,
-		GoType:       reflect.TypeOf((*Frame)(nil)),
-		InitClass:    initClassFrame,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFrame{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFrameClass{})),
+		GType:     GTypeFrame,
+		GoType:    reflect.TypeOf((*Frame)(nil)),
+		InitClass: initClassFrame,
 	})
 }
 
@@ -103,6 +101,10 @@ func initClassFrame(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ComputeChildAllocation(allocation *Allocation) }); ok {
 		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk4_FrameClass_compute_child_allocation)
+	}
+	if goval, ok := goval.(interface{ InitFrame(*FrameClass) }); ok {
+		klass := (*FrameClass)(gextras.NewStructNative(gclass))
+		goval.InitFrame(klass)
 	}
 }
 
@@ -381,4 +383,22 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	C.gtk_frame_set_label_widget(_arg0, _arg1)
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(labelWidget)
+}
+
+// FrameClass: instance of this type is always passed by reference.
+type FrameClass struct {
+	*frameClass
+}
+
+// frameClass is the struct that's finalized.
+type frameClass struct {
+	native *C.GtkFrameClass
+}
+
+// ParentClass: parent class.
+func (f *FrameClass) ParentClass() *WidgetClass {
+	valptr := &f.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

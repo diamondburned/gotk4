@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// EventControllerOverrider contains methods that are overridable.
-type EventControllerOverrider interface {
-}
-
 // EventController: GtkEventController is the base class for event controllers.
 //
 // These are ancillary objects associated to widgets, which react to GdkEvents,
@@ -61,9 +57,6 @@ type EventControllerer interface {
 }
 
 var _ EventControllerer = (*EventController)(nil)
-
-func initClassEventController(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventController(obj *coreglib.Object) *EventController {
 	return &EventController{

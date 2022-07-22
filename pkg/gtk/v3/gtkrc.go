@@ -1007,11 +1007,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRCStyle,
-		GoType:       reflect.TypeOf((*RCStyle)(nil)),
-		InitClass:    initClassRCStyle,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkRcStyle{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkRcStyleClass{})),
+		GType:     GTypeRCStyle,
+		GoType:    reflect.TypeOf((*RCStyle)(nil)),
+		InitClass: initClassRCStyle,
 	})
 }
 
@@ -1027,6 +1025,10 @@ func initClassRCStyle(gclass unsafe.Pointer, goval any) {
 		Parse(settings *Settings, scanner *glib.Scanner) uint
 	}); ok {
 		pclass.parse = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_parse)
+	}
+	if goval, ok := goval.(interface{ InitRCStyle(*RCStyleClass) }); ok {
+		klass := (*RCStyleClass)(gextras.NewStructNative(gclass))
+		goval.InitRCStyle(klass)
 	}
 }
 
@@ -1152,4 +1154,14 @@ func (r *RCProperty) Origin() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
+}
+
+// RCStyleClass: instance of this type is always passed by reference.
+type RCStyleClass struct {
+	*rcStyleClass
+}
+
+// rcStyleClass is the struct that's finalized.
+type rcStyleClass struct {
+	native *C.GtkRcStyleClass
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,21 @@ var (
 	_ coreglib.Objector = (*ExpanderAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeExpanderAccessible,
+		GoType:    reflect.TypeOf((*ExpanderAccessible)(nil)),
+		InitClass: initClassExpanderAccessible,
+	})
+}
+
 func initClassExpanderAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitExpanderAccessible(*ExpanderAccessibleClass)
+	}); ok {
+		klass := (*ExpanderAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitExpanderAccessible(klass)
+	}
 }
 
 func wrapExpanderAccessible(obj *coreglib.Object) *ExpanderAccessible {
@@ -50,7 +66,7 @@ func wrapExpanderAccessible(obj *coreglib.Object) *ExpanderAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +83,21 @@ func wrapExpanderAccessible(obj *coreglib.Object) *ExpanderAccessible {
 
 func marshalExpanderAccessible(p uintptr) (interface{}, error) {
 	return wrapExpanderAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ExpanderAccessibleClass: instance of this type is always passed by reference.
+type ExpanderAccessibleClass struct {
+	*expanderAccessibleClass
+}
+
+// expanderAccessibleClass is the struct that's finalized.
+type expanderAccessibleClass struct {
+	native *C.GtkExpanderAccessibleClass
+}
+
+func (e *ExpanderAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &e.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

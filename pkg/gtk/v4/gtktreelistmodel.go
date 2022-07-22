@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -82,7 +84,19 @@ var (
 	_ coreglib.Objector = (*TreeListModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTreeListModel,
+		GoType:    reflect.TypeOf((*TreeListModel)(nil)),
+		InitClass: initClassTreeListModel,
+	})
+}
+
 func initClassTreeListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTreeListModel(*TreeListModelClass) }); ok {
+		klass := (*TreeListModelClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeListModel(klass)
+	}
 }
 
 func wrapTreeListModel(obj *coreglib.Object) *TreeListModel {
@@ -364,7 +378,19 @@ var (
 	_ coreglib.Objector = (*TreeListRow)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTreeListRow,
+		GoType:    reflect.TypeOf((*TreeListRow)(nil)),
+		InitClass: initClassTreeListRow,
+	})
+}
+
 func initClassTreeListRow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTreeListRow(*TreeListRowClass) }); ok {
+		klass := (*TreeListRowClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeListRow(klass)
+	}
 }
 
 func wrapTreeListRow(obj *coreglib.Object) *TreeListRow {
@@ -625,4 +651,24 @@ func (self *TreeListRow) SetExpanded(expanded bool) {
 	C.gtk_tree_list_row_set_expanded(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expanded)
+}
+
+// TreeListModelClass: instance of this type is always passed by reference.
+type TreeListModelClass struct {
+	*treeListModelClass
+}
+
+// treeListModelClass is the struct that's finalized.
+type treeListModelClass struct {
+	native *C.GtkTreeListModelClass
+}
+
+// TreeListRowClass: instance of this type is always passed by reference.
+type TreeListRowClass struct {
+	*treeListRowClass
+}
+
+// treeListRowClass is the struct that's finalized.
+type treeListRowClass struct {
+	native *C.GtkTreeListRowClass
 }

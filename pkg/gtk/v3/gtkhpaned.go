@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -46,7 +48,19 @@ var (
 	_ coreglib.Objector = (*HPaned)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeHPaned,
+		GoType:    reflect.TypeOf((*HPaned)(nil)),
+		InitClass: initClassHPaned,
+	})
+}
+
 func initClassHPaned(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitHPaned(*HPanedClass) }); ok {
+		klass := (*HPanedClass)(gextras.NewStructNative(gclass))
+		goval.InitHPaned(klass)
+	}
 }
 
 func wrapHPaned(obj *coreglib.Object) *HPaned {
@@ -96,4 +110,21 @@ func NewHPaned() *HPaned {
 	_hPaned = wrapHPaned(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hPaned
+}
+
+// HPanedClass: instance of this type is always passed by reference.
+type HPanedClass struct {
+	*hPanedClass
+}
+
+// hPanedClass is the struct that's finalized.
+type hPanedClass struct {
+	native *C.GtkHPanedClass
+}
+
+func (h *HPanedClass) ParentClass() *PanedClass {
+	valptr := &h.native.parent_class
+	var v *PanedClass // out
+	v = (*PanedClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -30,10 +30,6 @@ func init() {
 	})
 }
 
-// GestureDragOverrider contains methods that are overridable.
-type GestureDragOverrider interface {
-}
-
 // GestureDrag is a Gesture implementation that recognizes drag operations. The
 // drag operation itself can be tracked throught the GestureDrag::drag-begin,
 // GestureDrag::drag-update and GestureDrag::drag-end signals, or the relevant
@@ -47,9 +43,6 @@ type GestureDrag struct {
 var (
 	_ Gesturer = (*GestureDrag)(nil)
 )
-
-func initClassGestureDrag(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureDrag(obj *coreglib.Object) *GestureDrag {
 	return &GestureDrag{

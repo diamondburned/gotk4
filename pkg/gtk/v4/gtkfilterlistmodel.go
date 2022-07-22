@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -50,7 +52,19 @@ var (
 	_ coreglib.Objector = (*FilterListModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFilterListModel,
+		GoType:    reflect.TypeOf((*FilterListModel)(nil)),
+		InitClass: initClassFilterListModel,
+	})
+}
+
 func initClassFilterListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFilterListModel(*FilterListModelClass) }); ok {
+		klass := (*FilterListModelClass)(gextras.NewStructNative(gclass))
+		goval.InitFilterListModel(klass)
+	}
 }
 
 func wrapFilterListModel(obj *coreglib.Object) *FilterListModel {
@@ -294,4 +308,14 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// FilterListModelClass: instance of this type is always passed by reference.
+type FilterListModelClass struct {
+	*filterListModelClass
+}
+
+// filterListModelClass is the struct that's finalized.
+type filterListModelClass struct {
+	native *C.GtkFilterListModelClass
 }

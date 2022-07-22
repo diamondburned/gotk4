@@ -3,9 +3,11 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -66,7 +68,19 @@ var (
 	_ coreglib.Objector = (*Registry)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRegistry,
+		GoType:    reflect.TypeOf((*Registry)(nil)),
+		InitClass: initClassRegistry,
+	})
+}
+
 func initClassRegistry(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRegistry(*RegistryClass) }); ok {
+		klass := (*RegistryClass)(gextras.NewStructNative(gclass))
+		goval.InitRegistry(klass)
+	}
 }
 
 func wrapRegistry(obj *coreglib.Object) *Registry {
@@ -162,4 +176,14 @@ func (registry *Registry) SetFactoryType(typ, factoryType coreglib.Type) {
 	runtime.KeepAlive(registry)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(factoryType)
+}
+
+// RegistryClass: instance of this type is always passed by reference.
+type RegistryClass struct {
+	*registryClass
+}
+
+// registryClass is the struct that's finalized.
+type registryClass struct {
+	native *C.AtkRegistryClass
 }

@@ -543,7 +543,7 @@ func (typ *Resolved) ImplName() string {
 	if name == "Object" {
 		// Avoid collision with coreglib.Object, since that might be embedded
 		// into an implementation struct.
-		name = "ObjectClass"
+		name = typ.Extern.Namespace.Name + "Object"
 	}
 
 	return name
@@ -564,17 +564,11 @@ func (typ *Resolved) PublicName() string {
 	name := strcases.PascalToGo(typ.Extern.Name())
 
 	switch typ.Extern.Type.(type) {
-	case *gir.Class:
+	case *gir.Class, *gir.Interface:
 		// Avoid collision with coreglib.Object, since that might be embedded
 		// into an implementation struct.
 		if name == "Object" {
-			name = "ObjectClass"
-		}
-		name = strcases.Interfacify(name)
-
-	case *gir.Interface:
-		if name == "Object" {
-			name = "ObjectInterface"
+			name = typ.Extern.Namespace.Name + "Object"
 		}
 		name = strcases.Interfacify(name)
 	}

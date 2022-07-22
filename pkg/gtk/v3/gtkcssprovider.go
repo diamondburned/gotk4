@@ -124,11 +124,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCSSProvider,
-		GoType:       reflect.TypeOf((*CSSProvider)(nil)),
-		InitClass:    initClassCSSProvider,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCssProvider{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCssProviderClass{})),
+		GType:     GTypeCSSProvider,
+		GoType:    reflect.TypeOf((*CSSProvider)(nil)),
+		InitClass: initClassCSSProvider,
 	})
 }
 
@@ -140,6 +138,10 @@ func initClassCSSProvider(gclass unsafe.Pointer, goval any) {
 		ParsingError(section *CSSSection, err error)
 	}); ok {
 		pclass.parsing_error = (*[0]byte)(C._gotk4_gtk3_CssProviderClass_parsing_error)
+	}
+	if goval, ok := goval.(interface{ InitCSSProvider(*CSSProviderClass) }); ok {
+		klass := (*CSSProviderClass)(gextras.NewStructNative(gclass))
+		goval.InitCSSProvider(klass)
 	}
 }
 
@@ -435,4 +437,14 @@ func CSSProviderGetNamed(name, variant string) *CSSProvider {
 	_cssProvider = wrapCSSProvider(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cssProvider
+}
+
+// CSSProviderClass: instance of this type is always passed by reference.
+type CSSProviderClass struct {
+	*cssProviderClass
+}
+
+// cssProviderClass is the struct that's finalized.
+type cssProviderClass struct {
+	native *C.GtkCssProviderClass
 }

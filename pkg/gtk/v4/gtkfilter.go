@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -168,11 +169,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFilter,
-		GoType:       reflect.TypeOf((*Filter)(nil)),
-		InitClass:    initClassFilter,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFilter{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFilterClass{})),
+		GType:     GTypeFilter,
+		GoType:    reflect.TypeOf((*Filter)(nil)),
+		InitClass: initClassFilter,
 	})
 }
 
@@ -188,6 +187,10 @@ func initClassFilter(gclass unsafe.Pointer, goval any) {
 		Match(item *coreglib.Object) bool
 	}); ok {
 		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
+	}
+	if goval, ok := goval.(interface{ InitFilter(*FilterClass) }); ok {
+		klass := (*FilterClass)(gextras.NewStructNative(gclass))
+		goval.InitFilter(klass)
 	}
 }
 
@@ -349,4 +352,14 @@ func (self *Filter) Match(item *coreglib.Object) bool {
 	}
 
 	return _ok
+}
+
+// FilterClass: instance of this type is always passed by reference.
+type FilterClass struct {
+	*filterClass
+}
+
+// filterClass is the struct that's finalized.
+type filterClass struct {
+	native *C.GtkFilterClass
 }

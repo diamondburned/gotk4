@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -82,11 +83,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFileChooserButton,
-		GoType:       reflect.TypeOf((*FileChooserButton)(nil)),
-		InitClass:    initClassFileChooserButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFileChooserButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFileChooserButtonClass{})),
+		GType:     GTypeFileChooserButton,
+		GoType:    reflect.TypeOf((*FileChooserButton)(nil)),
+		InitClass: initClassFileChooserButton,
 	})
 }
 
@@ -96,6 +95,10 @@ func initClassFileChooserButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ FileSet() }); ok {
 		pclass.file_set = (*[0]byte)(C._gotk4_gtk3_FileChooserButtonClass_file_set)
+	}
+	if goval, ok := goval.(interface{ InitFileChooserButton(*FileChooserButtonClass) }); ok {
+		klass := (*FileChooserButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitFileChooserButton(klass)
 	}
 }
 
@@ -362,4 +365,22 @@ func (button *FileChooserButton) SetWidthChars(nChars int) {
 	C.gtk_file_chooser_button_set_width_chars(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(nChars)
+}
+
+// FileChooserButtonClass: instance of this type is always passed by reference.
+type FileChooserButtonClass struct {
+	*fileChooserButtonClass
+}
+
+// fileChooserButtonClass is the struct that's finalized.
+type fileChooserButtonClass struct {
+	native *C.GtkFileChooserButtonClass
+}
+
+// ParentClass: parent class.
+func (f *FileChooserButtonClass) ParentClass() *BoxClass {
+	valptr := &f.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

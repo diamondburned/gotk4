@@ -134,3 +134,13 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 
 	return _hyperlink
 }
+
+// HyperlinkImplIface: instance of this type is always passed by reference.
+type HyperlinkImplIface struct {
+	*hyperlinkImplIface
+}
+
+// hyperlinkImplIface is the struct that's finalized.
+type hyperlinkImplIface struct {
+	native *C.AtkHyperlinkImplIface
+}

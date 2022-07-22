@@ -100,7 +100,7 @@ type SelectionOverrider interface {
 	//    - object (optional) representing the selected accessible, or NULL if
 	//      selection does not implement this interface.
 	//
-	RefSelection(i int) *ObjectClass
+	RefSelection(i int) *AtkObject
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
 	//
@@ -166,7 +166,7 @@ type Selectioner interface {
 	IsChildSelected(i int) bool
 	// RefSelection gets a reference to the accessible object representing the
 	// specified selected child of the object.
-	RefSelection(i int) *ObjectClass
+	RefSelection(i int) *AtkObject
 	// RemoveSelection removes the specified child of the object from the
 	// object's selection.
 	RemoveSelection(i int) bool
@@ -482,7 +482,7 @@ func (selection *Selection) IsChildSelected(i int) bool {
 //    - object (optional) representing the selected accessible, or NULL if
 //      selection does not implement this interface.
 //
-func (selection *Selection) RefSelection(i int) *ObjectClass {
+func (selection *Selection) RefSelection(i int) *AtkObject {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -494,7 +494,7 @@ func (selection *Selection) RefSelection(i int) *ObjectClass {
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	if _cret != nil {
 		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -559,4 +559,14 @@ func (selection *Selection) SelectAllSelection() bool {
 	}
 
 	return _ok
+}
+
+// SelectionIface: instance of this type is always passed by reference.
+type SelectionIface struct {
+	*selectionIface
+}
+
+// selectionIface is the struct that's finalized.
+type selectionIface struct {
+	native *C.AtkSelectionIface
 }

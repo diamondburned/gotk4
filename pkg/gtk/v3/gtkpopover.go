@@ -108,11 +108,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePopover,
-		GoType:       reflect.TypeOf((*Popover)(nil)),
-		InitClass:    initClassPopover,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkPopover{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkPopoverClass{})),
+		GType:     GTypePopover,
+		GoType:    reflect.TypeOf((*Popover)(nil)),
+		InitClass: initClassPopover,
 	})
 }
 
@@ -122,6 +120,10 @@ func initClassPopover(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Closed() }); ok {
 		pclass.closed = (*[0]byte)(C._gotk4_gtk3_PopoverClass_closed)
+	}
+	if goval, ok := goval.(interface{ InitPopover(*PopoverClass) }); ok {
+		klass := (*PopoverClass)(gextras.NewStructNative(gclass))
+		goval.InitPopover(klass)
 	}
 }
 
@@ -682,4 +684,21 @@ func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 	C.gtk_popover_set_transitions_enabled(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(transitionsEnabled)
+}
+
+// PopoverClass: instance of this type is always passed by reference.
+type PopoverClass struct {
+	*popoverClass
+}
+
+// popoverClass is the struct that's finalized.
+type popoverClass struct {
+	native *C.GtkPopoverClass
+}
+
+func (p *PopoverClass) ParentClass() *BinClass {
+	valptr := &p.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

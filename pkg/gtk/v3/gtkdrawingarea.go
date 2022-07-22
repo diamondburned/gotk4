@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -116,7 +118,19 @@ var (
 	_ Widgetter = (*DrawingArea)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDrawingArea,
+		GoType:    reflect.TypeOf((*DrawingArea)(nil)),
+		InitClass: initClassDrawingArea,
+	})
+}
+
 func initClassDrawingArea(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDrawingArea(*DrawingAreaClass) }); ok {
+		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
+		goval.InitDrawingArea(klass)
+	}
 }
 
 func wrapDrawingArea(obj *coreglib.Object) *DrawingArea {
@@ -156,4 +170,21 @@ func NewDrawingArea() *DrawingArea {
 	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _drawingArea
+}
+
+// DrawingAreaClass: instance of this type is always passed by reference.
+type DrawingAreaClass struct {
+	*drawingAreaClass
+}
+
+// drawingAreaClass is the struct that's finalized.
+type drawingAreaClass struct {
+	native *C.GtkDrawingAreaClass
+}
+
+func (d *DrawingAreaClass) ParentClass() *WidgetClass {
+	valptr := &d.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -116,11 +116,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeActionGroup,
-		GoType:       reflect.TypeOf((*ActionGroup)(nil)),
-		InitClass:    initClassActionGroup,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkActionGroup{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkActionGroupClass{})),
+		GType:     GTypeActionGroup,
+		GoType:    reflect.TypeOf((*ActionGroup)(nil)),
+		InitClass: initClassActionGroup,
 	})
 }
 
@@ -132,6 +130,10 @@ func initClassActionGroup(gclass unsafe.Pointer, goval any) {
 		Action(actionName string) *Action
 	}); ok {
 		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_ActionGroupClass_get_action)
+	}
+	if goval, ok := goval.(interface{ InitActionGroup(*ActionGroupClass) }); ok {
+		klass := (*ActionGroupClass)(gextras.NewStructNative(gclass))
+		goval.InitActionGroup(klass)
 	}
 }
 
@@ -814,6 +816,16 @@ func (a *ActionEntry) Tooltip() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
+}
+
+// ActionGroupClass: instance of this type is always passed by reference.
+type ActionGroupClass struct {
+	*actionGroupClass
+}
+
+// actionGroupClass is the struct that's finalized.
+type actionGroupClass struct {
+	native *C.GtkActionGroupClass
 }
 
 // RadioActionEntry structs are used with gtk_action_group_add_radio_actions()

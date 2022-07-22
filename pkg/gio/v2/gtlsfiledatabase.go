@@ -112,3 +112,16 @@ func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 
 	return _tlsFileDatabase, _goerr
 }
+
+// TLSFileDatabaseInterface provides an interface for FileDatabase
+// implementations.
+//
+// An instance of this type is always passed by reference.
+type TLSFileDatabaseInterface struct {
+	*tlsFileDatabaseInterface
+}
+
+// tlsFileDatabaseInterface is the struct that's finalized.
+type tlsFileDatabaseInterface struct {
+	native *C.GTlsFileDatabaseInterface
+}

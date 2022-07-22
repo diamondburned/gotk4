@@ -298,3 +298,16 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 
 	return _object, _goerr
 }
+
+// AsyncInitableIface provides an interface for asynchronous initializing object
+// such that initialization may fail.
+//
+// An instance of this type is always passed by reference.
+type AsyncInitableIface struct {
+	*asyncInitableIface
+}
+
+// asyncInitableIface is the struct that's finalized.
+type asyncInitableIface struct {
+	native *C.GAsyncInitableIface
+}

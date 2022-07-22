@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// X11DeviceManagerCoreOverrider contains methods that are overridable.
-type X11DeviceManagerCoreOverrider interface {
-}
-
 type X11DeviceManagerCore struct {
 	_ [0]func() // equal guard
 	gdk.DeviceManager
@@ -37,9 +33,6 @@ type X11DeviceManagerCore struct {
 var (
 	_ gdk.DeviceManagerer = (*X11DeviceManagerCore)(nil)
 )
-
-func initClassX11DeviceManagerCore(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11DeviceManagerCore(obj *coreglib.Object) *X11DeviceManagerCore {
 	return &X11DeviceManagerCore{

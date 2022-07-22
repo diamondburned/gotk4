@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -192,7 +194,19 @@ var (
 	_ Binner            = (*FileChooserDialog)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFileChooserDialog,
+		GoType:    reflect.TypeOf((*FileChooserDialog)(nil)),
+		InitClass: initClassFileChooserDialog,
+	})
+}
+
 func initClassFileChooserDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFileChooserDialog(*FileChooserDialogClass) }); ok {
+		klass := (*FileChooserDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitFileChooserDialog(klass)
+	}
 }
 
 func wrapFileChooserDialog(obj *coreglib.Object) *FileChooserDialog {
@@ -226,4 +240,21 @@ func wrapFileChooserDialog(obj *coreglib.Object) *FileChooserDialog {
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return wrapFileChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// FileChooserDialogClass: instance of this type is always passed by reference.
+type FileChooserDialogClass struct {
+	*fileChooserDialogClass
+}
+
+// fileChooserDialogClass is the struct that's finalized.
+type fileChooserDialogClass struct {
+	native *C.GtkFileChooserDialogClass
+}
+
+func (f *FileChooserDialogClass) ParentClass() *DialogClass {
+	valptr := &f.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

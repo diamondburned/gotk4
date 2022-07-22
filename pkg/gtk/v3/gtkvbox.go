@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -65,7 +67,19 @@ var (
 	_ coreglib.Objector = (*VBox)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeVBox,
+		GoType:    reflect.TypeOf((*VBox)(nil)),
+		InitClass: initClassVBox,
+	})
+}
+
 func initClassVBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitVBox(*VBoxClass) }); ok {
+		klass := (*VBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitVBox(klass)
+	}
 }
 
 func wrapVBox(obj *coreglib.Object) *VBox {
@@ -132,4 +146,21 @@ func NewVBox(homogeneous bool, spacing int) *VBox {
 	_vBox = wrapVBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vBox
+}
+
+// VBoxClass: instance of this type is always passed by reference.
+type VBoxClass struct {
+	*vBoxClass
+}
+
+// vBoxClass is the struct that's finalized.
+type vBoxClass struct {
+	native *C.GtkVBoxClass
+}
+
+func (v *VBoxClass) ParentClass() *BoxClass {
+	valptr := &v.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

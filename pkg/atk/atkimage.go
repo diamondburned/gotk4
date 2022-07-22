@@ -380,3 +380,13 @@ func (image *Image) SetImageDescription(description string) bool {
 
 	return _ok
 }
+
+// ImageIface: instance of this type is always passed by reference.
+type ImageIface struct {
+	*imageIface
+}
+
+// imageIface is the struct that's finalized.
+type imageIface struct {
+	native *C.AtkImageIface
+}

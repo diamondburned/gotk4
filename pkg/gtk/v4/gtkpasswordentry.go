@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// PasswordEntryOverrider contains methods that are overridable.
-type PasswordEntryOverrider interface {
-}
-
 // PasswordEntry: GtkPasswordEntry is an entry that has been tailored for
 // entering secrets.
 //
@@ -76,9 +72,6 @@ var (
 	_ Widgetter         = (*PasswordEntry)(nil)
 	_ coreglib.Objector = (*PasswordEntry)(nil)
 )
-
-func initClassPasswordEntry(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapPasswordEntry(obj *coreglib.Object) *PasswordEntry {
 	return &PasswordEntry{

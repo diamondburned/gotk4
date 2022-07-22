@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -64,7 +66,19 @@ var (
 	_ MenuSheller       = (*RecentChooserMenu)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRecentChooserMenu,
+		GoType:    reflect.TypeOf((*RecentChooserMenu)(nil)),
+		InitClass: initClassRecentChooserMenu,
+	})
+}
+
 func initClassRecentChooserMenu(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRecentChooserMenu(*RecentChooserMenuClass) }); ok {
+		klass := (*RecentChooserMenuClass)(gextras.NewStructNative(gclass))
+		goval.InitRecentChooserMenu(klass)
+	}
 }
 
 func wrapRecentChooserMenu(obj *coreglib.Object) *RecentChooserMenu {
@@ -206,4 +220,21 @@ func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(showNumbers)
+}
+
+// RecentChooserMenuClass: instance of this type is always passed by reference.
+type RecentChooserMenuClass struct {
+	*recentChooserMenuClass
+}
+
+// recentChooserMenuClass is the struct that's finalized.
+type recentChooserMenuClass struct {
+	native *C.GtkRecentChooserMenuClass
+}
+
+func (r *RecentChooserMenuClass) ParentClass() *MenuClass {
+	valptr := &r.native.parent_class
+	var v *MenuClass // out
+	v = (*MenuClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

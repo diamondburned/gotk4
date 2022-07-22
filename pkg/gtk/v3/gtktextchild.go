@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -44,7 +45,19 @@ var (
 	_ coreglib.Objector = (*TextChildAnchor)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTextChildAnchor,
+		GoType:    reflect.TypeOf((*TextChildAnchor)(nil)),
+		InitClass: initClassTextChildAnchor,
+	})
+}
+
 func initClassTextChildAnchor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTextChildAnchor(*TextChildAnchorClass) }); ok {
+		klass := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
+		goval.InitTextChildAnchor(klass)
+	}
 }
 
 func wrapTextChildAnchor(obj *coreglib.Object) *TextChildAnchor {
@@ -149,4 +162,14 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	})
 
 	return _list
+}
+
+// TextChildAnchorClass: instance of this type is always passed by reference.
+type TextChildAnchorClass struct {
+	*textChildAnchorClass
+}
+
+// textChildAnchorClass is the struct that's finalized.
+type textChildAnchorClass struct {
+	native *C.GtkTextChildAnchorClass
 }

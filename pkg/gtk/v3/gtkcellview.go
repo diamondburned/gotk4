@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -66,7 +67,19 @@ var (
 	_ coreglib.Objector = (*CellView)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCellView,
+		GoType:    reflect.TypeOf((*CellView)(nil)),
+		InitClass: initClassCellView,
+	})
+}
+
 func initClassCellView(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCellView(*CellViewClass) }); ok {
+		klass := (*CellViewClass)(gextras.NewStructNative(gclass))
+		goval.InitCellView(klass)
+	}
 }
 
 func wrapCellView(obj *coreglib.Object) *CellView {
@@ -510,4 +523,22 @@ func (cellView *CellView) SetModel(model TreeModeller) {
 	C.gtk_cell_view_set_model(_arg0, _arg1)
 	runtime.KeepAlive(cellView)
 	runtime.KeepAlive(model)
+}
+
+// CellViewClass: instance of this type is always passed by reference.
+type CellViewClass struct {
+	*cellViewClass
+}
+
+// cellViewClass is the struct that's finalized.
+type cellViewClass struct {
+	native *C.GtkCellViewClass
+}
+
+// ParentClass: parent class.
+func (c *CellViewClass) ParentClass() *WidgetClass {
+	valptr := &c.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

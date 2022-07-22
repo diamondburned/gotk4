@@ -44,7 +44,7 @@ type WindowOverrider interface {
 // underlying type by calling Cast().
 type Window struct {
 	_ [0]func() // equal guard
-	ObjectClass
+	AtkObject
 }
 
 var (
@@ -65,7 +65,7 @@ func ifaceInitWindower(gifacePtr, data C.gpointer) {
 
 func wrapWindow(obj *coreglib.Object) *Window {
 	return &Window{
-		ObjectClass: ObjectClass{
+		AtkObject: AtkObject{
 			Object: obj,
 		},
 	}
@@ -275,4 +275,14 @@ func _gotk4_atk1_Window_ConnectRestore(arg0 C.gpointer, arg1 C.guintptr) {
 // ConnectRestore: signal Window::restore is emitted when a window is restored.
 func (v *Window) ConnectRestore(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "restore", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectRestore), f)
+}
+
+// WindowIface: instance of this type is always passed by reference.
+type WindowIface struct {
+	*windowIface
+}
+
+// windowIface is the struct that's finalized.
+type windowIface struct {
+	native *C.AtkWindowIface
 }

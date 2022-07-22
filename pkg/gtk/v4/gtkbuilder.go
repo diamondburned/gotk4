@@ -121,10 +121,6 @@ func (b BuilderError) String() string {
 	}
 }
 
-// BuilderOverrider contains methods that are overridable.
-type BuilderOverrider interface {
-}
-
 // Builder: GtkBuilder reads XML descriptions of a user interface and
 // instantiates the described objects.
 //
@@ -304,9 +300,6 @@ type Builder struct {
 var (
 	_ coreglib.Objector = (*Builder)(nil)
 )
-
-func initClassBuilder(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapBuilder(obj *coreglib.Object) *Builder {
 	return &Builder{

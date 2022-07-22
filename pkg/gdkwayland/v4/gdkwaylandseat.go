@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// WaylandSeatOverrider contains methods that are overridable.
-type WaylandSeatOverrider interface {
-}
-
 // WaylandSeat: wayland implementation of GdkSeat.
 //
 // Beyond the regular gdk.Seat API, the Wayland implementation provides access
@@ -41,9 +37,6 @@ type WaylandSeat struct {
 var (
 	_ gdk.Seater = (*WaylandSeat)(nil)
 )
-
-func initClassWaylandSeat(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapWaylandSeat(obj *coreglib.Object) *WaylandSeat {
 	return &WaylandSeat{

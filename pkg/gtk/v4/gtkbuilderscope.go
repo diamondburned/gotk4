@@ -4,9 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -189,8 +191,8 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 	return wrapBuilderScope(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (self *BuilderScope) baseBuilderScope() *BuilderScope {
-	return self
+func (v *BuilderScope) baseBuilderScope() *BuilderScope {
+	return v
 }
 
 // BaseBuilderScope returns the underlying base object.
@@ -227,7 +229,19 @@ var (
 	_ coreglib.Objector = (*BuilderCScope)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBuilderCScope,
+		GoType:    reflect.TypeOf((*BuilderCScope)(nil)),
+		InitClass: initClassBuilderCScope,
+	})
+}
+
 func initClassBuilderCScope(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBuilderCScope(*BuilderCScopeClass) }); ok {
+		klass := (*BuilderCScopeClass)(gextras.NewStructNative(gclass))
+		goval.InitBuilderCScope(klass)
+	}
 }
 
 func wrapBuilderCScope(obj *coreglib.Object) *BuilderCScope {
@@ -263,4 +277,29 @@ func NewBuilderCScope() *BuilderCScope {
 	_builderCScope = wrapBuilderCScope(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _builderCScope
+}
+
+// BuilderCScopeClass: instance of this type is always passed by reference.
+type BuilderCScopeClass struct {
+	*builderCScopeClass
+}
+
+// builderCScopeClass is the struct that's finalized.
+type builderCScopeClass struct {
+	native *C.GtkBuilderCScopeClass
+}
+
+// BuilderScopeInterface: virtual function table to implement for BuilderScope
+// implementations. Default implementations for each function do exist, but they
+// usually just fail, so it is suggested that implementations implement all of
+// them.
+//
+// An instance of this type is always passed by reference.
+type BuilderScopeInterface struct {
+	*builderScopeInterface
+}
+
+// builderScopeInterface is the struct that's finalized.
+type builderScopeInterface struct {
+	native *C.GtkBuilderScopeInterface
 }

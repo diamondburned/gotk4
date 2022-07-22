@@ -147,10 +147,6 @@ func (w WrapMode) String() string {
 	}
 }
 
-// LayoutOverrider contains methods that are overridable.
-type LayoutOverrider interface {
-}
-
 // Layout: PangoLayout structure represents an entire paragraph of text.
 //
 // While complete access to the layout capabilities of Pango is provided using
@@ -182,9 +178,6 @@ type Layout struct {
 var (
 	_ coreglib.Objector = (*Layout)(nil)
 )
-
-func initClassLayout(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapLayout(obj *coreglib.Object) *Layout {
 	return &Layout{

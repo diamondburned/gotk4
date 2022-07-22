@@ -332,7 +332,7 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 
 	_, dup := registeredPrivateInstances.LoadOrStore(gclass, &privateGoInstance{data: data})
 	if dup {
-		log.Panicln("init_class called on the same gclass %s (%p) twice", subclass.goType, gclass)
+		log.Panicf("init_class called on the same gclass %s (%p) twice", subclass.goType, gclass)
 	}
 
 	// Add 2 pointers, one for our constant RegisteredSubclass type info, one
@@ -353,7 +353,7 @@ func _gotk4_gobject_finalize_class(gclass, data C.gpointer) {
 	// Unregister our gclass.
 	privateV, ok := registeredPrivateInstances.LoadAndDelete(gclass)
 	if !ok {
-		log.Panicln("cannot delete known gclass %s (%p)", subclass.goType, gclass)
+		log.Panicf("cannot delete known gclass %s (%p)", subclass.goType, gclass)
 		return
 	}
 
@@ -371,7 +371,7 @@ func _gotk4_gobject_init_instance(obj *C.GTypeInstance, gclass C.gpointer) {
 	// Grab our registeredSubclass ID.
 	privateV, ok := registeredPrivateInstances.Load(gclass)
 	if !ok {
-		log.Panicln(
+		log.Panicf(
 			"init_instance called on unregistered gclass %s (%p)",
 			typeFromObject(unsafe.Pointer(obj)), gclass)
 	}

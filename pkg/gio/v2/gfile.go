@@ -6167,3 +6167,26 @@ func FileParseName(parseName string) *File {
 
 	return _file
 }
+
+// FileIface: interface for writing VFS file handles.
+//
+// An instance of this type is always passed by reference.
+type FileIface struct {
+	*fileIface
+}
+
+// fileIface is the struct that's finalized.
+type fileIface struct {
+	native *C.GFileIface
+}
+
+// SupportsThreadContexts: boolean that indicates whether the #GFile
+// implementation supports thread-default contexts. Since 2.22.
+func (f *FileIface) SupportsThreadContexts() bool {
+	valptr := &f.native.supports_thread_contexts
+	var v bool // out
+	if *valptr != 0 {
+		v = true
+	}
+	return v
+}

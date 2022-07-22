@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -95,11 +96,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellRendererAccel,
-		GoType:       reflect.TypeOf((*CellRendererAccel)(nil)),
-		InitClass:    initClassCellRendererAccel,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRendererAccel{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererAccelClass{})),
+		GType:     GTypeCellRendererAccel,
+		GoType:    reflect.TypeOf((*CellRendererAccel)(nil)),
+		InitClass: initClassCellRendererAccel,
 	})
 }
 
@@ -115,6 +114,10 @@ func initClassCellRendererAccel(gclass unsafe.Pointer, goval any) {
 		AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 	}); ok {
 		pclass.accel_edited = (*[0]byte)(C._gotk4_gtk3_CellRendererAccelClass_accel_edited)
+	}
+	if goval, ok := goval.(interface{ InitCellRendererAccel(*CellRendererAccelClass) }); ok {
+		klass := (*CellRendererAccelClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererAccel(klass)
 	}
 }
 
@@ -187,8 +190,8 @@ func _gotk4_gtk3_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.
 }
 
 // ConnectAccelCleared gets emitted when the user has removed the accelerator.
-func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accel, "accel-cleared", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelCleared), f)
+func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "accel-cleared", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelCleared), f)
 }
 
 //export _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited
@@ -218,8 +221,8 @@ func _gotk4_gtk3_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.g
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
-func (accel *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(accel, "accel-edited", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelEdited), f)
+func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "accel-edited", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelEdited), f)
 }
 
 // NewCellRendererAccel creates a new CellRendererAccel.
@@ -238,4 +241,21 @@ func NewCellRendererAccel() *CellRendererAccel {
 	_cellRendererAccel = wrapCellRendererAccel(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererAccel
+}
+
+// CellRendererAccelClass: instance of this type is always passed by reference.
+type CellRendererAccelClass struct {
+	*cellRendererAccelClass
+}
+
+// cellRendererAccelClass is the struct that's finalized.
+type cellRendererAccelClass struct {
+	native *C.GtkCellRendererAccelClass
+}
+
+func (c *CellRendererAccelClass) ParentClass() *CellRendererTextClass {
+	valptr := &c.native.parent_class
+	var v *CellRendererTextClass // out
+	v = (*CellRendererTextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

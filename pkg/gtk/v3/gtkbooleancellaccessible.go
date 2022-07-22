@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*BooleanCellAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBooleanCellAccessible,
+		GoType:    reflect.TypeOf((*BooleanCellAccessible)(nil)),
+		InitClass: initClassBooleanCellAccessible,
+	})
+}
+
 func initClassBooleanCellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitBooleanCellAccessible(*BooleanCellAccessibleClass)
+	}); ok {
+		klass := (*BooleanCellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitBooleanCellAccessible(klass)
+	}
 }
 
 func wrapBooleanCellAccessible(obj *coreglib.Object) *BooleanCellAccessible {
@@ -48,7 +64,7 @@ func wrapBooleanCellAccessible(obj *coreglib.Object) *BooleanCellAccessible {
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -56,14 +72,14 @@ func wrapBooleanCellAccessible(obj *coreglib.Object) *BooleanCellAccessible {
 				Action: atk.Action{
 					Object: obj,
 				},
+				AtkObject: atk.AtkObject{
+					Object: obj,
+				},
 				Component: atk.Component{
 					Object: obj,
 				},
-				ObjectClass: atk.ObjectClass{
-					Object: obj,
-				},
 				TableCell: atk.TableCell{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -74,4 +90,22 @@ func wrapBooleanCellAccessible(obj *coreglib.Object) *BooleanCellAccessible {
 
 func marshalBooleanCellAccessible(p uintptr) (interface{}, error) {
 	return wrapBooleanCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// BooleanCellAccessibleClass: instance of this type is always passed by
+// reference.
+type BooleanCellAccessibleClass struct {
+	*booleanCellAccessibleClass
+}
+
+// booleanCellAccessibleClass is the struct that's finalized.
+type booleanCellAccessibleClass struct {
+	native *C.GtkBooleanCellAccessibleClass
+}
+
+func (b *BooleanCellAccessibleClass) ParentClass() *RendererCellAccessibleClass {
+	valptr := &b.native.parent_class
+	var v *RendererCellAccessibleClass // out
+	v = (*RendererCellAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

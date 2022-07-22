@@ -4,11 +4,13 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -121,7 +123,19 @@ var (
 	_ Containerer = (*Table)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTable,
+		GoType:    reflect.TypeOf((*Table)(nil)),
+		InitClass: initClassTable,
+	})
+}
+
 func initClassTable(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTable(*TableClass) }); ok {
+		klass := (*TableClass)(gextras.NewStructNative(gclass))
+		goval.InitTable(klass)
+	}
 }
 
 func wrapTable(obj *coreglib.Object) *Table {
@@ -724,6 +738,23 @@ func (t *TableChild) SetXpadding(xpadding uint16) {
 func (t *TableChild) SetYpadding(ypadding uint16) {
 	valptr := &t.native.ypadding
 	*valptr = C.guint16(ypadding)
+}
+
+// TableClass: instance of this type is always passed by reference.
+type TableClass struct {
+	*tableClass
+}
+
+// tableClass is the struct that's finalized.
+type tableClass struct {
+	native *C.GtkTableClass
+}
+
+func (t *TableClass) ParentClass() *ContainerClass {
+	valptr := &t.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }
 
 // TableRowCol: instance of this type is always passed by reference.

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*PlugAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypePlugAccessible,
+		GoType:    reflect.TypeOf((*PlugAccessible)(nil)),
+		InitClass: initClassPlugAccessible,
+	})
+}
+
 func initClassPlugAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitPlugAccessible(*PlugAccessibleClass) }); ok {
+		klass := (*PlugAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitPlugAccessible(klass)
+	}
 }
 
 func wrapPlugAccessible(obj *coreglib.Object) *PlugAccessible {
@@ -50,7 +64,7 @@ func wrapPlugAccessible(obj *coreglib.Object) *PlugAccessible {
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						ObjectClass: atk.ObjectClass{
+						AtkObject: atk.AtkObject{
 							Object: obj,
 						},
 					},
@@ -60,7 +74,7 @@ func wrapPlugAccessible(obj *coreglib.Object) *PlugAccessible {
 				},
 			},
 			Window: atk.Window{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -89,4 +103,21 @@ func (plug *PlugAccessible) ID() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// PlugAccessibleClass: instance of this type is always passed by reference.
+type PlugAccessibleClass struct {
+	*plugAccessibleClass
+}
+
+// plugAccessibleClass is the struct that's finalized.
+type plugAccessibleClass struct {
+	native *C.GtkPlugAccessibleClass
+}
+
+func (p *PlugAccessibleClass) ParentClass() *WindowAccessibleClass {
+	valptr := &p.native.parent_class
+	var v *WindowAccessibleClass // out
+	v = (*WindowAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

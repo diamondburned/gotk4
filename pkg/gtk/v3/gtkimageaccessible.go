@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,14 +44,26 @@ var (
 	_ coreglib.Objector = (*ImageAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeImageAccessible,
+		GoType:    reflect.TypeOf((*ImageAccessible)(nil)),
+		InitClass: initClassImageAccessible,
+	})
+}
+
 func initClassImageAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitImageAccessible(*ImageAccessibleClass) }); ok {
+		klass := (*ImageAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitImageAccessible(klass)
+	}
 }
 
 func wrapImageAccessible(obj *coreglib.Object) *ImageAccessible {
 	return &ImageAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -65,4 +79,21 @@ func wrapImageAccessible(obj *coreglib.Object) *ImageAccessible {
 
 func marshalImageAccessible(p uintptr) (interface{}, error) {
 	return wrapImageAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ImageAccessibleClass: instance of this type is always passed by reference.
+type ImageAccessibleClass struct {
+	*imageAccessibleClass
+}
+
+// imageAccessibleClass is the struct that's finalized.
+type imageAccessibleClass struct {
+	native *C.GtkImageAccessibleClass
+}
+
+func (i *ImageAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &i.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

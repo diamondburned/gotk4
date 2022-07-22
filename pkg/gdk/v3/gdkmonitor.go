@@ -73,10 +73,6 @@ func (s SubpixelLayout) String() string {
 	}
 }
 
-// MonitorOverrider contains methods that are overridable.
-type MonitorOverrider interface {
-}
-
 // Monitor objects represent the individual outputs that are associated with a
 // Display. GdkDisplay has APIs to enumerate monitors with
 // gdk_display_get_n_monitors() and gdk_display_get_monitor(), and to find
@@ -93,9 +89,6 @@ type Monitor struct {
 var (
 	_ coreglib.Objector = (*Monitor)(nil)
 )
-
-func initClassMonitor(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapMonitor(obj *coreglib.Object) *Monitor {
 	return &Monitor{

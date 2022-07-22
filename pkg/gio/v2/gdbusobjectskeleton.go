@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -58,11 +59,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeDBusObjectSkeleton,
-		GoType:       reflect.TypeOf((*DBusObjectSkeleton)(nil)),
-		InitClass:    initClassDBusObjectSkeleton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GDBusObjectSkeleton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GDBusObjectSkeletonClass{})),
+		GType:     GTypeDBusObjectSkeleton,
+		GoType:    reflect.TypeOf((*DBusObjectSkeleton)(nil)),
+		InitClass: initClassDBusObjectSkeleton,
 	})
 }
 
@@ -74,6 +73,12 @@ func initClassDBusObjectSkeleton(gclass unsafe.Pointer, goval any) {
 		AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 	}); ok {
 		pclass.authorize_method = (*[0]byte)(C._gotk4_gio2_DBusObjectSkeletonClass_authorize_method)
+	}
+	if goval, ok := goval.(interface {
+		InitDBusObjectSkeleton(*DBusObjectSkeletonClass)
+	}); ok {
+		klass := (*DBusObjectSkeletonClass)(gextras.NewStructNative(gclass))
+		goval.InitDBusObjectSkeleton(klass)
 	}
 }
 
@@ -304,4 +309,16 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(objectPath)
+}
+
+// DBusObjectSkeletonClass class structure for BusObjectSkeleton.
+//
+// An instance of this type is always passed by reference.
+type DBusObjectSkeletonClass struct {
+	*dBusObjectSkeletonClass
+}
+
+// dBusObjectSkeletonClass is the struct that's finalized.
+type dBusObjectSkeletonClass struct {
+	native *C.GDBusObjectSkeletonClass
 }

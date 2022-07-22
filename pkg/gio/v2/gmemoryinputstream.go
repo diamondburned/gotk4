@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -49,7 +50,19 @@ var (
 	_ coreglib.Objector = (*MemoryInputStream)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMemoryInputStream,
+		GoType:    reflect.TypeOf((*MemoryInputStream)(nil)),
+		InitClass: initClassMemoryInputStream,
+	})
+}
+
 func initClassMemoryInputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMemoryInputStream(*MemoryInputStreamClass) }); ok {
+		klass := (*MemoryInputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitMemoryInputStream(klass)
+	}
 }
 
 func wrapMemoryInputStream(obj *coreglib.Object) *MemoryInputStream {
@@ -134,4 +147,21 @@ func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	C.g_memory_input_stream_add_bytes(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(bytes)
+}
+
+// MemoryInputStreamClass: instance of this type is always passed by reference.
+type MemoryInputStreamClass struct {
+	*memoryInputStreamClass
+}
+
+// memoryInputStreamClass is the struct that's finalized.
+type memoryInputStreamClass struct {
+	native *C.GMemoryInputStreamClass
+}
+
+func (m *MemoryInputStreamClass) ParentClass() *InputStreamClass {
+	valptr := &m.native.parent_class
+	var v *InputStreamClass // out
+	v = (*InputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -109,11 +109,27 @@ func marshalShortcutManager(p uintptr) (interface{}, error) {
 	return wrapShortcutManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (self *ShortcutManager) baseShortcutManager() *ShortcutManager {
-	return self
+func (v *ShortcutManager) baseShortcutManager() *ShortcutManager {
+	return v
 }
 
 // BaseShortcutManager returns the underlying base object.
 func BaseShortcutManager(obj ShortcutManagerer) *ShortcutManager {
 	return obj.baseShortcutManager()
+}
+
+// ShortcutManagerInterface: list of functions that can be implemented for the
+// ShortcutManager interface.
+//
+// Note that no function is mandatory to implement, the default implementation
+// will work fine.
+//
+// An instance of this type is always passed by reference.
+type ShortcutManagerInterface struct {
+	*shortcutManagerInterface
+}
+
+// shortcutManagerInterface is the struct that's finalized.
+type shortcutManagerInterface struct {
+	native *C.GtkShortcutManagerInterface
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,19 @@ var (
 	_ coreglib.Objector = (*WindowAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeWindowAccessible,
+		GoType:    reflect.TypeOf((*WindowAccessible)(nil)),
+		InitClass: initClassWindowAccessible,
+	})
+}
+
 func initClassWindowAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitWindowAccessible(*WindowAccessibleClass) }); ok {
+		klass := (*WindowAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitWindowAccessible(klass)
+	}
 }
 
 func wrapWindowAccessible(obj *coreglib.Object) *WindowAccessible {
@@ -50,7 +64,7 @@ func wrapWindowAccessible(obj *coreglib.Object) *WindowAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -60,7 +74,7 @@ func wrapWindowAccessible(obj *coreglib.Object) *WindowAccessible {
 			},
 		},
 		Window: atk.Window{
-			ObjectClass: atk.ObjectClass{
+			AtkObject: atk.AtkObject{
 				Object: obj,
 			},
 		},
@@ -69,4 +83,21 @@ func wrapWindowAccessible(obj *coreglib.Object) *WindowAccessible {
 
 func marshalWindowAccessible(p uintptr) (interface{}, error) {
 	return wrapWindowAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// WindowAccessibleClass: instance of this type is always passed by reference.
+type WindowAccessibleClass struct {
+	*windowAccessibleClass
+}
+
+// windowAccessibleClass is the struct that's finalized.
+type windowAccessibleClass struct {
+	native *C.GtkWindowAccessibleClass
+}
+
+func (w *WindowAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &w.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

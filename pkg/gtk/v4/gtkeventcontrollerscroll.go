@@ -98,10 +98,6 @@ func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
 	return (e & other) == other
 }
 
-// EventControllerScrollOverrider contains methods that are overridable.
-type EventControllerScrollOverrider interface {
-}
-
 // EventControllerScroll: GtkEventControllerScroll is an event controller that
 // handles scroll events.
 //
@@ -145,9 +141,6 @@ type EventControllerScroll struct {
 var (
 	_ EventControllerer = (*EventControllerScroll)(nil)
 )
-
-func initClassEventControllerScroll(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventControllerScroll(obj *coreglib.Object) *EventControllerScroll {
 	return &EventControllerScroll{

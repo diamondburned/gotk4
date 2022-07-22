@@ -129,11 +129,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFileEnumerator,
-		GoType:       reflect.TypeOf((*FileEnumerator)(nil)),
-		InitClass:    initClassFileEnumerator,
-		ClassSize:    uint32(unsafe.Sizeof(C.GFileEnumerator{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GFileEnumeratorClass{})),
+		GType:     GTypeFileEnumerator,
+		GoType:    reflect.TypeOf((*FileEnumerator)(nil)),
+		InitClass: initClassFileEnumerator,
 	})
 }
 
@@ -163,6 +161,10 @@ func initClassFileEnumerator(gclass unsafe.Pointer, goval any) {
 		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 	}); ok {
 		pclass.next_files_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
+	}
+	if goval, ok := goval.(interface{ InitFileEnumerator(*FileEnumeratorClass) }); ok {
+		klass := (*FileEnumeratorClass)(gextras.NewStructNative(gclass))
+		goval.InitFileEnumerator(klass)
 	}
 }
 
@@ -766,4 +768,14 @@ func (enumerator *FileEnumerator) SetPending(pending bool) {
 	C.g_file_enumerator_set_pending(_arg0, _arg1)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(pending)
+}
+
+// FileEnumeratorClass: instance of this type is always passed by reference.
+type FileEnumeratorClass struct {
+	*fileEnumeratorClass
+}
+
+// fileEnumeratorClass is the struct that's finalized.
+type fileEnumeratorClass struct {
+	native *C.GFileEnumeratorClass
 }

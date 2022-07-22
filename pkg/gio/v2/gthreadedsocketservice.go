@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -64,11 +65,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeThreadedSocketService,
-		GoType:       reflect.TypeOf((*ThreadedSocketService)(nil)),
-		InitClass:    initClassThreadedSocketService,
-		ClassSize:    uint32(unsafe.Sizeof(C.GThreadedSocketService{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GThreadedSocketServiceClass{})),
+		GType:     GTypeThreadedSocketService,
+		GoType:    reflect.TypeOf((*ThreadedSocketService)(nil)),
+		InitClass: initClassThreadedSocketService,
 	})
 }
 
@@ -80,6 +79,12 @@ func initClassThreadedSocketService(gclass unsafe.Pointer, goval any) {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	}); ok {
 		pclass.run = (*[0]byte)(C._gotk4_gio2_ThreadedSocketServiceClass_run)
+	}
+	if goval, ok := goval.(interface {
+		InitThreadedSocketService(*ThreadedSocketServiceClass)
+	}); ok {
+		klass := (*ThreadedSocketServiceClass)(gextras.NewStructNative(gclass))
+		goval.InitThreadedSocketService(klass)
 	}
 }
 
@@ -151,8 +156,8 @@ func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSock
 // connection. This thread is dedicated to handling connection and may perform
 // blocking IO. The signal handler need not return until the connection is
 // closed.
-func (service *ThreadedSocketService) ConnectRun(f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(service, "run", false, unsafe.Pointer(C._gotk4_gio2_ThreadedSocketService_ConnectRun), f)
+func (v *ThreadedSocketService) ConnectRun(f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "run", false, unsafe.Pointer(C._gotk4_gio2_ThreadedSocketService_ConnectRun), f)
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.
@@ -181,4 +186,22 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
+}
+
+// ThreadedSocketServiceClass: instance of this type is always passed by
+// reference.
+type ThreadedSocketServiceClass struct {
+	*threadedSocketServiceClass
+}
+
+// threadedSocketServiceClass is the struct that's finalized.
+type threadedSocketServiceClass struct {
+	native *C.GThreadedSocketServiceClass
+}
+
+func (t *ThreadedSocketServiceClass) ParentClass() *SocketServiceClass {
+	valptr := &t.native.parent_class
+	var v *SocketServiceClass // out
+	v = (*SocketServiceClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

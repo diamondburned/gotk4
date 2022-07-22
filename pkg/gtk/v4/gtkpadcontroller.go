@@ -61,10 +61,6 @@ func (p PadActionType) String() string {
 	}
 }
 
-// PadControllerOverrider contains methods that are overridable.
-type PadControllerOverrider interface {
-}
-
 // PadController: GtkPadController is an event controller for the pads found in
 // drawing tablets.
 //
@@ -117,9 +113,6 @@ type PadController struct {
 var (
 	_ EventControllerer = (*PadController)(nil)
 )
-
-func initClassPadController(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapPadController(obj *coreglib.Object) *PadController {
 	return &PadController{

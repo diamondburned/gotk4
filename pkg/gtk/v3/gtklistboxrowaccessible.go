@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*ListBoxRowAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeListBoxRowAccessible,
+		GoType:    reflect.TypeOf((*ListBoxRowAccessible)(nil)),
+		InitClass: initClassListBoxRowAccessible,
+	})
+}
+
 func initClassListBoxRowAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitListBoxRowAccessible(*ListBoxRowAccessibleClass)
+	}); ok {
+		klass := (*ListBoxRowAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitListBoxRowAccessible(klass)
+	}
 }
 
 func wrapListBoxRowAccessible(obj *coreglib.Object) *ListBoxRowAccessible {
@@ -48,7 +64,7 @@ func wrapListBoxRowAccessible(obj *coreglib.Object) *ListBoxRowAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -62,4 +78,22 @@ func wrapListBoxRowAccessible(obj *coreglib.Object) *ListBoxRowAccessible {
 
 func marshalListBoxRowAccessible(p uintptr) (interface{}, error) {
 	return wrapListBoxRowAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ListBoxRowAccessibleClass: instance of this type is always passed by
+// reference.
+type ListBoxRowAccessibleClass struct {
+	*listBoxRowAccessibleClass
+}
+
+// listBoxRowAccessibleClass is the struct that's finalized.
+type listBoxRowAccessibleClass struct {
+	native *C.GtkListBoxRowAccessibleClass
+}
+
+func (l *ListBoxRowAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &l.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

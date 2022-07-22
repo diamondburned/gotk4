@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// GesturePanOverrider contains methods that are overridable.
-type GesturePanOverrider interface {
-}
-
 // GesturePan: GtkGesturePan is a GtkGesture for pan gestures.
 //
 // These are drags that are locked to happen along one axis. The axis that a
@@ -51,9 +47,6 @@ type GesturePan struct {
 var (
 	_ Gesturer = (*GesturePan)(nil)
 )
-
-func initClassGesturePan(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGesturePan(obj *coreglib.Object) *GesturePan {
 	return &GesturePan{

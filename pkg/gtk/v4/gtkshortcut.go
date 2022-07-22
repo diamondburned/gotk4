@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -54,7 +55,19 @@ var (
 	_ coreglib.Objector = (*Shortcut)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeShortcut,
+		GoType:    reflect.TypeOf((*Shortcut)(nil)),
+		InitClass: initClassShortcut,
+	})
+}
+
 func initClassShortcut(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitShortcut(*ShortcutClass) }); ok {
+		klass := (*ShortcutClass)(gextras.NewStructNative(gclass))
+		goval.InitShortcut(klass)
+	}
 }
 
 func wrapShortcut(obj *coreglib.Object) *Shortcut {
@@ -271,4 +284,14 @@ func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
 	C.gtk_shortcut_set_trigger(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(trigger)
+}
+
+// ShortcutClass: instance of this type is always passed by reference.
+type ShortcutClass struct {
+	*shortcutClass
+}
+
+// shortcutClass is the struct that's finalized.
+type shortcutClass struct {
+	native *C.GtkShortcutClass
 }

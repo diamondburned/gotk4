@@ -34,10 +34,6 @@ func init() {
 	})
 }
 
-// GestureOverrider contains methods that are overridable.
-type GestureOverrider interface {
-}
-
 // Gesture is the base object for gesture recognition, although this object is
 // quite generalized to serve as a base for multi-touch gestures, it is suitable
 // to implement single-touch and pointer-based gestures (using the special NULL
@@ -155,9 +151,6 @@ type Gesturer interface {
 }
 
 var _ Gesturer = (*Gesture)(nil)
-
-func initClassGesture(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGesture(obj *coreglib.Object) *Gesture {
 	return &Gesture{

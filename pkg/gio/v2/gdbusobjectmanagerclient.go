@@ -129,11 +129,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeDBusObjectManagerClient,
-		GoType:       reflect.TypeOf((*DBusObjectManagerClient)(nil)),
-		InitClass:    initClassDBusObjectManagerClient,
-		ClassSize:    uint32(unsafe.Sizeof(C.GDBusObjectManagerClient{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GDBusObjectManagerClientClass{})),
+		GType:     GTypeDBusObjectManagerClient,
+		GoType:    reflect.TypeOf((*DBusObjectManagerClient)(nil)),
+		InitClass: initClassDBusObjectManagerClient,
 	})
 }
 
@@ -145,6 +143,12 @@ func initClassDBusObjectManagerClient(gclass unsafe.Pointer, goval any) {
 		InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 	}); ok {
 		pclass.interface_proxy_signal = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal)
+	}
+	if goval, ok := goval.(interface {
+		InitDBusObjectManagerClient(*DBusObjectManagerClientClass)
+	}); ok {
+		klass := (*DBusObjectManagerClientClass)(gextras.NewStructNative(gclass))
+		goval.InitDBusObjectManagerClient(klass)
 	}
 }
 
@@ -741,4 +745,16 @@ func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flag
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(getProxyTypeFunc)
 	runtime.KeepAlive(callback)
+}
+
+// DBusObjectManagerClientClass class structure for BusObjectManagerClient.
+//
+// An instance of this type is always passed by reference.
+type DBusObjectManagerClientClass struct {
+	*dBusObjectManagerClientClass
+}
+
+// dBusObjectManagerClientClass is the struct that's finalized.
+type dBusObjectManagerClientClass struct {
+	native *C.GDBusObjectManagerClientClass
 }

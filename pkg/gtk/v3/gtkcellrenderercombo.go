@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -53,7 +54,19 @@ var (
 	_ CellRendererer = (*CellRendererCombo)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCellRendererCombo,
+		GoType:    reflect.TypeOf((*CellRendererCombo)(nil)),
+		InitClass: initClassCellRendererCombo,
+	})
+}
+
 func initClassCellRendererCombo(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCellRendererCombo(*CellRendererComboClass) }); ok {
+		klass := (*CellRendererComboClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererCombo(klass)
+	}
 }
 
 func wrapCellRendererCombo(obj *coreglib.Object) *CellRendererCombo {
@@ -130,4 +143,21 @@ func NewCellRendererCombo() *CellRendererCombo {
 	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererCombo
+}
+
+// CellRendererComboClass: instance of this type is always passed by reference.
+type CellRendererComboClass struct {
+	*cellRendererComboClass
+}
+
+// cellRendererComboClass is the struct that's finalized.
+type cellRendererComboClass struct {
+	native *C.GtkCellRendererComboClass
+}
+
+func (c *CellRendererComboClass) Parent() *CellRendererTextClass {
+	valptr := &c.native.parent
+	var v *CellRendererTextClass // out
+	v = (*CellRendererTextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

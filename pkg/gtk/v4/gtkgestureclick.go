@@ -30,10 +30,6 @@ func init() {
 	})
 }
 
-// GestureClickOverrider contains methods that are overridable.
-type GestureClickOverrider interface {
-}
-
 // GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.
 //
 // It is able to recognize multiple clicks on a nearby zone, which can be
@@ -48,9 +44,6 @@ type GestureClick struct {
 var (
 	_ Gesturer = (*GestureClick)(nil)
 )
-
-func initClassGestureClick(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureClick(obj *coreglib.Object) *GestureClick {
 	return &GestureClick{

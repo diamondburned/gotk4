@@ -16,6 +16,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -621,7 +622,7 @@ type WidgetOverrider interface {
 	//
 	//    - object associated with widget.
 	//
-	Accessible() *atk.ObjectClass
+	Accessible() *atk.AtkObject
 	// PreferredHeight retrieves a widget’s initial minimum and natural height.
 	//
 	// This call is specific to width-for-height requests.
@@ -1144,11 +1145,9 @@ var _ Widgetter = (*Widget)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeWidget,
-		GoType:       reflect.TypeOf((*Widget)(nil)),
-		InitClass:    initClassWidget,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkWidget{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkWidgetClass{})),
+		GType:     GTypeWidget,
+		GoType:    reflect.TypeOf((*Widget)(nil)),
+		InitClass: initClassWidget,
 	})
 }
 
@@ -1318,7 +1317,7 @@ func initClassWidget(gclass unsafe.Pointer, goval any) {
 		pclass.focus_out_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_focus_out_event)
 	}
 
-	if _, ok := goval.(interface{ Accessible() *atk.ObjectClass }); ok {
+	if _, ok := goval.(interface{ Accessible() *atk.AtkObject }); ok {
 		pclass.get_accessible = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_accessible)
 	}
 
@@ -1578,6 +1577,10 @@ func initClassWidget(gclass unsafe.Pointer, goval any) {
 		WindowStateEvent(event *gdk.EventWindowState) bool
 	}); ok {
 		pclass.window_state_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_window_state_event)
+	}
+	if goval, ok := goval.(interface{ InitWidget(*WidgetClass) }); ok {
+		klass := (*WidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitWidget(klass)
 	}
 }
 
@@ -2165,7 +2168,7 @@ func _gotk4_gtk3_WidgetClass_focus_out_event(arg0 *C.GtkWidget, arg1 *C.GdkEvent
 //export _gotk4_gtk3_WidgetClass_get_accessible
 func _gotk4_gtk3_WidgetClass_get_accessible(arg0 *C.GtkWidget) (cret *C.AtkObject) {
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Accessible() *atk.ObjectClass })
+	iface := goval.(interface{ Accessible() *atk.AtkObject })
 
 	object := iface.Accessible()
 
@@ -6002,7 +6005,7 @@ func (widget *Widget) FreezeChildNotify() {
 //
 //    - object associated with widget.
 //
-func (widget *Widget) Accessible() *atk.ObjectClass {
+func (widget *Widget) Accessible() *atk.AtkObject {
 	var _arg0 *C.GtkWidget // out
 	var _cret *C.AtkObject // in
 
@@ -6011,11 +6014,11 @@ func (widget *Widget) Accessible() *atk.ObjectClass {
 	_cret = C.gtk_widget_get_accessible(_arg0)
 	runtime.KeepAlive(widget)
 
-	var _object *atk.ObjectClass // out
+	var _object *atk.AtkObject // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_object = &atk.ObjectClass{
+		_object = &atk.AtkObject{
 			Object: obj,
 		}
 	}
@@ -11592,4 +11595,228 @@ func (requisition *Requisition) Copy() *Requisition {
 	)
 
 	return _ret
+}
+
+// WidgetClass: instance of this type is always passed by reference.
+type WidgetClass struct {
+	*widgetClass
+}
+
+// widgetClass is the struct that's finalized.
+type widgetClass struct {
+	native *C.GtkWidgetClass
+}
+
+// ActivateSignal: signal to emit when a widget of this class is activated,
+// gtk_widget_activate() handles the emission. Implementation of this signal is
+// optional.
+func (w *WidgetClass) ActivateSignal() uint {
+	valptr := &w.native.activate_signal
+	var v uint // out
+	v = uint(*valptr)
+	return v
+}
+
+// BindTemplateChildFull: automatically assign an object declared in the class
+// template XML to be set to a location on a freshly built instance’s private
+// data, or alternatively accessible via gtk_widget_get_template_child().
+//
+// The struct can point either into the public instance, then you should use
+// G_STRUCT_OFFSET(WidgetType, member) for struct_offset, or in the private
+// struct, then you should use G_PRIVATE_OFFSET(WidgetType, member).
+//
+// An explicit strong reference will be held automatically for the duration of
+// your instance’s life cycle, it will be released automatically when
+// Class.dispose() runs on your instance and if a struct_offset that is != 0 is
+// specified, then the automatic location in your instance public or private
+// data will be set to NULL. You can however access an automated child pointer
+// the first time your classes Class.dispose() runs, or alternatively in
+// WidgetClass.destroy().
+//
+// If internal_child is specified, BuildableIface.get_internal_child() will be
+// automatically implemented by the Widget class so there is no need to
+// implement it manually.
+//
+// The wrapper macros gtk_widget_class_bind_template_child(),
+// gtk_widget_class_bind_template_child_internal(),
+// gtk_widget_class_bind_template_child_private() and
+// gtk_widget_class_bind_template_child_internal_private() might be more
+// convenient to use.
+//
+// Note that this must be called from a composite widget classes class
+// initializer after calling gtk_widget_class_set_template().
+//
+// The function takes the following parameters:
+//
+//    - name: “id” of the child defined in the template XML.
+//    - internalChild: whether the child should be accessible as an
+//      “internal-child” when this class is used in GtkBuilder XML.
+//    - structOffset: structure offset into the composite widget’s instance
+//      public or private structure where the automated child pointer should be
+//      set, or 0 to not assign the pointer.
+//
+func (widgetClass *WidgetClass) BindTemplateChildFull(name string, internalChild bool, structOffset int) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.gchar          // out
+	var _arg2 C.gboolean        // out
+	var _arg3 C.gssize          // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if internalChild {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.gssize(structOffset)
+
+	C.gtk_widget_class_bind_template_child_full(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(internalChild)
+	runtime.KeepAlive(structOffset)
+}
+
+// CSSName gets the name used by this class for matching in CSS code. See
+// gtk_widget_class_set_css_name() for details.
+//
+// The function returns the following values:
+//
+//    - utf8: CSS name of the given class.
+//
+func (widgetClass *WidgetClass) CSSName() string {
+	var _arg0 *C.GtkWidgetClass // out
+	var _cret *C.char           // in
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+
+	_cret = C.gtk_widget_class_get_css_name(_arg0)
+	runtime.KeepAlive(widgetClass)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// SetAccessibleRole sets the default Role to be set on accessibles created for
+// widgets of widget_class. Accessibles may decide to not honor this setting if
+// their role reporting is more refined. Calls to
+// gtk_widget_class_set_accessible_type() will reset this value.
+//
+// In cases where you want more fine-grained control over the role of
+// accessibles created for widget_class, you should provide your own accessible
+// type and use gtk_widget_class_set_accessible_type() instead.
+//
+// If role is K_ROLE_INVALID, the default role will not be changed and the
+// accessible’s default role will be used instead.
+//
+// This function should only be called from class init functions of widgets.
+//
+// The function takes the following parameters:
+//
+//    - role to use for accessibles created for widget_class.
+//
+func (widgetClass *WidgetClass) SetAccessibleRole(role atk.Role) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 C.AtkRole         // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = C.AtkRole(role)
+
+	C.gtk_widget_class_set_accessible_role(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(role)
+}
+
+// SetAccessibleType sets the type to be used for creating accessibles for
+// widgets of widget_class. The given type must be a subtype of the type used
+// for accessibles of the parent class.
+//
+// This function should only be called from class init functions of widgets.
+//
+// The function takes the following parameters:
+//
+//    - typ: object type that implements the accessible for widget_class.
+//
+func (widgetClass *WidgetClass) SetAccessibleType(typ coreglib.Type) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 C.GType           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = C.GType(typ)
+
+	C.gtk_widget_class_set_accessible_type(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(typ)
+}
+
+// SetCSSName sets the name to be used for CSS matching of widgets.
+//
+// If this function is not called for a given class, the name of the parent
+// class is used.
+//
+// The function takes the following parameters:
+//
+//    - name to use.
+//
+func (widgetClass *WidgetClass) SetCSSName(name string) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_class_set_css_name(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(name)
+}
+
+// SetTemplate: this should be called at class initialization time to specify
+// the GtkBuilder XML to be used to extend a widget.
+//
+// For convenience, gtk_widget_class_set_template_from_resource() is also
+// provided.
+//
+// Note that any class that installs templates must call
+// gtk_widget_init_template() in the widget’s instance initializer.
+//
+// The function takes the following parameters:
+//
+//    - templateBytes holding the Builder XML.
+//
+func (widgetClass *WidgetClass) SetTemplate(templateBytes *glib.Bytes) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.GBytes         // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(templateBytes)))
+
+	C.gtk_widget_class_set_template(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(templateBytes)
+}
+
+// SetTemplateFromResource: convenience function to call
+// gtk_widget_class_set_template().
+//
+// Note that any class that installs templates must call
+// gtk_widget_init_template() in the widget’s instance initializer.
+//
+// The function takes the following parameters:
+//
+//    - resourceName: name of the resource to load the template from.
+//
+func (widgetClass *WidgetClass) SetTemplateFromResource(resourceName string) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourceName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_class_set_template_from_resource(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(resourceName)
 }

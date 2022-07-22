@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -176,11 +177,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSorter,
-		GoType:       reflect.TypeOf((*Sorter)(nil)),
-		InitClass:    initClassSorter,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkSorter{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkSorterClass{})),
+		GType:     GTypeSorter,
+		GoType:    reflect.TypeOf((*Sorter)(nil)),
+		InitClass: initClassSorter,
 	})
 }
 
@@ -196,6 +195,10 @@ func initClassSorter(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Order() SorterOrder }); ok {
 		pclass.get_order = (*[0]byte)(C._gotk4_gtk4_SorterClass_get_order)
+	}
+	if goval, ok := goval.(interface{ InitSorter(*SorterClass) }); ok {
+		klass := (*SorterClass)(gextras.NewStructNative(gclass))
+		goval.InitSorter(klass)
 	}
 }
 
@@ -372,4 +375,16 @@ func (self *Sorter) Order() SorterOrder {
 	_sorterOrder = SorterOrder(_cret)
 
 	return _sorterOrder
+}
+
+// SorterClass: virtual table for GtkSorter.
+//
+// An instance of this type is always passed by reference.
+type SorterClass struct {
+	*sorterClass
+}
+
+// sorterClass is the struct that's finalized.
+type sorterClass struct {
+	native *C.GtkSorterClass
 }

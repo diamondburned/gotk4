@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// FileIconOverrider contains methods that are overridable.
-type FileIconOverrider interface {
-}
-
 // FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon struct {
 	_ [0]func() // equal guard
@@ -40,9 +36,6 @@ type FileIcon struct {
 var (
 	_ coreglib.Objector = (*FileIcon)(nil)
 )
-
-func initClassFileIcon(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapFileIcon(obj *coreglib.Object) *FileIcon {
 	return &FileIcon{

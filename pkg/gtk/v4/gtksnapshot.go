@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// SnapshotOverrider contains methods that are overridable.
-type SnapshotOverrider interface {
-}
-
 // Snapshot: GtkSnapshot assists in creating GskRenderNodes for widgets.
 //
 // It functions in a similar way to a cairo context, and maintains a stack of
@@ -56,9 +52,6 @@ type Snapshot struct {
 var (
 	_ gdk.Snapshotter = (*Snapshot)(nil)
 )
-
-func initClassSnapshot(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapSnapshot(obj *coreglib.Object) *Snapshot {
 	return &Snapshot{

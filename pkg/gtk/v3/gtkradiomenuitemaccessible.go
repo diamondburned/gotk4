@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*RadioMenuItemAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRadioMenuItemAccessible,
+		GoType:    reflect.TypeOf((*RadioMenuItemAccessible)(nil)),
+		InitClass: initClassRadioMenuItemAccessible,
+	})
+}
+
 func initClassRadioMenuItemAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitRadioMenuItemAccessible(*RadioMenuItemAccessibleClass)
+	}); ok {
+		klass := (*RadioMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitRadioMenuItemAccessible(klass)
+	}
 }
 
 func wrapRadioMenuItemAccessible(obj *coreglib.Object) *RadioMenuItemAccessible {
@@ -50,7 +66,7 @@ func wrapRadioMenuItemAccessible(obj *coreglib.Object) *RadioMenuItemAccessible 
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
-							ObjectClass: atk.ObjectClass{
+							AtkObject: atk.AtkObject{
 								Object: obj,
 							},
 						},
@@ -73,4 +89,22 @@ func wrapRadioMenuItemAccessible(obj *coreglib.Object) *RadioMenuItemAccessible 
 
 func marshalRadioMenuItemAccessible(p uintptr) (interface{}, error) {
 	return wrapRadioMenuItemAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// RadioMenuItemAccessibleClass: instance of this type is always passed by
+// reference.
+type RadioMenuItemAccessibleClass struct {
+	*radioMenuItemAccessibleClass
+}
+
+// radioMenuItemAccessibleClass is the struct that's finalized.
+type radioMenuItemAccessibleClass struct {
+	native *C.GtkRadioMenuItemAccessibleClass
+}
+
+func (r *RadioMenuItemAccessibleClass) ParentClass() *CheckMenuItemAccessibleClass {
+	valptr := &r.native.parent_class
+	var v *CheckMenuItemAccessibleClass // out
+	v = (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

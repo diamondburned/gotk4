@@ -4,10 +4,12 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -173,7 +175,19 @@ var (
 	_ Containerer = (*Stack)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStack,
+		GoType:    reflect.TypeOf((*Stack)(nil)),
+		InitClass: initClassStack,
+	})
+}
+
 func initClassStack(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStack(*StackClass) }); ok {
+		klass := (*StackClass)(gextras.NewStructNative(gclass))
+		goval.InitStack(klass)
+	}
 }
 
 func wrapStack(obj *coreglib.Object) *Stack {
@@ -760,4 +774,21 @@ func (stack *Stack) SetVisibleChildName(name string) {
 	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(name)
+}
+
+// StackClass: instance of this type is always passed by reference.
+type StackClass struct {
+	*stackClass
+}
+
+// stackClass is the struct that's finalized.
+type stackClass struct {
+	native *C.GtkStackClass
+}
+
+func (s *StackClass) ParentClass() *ContainerClass {
+	valptr := &s.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -205,7 +206,19 @@ var (
 	_ coreglib.Objector = (*ConstraintLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeConstraintLayout,
+		GoType:    reflect.TypeOf((*ConstraintLayout)(nil)),
+		InitClass: initClassConstraintLayout,
+	})
+}
+
 func initClassConstraintLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitConstraintLayout(*ConstraintLayoutClass) }); ok {
+		klass := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitConstraintLayout(klass)
+	}
 }
 
 func wrapConstraintLayout(obj *coreglib.Object) *ConstraintLayout {
@@ -578,7 +591,21 @@ var (
 	_ LayoutChilder = (*ConstraintLayoutChild)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeConstraintLayoutChild,
+		GoType:    reflect.TypeOf((*ConstraintLayoutChild)(nil)),
+		InitClass: initClassConstraintLayoutChild,
+	})
+}
+
 func initClassConstraintLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitConstraintLayoutChild(*ConstraintLayoutChildClass)
+	}); ok {
+		klass := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.InitConstraintLayoutChild(klass)
+	}
 }
 
 func wrapConstraintLayoutChild(obj *coreglib.Object) *ConstraintLayoutChild {
@@ -591,4 +618,39 @@ func wrapConstraintLayoutChild(obj *coreglib.Object) *ConstraintLayoutChild {
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
 	return wrapConstraintLayoutChild(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConstraintLayoutChildClass: instance of this type is always passed by
+// reference.
+type ConstraintLayoutChildClass struct {
+	*constraintLayoutChildClass
+}
+
+// constraintLayoutChildClass is the struct that's finalized.
+type constraintLayoutChildClass struct {
+	native *C.GtkConstraintLayoutChildClass
+}
+
+func (c *ConstraintLayoutChildClass) ParentClass() *LayoutChildClass {
+	valptr := &c.native.parent_class
+	var v *LayoutChildClass // out
+	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// ConstraintLayoutClass: instance of this type is always passed by reference.
+type ConstraintLayoutClass struct {
+	*constraintLayoutClass
+}
+
+// constraintLayoutClass is the struct that's finalized.
+type constraintLayoutClass struct {
+	native *C.GtkConstraintLayoutClass
+}
+
+func (c *ConstraintLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &c.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

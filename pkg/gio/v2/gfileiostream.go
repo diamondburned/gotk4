@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -146,11 +147,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFileIOStream,
-		GoType:       reflect.TypeOf((*FileIOStream)(nil)),
-		InitClass:    initClassFileIOStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GFileIOStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GFileIOStreamClass{})),
+		GType:     GTypeFileIOStream,
+		GoType:    reflect.TypeOf((*FileIOStream)(nil)),
+		InitClass: initClassFileIOStream,
 	})
 }
 
@@ -196,6 +195,10 @@ func initClassFileIOStream(gclass unsafe.Pointer, goval any) {
 		TruncateFn(ctx context.Context, size int64) error
 	}); ok {
 		pclass.truncate_fn = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_truncate_fn)
+	}
+	if goval, ok := goval.(interface{ InitFileIOStream(*FileIOStreamClass) }); ok {
+		klass := (*FileIOStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitFileIOStream(klass)
 	}
 }
 
@@ -544,4 +547,21 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	}
 
 	return _fileInfo, _goerr
+}
+
+// FileIOStreamClass: instance of this type is always passed by reference.
+type FileIOStreamClass struct {
+	*fileIOStreamClass
+}
+
+// fileIOStreamClass is the struct that's finalized.
+type fileIOStreamClass struct {
+	native *C.GFileIOStreamClass
+}
+
+func (f *FileIOStreamClass) ParentClass() *IOStreamClass {
+	valptr := &f.native.parent_class
+	var v *IOStreamClass // out
+	v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

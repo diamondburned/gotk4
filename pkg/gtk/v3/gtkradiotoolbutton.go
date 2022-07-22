@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -55,7 +56,19 @@ var (
 	_ Binner            = (*RadioToolButton)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRadioToolButton,
+		GoType:    reflect.TypeOf((*RadioToolButton)(nil)),
+		InitClass: initClassRadioToolButton,
+	})
+}
+
 func initClassRadioToolButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRadioToolButton(*RadioToolButtonClass) }); ok {
+		klass := (*RadioToolButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitRadioToolButton(klass)
+	}
 }
 
 func wrapRadioToolButton(obj *coreglib.Object) *RadioToolButton {
@@ -306,4 +319,21 @@ func (button *RadioToolButton) SetGroup(group []*RadioButton) {
 	C.gtk_radio_tool_button_set_group(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(group)
+}
+
+// RadioToolButtonClass: instance of this type is always passed by reference.
+type RadioToolButtonClass struct {
+	*radioToolButtonClass
+}
+
+// radioToolButtonClass is the struct that's finalized.
+type radioToolButtonClass struct {
+	native *C.GtkRadioToolButtonClass
+}
+
+func (r *RadioToolButtonClass) ParentClass() *ToggleToolButtonClass {
+	valptr := &r.native.parent_class
+	var v *ToggleToolButtonClass // out
+	v = (*ToggleToolButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

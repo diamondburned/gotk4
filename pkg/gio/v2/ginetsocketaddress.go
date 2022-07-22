@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ SocketAddresser = (*InetSocketAddress)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeInetSocketAddress,
+		GoType:    reflect.TypeOf((*InetSocketAddress)(nil)),
+		InitClass: initClassInetSocketAddress,
+	})
+}
+
 func initClassInetSocketAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitInetSocketAddress(*InetSocketAddressClass) }); ok {
+		klass := (*InetSocketAddressClass)(gextras.NewStructNative(gclass))
+		goval.InitInetSocketAddress(klass)
+	}
 }
 
 func wrapInetSocketAddress(obj *coreglib.Object) *InetSocketAddress {
@@ -215,4 +229,21 @@ func (address *InetSocketAddress) ScopeID() uint32 {
 	_guint32 = uint32(_cret)
 
 	return _guint32
+}
+
+// InetSocketAddressClass: instance of this type is always passed by reference.
+type InetSocketAddressClass struct {
+	*inetSocketAddressClass
+}
+
+// inetSocketAddressClass is the struct that's finalized.
+type inetSocketAddressClass struct {
+	native *C.GInetSocketAddressClass
+}
+
+func (i *InetSocketAddressClass) ParentClass() *SocketAddressClass {
+	valptr := &i.native.parent_class
+	var v *SocketAddressClass // out
+	v = (*SocketAddressClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

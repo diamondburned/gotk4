@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// DragSurfaceOverrider contains methods that are overridable.
-type DragSurfaceOverrider interface {
-}
-
 // DragSurface is an interface for surfaces used during DND.
 //
 // DragSurface wraps an interface. This means the user can get the
@@ -51,9 +47,6 @@ type DragSurfacer interface {
 }
 
 var _ DragSurfacer = (*DragSurface)(nil)
-
-func ifaceInitDragSurfacer(gifacePtr, data C.gpointer) {
-}
 
 func wrapDragSurface(obj *coreglib.Object) *DragSurface {
 	return &DragSurface{

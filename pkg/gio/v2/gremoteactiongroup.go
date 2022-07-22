@@ -257,3 +257,15 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value,
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(platformData)
 }
+
+// RemoteActionGroupInterface: virtual function table for ActionGroup.
+//
+// An instance of this type is always passed by reference.
+type RemoteActionGroupInterface struct {
+	*remoteActionGroupInterface
+}
+
+// remoteActionGroupInterface is the struct that's finalized.
+type remoteActionGroupInterface struct {
+	native *C.GRemoteActionGroupInterface
+}

@@ -365,3 +365,15 @@ func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	runtime.KeepAlive(removed)
 	runtime.KeepAlive(added)
 }
+
+// ListModelInterface: virtual function table for Model.
+//
+// An instance of this type is always passed by reference.
+type ListModelInterface struct {
+	*listModelInterface
+}
+
+// listModelInterface is the struct that's finalized.
+type listModelInterface struct {
+	native *C.GListModelInterface
+}

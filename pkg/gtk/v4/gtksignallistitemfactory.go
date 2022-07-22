@@ -28,10 +28,6 @@ func init() {
 	})
 }
 
-// SignalListItemFactoryOverrider contains methods that are overridable.
-type SignalListItemFactoryOverrider interface {
-}
-
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that
 // emits signals to to manage listitems.
 //
@@ -80,9 +76,6 @@ type SignalListItemFactory struct {
 var (
 	_ coreglib.Objector = (*SignalListItemFactory)(nil)
 )
-
-func initClassSignalListItemFactory(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapSignalListItemFactory(obj *coreglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{

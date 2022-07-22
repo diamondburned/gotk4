@@ -323,11 +323,9 @@ var _ IMContexter = (*IMContext)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeIMContext,
-		GoType:       reflect.TypeOf((*IMContext)(nil)),
-		InitClass:    initClassIMContext,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkIMContext{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkIMContextClass{})),
+		GType:     GTypeIMContext,
+		GoType:    reflect.TypeOf((*IMContext)(nil)),
+		InitClass: initClassIMContext,
 	})
 }
 
@@ -413,6 +411,10 @@ func initClassIMContext(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ SetUsePreedit(usePreedit bool) }); ok {
 		pclass.set_use_preedit = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_use_preedit)
+	}
+	if goval, ok := goval.(interface{ InitIMContext(*IMContextClass) }); ok {
+		klass := (*IMContextClass)(gextras.NewStructNative(gclass))
+		goval.InitIMContext(klass)
 	}
 }
 
@@ -1336,4 +1338,14 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	C.gtk_im_context_set_use_preedit(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(usePreedit)
+}
+
+// IMContextClass: instance of this type is always passed by reference.
+type IMContextClass struct {
+	*imContextClass
+}
+
+// imContextClass is the struct that's finalized.
+type imContextClass struct {
+	native *C.GtkIMContextClass
 }

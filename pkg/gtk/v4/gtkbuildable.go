@@ -356,6 +356,20 @@ func (buildable *Buildable) BuildableID() string {
 	return _utf8
 }
 
+// BuildableIface: GtkBuildableIface interface contains methods that are
+// necessary to allow GtkBuilder to construct an object from a GtkBuilder UI
+// definition.
+//
+// An instance of this type is always passed by reference.
+type BuildableIface struct {
+	*buildableIface
+}
+
+// buildableIface is the struct that's finalized.
+type buildableIface struct {
+	native *C.GtkBuildableIface
+}
+
 // BuildableParser: sub-parser for GtkBuildable implementations.
 //
 // An instance of this type is always passed by reference.

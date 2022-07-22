@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,7 +69,19 @@ type Miscer interface {
 
 var _ Miscer = (*Misc)(nil)
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMisc,
+		GoType:    reflect.TypeOf((*Misc)(nil)),
+		InitClass: initClassMisc,
+	})
+}
+
 func initClassMisc(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMisc(*MiscClass) }); ok {
+		klass := (*MiscClass)(gextras.NewStructNative(gclass))
+		goval.InitMisc(klass)
+	}
 }
 
 func wrapMisc(obj *coreglib.Object) *Misc {
@@ -207,4 +221,21 @@ func (misc *Misc) SetPadding(xpad, ypad int) {
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)
 	runtime.KeepAlive(ypad)
+}
+
+// MiscClass: instance of this type is always passed by reference.
+type MiscClass struct {
+	*miscClass
+}
+
+// miscClass is the struct that's finalized.
+type miscClass struct {
+	native *C.GtkMiscClass
+}
+
+func (m *MiscClass) ParentClass() *WidgetClass {
+	valptr := &m.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

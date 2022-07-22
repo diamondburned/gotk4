@@ -114,7 +114,7 @@ type TableOverrider interface {
 	//    - object (optional): atkObject* representing the table caption, or NULL
 	//      if value does not implement this interface.
 	//
-	Caption() *ObjectClass
+	Caption() *AtkObject
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// index_.
 	//
@@ -169,7 +169,7 @@ type TableOverrider interface {
 	//    - object (optional): atkObject* representing the specified column
 	//      header, or NULL if value does not implement this interface.
 	//
-	ColumnHeader(column int) *ObjectClass
+	ColumnHeader(column int) *AtkObject
 	// IndexAt gets a #gint representing the index at the specified row and
 	// column.
 	//
@@ -256,7 +256,7 @@ type TableOverrider interface {
 	//    - object (optional): atkObject* representing the specified row header,
 	//      or NULL if value does not implement this interface.
 	//
-	RowHeader(row int) *ObjectClass
+	RowHeader(row int) *AtkObject
 	// SelectedColumns gets the selected columns of the table by initializing
 	// **selected with the selected column numbers. This array should be freed
 	// by the caller.
@@ -292,7 +292,7 @@ type TableOverrider interface {
 	//    - object: atkObject* representing a summary description of the table,
 	//      or zero if value does not implement this interface.
 	//
-	Summary() *ObjectClass
+	Summary() *AtkObject
 	// IsColumnSelected gets a boolean value indicating whether the specified
 	// column is selected.
 	//
@@ -346,7 +346,7 @@ type TableOverrider interface {
 	//
 	//    - object representing the referred to accessible.
 	//
-	RefAt(row, column int) *ObjectClass
+	RefAt(row, column int) *AtkObject
 	// RemoveColumnSelection adds the specified column to the selection.
 	//
 	// The function takes the following parameters:
@@ -390,7 +390,7 @@ type TableOverrider interface {
 	//
 	//    - caption representing the caption to set for table.
 	//
-	SetCaption(caption *ObjectClass)
+	SetCaption(caption *AtkObject)
 	// SetColumnDescription sets the description text for the specified column
 	// of the table.
 	//
@@ -408,7 +408,7 @@ type TableOverrider interface {
 	//    - column representing a column in table.
 	//    - header: Table.
 	//
-	SetColumnHeader(column int, header *ObjectClass)
+	SetColumnHeader(column int, header *AtkObject)
 	// SetRowDescription sets the description text for the specified row of
 	// table.
 	//
@@ -426,14 +426,14 @@ type TableOverrider interface {
 	//    - row representing a row in table.
 	//    - header: Table.
 	//
-	SetRowHeader(row int, header *ObjectClass)
+	SetRowHeader(row int, header *AtkObject)
 	// SetSummary sets the summary description of the table.
 	//
 	// The function takes the following parameters:
 	//
 	//    - accessible representing the summary description to set for table.
 	//
-	SetSummary(accessible *ObjectClass)
+	SetSummary(accessible *AtkObject)
 }
 
 // Table should be implemented by components which present elements ordered via
@@ -481,7 +481,7 @@ type Tabler interface {
 	// AddRowSelection adds the specified row to the selection.
 	AddRowSelection(row int) bool
 	// Caption gets the caption for the table.
-	Caption() *ObjectClass
+	Caption() *AtkObject
 	// ColumnAtIndex gets a #gint representing the column at the specified
 	// index_.
 	ColumnAtIndex(index_ int) int
@@ -493,7 +493,7 @@ type Tabler interface {
 	ColumnExtentAt(row, column int) int
 	// ColumnHeader gets the column header of a specified column in an
 	// accessible table.
-	ColumnHeader(column int) *ObjectClass
+	ColumnHeader(column int) *AtkObject
 	// IndexAt gets a #gint representing the index at the specified row and
 	// column.
 	IndexAt(row, column int) int
@@ -510,7 +510,7 @@ type Tabler interface {
 	// a specified row and column in the table.
 	RowExtentAt(row, column int) int
 	// RowHeader gets the row header of a specified row in an accessible table.
-	RowHeader(row int) *ObjectClass
+	RowHeader(row int) *AtkObject
 	// SelectedColumns gets the selected columns of the table by initializing
 	// **selected with the selected column numbers.
 	SelectedColumns(selected **int) int
@@ -518,7 +518,7 @@ type Tabler interface {
 	// **selected with the selected row numbers.
 	SelectedRows(selected **int) int
 	// Summary gets the summary description of the table.
-	Summary() *ObjectClass
+	Summary() *AtkObject
 	// IsColumnSelected gets a boolean value indicating whether the specified
 	// column is selected.
 	IsColumnSelected(column int) bool
@@ -529,25 +529,25 @@ type Tabler interface {
 	// at the specified row and column is selected.
 	IsSelected(row, column int) bool
 	// RefAt: get a reference to the table cell at row, column.
-	RefAt(row, column int) *ObjectClass
+	RefAt(row, column int) *AtkObject
 	// RemoveColumnSelection adds the specified column to the selection.
 	RemoveColumnSelection(column int) bool
 	// RemoveRowSelection removes the specified row from the selection.
 	RemoveRowSelection(row int) bool
 	// SetCaption sets the caption for the table.
-	SetCaption(caption *ObjectClass)
+	SetCaption(caption *AtkObject)
 	// SetColumnDescription sets the description text for the specified column
 	// of the table.
 	SetColumnDescription(column int, description string)
 	// SetColumnHeader sets the specified column header to header.
-	SetColumnHeader(column int, header *ObjectClass)
+	SetColumnHeader(column int, header *AtkObject)
 	// SetRowDescription sets the description text for the specified row of
 	// table.
 	SetRowDescription(row int, description string)
 	// SetRowHeader sets the specified row header to header.
-	SetRowHeader(row int, header *ObjectClass)
+	SetRowHeader(row int, header *AtkObject)
 	// SetSummary sets the summary description of the table.
-	SetSummary(accessible *ObjectClass)
+	SetSummary(accessible *AtkObject)
 
 	// Column-deleted: "column-deleted" signal is emitted by an object which
 	// implements the AtkTable interface when a column is deleted.
@@ -1088,7 +1088,7 @@ func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
-	var _caption *ObjectClass // out
+	var _caption *AtkObject // out
 
 	_caption = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
 
@@ -1114,8 +1114,8 @@ func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
-	var _column int          // out
-	var _header *ObjectClass // out
+	var _column int        // out
+	var _header *AtkObject // out
 
 	_column = int(arg1)
 	_header = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
@@ -1142,8 +1142,8 @@ func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
-	var _row int             // out
-	var _header *ObjectClass // out
+	var _row int           // out
+	var _header *AtkObject // out
 
 	_row = int(arg1)
 	_header = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
@@ -1156,7 +1156,7 @@ func _gotk4_atk1_TableIface_set_summary(arg0 *C.AtkTable, arg1 *C.AtkObject) {
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
-	var _accessible *ObjectClass // out
+	var _accessible *AtkObject // out
 
 	_accessible = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
 
@@ -1423,7 +1423,7 @@ func (table *Table) AddRowSelection(row int) bool {
 //    - object (optional): atkObject* representing the table caption, or NULL if
 //      value does not implement this interface.
 //
-func (table *Table) Caption() *ObjectClass {
+func (table *Table) Caption() *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
@@ -1432,7 +1432,7 @@ func (table *Table) Caption() *ObjectClass {
 	_cret = C.atk_table_get_caption(_arg0)
 	runtime.KeepAlive(table)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	if _cret != nil {
 		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
@@ -1551,7 +1551,7 @@ func (table *Table) ColumnExtentAt(row, column int) int {
 //    - object (optional): atkObject* representing the specified column header,
 //      or NULL if value does not implement this interface.
 //
-func (table *Table) ColumnHeader(column int) *ObjectClass {
+func (table *Table) ColumnHeader(column int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -1563,7 +1563,7 @@ func (table *Table) ColumnHeader(column int) *ObjectClass {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	if _cret != nil {
 		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
@@ -1766,7 +1766,7 @@ func (table *Table) RowExtentAt(row, column int) int {
 //    - object (optional): atkObject* representing the specified row header, or
 //      NULL if value does not implement this interface.
 //
-func (table *Table) RowHeader(row int) *ObjectClass {
+func (table *Table) RowHeader(row int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -1778,7 +1778,7 @@ func (table *Table) RowHeader(row int) *ObjectClass {
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	if _cret != nil {
 		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
@@ -1857,7 +1857,7 @@ func (table *Table) SelectedRows(selected **int) int {
 //    - object: atkObject* representing a summary description of the table, or
 //      zero if value does not implement this interface.
 //
-func (table *Table) Summary() *ObjectClass {
+func (table *Table) Summary() *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
 
@@ -1866,7 +1866,7 @@ func (table *Table) Summary() *ObjectClass {
 	_cret = C.atk_table_get_summary(_arg0)
 	runtime.KeepAlive(table)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -1988,7 +1988,7 @@ func (table *Table) IsSelected(row, column int) bool {
 //
 //    - object representing the referred to accessible.
 //
-func (table *Table) RefAt(row, column int) *ObjectClass {
+func (table *Table) RefAt(row, column int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 C.gint       // out
@@ -2003,7 +2003,7 @@ func (table *Table) RefAt(row, column int) *ObjectClass {
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(column)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -2080,7 +2080,7 @@ func (table *Table) RemoveRowSelection(row int) bool {
 //
 //    - caption representing the caption to set for table.
 //
-func (table *Table) SetCaption(caption *ObjectClass) {
+func (table *Table) SetCaption(caption *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
@@ -2124,7 +2124,7 @@ func (table *Table) SetColumnDescription(column int, description string) {
 //    - column representing a column in table.
 //    - header: Table.
 //
-func (table *Table) SetColumnHeader(column int, header *ObjectClass) {
+func (table *Table) SetColumnHeader(column int, header *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
@@ -2170,7 +2170,7 @@ func (table *Table) SetRowDescription(row int, description string) {
 //    - row representing a row in table.
 //    - header: Table.
 //
-func (table *Table) SetRowHeader(row int, header *ObjectClass) {
+func (table *Table) SetRowHeader(row int, header *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
 	var _arg2 *C.AtkObject // out
@@ -2191,7 +2191,7 @@ func (table *Table) SetRowHeader(row int, header *ObjectClass) {
 //
 //    - accessible representing the summary description to set for table.
 //
-func (table *Table) SetSummary(accessible *ObjectClass) {
+func (table *Table) SetSummary(accessible *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
 
@@ -2201,4 +2201,14 @@ func (table *Table) SetSummary(accessible *ObjectClass) {
 	C.atk_table_set_summary(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(accessible)
+}
+
+// TableIface: instance of this type is always passed by reference.
+type TableIface struct {
+	*tableIface
+}
+
+// tableIface is the struct that's finalized.
+type tableIface struct {
+	native *C.AtkTableIface
 }

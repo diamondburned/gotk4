@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -58,7 +60,19 @@ type Binner interface {
 
 var _ Binner = (*Bin)(nil)
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBin,
+		GoType:    reflect.TypeOf((*Bin)(nil)),
+		InitClass: initClassBin,
+	})
+}
+
 func initClassBin(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBin(*BinClass) }); ok {
+		klass := (*BinClass)(gextras.NewStructNative(gclass))
+		goval.InitBin(klass)
+	}
 }
 
 func wrapBin(obj *coreglib.Object) *Bin {
@@ -130,4 +144,22 @@ func (bin *Bin) Child() Widgetter {
 	}
 
 	return _widget
+}
+
+// BinClass: instance of this type is always passed by reference.
+type BinClass struct {
+	*binClass
+}
+
+// binClass is the struct that's finalized.
+type binClass struct {
+	native *C.GtkBinClass
+}
+
+// ParentClass: parent class.
+func (b *BinClass) ParentClass() *ContainerClass {
+	valptr := &b.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

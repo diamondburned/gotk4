@@ -528,3 +528,17 @@ func (activatable *Activatable) SyncActionProperties(action *Action) {
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
 }
+
+// ActivatableIface: > This method can be called with a NULL action at times.
+//
+// Deprecated: since version 3.10.
+//
+// An instance of this type is always passed by reference.
+type ActivatableIface struct {
+	*activatableIface
+}
+
+// activatableIface is the struct that's finalized.
+type activatableIface struct {
+	native *C.GtkActivatableIface
+}

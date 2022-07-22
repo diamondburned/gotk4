@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -59,7 +61,19 @@ var (
 	_ coreglib.Objector = (*CellAreaBox)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCellAreaBox,
+		GoType:    reflect.TypeOf((*CellAreaBox)(nil)),
+		InitClass: initClassCellAreaBox,
+	})
+}
+
 func initClassCellAreaBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCellAreaBox(*CellAreaBoxClass) }); ok {
+		klass := (*CellAreaBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitCellAreaBox(klass)
+	}
 }
 
 func wrapCellAreaBox(obj *coreglib.Object) *CellAreaBox {
@@ -223,4 +237,14 @@ func (box *CellAreaBox) SetSpacing(spacing int) {
 	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)
+}
+
+// CellAreaBoxClass: instance of this type is always passed by reference.
+type CellAreaBoxClass struct {
+	*cellAreaBoxClass
+}
+
+// cellAreaBoxClass is the struct that's finalized.
+type cellAreaBoxClass struct {
+	native *C.GtkCellAreaBoxClass
 }

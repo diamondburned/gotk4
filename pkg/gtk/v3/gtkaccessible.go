@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -54,7 +55,7 @@ type AccessibleOverrider interface {
 // in WidgetClass.
 type Accessible struct {
 	_ [0]func() // equal guard
-	atk.ObjectClass
+	atk.AtkObject
 }
 
 var (
@@ -63,11 +64,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAccessible,
-		GoType:       reflect.TypeOf((*Accessible)(nil)),
-		InitClass:    initClassAccessible,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAccessible{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkAccessibleClass{})),
+		GType:     GTypeAccessible,
+		GoType:    reflect.TypeOf((*Accessible)(nil)),
+		InitClass: initClassAccessible,
 	})
 }
 
@@ -85,6 +84,10 @@ func initClassAccessible(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ WidgetUnset() }); ok {
 		pclass.widget_unset = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_unset)
+	}
+	if goval, ok := goval.(interface{ InitAccessible(*AccessibleClass) }); ok {
+		klass := (*AccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitAccessible(klass)
 	}
 }
 
@@ -114,7 +117,7 @@ func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
 
 func wrapAccessible(obj *coreglib.Object) *Accessible {
 	return &Accessible{
-		ObjectClass: atk.ObjectClass{
+		AtkObject: atk.AtkObject{
 			Object: obj,
 		},
 	}
@@ -198,4 +201,21 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 	C.gtk_accessible_set_widget(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(widget)
+}
+
+// AccessibleClass: instance of this type is always passed by reference.
+type AccessibleClass struct {
+	*accessibleClass
+}
+
+// accessibleClass is the struct that's finalized.
+type accessibleClass struct {
+	native *C.GtkAccessibleClass
+}
+
+func (a *AccessibleClass) ParentClass() *atk.ObjectClass {
+	valptr := &a.native.parent_class
+	var v *atk.ObjectClass // out
+	v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

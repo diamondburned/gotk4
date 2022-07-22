@@ -136,11 +136,9 @@ var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMenuAttributeIter,
-		GoType:       reflect.TypeOf((*MenuAttributeIter)(nil)),
-		InitClass:    initClassMenuAttributeIter,
-		ClassSize:    uint32(unsafe.Sizeof(C.GMenuAttributeIter{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GMenuAttributeIterClass{})),
+		GType:     GTypeMenuAttributeIter,
+		GoType:    reflect.TypeOf((*MenuAttributeIter)(nil)),
+		InitClass: initClassMenuAttributeIter,
 	})
 }
 
@@ -152,6 +150,10 @@ func initClassMenuAttributeIter(gclass unsafe.Pointer, goval any) {
 		Next() (string, *glib.Variant, bool)
 	}); ok {
 		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuAttributeIterClass_get_next)
+	}
+	if goval, ok := goval.(interface{ InitMenuAttributeIter(*MenuAttributeIterClass) }); ok {
+		klass := (*MenuAttributeIterClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuAttributeIter(klass)
 	}
 }
 
@@ -388,11 +390,9 @@ var _ MenuLinkIterer = (*MenuLinkIter)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMenuLinkIter,
-		GoType:       reflect.TypeOf((*MenuLinkIter)(nil)),
-		InitClass:    initClassMenuLinkIter,
-		ClassSize:    uint32(unsafe.Sizeof(C.GMenuLinkIter{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GMenuLinkIterClass{})),
+		GType:     GTypeMenuLinkIter,
+		GoType:    reflect.TypeOf((*MenuLinkIter)(nil)),
+		InitClass: initClassMenuLinkIter,
 	})
 }
 
@@ -404,6 +404,10 @@ func initClassMenuLinkIter(gclass unsafe.Pointer, goval any) {
 		Next() (string, MenuModeller, bool)
 	}); ok {
 		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuLinkIterClass_get_next)
+	}
+	if goval, ok := goval.(interface{ InitMenuLinkIter(*MenuLinkIterClass) }); ok {
+		klass := (*MenuLinkIterClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuLinkIter(klass)
 	}
 }
 
@@ -863,11 +867,9 @@ var _ MenuModeller = (*MenuModel)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMenuModel,
-		GoType:       reflect.TypeOf((*MenuModel)(nil)),
-		InitClass:    initClassMenuModel,
-		ClassSize:    uint32(unsafe.Sizeof(C.GMenuModel{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GMenuModelClass{})),
+		GType:     GTypeMenuModel,
+		GoType:    reflect.TypeOf((*MenuModel)(nil)),
+		InitClass: initClassMenuModel,
 	})
 }
 
@@ -917,6 +919,10 @@ func initClassMenuModel(gclass unsafe.Pointer, goval any) {
 		IterateItemLinks(itemIndex int) MenuLinkIterer
 	}); ok {
 		pclass.iterate_item_links = (*[0]byte)(C._gotk4_gio2_MenuModelClass_iterate_item_links)
+	}
+	if goval, ok := goval.(interface{ InitMenuModel(*MenuModelClass) }); ok {
+		klass := (*MenuModelClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuModel(klass)
 	}
 }
 
@@ -1440,4 +1446,34 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	}
 
 	return _menuLinkIter
+}
+
+// MenuAttributeIterClass: instance of this type is always passed by reference.
+type MenuAttributeIterClass struct {
+	*menuAttributeIterClass
+}
+
+// menuAttributeIterClass is the struct that's finalized.
+type menuAttributeIterClass struct {
+	native *C.GMenuAttributeIterClass
+}
+
+// MenuLinkIterClass: instance of this type is always passed by reference.
+type MenuLinkIterClass struct {
+	*menuLinkIterClass
+}
+
+// menuLinkIterClass is the struct that's finalized.
+type menuLinkIterClass struct {
+	native *C.GMenuLinkIterClass
+}
+
+// MenuModelClass: instance of this type is always passed by reference.
+type MenuModelClass struct {
+	*menuModelClass
+}
+
+// menuModelClass is the struct that's finalized.
+type menuModelClass struct {
+	native *C.GMenuModelClass
 }

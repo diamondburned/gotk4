@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -75,7 +76,19 @@ var (
 	_ Widgetter = (*Fixed)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFixed,
+		GoType:    reflect.TypeOf((*Fixed)(nil)),
+		InitClass: initClassFixed,
+	})
+}
+
 func initClassFixed(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFixed(*FixedClass) }); ok {
+		klass := (*FixedClass)(gextras.NewStructNative(gclass))
+		goval.InitFixed(klass)
+	}
 }
 
 func wrapFixed(obj *coreglib.Object) *Fixed {
@@ -293,4 +306,21 @@ func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(transform)
+}
+
+// FixedClass: instance of this type is always passed by reference.
+type FixedClass struct {
+	*fixedClass
+}
+
+// fixedClass is the struct that's finalized.
+type fixedClass struct {
+	native *C.GtkFixedClass
+}
+
+func (f *FixedClass) ParentClass() *WidgetClass {
+	valptr := &f.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

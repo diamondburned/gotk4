@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -58,7 +60,19 @@ type LayoutChilder interface {
 
 var _ LayoutChilder = (*LayoutChild)(nil)
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeLayoutChild,
+		GoType:    reflect.TypeOf((*LayoutChild)(nil)),
+		InitClass: initClassLayoutChild,
+	})
+}
+
 func initClassLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitLayoutChild(*LayoutChildClass) }); ok {
+		klass := (*LayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.InitLayoutChild(klass)
+	}
 }
 
 func wrapLayoutChild(obj *coreglib.Object) *LayoutChild {
@@ -155,4 +169,14 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	}
 
 	return _layoutManager
+}
+
+// LayoutChildClass: instance of this type is always passed by reference.
+type LayoutChildClass struct {
+	*layoutChildClass
+}
+
+// layoutChildClass is the struct that's finalized.
+type layoutChildClass struct {
+	native *C.GtkLayoutChildClass
 }

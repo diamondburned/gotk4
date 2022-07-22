@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -99,7 +100,19 @@ var (
 	_ coreglib.Objector = (*TreeModelSort)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTreeModelSort,
+		GoType:    reflect.TypeOf((*TreeModelSort)(nil)),
+		InitClass: initClassTreeModelSort,
+	})
+}
+
 func initClassTreeModelSort(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTreeModelSort(*TreeModelSortClass) }); ok {
+		klass := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeModelSort(klass)
+	}
 }
 
 func wrapTreeModelSort(obj *coreglib.Object) *TreeModelSort {
@@ -378,4 +391,14 @@ func (treeModelSort *TreeModelSort) ResetDefaultSortFunc() {
 
 	C.gtk_tree_model_sort_reset_default_sort_func(_arg0)
 	runtime.KeepAlive(treeModelSort)
+}
+
+// TreeModelSortClass: instance of this type is always passed by reference.
+type TreeModelSortClass struct {
+	*treeModelSortClass
+}
+
+// treeModelSortClass is the struct that's finalized.
+type treeModelSortClass struct {
+	native *C.GtkTreeModelSortClass
 }

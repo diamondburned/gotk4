@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -47,7 +49,21 @@ var (
 	_ coreglib.Objector = (*SimpleProxyResolver)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSimpleProxyResolver,
+		GoType:    reflect.TypeOf((*SimpleProxyResolver)(nil)),
+		InitClass: initClassSimpleProxyResolver,
+	})
+}
+
 func initClassSimpleProxyResolver(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitSimpleProxyResolver(*SimpleProxyResolverClass)
+	}); ok {
+		klass := (*SimpleProxyResolverClass)(gextras.NewStructNative(gclass))
+		goval.InitSimpleProxyResolver(klass)
+	}
 }
 
 func wrapSimpleProxyResolver(obj *coreglib.Object) *SimpleProxyResolver {
@@ -115,4 +131,15 @@ func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(uriScheme)
 	runtime.KeepAlive(proxy)
+}
+
+// SimpleProxyResolverClass: instance of this type is always passed by
+// reference.
+type SimpleProxyResolverClass struct {
+	*simpleProxyResolverClass
+}
+
+// simpleProxyResolverClass is the struct that's finalized.
+type simpleProxyResolverClass struct {
+	native *C.GSimpleProxyResolverClass
 }

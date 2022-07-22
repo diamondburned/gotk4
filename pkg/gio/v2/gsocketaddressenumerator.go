@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -108,11 +109,9 @@ var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocketAddressEnumerator,
-		GoType:       reflect.TypeOf((*SocketAddressEnumerator)(nil)),
-		InitClass:    initClassSocketAddressEnumerator,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSocketAddressEnumerator{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSocketAddressEnumeratorClass{})),
+		GType:     GTypeSocketAddressEnumerator,
+		GoType:    reflect.TypeOf((*SocketAddressEnumerator)(nil)),
+		InitClass: initClassSocketAddressEnumerator,
 	})
 }
 
@@ -130,6 +129,12 @@ func initClassSocketAddressEnumerator(gclass unsafe.Pointer, goval any) {
 		NextFinish(result AsyncResulter) (SocketAddresser, error)
 	}); ok {
 		pclass.next_finish = (*[0]byte)(C._gotk4_gio2_SocketAddressEnumeratorClass_next_finish)
+	}
+	if goval, ok := goval.(interface {
+		InitSocketAddressEnumerator(*SocketAddressEnumeratorClass)
+	}); ok {
+		klass := (*SocketAddressEnumeratorClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketAddressEnumerator(klass)
 	}
 }
 
@@ -365,4 +370,16 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	}
 
 	return _socketAddress, _goerr
+}
+
+// SocketAddressEnumeratorClass class structure for AddressEnumerator.
+//
+// An instance of this type is always passed by reference.
+type SocketAddressEnumeratorClass struct {
+	*socketAddressEnumeratorClass
+}
+
+// socketAddressEnumeratorClass is the struct that's finalized.
+type socketAddressEnumeratorClass struct {
+	native *C.GSocketAddressEnumeratorClass
 }

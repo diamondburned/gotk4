@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -46,7 +48,19 @@ var (
 	_ coreglib.Objector = (*VSeparator)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeVSeparator,
+		GoType:    reflect.TypeOf((*VSeparator)(nil)),
+		InitClass: initClassVSeparator,
+	})
+}
+
 func initClassVSeparator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitVSeparator(*VSeparatorClass) }); ok {
+		klass := (*VSeparatorClass)(gextras.NewStructNative(gclass))
+		goval.InitVSeparator(klass)
+	}
 }
 
 func wrapVSeparator(obj *coreglib.Object) *VSeparator {
@@ -94,4 +108,21 @@ func NewVSeparator() *VSeparator {
 	_vSeparator = wrapVSeparator(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vSeparator
+}
+
+// VSeparatorClass: instance of this type is always passed by reference.
+type VSeparatorClass struct {
+	*vSeparatorClass
+}
+
+// vSeparatorClass is the struct that's finalized.
+type vSeparatorClass struct {
+	native *C.GtkVSeparatorClass
+}
+
+func (v *VSeparatorClass) ParentClass() *SeparatorClass {
+	valptr := &v.native.parent_class
+	var v *SeparatorClass // out
+	v = (*SeparatorClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

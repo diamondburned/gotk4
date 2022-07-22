@@ -3,9 +3,11 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -35,19 +37,31 @@ type GObjectAccessibleOverrider interface {
 // accessible object for GnomeCanvasItem in the GAIL library.
 type GObjectAccessible struct {
 	_ [0]func() // equal guard
-	ObjectClass
+	AtkObject
 }
 
 var (
 	_ coreglib.Objector = (*GObjectAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeGObjectAccessible,
+		GoType:    reflect.TypeOf((*GObjectAccessible)(nil)),
+		InitClass: initClassGObjectAccessible,
+	})
+}
+
 func initClassGObjectAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitGObjectAccessible(*GObjectAccessibleClass) }); ok {
+		klass := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitGObjectAccessible(klass)
+	}
 }
 
 func wrapGObjectAccessible(obj *coreglib.Object) *GObjectAccessible {
 	return &GObjectAccessible{
-		ObjectClass: ObjectClass{
+		AtkObject: AtkObject{
 			Object: obj,
 		},
 	}
@@ -89,7 +103,7 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 //
 //    - object which is the accessible object for the obj.
 //
-func GObjectAccessibleForObject(obj *coreglib.Object) *ObjectClass {
+func GObjectAccessibleForObject(obj *coreglib.Object) *AtkObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
 
@@ -98,9 +112,19 @@ func GObjectAccessibleForObject(obj *coreglib.Object) *ObjectClass {
 	_cret = C.atk_gobject_accessible_for_object(_arg1)
 	runtime.KeepAlive(obj)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _object
+}
+
+// GObjectAccessibleClass: instance of this type is always passed by reference.
+type GObjectAccessibleClass struct {
+	*gObjectAccessibleClass
+}
+
+// gObjectAccessibleClass is the struct that's finalized.
+type gObjectAccessibleClass struct {
+	native *C.AtkGObjectAccessibleClass
 }

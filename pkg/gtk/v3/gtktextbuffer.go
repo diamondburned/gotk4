@@ -214,11 +214,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTextBuffer,
-		GoType:       reflect.TypeOf((*TextBuffer)(nil)),
-		InitClass:    initClassTextBuffer,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextBuffer{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextBufferClass{})),
+		GType:     GTypeTextBuffer,
+		GoType:    reflect.TypeOf((*TextBuffer)(nil)),
+		InitClass: initClassTextBuffer,
 	})
 }
 
@@ -288,6 +286,10 @@ func initClassTextBuffer(gclass unsafe.Pointer, goval any) {
 		RemoveTag(tag *TextTag, start, end *TextIter)
 	}); ok {
 		pclass.remove_tag = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_remove_tag)
+	}
+	if goval, ok := goval.(interface{ InitTextBuffer(*TextBufferClass) }); ok {
+		klass := (*TextBufferClass)(gextras.NewStructNative(gclass))
+		goval.InitTextBuffer(klass)
 	}
 }
 
@@ -2683,4 +2685,14 @@ func (buffer *TextBuffer) SetText(text string) {
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(text)
+}
+
+// TextBufferClass: instance of this type is always passed by reference.
+type TextBufferClass struct {
+	*textBufferClass
+}
+
+// textBufferClass is the struct that's finalized.
+type textBufferClass struct {
+	native *C.GtkTextBufferClass
 }

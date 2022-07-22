@@ -309,3 +309,16 @@ func (connectable *SocketConnectable) String() string {
 
 	return _utf8
 }
+
+// SocketConnectableIface provides an interface for returning a
+// AddressEnumerator and AddressEnumerator
+//
+// An instance of this type is always passed by reference.
+type SocketConnectableIface struct {
+	*socketConnectableIface
+}
+
+// socketConnectableIface is the struct that's finalized.
+type socketConnectableIface struct {
+	native *C.GSocketConnectableIface
+}

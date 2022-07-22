@@ -87,11 +87,9 @@ var _ TLSCertificater = (*TLSCertificate)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTLSCertificate,
-		GoType:       reflect.TypeOf((*TLSCertificate)(nil)),
-		InitClass:    initClassTLSCertificate,
-		ClassSize:    uint32(unsafe.Sizeof(C.GTlsCertificate{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GTlsCertificateClass{})),
+		GType:     GTypeTLSCertificate,
+		GoType:    reflect.TypeOf((*TLSCertificate)(nil)),
+		InitClass: initClassTLSCertificate,
 	})
 }
 
@@ -103,6 +101,10 @@ func initClassTLSCertificate(gclass unsafe.Pointer, goval any) {
 		Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 	}); ok {
 		pclass.verify = (*[0]byte)(C._gotk4_gio2_TlsCertificateClass_verify)
+	}
+	if goval, ok := goval.(interface{ InitTLSCertificate(*TLSCertificateClass) }); ok {
+		klass := (*TLSCertificateClass)(gextras.NewStructNative(gclass))
+		goval.InitTLSCertificate(klass)
 	}
 }
 
@@ -556,4 +558,14 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	}
 
 	return _list, _goerr
+}
+
+// TLSCertificateClass: instance of this type is always passed by reference.
+type TLSCertificateClass struct {
+	*tlsCertificateClass
+}
+
+// tlsCertificateClass is the struct that's finalized.
+type tlsCertificateClass struct {
+	native *C.GTlsCertificateClass
 }

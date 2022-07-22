@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// ShortcutsGroupOverrider contains methods that are overridable.
-type ShortcutsGroupOverrider interface {
-}
-
 // ShortcutsGroup represents a group of related keyboard shortcuts or gestures.
 // The group has a title. It may optionally be associated with a view of the
 // application, which can be used to show only relevant shortcuts depending on
@@ -46,9 +42,6 @@ var (
 	_ Containerer       = (*ShortcutsGroup)(nil)
 	_ coreglib.Objector = (*ShortcutsGroup)(nil)
 )
-
-func initClassShortcutsGroup(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutsGroup(obj *coreglib.Object) *ShortcutsGroup {
 	return &ShortcutsGroup{

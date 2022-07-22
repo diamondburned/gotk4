@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// DropTargetAsyncOverrider contains methods that are overridable.
-type DropTargetAsyncOverrider interface {
-}
-
 // DropTargetAsync: GtkDropTargetAsync is an event controller to receive
 // Drag-and-Drop operations, asynchronously.
 //
@@ -76,9 +72,6 @@ type DropTargetAsync struct {
 var (
 	_ EventControllerer = (*DropTargetAsync)(nil)
 )
-
-func initClassDropTargetAsync(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapDropTargetAsync(obj *coreglib.Object) *DropTargetAsync {
 	return &DropTargetAsync{

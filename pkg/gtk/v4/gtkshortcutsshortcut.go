@@ -97,10 +97,6 @@ func (s ShortcutType) String() string {
 	}
 }
 
-// ShortcutsShortcutOverrider contains methods that are overridable.
-type ShortcutsShortcutOverrider interface {
-}
-
 // ShortcutsShortcut: GtkShortcutsShortcut represents a single keyboard shortcut
 // or gesture with a short text.
 //
@@ -113,9 +109,6 @@ type ShortcutsShortcut struct {
 var (
 	_ Widgetter = (*ShortcutsShortcut)(nil)
 )
-
-func initClassShortcutsShortcut(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutsShortcut(obj *coreglib.Object) *ShortcutsShortcut {
 	return &ShortcutsShortcut{

@@ -287,3 +287,13 @@ func (hypertext *Hypertext) NLinks() int {
 
 	return _gint
 }
+
+// HypertextIface: instance of this type is always passed by reference.
+type HypertextIface struct {
+	*hypertextIface
+}
+
+// hypertextIface is the struct that's finalized.
+type hypertextIface struct {
+	native *C.AtkHypertextIface
+}

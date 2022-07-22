@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// TaskOverrider contains methods that are overridable.
-type TaskOverrider interface {
-}
-
 // Task represents and manages a cancellable "task".
 //
 //
@@ -205,9 +201,6 @@ type Task struct {
 var (
 	_ coreglib.Objector = (*Task)(nil)
 )
-
-func initClassTask(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapTask(obj *coreglib.Object) *Task {
 	return &Task{

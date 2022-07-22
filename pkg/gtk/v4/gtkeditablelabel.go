@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,7 +69,19 @@ var (
 	_ coreglib.Objector = (*EditableLabel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeEditableLabel,
+		GoType:    reflect.TypeOf((*EditableLabel)(nil)),
+		InitClass: initClassEditableLabel,
+	})
+}
+
 func initClassEditableLabel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitEditableLabel(*EditableLabelClass) }); ok {
+		klass := (*EditableLabelClass)(gextras.NewStructNative(gclass))
+		goval.InitEditableLabel(klass)
+	}
 }
 
 func wrapEditableLabel(obj *coreglib.Object) *EditableLabel {
@@ -195,4 +209,21 @@ func (self *EditableLabel) StopEditing(commit bool) {
 	C.gtk_editable_label_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(commit)
+}
+
+// EditableLabelClass: instance of this type is always passed by reference.
+type EditableLabelClass struct {
+	*editableLabelClass
+}
+
+// editableLabelClass is the struct that's finalized.
+type editableLabelClass struct {
+	native *C.GtkEditableLabelClass
+}
+
+func (e *EditableLabelClass) ParentClass() *WidgetClass {
+	valptr := &e.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

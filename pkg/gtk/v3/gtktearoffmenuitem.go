@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,7 +57,19 @@ var (
 	_ coreglib.Objector = (*TearoffMenuItem)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTearoffMenuItem,
+		GoType:    reflect.TypeOf((*TearoffMenuItem)(nil)),
+		InitClass: initClassTearoffMenuItem,
+	})
+}
+
 func initClassTearoffMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTearoffMenuItem(*TearoffMenuItemClass) }); ok {
+		klass := (*TearoffMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.InitTearoffMenuItem(klass)
+	}
 }
 
 func wrapTearoffMenuItem(obj *coreglib.Object) *TearoffMenuItem {
@@ -122,4 +136,22 @@ func NewTearoffMenuItem() *TearoffMenuItem {
 	_tearoffMenuItem = wrapTearoffMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _tearoffMenuItem
+}
+
+// TearoffMenuItemClass: instance of this type is always passed by reference.
+type TearoffMenuItemClass struct {
+	*tearoffMenuItemClass
+}
+
+// tearoffMenuItemClass is the struct that's finalized.
+type tearoffMenuItemClass struct {
+	native *C.GtkTearoffMenuItemClass
+}
+
+// ParentClass: parent class.
+func (t *TearoffMenuItemClass) ParentClass() *MenuItemClass {
+	valptr := &t.native.parent_class
+	var v *MenuItemClass // out
+	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

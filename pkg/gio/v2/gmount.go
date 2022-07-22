@@ -1098,3 +1098,15 @@ func (mount *Mount) Unshadow() {
 	C.g_mount_unshadow(_arg0)
 	runtime.KeepAlive(mount)
 }
+
+// MountIface: interface for implementing operations for mounts.
+//
+// An instance of this type is always passed by reference.
+type MountIface struct {
+	*mountIface
+}
+
+// mountIface is the struct that's finalized.
+type mountIface struct {
+	native *C.GMountIface
+}

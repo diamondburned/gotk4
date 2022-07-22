@@ -792,3 +792,13 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(showPreviewEntry)
 }
+
+// FontChooserIface: instance of this type is always passed by reference.
+type FontChooserIface struct {
+	*fontChooserIface
+}
+
+// fontChooserIface is the struct that's finalized.
+type fontChooserIface struct {
+	native *C.GtkFontChooserIface
+}

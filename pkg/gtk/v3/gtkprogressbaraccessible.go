@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,14 +44,28 @@ var (
 	_ coreglib.Objector = (*ProgressBarAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeProgressBarAccessible,
+		GoType:    reflect.TypeOf((*ProgressBarAccessible)(nil)),
+		InitClass: initClassProgressBarAccessible,
+	})
+}
+
 func initClassProgressBarAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitProgressBarAccessible(*ProgressBarAccessibleClass)
+	}); ok {
+		klass := (*ProgressBarAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitProgressBarAccessible(klass)
+	}
 }
 
 func wrapProgressBarAccessible(obj *coreglib.Object) *ProgressBarAccessible {
 	return &ProgressBarAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -65,4 +81,22 @@ func wrapProgressBarAccessible(obj *coreglib.Object) *ProgressBarAccessible {
 
 func marshalProgressBarAccessible(p uintptr) (interface{}, error) {
 	return wrapProgressBarAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ProgressBarAccessibleClass: instance of this type is always passed by
+// reference.
+type ProgressBarAccessibleClass struct {
+	*progressBarAccessibleClass
+}
+
+// progressBarAccessibleClass is the struct that's finalized.
+type progressBarAccessibleClass struct {
+	native *C.GtkProgressBarAccessibleClass
+}
+
+func (p *ProgressBarAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &p.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

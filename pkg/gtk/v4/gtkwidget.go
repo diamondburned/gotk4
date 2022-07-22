@@ -735,11 +735,9 @@ var _ Widgetter = (*Widget)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeWidget,
-		GoType:       reflect.TypeOf((*Widget)(nil)),
-		InitClass:    initClassWidget,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkWidget{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkWidgetClass{})),
+		GType:     GTypeWidget,
+		GoType:    reflect.TypeOf((*Widget)(nil)),
+		InitClass: initClassWidget,
 	})
 }
 
@@ -851,6 +849,10 @@ func initClassWidget(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Unroot() }); ok {
 		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unroot)
+	}
+	if goval, ok := goval.(interface{ InitWidget(*WidgetClass) }); ok {
+		klass := (*WidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitWidget(klass)
 	}
 }
 
@@ -6345,4 +6347,486 @@ func (requisition *Requisition) Copy() *Requisition {
 	)
 
 	return _ret
+}
+
+// WidgetClass: instance of this type is always passed by reference.
+type WidgetClass struct {
+	*widgetClass
+}
+
+// widgetClass is the struct that's finalized.
+type widgetClass struct {
+	native *C.GtkWidgetClass
+}
+
+// AddShortcut installs a shortcut in widget_class.
+//
+// Every instance created for widget_class or its subclasses will inherit this
+// shortcut and trigger it.
+//
+// Shortcuts added this way will be triggered in the GTK_PHASE_BUBBLE phase,
+// which means they may also trigger if child widgets have focus.
+//
+// This function must only be used in class initialization functions otherwise
+// it is not guaranteed that the shortcut will be installed.
+//
+// The function takes the following parameters:
+//
+//    - shortcut to add.
+//
+func (widgetClass *WidgetClass) AddShortcut(shortcut *Shortcut) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.GtkShortcut    // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
+
+	C.gtk_widget_class_add_shortcut(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(shortcut)
+}
+
+// BindTemplateChildFull: automatically assign an object declared in the class
+// template XML to be set to a location on a freshly built instance’s private
+// data, or alternatively accessible via gtk.Widget.GetTemplateChild().
+//
+// The struct can point either into the public instance, then you should use
+// G_STRUCT_OFFSET(WidgetType, member) for struct_offset, or in the private
+// struct, then you should use G_PRIVATE_OFFSET(WidgetType, member).
+//
+// An explicit strong reference will be held automatically for the duration of
+// your instance’s life cycle, it will be released automatically when
+// GObjectClass.dispose() runs on your instance and if a struct_offset that is
+// != 0 is specified, then the automatic location in your instance public or
+// private data will be set to NULL. You can however access an automated child
+// pointer the first time your classes GObjectClass.dispose() runs, or
+// alternatively in gtk.Widget::destroy.
+//
+// If internal_child is specified, gtk.Buildable.GetInternalChild() will be
+// automatically implemented by the GtkWidget class so there is no need to
+// implement it manually.
+//
+// The wrapper macros gtk.WidgetClassBindTemplateChild(),
+// gtk.WidgetClassBindTemplateChildInternal(),
+// gtk.WidgetClassBindTemplateChildPrivate() and
+// gtk.WidgetClassBindTemplateChildInternalPrivate() might be more convenient to
+// use.
+//
+// Note that this must be called from a composite widget classes class
+// initializer after calling gtk.WidgetClass.SetTemplate().
+//
+// The function takes the following parameters:
+//
+//    - name: “id” of the child defined in the template XML.
+//    - internalChild: whether the child should be accessible as an
+//      “internal-child” when this class is used in GtkBuilder XML.
+//    - structOffset: structure offset into the composite widget’s instance
+//      public or private structure where the automated child pointer should be
+//      set, or 0 to not assign the pointer.
+//
+func (widgetClass *WidgetClass) BindTemplateChildFull(name string, internalChild bool, structOffset int) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.char           // out
+	var _arg2 C.gboolean        // out
+	var _arg3 C.gssize          // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if internalChild {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.gssize(structOffset)
+
+	C.gtk_widget_class_bind_template_child_full(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(internalChild)
+	runtime.KeepAlive(structOffset)
+}
+
+// AccessibleRole retrieves the accessible role used by the given GtkWidget
+// class.
+//
+// Different accessible roles have different states, and are rendered
+// differently by assistive technologies.
+//
+// See also: gtk.Accessible.GetAccessibleRole().
+//
+// The function returns the following values:
+//
+//    - accessibleRole: accessible role for the widget class.
+//
+func (widgetClass *WidgetClass) AccessibleRole() AccessibleRole {
+	var _arg0 *C.GtkWidgetClass   // out
+	var _cret C.GtkAccessibleRole // in
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+
+	_cret = C.gtk_widget_class_get_accessible_role(_arg0)
+	runtime.KeepAlive(widgetClass)
+
+	var _accessibleRole AccessibleRole // out
+
+	_accessibleRole = AccessibleRole(_cret)
+
+	return _accessibleRole
+}
+
+// ActivateSignal retrieves the signal id for the activation signal set using
+// gtk_widget_class_set_activate_signal().
+//
+// The function returns the following values:
+//
+//    - guint: signal id, or 0 if the widget class does not specify an activation
+//      signal.
+//
+func (widgetClass *WidgetClass) ActivateSignal() uint {
+	var _arg0 *C.GtkWidgetClass // out
+	var _cret C.guint           // in
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+
+	_cret = C.gtk_widget_class_get_activate_signal(_arg0)
+	runtime.KeepAlive(widgetClass)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// CSSName gets the name used by this class for matching in CSS code.
+//
+// See gtk_widget_class_set_css_name() for details.
+//
+// The function returns the following values:
+//
+//    - utf8: CSS name of the given class.
+//
+func (widgetClass *WidgetClass) CSSName() string {
+	var _arg0 *C.GtkWidgetClass // out
+	var _cret *C.char           // in
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+
+	_cret = C.gtk_widget_class_get_css_name(_arg0)
+	runtime.KeepAlive(widgetClass)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// LayoutManagerType retrieves the type of the gtk.LayoutManager used by the
+// GtkWidget class.
+//
+// See also: gtk_widget_class_set_layout_manager_type().
+//
+// The function returns the following values:
+//
+//    - gType: type of a GtkLayoutManager subclass, or G_TYPE_INVALID.
+//
+func (widgetClass *WidgetClass) LayoutManagerType() coreglib.Type {
+	var _arg0 *C.GtkWidgetClass // out
+	var _cret C.GType           // in
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+
+	_cret = C.gtk_widget_class_get_layout_manager_type(_arg0)
+	runtime.KeepAlive(widgetClass)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// InstallPropertyAction installs an action called action_name on widget_class
+// and binds its state to the value of the property_name property.
+//
+// This function will perform a few santity checks on the property selected via
+// property_name. Namely, the property must exist, must be readable, writable
+// and must not be construct-only. There are also restrictions on the type of
+// the given property, it must be boolean, int, unsigned int, double or string.
+// If any of these conditions are not met, a critical warning will be printed
+// and no action will be added.
+//
+// The state type of the action matches the property type.
+//
+// If the property is boolean, the action will have no parameter and toggle the
+// property value. Otherwise, the action will have a parameter of the same type
+// as the property.
+//
+// The function takes the following parameters:
+//
+//    - actionName: name of the action.
+//    - propertyName: name of the property in instances of widget_class or any
+//      parent class.
+//
+func (widgetClass *WidgetClass) InstallPropertyAction(actionName string, propertyName string) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.char           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_widget_class_install_property_action(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(actionName)
+	runtime.KeepAlive(propertyName)
+}
+
+// QueryAction queries the actions that have been installed for a widget class
+// using gtk.WidgetClass.InstallAction() during class initialization.
+//
+// Note that this function will also return actions defined by parent classes.
+// You can identify those by looking at owner.
+//
+// The function takes the following parameters:
+//
+//    - index_: position of the action to query.
+//
+// The function returns the following values:
+//
+//    - owner: return location for the type where the action was defined.
+//    - actionName: return location for the action name.
+//    - parameterType (optional): return location for the parameter type.
+//    - propertyName (optional): return location for the property name.
+//    - ok: TRUE if the action was found, FALSE if index_ is out of range.
+//
+func (widgetClass *WidgetClass) QueryAction(index_ uint) (owner coreglib.Type, actionName string, parameterType *glib.VariantType, propertyName string, ok bool) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GType           // in
+	var _arg3 *C.char           // in
+	var _arg4 *C.GVariantType   // in
+	var _arg5 *C.char           // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = C.guint(index_)
+
+	_cret = C.gtk_widget_class_query_action(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(index_)
+
+	var _owner coreglib.Type             // out
+	var _actionName string               // out
+	var _parameterType *glib.VariantType // out
+	var _propertyName string             // out
+	var _ok bool                         // out
+
+	_owner = coreglib.Type(_arg2)
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+	defer C.free(unsafe.Pointer(_arg3))
+	if _arg4 != nil {
+		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_parameterType)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_type_free((*C.GVariantType)(intern.C))
+			},
+		)
+	}
+	if _arg5 != nil {
+		_propertyName = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _owner, _actionName, _parameterType, _propertyName, _ok
+}
+
+// SetAccessibleRole sets the accessible role used by the given GtkWidget class.
+//
+// Different accessible roles have different states, and are rendered
+// differently by assistive technologies.
+//
+// The function takes the following parameters:
+//
+//    - accessibleRole: GtkAccessibleRole used by the widget_class.
+//
+func (widgetClass *WidgetClass) SetAccessibleRole(accessibleRole AccessibleRole) {
+	var _arg0 *C.GtkWidgetClass   // out
+	var _arg1 C.GtkAccessibleRole // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = C.GtkAccessibleRole(accessibleRole)
+
+	C.gtk_widget_class_set_accessible_role(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(accessibleRole)
+}
+
+// SetActivateSignal sets the GtkWidgetClass.activate_signal field with the
+// given signal_id; the signal will be emitted when calling
+// gtk_widget_activate().
+//
+// The signal_id must have been registered with g_signal_new() or
+// g_signal_newv() before calling this function.
+//
+// The function takes the following parameters:
+//
+//    - signalId: id for the activate signal.
+//
+func (widgetClass *WidgetClass) SetActivateSignal(signalId uint) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 C.guint           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = C.guint(signalId)
+
+	C.gtk_widget_class_set_activate_signal(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(signalId)
+}
+
+// SetActivateSignalFromName sets the GtkWidgetClass.activate_signal field with
+// the signal id for the given signal_name; the signal will be emitted when
+// calling gtk_widget_activate().
+//
+// The signal_name of widget_type must have been registered with g_signal_new()
+// or g_signal_newv() before calling this function.
+//
+// The function takes the following parameters:
+//
+//    - signalName: name of the activate signal of widget_type.
+//
+func (widgetClass *WidgetClass) SetActivateSignalFromName(signalName string) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_class_set_activate_signal_from_name(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(signalName)
+}
+
+// SetCSSName sets the name to be used for CSS matching of widgets.
+//
+// If this function is not called for a given class, the name set on the parent
+// class is used. By default, GtkWidget uses the name "widget".
+//
+// The function takes the following parameters:
+//
+//    - name to use.
+//
+func (widgetClass *WidgetClass) SetCSSName(name string) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_class_set_css_name(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(name)
+}
+
+// SetLayoutManagerType sets the type to be used for creating layout managers
+// for widgets of widget_class.
+//
+// The given type must be a subtype of gtk.LayoutManager.
+//
+// This function should only be called from class init functions of widgets.
+//
+// The function takes the following parameters:
+//
+//    - typ: object type that implements the GtkLayoutManager for widget_class.
+//
+func (widgetClass *WidgetClass) SetLayoutManagerType(typ coreglib.Type) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 C.GType           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = C.GType(typ)
+
+	C.gtk_widget_class_set_layout_manager_type(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(typ)
+}
+
+// SetTemplate: this should be called at class initialization time to specify
+// the GtkBuilder XML to be used to extend a widget.
+//
+// For convenience, gtk.WidgetClass.SetTemplateFromResource() is also provided.
+//
+// Note that any class that installs templates must call
+// gtk.Widget.InitTemplate() in the widget’s instance initializer.
+//
+// The function takes the following parameters:
+//
+//    - templateBytes holding the Builder XML.
+//
+func (widgetClass *WidgetClass) SetTemplate(templateBytes *glib.Bytes) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.GBytes         // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(templateBytes)))
+
+	C.gtk_widget_class_set_template(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(templateBytes)
+}
+
+// SetTemplateFromResource: convenience function that calls
+// gtk.WidgetClass.SetTemplate() with the contents of a GResource.
+//
+// Note that any class that installs templates must call
+// gtk.Widget.InitTemplate() in the widget’s instance initializer.
+//
+// The function takes the following parameters:
+//
+//    - resourceName: name of the resource to load the template from.
+//
+func (widgetClass *WidgetClass) SetTemplateFromResource(resourceName string) {
+	var _arg0 *C.GtkWidgetClass // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourceName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_widget_class_set_template_from_resource(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(resourceName)
+}
+
+// SetTemplateScope: for use in language bindings, this will override the
+// default GtkBuilderScope to be used when parsing GtkBuilder XML from this
+// class’s template data.
+//
+// Note that this must be called from a composite widget classes class
+// initializer after calling gtk_widget_class_set_template().
+//
+// The function takes the following parameters:
+//
+//    - scope: GtkBuilderScope to use when loading the class template.
+//
+func (widgetClass *WidgetClass) SetTemplateScope(scope BuilderScoper) {
+	var _arg0 *C.GtkWidgetClass  // out
+	var _arg1 *C.GtkBuilderScope // out
+
+	_arg0 = (*C.GtkWidgetClass)(gextras.StructNative(unsafe.Pointer(widgetClass)))
+	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
+
+	C.gtk_widget_class_set_template_scope(_arg0, _arg1)
+	runtime.KeepAlive(widgetClass)
+	runtime.KeepAlive(scope)
 }

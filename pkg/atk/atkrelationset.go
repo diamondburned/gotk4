@@ -3,9 +3,11 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -44,7 +46,19 @@ var (
 	_ coreglib.Objector = (*RelationSet)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRelationSet,
+		GoType:    reflect.TypeOf((*RelationSet)(nil)),
+		InitClass: initClassRelationSet,
+	})
+}
+
 func initClassRelationSet(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRelationSet(*RelationSetClass) }); ok {
+		klass := (*RelationSetClass)(gextras.NewStructNative(gclass))
+		goval.InitRelationSet(klass)
+	}
 }
 
 func wrapRelationSet(obj *coreglib.Object) *RelationSet {
@@ -106,7 +120,7 @@ func (set *RelationSet) Add(relation *Relation) {
 //    - relationship: RelationType.
 //    - target: Object.
 //
-func (set *RelationSet) AddRelationByType(relationship RelationType, target *ObjectClass) {
+func (set *RelationSet) AddRelationByType(relationship RelationType, target *AtkObject) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -167,7 +181,7 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 //    - ok: TRUE if set contains a relation with the relationship type
 //      relationship with an object target, FALSE otherwise.
 //
-func (set *RelationSet) ContainsTarget(relationship RelationType, target *ObjectClass) bool {
+func (set *RelationSet) ContainsTarget(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -289,4 +303,14 @@ func (set *RelationSet) Remove(relation *Relation) {
 	C.atk_relation_set_remove(_arg0, _arg1)
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relation)
+}
+
+// RelationSetClass: instance of this type is always passed by reference.
+type RelationSetClass struct {
+	*relationSetClass
+}
+
+// relationSetClass is the struct that's finalized.
+type relationSetClass struct {
+	native *C.AtkRelationSetClass
 }

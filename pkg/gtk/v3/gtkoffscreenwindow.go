@@ -3,11 +3,13 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -59,7 +61,19 @@ var (
 	_ Binner = (*OffscreenWindow)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeOffscreenWindow,
+		GoType:    reflect.TypeOf((*OffscreenWindow)(nil)),
+		InitClass: initClassOffscreenWindow,
+	})
+}
+
 func initClassOffscreenWindow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitOffscreenWindow(*OffscreenWindowClass) }); ok {
+		klass := (*OffscreenWindowClass)(gextras.NewStructNative(gclass))
+		goval.InitOffscreenWindow(klass)
+	}
 }
 
 func wrapOffscreenWindow(obj *coreglib.Object) *OffscreenWindow {
@@ -172,4 +186,22 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	}
 
 	return _surface
+}
+
+// OffscreenWindowClass: instance of this type is always passed by reference.
+type OffscreenWindowClass struct {
+	*offscreenWindowClass
+}
+
+// offscreenWindowClass is the struct that's finalized.
+type offscreenWindowClass struct {
+	native *C.GtkOffscreenWindowClass
+}
+
+// ParentClass: parent class.
+func (o *OffscreenWindowClass) ParentClass() *WindowClass {
+	valptr := &o.native.parent_class
+	var v *WindowClass // out
+	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

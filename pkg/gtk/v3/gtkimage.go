@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -162,7 +163,19 @@ var (
 	_ Miscer = (*Image)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeImage,
+		GoType:    reflect.TypeOf((*Image)(nil)),
+		InitClass: initClassImage,
+	})
+}
+
 func initClassImage(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitImage(*ImageClass) }); ok {
+		klass := (*ImageClass)(gextras.NewStructNative(gclass))
+		goval.InitImage(klass)
+	}
 }
 
 func wrapImage(obj *coreglib.Object) *Image {
@@ -1011,4 +1024,21 @@ func (image *Image) SetPixelSize(pixelSize int) {
 	C.gtk_image_set_pixel_size(_arg0, _arg1)
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(pixelSize)
+}
+
+// ImageClass: instance of this type is always passed by reference.
+type ImageClass struct {
+	*imageClass
+}
+
+// imageClass is the struct that's finalized.
+type imageClass struct {
+	native *C.GtkImageClass
+}
+
+func (i *ImageClass) ParentClass() *MiscClass {
+	valptr := &i.native.parent_class
+	var v *MiscClass // out
+	v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

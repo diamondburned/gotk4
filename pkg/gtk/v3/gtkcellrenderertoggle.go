@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -51,11 +52,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellRendererToggle,
-		GoType:       reflect.TypeOf((*CellRendererToggle)(nil)),
-		InitClass:    initClassCellRendererToggle,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRendererToggle{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererToggleClass{})),
+		GType:     GTypeCellRendererToggle,
+		GoType:    reflect.TypeOf((*CellRendererToggle)(nil)),
+		InitClass: initClassCellRendererToggle,
 	})
 }
 
@@ -65,6 +64,12 @@ func initClassCellRendererToggle(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Toggled(path string) }); ok {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CellRendererToggleClass_toggled)
+	}
+	if goval, ok := goval.(interface {
+		InitCellRendererToggle(*CellRendererToggleClass)
+	}); ok {
+		klass := (*CellRendererToggleClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererToggle(klass)
 	}
 }
 
@@ -283,4 +288,21 @@ func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	C.gtk_cell_renderer_toggle_set_radio(_arg0, _arg1)
 	runtime.KeepAlive(toggle)
 	runtime.KeepAlive(radio)
+}
+
+// CellRendererToggleClass: instance of this type is always passed by reference.
+type CellRendererToggleClass struct {
+	*cellRendererToggleClass
+}
+
+// cellRendererToggleClass is the struct that's finalized.
+type cellRendererToggleClass struct {
+	native *C.GtkCellRendererToggleClass
+}
+
+func (c *CellRendererToggleClass) ParentClass() *CellRendererClass {
+	valptr := &c.native.parent_class
+	var v *CellRendererClass // out
+	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

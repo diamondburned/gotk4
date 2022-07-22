@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,11 +68,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocketClient,
-		GoType:       reflect.TypeOf((*SocketClient)(nil)),
-		InitClass:    initClassSocketClient,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSocketClient{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSocketClientClass{})),
+		GType:     GTypeSocketClient,
+		GoType:    reflect.TypeOf((*SocketClient)(nil)),
+		InitClass: initClassSocketClient,
 	})
 }
 
@@ -83,6 +82,10 @@ func initClassSocketClient(gclass unsafe.Pointer, goval any) {
 		Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
 	}); ok {
 		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketClientClass_event)
+	}
+	if goval, ok := goval.(interface{ InitSocketClient(*SocketClientClass) }); ok {
+		klass := (*SocketClientClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketClient(klass)
 	}
 }
 
@@ -1328,4 +1331,14 @@ func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	C.g_socket_client_set_tls_validation_flags(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(flags)
+}
+
+// SocketClientClass: instance of this type is always passed by reference.
+type SocketClientClass struct {
+	*socketClientClass
+}
+
+// socketClientClass is the struct that's finalized.
+type socketClientClass struct {
+	native *C.GSocketClientClass
 }

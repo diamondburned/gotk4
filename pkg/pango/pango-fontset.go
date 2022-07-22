@@ -153,11 +153,9 @@ var _ Fontsetter = (*Fontset)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFontset,
-		GoType:       reflect.TypeOf((*Fontset)(nil)),
-		InitClass:    initClassFontset,
-		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontset{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontsetClass{})),
+		GType:     GTypeFontset,
+		GoType:    reflect.TypeOf((*Fontset)(nil)),
+		InitClass: initClassFontset,
 	})
 }
 
@@ -175,6 +173,10 @@ func initClassFontset(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Metrics() *FontMetrics }); ok {
 		pclass.get_metrics = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_metrics)
+	}
+	if goval, ok := goval.(interface{ InitFontset(*FontsetClass) }); ok {
+		klass := (*FontsetClass)(gextras.NewStructNative(gclass))
+		goval.InitFontset(klass)
 	}
 }
 
@@ -339,10 +341,6 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	return _fontMetrics
 }
 
-// FontsetSimpleOverrider contains methods that are overridable.
-type FontsetSimpleOverrider interface {
-}
-
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract
 // PangoFontset base class as an array of fonts.
 //
@@ -356,9 +354,6 @@ type FontsetSimple struct {
 var (
 	_ Fontsetter = (*FontsetSimple)(nil)
 )
-
-func initClassFontsetSimple(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapFontsetSimple(obj *coreglib.Object) *FontsetSimple {
 	return &FontsetSimple{
@@ -437,4 +432,17 @@ func (fontset *FontsetSimple) Size() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// FontsetClass structure holds the virtual functions for a particular Fontset
+// implementation.
+//
+// An instance of this type is always passed by reference.
+type FontsetClass struct {
+	*fontsetClass
+}
+
+// fontsetClass is the struct that's finalized.
+type fontsetClass struct {
+	native *C.PangoFontsetClass
 }

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -48,7 +50,19 @@ var (
 	_ Ranger = (*HScale)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeHScale,
+		GoType:    reflect.TypeOf((*HScale)(nil)),
+		InitClass: initClassHScale,
+	})
+}
+
 func initClassHScale(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitHScale(*HScaleClass) }); ok {
+		klass := (*HScaleClass)(gextras.NewStructNative(gclass))
+		goval.InitHScale(klass)
+	}
 }
 
 func wrapHScale(obj *coreglib.Object) *HScale {
@@ -152,4 +166,21 @@ func NewHScaleWithRange(min, max, step float64) *HScale {
 	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hScale
+}
+
+// HScaleClass: instance of this type is always passed by reference.
+type HScaleClass struct {
+	*hScaleClass
+}
+
+// hScaleClass is the struct that's finalized.
+type hScaleClass struct {
+	native *C.GtkHScaleClass
+}
+
+func (h *HScaleClass) ParentClass() *ScaleClass {
+	valptr := &h.native.parent_class
+	var v *ScaleClass // out
+	v = (*ScaleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

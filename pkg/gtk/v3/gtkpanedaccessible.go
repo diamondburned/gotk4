@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,19 @@ var (
 	_ coreglib.Objector = (*PanedAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypePanedAccessible,
+		GoType:    reflect.TypeOf((*PanedAccessible)(nil)),
+		InitClass: initClassPanedAccessible,
+	})
+}
+
 func initClassPanedAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitPanedAccessible(*PanedAccessibleClass) }); ok {
+		klass := (*PanedAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitPanedAccessible(klass)
+	}
 }
 
 func wrapPanedAccessible(obj *coreglib.Object) *PanedAccessible {
@@ -50,7 +64,7 @@ func wrapPanedAccessible(obj *coreglib.Object) *PanedAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +81,21 @@ func wrapPanedAccessible(obj *coreglib.Object) *PanedAccessible {
 
 func marshalPanedAccessible(p uintptr) (interface{}, error) {
 	return wrapPanedAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// PanedAccessibleClass: instance of this type is always passed by reference.
+type PanedAccessibleClass struct {
+	*panedAccessibleClass
+}
+
+// panedAccessibleClass is the struct that's finalized.
+type panedAccessibleClass struct {
+	native *C.GtkPanedAccessibleClass
+}
+
+func (p *PanedAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &p.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

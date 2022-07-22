@@ -3,8 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -50,7 +52,21 @@ type NativeVolumeMonitorrer interface {
 
 var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNativeVolumeMonitor,
+		GoType:    reflect.TypeOf((*NativeVolumeMonitor)(nil)),
+		InitClass: initClassNativeVolumeMonitor,
+	})
+}
+
 func initClassNativeVolumeMonitor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitNativeVolumeMonitor(*NativeVolumeMonitorClass)
+	}); ok {
+		klass := (*NativeVolumeMonitorClass)(gextras.NewStructNative(gclass))
+		goval.InitNativeVolumeMonitor(klass)
+	}
 }
 
 func wrapNativeVolumeMonitor(obj *coreglib.Object) *NativeVolumeMonitor {
@@ -72,4 +88,22 @@ func (v *NativeVolumeMonitor) baseNativeVolumeMonitor() *NativeVolumeMonitor {
 // BaseNativeVolumeMonitor returns the underlying base object.
 func BaseNativeVolumeMonitor(obj NativeVolumeMonitorrer) *NativeVolumeMonitor {
 	return obj.baseNativeVolumeMonitor()
+}
+
+// NativeVolumeMonitorClass: instance of this type is always passed by
+// reference.
+type NativeVolumeMonitorClass struct {
+	*nativeVolumeMonitorClass
+}
+
+// nativeVolumeMonitorClass is the struct that's finalized.
+type nativeVolumeMonitorClass struct {
+	native *C.GNativeVolumeMonitorClass
+}
+
+func (n *NativeVolumeMonitorClass) ParentClass() *VolumeMonitorClass {
+	valptr := &n.native.parent_class
+	var v *VolumeMonitorClass // out
+	v = (*VolumeMonitorClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

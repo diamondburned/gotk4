@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,21 @@ var (
 	_ Binner = (*ColorSelectionDialog)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeColorSelectionDialog,
+		GoType:    reflect.TypeOf((*ColorSelectionDialog)(nil)),
+		InitClass: initClassColorSelectionDialog,
+	})
+}
+
 func initClassColorSelectionDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitColorSelectionDialog(*ColorSelectionDialogClass)
+	}); ok {
+		klass := (*ColorSelectionDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitColorSelectionDialog(klass)
+	}
 }
 
 func wrapColorSelectionDialog(obj *coreglib.Object) *ColorSelectionDialog {
@@ -136,4 +152,22 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	}
 
 	return _widget
+}
+
+// ColorSelectionDialogClass: instance of this type is always passed by
+// reference.
+type ColorSelectionDialogClass struct {
+	*colorSelectionDialogClass
+}
+
+// colorSelectionDialogClass is the struct that's finalized.
+type colorSelectionDialogClass struct {
+	native *C.GtkColorSelectionDialogClass
+}
+
+func (c *ColorSelectionDialogClass) ParentClass() *DialogClass {
+	valptr := &c.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

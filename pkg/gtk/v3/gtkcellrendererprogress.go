@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,21 @@ var (
 	_ CellRendererer = (*CellRendererProgress)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCellRendererProgress,
+		GoType:    reflect.TypeOf((*CellRendererProgress)(nil)),
+		InitClass: initClassCellRendererProgress,
+	})
+}
+
 func initClassCellRendererProgress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitCellRendererProgress(*CellRendererProgressClass)
+	}); ok {
+		klass := (*CellRendererProgressClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererProgress(klass)
+	}
 }
 
 func wrapCellRendererProgress(obj *coreglib.Object) *CellRendererProgress {
@@ -81,4 +97,22 @@ func NewCellRendererProgress() *CellRendererProgress {
 	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererProgress
+}
+
+// CellRendererProgressClass: instance of this type is always passed by
+// reference.
+type CellRendererProgressClass struct {
+	*cellRendererProgressClass
+}
+
+// cellRendererProgressClass is the struct that's finalized.
+type cellRendererProgressClass struct {
+	native *C.GtkCellRendererProgressClass
+}
+
+func (c *CellRendererProgressClass) ParentClass() *CellRendererClass {
+	valptr := &c.native.parent_class
+	var v *CellRendererClass // out
+	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

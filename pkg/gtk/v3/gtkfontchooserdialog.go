@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -53,7 +55,19 @@ var (
 	_ Binner            = (*FontChooserDialog)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFontChooserDialog,
+		GoType:    reflect.TypeOf((*FontChooserDialog)(nil)),
+		InitClass: initClassFontChooserDialog,
+	})
+}
+
 func initClassFontChooserDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFontChooserDialog(*FontChooserDialogClass) }); ok {
+		klass := (*FontChooserDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitFontChooserDialog(klass)
+	}
 }
 
 func wrapFontChooserDialog(obj *coreglib.Object) *FontChooserDialog {
@@ -122,4 +136,22 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	_fontChooserDialog = wrapFontChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserDialog
+}
+
+// FontChooserDialogClass: instance of this type is always passed by reference.
+type FontChooserDialogClass struct {
+	*fontChooserDialogClass
+}
+
+// fontChooserDialogClass is the struct that's finalized.
+type fontChooserDialogClass struct {
+	native *C.GtkFontChooserDialogClass
+}
+
+// ParentClass: parent class.
+func (f *FontChooserDialogClass) ParentClass() *DialogClass {
+	valptr := &f.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

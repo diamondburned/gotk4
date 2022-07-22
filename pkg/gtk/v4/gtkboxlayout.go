@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,7 +57,19 @@ var (
 	_ coreglib.Objector = (*BoxLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBoxLayout,
+		GoType:    reflect.TypeOf((*BoxLayout)(nil)),
+		InitClass: initClassBoxLayout,
+	})
+}
+
 func initClassBoxLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBoxLayout(*BoxLayoutClass) }); ok {
+		klass := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitBoxLayout(klass)
+	}
 }
 
 func wrapBoxLayout(obj *coreglib.Object) *BoxLayout {
@@ -229,4 +243,21 @@ func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 	C.gtk_box_layout_set_spacing(_arg0, _arg1)
 	runtime.KeepAlive(boxLayout)
 	runtime.KeepAlive(spacing)
+}
+
+// BoxLayoutClass: instance of this type is always passed by reference.
+type BoxLayoutClass struct {
+	*boxLayoutClass
+}
+
+// boxLayoutClass is the struct that's finalized.
+type boxLayoutClass struct {
+	native *C.GtkBoxLayoutClass
+}
+
+func (b *BoxLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &b.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

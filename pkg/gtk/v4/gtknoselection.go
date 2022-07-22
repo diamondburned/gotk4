@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -46,7 +48,19 @@ var (
 	_ coreglib.Objector = (*NoSelection)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNoSelection,
+		GoType:    reflect.TypeOf((*NoSelection)(nil)),
+		InitClass: initClassNoSelection,
+	})
+}
+
 func initClassNoSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNoSelection(*NoSelectionClass) }); ok {
+		klass := (*NoSelectionClass)(gextras.NewStructNative(gclass))
+		goval.InitNoSelection(klass)
+	}
 }
 
 func wrapNoSelection(obj *coreglib.Object) *NoSelection {
@@ -140,4 +154,14 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 	C.gtk_no_selection_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// NoSelectionClass: instance of this type is always passed by reference.
+type NoSelectionClass struct {
+	*noSelectionClass
+}
+
+// noSelectionClass is the struct that's finalized.
+type noSelectionClass struct {
+	native *C.GtkNoSelectionClass
 }

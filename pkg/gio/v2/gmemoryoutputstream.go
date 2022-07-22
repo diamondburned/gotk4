@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -50,7 +51,21 @@ var (
 	_ coreglib.Objector = (*MemoryOutputStream)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMemoryOutputStream,
+		GoType:    reflect.TypeOf((*MemoryOutputStream)(nil)),
+		InitClass: initClassMemoryOutputStream,
+	})
+}
+
 func initClassMemoryOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitMemoryOutputStream(*MemoryOutputStreamClass)
+	}); ok {
+		klass := (*MemoryOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitMemoryOutputStream(klass)
+	}
 }
 
 func wrapMemoryOutputStream(obj *coreglib.Object) *MemoryOutputStream {
@@ -229,4 +244,21 @@ func (ostream *MemoryOutputStream) StealData() unsafe.Pointer {
 	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
 
 	return _gpointer
+}
+
+// MemoryOutputStreamClass: instance of this type is always passed by reference.
+type MemoryOutputStreamClass struct {
+	*memoryOutputStreamClass
+}
+
+// memoryOutputStreamClass is the struct that's finalized.
+type memoryOutputStreamClass struct {
+	native *C.GMemoryOutputStreamClass
+}
+
+func (m *MemoryOutputStreamClass) ParentClass() *OutputStreamClass {
+	valptr := &m.native.parent_class
+	var v *OutputStreamClass // out
+	v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

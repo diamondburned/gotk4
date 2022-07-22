@@ -271,11 +271,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTextView,
-		GoType:       reflect.TypeOf((*TextView)(nil)),
-		InitClass:    initClassTextView,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextView{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextViewClass{})),
+		GType:     GTypeTextView,
+		GoType:    reflect.TypeOf((*TextView)(nil)),
+		InitClass: initClassTextView,
 	})
 }
 
@@ -341,6 +339,10 @@ func initClassTextView(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ToggleOverwrite() }); ok {
 		pclass.toggle_overwrite = (*[0]byte)(C._gotk4_gtk3_TextViewClass_toggle_overwrite)
+	}
+	if goval, ok := goval.(interface{ InitTextView(*TextViewClass) }); ok {
+		klass := (*TextViewClass)(gextras.NewStructNative(gclass))
+		goval.InitTextView(klass)
 	}
 }
 
@@ -3096,4 +3098,22 @@ func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, wind
 	_bufferY = int(_arg5)
 
 	return _bufferX, _bufferY
+}
+
+// TextViewClass: instance of this type is always passed by reference.
+type TextViewClass struct {
+	*textViewClass
+}
+
+// textViewClass is the struct that's finalized.
+type textViewClass struct {
+	native *C.GtkTextViewClass
+}
+
+// ParentClass: object class structure needs to be the first.
+func (t *TextViewClass) ParentClass() *ContainerClass {
+	valptr := &t.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

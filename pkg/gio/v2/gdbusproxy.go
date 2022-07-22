@@ -98,11 +98,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeDBusProxy,
-		GoType:       reflect.TypeOf((*DBusProxy)(nil)),
-		InitClass:    initClassDBusProxy,
-		ClassSize:    uint32(unsafe.Sizeof(C.GDBusProxy{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GDBusProxyClass{})),
+		GType:     GTypeDBusProxy,
+		GoType:    reflect.TypeOf((*DBusProxy)(nil)),
+		InitClass: initClassDBusProxy,
 	})
 }
 
@@ -114,6 +112,10 @@ func initClassDBusProxy(gclass unsafe.Pointer, goval any) {
 		GSignal(senderName, signalName string, parameters *glib.Variant)
 	}); ok {
 		pclass.g_signal = (*[0]byte)(C._gotk4_gio2_DBusProxyClass_g_signal)
+	}
+	if goval, ok := goval.(interface{ InitDBusProxy(*DBusProxyClass) }); ok {
+		klass := (*DBusProxyClass)(gextras.NewStructNative(gclass))
+		goval.InitDBusProxy(klass)
 	}
 }
 
@@ -1228,4 +1230,16 @@ func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFla
 	runtime.KeepAlive(objectPath)
 	runtime.KeepAlive(interfaceName)
 	runtime.KeepAlive(callback)
+}
+
+// DBusProxyClass class structure for BusProxy.
+//
+// An instance of this type is always passed by reference.
+type DBusProxyClass struct {
+	*dBusProxyClass
+}
+
+// dBusProxyClass is the struct that's finalized.
+type dBusProxyClass struct {
+	native *C.GDBusProxyClass
 }

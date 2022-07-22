@@ -180,11 +180,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeApplication,
-		GoType:       reflect.TypeOf((*Application)(nil)),
-		InitClass:    initClassApplication,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkApplication{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkApplicationClass{})),
+		GType:     GTypeApplication,
+		GoType:    reflect.TypeOf((*Application)(nil)),
+		InitClass: initClassApplication,
 	})
 }
 
@@ -198,6 +196,10 @@ func initClassApplication(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ WindowRemoved(window *Window) }); ok {
 		pclass.window_removed = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_removed)
+	}
+	if goval, ok := goval.(interface{ InitApplication(*ApplicationClass) }); ok {
+		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
+		goval.InitApplication(klass)
 	}
 }
 
@@ -923,4 +925,22 @@ func (application *Application) Uninhibit(cookie uint) {
 	C.gtk_application_uninhibit(_arg0, _arg1)
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(cookie)
+}
+
+// ApplicationClass: instance of this type is always passed by reference.
+type ApplicationClass struct {
+	*applicationClass
+}
+
+// applicationClass is the struct that's finalized.
+type applicationClass struct {
+	native *C.GtkApplicationClass
+}
+
+// ParentClass: parent class.
+func (a *ApplicationClass) ParentClass() *gio.ApplicationClass {
+	valptr := &a.native.parent_class
+	var v *gio.ApplicationClass // out
+	v = (*gio.ApplicationClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

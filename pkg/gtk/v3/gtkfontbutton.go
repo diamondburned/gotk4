@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -59,11 +60,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFontButton,
-		GoType:       reflect.TypeOf((*FontButton)(nil)),
-		InitClass:    initClassFontButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFontButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFontButtonClass{})),
+		GType:     GTypeFontButton,
+		GoType:    reflect.TypeOf((*FontButton)(nil)),
+		InitClass: initClassFontButton,
 	})
 }
 
@@ -73,6 +72,10 @@ func initClassFontButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ FontSet() }); ok {
 		pclass.font_set = (*[0]byte)(C._gotk4_gtk3_FontButtonClass_font_set)
+	}
+	if goval, ok := goval.(interface{ InitFontButton(*FontButtonClass) }); ok {
+		klass := (*FontButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitFontButton(klass)
 	}
 }
 
@@ -488,4 +491,21 @@ func (fontButton *FontButton) SetUseSize(useSize bool) {
 	C.gtk_font_button_set_use_size(_arg0, _arg1)
 	runtime.KeepAlive(fontButton)
 	runtime.KeepAlive(useSize)
+}
+
+// FontButtonClass: instance of this type is always passed by reference.
+type FontButtonClass struct {
+	*fontButtonClass
+}
+
+// fontButtonClass is the struct that's finalized.
+type fontButtonClass struct {
+	native *C.GtkFontButtonClass
+}
+
+func (f *FontButtonClass) ParentClass() *ButtonClass {
+	valptr := &f.native.parent_class
+	var v *ButtonClass // out
+	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

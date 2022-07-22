@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,19 @@ var (
 	_ coreglib.Objector = (*StringSorter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStringSorter,
+		GoType:    reflect.TypeOf((*StringSorter)(nil)),
+		InitClass: initClassStringSorter,
+	})
+}
+
 func initClassStringSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStringSorter(*StringSorterClass) }); ok {
+		klass := (*StringSorterClass)(gextras.NewStructNative(gclass))
+		goval.InitStringSorter(klass)
+	}
 }
 
 func wrapStringSorter(obj *coreglib.Object) *StringSorter {
@@ -196,4 +210,21 @@ func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
 	C.gtk_string_sorter_set_ignore_case(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ignoreCase)
+}
+
+// StringSorterClass: instance of this type is always passed by reference.
+type StringSorterClass struct {
+	*stringSorterClass
+}
+
+// stringSorterClass is the struct that's finalized.
+type stringSorterClass struct {
+	native *C.GtkStringSorterClass
+}
+
+func (s *StringSorterClass) ParentClass() *SorterClass {
+	valptr := &s.native.parent_class
+	var v *SorterClass // out
+	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

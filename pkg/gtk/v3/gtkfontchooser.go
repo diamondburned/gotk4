@@ -783,3 +783,25 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(showPreviewEntry)
 }
+
+// FontChooserIface: instance of this type is always passed by reference.
+type FontChooserIface struct {
+	*fontChooserIface
+}
+
+// fontChooserIface is the struct that's finalized.
+type fontChooserIface struct {
+	native *C.GtkFontChooserIface
+}
+
+func (f *FontChooserIface) Padding() [10]unsafe.Pointer {
+	valptr := &f.native.padding
+	var v [10]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 10; i++ {
+			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
+}

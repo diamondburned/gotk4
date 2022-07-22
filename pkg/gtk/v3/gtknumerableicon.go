@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -48,7 +50,19 @@ var (
 	_ coreglib.Objector = (*NumerableIcon)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNumerableIcon,
+		GoType:    reflect.TypeOf((*NumerableIcon)(nil)),
+		InitClass: initClassNumerableIcon,
+	})
+}
+
 func initClassNumerableIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNumerableIcon(*NumerableIconClass) }); ok {
+		klass := (*NumerableIconClass)(gextras.NewStructNative(gclass))
+		goval.InitNumerableIcon(klass)
+	}
 }
 
 func wrapNumerableIcon(obj *coreglib.Object) *NumerableIcon {
@@ -416,4 +430,33 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	}
 
 	return _icon
+}
+
+// NumerableIconClass: instance of this type is always passed by reference.
+type NumerableIconClass struct {
+	*numerableIconClass
+}
+
+// numerableIconClass is the struct that's finalized.
+type numerableIconClass struct {
+	native *C.GtkNumerableIconClass
+}
+
+func (n *NumerableIconClass) ParentClass() *gio.EmblemedIconClass {
+	valptr := &n.native.parent_class
+	var v *gio.EmblemedIconClass // out
+	v = (*gio.EmblemedIconClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+func (n *NumerableIconClass) Padding() [16]unsafe.Pointer {
+	valptr := &n.native.padding
+	var v [16]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 16; i++ {
+			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
 }

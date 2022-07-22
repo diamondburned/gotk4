@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -35,19 +36,33 @@ type ToplevelAccessibleOverrider interface {
 
 type ToplevelAccessible struct {
 	_ [0]func() // equal guard
-	atk.ObjectClass
+	atk.AtkObject
 }
 
 var (
 	_ coreglib.Objector = (*ToplevelAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeToplevelAccessible,
+		GoType:    reflect.TypeOf((*ToplevelAccessible)(nil)),
+		InitClass: initClassToplevelAccessible,
+	})
+}
+
 func initClassToplevelAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitToplevelAccessible(*ToplevelAccessibleClass)
+	}); ok {
+		klass := (*ToplevelAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitToplevelAccessible(klass)
+	}
 }
 
 func wrapToplevelAccessible(obj *coreglib.Object) *ToplevelAccessible {
 	return &ToplevelAccessible{
-		ObjectClass: atk.ObjectClass{
+		AtkObject: atk.AtkObject{
 			Object: obj,
 		},
 	}
@@ -81,4 +96,21 @@ func (accessible *ToplevelAccessible) Children() []*Window {
 	})
 
 	return _list
+}
+
+// ToplevelAccessibleClass: instance of this type is always passed by reference.
+type ToplevelAccessibleClass struct {
+	*toplevelAccessibleClass
+}
+
+// toplevelAccessibleClass is the struct that's finalized.
+type toplevelAccessibleClass struct {
+	native *C.GtkToplevelAccessibleClass
+}
+
+func (t *ToplevelAccessibleClass) ParentClass() *atk.ObjectClass {
+	valptr := &t.native.parent_class
+	var v *atk.ObjectClass // out
+	v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*HButtonBox)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeHButtonBox,
+		GoType:    reflect.TypeOf((*HButtonBox)(nil)),
+		InitClass: initClassHButtonBox,
+	})
+}
+
 func initClassHButtonBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitHButtonBox(*HButtonBoxClass) }); ok {
+		klass := (*HButtonBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitHButtonBox(klass)
+	}
 }
 
 func wrapHButtonBox(obj *coreglib.Object) *HButtonBox {
@@ -93,4 +107,21 @@ func NewHButtonBox() *HButtonBox {
 	_hButtonBox = wrapHButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hButtonBox
+}
+
+// HButtonBoxClass: instance of this type is always passed by reference.
+type HButtonBoxClass struct {
+	*hButtonBoxClass
+}
+
+// hButtonBoxClass is the struct that's finalized.
+type hButtonBoxClass struct {
+	native *C.GtkHButtonBoxClass
+}
+
+func (h *HButtonBoxClass) ParentClass() *ButtonBoxClass {
+	valptr := &h.native.parent_class
+	var v *ButtonBoxClass // out
+	v = (*ButtonBoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

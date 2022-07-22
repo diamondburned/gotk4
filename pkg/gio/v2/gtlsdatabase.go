@@ -293,11 +293,9 @@ var _ TLSDatabaser = (*TLSDatabase)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTLSDatabase,
-		GoType:       reflect.TypeOf((*TLSDatabase)(nil)),
-		InitClass:    initClassTLSDatabase,
-		ClassSize:    uint32(unsafe.Sizeof(C.GTlsDatabase{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GTlsDatabaseClass{})),
+		GType:     GTypeTLSDatabase,
+		GoType:    reflect.TypeOf((*TLSDatabase)(nil)),
+		InitClass: initClassTLSDatabase,
 	})
 }
 
@@ -357,6 +355,10 @@ func initClassTLSDatabase(gclass unsafe.Pointer, goval any) {
 		VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error)
 	}); ok {
 		pclass.verify_chain_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_verify_chain_finish)
+	}
+	if goval, ok := goval.(interface{ InitTLSDatabase(*TLSDatabaseClass) }); ok {
+		klass := (*TLSDatabaseClass)(gextras.NewStructNative(gclass))
+		goval.InitTLSDatabase(klass)
 	}
 }
 
@@ -1546,4 +1548,18 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 	}
 
 	return _tlsCertificateFlags, _goerr
+}
+
+// TLSDatabaseClass class for Database. Derived classes should implement the
+// various virtual methods. _async and _finish methods have a default
+// implementation that runs the corresponding sync method in a thread.
+//
+// An instance of this type is always passed by reference.
+type TLSDatabaseClass struct {
+	*tlsDatabaseClass
+}
+
+// tlsDatabaseClass is the struct that's finalized.
+type tlsDatabaseClass struct {
+	native *C.GTlsDatabaseClass
 }

@@ -341,3 +341,13 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 
 	return _utf8
 }
+
+// StreamableContentIface: instance of this type is always passed by reference.
+type StreamableContentIface struct {
+	*streamableContentIface
+}
+
+// streamableContentIface is the struct that's finalized.
+type streamableContentIface struct {
+	native *C.AtkStreamableContentIface
+}

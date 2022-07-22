@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -88,11 +89,9 @@ var _ NativeDialogger = (*NativeDialog)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeNativeDialog,
-		GoType:       reflect.TypeOf((*NativeDialog)(nil)),
-		InitClass:    initClassNativeDialog,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkNativeDialog{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkNativeDialogClass{})),
+		GType:     GTypeNativeDialog,
+		GoType:    reflect.TypeOf((*NativeDialog)(nil)),
+		InitClass: initClassNativeDialog,
 	})
 }
 
@@ -110,6 +109,10 @@ func initClassNativeDialog(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Show() }); ok {
 		pclass.show = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_show)
+	}
+	if goval, ok := goval.(interface{ InitNativeDialog(*NativeDialogClass) }); ok {
+		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitNativeDialog(klass)
 	}
 }
 
@@ -409,4 +412,16 @@ func (self *NativeDialog) Show() {
 
 	C.gtk_native_dialog_show(_arg0)
 	runtime.KeepAlive(self)
+}
+
+// NativeDialogClass class structure for NativeDialog.
+//
+// An instance of this type is always passed by reference.
+type NativeDialogClass struct {
+	*nativeDialogClass
+}
+
+// nativeDialogClass is the struct that's finalized.
+type nativeDialogClass struct {
+	native *C.GtkNativeDialogClass
 }

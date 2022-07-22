@@ -363,3 +363,13 @@ func (text *EditableText) SetTextContents(str string) {
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
 }
+
+// EditableTextIface: instance of this type is always passed by reference.
+type EditableTextIface struct {
+	*editableTextIface
+}
+
+// editableTextIface is the struct that's finalized.
+type editableTextIface struct {
+	native *C.AtkEditableTextIface
+}

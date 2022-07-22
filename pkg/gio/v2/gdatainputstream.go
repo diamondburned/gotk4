@@ -4,12 +4,14 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,19 @@ var (
 	_ FilterInputStreamer = (*DataInputStream)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDataInputStream,
+		GoType:    reflect.TypeOf((*DataInputStream)(nil)),
+		InitClass: initClassDataInputStream,
+	})
+}
+
 func initClassDataInputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDataInputStream(*DataInputStreamClass) }); ok {
+		klass := (*DataInputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitDataInputStream(klass)
+	}
 }
 
 func wrapDataInputStream(obj *coreglib.Object) *DataInputStream {
@@ -1079,4 +1093,21 @@ func (stream *DataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	C.g_data_input_stream_set_newline_type(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(typ)
+}
+
+// DataInputStreamClass: instance of this type is always passed by reference.
+type DataInputStreamClass struct {
+	*dataInputStreamClass
+}
+
+// dataInputStreamClass is the struct that's finalized.
+type dataInputStreamClass struct {
+	native *C.GDataInputStreamClass
+}
+
+func (d *DataInputStreamClass) ParentClass() *BufferedInputStreamClass {
+	valptr := &d.native.parent_class
+	var v *BufferedInputStreamClass // out
+	v = (*BufferedInputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

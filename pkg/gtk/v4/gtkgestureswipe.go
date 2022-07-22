@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// GestureSwipeOverrider contains methods that are overridable.
-type GestureSwipeOverrider interface {
-}
-
 // GestureSwipe: GtkGestureSwipe is a GtkGesture for swipe gestures.
 //
 // After a press/move/.../move/release sequence happens, the
@@ -49,9 +45,6 @@ type GestureSwipe struct {
 var (
 	_ Gesturer = (*GestureSwipe)(nil)
 )
-
-func initClassGestureSwipe(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureSwipe(obj *coreglib.Object) *GestureSwipe {
 	return &GestureSwipe{

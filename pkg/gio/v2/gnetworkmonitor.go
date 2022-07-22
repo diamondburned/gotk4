@@ -347,3 +347,15 @@ func NetworkMonitorGetDefault() *NetworkMonitor {
 
 	return _networkMonitor
 }
+
+// NetworkMonitorInterface: virtual function table for Monitor.
+//
+// An instance of this type is always passed by reference.
+type NetworkMonitorInterface struct {
+	*networkMonitorInterface
+}
+
+// networkMonitorInterface is the struct that's finalized.
+type networkMonitorInterface struct {
+	native *C.GNetworkMonitorInterface
+}

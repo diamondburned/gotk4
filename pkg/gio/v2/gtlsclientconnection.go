@@ -382,3 +382,15 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 
 	return _tlsClientConnection, _goerr
 }
+
+// TLSClientConnectionInterface: vtable for a ClientConnection implementation.
+//
+// An instance of this type is always passed by reference.
+type TLSClientConnectionInterface struct {
+	*tlsClientConnectionInterface
+}
+
+// tlsClientConnectionInterface is the struct that's finalized.
+type tlsClientConnectionInterface struct {
+	native *C.GTlsClientConnectionInterface
+}

@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -68,11 +69,9 @@ var _ MediaFiler = (*MediaFile)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMediaFile,
-		GoType:       reflect.TypeOf((*MediaFile)(nil)),
-		InitClass:    initClassMediaFile,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkMediaFile{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkMediaFileClass{})),
+		GType:     GTypeMediaFile,
+		GoType:    reflect.TypeOf((*MediaFile)(nil)),
+		InitClass: initClassMediaFile,
 	})
 }
 
@@ -86,6 +85,10 @@ func initClassMediaFile(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Open() }); ok {
 		pclass.open = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_open)
+	}
+	if goval, ok := goval.(interface{ InitMediaFile(*MediaFileClass) }); ok {
+		klass := (*MediaFileClass)(gextras.NewStructNative(gclass))
+		goval.InitMediaFile(klass)
 	}
 }
 
@@ -437,4 +440,21 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	C.gtk_media_file_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
+}
+
+// MediaFileClass: instance of this type is always passed by reference.
+type MediaFileClass struct {
+	*mediaFileClass
+}
+
+// mediaFileClass is the struct that's finalized.
+type mediaFileClass struct {
+	native *C.GtkMediaFileClass
+}
+
+func (m *MediaFileClass) ParentClass() *MediaStreamClass {
+	valptr := &m.native.parent_class
+	var v *MediaStreamClass // out
+	v = (*MediaStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -91,11 +92,9 @@ var _ SocketAddresser = (*SocketAddress)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocketAddress,
-		GoType:       reflect.TypeOf((*SocketAddress)(nil)),
-		InitClass:    initClassSocketAddress,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSocketAddress{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSocketAddressClass{})),
+		GType:     GTypeSocketAddress,
+		GoType:    reflect.TypeOf((*SocketAddress)(nil)),
+		InitClass: initClassSocketAddress,
 	})
 }
 
@@ -115,6 +114,10 @@ func initClassSocketAddress(gclass unsafe.Pointer, goval any) {
 		ToNative(dest unsafe.Pointer, destlen uint) error
 	}); ok {
 		pclass.to_native = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_to_native)
+	}
+	if goval, ok := goval.(interface{ InitSocketAddress(*SocketAddressClass) }); ok {
+		klass := (*SocketAddressClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketAddress(klass)
 	}
 }
 
@@ -299,4 +302,14 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 	}
 
 	return _goerr
+}
+
+// SocketAddressClass: instance of this type is always passed by reference.
+type SocketAddressClass struct {
+	*socketAddressClass
+}
+
+// socketAddressClass is the struct that's finalized.
+type socketAddressClass struct {
+	native *C.GSocketAddressClass
 }

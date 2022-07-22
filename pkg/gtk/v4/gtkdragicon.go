@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
@@ -54,7 +56,19 @@ var (
 	_ coreglib.Objector = (*DragIcon)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDragIcon,
+		GoType:    reflect.TypeOf((*DragIcon)(nil)),
+		InitClass: initClassDragIcon,
+	})
+}
+
 func initClassDragIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDragIcon(*DragIconClass) }); ok {
+		klass := (*DragIconClass)(gextras.NewStructNative(gclass))
+		goval.InitDragIcon(klass)
+	}
 }
 
 func wrapDragIcon(obj *coreglib.Object) *DragIcon {
@@ -280,4 +294,21 @@ func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, 
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(hotX)
 	runtime.KeepAlive(hotY)
+}
+
+// DragIconClass: instance of this type is always passed by reference.
+type DragIconClass struct {
+	*dragIconClass
+}
+
+// dragIconClass is the struct that's finalized.
+type dragIconClass struct {
+	native *C.GtkDragIconClass
+}
+
+func (d *DragIconClass) ParentClass() *WidgetClass {
+	valptr := &d.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

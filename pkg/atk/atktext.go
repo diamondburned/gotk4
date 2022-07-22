@@ -2464,6 +2464,16 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
 	return _ok
 }
 
+// TextIface: instance of this type is always passed by reference.
+type TextIface struct {
+	*textIface
+}
+
+// textIface is the struct that's finalized.
+type textIface struct {
+	native *C.AtkTextIface
+}
+
 // TextRange: structure used to describe a text range.
 //
 // An instance of this type is always passed by reference.

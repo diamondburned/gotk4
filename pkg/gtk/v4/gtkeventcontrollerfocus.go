@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// EventControllerFocusOverrider contains methods that are overridable.
-type EventControllerFocusOverrider interface {
-}
-
 // EventControllerFocus: GtkEventControllerFocus is an event controller to keep
 // track of keyboard focus.
 //
@@ -47,9 +43,6 @@ type EventControllerFocus struct {
 var (
 	_ EventControllerer = (*EventControllerFocus)(nil)
 )
-
-func initClassEventControllerFocus(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventControllerFocus(obj *coreglib.Object) *EventControllerFocus {
 	return &EventControllerFocus{

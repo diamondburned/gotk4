@@ -463,3 +463,13 @@ func (editable *Editable) SetPosition(position int) {
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(position)
 }
+
+// EditableInterface: instance of this type is always passed by reference.
+type EditableInterface struct {
+	*editableInterface
+}
+
+// editableInterface is the struct that's finalized.
+type editableInterface struct {
+	native *C.GtkEditableInterface
+}

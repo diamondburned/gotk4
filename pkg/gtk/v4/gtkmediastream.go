@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
@@ -135,11 +136,9 @@ var _ MediaStreamer = (*MediaStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMediaStream,
-		GoType:       reflect.TypeOf((*MediaStream)(nil)),
-		InitClass:    initClassMediaStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkMediaStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkMediaStreamClass{})),
+		GType:     GTypeMediaStream,
+		GoType:    reflect.TypeOf((*MediaStream)(nil)),
+		InitClass: initClassMediaStream,
 	})
 }
 
@@ -171,6 +170,10 @@ func initClassMediaStream(gclass unsafe.Pointer, goval any) {
 		UpdateAudio(muted bool, volume float64)
 	}); ok {
 		pclass.update_audio = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_update_audio)
+	}
+	if goval, ok := goval.(interface{ InitMediaStream(*MediaStreamClass) }); ok {
+		klass := (*MediaStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitMediaStream(klass)
 	}
 }
 
@@ -1000,4 +1003,14 @@ func (self *MediaStream) Update(timestamp int64) {
 	C.gtk_media_stream_update(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(timestamp)
+}
+
+// MediaStreamClass: instance of this type is always passed by reference.
+type MediaStreamClass struct {
+	*mediaStreamClass
+}
+
+// mediaStreamClass is the struct that's finalized.
+type mediaStreamClass struct {
+	native *C.GtkMediaStreamClass
 }

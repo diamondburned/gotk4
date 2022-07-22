@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// PixbufSimpleAnimOverrider contains methods that are overridable.
-type PixbufSimpleAnimOverrider interface {
-}
-
 // PixbufSimpleAnim: opaque struct representing a simple animation.
 type PixbufSimpleAnim struct {
 	_ [0]func() // equal guard
@@ -38,9 +34,6 @@ type PixbufSimpleAnim struct {
 var (
 	_ coreglib.Objector = (*PixbufSimpleAnim)(nil)
 )
-
-func initClassPixbufSimpleAnim(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapPixbufSimpleAnim(obj *coreglib.Object) *PixbufSimpleAnim {
 	return &PixbufSimpleAnim{

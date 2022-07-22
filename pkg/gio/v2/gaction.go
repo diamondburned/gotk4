@@ -757,3 +757,15 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 
 	return _utf8
 }
+
+// ActionInterface: virtual function table for #GAction.
+//
+// An instance of this type is always passed by reference.
+type ActionInterface struct {
+	*actionInterface
+}
+
+// actionInterface is the struct that's finalized.
+type actionInterface struct {
+	native *C.GActionInterface
+}

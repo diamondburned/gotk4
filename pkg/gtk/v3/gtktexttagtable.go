@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -102,11 +103,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTextTagTable,
-		GoType:       reflect.TypeOf((*TextTagTable)(nil)),
-		InitClass:    initClassTextTagTable,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextTagTable{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextTagTableClass{})),
+		GType:     GTypeTextTagTable,
+		GoType:    reflect.TypeOf((*TextTagTable)(nil)),
+		InitClass: initClassTextTagTable,
 	})
 }
 
@@ -126,6 +125,10 @@ func initClassTextTagTable(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ TagRemoved(tag *TextTag) }); ok {
 		pclass.tag_removed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_removed)
+	}
+	if goval, ok := goval.(interface{ InitTextTagTable(*TextTagTableClass) }); ok {
+		klass := (*TextTagTableClass)(gextras.NewStructNative(gclass))
+		goval.InitTextTagTable(klass)
 	}
 }
 
@@ -409,4 +412,14 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)
+}
+
+// TextTagTableClass: instance of this type is always passed by reference.
+type TextTagTableClass struct {
+	*textTagTableClass
+}
+
+// textTagTableClass is the struct that's finalized.
+type textTagTableClass struct {
+	native *C.GtkTextTagTableClass
 }

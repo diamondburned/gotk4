@@ -82,11 +82,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRange,
-		GoType:       reflect.TypeOf((*Range)(nil)),
-		InitClass:    initClassRange,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkRange{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkRangeClass{})),
+		GType:     GTypeRange,
+		GoType:    reflect.TypeOf((*Range)(nil)),
+		InitClass: initClassRange,
 	})
 }
 
@@ -114,6 +112,10 @@ func initClassRange(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_RangeClass_value_changed)
+	}
+	if goval, ok := goval.(interface{ InitRange(*RangeClass) }); ok {
+		klass := (*RangeClass)(gextras.NewStructNative(gclass))
+		goval.InitRange(klass)
 	}
 }
 
@@ -869,4 +871,21 @@ func (_range *Range) SetValue(value float64) {
 	C.gtk_range_set_value(_arg0, _arg1)
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(value)
+}
+
+// RangeClass: instance of this type is always passed by reference.
+type RangeClass struct {
+	*rangeClass
+}
+
+// rangeClass is the struct that's finalized.
+type rangeClass struct {
+	native *C.GtkRangeClass
+}
+
+func (r *RangeClass) ParentClass() *WidgetClass {
+	valptr := &r.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

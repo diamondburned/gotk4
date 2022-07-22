@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// X11DeviceManagerXI2Overrider contains methods that are overridable.
-type X11DeviceManagerXI2Overrider interface {
-}
-
 type X11DeviceManagerXI2 struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -36,9 +32,6 @@ type X11DeviceManagerXI2 struct {
 var (
 	_ coreglib.Objector = (*X11DeviceManagerXI2)(nil)
 )
-
-func initClassX11DeviceManagerXI2(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11DeviceManagerXI2(obj *coreglib.Object) *X11DeviceManagerXI2 {
 	return &X11DeviceManagerXI2{

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -58,11 +59,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeHSV,
-		GoType:       reflect.TypeOf((*HSV)(nil)),
-		InitClass:    initClassHSV,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkHSV{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkHSVClass{})),
+		GType:     GTypeHSV,
+		GoType:    reflect.TypeOf((*HSV)(nil)),
+		InitClass: initClassHSV,
 	})
 }
 
@@ -76,6 +75,10 @@ func initClassHSV(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Move(typ DirectionType) }); ok {
 		pclass.move = (*[0]byte)(C._gotk4_gtk3_HSVClass_move)
+	}
+	if goval, ok := goval.(interface{ InitHSV(*HSVClass) }); ok {
+		klass := (*HSVClass)(gextras.NewStructNative(gclass))
+		goval.InitHSV(klass)
 	}
 }
 
@@ -315,4 +318,21 @@ func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	runtime.KeepAlive(hsv)
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(ringWidth)
+}
+
+// HSVClass: instance of this type is always passed by reference.
+type HSVClass struct {
+	*hsvClass
+}
+
+// hsvClass is the struct that's finalized.
+type hsvClass struct {
+	native *C.GtkHSVClass
+}
+
+func (h *HSVClass) ParentClass() *WidgetClass {
+	valptr := &h.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

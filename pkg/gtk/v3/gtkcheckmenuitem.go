@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -68,11 +69,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCheckMenuItem,
-		GoType:       reflect.TypeOf((*CheckMenuItem)(nil)),
-		InitClass:    initClassCheckMenuItem,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCheckMenuItem{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCheckMenuItemClass{})),
+		GType:     GTypeCheckMenuItem,
+		GoType:    reflect.TypeOf((*CheckMenuItem)(nil)),
+		InitClass: initClassCheckMenuItem,
 	})
 }
 
@@ -86,6 +85,10 @@ func initClassCheckMenuItem(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_toggled)
+	}
+	if goval, ok := goval.(interface{ InitCheckMenuItem(*CheckMenuItemClass) }); ok {
+		klass := (*CheckMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.InitCheckMenuItem(klass)
 	}
 }
 
@@ -406,4 +409,22 @@ func (checkMenuItem *CheckMenuItem) Toggled() {
 
 	C.gtk_check_menu_item_toggled(_arg0)
 	runtime.KeepAlive(checkMenuItem)
+}
+
+// CheckMenuItemClass: instance of this type is always passed by reference.
+type CheckMenuItemClass struct {
+	*checkMenuItemClass
+}
+
+// checkMenuItemClass is the struct that's finalized.
+type checkMenuItemClass struct {
+	native *C.GtkCheckMenuItemClass
+}
+
+// ParentClass: parent class.
+func (c *CheckMenuItemClass) ParentClass() *MenuItemClass {
+	valptr := &c.native.parent_class
+	var v *MenuItemClass // out
+	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

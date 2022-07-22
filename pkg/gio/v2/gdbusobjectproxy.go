@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -43,7 +45,19 @@ var (
 	_ coreglib.Objector = (*DBusObjectProxy)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDBusObjectProxy,
+		GoType:    reflect.TypeOf((*DBusObjectProxy)(nil)),
+		InitClass: initClassDBusObjectProxy,
+	})
+}
+
 func initClassDBusObjectProxy(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDBusObjectProxy(*DBusObjectProxyClass) }); ok {
+		klass := (*DBusObjectProxyClass)(gextras.NewStructNative(gclass))
+		goval.InitDBusObjectProxy(klass)
+	}
 }
 
 func wrapDBusObjectProxy(obj *coreglib.Object) *DBusObjectProxy {
@@ -111,4 +125,16 @@ func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
+}
+
+// DBusObjectProxyClass class structure for BusObjectProxy.
+//
+// An instance of this type is always passed by reference.
+type DBusObjectProxyClass struct {
+	*dBusObjectProxyClass
+}
+
+// dBusObjectProxyClass is the struct that's finalized.
+type dBusObjectProxyClass struct {
+	native *C.GDBusObjectProxyClass
 }

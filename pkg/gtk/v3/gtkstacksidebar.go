@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -56,7 +58,19 @@ var (
 	_ Binner = (*StackSidebar)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStackSidebar,
+		GoType:    reflect.TypeOf((*StackSidebar)(nil)),
+		InitClass: initClassStackSidebar,
+	})
+}
+
 func initClassStackSidebar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStackSidebar(*StackSidebarClass) }); ok {
+		klass := (*StackSidebarClass)(gextras.NewStructNative(gclass))
+		goval.InitStackSidebar(klass)
+	}
 }
 
 func wrapStackSidebar(obj *coreglib.Object) *StackSidebar {
@@ -146,4 +160,21 @@ func (sidebar *StackSidebar) SetStack(stack *Stack) {
 	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 	runtime.KeepAlive(sidebar)
 	runtime.KeepAlive(stack)
+}
+
+// StackSidebarClass: instance of this type is always passed by reference.
+type StackSidebarClass struct {
+	*stackSidebarClass
+}
+
+// stackSidebarClass is the struct that's finalized.
+type stackSidebarClass struct {
+	native *C.GtkStackSidebarClass
+}
+
+func (s *StackSidebarClass) ParentClass() *BinClass {
+	valptr := &s.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

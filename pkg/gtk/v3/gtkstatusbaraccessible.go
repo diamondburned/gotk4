@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*StatusbarAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStatusbarAccessible,
+		GoType:    reflect.TypeOf((*StatusbarAccessible)(nil)),
+		InitClass: initClassStatusbarAccessible,
+	})
+}
+
 func initClassStatusbarAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitStatusbarAccessible(*StatusbarAccessibleClass)
+	}); ok {
+		klass := (*StatusbarAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitStatusbarAccessible(klass)
+	}
 }
 
 func wrapStatusbarAccessible(obj *coreglib.Object) *StatusbarAccessible {
@@ -48,7 +64,7 @@ func wrapStatusbarAccessible(obj *coreglib.Object) *StatusbarAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -62,4 +78,22 @@ func wrapStatusbarAccessible(obj *coreglib.Object) *StatusbarAccessible {
 
 func marshalStatusbarAccessible(p uintptr) (interface{}, error) {
 	return wrapStatusbarAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// StatusbarAccessibleClass: instance of this type is always passed by
+// reference.
+type StatusbarAccessibleClass struct {
+	*statusbarAccessibleClass
+}
+
+// statusbarAccessibleClass is the struct that's finalized.
+type statusbarAccessibleClass struct {
+	native *C.GtkStatusbarAccessibleClass
+}
+
+func (s *StatusbarAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

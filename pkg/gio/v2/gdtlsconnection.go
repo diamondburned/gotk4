@@ -1113,3 +1113,16 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 
 	return _goerr
 }
+
+// DTLSConnectionInterface: virtual method table for a Connection
+// implementation.
+//
+// An instance of this type is always passed by reference.
+type DTLSConnectionInterface struct {
+	*dtlsConnectionInterface
+}
+
+// dtlsConnectionInterface is the struct that's finalized.
+type dtlsConnectionInterface struct {
+	native *C.GDtlsConnectionInterface
+}

@@ -224,7 +224,7 @@ type ComponentOverrider interface {
 	//
 	//    - object (optional): reference to the accessible child, if one exists.
 	//
-	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
+	RefAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
@@ -363,7 +363,7 @@ type Componenter interface {
 	GrabFocus() bool
 	// RefAccessibleAtPoint gets a reference to the accessible child, if one
 	// exists, at the coordinate point specified by x and y.
-	RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass
+	RefAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
 	// list of functions to be executed when this object receives focus events
 	// (in or out).
@@ -983,7 +983,7 @@ func (component *Component) GrabFocus() bool {
 //
 //    - object (optional): reference to the accessible child, if one exists.
 //
-func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *ObjectClass {
+func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
 	var _arg2 C.gint          // out
@@ -1001,7 +1001,7 @@ func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) 
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(coordType)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	if _cret != nil {
 		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
@@ -1234,6 +1234,21 @@ func (component *Component) SetSize(width, height int) bool {
 	}
 
 	return _ok
+}
+
+// ComponentIface: atkComponent interface should be supported by any object that
+// is rendered on the screen. The interface provides the standard mechanism for
+// an assistive technology to determine and set the graphical representation of
+// an object.
+//
+// An instance of this type is always passed by reference.
+type ComponentIface struct {
+	*componentIface
+}
+
+// componentIface is the struct that's finalized.
+type componentIface struct {
+	native *C.AtkComponentIface
 }
 
 // Rectangle: data structure for holding a rectangle. Those coordinates are

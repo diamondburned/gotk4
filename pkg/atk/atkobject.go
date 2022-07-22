@@ -52,7 +52,7 @@ var (
 	GTypeLayer            = coreglib.Type(C.atk_layer_get_type())
 	GTypeRole             = coreglib.Type(C.atk_role_get_type())
 	GTypeImplementorIface = coreglib.Type(C.atk_implementor_get_type())
-	GTypeObjectClass      = coreglib.Type(C.atk_object_get_type())
+	GTypeAtkObject        = coreglib.Type(C.atk_object_get_type())
 )
 
 func init() {
@@ -60,7 +60,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeLayer, F: marshalLayer},
 		coreglib.TypeMarshaler{T: GTypeRole, F: marshalRole},
 		coreglib.TypeMarshaler{T: GTypeImplementorIface, F: marshalImplementorIface},
-		coreglib.TypeMarshaler{T: GTypeObjectClass, F: marshalObjectClass},
+		coreglib.TypeMarshaler{T: GTypeAtkObject, F: marshalAtkObject},
 	})
 }
 
@@ -1001,8 +1001,8 @@ func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 	return obj.baseImplementorIface()
 }
 
-// ObjectClassOverrider contains methods that are overridable.
-type ObjectClassOverrider interface {
+// AtkObjectOverrider contains methods that are overridable.
+type AtkObjectOverrider interface {
 	// The function takes the following parameters:
 	//
 	ActiveDescendantChanged(child *unsafe.Pointer)
@@ -1085,7 +1085,7 @@ type ObjectClassOverrider interface {
 	//
 	//    - object representing the accessible parent of the accessible.
 	//
-	Parent() *ObjectClass
+	Parent() *AtkObject
 	// Role gets the role of the accessible.
 	//
 	// The function returns the following values:
@@ -1160,7 +1160,7 @@ type ObjectClassOverrider interface {
 	//
 	//    - parent to be set as the accessible parent.
 	//
-	SetParent(parent *ObjectClass)
+	SetParent(parent *AtkObject)
 	// SetRole sets the role of the accessible.
 	//
 	// The function takes the following parameters:
@@ -1177,8 +1177,8 @@ type ObjectClassOverrider interface {
 	VisibleDataChanged()
 }
 
-// ObjectClass: this class is the primary class for accessibility support via
-// the Accessibility ToolKit (ATK). Objects which are instances of Object (or
+// AtkObject: this class is the primary class for accessibility support via the
+// Accessibility ToolKit (ATK). Objects which are instances of Object (or
 // instances of AtkObject-derived types) are queried for properties which relate
 // basic (and generic) properties of a UI component such as name and
 // description. Instances of Object may also be queried as to whether they
@@ -1193,26 +1193,24 @@ type ObjectClassOverrider interface {
 // implementation is insufficient, via instances of a new Object subclass.
 //
 // See also: ObjectFactory, Registry. (GTK+ users see also Accessible).
-type ObjectClass struct {
+type AtkObject struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
 }
 
 var (
-	_ coreglib.Objector = (*ObjectClass)(nil)
+	_ coreglib.Objector = (*AtkObject)(nil)
 )
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeObjectClass,
-		GoType:       reflect.TypeOf((*ObjectClass)(nil)),
-		InitClass:    initClassObjectClass,
-		ClassSize:    uint32(unsafe.Sizeof(C.AtkObject{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.AtkObjectClass{})),
+		GType:     GTypeAtkObject,
+		GoType:    reflect.TypeOf((*AtkObject)(nil)),
+		InitClass: initClassAtkObject,
 	})
 }
 
-func initClassObjectClass(gclass unsafe.Pointer, goval any) {
+func initClassAtkObject(gclass unsafe.Pointer, goval any) {
 
 	pclass := (*C.AtkObjectClass)(unsafe.Pointer(gclass))
 
@@ -1258,7 +1256,7 @@ func initClassObjectClass(gclass unsafe.Pointer, goval any) {
 		pclass.get_object_locale = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_object_locale)
 	}
 
-	if _, ok := goval.(interface{ Parent() *ObjectClass }); ok {
+	if _, ok := goval.(interface{ Parent() *AtkObject }); ok {
 		pclass.get_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_parent)
 	}
 
@@ -1294,7 +1292,7 @@ func initClassObjectClass(gclass unsafe.Pointer, goval any) {
 		pclass.set_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_name)
 	}
 
-	if _, ok := goval.(interface{ SetParent(parent *ObjectClass) }); ok {
+	if _, ok := goval.(interface{ SetParent(parent *AtkObject) }); ok {
 		pclass.set_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_parent)
 	}
 
@@ -1310,6 +1308,10 @@ func initClassObjectClass(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ VisibleDataChanged() }); ok {
 		pclass.visible_data_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_visible_data_changed)
+	}
+	if goval, ok := goval.(interface{ InitAtkObject(*ObjectClass) }); ok {
+		klass := (*ObjectClass)(gextras.NewStructNative(gclass))
+		goval.InitAtkObject(klass)
 	}
 }
 
@@ -1447,7 +1449,7 @@ func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar
 //export _gotk4_atk1_ObjectClass_get_parent
 func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Parent() *ObjectClass })
+	iface := goval.(interface{ Parent() *AtkObject })
 
 	object := iface.Parent()
 
@@ -1557,9 +1559,9 @@ func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
 //export _gotk4_atk1_ObjectClass_set_parent
 func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SetParent(parent *ObjectClass) })
+	iface := goval.(interface{ SetParent(parent *AtkObject) })
 
-	var _parent *ObjectClass // out
+	var _parent *AtkObject // out
 
 	_parent = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
 
@@ -1604,19 +1606,19 @@ func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.AtkObject) {
 	iface.VisibleDataChanged()
 }
 
-func wrapObject(obj *coreglib.Object) *ObjectClass {
-	return &ObjectClass{
+func wrapObject(obj *coreglib.Object) *AtkObject {
+	return &AtkObject{
 		Object: obj,
 	}
 }
 
-func marshalObjectClass(p uintptr) (interface{}, error) {
+func marshalAtkObject(p uintptr) (interface{}, error) {
 	return wrapObject(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 //export _gotk4_atk1_Object_ConnectActiveDescendantChanged
 func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
-	var f func(arg1 *ObjectClass)
+	var f func(arg1 *AtkObject)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -1624,10 +1626,10 @@ func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(arg1 *ObjectClass))
+		f = closure.Func.(func(arg1 *AtkObject))
 	}
 
-	var _arg1 *ObjectClass // out
+	var _arg1 *AtkObject // out
 
 	_arg1 = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
 
@@ -1638,13 +1640,13 @@ func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.
 // by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
 // object in the object changes. For instance, a table will emit the signal when
 // the cell in the table which has focus changes.
-func (object *ObjectClass) ConnectActiveDescendantChanged(f func(arg1 *ObjectClass)) coreglib.SignalHandle {
+func (object *AtkObject) ConnectActiveDescendantChanged(f func(arg1 *AtkObject)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "active-descendant-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectActiveDescendantChanged), f)
 }
 
 //export _gotk4_atk1_Object_ConnectChildrenChanged
 func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.gpointer, arg3 C.guintptr) {
-	var f func(arg1 uint, arg2 *ObjectClass)
+	var f func(arg1 uint, arg2 *AtkObject)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -1652,11 +1654,11 @@ func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(arg1 uint, arg2 *ObjectClass))
+		f = closure.Func.(func(arg1 uint, arg2 *AtkObject))
 	}
 
-	var _arg1 uint         // out
-	var _arg2 *ObjectClass // out
+	var _arg1 uint       // out
+	var _arg2 *AtkObject // out
 
 	_arg1 = uint(arg1)
 	_arg2 = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
@@ -1666,7 +1668,7 @@ func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, ar
 
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
 // added or removed form an object. It supports two details: "add" and "remove".
-func (object *ObjectClass) ConnectChildrenChanged(f func(arg1 uint, arg2 *ObjectClass)) coreglib.SignalHandle {
+func (object *AtkObject) ConnectChildrenChanged(f func(arg1 uint, arg2 *AtkObject)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
 }
 
@@ -1694,7 +1696,7 @@ func _gotk4_atk1_Object_ConnectFocusEvent(arg0 C.gpointer, arg1 C.gboolean, arg2
 
 // ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
 // lost focus.
-func (object *ObjectClass) ConnectFocusEvent(f func(arg1 bool)) coreglib.SignalHandle {
+func (object *AtkObject) ConnectFocusEvent(f func(arg1 bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "focus-event", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectFocusEvent), f)
 }
 
@@ -1729,7 +1731,7 @@ func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.gpointer,
 // emit property-changed notifications. Object::property-changed is needed by
 // the implementation of atk_add_global_event_listener() because GObject notify
 // doesn't support emission hooks.
-func (object *ObjectClass) ConnectPropertyChange(f func(arg1 *PropertyValues)) coreglib.SignalHandle {
+func (object *AtkObject) ConnectPropertyChange(f func(arg1 *PropertyValues)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "property-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectPropertyChange), f)
 }
 
@@ -1759,7 +1761,7 @@ func _gotk4_atk1_Object_ConnectStateChange(arg0 C.gpointer, arg1 *C.gchar, arg2 
 
 // ConnectStateChange: "state-change" signal is emitted when an object's state
 // changes. The detail value identifies the state type which has changed.
-func (object *ObjectClass) ConnectStateChange(f func(arg1 string, arg2 bool)) coreglib.SignalHandle {
+func (object *AtkObject) ConnectStateChange(f func(arg1 string, arg2 bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "state-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectStateChange), f)
 }
 
@@ -1781,7 +1783,7 @@ func _gotk4_atk1_Object_ConnectVisibleDataChanged(arg0 C.gpointer, arg1 C.guintp
 
 // ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
 // visual appearance of the object changed.
-func (object *ObjectClass) ConnectVisibleDataChanged(f func()) coreglib.SignalHandle {
+func (object *AtkObject) ConnectVisibleDataChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "visible-data-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectVisibleDataChanged), f)
 }
 
@@ -1797,7 +1799,7 @@ func (object *ObjectClass) ConnectVisibleDataChanged(f func()) coreglib.SignalHa
 //
 //    - ok: TRUE if the relationship is added.
 //
-func (object *ObjectClass) AddRelationship(relationship RelationType, target *ObjectClass) bool {
+func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -1828,7 +1830,7 @@ func (object *ObjectClass) AddRelationship(relationship RelationType, target *Ob
 //    - utf8: character string representing the accessible id of the object, or
 //      NULL if no such string was set.
 //
-func (accessible *ObjectClass) AccessibleID() string {
+func (accessible *AtkObject) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -1851,7 +1853,7 @@ func (accessible *ObjectClass) AccessibleID() string {
 //    - utf8: character string representing the accessible description of the
 //      accessible.
 //
-func (accessible *ObjectClass) Description() string {
+func (accessible *AtkObject) Description() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -1874,7 +1876,7 @@ func (accessible *ObjectClass) Description() string {
 //
 //    - gint: integer which is the index of the accessible in its parent.
 //
-func (accessible *ObjectClass) IndexInParent() int {
+func (accessible *AtkObject) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1898,7 +1900,7 @@ func (accessible *ObjectClass) IndexInParent() int {
 //
 //    - layer which is the layer of the accessible.
 //
-func (accessible *ObjectClass) Layer() Layer {
+func (accessible *AtkObject) Layer() Layer {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkLayer   // in
 
@@ -1924,7 +1926,7 @@ func (accessible *ObjectClass) Layer() Layer {
 //    - gint which is the zorder of the accessible, i.e. the depth at which the
 //      component is shown in relation to other components in the same container.
 //
-func (accessible *ObjectClass) MDIZOrder() int {
+func (accessible *AtkObject) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1947,7 +1949,7 @@ func (accessible *ObjectClass) MDIZOrder() int {
 //    - gint: integer representing the number of accessible children of the
 //      accessible.
 //
-func (accessible *ObjectClass) NAccessibleChildren() int {
+func (accessible *AtkObject) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
 
@@ -1969,7 +1971,7 @@ func (accessible *ObjectClass) NAccessibleChildren() int {
 //
 //    - utf8: character string representing the accessible name of the object.
 //
-func (accessible *ObjectClass) Name() string {
+func (accessible *AtkObject) Name() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -1993,7 +1995,7 @@ func (accessible *ObjectClass) Name() string {
 //    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
 //      accessible.
 //
-func (accessible *ObjectClass) ObjectLocale() string {
+func (accessible *AtkObject) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
 
@@ -2022,7 +2024,7 @@ func (accessible *ObjectClass) ObjectLocale() string {
 //
 //    - object representing the accessible parent of the accessible.
 //
-func (accessible *ObjectClass) Parent() *ObjectClass {
+func (accessible *AtkObject) Parent() *AtkObject {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
@@ -2031,7 +2033,7 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 	_cret = C.atk_object_get_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
@@ -2044,7 +2046,7 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 //
 //    - role which is the role of the accessible.
 //
-func (accessible *ObjectClass) Role() Role {
+func (accessible *AtkObject) Role() Role {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkRole    // in
 
@@ -2070,7 +2072,7 @@ func (accessible *ObjectClass) Role() Role {
 //    - data (optional) which identifies the object for which the AtkObject was
 //      created.
 //
-func (accessible *ObjectClass) Initialize(data unsafe.Pointer) {
+func (accessible *AtkObject) Initialize(data unsafe.Pointer) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
 
@@ -2092,7 +2094,7 @@ func (accessible *ObjectClass) Initialize(data unsafe.Pointer) {
 //    - state whose state is changed.
 //    - value: gboolean which indicates whether the state is being set on or off.
 //
-func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
+func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkState   // out
 	var _arg2 C.gboolean   // out
@@ -2121,7 +2123,7 @@ func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 //
 //    - object representing the accessible parent of the accessible if assigned.
 //
-func (accessible *ObjectClass) PeekParent() *ObjectClass {
+func (accessible *AtkObject) PeekParent() *AtkObject {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
 
@@ -2130,7 +2132,7 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 	_cret = C.atk_object_peek_parent(_arg0)
 	runtime.KeepAlive(accessible)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
@@ -2149,7 +2151,7 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 //
 //    - object representing the specified accessible child of the accessible.
 //
-func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
+func (accessible *AtkObject) RefAccessibleChild(i int) *AtkObject {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
 	var _cret *C.AtkObject // in
@@ -2161,7 +2163,7 @@ func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(i)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -2174,7 +2176,7 @@ func (accessible *ObjectClass) RefAccessibleChild(i int) *ObjectClass {
 //
 //    - relationSet representing the relation set of the object.
 //
-func (accessible *ObjectClass) RefRelationSet() *RelationSet {
+func (accessible *AtkObject) RefRelationSet() *RelationSet {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
 
@@ -2198,7 +2200,7 @@ func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 //    - stateSet: reference to an StateSet which is the state set of the
 //      accessible.
 //
-func (accessible *ObjectClass) RefStateSet() *StateSet {
+func (accessible *AtkObject) RefStateSet() *StateSet {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
 
@@ -2222,7 +2224,7 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 //
 //    - handlerId: guint which identifies the handler to be removed.
 //
-func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
+func (accessible *AtkObject) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
 
@@ -2246,7 +2248,7 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint) {
 //
 //    - ok: TRUE if the relationship is removed.
 //
-func (object *ObjectClass) RemoveRelationship(relationship RelationType, target *ObjectClass) bool {
+func (object *AtkObject) RemoveRelationship(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
 	var _arg2 *C.AtkObject      // out
@@ -2280,7 +2282,7 @@ func (object *ObjectClass) RemoveRelationship(relationship RelationType, target 
 //
 //    - name: character string to be set as the accessible id.
 //
-func (accessible *ObjectClass) SetAccessibleID(name string) {
+func (accessible *AtkObject) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -2302,7 +2304,7 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 //
 //    - description: character string to be set as the accessible description.
 //
-func (accessible *ObjectClass) SetDescription(description string) {
+func (accessible *AtkObject) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -2324,7 +2326,7 @@ func (accessible *ObjectClass) SetDescription(description string) {
 //
 //    - name: character string to be set as the accessible name.
 //
-func (accessible *ObjectClass) SetName(name string) {
+func (accessible *AtkObject) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
@@ -2343,7 +2345,7 @@ func (accessible *ObjectClass) SetName(name string) {
 //
 //    - parent to be set as the accessible parent.
 //
-func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
+func (accessible *AtkObject) SetParent(parent *AtkObject) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
 
@@ -2361,7 +2363,7 @@ func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
 //
 //    - role to be set as the role.
 //
-func (accessible *ObjectClass) SetRole(role Role) {
+func (accessible *AtkObject) SetRole(role Role) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkRole    // out
 
@@ -2409,6 +2411,16 @@ func (a *Attribute) Value() string {
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
+}
+
+// ObjectClass: instance of this type is always passed by reference.
+type ObjectClass struct {
+	*objectClass
+}
+
+// objectClass is the struct that's finalized.
+type objectClass struct {
+	native *C.AtkObjectClass
 }
 
 // PropertyValues: note: old_value field of PropertyValues will not contain a

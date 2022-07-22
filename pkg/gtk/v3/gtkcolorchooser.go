@@ -358,3 +358,25 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)
 }
+
+// ColorChooserInterface: instance of this type is always passed by reference.
+type ColorChooserInterface struct {
+	*colorChooserInterface
+}
+
+// colorChooserInterface is the struct that's finalized.
+type colorChooserInterface struct {
+	native *C.GtkColorChooserInterface
+}
+
+func (c *ColorChooserInterface) Padding() [12]unsafe.Pointer {
+	valptr := &c.native.padding
+	var v [12]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 12; i++ {
+			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
+}

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,8 +43,8 @@ type CellAccessible struct {
 
 	*coreglib.Object
 	atk.Action
+	atk.AtkObject
 	atk.Component
-	atk.ObjectClass
 	atk.TableCell
 }
 
@@ -53,11 +54,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellAccessible,
-		GoType:       reflect.TypeOf((*CellAccessible)(nil)),
-		InitClass:    initClassCellAccessible,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellAccessible{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellAccessibleClass{})),
+		GType:     GTypeCellAccessible,
+		GoType:    reflect.TypeOf((*CellAccessible)(nil)),
+		InitClass: initClassCellAccessible,
 	})
 }
 
@@ -67,6 +66,10 @@ func initClassCellAccessible(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ UpdateCache(emitSignal bool) }); ok {
 		pclass.update_cache = (*[0]byte)(C._gotk4_gtk3_CellAccessibleClass_update_cache)
+	}
+	if goval, ok := goval.(interface{ InitCellAccessible(*CellAccessibleClass) }); ok {
+		klass := (*CellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitCellAccessible(klass)
 	}
 }
 
@@ -87,7 +90,7 @@ func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg
 func wrapCellAccessible(obj *coreglib.Object) *CellAccessible {
 	return &CellAccessible{
 		Accessible: Accessible{
-			ObjectClass: atk.ObjectClass{
+			AtkObject: atk.AtkObject{
 				Object: obj,
 			},
 		},
@@ -95,14 +98,14 @@ func wrapCellAccessible(obj *coreglib.Object) *CellAccessible {
 		Action: atk.Action{
 			Object: obj,
 		},
+		AtkObject: atk.AtkObject{
+			Object: obj,
+		},
 		Component: atk.Component{
 			Object: obj,
 		},
-		ObjectClass: atk.ObjectClass{
-			Object: obj,
-		},
 		TableCell: atk.TableCell{
-			ObjectClass: atk.ObjectClass{
+			AtkObject: atk.AtkObject{
 				Object: obj,
 			},
 		},
@@ -111,4 +114,21 @@ func wrapCellAccessible(obj *coreglib.Object) *CellAccessible {
 
 func marshalCellAccessible(p uintptr) (interface{}, error) {
 	return wrapCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// CellAccessibleClass: instance of this type is always passed by reference.
+type CellAccessibleClass struct {
+	*cellAccessibleClass
+}
+
+// cellAccessibleClass is the struct that's finalized.
+type cellAccessibleClass struct {
+	native *C.GtkCellAccessibleClass
+}
+
+func (c *CellAccessibleClass) ParentClass() *AccessibleClass {
+	valptr := &c.native.parent_class
+	var v *AccessibleClass // out
+	v = (*AccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

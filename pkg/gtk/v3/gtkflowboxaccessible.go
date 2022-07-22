@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,19 @@ var (
 	_ coreglib.Objector = (*FlowBoxAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFlowBoxAccessible,
+		GoType:    reflect.TypeOf((*FlowBoxAccessible)(nil)),
+		InitClass: initClassFlowBoxAccessible,
+	})
+}
+
 func initClassFlowBoxAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFlowBoxAccessible(*FlowBoxAccessibleClass) }); ok {
+		klass := (*FlowBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitFlowBoxAccessible(klass)
+	}
 }
 
 func wrapFlowBoxAccessible(obj *coreglib.Object) *FlowBoxAccessible {
@@ -50,7 +64,7 @@ func wrapFlowBoxAccessible(obj *coreglib.Object) *FlowBoxAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +81,21 @@ func wrapFlowBoxAccessible(obj *coreglib.Object) *FlowBoxAccessible {
 
 func marshalFlowBoxAccessible(p uintptr) (interface{}, error) {
 	return wrapFlowBoxAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// FlowBoxAccessibleClass: instance of this type is always passed by reference.
+type FlowBoxAccessibleClass struct {
+	*flowBoxAccessibleClass
+}
+
+// flowBoxAccessibleClass is the struct that's finalized.
+type flowBoxAccessibleClass struct {
+	native *C.GtkFlowBoxAccessibleClass
+}
+
+func (f *FlowBoxAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &f.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

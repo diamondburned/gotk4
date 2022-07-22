@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -43,7 +45,21 @@ var (
 	_ coreglib.Objector = (*ScaleButtonAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeScaleButtonAccessible,
+		GoType:    reflect.TypeOf((*ScaleButtonAccessible)(nil)),
+		InitClass: initClassScaleButtonAccessible,
+	})
+}
+
 func initClassScaleButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitScaleButtonAccessible(*ScaleButtonAccessibleClass)
+	}); ok {
+		klass := (*ScaleButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitScaleButtonAccessible(klass)
+	}
 }
 
 func wrapScaleButtonAccessible(obj *coreglib.Object) *ScaleButtonAccessible {
@@ -52,7 +68,7 @@ func wrapScaleButtonAccessible(obj *coreglib.Object) *ScaleButtonAccessible {
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						ObjectClass: atk.ObjectClass{
+						AtkObject: atk.AtkObject{
 							Object: obj,
 						},
 					},
@@ -78,4 +94,22 @@ func wrapScaleButtonAccessible(obj *coreglib.Object) *ScaleButtonAccessible {
 
 func marshalScaleButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapScaleButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ScaleButtonAccessibleClass: instance of this type is always passed by
+// reference.
+type ScaleButtonAccessibleClass struct {
+	*scaleButtonAccessibleClass
+}
+
+// scaleButtonAccessibleClass is the struct that's finalized.
+type scaleButtonAccessibleClass struct {
+	native *C.GtkScaleButtonAccessibleClass
+}
+
+func (s *ScaleButtonAccessibleClass) ParentClass() *ButtonAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *ButtonAccessibleClass // out
+	v = (*ButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

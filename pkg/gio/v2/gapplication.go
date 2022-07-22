@@ -244,11 +244,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeApplication,
-		GoType:       reflect.TypeOf((*Application)(nil)),
-		InitClass:    initClassApplication,
-		ClassSize:    uint32(unsafe.Sizeof(C.GApplication{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GApplicationClass{})),
+		GType:     GTypeApplication,
+		GoType:    reflect.TypeOf((*Application)(nil)),
+		InitClass: initClassApplication,
 	})
 }
 
@@ -326,6 +324,10 @@ func initClassApplication(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Startup() }); ok {
 		pclass.startup = (*[0]byte)(C._gotk4_gio2_ApplicationClass_startup)
+	}
+	if goval, ok := goval.(interface{ InitApplication(*ApplicationClass) }); ok {
+		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
+		goval.InitApplication(klass)
 	}
 }
 
@@ -2094,4 +2096,16 @@ func ApplicationIDIsValid(applicationId string) bool {
 	}
 
 	return _ok
+}
+
+// ApplicationClass: virtual function table for #GApplication.
+//
+// An instance of this type is always passed by reference.
+type ApplicationClass struct {
+	*applicationClass
+}
+
+// applicationClass is the struct that's finalized.
+type applicationClass struct {
+	native *C.GApplicationClass
 }

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,14 +43,28 @@ var (
 	_ coreglib.Objector = (*RendererCellAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRendererCellAccessible,
+		GoType:    reflect.TypeOf((*RendererCellAccessible)(nil)),
+		InitClass: initClassRendererCellAccessible,
+	})
+}
+
 func initClassRendererCellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitRendererCellAccessible(*RendererCellAccessibleClass)
+	}); ok {
+		klass := (*RendererCellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitRendererCellAccessible(klass)
+	}
 }
 
 func wrapRendererCellAccessible(obj *coreglib.Object) *RendererCellAccessible {
 	return &RendererCellAccessible{
 		CellAccessible: CellAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -56,14 +72,14 @@ func wrapRendererCellAccessible(obj *coreglib.Object) *RendererCellAccessible {
 			Action: atk.Action{
 				Object: obj,
 			},
+			AtkObject: atk.AtkObject{
+				Object: obj,
+			},
 			Component: atk.Component{
 				Object: obj,
 			},
-			ObjectClass: atk.ObjectClass{
-				Object: obj,
-			},
 			TableCell: atk.TableCell{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -93,4 +109,22 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 	_rendererCellAccessible = wrapRendererCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rendererCellAccessible
+}
+
+// RendererCellAccessibleClass: instance of this type is always passed by
+// reference.
+type RendererCellAccessibleClass struct {
+	*rendererCellAccessibleClass
+}
+
+// rendererCellAccessibleClass is the struct that's finalized.
+type rendererCellAccessibleClass struct {
+	native *C.GtkRendererCellAccessibleClass
+}
+
+func (r *RendererCellAccessibleClass) ParentClass() *CellAccessibleClass {
+	valptr := &r.native.parent_class
+	var v *CellAccessibleClass // out
+	v = (*CellAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

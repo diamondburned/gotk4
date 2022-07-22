@@ -11,6 +11,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -192,11 +193,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCalendar,
-		GoType:       reflect.TypeOf((*Calendar)(nil)),
-		InitClass:    initClassCalendar,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCalendar{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCalendarClass{})),
+		GType:     GTypeCalendar,
+		GoType:    reflect.TypeOf((*Calendar)(nil)),
+		InitClass: initClassCalendar,
 	})
 }
 
@@ -230,6 +229,10 @@ func initClassCalendar(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ PrevYear() }); ok {
 		pclass.prev_year = (*[0]byte)(C._gotk4_gtk3_CalendarClass_prev_year)
+	}
+	if goval, ok := goval.(interface{ InitCalendar(*CalendarClass) }); ok {
+		klass := (*CalendarClass)(gextras.NewStructNative(gclass))
+		goval.InitCalendar(klass)
 	}
 }
 
@@ -779,4 +782,21 @@ func (calendar *Calendar) UnmarkDay(day uint) {
 	C.gtk_calendar_unmark_day(_arg0, _arg1)
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
+}
+
+// CalendarClass: instance of this type is always passed by reference.
+type CalendarClass struct {
+	*calendarClass
+}
+
+// calendarClass is the struct that's finalized.
+type calendarClass struct {
+	native *C.GtkCalendarClass
+}
+
+func (c *CalendarClass) ParentClass() *WidgetClass {
+	valptr := &c.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

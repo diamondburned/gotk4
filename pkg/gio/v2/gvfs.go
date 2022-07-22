@@ -171,11 +171,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeVFS,
-		GoType:       reflect.TypeOf((*VFS)(nil)),
-		InitClass:    initClassVFS,
-		ClassSize:    uint32(unsafe.Sizeof(C.GVfs{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GVfsClass{})),
+		GType:     GTypeVFS,
+		GoType:    reflect.TypeOf((*VFS)(nil)),
+		InitClass: initClassVFS,
 	})
 }
 
@@ -221,6 +219,10 @@ func initClassVFS(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ParseName(parseName string) *File }); ok {
 		pclass.parse_name = (*[0]byte)(C._gotk4_gio2_VfsClass_parse_name)
+	}
+	if goval, ok := goval.(interface{ InitVFS(*VFSClass) }); ok {
+		klass := (*VFSClass)(gextras.NewStructNative(gclass))
+		goval.InitVFS(klass)
 	}
 }
 
@@ -694,4 +696,14 @@ func VFSGetLocal() *VFS {
 	_vfs = wrapVFS(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vfs
+}
+
+// VFSClass: instance of this type is always passed by reference.
+type VFSClass struct {
+	*vfsClass
+}
+
+// vfsClass is the struct that's finalized.
+type vfsClass struct {
+	native *C.GVfsClass
 }

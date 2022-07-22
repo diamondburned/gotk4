@@ -3,9 +3,11 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -34,7 +36,7 @@ type NoOpObjectOverrider interface {
 // requested for an object type for which no factory type is specified.
 type NoOpObject struct {
 	_ [0]func() // equal guard
-	ObjectClass
+	AtkObject
 
 	*coreglib.Object
 	Action
@@ -55,12 +57,24 @@ var (
 	_ coreglib.Objector = (*NoOpObject)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNoOpObject,
+		GoType:    reflect.TypeOf((*NoOpObject)(nil)),
+		InitClass: initClassNoOpObject,
+	})
+}
+
 func initClassNoOpObject(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNoOpObject(*NoOpObjectClass) }); ok {
+		klass := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
+		goval.InitNoOpObject(klass)
+	}
 }
 
 func wrapNoOpObject(obj *coreglib.Object) *NoOpObject {
 	return &NoOpObject{
-		ObjectClass: ObjectClass{
+		AtkObject: AtkObject{
 			Object: obj,
 		},
 		Object: obj,
@@ -89,7 +103,7 @@ func wrapNoOpObject(obj *coreglib.Object) *NoOpObject {
 			Object: obj,
 		},
 		TableCell: TableCell{
-			ObjectClass: ObjectClass{
+			AtkObject: AtkObject{
 				Object: obj,
 			},
 		},
@@ -100,7 +114,7 @@ func wrapNoOpObject(obj *coreglib.Object) *NoOpObject {
 			Object: obj,
 		},
 		Window: Window{
-			ObjectClass: ObjectClass{
+			AtkObject: AtkObject{
 				Object: obj,
 			},
 		},
@@ -136,4 +150,21 @@ func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 	_noOpObject = wrapNoOpObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObject
+}
+
+// NoOpObjectClass: instance of this type is always passed by reference.
+type NoOpObjectClass struct {
+	*noOpObjectClass
+}
+
+// noOpObjectClass is the struct that's finalized.
+type noOpObjectClass struct {
+	native *C.AtkNoOpObjectClass
+}
+
+func (n *NoOpObjectClass) ParentClass() *ObjectClass {
+	valptr := &n.native.parent_class
+	var v *ObjectClass // out
+	v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

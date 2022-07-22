@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -66,11 +67,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCheckButton,
-		GoType:       reflect.TypeOf((*CheckButton)(nil)),
-		InitClass:    initClassCheckButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCheckButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCheckButtonClass{})),
+		GType:     GTypeCheckButton,
+		GoType:    reflect.TypeOf((*CheckButton)(nil)),
+		InitClass: initClassCheckButton,
 	})
 }
 
@@ -80,6 +79,10 @@ func initClassCheckButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
 		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
+	}
+	if goval, ok := goval.(interface{ InitCheckButton(*CheckButtonClass) }); ok {
+		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitCheckButton(klass)
 	}
 }
 
@@ -220,4 +223,21 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
+}
+
+// CheckButtonClass: instance of this type is always passed by reference.
+type CheckButtonClass struct {
+	*checkButtonClass
+}
+
+// checkButtonClass is the struct that's finalized.
+type checkButtonClass struct {
+	native *C.GtkCheckButtonClass
+}
+
+func (c *CheckButtonClass) ParentClass() *ToggleButtonClass {
+	valptr := &c.native.parent_class
+	var v *ToggleButtonClass // out
+	v = (*ToggleButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

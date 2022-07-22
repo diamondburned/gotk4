@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -93,11 +94,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeStatusbar,
-		GoType:       reflect.TypeOf((*Statusbar)(nil)),
-		InitClass:    initClassStatusbar,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkStatusbar{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkStatusbarClass{})),
+		GType:     GTypeStatusbar,
+		GoType:    reflect.TypeOf((*Statusbar)(nil)),
+		InitClass: initClassStatusbar,
 	})
 }
 
@@ -115,6 +114,10 @@ func initClassStatusbar(gclass unsafe.Pointer, goval any) {
 		TextPushed(contextId uint, text string)
 	}); ok {
 		pclass.text_pushed = (*[0]byte)(C._gotk4_gtk3_StatusbarClass_text_pushed)
+	}
+	if goval, ok := goval.(interface{ InitStatusbar(*StatusbarClass) }); ok {
+		klass := (*StatusbarClass)(gextras.NewStructNative(gclass))
+		goval.InitStatusbar(klass)
 	}
 }
 
@@ -404,4 +407,28 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	C.gtk_statusbar_remove_all(_arg0, _arg1)
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
+}
+
+// StatusbarClass: instance of this type is always passed by reference.
+type StatusbarClass struct {
+	*statusbarClass
+}
+
+// statusbarClass is the struct that's finalized.
+type statusbarClass struct {
+	native *C.GtkStatusbarClass
+}
+
+func (s *StatusbarClass) ParentClass() *BoxClass {
+	valptr := &s.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+func (s *StatusbarClass) Reserved() unsafe.Pointer {
+	valptr := &s.native.reserved
+	var v unsafe.Pointer // out
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return v
 }

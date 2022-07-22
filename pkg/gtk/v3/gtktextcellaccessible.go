@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -36,7 +38,7 @@ type TextCellAccessible struct {
 	RendererCellAccessible
 
 	*coreglib.Object
-	atk.ObjectClass
+	atk.AtkObject
 	atk.Text
 }
 
@@ -44,7 +46,21 @@ var (
 	_ coreglib.Objector = (*TextCellAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTextCellAccessible,
+		GoType:    reflect.TypeOf((*TextCellAccessible)(nil)),
+		InitClass: initClassTextCellAccessible,
+	})
+}
+
 func initClassTextCellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitTextCellAccessible(*TextCellAccessibleClass)
+	}); ok {
+		klass := (*TextCellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitTextCellAccessible(klass)
+	}
 }
 
 func wrapTextCellAccessible(obj *coreglib.Object) *TextCellAccessible {
@@ -52,7 +68,7 @@ func wrapTextCellAccessible(obj *coreglib.Object) *TextCellAccessible {
 		RendererCellAccessible: RendererCellAccessible{
 			CellAccessible: CellAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -60,21 +76,21 @@ func wrapTextCellAccessible(obj *coreglib.Object) *TextCellAccessible {
 				Action: atk.Action{
 					Object: obj,
 				},
+				AtkObject: atk.AtkObject{
+					Object: obj,
+				},
 				Component: atk.Component{
 					Object: obj,
 				},
-				ObjectClass: atk.ObjectClass{
-					Object: obj,
-				},
 				TableCell: atk.TableCell{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
 			},
 		},
 		Object: obj,
-		ObjectClass: atk.ObjectClass{
+		AtkObject: atk.AtkObject{
 			Object: obj,
 		},
 		Text: atk.Text{
@@ -85,4 +101,21 @@ func wrapTextCellAccessible(obj *coreglib.Object) *TextCellAccessible {
 
 func marshalTextCellAccessible(p uintptr) (interface{}, error) {
 	return wrapTextCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// TextCellAccessibleClass: instance of this type is always passed by reference.
+type TextCellAccessibleClass struct {
+	*textCellAccessibleClass
+}
+
+// textCellAccessibleClass is the struct that's finalized.
+type textCellAccessibleClass struct {
+	native *C.GtkTextCellAccessibleClass
+}
+
+func (t *TextCellAccessibleClass) ParentClass() *RendererCellAccessibleClass {
+	valptr := &t.native.parent_class
+	var v *RendererCellAccessibleClass // out
+	v = (*RendererCellAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

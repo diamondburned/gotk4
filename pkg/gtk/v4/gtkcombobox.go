@@ -121,11 +121,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeComboBox,
-		GoType:       reflect.TypeOf((*ComboBox)(nil)),
-		InitClass:    initClassComboBox,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkComboBox{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkComboBoxClass{})),
+		GType:     GTypeComboBox,
+		GoType:    reflect.TypeOf((*ComboBox)(nil)),
+		InitClass: initClassComboBox,
 	})
 }
 
@@ -139,6 +137,10 @@ func initClassComboBox(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ FormatEntryText(path string) string }); ok {
 		pclass.format_entry_text = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_format_entry_text)
+	}
+	if goval, ok := goval.(interface{ InitComboBox(*ComboBoxClass) }); ok {
+		klass := (*ComboBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitComboBox(klass)
 	}
 }
 
@@ -1036,4 +1038,22 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 	C.gtk_combo_box_set_row_separator_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(fn)
+}
+
+// ComboBoxClass: instance of this type is always passed by reference.
+type ComboBoxClass struct {
+	*comboBoxClass
+}
+
+// comboBoxClass is the struct that's finalized.
+type comboBoxClass struct {
+	native *C.GtkComboBoxClass
+}
+
+// ParentClass: parent class.
+func (c *ComboBoxClass) ParentClass() *WidgetClass {
+	valptr := &c.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

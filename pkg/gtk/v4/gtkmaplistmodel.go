@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -103,7 +105,19 @@ var (
 	_ coreglib.Objector = (*MapListModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMapListModel,
+		GoType:    reflect.TypeOf((*MapListModel)(nil)),
+		InitClass: initClassMapListModel,
+	})
+}
+
 func initClassMapListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMapListModel(*MapListModelClass) }); ok {
+		klass := (*MapListModelClass)(gextras.NewStructNative(gclass))
+		goval.InitMapListModel(klass)
+	}
 }
 
 func wrapMapListModel(obj *coreglib.Object) *MapListModel {
@@ -267,4 +281,14 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	C.gtk_map_list_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// MapListModelClass: instance of this type is always passed by reference.
+type MapListModelClass struct {
+	*mapListModelClass
+}
+
+// mapListModelClass is the struct that's finalized.
+type mapListModelClass struct {
+	native *C.GtkMapListModelClass
 }

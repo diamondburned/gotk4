@@ -704,3 +704,15 @@ func (manager *DBusObjectManager) Objects() []*DBusObject {
 
 	return _list
 }
+
+// DBusObjectManagerIface: base type for D-Bus object managers.
+//
+// An instance of this type is always passed by reference.
+type DBusObjectManagerIface struct {
+	*dBusObjectManagerIface
+}
+
+// dBusObjectManagerIface is the struct that's finalized.
+type dBusObjectManagerIface struct {
+	native *C.GDBusObjectManagerIface
+}

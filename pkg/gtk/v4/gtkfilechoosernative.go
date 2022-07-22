@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -189,7 +191,19 @@ var (
 	_ coreglib.Objector = (*FileChooserNative)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFileChooserNative,
+		GoType:    reflect.TypeOf((*FileChooserNative)(nil)),
+		InitClass: initClassFileChooserNative,
+	})
+}
+
 func initClassFileChooserNative(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFileChooserNative(*FileChooserNativeClass) }); ok {
+		klass := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
+		goval.InitFileChooserNative(klass)
+	}
 }
 
 func wrapFileChooserNative(obj *coreglib.Object) *FileChooserNative {
@@ -367,4 +381,21 @@ func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(cancelLabel)
+}
+
+// FileChooserNativeClass: instance of this type is always passed by reference.
+type FileChooserNativeClass struct {
+	*fileChooserNativeClass
+}
+
+// fileChooserNativeClass is the struct that's finalized.
+type fileChooserNativeClass struct {
+	native *C.GtkFileChooserNativeClass
+}
+
+func (f *FileChooserNativeClass) ParentClass() *NativeDialogClass {
+	valptr := &f.native.parent_class
+	var v *NativeDialogClass // out
+	v = (*NativeDialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

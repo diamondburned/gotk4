@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,7 +57,19 @@ var (
 	_ coreglib.Objector = (*Separator)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSeparator,
+		GoType:    reflect.TypeOf((*Separator)(nil)),
+		InitClass: initClassSeparator,
+	})
+}
+
 func initClassSeparator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSeparator(*SeparatorClass) }); ok {
+		klass := (*SeparatorClass)(gextras.NewStructNative(gclass))
+		goval.InitSeparator(klass)
+	}
 }
 
 func wrapSeparator(obj *coreglib.Object) *Separator {
@@ -107,4 +121,21 @@ func NewSeparator(orientation Orientation) *Separator {
 	_separator = wrapSeparator(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _separator
+}
+
+// SeparatorClass: instance of this type is always passed by reference.
+type SeparatorClass struct {
+	*separatorClass
+}
+
+// separatorClass is the struct that's finalized.
+type separatorClass struct {
+	native *C.GtkSeparatorClass
+}
+
+func (s *SeparatorClass) ParentClass() *WidgetClass {
+	valptr := &s.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// X11VisualOverrider contains methods that are overridable.
-type X11VisualOverrider interface {
-}
-
 type X11Visual struct {
 	_ [0]func() // equal guard
 	gdk.Visual
@@ -37,9 +33,6 @@ type X11Visual struct {
 var (
 	_ coreglib.Objector = (*X11Visual)(nil)
 )
-
-func initClassX11Visual(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11Visual(obj *coreglib.Object) *X11Visual {
 	return &X11Visual{

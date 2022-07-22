@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -74,7 +75,19 @@ var (
 	_ coreglib.Objector = (*Settings)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSettings,
+		GoType:    reflect.TypeOf((*Settings)(nil)),
+		InitClass: initClassSettings,
+	})
+}
+
 func initClassSettings(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSettings(*SettingsClass) }); ok {
+		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
+		goval.InitSettings(klass)
+	}
 }
 
 func wrapSettings(obj *coreglib.Object) *Settings {
@@ -266,6 +279,16 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
+}
+
+// SettingsClass: instance of this type is always passed by reference.
+type SettingsClass struct {
+	*settingsClass
+}
+
+// settingsClass is the struct that's finalized.
+type settingsClass struct {
+	native *C.GtkSettingsClass
 }
 
 // SettingsValue: instance of this type is always passed by reference.

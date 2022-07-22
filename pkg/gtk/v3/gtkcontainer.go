@@ -317,11 +317,9 @@ var _ Containerer = (*Container)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeContainer,
-		GoType:       reflect.TypeOf((*Container)(nil)),
-		InitClass:    initClassContainer,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkContainer{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkContainerClass{})),
+		GType:     GTypeContainer,
+		GoType:    reflect.TypeOf((*Container)(nil)),
+		InitClass: initClassContainer,
 	})
 }
 
@@ -357,6 +355,10 @@ func initClassContainer(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
 		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_set_focus_child)
+	}
+	if goval, ok := goval.(interface{ InitContainer(*ContainerClass) }); ok {
+		klass := (*ContainerClass)(gextras.NewStructNative(gclass))
+		goval.InitContainer(klass)
 	}
 }
 
@@ -1459,4 +1461,41 @@ func (container *Container) UnsetFocusChain() {
 
 	C.gtk_container_unset_focus_chain(_arg0)
 	runtime.KeepAlive(container)
+}
+
+// ContainerClass: base class for containers.
+//
+// An instance of this type is always passed by reference.
+type ContainerClass struct {
+	*containerClass
+}
+
+// containerClass is the struct that's finalized.
+type containerClass struct {
+	native *C.GtkContainerClass
+}
+
+// ParentClass: parent class.
+func (c *ContainerClass) ParentClass() *WidgetClass {
+	valptr := &c.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// HandleBorderWidth modifies a subclass of ContainerClass to automatically add
+// and remove the border-width setting on GtkContainer. This allows the subclass
+// to ignore the border width in its size request and allocate methods. The
+// intent is for a subclass to invoke this in its class_init function.
+//
+// gtk_container_class_handle_border_width() is necessary because it would break
+// API too badly to make this behavior the default. So subclasses must “opt in”
+// to the parent class handling border_width for them.
+func (klass *ContainerClass) HandleBorderWidth() {
+	var _arg0 *C.GtkContainerClass // out
+
+	_arg0 = (*C.GtkContainerClass)(gextras.StructNative(unsafe.Pointer(klass)))
+
+	C.gtk_container_class_handle_border_width(_arg0)
+	runtime.KeepAlive(klass)
 }

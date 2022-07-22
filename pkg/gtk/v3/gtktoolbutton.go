@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -72,11 +73,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeToolButton,
-		GoType:       reflect.TypeOf((*ToolButton)(nil)),
-		InitClass:    initClassToolButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkToolButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkToolButtonClass{})),
+		GType:     GTypeToolButton,
+		GoType:    reflect.TypeOf((*ToolButton)(nil)),
+		InitClass: initClassToolButton,
 	})
 }
 
@@ -86,6 +85,10 @@ func initClassToolButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Clicked() }); ok {
 		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_ToolButtonClass_clicked)
+	}
+	if goval, ok := goval.(interface{ InitToolButton(*ToolButtonClass) }); ok {
+		klass := (*ToolButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitToolButton(klass)
 	}
 }
 
@@ -563,4 +566,29 @@ func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	C.gtk_tool_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
+}
+
+// ToolButtonClass: instance of this type is always passed by reference.
+type ToolButtonClass struct {
+	*toolButtonClass
+}
+
+// toolButtonClass is the struct that's finalized.
+type toolButtonClass struct {
+	native *C.GtkToolButtonClass
+}
+
+// ParentClass: parent class.
+func (t *ToolButtonClass) ParentClass() *ToolItemClass {
+	valptr := &t.native.parent_class
+	var v *ToolItemClass // out
+	v = (*ToolItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+func (t *ToolButtonClass) ButtonType() coreglib.Type {
+	valptr := &t.native.button_type
+	var v coreglib.Type // out
+	v = coreglib.Type(*valptr)
+	return v
 }

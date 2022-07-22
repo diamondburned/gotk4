@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,14 +44,26 @@ var (
 	_ coreglib.Objector = (*SwitchAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSwitchAccessible,
+		GoType:    reflect.TypeOf((*SwitchAccessible)(nil)),
+		InitClass: initClassSwitchAccessible,
+	})
+}
+
 func initClassSwitchAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSwitchAccessible(*SwitchAccessibleClass) }); ok {
+		klass := (*SwitchAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitSwitchAccessible(klass)
+	}
 }
 
 func wrapSwitchAccessible(obj *coreglib.Object) *SwitchAccessible {
 	return &SwitchAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -65,4 +79,21 @@ func wrapSwitchAccessible(obj *coreglib.Object) *SwitchAccessible {
 
 func marshalSwitchAccessible(p uintptr) (interface{}, error) {
 	return wrapSwitchAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// SwitchAccessibleClass: instance of this type is always passed by reference.
+type SwitchAccessibleClass struct {
+	*switchAccessibleClass
+}
+
+// switchAccessibleClass is the struct that's finalized.
+type switchAccessibleClass struct {
+	native *C.GtkSwitchAccessibleClass
+}
+
+func (s *SwitchAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

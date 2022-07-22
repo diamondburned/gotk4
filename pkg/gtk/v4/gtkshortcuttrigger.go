@@ -34,10 +34,6 @@ func init() {
 	})
 }
 
-// AlternativeTriggerOverrider contains methods that are overridable.
-type AlternativeTriggerOverrider interface {
-}
-
 // AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
 //
 // The GtkAlternativeTrigger triggers when either of two trigger.
@@ -51,9 +47,6 @@ type AlternativeTrigger struct {
 var (
 	_ ShortcutTriggerer = (*AlternativeTrigger)(nil)
 )
-
-func initClassAlternativeTrigger(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapAlternativeTrigger(obj *coreglib.Object) *AlternativeTrigger {
 	return &AlternativeTrigger{
@@ -183,10 +176,6 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	return _shortcutTrigger
 }
 
-// KeyvalTriggerOverrider contains methods that are overridable.
-type KeyvalTriggerOverrider interface {
-}
-
 // KeyvalTrigger: GtkShortcutTrigger that triggers when a specific keyval and
 // modifiers are pressed.
 type KeyvalTrigger struct {
@@ -197,9 +186,6 @@ type KeyvalTrigger struct {
 var (
 	_ ShortcutTriggerer = (*KeyvalTrigger)(nil)
 )
-
-func initClassKeyvalTrigger(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapKeyvalTrigger(obj *coreglib.Object) *KeyvalTrigger {
 	return &KeyvalTrigger{
@@ -288,10 +274,6 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 	return _modifierType
 }
 
-// MnemonicTriggerOverrider contains methods that are overridable.
-type MnemonicTriggerOverrider interface {
-}
-
 // MnemonicTrigger: GtkShortcutTrigger that triggers when a specific mnemonic is
 // pressed.
 //
@@ -305,9 +287,6 @@ type MnemonicTrigger struct {
 var (
 	_ ShortcutTriggerer = (*MnemonicTrigger)(nil)
 )
-
-func initClassMnemonicTrigger(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapMnemonicTrigger(obj *coreglib.Object) *MnemonicTrigger {
 	return &MnemonicTrigger{
@@ -373,10 +352,6 @@ func (self *MnemonicTrigger) Keyval() uint {
 	return _guint
 }
 
-// NeverTriggerOverrider contains methods that are overridable.
-type NeverTriggerOverrider interface {
-}
-
 // NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	_ [0]func() // equal guard
@@ -386,9 +361,6 @@ type NeverTrigger struct {
 var (
 	_ ShortcutTriggerer = (*NeverTrigger)(nil)
 )
-
-func initClassNeverTrigger(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapNeverTrigger(obj *coreglib.Object) *NeverTrigger {
 	return &NeverTrigger{
@@ -423,10 +395,6 @@ func NeverTriggerGet() *NeverTrigger {
 	return _neverTrigger
 }
 
-// ShortcutTriggerOverrider contains methods that are overridable.
-type ShortcutTriggerOverrider interface {
-}
-
 // ShortcutTrigger: GtkShortcutTrigger tracks how a GtkShortcut should be
 // activated.
 //
@@ -458,9 +426,6 @@ type ShortcutTriggerer interface {
 }
 
 var _ ShortcutTriggerer = (*ShortcutTrigger)(nil)
-
-func initClassShortcutTrigger(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutTrigger(obj *coreglib.Object) *ShortcutTrigger {
 	return &ShortcutTrigger{

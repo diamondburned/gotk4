@@ -4,11 +4,13 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,19 @@ var (
 	_ FilterOutputStreamer = (*DataOutputStream)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDataOutputStream,
+		GoType:    reflect.TypeOf((*DataOutputStream)(nil)),
+		InitClass: initClassDataOutputStream,
+	})
+}
+
 func initClassDataOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDataOutputStream(*DataOutputStreamClass) }); ok {
+		klass := (*DataOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitDataOutputStream(klass)
+	}
 }
 
 func wrapDataOutputStream(obj *coreglib.Object) *DataOutputStream {
@@ -410,4 +424,21 @@ func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	C.g_data_output_stream_set_byte_order(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(order)
+}
+
+// DataOutputStreamClass: instance of this type is always passed by reference.
+type DataOutputStreamClass struct {
+	*dataOutputStreamClass
+}
+
+// dataOutputStreamClass is the struct that's finalized.
+type dataOutputStreamClass struct {
+	native *C.GDataOutputStreamClass
+}
+
+func (d *DataOutputStreamClass) ParentClass() *FilterOutputStreamClass {
+	valptr := &d.native.parent_class
+	var v *FilterOutputStreamClass // out
+	v = (*FilterOutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -165,11 +166,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeDrawingArea,
-		GoType:       reflect.TypeOf((*DrawingArea)(nil)),
-		InitClass:    initClassDrawingArea,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkDrawingArea{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkDrawingAreaClass{})),
+		GType:     GTypeDrawingArea,
+		GoType:    reflect.TypeOf((*DrawingArea)(nil)),
+		InitClass: initClassDrawingArea,
 	})
 }
 
@@ -179,6 +178,10 @@ func initClassDrawingArea(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
+	}
+	if goval, ok := goval.(interface{ InitDrawingArea(*DrawingAreaClass) }); ok {
+		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
+		goval.InitDrawingArea(klass)
 	}
 }
 
@@ -396,4 +399,21 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drawFunc)
+}
+
+// DrawingAreaClass: instance of this type is always passed by reference.
+type DrawingAreaClass struct {
+	*drawingAreaClass
+}
+
+// drawingAreaClass is the struct that's finalized.
+type drawingAreaClass struct {
+	native *C.GtkDrawingAreaClass
+}
+
+func (d *DrawingAreaClass) ParentClass() *WidgetClass {
+	valptr := &d.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

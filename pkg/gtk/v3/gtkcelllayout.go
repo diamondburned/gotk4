@@ -513,3 +513,13 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(fn)
 }
+
+// CellLayoutIface: instance of this type is always passed by reference.
+type CellLayoutIface struct {
+	*cellLayoutIface
+}
+
+// cellLayoutIface is the struct that's finalized.
+type cellLayoutIface struct {
+	native *C.GtkCellLayoutIface
+}

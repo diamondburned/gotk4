@@ -166,11 +166,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTreeViewColumn,
-		GoType:       reflect.TypeOf((*TreeViewColumn)(nil)),
-		InitClass:    initClassTreeViewColumn,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeViewColumn{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeViewColumnClass{})),
+		GType:     GTypeTreeViewColumn,
+		GoType:    reflect.TypeOf((*TreeViewColumn)(nil)),
+		InitClass: initClassTreeViewColumn,
 	})
 }
 
@@ -180,6 +178,10 @@ func initClassTreeViewColumn(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Clicked() }); ok {
 		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_TreeViewColumnClass_clicked)
+	}
+	if goval, ok := goval.(interface{ InitTreeViewColumn(*TreeViewColumnClass) }); ok {
+		klass := (*TreeViewColumnClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeViewColumn(klass)
 	}
 }
 
@@ -1470,4 +1472,14 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	C.gtk_tree_view_column_set_widget(_arg0, _arg1)
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(widget)
+}
+
+// TreeViewColumnClass: instance of this type is always passed by reference.
+type TreeViewColumnClass struct {
+	*treeViewColumnClass
+}
+
+// treeViewColumnClass is the struct that's finalized.
+type treeViewColumnClass struct {
+	native *C.GtkTreeViewColumnClass
 }

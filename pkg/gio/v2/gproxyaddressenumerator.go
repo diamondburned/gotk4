@@ -3,8 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,21 @@ var (
 	_ SocketAddressEnumeratorrer = (*ProxyAddressEnumerator)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeProxyAddressEnumerator,
+		GoType:    reflect.TypeOf((*ProxyAddressEnumerator)(nil)),
+		InitClass: initClassProxyAddressEnumerator,
+	})
+}
+
 func initClassProxyAddressEnumerator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitProxyAddressEnumerator(*ProxyAddressEnumeratorClass)
+	}); ok {
+		klass := (*ProxyAddressEnumeratorClass)(gextras.NewStructNative(gclass))
+		goval.InitProxyAddressEnumerator(klass)
+	}
 }
 
 func wrapProxyAddressEnumerator(obj *coreglib.Object) *ProxyAddressEnumerator {
@@ -58,4 +74,16 @@ func wrapProxyAddressEnumerator(obj *coreglib.Object) *ProxyAddressEnumerator {
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	return wrapProxyAddressEnumerator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ProxyAddressEnumeratorClass class structure for AddressEnumerator.
+//
+// An instance of this type is always passed by reference.
+type ProxyAddressEnumeratorClass struct {
+	*proxyAddressEnumeratorClass
+}
+
+// proxyAddressEnumeratorClass is the struct that's finalized.
+type proxyAddressEnumeratorClass struct {
+	native *C.GProxyAddressEnumeratorClass
 }

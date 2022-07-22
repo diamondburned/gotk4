@@ -534,3 +534,14 @@ func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, rela
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(relationset)
 }
+
+// CellAccessibleParentIface: instance of this type is always passed by
+// reference.
+type CellAccessibleParentIface struct {
+	*cellAccessibleParentIface
+}
+
+// cellAccessibleParentIface is the struct that's finalized.
+type cellAccessibleParentIface struct {
+	native *C.GtkCellAccessibleParentIface
+}

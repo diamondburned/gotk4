@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// NativeSurfaceOverrider contains methods that are overridable.
-type NativeSurfaceOverrider interface {
-}
-
 // NativeSurface: GtkNative is the interface implemented by all widgets that
 // have their own GdkSurface.
 //
@@ -76,9 +72,6 @@ type NativeSurfacer interface {
 }
 
 var _ NativeSurfacer = (*NativeSurface)(nil)
-
-func ifaceInitNativeSurfacer(gifacePtr, data C.gpointer) {
-}
 
 func wrapNativeSurface(obj *coreglib.Object) *NativeSurface {
 	return &NativeSurface{

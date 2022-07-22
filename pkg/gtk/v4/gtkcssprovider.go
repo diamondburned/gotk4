@@ -29,10 +29,6 @@ func init() {
 	})
 }
 
-// CSSProviderOverrider contains methods that are overridable.
-type CSSProviderOverrider interface {
-}
-
 // CSSProvider: GtkCssProvider is an object implementing the GtkStyleProvider
 // interface for CSS.
 //
@@ -70,9 +66,6 @@ type CSSProvider struct {
 var (
 	_ coreglib.Objector = (*CSSProvider)(nil)
 )
-
-func initClassCSSProvider(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapCSSProvider(obj *coreglib.Object) *CSSProvider {
 	return &CSSProvider{

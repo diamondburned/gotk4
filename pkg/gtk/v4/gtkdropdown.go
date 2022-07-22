@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -68,7 +70,19 @@ var (
 	_ Widgetter = (*DropDown)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDropDown,
+		GoType:    reflect.TypeOf((*DropDown)(nil)),
+		InitClass: initClassDropDown,
+	})
+}
+
 func initClassDropDown(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDropDown(*DropDownClass) }); ok {
+		klass := (*DropDownClass)(gextras.NewStructNative(gclass))
+		goval.InitDropDown(klass)
+	}
 }
 
 func wrapDropDown(obj *coreglib.Object) *DropDown {
@@ -488,4 +502,21 @@ func (self *DropDown) SetSelected(position uint) {
 	C.gtk_drop_down_set_selected(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
+}
+
+// DropDownClass: instance of this type is always passed by reference.
+type DropDownClass struct {
+	*dropDownClass
+}
+
+// dropDownClass is the struct that's finalized.
+type dropDownClass struct {
+	native *C.GtkDropDownClass
+}
+
+func (d *DropDownClass) ParentClass() *WidgetClass {
+	valptr := &d.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,11 +68,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMenuToolButton,
-		GoType:       reflect.TypeOf((*MenuToolButton)(nil)),
-		InitClass:    initClassMenuToolButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkMenuToolButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkMenuToolButtonClass{})),
+		GType:     GTypeMenuToolButton,
+		GoType:    reflect.TypeOf((*MenuToolButton)(nil)),
+		InitClass: initClassMenuToolButton,
 	})
 }
 
@@ -81,6 +80,10 @@ func initClassMenuToolButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ShowMenu() }); ok {
 		pclass.show_menu = (*[0]byte)(C._gotk4_gtk3_MenuToolButtonClass_show_menu)
+	}
+	if goval, ok := goval.(interface{ InitMenuToolButton(*MenuToolButtonClass) }); ok {
+		klass := (*MenuToolButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuToolButton(klass)
 	}
 }
 
@@ -332,4 +335,22 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	C.gtk_menu_tool_button_set_menu(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(menu)
+}
+
+// MenuToolButtonClass: instance of this type is always passed by reference.
+type MenuToolButtonClass struct {
+	*menuToolButtonClass
+}
+
+// menuToolButtonClass is the struct that's finalized.
+type menuToolButtonClass struct {
+	native *C.GtkMenuToolButtonClass
+}
+
+// ParentClass: parent class.
+func (m *MenuToolButtonClass) ParentClass() *ToolButtonClass {
+	valptr := &m.native.parent_class
+	var v *ToolButtonClass // out
+	v = (*ToolButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

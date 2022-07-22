@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -59,7 +61,19 @@ var (
 	_ Miscer = (*Arrow)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeArrow,
+		GoType:    reflect.TypeOf((*Arrow)(nil)),
+		InitClass: initClassArrow,
+	})
+}
+
 func initClassArrow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitArrow(*ArrowClass) }); ok {
+		klass := (*ArrowClass)(gextras.NewStructNative(gclass))
+		goval.InitArrow(klass)
+	}
 }
 
 func wrapArrow(obj *coreglib.Object) *Arrow {
@@ -139,4 +153,21 @@ func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	runtime.KeepAlive(arrow)
 	runtime.KeepAlive(arrowType)
 	runtime.KeepAlive(shadowType)
+}
+
+// ArrowClass: instance of this type is always passed by reference.
+type ArrowClass struct {
+	*arrowClass
+}
+
+// arrowClass is the struct that's finalized.
+type arrowClass struct {
+	native *C.GtkArrowClass
+}
+
+func (a *ArrowClass) ParentClass() *MiscClass {
+	valptr := &a.native.parent_class
+	var v *MiscClass // out
+	v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

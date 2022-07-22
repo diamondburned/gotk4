@@ -3,8 +3,10 @@
 package atk
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ coreglib.Objector = (*NoOpObjectFactory)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNoOpObjectFactory,
+		GoType:    reflect.TypeOf((*NoOpObjectFactory)(nil)),
+		InitClass: initClassNoOpObjectFactory,
+	})
+}
+
 func initClassNoOpObjectFactory(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNoOpObjectFactory(*NoOpObjectFactoryClass) }); ok {
+		klass := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
+		goval.InitNoOpObjectFactory(klass)
+	}
 }
 
 func wrapNoOpObjectFactory(obj *coreglib.Object) *NoOpObjectFactory {
@@ -72,4 +86,21 @@ func NewNoOpObjectFactory() *NoOpObjectFactory {
 	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _noOpObjectFactory
+}
+
+// NoOpObjectFactoryClass: instance of this type is always passed by reference.
+type NoOpObjectFactoryClass struct {
+	*noOpObjectFactoryClass
+}
+
+// noOpObjectFactoryClass is the struct that's finalized.
+type noOpObjectFactoryClass struct {
+	native *C.AtkNoOpObjectFactoryClass
+}
+
+func (n *NoOpObjectFactoryClass) ParentClass() *ObjectFactoryClass {
+	valptr := &n.native.parent_class
+	var v *ObjectFactoryClass // out
+	v = (*ObjectFactoryClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

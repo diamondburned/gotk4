@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// SurfaceOverrider contains methods that are overridable.
-type SurfaceOverrider interface {
-}
-
 // Surface: GdkSurface is a rectangular region on the screen.
 //
 // It’s a low-level object, used to implement high-level objects such as
@@ -64,9 +60,6 @@ type Surfacer interface {
 }
 
 var _ Surfacer = (*Surface)(nil)
-
-func initClassSurface(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapSurface(obj *coreglib.Object) *Surface {
 	return &Surface{

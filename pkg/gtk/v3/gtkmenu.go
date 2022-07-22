@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -106,7 +107,19 @@ var (
 	_ MenuSheller = (*Menu)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMenu,
+		GoType:    reflect.TypeOf((*Menu)(nil)),
+		InitClass: initClassMenu,
+	})
+}
+
 func initClassMenu(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMenu(*MenuClass) }); ok {
+		klass := (*MenuClass)(gextras.NewStructNative(gclass))
+		goval.InitMenu(klass)
+	}
 }
 
 func wrapMenu(obj *coreglib.Object) *Menu {
@@ -989,4 +1002,21 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	})
 
 	return _list
+}
+
+// MenuClass: instance of this type is always passed by reference.
+type MenuClass struct {
+	*menuClass
+}
+
+// menuClass is the struct that's finalized.
+type menuClass struct {
+	native *C.GtkMenuClass
+}
+
+func (m *MenuClass) ParentClass() *MenuShellClass {
+	valptr := &m.native.parent_class
+	var v *MenuShellClass // out
+	v = (*MenuShellClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

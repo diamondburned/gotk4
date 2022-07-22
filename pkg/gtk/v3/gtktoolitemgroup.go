@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -58,7 +60,19 @@ var (
 	_ Widgetter         = (*ToolItemGroup)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeToolItemGroup,
+		GoType:    reflect.TypeOf((*ToolItemGroup)(nil)),
+		InitClass: initClassToolItemGroup,
+	})
+}
+
 func initClassToolItemGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitToolItemGroup(*ToolItemGroupClass) }); ok {
+		klass := (*ToolItemGroupClass)(gextras.NewStructNative(gclass))
+		goval.InitToolItemGroup(klass)
+	}
 }
 
 func wrapToolItemGroup(obj *coreglib.Object) *ToolItemGroup {
@@ -532,4 +546,22 @@ func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	C.gtk_tool_item_group_set_label_widget(_arg0, _arg1)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(labelWidget)
+}
+
+// ToolItemGroupClass: instance of this type is always passed by reference.
+type ToolItemGroupClass struct {
+	*toolItemGroupClass
+}
+
+// toolItemGroupClass is the struct that's finalized.
+type toolItemGroupClass struct {
+	native *C.GtkToolItemGroupClass
+}
+
+// ParentClass: parent class.
+func (t *ToolItemGroupClass) ParentClass() *ContainerClass {
+	valptr := &t.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

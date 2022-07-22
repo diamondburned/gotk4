@@ -9,6 +9,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -298,11 +299,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeDialog,
-		GoType:       reflect.TypeOf((*Dialog)(nil)),
-		InitClass:    initClassDialog,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkDialog{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkDialogClass{})),
+		GType:     GTypeDialog,
+		GoType:    reflect.TypeOf((*Dialog)(nil)),
+		InitClass: initClassDialog,
 	})
 }
 
@@ -316,6 +315,10 @@ func initClassDialog(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Response(responseId int) }); ok {
 		pclass.response = (*[0]byte)(C._gotk4_gtk4_DialogClass_response)
+	}
+	if goval, ok := goval.(interface{ InitDialog(*DialogClass) }); ok {
+		klass := (*DialogClass)(gextras.NewStructNative(gclass))
+		goval.InitDialog(klass)
 	}
 }
 
@@ -737,4 +740,22 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
+}
+
+// DialogClass: instance of this type is always passed by reference.
+type DialogClass struct {
+	*dialogClass
+}
+
+// dialogClass is the struct that's finalized.
+type dialogClass struct {
+	native *C.GtkDialogClass
+}
+
+// ParentClass: parent class.
+func (d *DialogClass) ParentClass() *WindowClass {
+	valptr := &d.native.parent_class
+	var v *WindowClass // out
+	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

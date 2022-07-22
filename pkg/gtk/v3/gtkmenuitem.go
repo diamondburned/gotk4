@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -112,11 +113,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMenuItem,
-		GoType:       reflect.TypeOf((*MenuItem)(nil)),
-		InitClass:    initClassMenuItem,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkMenuItem{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkMenuItemClass{})),
+		GType:     GTypeMenuItem,
+		GoType:    reflect.TypeOf((*MenuItem)(nil)),
+		InitClass: initClassMenuItem,
 	})
 }
 
@@ -150,6 +149,10 @@ func initClassMenuItem(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ToggleSizeAllocate(allocation int) }); ok {
 		pclass.toggle_size_allocate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_toggle_size_allocate)
+	}
+	if goval, ok := goval.(interface{ InitMenuItem(*MenuItemClass) }); ok {
+		klass := (*MenuItemClass)(gextras.NewStructNative(gclass))
+		goval.InitMenuItem(klass)
 	}
 }
 
@@ -839,4 +842,22 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(allocation)
+}
+
+// MenuItemClass: instance of this type is always passed by reference.
+type MenuItemClass struct {
+	*menuItemClass
+}
+
+// menuItemClass is the struct that's finalized.
+type menuItemClass struct {
+	native *C.GtkMenuItemClass
+}
+
+// ParentClass: parent class.
+func (m *MenuItemClass) ParentClass() *BinClass {
+	valptr := &m.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

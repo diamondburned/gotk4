@@ -3,9 +3,11 @@
 package atk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -124,7 +126,19 @@ var (
 	_ coreglib.Objector = (*Relation)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRelation,
+		GoType:    reflect.TypeOf((*Relation)(nil)),
+		InitClass: initClassRelation,
+	})
+}
+
 func initClassRelation(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRelation(*RelationClass) }); ok {
+		klass := (*RelationClass)(gextras.NewStructNative(gclass))
+		goval.InitRelation(klass)
+	}
 }
 
 func wrapRelation(obj *coreglib.Object) *Relation {
@@ -149,7 +163,7 @@ func marshalRelation(p uintptr) (interface{}, error) {
 //
 //    - relation: pointer to a new Relation.
 //
-func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
+func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 	var _arg1 **C.AtkObject // out
 	var _arg2 C.gint
 	var _arg3 C.AtkRelationType // out
@@ -184,7 +198,7 @@ func NewRelation(targets []*ObjectClass, relationship RelationType) *Relation {
 //
 //    - target: Object.
 //
-func (relation *Relation) AddTarget(target *ObjectClass) {
+func (relation *Relation) AddTarget(target *AtkObject) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 
@@ -229,7 +243,7 @@ func (relation *Relation) RelationType() RelationType {
 //
 //    - ok: TRUE if the removal is successful.
 //
-func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
+func (relation *Relation) RemoveTarget(target *AtkObject) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
 	var _cret C.gboolean     // in
@@ -248,4 +262,14 @@ func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	}
 
 	return _ok
+}
+
+// RelationClass: instance of this type is always passed by reference.
+type RelationClass struct {
+	*relationClass
+}
+
+// relationClass is the struct that's finalized.
+type relationClass struct {
+	native *C.AtkRelationClass
 }

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -44,7 +46,19 @@ var (
 	_ Binner = (*EventBox)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeEventBox,
+		GoType:    reflect.TypeOf((*EventBox)(nil)),
+		InitClass: initClassEventBox,
+	})
+}
+
 func initClassEventBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitEventBox(*EventBoxClass) }); ok {
+		klass := (*EventBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitEventBox(klass)
+	}
 }
 
 func wrapEventBox(obj *coreglib.Object) *EventBox {
@@ -211,4 +225,22 @@ func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
 	C.gtk_event_box_set_visible_window(_arg0, _arg1)
 	runtime.KeepAlive(eventBox)
 	runtime.KeepAlive(visibleWindow)
+}
+
+// EventBoxClass: instance of this type is always passed by reference.
+type EventBoxClass struct {
+	*eventBoxClass
+}
+
+// eventBoxClass is the struct that's finalized.
+type eventBoxClass struct {
+	native *C.GtkEventBoxClass
+}
+
+// ParentClass: parent class.
+func (e *EventBoxClass) ParentClass() *BinClass {
+	valptr := &e.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

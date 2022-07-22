@@ -80,10 +80,6 @@ func (b ButtonsType) String() string {
 	}
 }
 
-// MessageDialogOverrider contains methods that are overridable.
-type MessageDialogOverrider interface {
-}
-
 // MessageDialog: GtkMessageDialog presents a dialog with some message text.
 //
 // !An example GtkMessageDialog (messagedialog.png)
@@ -149,9 +145,6 @@ var (
 	_ Widgetter         = (*MessageDialog)(nil)
 	_ coreglib.Objector = (*MessageDialog)(nil)
 )
-
-func initClassMessageDialog(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapMessageDialog(obj *coreglib.Object) *MessageDialog {
 	return &MessageDialog{

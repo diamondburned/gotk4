@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// ShortcutsSectionOverrider contains methods that are overridable.
-type ShortcutsSectionOverrider interface {
-}
-
 // ShortcutsSection: GtkShortcutsSection collects all the keyboard shortcuts and
 // gestures for a major application mode.
 //
@@ -49,9 +45,6 @@ var (
 	_ Widgetter         = (*ShortcutsSection)(nil)
 	_ coreglib.Objector = (*ShortcutsSection)(nil)
 )
-
-func initClassShortcutsSection(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutsSection(obj *coreglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{

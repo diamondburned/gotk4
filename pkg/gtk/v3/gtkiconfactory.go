@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -321,7 +322,19 @@ var (
 	_ coreglib.Objector = (*IconFactory)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeIconFactory,
+		GoType:    reflect.TypeOf((*IconFactory)(nil)),
+		InitClass: initClassIconFactory,
+	})
+}
+
 func initClassIconFactory(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitIconFactory(*IconFactoryClass) }); ok {
+		klass := (*IconFactoryClass)(gextras.NewStructNative(gclass))
+		goval.InitIconFactory(klass)
+	}
 }
 
 func wrapIconFactory(obj *coreglib.Object) *IconFactory {
@@ -510,4 +523,14 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 	)
 
 	return _iconSet
+}
+
+// IconFactoryClass: instance of this type is always passed by reference.
+type IconFactoryClass struct {
+	*iconFactoryClass
+}
+
+// iconFactoryClass is the struct that's finalized.
+type iconFactoryClass struct {
+	native *C.GtkIconFactoryClass
 }

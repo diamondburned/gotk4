@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -106,7 +107,19 @@ var (
 	_ coreglib.Objector = (*SizeGroup)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSizeGroup,
+		GoType:    reflect.TypeOf((*SizeGroup)(nil)),
+		InitClass: initClassSizeGroup,
+	})
+}
+
 func initClassSizeGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSizeGroup(*SizeGroupClass) }); ok {
+		klass := (*SizeGroupClass)(gextras.NewStructNative(gclass))
+		goval.InitSizeGroup(klass)
+	}
 }
 
 func wrapSizeGroup(obj *coreglib.Object) *SizeGroup {
@@ -336,4 +349,14 @@ func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
 	C.gtk_size_group_set_mode(_arg0, _arg1)
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(mode)
+}
+
+// SizeGroupClass: instance of this type is always passed by reference.
+type SizeGroupClass struct {
+	*sizeGroupClass
+}
+
+// sizeGroupClass is the struct that's finalized.
+type sizeGroupClass struct {
+	native *C.GtkSizeGroupClass
 }

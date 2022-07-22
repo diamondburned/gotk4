@@ -296,3 +296,16 @@ func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 
 	return _proxy
 }
+
+// ProxyInterface provides an interface for handling proxy connection and
+// payload.
+//
+// An instance of this type is always passed by reference.
+type ProxyInterface struct {
+	*proxyInterface
+}
+
+// proxyInterface is the struct that's finalized.
+type proxyInterface struct {
+	native *C.GProxyInterface
+}

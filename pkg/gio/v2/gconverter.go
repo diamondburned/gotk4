@@ -363,3 +363,16 @@ func (converter *Converter) Reset() {
 	C.g_converter_reset(_arg0)
 	runtime.KeepAlive(converter)
 }
+
+// ConverterIface provides an interface for converting data from one type to
+// another type. The conversion can be stateful and may fail at any place.
+//
+// An instance of this type is always passed by reference.
+type ConverterIface struct {
+	*converterIface
+}
+
+// converterIface is the struct that's finalized.
+type converterIface struct {
+	native *C.GConverterIface
+}

@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -49,7 +51,19 @@ var (
 	_ coreglib.Objector = (*NetworkAddress)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNetworkAddress,
+		GoType:    reflect.TypeOf((*NetworkAddress)(nil)),
+		InitClass: initClassNetworkAddress,
+	})
+}
+
 func initClassNetworkAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNetworkAddress(*NetworkAddressClass) }); ok {
+		klass := (*NetworkAddressClass)(gextras.NewStructNative(gclass))
+		goval.InitNetworkAddress(klass)
+	}
 }
 
 func wrapNetworkAddress(obj *coreglib.Object) *NetworkAddress {
@@ -300,4 +314,14 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	}
 
 	return _networkAddress, _goerr
+}
+
+// NetworkAddressClass: instance of this type is always passed by reference.
+type NetworkAddressClass struct {
+	*networkAddressClass
+}
+
+// networkAddressClass is the struct that's finalized.
+type networkAddressClass struct {
+	native *C.GNetworkAddressClass
 }

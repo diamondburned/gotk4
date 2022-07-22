@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*RadioButtonAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRadioButtonAccessible,
+		GoType:    reflect.TypeOf((*RadioButtonAccessible)(nil)),
+		InitClass: initClassRadioButtonAccessible,
+	})
+}
+
 func initClassRadioButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitRadioButtonAccessible(*RadioButtonAccessibleClass)
+	}); ok {
+		klass := (*RadioButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitRadioButtonAccessible(klass)
+	}
 }
 
 func wrapRadioButtonAccessible(obj *coreglib.Object) *RadioButtonAccessible {
@@ -50,7 +66,7 @@ func wrapRadioButtonAccessible(obj *coreglib.Object) *RadioButtonAccessible {
 				ContainerAccessible: ContainerAccessible{
 					WidgetAccessible: WidgetAccessible{
 						Accessible: Accessible{
-							ObjectClass: atk.ObjectClass{
+							AtkObject: atk.AtkObject{
 								Object: obj,
 							},
 						},
@@ -73,4 +89,22 @@ func wrapRadioButtonAccessible(obj *coreglib.Object) *RadioButtonAccessible {
 
 func marshalRadioButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapRadioButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// RadioButtonAccessibleClass: instance of this type is always passed by
+// reference.
+type RadioButtonAccessibleClass struct {
+	*radioButtonAccessibleClass
+}
+
+// radioButtonAccessibleClass is the struct that's finalized.
+type radioButtonAccessibleClass struct {
+	native *C.GtkRadioButtonAccessibleClass
+}
+
+func (r *RadioButtonAccessibleClass) ParentClass() *ToggleButtonAccessibleClass {
+	valptr := &r.native.parent_class
+	var v *ToggleButtonAccessibleClass // out
+	v = (*ToggleButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

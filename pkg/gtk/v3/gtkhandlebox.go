@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -76,11 +77,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeHandleBox,
-		GoType:       reflect.TypeOf((*HandleBox)(nil)),
-		InitClass:    initClassHandleBox,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkHandleBox{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkHandleBoxClass{})),
+		GType:     GTypeHandleBox,
+		GoType:    reflect.TypeOf((*HandleBox)(nil)),
+		InitClass: initClassHandleBox,
 	})
 }
 
@@ -94,6 +93,10 @@ func initClassHandleBox(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ChildDetached(child Widgetter) }); ok {
 		pclass.child_detached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_detached)
+	}
+	if goval, ok := goval.(interface{ InitHandleBox(*HandleBoxClass) }); ok {
+		klass := (*HandleBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitHandleBox(klass)
 	}
 }
 
@@ -453,4 +456,22 @@ func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
 	runtime.KeepAlive(handleBox)
 	runtime.KeepAlive(edge)
+}
+
+// HandleBoxClass: instance of this type is always passed by reference.
+type HandleBoxClass struct {
+	*handleBoxClass
+}
+
+// handleBoxClass is the struct that's finalized.
+type handleBoxClass struct {
+	native *C.GtkHandleBoxClass
+}
+
+// ParentClass: parent class.
+func (h *HandleBoxClass) ParentClass() *BinClass {
+	valptr := &h.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

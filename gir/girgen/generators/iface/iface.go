@@ -35,10 +35,10 @@ type Generator struct {
 	InterfaceName string
 	StructName    string
 
-	Virtuals     Methods // deprecated
-	Methods      Methods // for big interface
-	Constructors Methods
-	Signals      []Signal
+	VirtualMethods Methods
+	Methods        Methods // for big interface
+	Constructors   Methods
+	Signals        []Signal
 
 	Tree types.Tree
 
@@ -99,12 +99,12 @@ func (g *Generator) Reset() {
 
 	g.Tree.Reset()
 	g.Methods.reset(0)
-	g.Virtuals.reset(0)
+	g.VirtualMethods.reset(0)
 
 	*g = Generator{
-		Tree:     g.Tree,
-		Methods:  g.Methods,
-		Virtuals: g.Virtuals,
+		Tree:           g.Tree,
+		Methods:        g.Methods,
+		VirtualMethods: g.VirtualMethods,
 
 		header: g.header,
 		cgen:   g.cgen,
@@ -257,10 +257,10 @@ func (g *Generator) Use(typ interface{}) bool {
 	g.header.NeedsExternGLib()
 
 	g.Methods.setMethods(g, g.methods)
-	g.Virtuals.setVirtuals(g, g.virtuals)
+	g.VirtualMethods.setVirtuals(g, g.virtuals)
 
 	g.renameGetters(g.Methods)
-	g.renameGetters(g.Virtuals)
+	g.renameGetters(g.VirtualMethods)
 
 	var signals []gir.Signal
 

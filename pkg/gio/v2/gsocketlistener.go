@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,11 +68,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocketListener,
-		GoType:       reflect.TypeOf((*SocketListener)(nil)),
-		InitClass:    initClassSocketListener,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSocketListener{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSocketListenerClass{})),
+		GType:     GTypeSocketListener,
+		GoType:    reflect.TypeOf((*SocketListener)(nil)),
+		InitClass: initClassSocketListener,
 	})
 }
 
@@ -87,6 +86,10 @@ func initClassSocketListener(gclass unsafe.Pointer, goval any) {
 		Event(event SocketListenerEvent, socket *Socket)
 	}); ok {
 		pclass.event = (*[0]byte)(C._gotk4_gio2_SocketListenerClass_event)
+	}
+	if goval, ok := goval.(interface{ InitSocketListener(*SocketListenerClass) }); ok {
+		klass := (*SocketListenerClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketListener(klass)
 	}
 }
 
@@ -675,4 +678,16 @@ func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	C.g_socket_listener_set_backlog(_arg0, _arg1)
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(listenBacklog)
+}
+
+// SocketListenerClass class structure for Listener.
+//
+// An instance of this type is always passed by reference.
+type SocketListenerClass struct {
+	*socketListenerClass
+}
+
+// socketListenerClass is the struct that's finalized.
+type socketListenerClass struct {
+	native *C.GSocketListenerClass
 }

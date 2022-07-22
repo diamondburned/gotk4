@@ -398,3 +398,15 @@ func (object *DBusObject) ObjectPath() string {
 
 	return _utf8
 }
+
+// DBusObjectIface: base object type for D-Bus objects.
+//
+// An instance of this type is always passed by reference.
+type DBusObjectIface struct {
+	*dBusObjectIface
+}
+
+// dBusObjectIface is the struct that's finalized.
+type dBusObjectIface struct {
+	native *C.GDBusObjectIface
+}

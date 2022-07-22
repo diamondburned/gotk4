@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -69,7 +70,19 @@ var (
 	_ coreglib.Objector = (*TreeStore)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTreeStore,
+		GoType:    reflect.TypeOf((*TreeStore)(nil)),
+		InitClass: initClassTreeStore,
+	})
+}
+
 func initClassTreeStore(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTreeStore(*TreeStoreClass) }); ok {
+		klass := (*TreeStoreClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeStore(klass)
+	}
 }
 
 func wrapTreeStore(obj *coreglib.Object) *TreeStore {
@@ -716,4 +729,14 @@ func (treeStore *TreeStore) Swap(a, b *TreeIter) {
 	runtime.KeepAlive(treeStore)
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
+}
+
+// TreeStoreClass: instance of this type is always passed by reference.
+type TreeStoreClass struct {
+	*treeStoreClass
+}
+
+// treeStoreClass is the struct that's finalized.
+type treeStoreClass struct {
+	native *C.GtkTreeStoreClass
 }

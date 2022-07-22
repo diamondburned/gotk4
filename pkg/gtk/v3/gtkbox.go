@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -90,7 +92,19 @@ var (
 	_ coreglib.Objector = (*Box)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBox,
+		GoType:    reflect.TypeOf((*Box)(nil)),
+		InitClass: initClassBox,
+	})
+}
+
 func initClassBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBox(*BoxClass) }); ok {
+		klass := (*BoxClass)(gextras.NewStructNative(gclass))
+		goval.InitBox(klass)
+	}
 }
 
 func wrapBox(obj *coreglib.Object) *Box {
@@ -542,4 +556,22 @@ func (box *Box) SetSpacing(spacing int) {
 	C.gtk_box_set_spacing(_arg0, _arg1)
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)
+}
+
+// BoxClass: instance of this type is always passed by reference.
+type BoxClass struct {
+	*boxClass
+}
+
+// boxClass is the struct that's finalized.
+type boxClass struct {
+	native *C.GtkBoxClass
+}
+
+// ParentClass: parent class.
+func (b *BoxClass) ParentClass() *ContainerClass {
+	valptr := &b.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

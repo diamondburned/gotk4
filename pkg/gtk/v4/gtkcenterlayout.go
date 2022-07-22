@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -46,7 +48,19 @@ var (
 	_ LayoutManagerer = (*CenterLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCenterLayout,
+		GoType:    reflect.TypeOf((*CenterLayout)(nil)),
+		InitClass: initClassCenterLayout,
+	})
+}
+
 func initClassCenterLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCenterLayout(*CenterLayoutClass) }); ok {
+		klass := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitCenterLayout(klass)
+	}
 }
 
 func wrapCenterLayout(obj *coreglib.Object) *CenterLayout {
@@ -334,4 +348,21 @@ func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
+}
+
+// CenterLayoutClass: instance of this type is always passed by reference.
+type CenterLayoutClass struct {
+	*centerLayoutClass
+}
+
+// centerLayoutClass is the struct that's finalized.
+type centerLayoutClass struct {
+	native *C.GtkCenterLayoutClass
+}
+
+func (c *CenterLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &c.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -354,11 +354,9 @@ var _ CellRendererer = (*CellRenderer)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellRenderer,
-		GoType:       reflect.TypeOf((*CellRenderer)(nil)),
-		InitClass:    initClassCellRenderer,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRenderer{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererClass{})),
+		GType:     GTypeCellRenderer,
+		GoType:    reflect.TypeOf((*CellRenderer)(nil)),
+		InitClass: initClassCellRenderer,
 	})
 }
 
@@ -426,6 +424,10 @@ func initClassCellRenderer(gclass unsafe.Pointer, goval any) {
 		StartEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
 	}); ok {
 		pclass.start_editing = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_start_editing)
+	}
+	if goval, ok := goval.(interface{ InitCellRenderer(*CellRendererClass) }); ok {
+		klass := (*CellRendererClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRenderer(klass)
 	}
 }
 
@@ -1736,4 +1738,14 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 	C.gtk_cell_renderer_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(canceled)
+}
+
+// CellRendererClass: instance of this type is always passed by reference.
+type CellRendererClass struct {
+	*cellRendererClass
+}
+
+// cellRendererClass is the struct that's finalized.
+type cellRendererClass struct {
+	native *C.GtkCellRendererClass
 }

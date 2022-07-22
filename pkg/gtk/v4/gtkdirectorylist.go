@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -64,7 +66,19 @@ var (
 	_ coreglib.Objector = (*DirectoryList)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDirectoryList,
+		GoType:    reflect.TypeOf((*DirectoryList)(nil)),
+		InitClass: initClassDirectoryList,
+	})
+}
+
 func initClassDirectoryList(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitDirectoryList(*DirectoryListClass) }); ok {
+		klass := (*DirectoryListClass)(gextras.NewStructNative(gclass))
+		goval.InitDirectoryList(klass)
+	}
 }
 
 func wrapDirectoryList(obj *coreglib.Object) *DirectoryList {
@@ -372,4 +386,14 @@ func (self *DirectoryList) SetMonitored(monitored bool) {
 	C.gtk_directory_list_set_monitored(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(monitored)
+}
+
+// DirectoryListClass: instance of this type is always passed by reference.
+type DirectoryListClass struct {
+	*directoryListClass
+}
+
+// directoryListClass is the struct that's finalized.
+type directoryListClass struct {
+	native *C.GtkDirectoryListClass
 }

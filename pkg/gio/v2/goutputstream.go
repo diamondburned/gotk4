@@ -162,11 +162,9 @@ var _ OutputStreamer = (*OutputStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeOutputStream,
-		GoType:       reflect.TypeOf((*OutputStream)(nil)),
-		InitClass:    initClassOutputStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GOutputStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GOutputStreamClass{})),
+		GType:     GTypeOutputStream,
+		GoType:    reflect.TypeOf((*OutputStream)(nil)),
+		InitClass: initClassOutputStream,
 	})
 }
 
@@ -220,6 +218,10 @@ func initClassOutputStream(gclass unsafe.Pointer, goval any) {
 		WritevFinish(result AsyncResulter) (uint, error)
 	}); ok {
 		pclass.writev_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_writev_finish)
+	}
+	if goval, ok := goval.(interface{ InitOutputStream(*OutputStreamClass) }); ok {
+		klass := (*OutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitOutputStream(klass)
 	}
 }
 
@@ -1810,4 +1812,14 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	}
 
 	return _bytesWritten, _goerr
+}
+
+// OutputStreamClass: instance of this type is always passed by reference.
+type OutputStreamClass struct {
+	*outputStreamClass
+}
+
+// outputStreamClass is the struct that's finalized.
+type outputStreamClass struct {
+	native *C.GOutputStreamClass
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,7 +57,19 @@ var (
 	_ coreglib.Objector = (*TextTag)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTextTag,
+		GoType:    reflect.TypeOf((*TextTag)(nil)),
+		InitClass: initClassTextTag,
+	})
+}
+
 func initClassTextTag(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTextTag(*TextTagClass) }); ok {
+		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
+		goval.InitTextTag(klass)
+	}
 }
 
 func wrapTextTag(obj *coreglib.Object) *TextTag {
@@ -171,4 +185,14 @@ func (tag *TextTag) SetPriority(priority int) {
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
+}
+
+// TextTagClass: instance of this type is always passed by reference.
+type TextTagClass struct {
+	*textTagClass
+}
+
+// textTagClass is the struct that's finalized.
+type textTagClass struct {
+	native *C.GtkTextTagClass
 }

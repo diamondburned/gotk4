@@ -49,11 +49,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCancellable,
-		GoType:       reflect.TypeOf((*Cancellable)(nil)),
-		InitClass:    initClassCancellable,
-		ClassSize:    uint32(unsafe.Sizeof(C.GCancellable{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GCancellableClass{})),
+		GType:     GTypeCancellable,
+		GoType:    reflect.TypeOf((*Cancellable)(nil)),
+		InitClass: initClassCancellable,
 	})
 }
 
@@ -63,6 +61,10 @@ func initClassCancellable(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Cancelled() }); ok {
 		pclass.cancelled = (*[0]byte)(C._gotk4_gio2_CancellableClass_cancelled)
+	}
+	if goval, ok := goval.(interface{ InitCancellable(*CancellableClass) }); ok {
+		klass := (*CancellableClass)(gextras.NewStructNative(gclass))
+		goval.InitCancellable(klass)
 	}
 }
 
@@ -448,4 +450,14 @@ func CancellableGetCurrent() *Cancellable {
 	}
 
 	return _cancellable
+}
+
+// CancellableClass: instance of this type is always passed by reference.
+type CancellableClass struct {
+	*cancellableClass
+}
+
+// cancellableClass is the struct that's finalized.
+type cancellableClass struct {
+	native *C.GCancellableClass
 }

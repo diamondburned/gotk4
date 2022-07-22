@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -56,7 +58,19 @@ var (
 	_ coreglib.Objector = (*SeparatorToolItem)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSeparatorToolItem,
+		GoType:    reflect.TypeOf((*SeparatorToolItem)(nil)),
+		InitClass: initClassSeparatorToolItem,
+	})
+}
+
 func initClassSeparatorToolItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSeparatorToolItem(*SeparatorToolItemClass) }); ok {
+		klass := (*SeparatorToolItemClass)(gextras.NewStructNative(gclass))
+		goval.InitSeparatorToolItem(klass)
+	}
 }
 
 func wrapSeparatorToolItem(obj *coreglib.Object) *SeparatorToolItem {
@@ -153,4 +167,22 @@ func (item *SeparatorToolItem) SetDraw(draw bool) {
 	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(draw)
+}
+
+// SeparatorToolItemClass: instance of this type is always passed by reference.
+type SeparatorToolItemClass struct {
+	*separatorToolItemClass
+}
+
+// separatorToolItemClass is the struct that's finalized.
+type separatorToolItemClass struct {
+	native *C.GtkSeparatorToolItemClass
+}
+
+// ParentClass: parent class.
+func (s *SeparatorToolItemClass) ParentClass() *ToolItemClass {
+	valptr := &s.native.parent_class
+	var v *ToolItemClass // out
+	v = (*ToolItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

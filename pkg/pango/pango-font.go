@@ -430,11 +430,9 @@ var _ Fonter = (*Font)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFont,
-		GoType:       reflect.TypeOf((*Font)(nil)),
-		InitClass:    initClassFont,
-		ClassSize:    uint32(unsafe.Sizeof(C.PangoFont{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontClass{})),
+		GType:     GTypeFont,
+		GoType:    reflect.TypeOf((*Font)(nil)),
+		InitClass: initClassFont,
 	})
 }
 
@@ -470,6 +468,10 @@ func initClassFont(gclass unsafe.Pointer, goval any) {
 		Metrics(language *Language) *FontMetrics
 	}); ok {
 		pclass.get_metrics = (*[0]byte)(C._gotk4_pango1_FontClass_get_metrics)
+	}
+	if goval, ok := goval.(interface{ InitFont(*FontClass) }); ok {
+		klass := (*FontClass)(gextras.NewStructNative(gclass))
+		goval.InitFont(klass)
 	}
 }
 
@@ -977,11 +979,9 @@ var _ FontFacer = (*FontFace)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFontFace,
-		GoType:       reflect.TypeOf((*FontFace)(nil)),
-		InitClass:    initClassFontFace,
-		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontFace{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontFaceClass{})),
+		GType:     GTypeFontFace,
+		GoType:    reflect.TypeOf((*FontFace)(nil)),
+		InitClass: initClassFontFace,
 	})
 }
 
@@ -1007,6 +1007,10 @@ func initClassFontFace(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ListSizes() []int }); ok {
 		pclass.list_sizes = (*[0]byte)(C._gotk4_pango1_FontFaceClass_list_sizes)
+	}
+	if goval, ok := goval.(interface{ InitFontFace(*FontFaceClass) }); ok {
+		klass := (*FontFaceClass)(gextras.NewStructNative(gclass))
+		goval.InitFontFace(klass)
 	}
 }
 
@@ -1351,11 +1355,9 @@ var _ FontFamilier = (*FontFamily)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFontFamily,
-		GoType:       reflect.TypeOf((*FontFamily)(nil)),
-		InitClass:    initClassFontFamily,
-		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontFamily{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontFamilyClass{})),
+		GType:     GTypeFontFamily,
+		GoType:    reflect.TypeOf((*FontFamily)(nil)),
+		InitClass: initClassFontFamily,
 	})
 }
 
@@ -1381,6 +1383,10 @@ func initClassFontFamily(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ListFaces() []FontFacer }); ok {
 		pclass.list_faces = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_list_faces)
+	}
+	if goval, ok := goval.(interface{ InitFontFamily(*FontFamilyClass) }); ok {
+		klass := (*FontFamilyClass)(gextras.NewStructNative(gclass))
+		goval.InitFontFamily(klass)
 	}
 }
 
@@ -1670,6 +1676,16 @@ func (family *FontFamily) ListFaces() []FontFacer {
 	}
 
 	return _faces
+}
+
+// FontClass: instance of this type is always passed by reference.
+type FontClass struct {
+	*fontClass
+}
+
+// fontClass is the struct that's finalized.
+type fontClass struct {
+	native *C.PangoFontClass
 }
 
 // FontDescription: PangoFontDescription describes a font in an
@@ -2642,6 +2658,26 @@ func FontDescriptionFromString(str string) *FontDescription {
 	)
 
 	return _fontDescription
+}
+
+// FontFaceClass: instance of this type is always passed by reference.
+type FontFaceClass struct {
+	*fontFaceClass
+}
+
+// fontFaceClass is the struct that's finalized.
+type fontFaceClass struct {
+	native *C.PangoFontFaceClass
+}
+
+// FontFamilyClass: instance of this type is always passed by reference.
+type FontFamilyClass struct {
+	*fontFamilyClass
+}
+
+// fontFamilyClass is the struct that's finalized.
+type fontFamilyClass struct {
+	native *C.PangoFontFamilyClass
 }
 
 // FontMetrics: PangoFontMetrics structure holds the overall metric information

@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// ShortcutsGroupOverrider contains methods that are overridable.
-type ShortcutsGroupOverrider interface {
-}
-
 // ShortcutsGroup: GtkShortcutsGroup represents a group of related keyboard
 // shortcuts or gestures.
 //
@@ -45,9 +41,6 @@ var (
 	_ Widgetter         = (*ShortcutsGroup)(nil)
 	_ coreglib.Objector = (*ShortcutsGroup)(nil)
 )
-
-func initClassShortcutsGroup(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutsGroup(obj *coreglib.Object) *ShortcutsGroup {
 	return &ShortcutsGroup{

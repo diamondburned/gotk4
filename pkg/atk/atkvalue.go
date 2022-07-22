@@ -888,3 +888,13 @@ func (obj *Value) SetValue(newValue float64) {
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(newValue)
 }
+
+// ValueIface: instance of this type is always passed by reference.
+type ValueIface struct {
+	*valueIface
+}
+
+// valueIface is the struct that's finalized.
+type valueIface struct {
+	native *C.AtkValueIface
+}

@@ -173,11 +173,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeEntry,
-		GoType:       reflect.TypeOf((*Entry)(nil)),
-		InitClass:    initClassEntry,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkEntry{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkEntryClass{})),
+		GType:     GTypeEntry,
+		GoType:    reflect.TypeOf((*Entry)(nil)),
+		InitClass: initClassEntry,
 	})
 }
 
@@ -187,6 +185,10 @@ func initClassEntry(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_EntryClass_activate)
+	}
+	if goval, ok := goval.(interface{ InitEntry(*EntryClass) }); ok {
+		klass := (*EntryClass)(gextras.NewStructNative(gclass))
+		goval.InitEntry(klass)
 	}
 }
 
@@ -1907,4 +1909,27 @@ func (entry *Entry) UnsetInvisibleChar() {
 
 	C.gtk_entry_unset_invisible_char(_arg0)
 	runtime.KeepAlive(entry)
+}
+
+// EntryClass class structure for Entry. All virtual functions have a default
+// implementation. Derived classes may set the virtual function pointers for the
+// signal handlers to NULL, but must keep get_text_area_size and get_frame_size
+// non-NULL; either use the default implementation, or provide a custom one.
+//
+// An instance of this type is always passed by reference.
+type EntryClass struct {
+	*entryClass
+}
+
+// entryClass is the struct that's finalized.
+type entryClass struct {
+	native *C.GtkEntryClass
+}
+
+// ParentClass: parent class.
+func (e *EntryClass) ParentClass() *WidgetClass {
+	valptr := &e.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

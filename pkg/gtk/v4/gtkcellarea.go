@@ -536,11 +536,9 @@ var _ CellAreaer = (*CellArea)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellArea,
-		GoType:       reflect.TypeOf((*CellArea)(nil)),
-		InitClass:    initClassCellArea,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellArea{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellAreaClass{})),
+		GType:     GTypeCellArea,
+		GoType:    reflect.TypeOf((*CellArea)(nil)),
+		InitClass: initClassCellArea,
 	})
 }
 
@@ -626,6 +624,10 @@ func initClassCellArea(gclass unsafe.Pointer, goval any) {
 		Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 	}); ok {
 		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_snapshot)
+	}
+	if goval, ok := goval.(interface{ InitCellArea(*CellAreaClass) }); ok {
+		klass := (*CellAreaClass)(gextras.NewStructNative(gclass))
+		goval.InitCellArea(klass)
 	}
 }
 
@@ -2732,4 +2734,14 @@ func (area *CellArea) StopEditing(canceled bool) {
 	C.gtk_cell_area_stop_editing(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(canceled)
+}
+
+// CellAreaClass: instance of this type is always passed by reference.
+type CellAreaClass struct {
+	*cellAreaClass
+}
+
+// cellAreaClass is the struct that's finalized.
+type cellAreaClass struct {
+	native *C.GtkCellAreaClass
 }

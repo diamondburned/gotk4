@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -60,7 +62,21 @@ var (
 	_ coreglib.Objector = (*DBusObjectManagerServer)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeDBusObjectManagerServer,
+		GoType:    reflect.TypeOf((*DBusObjectManagerServer)(nil)),
+		InitClass: initClassDBusObjectManagerServer,
+	})
+}
+
 func initClassDBusObjectManagerServer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitDBusObjectManagerServer(*DBusObjectManagerServerClass)
+	}); ok {
+		klass := (*DBusObjectManagerServerClass)(gextras.NewStructNative(gclass))
+		goval.InitDBusObjectManagerServer(klass)
+	}
 }
 
 func wrapDBusObjectManagerServer(obj *coreglib.Object) *DBusObjectManagerServer {
@@ -266,4 +282,16 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	}
 
 	return _ok
+}
+
+// DBusObjectManagerServerClass class structure for BusObjectManagerServer.
+//
+// An instance of this type is always passed by reference.
+type DBusObjectManagerServerClass struct {
+	*dBusObjectManagerServerClass
+}
+
+// dBusObjectManagerServerClass is the struct that's finalized.
+type dBusObjectManagerServerClass struct {
+	native *C.GDBusObjectManagerServerClass
 }

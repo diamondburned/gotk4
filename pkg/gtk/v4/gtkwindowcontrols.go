@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -86,7 +88,19 @@ var (
 	_ Widgetter = (*WindowControls)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeWindowControls,
+		GoType:    reflect.TypeOf((*WindowControls)(nil)),
+		InitClass: initClassWindowControls,
+	})
+}
+
 func initClassWindowControls(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitWindowControls(*WindowControlsClass) }); ok {
+		klass := (*WindowControlsClass)(gextras.NewStructNative(gclass))
+		goval.InitWindowControls(klass)
+	}
 }
 
 func wrapWindowControls(obj *coreglib.Object) *WindowControls {
@@ -262,4 +276,21 @@ func (self *WindowControls) SetSide(side PackType) {
 	C.gtk_window_controls_set_side(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(side)
+}
+
+// WindowControlsClass: instance of this type is always passed by reference.
+type WindowControlsClass struct {
+	*windowControlsClass
+}
+
+// windowControlsClass is the struct that's finalized.
+type windowControlsClass struct {
+	native *C.GtkWindowControlsClass
+}
+
+func (w *WindowControlsClass) ParentClass() *WidgetClass {
+	valptr := &w.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

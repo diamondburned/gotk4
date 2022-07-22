@@ -104,11 +104,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeComboBox,
-		GoType:       reflect.TypeOf((*ComboBox)(nil)),
-		InitClass:    initClassComboBox,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkComboBox{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkComboBoxClass{})),
+		GType:     GTypeComboBox,
+		GoType:    reflect.TypeOf((*ComboBox)(nil)),
+		InitClass: initClassComboBox,
 	})
 }
 
@@ -122,6 +120,10 @@ func initClassComboBox(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ FormatEntryText(path string) string }); ok {
 		pclass.format_entry_text = (*[0]byte)(C._gotk4_gtk3_ComboBoxClass_format_entry_text)
+	}
+	if goval, ok := goval.(interface{ InitComboBox(*ComboBoxClass) }); ok {
+		klass := (*ComboBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitComboBox(klass)
 	}
 }
 
@@ -792,7 +794,7 @@ func (comboBox *ComboBox) Model() *TreeModel {
 //
 //    - object: accessible object corresponding to the combo box’s popup.
 //
-func (comboBox *ComboBox) PopupAccessible() *atk.ObjectClass {
+func (comboBox *ComboBox) PopupAccessible() *atk.AtkObject {
 	var _arg0 *C.GtkComboBox // out
 	var _cret *C.AtkObject   // in
 
@@ -801,11 +803,11 @@ func (comboBox *ComboBox) PopupAccessible() *atk.ObjectClass {
 	_cret = C.gtk_combo_box_get_popup_accessible(_arg0)
 	runtime.KeepAlive(comboBox)
 
-	var _object *atk.ObjectClass // out
+	var _object *atk.AtkObject // out
 
 	{
 		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_object = &atk.ObjectClass{
+		_object = &atk.AtkObject{
 			Object: obj,
 		}
 	}
@@ -1301,4 +1303,22 @@ func (comboBox *ComboBox) SetWrapWidth(width int) {
 	C.gtk_combo_box_set_wrap_width(_arg0, _arg1)
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(width)
+}
+
+// ComboBoxClass: instance of this type is always passed by reference.
+type ComboBoxClass struct {
+	*comboBoxClass
+}
+
+// comboBoxClass is the struct that's finalized.
+type comboBoxClass struct {
+	native *C.GtkComboBoxClass
+}
+
+// ParentClass: parent class.
+func (c *ComboBoxClass) ParentClass() *BinClass {
+	valptr := &c.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -131,11 +132,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeToolbar,
-		GoType:       reflect.TypeOf((*Toolbar)(nil)),
-		InitClass:    initClassToolbar,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkToolbar{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkToolbarClass{})),
+		GType:     GTypeToolbar,
+		GoType:    reflect.TypeOf((*Toolbar)(nil)),
+		InitClass: initClassToolbar,
 	})
 }
 
@@ -155,6 +154,10 @@ func initClassToolbar(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ StyleChanged(style ToolbarStyle) }); ok {
 		pclass.style_changed = (*[0]byte)(C._gotk4_gtk3_ToolbarClass_style_changed)
+	}
+	if goval, ok := goval.(interface{ InitToolbar(*ToolbarClass) }); ok {
+		klass := (*ToolbarClass)(gextras.NewStructNative(gclass))
+		goval.InitToolbar(klass)
 	}
 }
 
@@ -770,4 +773,21 @@ func (toolbar *Toolbar) UnsetStyle() {
 
 	C.gtk_toolbar_unset_style(_arg0)
 	runtime.KeepAlive(toolbar)
+}
+
+// ToolbarClass: instance of this type is always passed by reference.
+type ToolbarClass struct {
+	*toolbarClass
+}
+
+// toolbarClass is the struct that's finalized.
+type toolbarClass struct {
+	native *C.GtkToolbarClass
+}
+
+func (t *ToolbarClass) ParentClass() *ContainerClass {
+	valptr := &t.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

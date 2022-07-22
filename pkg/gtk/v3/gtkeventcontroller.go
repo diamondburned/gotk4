@@ -29,10 +29,6 @@ func init() {
 	})
 }
 
-// EventControllerOverrider contains methods that are overridable.
-type EventControllerOverrider interface {
-}
-
 // EventController is a base, low-level implementation for event controllers.
 // Those react to a series of Events, and possibly trigger actions as a
 // consequence of those.
@@ -55,9 +51,6 @@ type EventControllerer interface {
 }
 
 var _ EventControllerer = (*EventController)(nil)
-
-func initClassEventController(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventController(obj *coreglib.Object) *EventController {
 	return &EventController{

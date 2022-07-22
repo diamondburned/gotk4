@@ -1527,6 +1527,30 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	return _attrList, _text, _accelChar, _goerr
 }
 
+// AttrClass: PangoAttrClass structure stores the type and operations for a
+// particular type of attribute.
+//
+// The functions in this structure should not be called directly. Instead, one
+// should use the wrapper functions provided for PangoAttribute.
+//
+// An instance of this type is always passed by reference.
+type AttrClass struct {
+	*attrClass
+}
+
+// attrClass is the struct that's finalized.
+type attrClass struct {
+	native *C.PangoAttrClass
+}
+
+// Type: type ID for this attribute.
+func (a *AttrClass) Type() AttrType {
+	valptr := &a.native._type
+	var v AttrType // out
+	v = AttrType(*valptr)
+	return v
+}
+
 // AttrColor: PangoAttrColor structure is used to represent attributes that are
 // colors.
 //
@@ -2577,6 +2601,44 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 	return &Attribute{&attribute{(*C.PangoAttribute)(b)}}, nil
 }
 
+// Klass class structure holding information about the type of the attribute.
+func (a *Attribute) Klass() *AttrClass {
+	valptr := &a.native.klass
+	var v *AttrClass // out
+	v = (*AttrClass)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return v
+}
+
+// StartIndex: start index of the range (in bytes).
+func (a *Attribute) StartIndex() uint {
+	valptr := &a.native.start_index
+	var v uint // out
+	v = uint(*valptr)
+	return v
+}
+
+// EndIndex: end index of the range (in bytes). The character at this index is
+// not included in the range.
+func (a *Attribute) EndIndex() uint {
+	valptr := &a.native.end_index
+	var v uint // out
+	v = uint(*valptr)
+	return v
+}
+
+// StartIndex: start index of the range (in bytes).
+func (a *Attribute) SetStartIndex(startIndex uint) {
+	valptr := &a.native.start_index
+	*valptr = C.guint(startIndex)
+}
+
+// EndIndex: end index of the range (in bytes). The character at this index is
+// not included in the range.
+func (a *Attribute) SetEndIndex(endIndex uint) {
+	valptr := &a.native.end_index
+	*valptr = C.guint(endIndex)
+}
+
 // Copy: make a copy of an attribute.
 //
 // The function returns the following values:
@@ -2646,6 +2708,27 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	}
 
 	return _ok
+}
+
+// Init initializes attr's klass to klass, it's start_index to
+// PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING and end_index to
+// PANGO_ATTR_INDEX_TO_TEXT_END such that the attribute applies to the entire
+// text by default.
+//
+// The function takes the following parameters:
+//
+//    - klass: PangoAttrClass.
+//
+func (attr *Attribute) Init(klass *AttrClass) {
+	var _arg0 *C.PangoAttribute // out
+	var _arg1 *C.PangoAttrClass // out
+
+	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	_arg1 = (*C.PangoAttrClass)(gextras.StructNative(unsafe.Pointer(klass)))
+
+	C.pango_attribute_init(_arg0, _arg1)
+	runtime.KeepAlive(attr)
+	runtime.KeepAlive(klass)
 }
 
 // Color: PangoColor structure is used to represent a color in an uncalibrated

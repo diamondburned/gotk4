@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -127,11 +128,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeInfoBar,
-		GoType:       reflect.TypeOf((*InfoBar)(nil)),
-		InitClass:    initClassInfoBar,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkInfoBar{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkInfoBarClass{})),
+		GType:     GTypeInfoBar,
+		GoType:    reflect.TypeOf((*InfoBar)(nil)),
+		InitClass: initClassInfoBar,
 	})
 }
 
@@ -145,6 +144,10 @@ func initClassInfoBar(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Response(responseId int) }); ok {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_response)
+	}
+	if goval, ok := goval.(interface{ InitInfoBar(*InfoBarClass) }); ok {
+		klass := (*InfoBarClass)(gextras.NewStructNative(gclass))
+		goval.InitInfoBar(klass)
 	}
 }
 
@@ -571,4 +574,21 @@ func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	C.gtk_info_bar_set_show_close_button(_arg0, _arg1)
 	runtime.KeepAlive(infoBar)
 	runtime.KeepAlive(setting)
+}
+
+// InfoBarClass: instance of this type is always passed by reference.
+type InfoBarClass struct {
+	*infoBarClass
+}
+
+// infoBarClass is the struct that's finalized.
+type infoBarClass struct {
+	native *C.GtkInfoBarClass
+}
+
+func (i *InfoBarClass) ParentClass() *BoxClass {
+	valptr := &i.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -1054,3 +1054,13 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 }
+
+// RecentChooserIface: instance of this type is always passed by reference.
+type RecentChooserIface struct {
+	*recentChooserIface
+}
+
+// recentChooserIface is the struct that's finalized.
+type recentChooserIface struct {
+	native *C.GtkRecentChooserIface
+}

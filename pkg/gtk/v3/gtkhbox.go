@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -59,7 +61,19 @@ var (
 	_ coreglib.Objector = (*HBox)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeHBox,
+		GoType:    reflect.TypeOf((*HBox)(nil)),
+		InitClass: initClassHBox,
+	})
+}
+
 func initClassHBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitHBox(*HBoxClass) }); ok {
+		klass := (*HBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitHBox(klass)
+	}
 }
 
 func wrapHBox(obj *coreglib.Object) *HBox {
@@ -126,4 +140,21 @@ func NewHBox(homogeneous bool, spacing int) *HBox {
 	_hBox = wrapHBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _hBox
+}
+
+// HBoxClass: instance of this type is always passed by reference.
+type HBoxClass struct {
+	*hBoxClass
+}
+
+// hBoxClass is the struct that's finalized.
+type hBoxClass struct {
+	native *C.GtkHBoxClass
+}
+
+func (h *HBoxClass) ParentClass() *BoxClass {
+	valptr := &h.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

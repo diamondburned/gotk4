@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -72,11 +73,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSwitch,
-		GoType:       reflect.TypeOf((*Switch)(nil)),
-		InitClass:    initClassSwitch,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkSwitch{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkSwitchClass{})),
+		GType:     GTypeSwitch,
+		GoType:    reflect.TypeOf((*Switch)(nil)),
+		InitClass: initClassSwitch,
 	})
 }
 
@@ -90,6 +89,10 @@ func initClassSwitch(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ StateSet(state bool) bool }); ok {
 		pclass.state_set = (*[0]byte)(C._gotk4_gtk3_SwitchClass_state_set)
+	}
+	if goval, ok := goval.(interface{ InitSwitch(*SwitchClass) }); ok {
+		klass := (*SwitchClass)(gextras.NewStructNative(gclass))
+		goval.InitSwitch(klass)
 	}
 }
 
@@ -337,4 +340,22 @@ func (sw *Switch) SetState(state bool) {
 	C.gtk_switch_set_state(_arg0, _arg1)
 	runtime.KeepAlive(sw)
 	runtime.KeepAlive(state)
+}
+
+// SwitchClass: instance of this type is always passed by reference.
+type SwitchClass struct {
+	*switchClass
+}
+
+// switchClass is the struct that's finalized.
+type switchClass struct {
+	native *C.GtkSwitchClass
+}
+
+// ParentClass: parent class.
+func (s *SwitchClass) ParentClass() *WidgetClass {
+	valptr := &s.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

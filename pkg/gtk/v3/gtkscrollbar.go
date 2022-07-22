@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -79,7 +81,19 @@ var (
 	_ Ranger = (*Scrollbar)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeScrollbar,
+		GoType:    reflect.TypeOf((*Scrollbar)(nil)),
+		InitClass: initClassScrollbar,
+	})
+}
+
 func initClassScrollbar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitScrollbar(*ScrollbarClass) }); ok {
+		klass := (*ScrollbarClass)(gextras.NewStructNative(gclass))
+		goval.InitScrollbar(klass)
+	}
 }
 
 func wrapScrollbar(obj *coreglib.Object) *Scrollbar {
@@ -139,4 +153,21 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	_scrollbar = wrapScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _scrollbar
+}
+
+// ScrollbarClass: instance of this type is always passed by reference.
+type ScrollbarClass struct {
+	*scrollbarClass
+}
+
+// scrollbarClass is the struct that's finalized.
+type scrollbarClass struct {
+	native *C.GtkScrollbarClass
+}
+
+func (s *ScrollbarClass) ParentClass() *RangeClass {
+	valptr := &s.native.parent_class
+	var v *RangeClass // out
+	v = (*RangeClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

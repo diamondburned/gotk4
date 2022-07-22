@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -63,7 +64,19 @@ var (
 	_ coreglib.Objector = (*StyleProperties)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStyleProperties,
+		GoType:    reflect.TypeOf((*StyleProperties)(nil)),
+		InitClass: initClassStyleProperties,
+	})
+}
+
 func initClassStyleProperties(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStyleProperties(*StylePropertiesClass) }); ok {
+		klass := (*StylePropertiesClass)(gextras.NewStructNative(gclass))
+		goval.InitStyleProperties(klass)
+	}
 }
 
 func wrapStyleProperties(obj *coreglib.Object) *StyleProperties {
@@ -527,6 +540,16 @@ func (gradient *Gradient) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// StylePropertiesClass: instance of this type is always passed by reference.
+type StylePropertiesClass struct {
+	*stylePropertiesClass
+}
+
+// stylePropertiesClass is the struct that's finalized.
+type stylePropertiesClass struct {
+	native *C.GtkStylePropertiesClass
 }
 
 // SymbolicColor is a boxed type that represents a symbolic color. It is the

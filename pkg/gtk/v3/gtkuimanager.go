@@ -434,11 +434,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeUIManager,
-		GoType:       reflect.TypeOf((*UIManager)(nil)),
-		InitClass:    initClassUIManager,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkUIManager{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkUIManagerClass{})),
+		GType:     GTypeUIManager,
+		GoType:    reflect.TypeOf((*UIManager)(nil)),
+		InitClass: initClassUIManager,
 	})
 }
 
@@ -480,6 +478,10 @@ func initClassUIManager(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ PreActivate(action *Action) }); ok {
 		pclass.pre_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_pre_activate)
+	}
+	if goval, ok := goval.(interface{ InitUIManager(*UIManagerClass) }); ok {
+		klass := (*UIManagerClass)(gextras.NewStructNative(gclass))
+		goval.InitUIManager(klass)
 	}
 }
 
@@ -1468,4 +1470,14 @@ func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	C.gtk_ui_manager_set_add_tearoffs(_arg0, _arg1)
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(addTearoffs)
+}
+
+// UIManagerClass: instance of this type is always passed by reference.
+type UIManagerClass struct {
+	*uiManagerClass
+}
+
+// uiManagerClass is the struct that's finalized.
+type uiManagerClass struct {
+	native *C.GtkUIManagerClass
 }

@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*ZlibCompressor)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeZlibCompressor,
+		GoType:    reflect.TypeOf((*ZlibCompressor)(nil)),
+		InitClass: initClassZlibCompressor,
+	})
+}
+
 func initClassZlibCompressor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitZlibCompressor(*ZlibCompressorClass) }); ok {
+		klass := (*ZlibCompressorClass)(gextras.NewStructNative(gclass))
+		goval.InitZlibCompressor(klass)
+	}
 }
 
 func wrapZlibCompressor(obj *coreglib.Object) *ZlibCompressor {
@@ -136,4 +150,14 @@ func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 	runtime.KeepAlive(compressor)
 	runtime.KeepAlive(fileInfo)
+}
+
+// ZlibCompressorClass: instance of this type is always passed by reference.
+type ZlibCompressorClass struct {
+	*zlibCompressorClass
+}
+
+// zlibCompressorClass is the struct that's finalized.
+type zlibCompressorClass struct {
+	native *C.GZlibCompressorClass
 }

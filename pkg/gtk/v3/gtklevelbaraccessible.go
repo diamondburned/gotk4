@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,14 +44,28 @@ var (
 	_ coreglib.Objector = (*LevelBarAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeLevelBarAccessible,
+		GoType:    reflect.TypeOf((*LevelBarAccessible)(nil)),
+		InitClass: initClassLevelBarAccessible,
+	})
+}
+
 func initClassLevelBarAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitLevelBarAccessible(*LevelBarAccessibleClass)
+	}); ok {
+		klass := (*LevelBarAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitLevelBarAccessible(klass)
+	}
 }
 
 func wrapLevelBarAccessible(obj *coreglib.Object) *LevelBarAccessible {
 	return &LevelBarAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -65,4 +81,21 @@ func wrapLevelBarAccessible(obj *coreglib.Object) *LevelBarAccessible {
 
 func marshalLevelBarAccessible(p uintptr) (interface{}, error) {
 	return wrapLevelBarAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// LevelBarAccessibleClass: instance of this type is always passed by reference.
+type LevelBarAccessibleClass struct {
+	*levelBarAccessibleClass
+}
+
+// levelBarAccessibleClass is the struct that's finalized.
+type levelBarAccessibleClass struct {
+	native *C.GtkLevelBarAccessibleClass
+}
+
+func (l *LevelBarAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &l.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

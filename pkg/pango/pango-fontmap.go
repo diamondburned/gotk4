@@ -137,11 +137,9 @@ var _ FontMapper = (*FontMap)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFontMap,
-		GoType:       reflect.TypeOf((*FontMap)(nil)),
-		InitClass:    initClassFontMap,
-		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontMap{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontMapClass{})),
+		GType:     GTypeFontMap,
+		GoType:    reflect.TypeOf((*FontMap)(nil)),
+		InitClass: initClassFontMap,
 	})
 }
 
@@ -177,6 +175,10 @@ func initClassFontMap(gclass unsafe.Pointer, goval any) {
 		LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
 	}); ok {
 		pclass.load_fontset = (*[0]byte)(C._gotk4_pango1_FontMapClass_load_fontset)
+	}
+	if goval, ok := goval.(interface{ InitFontMap(*FontMapClass) }); ok {
+		klass := (*FontMapClass)(gextras.NewStructNative(gclass))
+		goval.InitFontMap(klass)
 	}
 }
 
@@ -574,4 +576,26 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	}
 
 	return _fontset
+}
+
+// FontMapClass structure holds the virtual functions for a particular FontMap
+// implementation.
+//
+// An instance of this type is always passed by reference.
+type FontMapClass struct {
+	*fontMapClass
+}
+
+// fontMapClass is the struct that's finalized.
+type fontMapClass struct {
+	native *C.PangoFontMapClass
+}
+
+// ShapeEngineType: type of rendering-system-dependent engines that can handle
+// fonts of this fonts loaded with this fontmap.
+func (f *FontMapClass) ShapeEngineType() string {
+	valptr := &f.native.shape_engine_type
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
 }

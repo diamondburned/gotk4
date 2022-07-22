@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -51,11 +52,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeObjectFactory,
-		GoType:       reflect.TypeOf((*ObjectFactory)(nil)),
-		InitClass:    initClassObjectFactory,
-		ClassSize:    uint32(unsafe.Sizeof(C.AtkObjectFactory{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.AtkObjectFactoryClass{})),
+		GType:     GTypeObjectFactory,
+		GoType:    reflect.TypeOf((*ObjectFactory)(nil)),
+		InitClass: initClassObjectFactory,
 	})
 }
 
@@ -65,6 +64,10 @@ func initClassObjectFactory(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Invalidate() }); ok {
 		pclass.invalidate = (*[0]byte)(C._gotk4_atk1_ObjectFactoryClass_invalidate)
+	}
+	if goval, ok := goval.(interface{ InitObjectFactory(*ObjectFactoryClass) }); ok {
+		klass := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
+		goval.InitObjectFactory(klass)
 	}
 }
 
@@ -97,7 +100,7 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 //
 //    - object that implements an accessibility interface on behalf of obj.
 //
-func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClass {
+func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *AtkObject {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
 	var _cret *C.AtkObject        // in
@@ -109,7 +112,7 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(obj)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -151,4 +154,14 @@ func (factory *ObjectFactory) Invalidate() {
 
 	C.atk_object_factory_invalidate(_arg0)
 	runtime.KeepAlive(factory)
+}
+
+// ObjectFactoryClass: instance of this type is always passed by reference.
+type ObjectFactoryClass struct {
+	*objectFactoryClass
+}
+
+// objectFactoryClass is the struct that's finalized.
+type objectFactoryClass struct {
+	native *C.AtkObjectFactoryClass
 }

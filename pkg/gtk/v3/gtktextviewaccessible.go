@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,21 @@ var (
 	_ coreglib.Objector = (*TextViewAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTextViewAccessible,
+		GoType:    reflect.TypeOf((*TextViewAccessible)(nil)),
+		InitClass: initClassTextViewAccessible,
+	})
+}
+
 func initClassTextViewAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitTextViewAccessible(*TextViewAccessibleClass)
+	}); ok {
+		klass := (*TextViewAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitTextViewAccessible(klass)
+	}
 }
 
 func wrapTextViewAccessible(obj *coreglib.Object) *TextViewAccessible {
@@ -53,7 +69,7 @@ func wrapTextViewAccessible(obj *coreglib.Object) *TextViewAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -77,4 +93,21 @@ func wrapTextViewAccessible(obj *coreglib.Object) *TextViewAccessible {
 
 func marshalTextViewAccessible(p uintptr) (interface{}, error) {
 	return wrapTextViewAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// TextViewAccessibleClass: instance of this type is always passed by reference.
+type TextViewAccessibleClass struct {
+	*textViewAccessibleClass
+}
+
+// textViewAccessibleClass is the struct that's finalized.
+type textViewAccessibleClass struct {
+	native *C.GtkTextViewAccessibleClass
+}
+
+func (t *TextViewAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &t.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

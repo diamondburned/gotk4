@@ -134,11 +134,9 @@ var _ InputStreamer = (*InputStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeInputStream,
-		GoType:       reflect.TypeOf((*InputStream)(nil)),
-		InitClass:    initClassInputStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GInputStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GInputStreamClass{})),
+		GType:     GTypeInputStream,
+		GoType:    reflect.TypeOf((*InputStream)(nil)),
+		InitClass: initClassInputStream,
 	})
 }
 
@@ -174,6 +172,10 @@ func initClassInputStream(gclass unsafe.Pointer, goval any) {
 		SkipFinish(result AsyncResulter) (int, error)
 	}); ok {
 		pclass.skip_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_skip_finish)
+	}
+	if goval, ok := goval.(interface{ InitInputStream(*InputStreamClass) }); ok {
+		klass := (*InputStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitInputStream(klass)
 	}
 }
 
@@ -1195,4 +1197,14 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	}
 
 	return _gssize, _goerr
+}
+
+// InputStreamClass: instance of this type is always passed by reference.
+type InputStreamClass struct {
+	*inputStreamClass
+}
+
+// inputStreamClass is the struct that's finalized.
+type inputStreamClass struct {
+	native *C.GInputStreamClass
 }

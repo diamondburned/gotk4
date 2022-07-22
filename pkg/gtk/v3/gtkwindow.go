@@ -214,11 +214,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeWindow,
-		GoType:       reflect.TypeOf((*Window)(nil)),
-		InitClass:    initClassWindow,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkWindow{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkWindowClass{})),
+		GType:     GTypeWindow,
+		GoType:    reflect.TypeOf((*Window)(nil)),
+		InitClass: initClassWindow,
 	})
 }
 
@@ -244,6 +242,10 @@ func initClassWindow(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ SetFocus(focus Widgetter) }); ok {
 		pclass.set_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_set_focus)
+	}
+	if goval, ok := goval.(interface{ InitWindow(*WindowClass) }); ok {
+		klass := (*WindowClass)(gextras.NewStructNative(gclass))
+		goval.InitWindow(klass)
 	}
 }
 
@@ -3842,4 +3844,22 @@ func WindowSetInteractiveDebugging(enable bool) {
 
 	C.gtk_window_set_interactive_debugging(_arg1)
 	runtime.KeepAlive(enable)
+}
+
+// WindowClass: instance of this type is always passed by reference.
+type WindowClass struct {
+	*windowClass
+}
+
+// windowClass is the struct that's finalized.
+type windowClass struct {
+	native *C.GtkWindowClass
+}
+
+// ParentClass: parent class.
+func (w *WindowClass) ParentClass() *BinClass {
+	valptr := &w.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

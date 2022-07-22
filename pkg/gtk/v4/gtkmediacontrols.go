@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -43,7 +45,19 @@ var (
 	_ Widgetter = (*MediaControls)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMediaControls,
+		GoType:    reflect.TypeOf((*MediaControls)(nil)),
+		InitClass: initClassMediaControls,
+	})
+}
+
 func initClassMediaControls(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMediaControls(*MediaControlsClass) }); ok {
+		klass := (*MediaControlsClass)(gextras.NewStructNative(gclass))
+		goval.InitMediaControls(klass)
+	}
 }
 
 func wrapMediaControls(obj *coreglib.Object) *MediaControls {
@@ -154,4 +168,21 @@ func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
 	runtime.KeepAlive(controls)
 	runtime.KeepAlive(stream)
+}
+
+// MediaControlsClass: instance of this type is always passed by reference.
+type MediaControlsClass struct {
+	*mediaControlsClass
+}
+
+// mediaControlsClass is the struct that's finalized.
+type mediaControlsClass struct {
+	native *C.GtkMediaControlsClass
+}
+
+func (m *MediaControlsClass) ParentClass() *WidgetClass {
+	valptr := &m.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

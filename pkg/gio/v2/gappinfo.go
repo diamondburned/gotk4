@@ -1436,11 +1436,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAppLaunchContext,
-		GoType:       reflect.TypeOf((*AppLaunchContext)(nil)),
-		InitClass:    initClassAppLaunchContext,
-		ClassSize:    uint32(unsafe.Sizeof(C.GAppLaunchContext{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GAppLaunchContextClass{})),
+		GType:     GTypeAppLaunchContext,
+		GoType:    reflect.TypeOf((*AppLaunchContext)(nil)),
+		InitClass: initClassAppLaunchContext,
 	})
 }
 
@@ -1468,6 +1466,10 @@ func initClassAppLaunchContext(gclass unsafe.Pointer, goval any) {
 		Launched(info AppInfor, platformData *glib.Variant)
 	}); ok {
 		pclass.launched = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_launched)
+	}
+	if goval, ok := goval.(interface{ InitAppLaunchContext(*AppLaunchContextClass) }); ok {
+		klass := (*AppLaunchContextClass)(gextras.NewStructNative(gclass))
+		goval.InitAppLaunchContext(klass)
 	}
 }
 
@@ -1948,4 +1950,27 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 	C.g_app_launch_context_unsetenv(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(variable)
+}
+
+// AppInfoIface: application Information interface, for operating system
+// portability.
+//
+// An instance of this type is always passed by reference.
+type AppInfoIface struct {
+	*appInfoIface
+}
+
+// appInfoIface is the struct that's finalized.
+type appInfoIface struct {
+	native *C.GAppInfoIface
+}
+
+// AppLaunchContextClass: instance of this type is always passed by reference.
+type AppLaunchContextClass struct {
+	*appLaunchContextClass
+}
+
+// appLaunchContextClass is the struct that's finalized.
+type appLaunchContextClass struct {
+	native *C.GAppLaunchContextClass
 }

@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -189,11 +190,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAboutDialog,
-		GoType:       reflect.TypeOf((*AboutDialog)(nil)),
-		InitClass:    initClassAboutDialog,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAboutDialog{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkAboutDialogClass{})),
+		GType:     GTypeAboutDialog,
+		GoType:    reflect.TypeOf((*AboutDialog)(nil)),
+		InitClass: initClassAboutDialog,
 	})
 }
 
@@ -203,6 +202,10 @@ func initClassAboutDialog(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ActivateLink(uri string) bool }); ok {
 		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_AboutDialogClass_activate_link)
+	}
+	if goval, ok := goval.(interface{ InitAboutDialog(*AboutDialogClass) }); ok {
+		klass := (*AboutDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitAboutDialog(klass)
 	}
 }
 
@@ -1096,4 +1099,21 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(wrapLicense)
+}
+
+// AboutDialogClass: instance of this type is always passed by reference.
+type AboutDialogClass struct {
+	*aboutDialogClass
+}
+
+// aboutDialogClass is the struct that's finalized.
+type aboutDialogClass struct {
+	native *C.GtkAboutDialogClass
+}
+
+func (a *AboutDialogClass) ParentClass() *DialogClass {
+	valptr := &a.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

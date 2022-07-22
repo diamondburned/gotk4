@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -39,7 +41,21 @@ var (
 	_ SocketAddresser = (*NativeSocketAddress)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNativeSocketAddress,
+		GoType:    reflect.TypeOf((*NativeSocketAddress)(nil)),
+		InitClass: initClassNativeSocketAddress,
+	})
+}
+
 func initClassNativeSocketAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitNativeSocketAddress(*NativeSocketAddressClass)
+	}); ok {
+		klass := (*NativeSocketAddressClass)(gextras.NewStructNative(gclass))
+		goval.InitNativeSocketAddress(klass)
+	}
 }
 
 func wrapNativeSocketAddress(obj *coreglib.Object) *NativeSocketAddress {
@@ -85,4 +101,22 @@ func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddres
 	_nativeSocketAddress = wrapNativeSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _nativeSocketAddress
+}
+
+// NativeSocketAddressClass: instance of this type is always passed by
+// reference.
+type NativeSocketAddressClass struct {
+	*nativeSocketAddressClass
+}
+
+// nativeSocketAddressClass is the struct that's finalized.
+type nativeSocketAddressClass struct {
+	native *C.GNativeSocketAddressClass
+}
+
+func (n *NativeSocketAddressClass) ParentClass() *SocketAddressClass {
+	valptr := &n.native.parent_class
+	var v *SocketAddressClass // out
+	v = (*SocketAddressClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

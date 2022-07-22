@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -102,11 +103,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMountOperation,
-		GoType:       reflect.TypeOf((*MountOperation)(nil)),
-		InitClass:    initClassMountOperation,
-		ClassSize:    uint32(unsafe.Sizeof(C.GMountOperation{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GMountOperationClass{})),
+		GType:     GTypeMountOperation,
+		GoType:    reflect.TypeOf((*MountOperation)(nil)),
+		InitClass: initClassMountOperation,
 	})
 }
 
@@ -140,6 +139,10 @@ func initClassMountOperation(gclass unsafe.Pointer, goval any) {
 		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 	}); ok {
 		pclass.show_unmount_progress = (*[0]byte)(C._gotk4_gio2_MountOperationClass_show_unmount_progress)
+	}
+	if goval, ok := goval.(interface{ InitMountOperation(*MountOperationClass) }); ok {
+		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
+		goval.InitMountOperation(klass)
 	}
 }
 
@@ -840,4 +843,14 @@ func (op *MountOperation) SetUsername(username string) {
 	C.g_mount_operation_set_username(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(username)
+}
+
+// MountOperationClass: instance of this type is always passed by reference.
+type MountOperationClass struct {
+	*mountOperationClass
+}
+
+// mountOperationClass is the struct that's finalized.
+type mountOperationClass struct {
+	native *C.GMountOperationClass
 }

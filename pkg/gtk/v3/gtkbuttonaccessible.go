@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -44,7 +46,19 @@ var (
 	_ coreglib.Objector = (*ButtonAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeButtonAccessible,
+		GoType:    reflect.TypeOf((*ButtonAccessible)(nil)),
+		InitClass: initClassButtonAccessible,
+	})
+}
+
 func initClassButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitButtonAccessible(*ButtonAccessibleClass) }); ok {
+		klass := (*ButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitButtonAccessible(klass)
+	}
 }
 
 func wrapButtonAccessible(obj *coreglib.Object) *ButtonAccessible {
@@ -52,7 +66,7 @@ func wrapButtonAccessible(obj *coreglib.Object) *ButtonAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -73,4 +87,21 @@ func wrapButtonAccessible(obj *coreglib.Object) *ButtonAccessible {
 
 func marshalButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ButtonAccessibleClass: instance of this type is always passed by reference.
+type ButtonAccessibleClass struct {
+	*buttonAccessibleClass
+}
+
+// buttonAccessibleClass is the struct that's finalized.
+type buttonAccessibleClass struct {
+	native *C.GtkButtonAccessibleClass
+}
+
+func (b *ButtonAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &b.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

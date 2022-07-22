@@ -113,3 +113,15 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 
 	return _dtlsServerConnection, _goerr
 }
+
+// DTLSServerConnectionInterface: vtable for a ServerConnection implementation.
+//
+// An instance of this type is always passed by reference.
+type DTLSServerConnectionInterface struct {
+	*dtlsServerConnectionInterface
+}
+
+// dtlsServerConnectionInterface is the struct that's finalized.
+type dtlsServerConnectionInterface struct {
+	native *C.GDtlsServerConnectionInterface
+}

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*FlowBoxChildAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFlowBoxChildAccessible,
+		GoType:    reflect.TypeOf((*FlowBoxChildAccessible)(nil)),
+		InitClass: initClassFlowBoxChildAccessible,
+	})
+}
+
 func initClassFlowBoxChildAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitFlowBoxChildAccessible(*FlowBoxChildAccessibleClass)
+	}); ok {
+		klass := (*FlowBoxChildAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitFlowBoxChildAccessible(klass)
+	}
 }
 
 func wrapFlowBoxChildAccessible(obj *coreglib.Object) *FlowBoxChildAccessible {
@@ -48,7 +64,7 @@ func wrapFlowBoxChildAccessible(obj *coreglib.Object) *FlowBoxChildAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -62,4 +78,22 @@ func wrapFlowBoxChildAccessible(obj *coreglib.Object) *FlowBoxChildAccessible {
 
 func marshalFlowBoxChildAccessible(p uintptr) (interface{}, error) {
 	return wrapFlowBoxChildAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// FlowBoxChildAccessibleClass: instance of this type is always passed by
+// reference.
+type FlowBoxChildAccessibleClass struct {
+	*flowBoxChildAccessibleClass
+}
+
+// flowBoxChildAccessibleClass is the struct that's finalized.
+type flowBoxChildAccessibleClass struct {
+	native *C.GtkFlowBoxChildAccessibleClass
+}
+
+func (f *FlowBoxChildAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &f.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

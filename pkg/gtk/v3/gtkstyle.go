@@ -1629,11 +1629,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeStyle,
-		GoType:       reflect.TypeOf((*Style)(nil)),
-		InitClass:    initClassStyle,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkStyle{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkStyleClass{})),
+		GType:     GTypeStyle,
+		GoType:    reflect.TypeOf((*Style)(nil)),
+		InitClass: initClassStyle,
 	})
 }
 
@@ -1787,6 +1785,10 @@ func initClassStyle(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Unrealize() }); ok {
 		pclass.unrealize = (*[0]byte)(C._gotk4_gtk3_StyleClass_unrealize)
+	}
+	if goval, ok := goval.(interface{ InitStyle(*StyleClass) }); ok {
+		klass := (*StyleClass)(gextras.NewStructNative(gclass))
+		goval.InitStyle(klass)
 	}
 }
 
@@ -3888,4 +3890,14 @@ func WidgetGetDefaultStyle() *Style {
 	_style = wrapStyle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _style
+}
+
+// StyleClass: instance of this type is always passed by reference.
+type StyleClass struct {
+	*styleClass
+}
+
+// styleClass is the struct that's finalized.
+type styleClass struct {
+	native *C.GtkStyleClass
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -55,7 +56,19 @@ var (
 	_ coreglib.Objector = (*WindowGroup)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeWindowGroup,
+		GoType:    reflect.TypeOf((*WindowGroup)(nil)),
+		InitClass: initClassWindowGroup,
+	})
+}
+
 func initClassWindowGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitWindowGroup(*WindowGroupClass) }); ok {
+		klass := (*WindowGroupClass)(gextras.NewStructNative(gclass))
+		goval.InitWindowGroup(klass)
+	}
 }
 
 func wrapWindowGroup(obj *coreglib.Object) *WindowGroup {
@@ -233,4 +246,14 @@ func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	C.gtk_window_group_remove_window(_arg0, _arg1)
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(window)
+}
+
+// WindowGroupClass: instance of this type is always passed by reference.
+type WindowGroupClass struct {
+	*windowGroupClass
+}
+
+// windowGroupClass is the struct that's finalized.
+type windowGroupClass struct {
+	native *C.GtkWindowGroupClass
 }

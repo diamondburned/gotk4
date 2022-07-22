@@ -84,10 +84,6 @@ func X11SetSmClientID(smClientId string) {
 	runtime.KeepAlive(smClientId)
 }
 
-// X11DisplayOverrider contains methods that are overridable.
-type X11DisplayOverrider interface {
-}
-
 type X11Display struct {
 	_ [0]func() // equal guard
 	gdk.Display
@@ -96,9 +92,6 @@ type X11Display struct {
 var (
 	_ coreglib.Objector = (*X11Display)(nil)
 )
-
-func initClassX11Display(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11Display(obj *coreglib.Object) *X11Display {
 	return &X11Display{

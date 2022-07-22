@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,19 @@ var (
 	_ coreglib.Objector = (*ListBoxAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeListBoxAccessible,
+		GoType:    reflect.TypeOf((*ListBoxAccessible)(nil)),
+		InitClass: initClassListBoxAccessible,
+	})
+}
+
 func initClassListBoxAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitListBoxAccessible(*ListBoxAccessibleClass) }); ok {
+		klass := (*ListBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitListBoxAccessible(klass)
+	}
 }
 
 func wrapListBoxAccessible(obj *coreglib.Object) *ListBoxAccessible {
@@ -50,7 +64,7 @@ func wrapListBoxAccessible(obj *coreglib.Object) *ListBoxAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +81,21 @@ func wrapListBoxAccessible(obj *coreglib.Object) *ListBoxAccessible {
 
 func marshalListBoxAccessible(p uintptr) (interface{}, error) {
 	return wrapListBoxAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ListBoxAccessibleClass: instance of this type is always passed by reference.
+type ListBoxAccessibleClass struct {
+	*listBoxAccessibleClass
+}
+
+// listBoxAccessibleClass is the struct that's finalized.
+type listBoxAccessibleClass struct {
+	native *C.GtkListBoxAccessibleClass
+}
+
+func (l *ListBoxAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &l.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

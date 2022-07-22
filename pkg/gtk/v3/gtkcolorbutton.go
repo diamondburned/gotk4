@@ -62,11 +62,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeColorButton,
-		GoType:       reflect.TypeOf((*ColorButton)(nil)),
-		InitClass:    initClassColorButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkColorButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkColorButtonClass{})),
+		GType:     GTypeColorButton,
+		GoType:    reflect.TypeOf((*ColorButton)(nil)),
+		InitClass: initClassColorButton,
 	})
 }
 
@@ -76,6 +74,10 @@ func initClassColorButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ColorSet() }); ok {
 		pclass.color_set = (*[0]byte)(C._gotk4_gtk3_ColorButtonClass_color_set)
+	}
+	if goval, ok := goval.(interface{ InitColorButton(*ColorButtonClass) }); ok {
+		klass := (*ColorButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitColorButton(klass)
 	}
 }
 
@@ -416,4 +418,21 @@ func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 	C.gtk_color_button_set_use_alpha(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useAlpha)
+}
+
+// ColorButtonClass: instance of this type is always passed by reference.
+type ColorButtonClass struct {
+	*colorButtonClass
+}
+
+// colorButtonClass is the struct that's finalized.
+type colorButtonClass struct {
+	native *C.GtkColorButtonClass
+}
+
+func (c *ColorButtonClass) ParentClass() *ButtonClass {
+	valptr := &c.native.parent_class
+	var v *ButtonClass // out
+	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

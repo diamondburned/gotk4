@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -51,7 +53,19 @@ var (
 	_ Binner = (*AspectFrame)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeAspectFrame,
+		GoType:    reflect.TypeOf((*AspectFrame)(nil)),
+		InitClass: initClassAspectFrame,
+	})
+}
+
 func initClassAspectFrame(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitAspectFrame(*AspectFrameClass) }); ok {
+		klass := (*AspectFrameClass)(gextras.NewStructNative(gclass))
+		goval.InitAspectFrame(klass)
+	}
 }
 
 func wrapAspectFrame(obj *coreglib.Object) *AspectFrame {
@@ -164,4 +178,22 @@ func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild boo
 	runtime.KeepAlive(yalign)
 	runtime.KeepAlive(ratio)
 	runtime.KeepAlive(obeyChild)
+}
+
+// AspectFrameClass: instance of this type is always passed by reference.
+type AspectFrameClass struct {
+	*aspectFrameClass
+}
+
+// aspectFrameClass is the struct that's finalized.
+type aspectFrameClass struct {
+	native *C.GtkAspectFrameClass
+}
+
+// ParentClass: parent class.
+func (a *AspectFrameClass) ParentClass() *FrameClass {
+	valptr := &a.native.parent_class
+	var v *FrameClass // out
+	v = (*FrameClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

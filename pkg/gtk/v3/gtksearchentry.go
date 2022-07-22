@@ -82,11 +82,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSearchEntry,
-		GoType:       reflect.TypeOf((*SearchEntry)(nil)),
-		InitClass:    initClassSearchEntry,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkSearchEntry{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkSearchEntryClass{})),
+		GType:     GTypeSearchEntry,
+		GoType:    reflect.TypeOf((*SearchEntry)(nil)),
+		InitClass: initClassSearchEntry,
 	})
 }
 
@@ -108,6 +106,10 @@ func initClassSearchEntry(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ StopSearch() }); ok {
 		pclass.stop_search = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_stop_search)
+	}
+	if goval, ok := goval.(interface{ InitSearchEntry(*SearchEntryClass) }); ok {
+		klass := (*SearchEntryClass)(gextras.NewStructNative(gclass))
+		goval.InitSearchEntry(klass)
 	}
 }
 
@@ -344,4 +346,21 @@ func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
 	}
 
 	return _ok
+}
+
+// SearchEntryClass: instance of this type is always passed by reference.
+type SearchEntryClass struct {
+	*searchEntryClass
+}
+
+// searchEntryClass is the struct that's finalized.
+type searchEntryClass struct {
+	native *C.GtkSearchEntryClass
+}
+
+func (s *SearchEntryClass) ParentClass() *EntryClass {
+	valptr := &s.native.parent_class
+	var v *EntryClass // out
+	v = (*EntryClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

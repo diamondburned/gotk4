@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -126,11 +127,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeEntryBuffer,
-		GoType:       reflect.TypeOf((*EntryBuffer)(nil)),
-		InitClass:    initClassEntryBuffer,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkEntryBuffer{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkEntryBufferClass{})),
+		GType:     GTypeEntryBuffer,
+		GoType:    reflect.TypeOf((*EntryBuffer)(nil)),
+		InitClass: initClassEntryBuffer,
 	})
 }
 
@@ -166,6 +165,10 @@ func initClassEntryBuffer(gclass unsafe.Pointer, goval any) {
 		InsertedText(position uint, chars string, nChars uint)
 	}); ok {
 		pclass.inserted_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_inserted_text)
+	}
+	if goval, ok := goval.(interface{ InitEntryBuffer(*EntryBufferClass) }); ok {
+		klass := (*EntryBufferClass)(gextras.NewStructNative(gclass))
+		goval.InitEntryBuffer(klass)
 	}
 }
 
@@ -653,4 +656,14 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(chars)
 	runtime.KeepAlive(nChars)
+}
+
+// EntryBufferClass: instance of this type is always passed by reference.
+type EntryBufferClass struct {
+	*entryBufferClass
+}
+
+// entryBufferClass is the struct that's finalized.
+type entryBufferClass struct {
+	native *C.GtkEntryBufferClass
 }

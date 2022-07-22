@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// GestureOverrider contains methods that are overridable.
-type GestureOverrider interface {
-}
-
 // Gesture: GtkGesture is the base class for gesture recognition.
 //
 // Although GtkGesture is quite generalized to serve as a base for multi-touch
@@ -146,9 +142,6 @@ type Gesturer interface {
 }
 
 var _ Gesturer = (*Gesture)(nil)
-
-func initClassGesture(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGesture(obj *coreglib.Object) *Gesture {
 	return &Gesture{

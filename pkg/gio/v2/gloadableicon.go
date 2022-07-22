@@ -232,3 +232,15 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 
 	return _typ, _inputStream, _goerr
 }
+
+// LoadableIconIface: interface for icons that can be loaded as a stream.
+//
+// An instance of this type is always passed by reference.
+type LoadableIconIface struct {
+	*loadableIconIface
+}
+
+// loadableIconIface is the struct that's finalized.
+type loadableIconIface struct {
+	native *C.GLoadableIconIface
+}

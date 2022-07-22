@@ -1997,6 +1997,16 @@ func (iter *TreeIter) Copy() *TreeIter {
 	return _treeIter
 }
 
+// TreeModelIface: instance of this type is always passed by reference.
+type TreeModelIface struct {
+	*treeModelIface
+}
+
+// treeModelIface is the struct that's finalized.
+type treeModelIface struct {
+	native *C.GtkTreeModelIface
+}
+
 // TreePath: instance of this type is always passed by reference.
 type TreePath struct {
 	*treePath

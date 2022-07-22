@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -62,7 +64,19 @@ var (
 	_ coreglib.Objector = (*StackSwitcher)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeStackSwitcher,
+		GoType:    reflect.TypeOf((*StackSwitcher)(nil)),
+		InitClass: initClassStackSwitcher,
+	})
+}
+
 func initClassStackSwitcher(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitStackSwitcher(*StackSwitcherClass) }); ok {
+		klass := (*StackSwitcherClass)(gextras.NewStructNative(gclass))
+		goval.InitStackSwitcher(klass)
+	}
 }
 
 func wrapStackSwitcher(obj *coreglib.Object) *StackSwitcher {
@@ -154,4 +168,21 @@ func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 	runtime.KeepAlive(switcher)
 	runtime.KeepAlive(stack)
+}
+
+// StackSwitcherClass: instance of this type is always passed by reference.
+type StackSwitcherClass struct {
+	*stackSwitcherClass
+}
+
+// stackSwitcherClass is the struct that's finalized.
+type stackSwitcherClass struct {
+	native *C.GtkStackSwitcherClass
+}
+
+func (s *StackSwitcherClass) ParentClass() *BoxClass {
+	valptr := &s.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

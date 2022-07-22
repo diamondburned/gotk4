@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -46,7 +48,19 @@ var (
 	_ LayoutManagerer = (*OverlayLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeOverlayLayout,
+		GoType:    reflect.TypeOf((*OverlayLayout)(nil)),
+		InitClass: initClassOverlayLayout,
+	})
+}
+
 func initClassOverlayLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitOverlayLayout(*OverlayLayoutClass) }); ok {
+		klass := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitOverlayLayout(klass)
+	}
 }
 
 func wrapOverlayLayout(obj *coreglib.Object) *OverlayLayout {
@@ -94,7 +108,21 @@ var (
 	_ LayoutChilder = (*OverlayLayoutChild)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeOverlayLayoutChild,
+		GoType:    reflect.TypeOf((*OverlayLayoutChild)(nil)),
+		InitClass: initClassOverlayLayoutChild,
+	})
+}
+
 func initClassOverlayLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitOverlayLayoutChild(*OverlayLayoutChildClass)
+	}); ok {
+		klass := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.InitOverlayLayoutChild(klass)
+	}
 }
 
 func wrapOverlayLayoutChild(obj *coreglib.Object) *OverlayLayoutChild {
@@ -195,4 +223,38 @@ func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	C.gtk_overlay_layout_child_set_measure(_arg0, _arg1)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(measure)
+}
+
+// OverlayLayoutChildClass: instance of this type is always passed by reference.
+type OverlayLayoutChildClass struct {
+	*overlayLayoutChildClass
+}
+
+// overlayLayoutChildClass is the struct that's finalized.
+type overlayLayoutChildClass struct {
+	native *C.GtkOverlayLayoutChildClass
+}
+
+func (o *OverlayLayoutChildClass) ParentClass() *LayoutChildClass {
+	valptr := &o.native.parent_class
+	var v *LayoutChildClass // out
+	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// OverlayLayoutClass: instance of this type is always passed by reference.
+type OverlayLayoutClass struct {
+	*overlayLayoutClass
+}
+
+// overlayLayoutClass is the struct that's finalized.
+type overlayLayoutClass struct {
+	native *C.GtkOverlayLayoutClass
+}
+
+func (o *OverlayLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &o.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

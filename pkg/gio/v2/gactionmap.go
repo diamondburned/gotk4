@@ -368,3 +368,15 @@ func (a *ActionEntry) State() string {
 	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
+
+// ActionMapInterface: virtual function table for Map.
+//
+// An instance of this type is always passed by reference.
+type ActionMapInterface struct {
+	*actionMapInterface
+}
+
+// actionMapInterface is the struct that's finalized.
+type actionMapInterface struct {
+	native *C.GActionMapInterface
+}

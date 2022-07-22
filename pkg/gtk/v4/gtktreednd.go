@@ -567,3 +567,23 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 
 	return _ok
 }
+
+// TreeDragDestIface: instance of this type is always passed by reference.
+type TreeDragDestIface struct {
+	*treeDragDestIface
+}
+
+// treeDragDestIface is the struct that's finalized.
+type treeDragDestIface struct {
+	native *C.GtkTreeDragDestIface
+}
+
+// TreeDragSourceIface: instance of this type is always passed by reference.
+type TreeDragSourceIface struct {
+	*treeDragSourceIface
+}
+
+// treeDragSourceIface is the struct that's finalized.
+type treeDragSourceIface struct {
+	native *C.GtkTreeDragSourceIface
+}

@@ -533,11 +533,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSettings,
-		GoType:       reflect.TypeOf((*Settings)(nil)),
-		InitClass:    initClassSettings,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSettings{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSettingsClass{})),
+		GType:     GTypeSettings,
+		GoType:    reflect.TypeOf((*Settings)(nil)),
+		InitClass: initClassSettings,
 	})
 }
 
@@ -561,6 +559,10 @@ func initClassSettings(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ WritableChanged(key string) }); ok {
 		pclass.writable_changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_changed)
+	}
+	if goval, ok := goval.(interface{ InitSettings(*SettingsClass) }); ok {
+		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
+		goval.InitSettings(klass)
 	}
 }
 
@@ -2499,4 +2501,26 @@ func SettingsUnbind(object *coreglib.Object, property string) {
 	C.g_settings_unbind(_arg1, _arg2)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(property)
+}
+
+// SettingsClass: instance of this type is always passed by reference.
+type SettingsClass struct {
+	*settingsClass
+}
+
+// settingsClass is the struct that's finalized.
+type settingsClass struct {
+	native *C.GSettingsClass
+}
+
+func (s *SettingsClass) Padding() [20]unsafe.Pointer {
+	valptr := &s.native.padding
+	var v [20]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 20; i++ {
+			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
 }

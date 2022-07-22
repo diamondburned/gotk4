@@ -114,3 +114,13 @@ func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	runtime.KeepAlive(orientable)
 	runtime.KeepAlive(orientation)
 }
+
+// OrientableIface: instance of this type is always passed by reference.
+type OrientableIface struct {
+	*orientableIface
+}
+
+// orientableIface is the struct that's finalized.
+type orientableIface struct {
+	native *C.GtkOrientableIface
+}

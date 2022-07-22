@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -67,7 +68,19 @@ var (
 	_ Binner = (*SearchBar)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSearchBar,
+		GoType:    reflect.TypeOf((*SearchBar)(nil)),
+		InitClass: initClassSearchBar,
+	})
+}
+
 func initClassSearchBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSearchBar(*SearchBarClass) }); ok {
+		klass := (*SearchBarClass)(gextras.NewStructNative(gclass))
+		goval.InitSearchBar(klass)
+	}
 }
 
 func wrapSearchBar(obj *coreglib.Object) *SearchBar {
@@ -290,4 +303,22 @@ func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
 	runtime.KeepAlive(bar)
 	runtime.KeepAlive(visible)
+}
+
+// SearchBarClass: instance of this type is always passed by reference.
+type SearchBarClass struct {
+	*searchBarClass
+}
+
+// searchBarClass is the struct that's finalized.
+type searchBarClass struct {
+	native *C.GtkSearchBarClass
+}
+
+// ParentClass: parent class.
+func (s *SearchBarClass) ParentClass() *BinClass {
+	valptr := &s.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -49,7 +51,19 @@ var (
 	_ coreglib.Objector = (*ListStore)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeListStore,
+		GoType:    reflect.TypeOf((*ListStore)(nil)),
+		InitClass: initClassListStore,
+	})
+}
+
 func initClassListStore(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitListStore(*ListStoreClass) }); ok {
+		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
+		goval.InitListStore(klass)
+	}
 }
 
 func wrapListStore(obj *coreglib.Object) *ListStore {
@@ -326,4 +340,14 @@ func (store *ListStore) Splice(position, nRemovals uint, additions []*coreglib.O
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(nRemovals)
 	runtime.KeepAlive(additions)
+}
+
+// ListStoreClass: instance of this type is always passed by reference.
+type ListStoreClass struct {
+	*listStoreClass
+}
+
+// listStoreClass is the struct that's finalized.
+type listStoreClass struct {
+	native *C.GListStoreClass
 }

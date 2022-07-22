@@ -29,10 +29,6 @@ func init() {
 	})
 }
 
-// DropControllerMotionOverrider contains methods that are overridable.
-type DropControllerMotionOverrider interface {
-}
-
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking
 // the pointer during Drag-and-Drop operations.
 //
@@ -49,9 +45,6 @@ type DropControllerMotion struct {
 var (
 	_ EventControllerer = (*DropControllerMotion)(nil)
 )
-
-func initClassDropControllerMotion(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapDropControllerMotion(obj *coreglib.Object) *DropControllerMotion {
 	return &DropControllerMotion{

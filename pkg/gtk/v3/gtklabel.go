@@ -86,11 +86,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeLabel,
-		GoType:       reflect.TypeOf((*Label)(nil)),
-		InitClass:    initClassLabel,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkLabel{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkLabelClass{})),
+		GType:     GTypeLabel,
+		GoType:    reflect.TypeOf((*Label)(nil)),
+		InitClass: initClassLabel,
 	})
 }
 
@@ -114,6 +112,10 @@ func initClassLabel(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ PopulatePopup(menu *Menu) }); ok {
 		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_LabelClass_populate_popup)
+	}
+	if goval, ok := goval.(interface{ InitLabel(*LabelClass) }); ok {
+		klass := (*LabelClass)(gextras.NewStructNative(gclass))
+		goval.InitLabel(klass)
 	}
 }
 
@@ -1604,4 +1606,21 @@ func (label *Label) SetYAlign(yalign float32) {
 	C.gtk_label_set_yalign(_arg0, _arg1)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(yalign)
+}
+
+// LabelClass: instance of this type is always passed by reference.
+type LabelClass struct {
+	*labelClass
+}
+
+// labelClass is the struct that's finalized.
+type labelClass struct {
+	native *C.GtkLabelClass
+}
+
+func (l *LabelClass) ParentClass() *MiscClass {
+	valptr := &l.native.parent_class
+	var v *MiscClass // out
+	v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

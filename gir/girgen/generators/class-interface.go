@@ -13,7 +13,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .GLibTypeStruct }}
 	// {{ .StructName }}Overrider contains methods that are overridable.
 	type {{ .StructName }}Overrider interface {
-		{{ range .GLibTypeStruct.Methods -}}
+		{{ range .GLibTypeStruct.VirtualMethods -}}
 		{{ if $.IsInSameFile . -}}
 		{{- GoDoc .Go 1 TrailingNewLine -}}
 		{{- .Go.Name }}{{ .Go.Tail }}
@@ -91,26 +91,21 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .GLibTypeStruct }}
 	{{ if .IsClass }}
 
-	{{ if .GLibTypeStruct.Methods }}
 	func init() {
 		coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
 			GType:     GType{{ .StructName }},
 			GoType:    reflect.TypeOf((*{{ .StructName }})(nil)),
 			InitClass: initClass{{ .StructName }},
-			{{ if not .IsRuntimeLinkMode -}}
-			ClassSize:    uint32(unsafe.Sizeof(C.{{ .CType }}{})),
-			InstanceSize: uint32(unsafe.Sizeof(C.{{ .GLibTypeStruct.CType }}{})),
-			{{ end -}}
 		})
 	}
-	{{ end }}
 
 	func initClass{{ .StructName }}(gclass unsafe.Pointer, goval any) {
-		{{ if .GLibTypeStruct.Methods }}
+		{{ if .GLibTypeStruct.VirtualMethods }}
 		{{- if .IsRuntimeLinkMode }}
+			{{- ImportCore . "girepository" -}}
 			pclass := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
 
-			{{ range .GLibTypeStruct.Methods }}
+			{{ range .GLibTypeStruct.VirtualMethods }}
 			if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
 				o := pclass.StructFieldOffset({{ Quote .FieldName }})
 				*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclass), o)) = unsafe.Pointer(C.{{ .C.Name }})
@@ -119,26 +114,33 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{- else }}
 			pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gclass))
 
-			{{ range .GLibTypeStruct.Methods }}
+			{{ range .GLibTypeStruct.VirtualMethods }}
 			if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
 				pclass.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
 			}
 			{{ end -}}
 		{{ end -}}
 		{{ end -}}
+
+		{{/* TODO: consider allowing custom initializers, WithInit() maybe */}}
+		{{-  ImportCore . "gextras"  -}}
+		if goval, ok := goval.(interface { Init{{ .StructName }}(*{{ .GLibTypeStruct.Name }}) }); ok {
+			klass := (*{{ .GLibTypeStruct.Name }})(gextras.NewStructNative(gclass))
+			goval.Init{{ .StructName }}(klass)
+		}
 	}
 	{{ else }}
 	func ifaceInit{{ .InterfaceName }}(gifacePtr, data C.gpointer) {
-		{{- if .GLibTypeStruct.Methods }}
+		{{- if .GLibTypeStruct.VirtualMethods }}
 
 		{{- if .IsRuntimeLinkMode}}
 			iface := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			{{- range .GLibTypeStruct.Methods}}
+			{{- range .GLibTypeStruct.VirtualMethods}}
 			*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset({{ Quote .FieldName }}))) = unsafe.Pointer(C.{{ .C.Name }})
 			{{- end }}
 		{{- else }}
 			iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))
-			{{- range .GLibTypeStruct.Methods }}
+			{{- range .GLibTypeStruct.VirtualMethods }}
 			iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
 			{{- end }}
 		{{- end }}
@@ -147,7 +149,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	}
 	{{ end }}
 
-	{{ range .GLibTypeStruct.Methods }}
+	{{ range .GLibTypeStruct.VirtualMethods }}
 	//export {{ .C.Name }}
 	func {{ .C.Name }}{{ .C.Tail }} {{ .C.Block }}
 	{{ end }}
@@ -241,9 +243,6 @@ func (d ifacegenData) Recv() string {
 	if len(d.Methods) > 0 {
 		return d.Methods[0].Recv
 	}
-	if len(d.Virtuals) > 0 {
-		return d.Virtuals[0].Recv
-	}
 	return "v"
 }
 
@@ -263,11 +262,13 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	}
 
 	// These conditions should follow what's in the template.
-	if igen.IsClass() && igen.GLibTypeStruct != nil && len(igen.GLibTypeStruct.Methods) > 0 {
-		writer.Header().NeedsExternGLib()
-		writer.Header().Import("reflect")
+	if igen.GLibTypeStruct != nil {
+		if igen.IsClass() {
+			writer.Header().NeedsExternGLib()
+			writer.Header().Import("reflect")
+		}
 
-		if gen.LinkMode() == types.RuntimeLinkMode {
+		if gen.LinkMode() == types.RuntimeLinkMode && len(igen.GLibTypeStruct.VirtualMethods) > 0 {
 			writer.Header().ImportCore("girepository")
 		}
 	}

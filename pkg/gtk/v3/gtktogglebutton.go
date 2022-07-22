@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -109,11 +110,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeToggleButton,
-		GoType:       reflect.TypeOf((*ToggleButton)(nil)),
-		InitClass:    initClassToggleButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkToggleButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkToggleButtonClass{})),
+		GType:     GTypeToggleButton,
+		GoType:    reflect.TypeOf((*ToggleButton)(nil)),
+		InitClass: initClassToggleButton,
 	})
 }
 
@@ -123,6 +122,10 @@ func initClassToggleButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleButtonClass_toggled)
+	}
+	if goval, ok := goval.(interface{ InitToggleButton(*ToggleButtonClass) }); ok {
+		klass := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitToggleButton(klass)
 	}
 }
 
@@ -440,4 +443,21 @@ func (toggleButton *ToggleButton) Toggled() {
 
 	C.gtk_toggle_button_toggled(_arg0)
 	runtime.KeepAlive(toggleButton)
+}
+
+// ToggleButtonClass: instance of this type is always passed by reference.
+type ToggleButtonClass struct {
+	*toggleButtonClass
+}
+
+// toggleButtonClass is the struct that's finalized.
+type toggleButtonClass struct {
+	native *C.GtkToggleButtonClass
+}
+
+func (t *ToggleButtonClass) ParentClass() *ButtonClass {
+	valptr := &t.native.parent_class
+	var v *ButtonClass // out
+	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

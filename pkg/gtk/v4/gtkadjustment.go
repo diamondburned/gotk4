@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,11 +56,9 @@ var ()
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAdjustment,
-		GoType:       reflect.TypeOf((*Adjustment)(nil)),
-		InitClass:    initClassAdjustment,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAdjustment{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkAdjustmentClass{})),
+		GType:     GTypeAdjustment,
+		GoType:    reflect.TypeOf((*Adjustment)(nil)),
+		InitClass: initClassAdjustment,
 	})
 }
 
@@ -73,6 +72,10 @@ func initClassAdjustment(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_AdjustmentClass_value_changed)
+	}
+	if goval, ok := goval.(interface{ InitAdjustment(*AdjustmentClass) }); ok {
+		klass := (*AdjustmentClass)(gextras.NewStructNative(gclass))
+		goval.InitAdjustment(klass)
 	}
 }
 
@@ -559,4 +562,14 @@ func (adjustment *Adjustment) SetValue(value float64) {
 	C.gtk_adjustment_set_value(_arg0, _arg1)
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
+}
+
+// AdjustmentClass: instance of this type is always passed by reference.
+type AdjustmentClass struct {
+	*adjustmentClass
+}
+
+// adjustmentClass is the struct that's finalized.
+type adjustmentClass struct {
+	native *C.GtkAdjustmentClass
 }

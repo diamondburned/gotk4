@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -52,7 +54,19 @@ var (
 	_ Widgetter = (*Video)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeVideo,
+		GoType:    reflect.TypeOf((*Video)(nil)),
+		InitClass: initClassVideo,
+	})
+}
+
 func initClassVideo(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitVideo(*VideoClass) }); ok {
+		klass := (*VideoClass)(gextras.NewStructNative(gclass))
+		goval.InitVideo(klass)
+	}
 }
 
 func wrapVideo(obj *coreglib.Object) *Video {
@@ -461,4 +475,21 @@ func (self *Video) SetResource(resourcePath string) {
 	C.gtk_video_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
+}
+
+// VideoClass: instance of this type is always passed by reference.
+type VideoClass struct {
+	*videoClass
+}
+
+// videoClass is the struct that's finalized.
+type videoClass struct {
+	native *C.GtkVideoClass
+}
+
+func (v *VideoClass) ParentClass() *WidgetClass {
+	valptr := &v.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

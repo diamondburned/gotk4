@@ -9,6 +9,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -117,11 +118,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeGLArea,
-		GoType:       reflect.TypeOf((*GLArea)(nil)),
-		InitClass:    initClassGLArea,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkGLArea{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkGLAreaClass{})),
+		GType:     GTypeGLArea,
+		GoType:    reflect.TypeOf((*GLArea)(nil)),
+		InitClass: initClassGLArea,
 	})
 }
 
@@ -137,6 +136,10 @@ func initClassGLArea(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk3_GLAreaClass_resize)
+	}
+	if goval, ok := goval.(interface{ InitGLArea(*GLAreaClass) }); ok {
+		klass := (*GLAreaClass)(gextras.NewStructNative(gclass))
+		goval.InitGLArea(klass)
 	}
 }
 
@@ -769,4 +772,16 @@ func (area *GLArea) SetUseES(useEs bool) {
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)
+}
+
+// GLAreaClass: GtkGLAreaClass structure contains only private data.
+//
+// An instance of this type is always passed by reference.
+type GLAreaClass struct {
+	*glAreaClass
+}
+
+// glAreaClass is the struct that's finalized.
+type glAreaClass struct {
+	native *C.GtkGLAreaClass
 }

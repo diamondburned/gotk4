@@ -28,10 +28,6 @@ func init() {
 	})
 }
 
-// ShortcutsSectionOverrider contains methods that are overridable.
-type ShortcutsSectionOverrider interface {
-}
-
 // ShortcutsSection collects all the keyboard shortcuts and gestures for a major
 // application mode. If your application needs multiple sections, you should
 // give each section a unique ShortcutsSection:section-name and a
@@ -51,9 +47,6 @@ var (
 	_ Containerer       = (*ShortcutsSection)(nil)
 	_ coreglib.Objector = (*ShortcutsSection)(nil)
 )
-
-func initClassShortcutsSection(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutsSection(obj *coreglib.Object) *ShortcutsSection {
 	return &ShortcutsSection{

@@ -74,11 +74,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTextTag,
-		GoType:       reflect.TypeOf((*TextTag)(nil)),
-		InitClass:    initClassTextTag,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextTag{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextTagClass{})),
+		GType:     GTypeTextTag,
+		GoType:    reflect.TypeOf((*TextTag)(nil)),
+		InitClass: initClassTextTag,
 	})
 }
 
@@ -90,6 +88,10 @@ func initClassTextTag(gclass unsafe.Pointer, goval any) {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
 	}); ok {
 		pclass.event = (*[0]byte)(C._gotk4_gtk3_TextTagClass_event)
+	}
+	if goval, ok := goval.(interface{ InitTextTag(*TextTagClass) }); ok {
+		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
+		goval.InitTextTag(klass)
 	}
 }
 
@@ -311,4 +313,14 @@ func (tag *TextTag) SetPriority(priority int) {
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
+}
+
+// TextTagClass: instance of this type is always passed by reference.
+type TextTagClass struct {
+	*textTagClass
+}
+
+// textTagClass is the struct that's finalized.
+type textTagClass struct {
+	native *C.GtkTextTagClass
 }

@@ -893,11 +893,9 @@ var _ Windower = (*Window)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeWindow,
-		GoType:       reflect.TypeOf((*Window)(nil)),
-		InitClass:    initClassWindow,
-		ClassSize:    uint32(unsafe.Sizeof(C.GdkWindow{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GdkWindowClass{})),
+		GType:     GTypeWindow,
+		GoType:    reflect.TypeOf((*Window)(nil)),
+		InitClass: initClassWindow,
 	})
 }
 
@@ -921,6 +919,10 @@ func initClassWindow(gclass unsafe.Pointer, goval any) {
 		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 	}); ok {
 		pclass.to_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_to_embedder)
+	}
+	if goval, ok := goval.(interface{ InitWindow(*WindowClass) }); ok {
+		klass := (*WindowClass)(gextras.NewStructNative(gclass))
+		goval.InitWindow(klass)
 	}
 }
 
@@ -6163,4 +6165,14 @@ func (w *WindowAttr) SetOverrideRedirect(overrideRedirect bool) {
 	if overrideRedirect {
 		*valptr = C.TRUE
 	}
+}
+
+// WindowClass: instance of this type is always passed by reference.
+type WindowClass struct {
+	*windowClass
+}
+
+// windowClass is the struct that's finalized.
+type windowClass struct {
+	native *C.GdkWindowClass
 }

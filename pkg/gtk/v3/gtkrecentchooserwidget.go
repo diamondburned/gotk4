@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -54,7 +56,21 @@ var (
 	_ Containerer       = (*RecentChooserWidget)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRecentChooserWidget,
+		GoType:    reflect.TypeOf((*RecentChooserWidget)(nil)),
+		InitClass: initClassRecentChooserWidget,
+	})
+}
+
 func initClassRecentChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitRecentChooserWidget(*RecentChooserWidgetClass)
+	}); ok {
+		klass := (*RecentChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitRecentChooserWidget(klass)
+	}
 }
 
 func wrapRecentChooserWidget(obj *coreglib.Object) *RecentChooserWidget {
@@ -137,4 +153,22 @@ func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidg
 	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _recentChooserWidget
+}
+
+// RecentChooserWidgetClass: instance of this type is always passed by
+// reference.
+type RecentChooserWidgetClass struct {
+	*recentChooserWidgetClass
+}
+
+// recentChooserWidgetClass is the struct that's finalized.
+type recentChooserWidgetClass struct {
+	native *C.GtkRecentChooserWidgetClass
+}
+
+func (r *RecentChooserWidgetClass) ParentClass() *BoxClass {
+	valptr := &r.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

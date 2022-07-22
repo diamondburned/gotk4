@@ -336,3 +336,13 @@ func (sortable *TreeSortable) SortColumnChanged() {
 	C.gtk_tree_sortable_sort_column_changed(_arg0)
 	runtime.KeepAlive(sortable)
 }
+
+// TreeSortableIface: instance of this type is always passed by reference.
+type TreeSortableIface struct {
+	*treeSortableIface
+}
+
+// treeSortableIface is the struct that's finalized.
+type treeSortableIface struct {
+	native *C.GtkTreeSortableIface
+}

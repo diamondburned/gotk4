@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -67,7 +68,7 @@ type SocketOverrider interface {
 // layer.
 type Socket struct {
 	_ [0]func() // equal guard
-	ObjectClass
+	AtkObject
 
 	*coreglib.Object
 	Component
@@ -79,11 +80,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocket,
-		GoType:       reflect.TypeOf((*Socket)(nil)),
-		InitClass:    initClassSocket,
-		ClassSize:    uint32(unsafe.Sizeof(C.AtkSocket{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.AtkSocketClass{})),
+		GType:     GTypeSocket,
+		GoType:    reflect.TypeOf((*Socket)(nil)),
+		InitClass: initClassSocket,
 	})
 }
 
@@ -93,6 +92,10 @@ func initClassSocket(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Embed(plugId string) }); ok {
 		pclass.embed = (*[0]byte)(C._gotk4_atk1_SocketClass_embed)
+	}
+	if goval, ok := goval.(interface{ InitSocket(*SocketClass) }); ok {
+		klass := (*SocketClass)(gextras.NewStructNative(gclass))
+		goval.InitSocket(klass)
 	}
 }
 
@@ -110,7 +113,7 @@ func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
 
 func wrapSocket(obj *coreglib.Object) *Socket {
 	return &Socket{
-		ObjectClass: ObjectClass{
+		AtkObject: AtkObject{
 			Object: obj,
 		},
 		Object: obj,
@@ -190,4 +193,21 @@ func (obj *Socket) IsOccupied() bool {
 	}
 
 	return _ok
+}
+
+// SocketClass: instance of this type is always passed by reference.
+type SocketClass struct {
+	*socketClass
+}
+
+// socketClass is the struct that's finalized.
+type socketClass struct {
+	native *C.AtkSocketClass
+}
+
+func (s *SocketClass) ParentClass() *ObjectClass {
+	valptr := &s.native.parent_class
+	var v *ObjectClass // out
+	v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

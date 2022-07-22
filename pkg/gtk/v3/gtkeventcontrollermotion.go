@@ -30,10 +30,6 @@ func init() {
 	})
 }
 
-// EventControllerMotionOverrider contains methods that are overridable.
-type EventControllerMotionOverrider interface {
-}
-
 // EventControllerMotion is an event controller meant for situations where you
 // need to track the position of the pointer.
 //
@@ -46,9 +42,6 @@ type EventControllerMotion struct {
 var (
 	_ EventControllerer = (*EventControllerMotion)(nil)
 )
-
-func initClassEventControllerMotion(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventControllerMotion(obj *coreglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{

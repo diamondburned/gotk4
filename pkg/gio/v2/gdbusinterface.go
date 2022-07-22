@@ -234,3 +234,15 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(object)
 }
+
+// DBusInterfaceIface: base type for D-Bus interfaces.
+//
+// An instance of this type is always passed by reference.
+type DBusInterfaceIface struct {
+	*dBusInterfaceIface
+}
+
+// dBusInterfaceIface is the struct that's finalized.
+type dBusInterfaceIface struct {
+	native *C.GDBusInterfaceIface
+}

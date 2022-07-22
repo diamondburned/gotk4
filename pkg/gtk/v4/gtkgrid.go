@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -125,7 +127,19 @@ var (
 	_ coreglib.Objector = (*Grid)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeGrid,
+		GoType:    reflect.TypeOf((*Grid)(nil)),
+		InitClass: initClassGrid,
+	})
+}
+
 func initClassGrid(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitGrid(*GridClass) }); ok {
+		klass := (*GridClass)(gextras.NewStructNative(gclass))
+		goval.InitGrid(klass)
+	}
 }
 
 func wrapGrid(obj *coreglib.Object) *Grid {
@@ -747,4 +761,22 @@ func (grid *Grid) SetRowSpacing(spacing uint) {
 	C.gtk_grid_set_row_spacing(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(spacing)
+}
+
+// GridClass: instance of this type is always passed by reference.
+type GridClass struct {
+	*gridClass
+}
+
+// gridClass is the struct that's finalized.
+type gridClass struct {
+	native *C.GtkGridClass
+}
+
+// ParentClass: parent class.
+func (g *GridClass) ParentClass() *WidgetClass {
+	valptr := &g.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

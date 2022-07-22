@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -109,7 +111,19 @@ var (
 	_ Binner = (*PopoverMenu)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypePopoverMenu,
+		GoType:    reflect.TypeOf((*PopoverMenu)(nil)),
+		InitClass: initClassPopoverMenu,
+	})
+}
+
 func initClassPopoverMenu(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitPopoverMenu(*PopoverMenuClass) }); ok {
+		klass := (*PopoverMenuClass)(gextras.NewStructNative(gclass))
+		goval.InitPopoverMenu(klass)
+	}
 }
 
 func wrapPopoverMenu(obj *coreglib.Object) *PopoverMenu {
@@ -180,4 +194,21 @@ func (popover *PopoverMenu) OpenSubmenu(name string) {
 	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(name)
+}
+
+// PopoverMenuClass: instance of this type is always passed by reference.
+type PopoverMenuClass struct {
+	*popoverMenuClass
+}
+
+// popoverMenuClass is the struct that's finalized.
+type popoverMenuClass struct {
+	native *C.GtkPopoverMenuClass
+}
+
+func (p *PopoverMenuClass) ParentClass() *PopoverClass {
+	valptr := &p.native.parent_class
+	var v *PopoverClass // out
+	v = (*PopoverClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
@@ -60,7 +62,19 @@ var (
 	_ coreglib.Objector = (*WidgetPaintable)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeWidgetPaintable,
+		GoType:    reflect.TypeOf((*WidgetPaintable)(nil)),
+		InitClass: initClassWidgetPaintable,
+	})
+}
+
 func initClassWidgetPaintable(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitWidgetPaintable(*WidgetPaintableClass) }); ok {
+		klass := (*WidgetPaintableClass)(gextras.NewStructNative(gclass))
+		goval.InitWidgetPaintable(klass)
+	}
 }
 
 func wrapWidgetPaintable(obj *coreglib.Object) *WidgetPaintable {
@@ -159,4 +173,14 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
+}
+
+// WidgetPaintableClass: instance of this type is always passed by reference.
+type WidgetPaintableClass struct {
+	*widgetPaintableClass
+}
+
+// widgetPaintableClass is the struct that's finalized.
+type widgetPaintableClass struct {
+	native *C.GtkWidgetPaintableClass
 }

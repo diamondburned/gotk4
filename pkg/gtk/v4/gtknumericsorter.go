@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*NumericSorter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNumericSorter,
+		GoType:    reflect.TypeOf((*NumericSorter)(nil)),
+		InitClass: initClassNumericSorter,
+	})
+}
+
 func initClassNumericSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNumericSorter(*NumericSorterClass) }); ok {
+		klass := (*NumericSorterClass)(gextras.NewStructNative(gclass))
+		goval.InitNumericSorter(klass)
+	}
 }
 
 func wrapNumericSorter(obj *coreglib.Object) *NumericSorter {
@@ -191,4 +205,21 @@ func (self *NumericSorter) SetSortOrder(sortOrder SortType) {
 	C.gtk_numeric_sorter_set_sort_order(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sortOrder)
+}
+
+// NumericSorterClass: instance of this type is always passed by reference.
+type NumericSorterClass struct {
+	*numericSorterClass
+}
+
+// numericSorterClass is the struct that's finalized.
+type numericSorterClass struct {
+	native *C.GtkNumericSorterClass
+}
+
+func (n *NumericSorterClass) ParentClass() *SorterClass {
+	valptr := &n.native.parent_class
+	var v *SorterClass // out
+	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

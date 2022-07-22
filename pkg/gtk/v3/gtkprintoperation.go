@@ -10,6 +10,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -478,11 +479,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePrintOperation,
-		GoType:       reflect.TypeOf((*PrintOperation)(nil)),
-		InitClass:    initClassPrintOperation,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkPrintOperation{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkPrintOperationClass{})),
+		GType:     GTypePrintOperation,
+		GoType:    reflect.TypeOf((*PrintOperation)(nil)),
+		InitClass: initClassPrintOperation,
 	})
 }
 
@@ -540,6 +539,10 @@ func initClassPrintOperation(gclass unsafe.Pointer, goval any) {
 		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 	}); ok {
 		pclass.update_custom_widget = (*[0]byte)(C._gotk4_gtk3_PrintOperationClass_update_custom_widget)
+	}
+	if goval, ok := goval.(interface{ InitPrintOperation(*PrintOperationClass) }); ok {
+		klass := (*PrintOperationClass)(gextras.NewStructNative(gclass))
+		goval.InitPrintOperation(klass)
 	}
 }
 
@@ -1959,4 +1962,14 @@ func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	C.gtk_print_operation_set_use_full_page(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(fullPage)
+}
+
+// PrintOperationClass: instance of this type is always passed by reference.
+type PrintOperationClass struct {
+	*printOperationClass
+}
+
+// printOperationClass is the struct that's finalized.
+type printOperationClass struct {
+	native *C.GtkPrintOperationClass
 }

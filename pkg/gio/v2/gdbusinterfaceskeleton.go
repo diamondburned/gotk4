@@ -93,11 +93,9 @@ var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeDBusInterfaceSkeleton,
-		GoType:       reflect.TypeOf((*DBusInterfaceSkeleton)(nil)),
-		InitClass:    initClassDBusInterfaceSkeleton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GDBusInterfaceSkeleton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GDBusInterfaceSkeletonClass{})),
+		GType:     GTypeDBusInterfaceSkeleton,
+		GoType:    reflect.TypeOf((*DBusInterfaceSkeleton)(nil)),
+		InitClass: initClassDBusInterfaceSkeleton,
 	})
 }
 
@@ -121,6 +119,12 @@ func initClassDBusInterfaceSkeleton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Properties() *glib.Variant }); ok {
 		pclass.get_properties = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_properties)
+	}
+	if goval, ok := goval.(interface {
+		InitDBusInterfaceSkeleton(*DBusInterfaceSkeletonClass)
+	}); ok {
+		klass := (*DBusInterfaceSkeletonClass)(gextras.NewStructNative(gclass))
+		goval.InitDBusInterfaceSkeleton(klass)
 	}
 }
 
@@ -555,4 +559,16 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
+}
+
+// DBusInterfaceSkeletonClass class structure for BusInterfaceSkeleton.
+//
+// An instance of this type is always passed by reference.
+type DBusInterfaceSkeletonClass struct {
+	*dBusInterfaceSkeletonClass
+}
+
+// dBusInterfaceSkeletonClass is the struct that's finalized.
+type dBusInterfaceSkeletonClass struct {
+	native *C.GDBusInterfaceSkeletonClass
 }

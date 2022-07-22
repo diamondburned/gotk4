@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -25,10 +27,6 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeConstraintTarget, F: marshalConstraintTarget},
 		coreglib.TypeMarshaler{T: GTypeConstraint, F: marshalConstraint},
 	})
-}
-
-// ConstraintTargetOverrider contains methods that are overridable.
-type ConstraintTargetOverrider interface {
 }
 
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects
@@ -55,9 +53,6 @@ type ConstraintTargetter interface {
 }
 
 var _ ConstraintTargetter = (*ConstraintTarget)(nil)
-
-func ifaceInitConstraintTargetter(gifacePtr, data C.gpointer) {
-}
 
 func wrapConstraintTarget(obj *coreglib.Object) *ConstraintTarget {
 	return &ConstraintTarget{
@@ -105,7 +100,19 @@ var (
 	_ coreglib.Objector = (*Constraint)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeConstraint,
+		GoType:    reflect.TypeOf((*Constraint)(nil)),
+		InitClass: initClassConstraint,
+	})
+}
+
 func initClassConstraint(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitConstraint(*ConstraintClass) }); ok {
+		klass := (*ConstraintClass)(gextras.NewStructNative(gclass))
+		goval.InitConstraint(klass)
+	}
 }
 
 func wrapConstraint(obj *coreglib.Object) *Constraint {
@@ -486,4 +493,14 @@ func (constraint *Constraint) IsRequired() bool {
 	}
 
 	return _ok
+}
+
+// ConstraintClass: instance of this type is always passed by reference.
+type ConstraintClass struct {
+	*constraintClass
+}
+
+// constraintClass is the struct that's finalized.
+type constraintClass struct {
+	native *C.GtkConstraintClass
 }

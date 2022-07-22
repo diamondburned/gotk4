@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -99,11 +100,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocket,
-		GoType:       reflect.TypeOf((*Socket)(nil)),
-		InitClass:    initClassSocket,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkSocket{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkSocketClass{})),
+		GType:     GTypeSocket,
+		GoType:    reflect.TypeOf((*Socket)(nil)),
+		InitClass: initClassSocket,
 	})
 }
 
@@ -117,6 +116,10 @@ func initClassSocket(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ PlugRemoved() bool }); ok {
 		pclass.plug_removed = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_removed)
+	}
+	if goval, ok := goval.(interface{ InitSocket(*SocketClass) }); ok {
+		klass := (*SocketClass)(gextras.NewStructNative(gclass))
+		goval.InitSocket(klass)
 	}
 }
 
@@ -270,4 +273,21 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 	}
 
 	return _window
+}
+
+// SocketClass: instance of this type is always passed by reference.
+type SocketClass struct {
+	*socketClass
+}
+
+// socketClass is the struct that's finalized.
+type socketClass struct {
+	native *C.GtkSocketClass
+}
+
+func (s *SocketClass) ParentClass() *ContainerClass {
+	valptr := &s.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

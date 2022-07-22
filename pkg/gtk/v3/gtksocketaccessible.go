@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*SocketAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSocketAccessible,
+		GoType:    reflect.TypeOf((*SocketAccessible)(nil)),
+		InitClass: initClassSocketAccessible,
+	})
+}
+
 func initClassSocketAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSocketAccessible(*SocketAccessibleClass) }); ok {
+		klass := (*SocketAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketAccessible(klass)
+	}
 }
 
 func wrapSocketAccessible(obj *coreglib.Object) *SocketAccessible {
@@ -49,7 +63,7 @@ func wrapSocketAccessible(obj *coreglib.Object) *SocketAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -78,4 +92,21 @@ func (socket *SocketAccessible) Embed(path string) {
 	C.gtk_socket_accessible_embed(_arg0, _arg1)
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(path)
+}
+
+// SocketAccessibleClass: instance of this type is always passed by reference.
+type SocketAccessibleClass struct {
+	*socketAccessibleClass
+}
+
+// socketAccessibleClass is the struct that's finalized.
+type socketAccessibleClass struct {
+	native *C.GtkSocketAccessibleClass
+}
+
+func (s *SocketAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

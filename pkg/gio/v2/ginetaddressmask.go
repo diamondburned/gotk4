@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,7 +47,19 @@ var (
 	_ coreglib.Objector = (*InetAddressMask)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeInetAddressMask,
+		GoType:    reflect.TypeOf((*InetAddressMask)(nil)),
+		InitClass: initClassInetAddressMask,
+	})
+}
+
 func initClassInetAddressMask(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitInetAddressMask(*InetAddressMaskClass) }); ok {
+		klass := (*InetAddressMaskClass)(gextras.NewStructNative(gclass))
+		goval.InitInetAddressMask(klass)
+	}
 }
 
 func wrapInetAddressMask(obj *coreglib.Object) *InetAddressMask {
@@ -282,4 +296,14 @@ func (mask *InetAddressMask) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// InetAddressMaskClass: instance of this type is always passed by reference.
+type InetAddressMaskClass struct {
+	*inetAddressMaskClass
+}
+
+// inetAddressMaskClass is the struct that's finalized.
+type inetAddressMaskClass struct {
+	native *C.GInetAddressMaskClass
 }

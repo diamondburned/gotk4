@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -51,7 +53,19 @@ var (
 	_ coreglib.Objector = (*ConstraintGuide)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeConstraintGuide,
+		GoType:    reflect.TypeOf((*ConstraintGuide)(nil)),
+		InitClass: initClassConstraintGuide,
+	})
+}
+
 func initClassConstraintGuide(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitConstraintGuide(*ConstraintGuideClass) }); ok {
+		klass := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
+		goval.InitConstraintGuide(klass)
+	}
 }
 
 func wrapConstraintGuide(obj *coreglib.Object) *ConstraintGuide {
@@ -325,4 +339,14 @@ func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
 	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(strength)
+}
+
+// ConstraintGuideClass: instance of this type is always passed by reference.
+type ConstraintGuideClass struct {
+	*constraintGuideClass
+}
+
+// constraintGuideClass is the struct that's finalized.
+type constraintGuideClass struct {
+	native *C.GtkConstraintGuideClass
 }

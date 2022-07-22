@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -74,11 +75,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeExpander,
-		GoType:       reflect.TypeOf((*Expander)(nil)),
-		InitClass:    initClassExpander,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkExpander{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkExpanderClass{})),
+		GType:     GTypeExpander,
+		GoType:    reflect.TypeOf((*Expander)(nil)),
+		InitClass: initClassExpander,
 	})
 }
 
@@ -88,6 +87,10 @@ func initClassExpander(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ExpanderClass_activate)
+	}
+	if goval, ok := goval.(interface{ InitExpander(*ExpanderClass) }); ok {
+		klass := (*ExpanderClass)(gextras.NewStructNative(gclass))
+		goval.InitExpander(klass)
 	}
 }
 
@@ -605,4 +608,22 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	C.gtk_expander_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(useUnderline)
+}
+
+// ExpanderClass: instance of this type is always passed by reference.
+type ExpanderClass struct {
+	*expanderClass
+}
+
+// expanderClass is the struct that's finalized.
+type expanderClass struct {
+	native *C.GtkExpanderClass
+}
+
+// ParentClass: parent class.
+func (e *ExpanderClass) ParentClass() *BinClass {
+	valptr := &e.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

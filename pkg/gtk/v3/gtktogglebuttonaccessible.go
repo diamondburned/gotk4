@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*ToggleButtonAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeToggleButtonAccessible,
+		GoType:    reflect.TypeOf((*ToggleButtonAccessible)(nil)),
+		InitClass: initClassToggleButtonAccessible,
+	})
+}
+
 func initClassToggleButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitToggleButtonAccessible(*ToggleButtonAccessibleClass)
+	}); ok {
+		klass := (*ToggleButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitToggleButtonAccessible(klass)
+	}
 }
 
 func wrapToggleButtonAccessible(obj *coreglib.Object) *ToggleButtonAccessible {
@@ -49,7 +65,7 @@ func wrapToggleButtonAccessible(obj *coreglib.Object) *ToggleButtonAccessible {
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						ObjectClass: atk.ObjectClass{
+						AtkObject: atk.AtkObject{
 							Object: obj,
 						},
 					},
@@ -71,4 +87,22 @@ func wrapToggleButtonAccessible(obj *coreglib.Object) *ToggleButtonAccessible {
 
 func marshalToggleButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapToggleButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ToggleButtonAccessibleClass: instance of this type is always passed by
+// reference.
+type ToggleButtonAccessibleClass struct {
+	*toggleButtonAccessibleClass
+}
+
+// toggleButtonAccessibleClass is the struct that's finalized.
+type toggleButtonAccessibleClass struct {
+	native *C.GtkToggleButtonAccessibleClass
+}
+
+func (t *ToggleButtonAccessibleClass) ParentClass() *ButtonAccessibleClass {
+	valptr := &t.native.parent_class
+	var v *ButtonAccessibleClass // out
+	v = (*ButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

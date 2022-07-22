@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -43,7 +45,21 @@ var (
 	_ coreglib.Objector = (*SelectionFilterModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSelectionFilterModel,
+		GoType:    reflect.TypeOf((*SelectionFilterModel)(nil)),
+		InitClass: initClassSelectionFilterModel,
+	})
+}
+
 func initClassSelectionFilterModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitSelectionFilterModel(*SelectionFilterModelClass)
+	}); ok {
+		klass := (*SelectionFilterModelClass)(gextras.NewStructNative(gclass))
+		goval.InitSelectionFilterModel(klass)
+	}
 }
 
 func wrapSelectionFilterModel(obj *coreglib.Object) *SelectionFilterModel {
@@ -134,4 +150,15 @@ func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
+}
+
+// SelectionFilterModelClass: instance of this type is always passed by
+// reference.
+type SelectionFilterModelClass struct {
+	*selectionFilterModelClass
+}
+
+// selectionFilterModelClass is the struct that's finalized.
+type selectionFilterModelClass struct {
+	native *C.GtkSelectionFilterModelClass
 }

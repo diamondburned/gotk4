@@ -203,3 +203,15 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 
 	return _dtlsClientConnection, _goerr
 }
+
+// DTLSClientConnectionInterface: vtable for a ClientConnection implementation.
+//
+// An instance of this type is always passed by reference.
+type DTLSClientConnectionInterface struct {
+	*dtlsClientConnectionInterface
+}
+
+// dtlsClientConnectionInterface is the struct that's finalized.
+type dtlsClientConnectionInterface struct {
+	native *C.GDtlsClientConnectionInterface
+}

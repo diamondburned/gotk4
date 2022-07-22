@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -47,7 +49,19 @@ var (
 	_ Widgetter = (*Invisible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeInvisible,
+		GoType:    reflect.TypeOf((*Invisible)(nil)),
+		InitClass: initClassInvisible,
+	})
+}
+
 func initClassInvisible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitInvisible(*InvisibleClass) }); ok {
+		klass := (*InvisibleClass)(gextras.NewStructNative(gclass))
+		goval.InitInvisible(klass)
+	}
 }
 
 func wrapInvisible(obj *coreglib.Object) *Invisible {
@@ -158,4 +172,21 @@ func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	C.gtk_invisible_set_screen(_arg0, _arg1)
 	runtime.KeepAlive(invisible)
 	runtime.KeepAlive(screen)
+}
+
+// InvisibleClass: instance of this type is always passed by reference.
+type InvisibleClass struct {
+	*invisibleClass
+}
+
+// invisibleClass is the struct that's finalized.
+type invisibleClass struct {
+	native *C.GtkInvisibleClass
+}
+
+func (i *InvisibleClass) ParentClass() *WidgetClass {
+	valptr := &i.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

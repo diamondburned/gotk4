@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// X11AppLaunchContextOverrider contains methods that are overridable.
-type X11AppLaunchContextOverrider interface {
-}
-
 type X11AppLaunchContext struct {
 	_ [0]func() // equal guard
 	gdk.AppLaunchContext
@@ -38,9 +34,6 @@ type X11AppLaunchContext struct {
 var (
 	_ coreglib.Objector = (*X11AppLaunchContext)(nil)
 )
-
-func initClassX11AppLaunchContext(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11AppLaunchContext(obj *coreglib.Object) *X11AppLaunchContext {
 	return &X11AppLaunchContext{

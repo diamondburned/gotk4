@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,14 +44,26 @@ var (
 	_ coreglib.Objector = (*RangeAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRangeAccessible,
+		GoType:    reflect.TypeOf((*RangeAccessible)(nil)),
+		InitClass: initClassRangeAccessible,
+	})
+}
+
 func initClassRangeAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRangeAccessible(*RangeAccessibleClass) }); ok {
+		klass := (*RangeAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitRangeAccessible(klass)
+	}
 }
 
 func wrapRangeAccessible(obj *coreglib.Object) *RangeAccessible {
 	return &RangeAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -65,4 +79,21 @@ func wrapRangeAccessible(obj *coreglib.Object) *RangeAccessible {
 
 func marshalRangeAccessible(p uintptr) (interface{}, error) {
 	return wrapRangeAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// RangeAccessibleClass: instance of this type is always passed by reference.
+type RangeAccessibleClass struct {
+	*rangeAccessibleClass
+}
+
+// rangeAccessibleClass is the struct that's finalized.
+type rangeAccessibleClass struct {
+	native *C.GtkRangeAccessibleClass
+}
+
+func (r *RangeAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &r.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

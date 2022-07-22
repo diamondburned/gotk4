@@ -132,11 +132,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeStatusIcon,
-		GoType:       reflect.TypeOf((*StatusIcon)(nil)),
-		InitClass:    initClassStatusIcon,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkStatusIcon{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkStatusIconClass{})),
+		GType:     GTypeStatusIcon,
+		GoType:    reflect.TypeOf((*StatusIcon)(nil)),
+		InitClass: initClassStatusIcon,
 	})
 }
 
@@ -180,6 +178,10 @@ func initClassStatusIcon(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ SizeChanged(size int) bool }); ok {
 		pclass.size_changed = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_size_changed)
+	}
+	if goval, ok := goval.(interface{ InitStatusIcon(*StatusIconClass) }); ok {
+		klass := (*StatusIconClass)(gextras.NewStructNative(gclass))
+		goval.InitStatusIcon(klass)
 	}
 }
 
@@ -1545,4 +1547,14 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 	C.gtk_status_icon_set_visible(_arg0, _arg1)
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(visible)
+}
+
+// StatusIconClass: instance of this type is always passed by reference.
+type StatusIconClass struct {
+	*statusIconClass
+}
+
+// statusIconClass is the struct that's finalized.
+type statusIconClass struct {
+	native *C.GtkStatusIconClass
 }

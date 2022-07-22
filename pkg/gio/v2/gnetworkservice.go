@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -47,7 +49,19 @@ var (
 	_ coreglib.Objector = (*NetworkService)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNetworkService,
+		GoType:    reflect.TypeOf((*NetworkService)(nil)),
+		InitClass: initClassNetworkService,
+	})
+}
+
 func initClassNetworkService(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitNetworkService(*NetworkServiceClass) }); ok {
+		klass := (*NetworkServiceClass)(gextras.NewStructNative(gclass))
+		goval.InitNetworkService(klass)
+	}
 }
 
 func wrapNetworkService(obj *coreglib.Object) *NetworkService {
@@ -210,4 +224,14 @@ func (srv *NetworkService) SetScheme(scheme string) {
 	C.g_network_service_set_scheme(_arg0, _arg1)
 	runtime.KeepAlive(srv)
 	runtime.KeepAlive(scheme)
+}
+
+// NetworkServiceClass: instance of this type is always passed by reference.
+type NetworkServiceClass struct {
+	*networkServiceClass
+}
+
+// networkServiceClass is the struct that's finalized.
+type networkServiceClass struct {
+	native *C.GNetworkServiceClass
 }

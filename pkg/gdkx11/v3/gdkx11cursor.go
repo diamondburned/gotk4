@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// X11CursorOverrider contains methods that are overridable.
-type X11CursorOverrider interface {
-}
-
 type X11Cursor struct {
 	_ [0]func() // equal guard
 	gdk.Cursor
@@ -37,9 +33,6 @@ type X11Cursor struct {
 var (
 	_ gdk.Cursorrer = (*X11Cursor)(nil)
 )
-
-func initClassX11Cursor(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11Cursor(obj *coreglib.Object) *X11Cursor {
 	return &X11Cursor{

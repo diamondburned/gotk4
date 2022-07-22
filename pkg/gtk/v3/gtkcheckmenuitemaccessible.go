@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,21 @@ var (
 	_ coreglib.Objector = (*CheckMenuItemAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCheckMenuItemAccessible,
+		GoType:    reflect.TypeOf((*CheckMenuItemAccessible)(nil)),
+		InitClass: initClassCheckMenuItemAccessible,
+	})
+}
+
 func initClassCheckMenuItemAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitCheckMenuItemAccessible(*CheckMenuItemAccessibleClass)
+	}); ok {
+		klass := (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitCheckMenuItemAccessible(klass)
+	}
 }
 
 func wrapCheckMenuItemAccessible(obj *coreglib.Object) *CheckMenuItemAccessible {
@@ -49,7 +65,7 @@ func wrapCheckMenuItemAccessible(obj *coreglib.Object) *CheckMenuItemAccessible 
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						ObjectClass: atk.ObjectClass{
+						AtkObject: atk.AtkObject{
 							Object: obj,
 						},
 					},
@@ -71,4 +87,22 @@ func wrapCheckMenuItemAccessible(obj *coreglib.Object) *CheckMenuItemAccessible 
 
 func marshalCheckMenuItemAccessible(p uintptr) (interface{}, error) {
 	return wrapCheckMenuItemAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// CheckMenuItemAccessibleClass: instance of this type is always passed by
+// reference.
+type CheckMenuItemAccessibleClass struct {
+	*checkMenuItemAccessibleClass
+}
+
+// checkMenuItemAccessibleClass is the struct that's finalized.
+type checkMenuItemAccessibleClass struct {
+	native *C.GtkCheckMenuItemAccessibleClass
+}
+
+func (c *CheckMenuItemAccessibleClass) ParentClass() *MenuItemAccessibleClass {
+	valptr := &c.native.parent_class
+	var v *MenuItemAccessibleClass // out
+	v = (*MenuItemAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -138,11 +139,9 @@ var _ Permissioner = (*Permission)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePermission,
-		GoType:       reflect.TypeOf((*Permission)(nil)),
-		InitClass:    initClassPermission,
-		ClassSize:    uint32(unsafe.Sizeof(C.GPermission{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GPermissionClass{})),
+		GType:     GTypePermission,
+		GoType:    reflect.TypeOf((*Permission)(nil)),
+		InitClass: initClassPermission,
 	})
 }
 
@@ -172,6 +171,10 @@ func initClassPermission(gclass unsafe.Pointer, goval any) {
 		ReleaseFinish(result AsyncResulter) error
 	}); ok {
 		pclass.release_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_release_finish)
+	}
+	if goval, ok := goval.(interface{ InitPermission(*PermissionClass) }); ok {
+		klass := (*PermissionClass)(gextras.NewStructNative(gclass))
+		goval.InitPermission(klass)
 	}
 }
 
@@ -638,4 +641,26 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// PermissionClass: instance of this type is always passed by reference.
+type PermissionClass struct {
+	*permissionClass
+}
+
+// permissionClass is the struct that's finalized.
+type permissionClass struct {
+	native *C.GPermissionClass
+}
+
+func (p *PermissionClass) Reserved() [16]unsafe.Pointer {
+	valptr := &p.native.reserved
+	var v [16]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 16; i++ {
+			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
 }

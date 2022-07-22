@@ -120,3 +120,15 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 
 	return _tlsServerConnection, _goerr
 }
+
+// TLSServerConnectionInterface: vtable for a ServerConnection implementation.
+//
+// An instance of this type is always passed by reference.
+type TLSServerConnectionInterface struct {
+	*tlsServerConnectionInterface
+}
+
+// tlsServerConnectionInterface is the struct that's finalized.
+type tlsServerConnectionInterface struct {
+	native *C.GTlsServerConnectionInterface
+}

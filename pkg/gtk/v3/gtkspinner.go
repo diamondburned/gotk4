@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -53,7 +55,19 @@ var (
 	_ Widgetter = (*Spinner)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSpinner,
+		GoType:    reflect.TypeOf((*Spinner)(nil)),
+		InitClass: initClassSpinner,
+	})
+}
+
 func initClassSpinner(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSpinner(*SpinnerClass) }); ok {
+		klass := (*SpinnerClass)(gextras.NewStructNative(gclass))
+		goval.InitSpinner(klass)
+	}
 }
 
 func wrapSpinner(obj *coreglib.Object) *Spinner {
@@ -113,4 +127,21 @@ func (spinner *Spinner) Stop() {
 
 	C.gtk_spinner_stop(_arg0)
 	runtime.KeepAlive(spinner)
+}
+
+// SpinnerClass: instance of this type is always passed by reference.
+type SpinnerClass struct {
+	*spinnerClass
+}
+
+// spinnerClass is the struct that's finalized.
+type spinnerClass struct {
+	native *C.GtkSpinnerClass
+}
+
+func (s *SpinnerClass) ParentClass() *WidgetClass {
+	valptr := &s.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

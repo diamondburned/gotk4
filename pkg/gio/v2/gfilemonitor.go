@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -80,11 +81,9 @@ var _ FileMonitorrer = (*FileMonitor)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFileMonitor,
-		GoType:       reflect.TypeOf((*FileMonitor)(nil)),
-		InitClass:    initClassFileMonitor,
-		ClassSize:    uint32(unsafe.Sizeof(C.GFileMonitor{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GFileMonitorClass{})),
+		GType:     GTypeFileMonitor,
+		GoType:    reflect.TypeOf((*FileMonitor)(nil)),
+		InitClass: initClassFileMonitor,
 	})
 }
 
@@ -100,6 +99,10 @@ func initClassFileMonitor(gclass unsafe.Pointer, goval any) {
 		Changed(file, otherFile Filer, eventType FileMonitorEvent)
 	}); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_changed)
+	}
+	if goval, ok := goval.(interface{ InitFileMonitor(*FileMonitorClass) }); ok {
+		klass := (*FileMonitorClass)(gextras.NewStructNative(gclass))
+		goval.InitFileMonitor(klass)
 	}
 }
 
@@ -368,4 +371,14 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)
+}
+
+// FileMonitorClass: instance of this type is always passed by reference.
+type FileMonitorClass struct {
+	*fileMonitorClass
+}
+
+// fileMonitorClass is the struct that's finalized.
+type fileMonitorClass struct {
+	native *C.GFileMonitorClass
 }

@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -44,7 +46,19 @@ var (
 	_ LayoutManagerer = (*BinLayout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBinLayout,
+		GoType:    reflect.TypeOf((*BinLayout)(nil)),
+		InitClass: initClassBinLayout,
+	})
+}
+
 func initClassBinLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBinLayout(*BinLayoutClass) }); ok {
+		klass := (*BinLayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitBinLayout(klass)
+	}
 }
 
 func wrapBinLayout(obj *coreglib.Object) *BinLayout {
@@ -75,4 +89,21 @@ func NewBinLayout() *BinLayout {
 	_binLayout = wrapBinLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _binLayout
+}
+
+// BinLayoutClass: instance of this type is always passed by reference.
+type BinLayoutClass struct {
+	*binLayoutClass
+}
+
+// binLayoutClass is the struct that's finalized.
+type binLayoutClass struct {
+	native *C.GtkBinLayoutClass
+}
+
+func (b *BinLayoutClass) ParentClass() *LayoutManagerClass {
+	valptr := &b.native.parent_class
+	var v *LayoutManagerClass // out
+	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

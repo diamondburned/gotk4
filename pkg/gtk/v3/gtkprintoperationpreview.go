@@ -323,3 +323,14 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)
 }
+
+// PrintOperationPreviewIface: instance of this type is always passed by
+// reference.
+type PrintOperationPreviewIface struct {
+	*printOperationPreviewIface
+}
+
+// printOperationPreviewIface is the struct that's finalized.
+type printOperationPreviewIface struct {
+	native *C.GtkPrintOperationPreviewIface
+}

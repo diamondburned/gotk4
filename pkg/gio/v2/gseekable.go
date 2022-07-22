@@ -251,3 +251,16 @@ func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 
 	return _goerr
 }
+
+// SeekableIface provides an interface for implementing seekable functionality
+// on I/O Streams.
+//
+// An instance of this type is always passed by reference.
+type SeekableIface struct {
+	*seekableIface
+}
+
+// seekableIface is the struct that's finalized.
+type seekableIface struct {
+	native *C.GSeekableIface
+}

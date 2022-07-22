@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -47,11 +48,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFilenameCompleter,
-		GoType:       reflect.TypeOf((*FilenameCompleter)(nil)),
-		InitClass:    initClassFilenameCompleter,
-		ClassSize:    uint32(unsafe.Sizeof(C.GFilenameCompleter{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GFilenameCompleterClass{})),
+		GType:     GTypeFilenameCompleter,
+		GoType:    reflect.TypeOf((*FilenameCompleter)(nil)),
+		InitClass: initClassFilenameCompleter,
 	})
 }
 
@@ -61,6 +60,10 @@ func initClassFilenameCompleter(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ GotCompletionData() }); ok {
 		pclass.got_completion_data = (*[0]byte)(C._gotk4_gio2_FilenameCompleterClass_got_completion_data)
+	}
+	if goval, ok := goval.(interface{ InitFilenameCompleter(*FilenameCompleterClass) }); ok {
+		klass := (*FilenameCompleterClass)(gextras.NewStructNative(gclass))
+		goval.InitFilenameCompleter(klass)
 	}
 }
 
@@ -220,4 +223,14 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	C.g_filename_completer_set_dirs_only(_arg0, _arg1)
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(dirsOnly)
+}
+
+// FilenameCompleterClass: instance of this type is always passed by reference.
+type FilenameCompleterClass struct {
+	*filenameCompleterClass
+}
+
+// filenameCompleterClass is the struct that's finalized.
+type filenameCompleterClass struct {
+	native *C.GFilenameCompleterClass
 }

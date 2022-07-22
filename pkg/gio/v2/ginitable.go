@@ -222,3 +222,16 @@ func (initable *Initable) Init(ctx context.Context) error {
 
 	return _goerr
 }
+
+// InitableIface provides an interface for initializing object such that
+// initialization may fail.
+//
+// An instance of this type is always passed by reference.
+type InitableIface struct {
+	*initableIface
+}
+
+// initableIface is the struct that's finalized.
+type initableIface struct {
+	native *C.GInitableIface
+}

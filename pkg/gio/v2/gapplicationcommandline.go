@@ -138,11 +138,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeApplicationCommandLine,
-		GoType:       reflect.TypeOf((*ApplicationCommandLine)(nil)),
-		InitClass:    initClassApplicationCommandLine,
-		ClassSize:    uint32(unsafe.Sizeof(C.GApplicationCommandLine{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GApplicationCommandLineClass{})),
+		GType:     GTypeApplicationCommandLine,
+		GoType:    reflect.TypeOf((*ApplicationCommandLine)(nil)),
+		InitClass: initClassApplicationCommandLine,
 	})
 }
 
@@ -160,6 +158,12 @@ func initClassApplicationCommandLine(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ PrinterrLiteral(message string) }); ok {
 		pclass.printerr_literal = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_printerr_literal)
+	}
+	if goval, ok := goval.(interface {
+		InitApplicationCommandLine(*ApplicationCommandLineClass)
+	}); ok {
+		klass := (*ApplicationCommandLineClass)(gextras.NewStructNative(gclass))
+		goval.InitApplicationCommandLine(klass)
 	}
 }
 
@@ -609,4 +613,16 @@ func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	C.g_application_command_line_set_exit_status(_arg0, _arg1)
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(exitStatus)
+}
+
+// ApplicationCommandLineClass private data only.
+//
+// An instance of this type is always passed by reference.
+type ApplicationCommandLineClass struct {
+	*applicationCommandLineClass
+}
+
+// applicationCommandLineClass is the struct that's finalized.
+type applicationCommandLineClass struct {
+	native *C.GApplicationCommandLineClass
 }

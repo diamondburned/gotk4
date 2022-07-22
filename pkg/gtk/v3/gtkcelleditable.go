@@ -272,3 +272,13 @@ func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)
 }
+
+// CellEditableIface: instance of this type is always passed by reference.
+type CellEditableIface struct {
+	*cellEditableIface
+}
+
+// cellEditableIface is the struct that's finalized.
+type cellEditableIface struct {
+	native *C.GtkCellEditableIface
+}

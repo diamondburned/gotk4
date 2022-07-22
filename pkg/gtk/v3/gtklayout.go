@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -58,7 +60,19 @@ var (
 	_ coreglib.Objector = (*Layout)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeLayout,
+		GoType:    reflect.TypeOf((*Layout)(nil)),
+		InitClass: initClassLayout,
+	})
+}
+
 func initClassLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitLayout(*LayoutClass) }); ok {
+		klass := (*LayoutClass)(gextras.NewStructNative(gclass))
+		goval.InitLayout(klass)
+	}
 }
 
 func wrapLayout(obj *coreglib.Object) *Layout {
@@ -368,4 +382,21 @@ func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	C.gtk_layout_set_vadjustment(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(adjustment)
+}
+
+// LayoutClass: instance of this type is always passed by reference.
+type LayoutClass struct {
+	*layoutClass
+}
+
+// layoutClass is the struct that's finalized.
+type layoutClass struct {
+	native *C.GtkLayoutClass
+}
+
+func (l *LayoutClass) ParentClass() *ContainerClass {
+	valptr := &l.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

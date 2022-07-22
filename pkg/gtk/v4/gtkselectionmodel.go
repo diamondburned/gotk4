@@ -904,3 +904,26 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 
 	return _ok
 }
+
+// SelectionModelInterface: list of virtual functions for the SelectionModel
+// interface. No function must be implemented, but unless
+// SelectionModel::is_selected() is implemented, it will not be possible to
+// select items in the set.
+//
+// The model does not need to implement any functions to support either
+// selecting or unselecting items. Of course, if the model does not do that, it
+// means that users cannot select or unselect items in a list widget using the
+// model.
+//
+// All selection functions fall back to SelectionModel::set_selection() so it is
+// sufficient to implement just that function for full selection support.
+//
+// An instance of this type is always passed by reference.
+type SelectionModelInterface struct {
+	*selectionModelInterface
+}
+
+// selectionModelInterface is the struct that's finalized.
+type selectionModelInterface struct {
+	native *C.GtkSelectionModelInterface
+}

@@ -369,7 +369,7 @@ func (d DebugFlag) Has(other DebugFlag) bool {
 
 type EntryIconAccessible struct {
 	_ [0]func() // equal guard
-	atk.ObjectClass
+	atk.AtkObject
 
 	*coreglib.Object
 	atk.Action
@@ -382,7 +382,7 @@ var (
 
 func wrapEntryIconAccessible(obj *coreglib.Object) *EntryIconAccessible {
 	return &EntryIconAccessible{
-		ObjectClass: atk.ObjectClass{
+		AtkObject: atk.AtkObject{
 			Object: obj,
 		},
 		Object: obj,

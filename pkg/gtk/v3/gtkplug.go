@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -64,11 +65,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePlug,
-		GoType:       reflect.TypeOf((*Plug)(nil)),
-		InitClass:    initClassPlug,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkPlug{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkPlugClass{})),
+		GType:     GTypePlug,
+		GoType:    reflect.TypeOf((*Plug)(nil)),
+		InitClass: initClassPlug,
 	})
 }
 
@@ -78,6 +77,10 @@ func initClassPlug(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Embedded() }); ok {
 		pclass.embedded = (*[0]byte)(C._gotk4_gtk3_PlugClass_embedded)
+	}
+	if goval, ok := goval.(interface{ InitPlug(*PlugClass) }); ok {
+		klass := (*PlugClass)(gextras.NewStructNative(gclass))
+		goval.InitPlug(klass)
 	}
 }
 
@@ -196,4 +199,21 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 	}
 
 	return _window
+}
+
+// PlugClass: instance of this type is always passed by reference.
+type PlugClass struct {
+	*plugClass
+}
+
+// plugClass is the struct that's finalized.
+type plugClass struct {
+	native *C.GtkPlugClass
+}
+
+func (p *PlugClass) ParentClass() *WindowClass {
+	valptr := &p.native.parent_class
+	var v *WindowClass // out
+	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -452,11 +452,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTreeView,
-		GoType:       reflect.TypeOf((*TreeView)(nil)),
-		InitClass:    initClassTreeView,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeView{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeViewClass{})),
+		GType:     GTypeTreeView,
+		GoType:    reflect.TypeOf((*TreeView)(nil)),
+		InitClass: initClassTreeView,
 	})
 }
 
@@ -536,6 +534,10 @@ func initClassTreeView(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ UnselectAll() bool }); ok {
 		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_unselect_all)
+	}
+	if goval, ok := goval.(interface{ InitTreeView(*TreeViewClass) }); ok {
+		klass := (*TreeViewClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeView(klass)
 	}
 }
 
@@ -3892,4 +3894,21 @@ func (treeView *TreeView) UnsetRowsDragSource() {
 
 	C.gtk_tree_view_unset_rows_drag_source(_arg0)
 	runtime.KeepAlive(treeView)
+}
+
+// TreeViewClass: instance of this type is always passed by reference.
+type TreeViewClass struct {
+	*treeViewClass
+}
+
+// treeViewClass is the struct that's finalized.
+type treeViewClass struct {
+	native *C.GtkTreeViewClass
+}
+
+func (t *TreeViewClass) ParentClass() *WidgetClass {
+	valptr := &t.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -9,6 +9,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -221,11 +222,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeScrolledWindow,
-		GoType:       reflect.TypeOf((*ScrolledWindow)(nil)),
-		InitClass:    initClassScrolledWindow,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkScrolledWindow{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkScrolledWindowClass{})),
+		GType:     GTypeScrolledWindow,
+		GoType:    reflect.TypeOf((*ScrolledWindow)(nil)),
+		InitClass: initClassScrolledWindow,
 	})
 }
 
@@ -241,6 +240,10 @@ func initClassScrolledWindow(gclass unsafe.Pointer, goval any) {
 		ScrollChild(scroll ScrollType, horizontal bool) bool
 	}); ok {
 		pclass.scroll_child = (*[0]byte)(C._gotk4_gtk3_ScrolledWindowClass_scroll_child)
+	}
+	if goval, ok := goval.(interface{ InitScrolledWindow(*ScrolledWindowClass) }); ok {
+		klass := (*ScrolledWindowClass)(gextras.NewStructNative(gclass))
+		goval.InitScrolledWindow(klass)
 	}
 }
 
@@ -1267,4 +1270,29 @@ func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
 
 	C.gtk_scrolled_window_unset_placement(_arg0)
 	runtime.KeepAlive(scrolledWindow)
+}
+
+// ScrolledWindowClass: instance of this type is always passed by reference.
+type ScrolledWindowClass struct {
+	*scrolledWindowClass
+}
+
+// scrolledWindowClass is the struct that's finalized.
+type scrolledWindowClass struct {
+	native *C.GtkScrolledWindowClass
+}
+
+// ParentClass: parent class.
+func (s *ScrolledWindowClass) ParentClass() *BinClass {
+	valptr := &s.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+func (s *ScrolledWindowClass) ScrollbarSpacing() int {
+	valptr := &s.native.scrollbar_spacing
+	var v int // out
+	v = int(*valptr)
+	return v
 }

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -70,11 +71,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeLinkButton,
-		GoType:       reflect.TypeOf((*LinkButton)(nil)),
-		InitClass:    initClassLinkButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkLinkButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkLinkButtonClass{})),
+		GType:     GTypeLinkButton,
+		GoType:    reflect.TypeOf((*LinkButton)(nil)),
+		InitClass: initClassLinkButton,
 	})
 }
 
@@ -84,6 +83,10 @@ func initClassLinkButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ActivateLink() bool }); ok {
 		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LinkButtonClass_activate_link)
+	}
+	if goval, ok := goval.(interface{ InitLinkButton(*LinkButtonClass) }); ok {
+		klass := (*LinkButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitLinkButton(klass)
 	}
 }
 
@@ -332,4 +335,16 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 	C.gtk_link_button_set_visited(_arg0, _arg1)
 	runtime.KeepAlive(linkButton)
 	runtime.KeepAlive(visited)
+}
+
+// LinkButtonClass contains only private data.
+//
+// An instance of this type is always passed by reference.
+type LinkButtonClass struct {
+	*linkButtonClass
+}
+
+// linkButtonClass is the struct that's finalized.
+type linkButtonClass struct {
+	native *C.GtkLinkButtonClass
 }

@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -162,11 +163,9 @@ var _ LayoutManagerer = (*LayoutManager)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeLayoutManager,
-		GoType:       reflect.TypeOf((*LayoutManager)(nil)),
-		InitClass:    initClassLayoutManager,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkLayoutManager{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkLayoutManagerClass{})),
+		GType:     GTypeLayoutManager,
+		GoType:    reflect.TypeOf((*LayoutManager)(nil)),
+		InitClass: initClassLayoutManager,
 	})
 }
 
@@ -204,6 +203,10 @@ func initClassLayoutManager(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Unroot() }); ok {
 		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_unroot)
+	}
+	if goval, ok := goval.(interface{ InitLayoutManager(*LayoutManagerClass) }); ok {
+		klass := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
+		goval.InitLayoutManager(klass)
 	}
 }
 
@@ -615,4 +618,26 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	_naturalBaseline = int(_arg7)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
+}
+
+// LayoutManagerClass: GtkLayoutManagerClass structure contains only private
+// data, and should only be accessed through the provided API, or when
+// subclassing LayoutManager.
+//
+// An instance of this type is always passed by reference.
+type LayoutManagerClass struct {
+	*layoutManagerClass
+}
+
+// layoutManagerClass is the struct that's finalized.
+type layoutManagerClass struct {
+	native *C.GtkLayoutManagerClass
+}
+
+// LayoutChildType: type of LayoutChild used by this layout manager.
+func (l *LayoutManagerClass) LayoutChildType() coreglib.Type {
+	valptr := &l.native.layout_child_type
+	var v coreglib.Type // out
+	v = coreglib.Type(*valptr)
+	return v
 }

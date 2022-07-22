@@ -51,11 +51,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRadioAction,
-		GoType:       reflect.TypeOf((*RadioAction)(nil)),
-		InitClass:    initClassRadioAction,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkRadioAction{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkRadioActionClass{})),
+		GType:     GTypeRadioAction,
+		GoType:    reflect.TypeOf((*RadioAction)(nil)),
+		InitClass: initClassRadioAction,
 	})
 }
 
@@ -65,6 +63,10 @@ func initClassRadioAction(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Changed(current *RadioAction) }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_RadioActionClass_changed)
+	}
+	if goval, ok := goval.(interface{ InitRadioAction(*RadioActionClass) }); ok {
+		klass := (*RadioActionClass)(gextras.NewStructNative(gclass))
+		goval.InitRadioAction(klass)
 	}
 }
 
@@ -338,4 +340,21 @@ func (action *RadioAction) SetGroup(group []*RadioAction) {
 	C.gtk_radio_action_set_group(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(group)
+}
+
+// RadioActionClass: instance of this type is always passed by reference.
+type RadioActionClass struct {
+	*radioActionClass
+}
+
+// radioActionClass is the struct that's finalized.
+type radioActionClass struct {
+	native *C.GtkRadioActionClass
+}
+
+func (r *RadioActionClass) ParentClass() *ToggleActionClass {
+	valptr := &r.native.parent_class
+	var v *ToggleActionClass // out
+	v = (*ToggleActionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

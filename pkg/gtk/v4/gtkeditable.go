@@ -841,3 +841,13 @@ func (editable *Editable) SetWidthChars(nChars int) {
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(nChars)
 }
+
+// EditableInterface: instance of this type is always passed by reference.
+type EditableInterface struct {
+	*editableInterface
+}
+
+// editableInterface is the struct that's finalized.
+type editableInterface struct {
+	native *C.GtkEditableInterface
+}

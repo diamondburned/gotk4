@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -73,11 +74,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeSocketService,
-		GoType:       reflect.TypeOf((*SocketService)(nil)),
-		InitClass:    initClassSocketService,
-		ClassSize:    uint32(unsafe.Sizeof(C.GSocketService{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GSocketServiceClass{})),
+		GType:     GTypeSocketService,
+		GoType:    reflect.TypeOf((*SocketService)(nil)),
+		InitClass: initClassSocketService,
 	})
 }
 
@@ -89,6 +88,10 @@ func initClassSocketService(gclass unsafe.Pointer, goval any) {
 		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	}); ok {
 		pclass.incoming = (*[0]byte)(C._gotk4_gio2_SocketServiceClass_incoming)
+	}
+	if goval, ok := goval.(interface{ InitSocketService(*SocketServiceClass) }); ok {
+		klass := (*SocketServiceClass)(gextras.NewStructNative(gclass))
+		goval.InitSocketService(klass)
 	}
 }
 
@@ -251,4 +254,23 @@ func (service *SocketService) Stop() {
 
 	C.g_socket_service_stop(_arg0)
 	runtime.KeepAlive(service)
+}
+
+// SocketServiceClass class structure for Service.
+//
+// An instance of this type is always passed by reference.
+type SocketServiceClass struct {
+	*socketServiceClass
+}
+
+// socketServiceClass is the struct that's finalized.
+type socketServiceClass struct {
+	native *C.GSocketServiceClass
+}
+
+func (s *SocketServiceClass) ParentClass() *SocketListenerClass {
+	valptr := &s.native.parent_class
+	var v *SocketListenerClass // out
+	v = (*SocketListenerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

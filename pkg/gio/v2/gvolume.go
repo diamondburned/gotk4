@@ -808,3 +808,15 @@ func (volume *Volume) ShouldAutomount() bool {
 
 	return _ok
 }
+
+// VolumeIface: interface for implementing operations for mountable volumes.
+//
+// An instance of this type is always passed by reference.
+type VolumeIface struct {
+	*volumeIface
+}
+
+// volumeIface is the struct that's finalized.
+type volumeIface struct {
+	native *C.GVolumeIface
+}

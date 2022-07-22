@@ -66,11 +66,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRadioMenuItem,
-		GoType:       reflect.TypeOf((*RadioMenuItem)(nil)),
-		InitClass:    initClassRadioMenuItem,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkRadioMenuItem{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkRadioMenuItemClass{})),
+		GType:     GTypeRadioMenuItem,
+		GoType:    reflect.TypeOf((*RadioMenuItem)(nil)),
+		InitClass: initClassRadioMenuItem,
 	})
 }
 
@@ -80,6 +78,10 @@ func initClassRadioMenuItem(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ GroupChanged() }); ok {
 		pclass.group_changed = (*[0]byte)(C._gotk4_gtk3_RadioMenuItemClass_group_changed)
+	}
+	if goval, ok := goval.(interface{ InitRadioMenuItem(*RadioMenuItemClass) }); ok {
+		klass := (*RadioMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.InitRadioMenuItem(klass)
 	}
 }
 
@@ -474,4 +476,21 @@ func (radioMenuItem *RadioMenuItem) SetGroup(group []*RadioMenuItem) {
 	C.gtk_radio_menu_item_set_group(_arg0, _arg1)
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(group)
+}
+
+// RadioMenuItemClass: instance of this type is always passed by reference.
+type RadioMenuItemClass struct {
+	*radioMenuItemClass
+}
+
+// radioMenuItemClass is the struct that's finalized.
+type radioMenuItemClass struct {
+	native *C.GtkRadioMenuItemClass
+}
+
+func (r *RadioMenuItemClass) ParentClass() *CheckMenuItemClass {
+	valptr := &r.native.parent_class
+	var v *CheckMenuItemClass // out
+	v = (*CheckMenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

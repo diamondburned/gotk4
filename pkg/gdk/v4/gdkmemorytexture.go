@@ -103,10 +103,6 @@ func (m MemoryFormat) String() string {
 	}
 }
 
-// MemoryTextureOverrider contains methods that are overridable.
-type MemoryTextureOverrider interface {
-}
-
 // MemoryTexture: GdkTexture representing image data in memory.
 type MemoryTexture struct {
 	_ [0]func() // equal guard
@@ -116,9 +112,6 @@ type MemoryTexture struct {
 var (
 	_ Texturer = (*MemoryTexture)(nil)
 )
-
-func initClassMemoryTexture(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapMemoryTexture(obj *coreglib.Object) *MemoryTexture {
 	return &MemoryTexture{

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -43,7 +45,21 @@ var (
 	_ coreglib.Objector = (*LinkButtonAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeLinkButtonAccessible,
+		GoType:    reflect.TypeOf((*LinkButtonAccessible)(nil)),
+		InitClass: initClassLinkButtonAccessible,
+	})
+}
+
 func initClassLinkButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitLinkButtonAccessible(*LinkButtonAccessibleClass)
+	}); ok {
+		klass := (*LinkButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitLinkButtonAccessible(klass)
+	}
 }
 
 func wrapLinkButtonAccessible(obj *coreglib.Object) *LinkButtonAccessible {
@@ -52,7 +68,7 @@ func wrapLinkButtonAccessible(obj *coreglib.Object) *LinkButtonAccessible {
 			ContainerAccessible: ContainerAccessible{
 				WidgetAccessible: WidgetAccessible{
 					Accessible: Accessible{
-						ObjectClass: atk.ObjectClass{
+						AtkObject: atk.AtkObject{
 							Object: obj,
 						},
 					},
@@ -78,4 +94,22 @@ func wrapLinkButtonAccessible(obj *coreglib.Object) *LinkButtonAccessible {
 
 func marshalLinkButtonAccessible(p uintptr) (interface{}, error) {
 	return wrapLinkButtonAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// LinkButtonAccessibleClass: instance of this type is always passed by
+// reference.
+type LinkButtonAccessibleClass struct {
+	*linkButtonAccessibleClass
+}
+
+// linkButtonAccessibleClass is the struct that's finalized.
+type linkButtonAccessibleClass struct {
+	native *C.GtkLinkButtonAccessibleClass
+}
+
+func (l *LinkButtonAccessibleClass) ParentClass() *ButtonAccessibleClass {
+	valptr := &l.native.parent_class
+	var v *ButtonAccessibleClass // out
+	v = (*ButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

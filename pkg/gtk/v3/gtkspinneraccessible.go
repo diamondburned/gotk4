@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,14 +44,26 @@ var (
 	_ coreglib.Objector = (*SpinnerAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSpinnerAccessible,
+		GoType:    reflect.TypeOf((*SpinnerAccessible)(nil)),
+		InitClass: initClassSpinnerAccessible,
+	})
+}
+
 func initClassSpinnerAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSpinnerAccessible(*SpinnerAccessibleClass) }); ok {
+		klass := (*SpinnerAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitSpinnerAccessible(klass)
+	}
 }
 
 func wrapSpinnerAccessible(obj *coreglib.Object) *SpinnerAccessible {
 	return &SpinnerAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -65,4 +79,21 @@ func wrapSpinnerAccessible(obj *coreglib.Object) *SpinnerAccessible {
 
 func marshalSpinnerAccessible(p uintptr) (interface{}, error) {
 	return wrapSpinnerAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// SpinnerAccessibleClass: instance of this type is always passed by reference.
+type SpinnerAccessibleClass struct {
+	*spinnerAccessibleClass
+}
+
+// spinnerAccessibleClass is the struct that's finalized.
+type spinnerAccessibleClass struct {
+	native *C.GtkSpinnerAccessibleClass
+}
+
+func (s *SpinnerAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &s.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

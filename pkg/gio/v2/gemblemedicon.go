@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -47,7 +48,19 @@ var (
 	_ coreglib.Objector = (*EmblemedIcon)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeEmblemedIcon,
+		GoType:    reflect.TypeOf((*EmblemedIcon)(nil)),
+		InitClass: initClassEmblemedIcon,
+	})
+}
+
 func initClassEmblemedIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitEmblemedIcon(*EmblemedIconClass) }); ok {
+		klass := (*EmblemedIconClass)(gextras.NewStructNative(gclass))
+		goval.InitEmblemedIcon(klass)
+	}
 }
 
 func wrapEmblemedIcon(obj *coreglib.Object) *EmblemedIcon {
@@ -171,4 +184,14 @@ func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _icon
+}
+
+// EmblemedIconClass: instance of this type is always passed by reference.
+type EmblemedIconClass struct {
+	*emblemedIconClass
+}
+
+// emblemedIconClass is the struct that's finalized.
+type emblemedIconClass struct {
+	native *C.GEmblemedIconClass
 }

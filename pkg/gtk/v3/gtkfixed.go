@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -78,7 +80,19 @@ var (
 	_ Containerer = (*Fixed)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFixed,
+		GoType:    reflect.TypeOf((*Fixed)(nil)),
+		InitClass: initClassFixed,
+	})
+}
+
 func initClassFixed(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFixed(*FixedClass) }); ok {
+		klass := (*FixedClass)(gextras.NewStructNative(gclass))
+		goval.InitFixed(klass)
+	}
 }
 
 func wrapFixed(obj *coreglib.Object) *Fixed {
@@ -229,4 +243,21 @@ func (f *FixedChild) SetX(x int) {
 func (f *FixedChild) SetY(y int) {
 	valptr := &f.native.y
 	*valptr = C.gint(y)
+}
+
+// FixedClass: instance of this type is always passed by reference.
+type FixedClass struct {
+	*fixedClass
+}
+
+// fixedClass is the struct that's finalized.
+type fixedClass struct {
+	native *C.GtkFixedClass
+}
+
+func (f *FixedClass) ParentClass() *ContainerClass {
+	valptr := &f.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

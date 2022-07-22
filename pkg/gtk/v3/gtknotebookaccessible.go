@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,21 @@ var (
 	_ coreglib.Objector = (*NotebookAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNotebookAccessible,
+		GoType:    reflect.TypeOf((*NotebookAccessible)(nil)),
+		InitClass: initClassNotebookAccessible,
+	})
+}
+
 func initClassNotebookAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitNotebookAccessible(*NotebookAccessibleClass)
+	}); ok {
+		klass := (*NotebookAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitNotebookAccessible(klass)
+	}
 }
 
 func wrapNotebookAccessible(obj *coreglib.Object) *NotebookAccessible {
@@ -50,7 +66,7 @@ func wrapNotebookAccessible(obj *coreglib.Object) *NotebookAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +83,21 @@ func wrapNotebookAccessible(obj *coreglib.Object) *NotebookAccessible {
 
 func marshalNotebookAccessible(p uintptr) (interface{}, error) {
 	return wrapNotebookAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NotebookAccessibleClass: instance of this type is always passed by reference.
+type NotebookAccessibleClass struct {
+	*notebookAccessibleClass
+}
+
+// notebookAccessibleClass is the struct that's finalized.
+type notebookAccessibleClass struct {
+	native *C.GtkNotebookAccessibleClass
+}
+
+func (n *NotebookAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &n.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

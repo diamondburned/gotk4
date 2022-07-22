@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -50,7 +52,21 @@ var (
 	_ CellRendererer = (*CellRendererPixbuf)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCellRendererPixbuf,
+		GoType:    reflect.TypeOf((*CellRendererPixbuf)(nil)),
+		InitClass: initClassCellRendererPixbuf,
+	})
+}
+
 func initClassCellRendererPixbuf(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitCellRendererPixbuf(*CellRendererPixbufClass)
+	}); ok {
+		klass := (*CellRendererPixbufClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererPixbuf(klass)
+	}
 }
 
 func wrapCellRendererPixbuf(obj *coreglib.Object) *CellRendererPixbuf {
@@ -88,4 +104,21 @@ func NewCellRendererPixbuf() *CellRendererPixbuf {
 	_cellRendererPixbuf = wrapCellRendererPixbuf(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererPixbuf
+}
+
+// CellRendererPixbufClass: instance of this type is always passed by reference.
+type CellRendererPixbufClass struct {
+	*cellRendererPixbufClass
+}
+
+// cellRendererPixbufClass is the struct that's finalized.
+type cellRendererPixbufClass struct {
+	native *C.GtkCellRendererPixbufClass
+}
+
+func (c *CellRendererPixbufClass) ParentClass() *CellRendererClass {
+	valptr := &c.native.parent_class
+	var v *CellRendererClass // out
+	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

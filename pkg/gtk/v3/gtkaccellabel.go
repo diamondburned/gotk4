@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -74,7 +76,19 @@ var (
 	_ Miscer = (*AccelLabel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeAccelLabel,
+		GoType:    reflect.TypeOf((*AccelLabel)(nil)),
+		InitClass: initClassAccelLabel,
+	})
+}
+
 func initClassAccelLabel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitAccelLabel(*AccelLabelClass) }); ok {
+		klass := (*AccelLabelClass)(gextras.NewStructNative(gclass))
+		goval.InitAccelLabel(klass)
+	}
 }
 
 func wrapAccelLabel(obj *coreglib.Object) *AccelLabel {
@@ -313,4 +327,63 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	C.gtk_accel_label_set_accel_widget(_arg0, _arg1)
 	runtime.KeepAlive(accelLabel)
 	runtime.KeepAlive(accelWidget)
+}
+
+// AccelLabelClass: instance of this type is always passed by reference.
+type AccelLabelClass struct {
+	*accelLabelClass
+}
+
+// accelLabelClass is the struct that's finalized.
+type accelLabelClass struct {
+	native *C.GtkAccelLabelClass
+}
+
+func (a *AccelLabelClass) ParentClass() *LabelClass {
+	valptr := &a.native.parent_class
+	var v *LabelClass // out
+	v = (*LabelClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+func (a *AccelLabelClass) SignalQuote1() string {
+	valptr := &a.native.signal_quote1
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+func (a *AccelLabelClass) SignalQuote2() string {
+	valptr := &a.native.signal_quote2
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+func (a *AccelLabelClass) ModNameShift() string {
+	valptr := &a.native.mod_name_shift
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+func (a *AccelLabelClass) ModNameControl() string {
+	valptr := &a.native.mod_name_control
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+func (a *AccelLabelClass) ModNameAlt() string {
+	valptr := &a.native.mod_name_alt
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
+}
+
+func (a *AccelLabelClass) ModSeparator() string {
+	valptr := &a.native.mod_separator
+	var v string // out
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return v
 }

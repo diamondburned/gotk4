@@ -116,11 +116,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeContentProvider,
-		GoType:       reflect.TypeOf((*ContentProvider)(nil)),
-		InitClass:    initClassContentProvider,
-		ClassSize:    uint32(unsafe.Sizeof(C.GdkContentProvider{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GdkContentProviderClass{})),
+		GType:     GTypeContentProvider,
+		GoType:    reflect.TypeOf((*ContentProvider)(nil)),
+		InitClass: initClassContentProvider,
 	})
 }
 
@@ -158,6 +156,10 @@ func initClassContentProvider(gclass unsafe.Pointer, goval any) {
 		WriteMIMETypeFinish(result gio.AsyncResulter) error
 	}); ok {
 		pclass.write_mime_type_finish = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_write_mime_type_finish)
+	}
+	if goval, ok := goval.(interface{ InitContentProvider(*ContentProviderClass) }); ok {
+		klass := (*ContentProviderClass)(gextras.NewStructNative(gclass))
+		goval.InitContentProvider(klass)
 	}
 }
 
@@ -490,4 +492,16 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 	}
 
 	return _goerr
+}
+
+// ContentProviderClass class structure for ContentProvider.
+//
+// An instance of this type is always passed by reference.
+type ContentProviderClass struct {
+	*contentProviderClass
+}
+
+// contentProviderClass is the struct that's finalized.
+type contentProviderClass struct {
+	native *C.GdkContentProviderClass
 }

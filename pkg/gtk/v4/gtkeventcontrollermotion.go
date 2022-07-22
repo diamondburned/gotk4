@@ -28,10 +28,6 @@ func init() {
 	})
 }
 
-// EventControllerMotionOverrider contains methods that are overridable.
-type EventControllerMotionOverrider interface {
-}
-
 // EventControllerMotion: GtkEventControllerMotion is an event controller
 // tracking the pointer position.
 //
@@ -48,9 +44,6 @@ type EventControllerMotion struct {
 var (
 	_ EventControllerer = (*EventControllerMotion)(nil)
 )
-
-func initClassEventControllerMotion(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEventControllerMotion(obj *coreglib.Object) *EventControllerMotion {
 	return &EventControllerMotion{

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ coreglib.Objector = (*FrameAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFrameAccessible,
+		GoType:    reflect.TypeOf((*FrameAccessible)(nil)),
+		InitClass: initClassFrameAccessible,
+	})
+}
+
 func initClassFrameAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFrameAccessible(*FrameAccessibleClass) }); ok {
+		klass := (*FrameAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitFrameAccessible(klass)
+	}
 }
 
 func wrapFrameAccessible(obj *coreglib.Object) *FrameAccessible {
@@ -48,7 +62,7 @@ func wrapFrameAccessible(obj *coreglib.Object) *FrameAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -62,4 +76,21 @@ func wrapFrameAccessible(obj *coreglib.Object) *FrameAccessible {
 
 func marshalFrameAccessible(p uintptr) (interface{}, error) {
 	return wrapFrameAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// FrameAccessibleClass: instance of this type is always passed by reference.
+type FrameAccessibleClass struct {
+	*frameAccessibleClass
+}
+
+// frameAccessibleClass is the struct that's finalized.
+type frameAccessibleClass struct {
+	native *C.GtkFrameAccessibleClass
+}
+
+func (f *FrameAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &f.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

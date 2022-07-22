@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -531,7 +532,19 @@ var (
 	_ coreglib.Objector = (*AccelGroup)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeAccelGroup,
+		GoType:    reflect.TypeOf((*AccelGroup)(nil)),
+		InitClass: initClassAccelGroup,
+	})
+}
+
 func initClassAccelGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitAccelGroup(*AccelGroupClass) }); ok {
+		klass := (*AccelGroupClass)(gextras.NewStructNative(gclass))
+		goval.InitAccelGroup(klass)
+	}
 }
 
 func wrapAccelGroup(obj *coreglib.Object) *AccelGroup {
@@ -904,6 +917,16 @@ func (accelGroup *AccelGroup) Unlock() {
 
 	C.gtk_accel_group_unlock(_arg0)
 	runtime.KeepAlive(accelGroup)
+}
+
+// AccelGroupClass: instance of this type is always passed by reference.
+type AccelGroupClass struct {
+	*accelGroupClass
+}
+
+// accelGroupClass is the struct that's finalized.
+type accelGroupClass struct {
+	native *C.GtkAccelGroupClass
 }
 
 // AccelGroupEntry: instance of this type is always passed by reference.

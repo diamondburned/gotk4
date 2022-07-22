@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -64,7 +66,21 @@ var (
 	_ Containerer       = (*ColorChooserWidget)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeColorChooserWidget,
+		GoType:    reflect.TypeOf((*ColorChooserWidget)(nil)),
+		InitClass: initClassColorChooserWidget,
+	})
+}
+
 func initClassColorChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitColorChooserWidget(*ColorChooserWidgetClass)
+	}); ok {
+		klass := (*ColorChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitColorChooserWidget(klass)
+	}
 }
 
 func wrapColorChooserWidget(obj *coreglib.Object) *ColorChooserWidget {
@@ -116,4 +132,22 @@ func NewColorChooserWidget() *ColorChooserWidget {
 	_colorChooserWidget = wrapColorChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorChooserWidget
+}
+
+// ColorChooserWidgetClass: instance of this type is always passed by reference.
+type ColorChooserWidgetClass struct {
+	*colorChooserWidgetClass
+}
+
+// colorChooserWidgetClass is the struct that's finalized.
+type colorChooserWidgetClass struct {
+	native *C.GtkColorChooserWidgetClass
+}
+
+// ParentClass: parent class.
+func (c *ColorChooserWidgetClass) ParentClass() *BoxClass {
+	valptr := &c.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

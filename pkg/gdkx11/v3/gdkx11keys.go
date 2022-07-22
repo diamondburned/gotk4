@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// X11KeymapOverrider contains methods that are overridable.
-type X11KeymapOverrider interface {
-}
-
 type X11Keymap struct {
 	_ [0]func() // equal guard
 	gdk.Keymap
@@ -38,9 +34,6 @@ type X11Keymap struct {
 var (
 	_ coreglib.Objector = (*X11Keymap)(nil)
 )
-
-func initClassX11Keymap(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapX11Keymap(obj *coreglib.Object) *X11Keymap {
 	return &X11Keymap{

@@ -256,11 +256,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTreeModelFilter,
-		GoType:       reflect.TypeOf((*TreeModelFilter)(nil)),
-		InitClass:    initClassTreeModelFilter,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeModelFilter{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeModelFilterClass{})),
+		GType:     GTypeTreeModelFilter,
+		GoType:    reflect.TypeOf((*TreeModelFilter)(nil)),
+		InitClass: initClassTreeModelFilter,
 	})
 }
 
@@ -278,6 +276,10 @@ func initClassTreeModelFilter(gclass unsafe.Pointer, goval any) {
 		Visible(childModel TreeModeller, iter *TreeIter) bool
 	}); ok {
 		pclass.visible = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_visible)
+	}
+	if goval, ok := goval.(interface{ InitTreeModelFilter(*TreeModelFilterClass) }); ok {
+		klass := (*TreeModelFilterClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeModelFilter(klass)
 	}
 }
 
@@ -688,4 +690,14 @@ func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	C.gtk_tree_model_filter_set_visible_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(fn)
+}
+
+// TreeModelFilterClass: instance of this type is always passed by reference.
+type TreeModelFilterClass struct {
+	*treeModelFilterClass
+}
+
+// treeModelFilterClass is the struct that's finalized.
+type treeModelFilterClass struct {
+	native *C.GtkTreeModelFilterClass
 }

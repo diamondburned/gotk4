@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -200,11 +201,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeNotebook,
-		GoType:       reflect.TypeOf((*Notebook)(nil)),
-		InitClass:    initClassNotebook,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkNotebook{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkNotebookClass{})),
+		GType:     GTypeNotebook,
+		GoType:    reflect.TypeOf((*Notebook)(nil)),
+		InitClass: initClassNotebook,
 	})
 }
 
@@ -262,6 +261,10 @@ func initClassNotebook(gclass unsafe.Pointer, goval any) {
 		SwitchPage(page Widgetter, pageNum uint)
 	}); ok {
 		pclass.switch_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_switch_page)
+	}
+	if goval, ok := goval.(interface{ InitNotebook(*NotebookClass) }); ok {
+		klass := (*NotebookClass)(gextras.NewStructNative(gclass))
+		goval.InitNotebook(klass)
 	}
 }
 
@@ -2250,4 +2253,21 @@ func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(reorderable)
+}
+
+// NotebookClass: instance of this type is always passed by reference.
+type NotebookClass struct {
+	*notebookClass
+}
+
+// notebookClass is the struct that's finalized.
+type notebookClass struct {
+	native *C.GtkNotebookClass
+}
+
+func (n *NotebookClass) ParentClass() *ContainerClass {
+	valptr := &n.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

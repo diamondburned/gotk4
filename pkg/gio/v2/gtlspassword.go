@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -61,11 +62,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTLSPassword,
-		GoType:       reflect.TypeOf((*TLSPassword)(nil)),
-		InitClass:    initClassTLSPassword,
-		ClassSize:    uint32(unsafe.Sizeof(C.GTlsPassword{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GTlsPasswordClass{})),
+		GType:     GTypeTLSPassword,
+		GoType:    reflect.TypeOf((*TLSPassword)(nil)),
+		InitClass: initClassTLSPassword,
 	})
 }
 
@@ -79,6 +78,10 @@ func initClassTLSPassword(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Value(length *uint) *byte }); ok {
 		pclass.get_value = (*[0]byte)(C._gotk4_gio2_TlsPasswordClass_get_value)
+	}
+	if goval, ok := goval.(interface{ InitTLSPassword(*TLSPasswordClass) }); ok {
+		klass := (*TLSPasswordClass)(gextras.NewStructNative(gclass))
+		goval.InitTLSPassword(klass)
 	}
 }
 
@@ -342,4 +345,16 @@ func (password *TLSPassword) SetWarning(warning string) {
 	C.g_tls_password_set_warning(_arg0, _arg1)
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(warning)
+}
+
+// TLSPasswordClass class structure for Password.
+//
+// An instance of this type is always passed by reference.
+type TLSPasswordClass struct {
+	*tlsPasswordClass
+}
+
+// tlsPasswordClass is the struct that's finalized.
+type tlsPasswordClass struct {
+	native *C.GTlsPasswordClass
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,14 +42,28 @@ var (
 	_ coreglib.Objector = (*ContainerAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeContainerAccessible,
+		GoType:    reflect.TypeOf((*ContainerAccessible)(nil)),
+		InitClass: initClassContainerAccessible,
+	})
+}
+
 func initClassContainerAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitContainerAccessible(*ContainerAccessibleClass)
+	}); ok {
+		klass := (*ContainerAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitContainerAccessible(klass)
+	}
 }
 
 func wrapContainerAccessible(obj *coreglib.Object) *ContainerAccessible {
 	return &ContainerAccessible{
 		WidgetAccessible: WidgetAccessible{
 			Accessible: Accessible{
-				ObjectClass: atk.ObjectClass{
+				AtkObject: atk.AtkObject{
 					Object: obj,
 				},
 			},
@@ -60,4 +76,22 @@ func wrapContainerAccessible(obj *coreglib.Object) *ContainerAccessible {
 
 func marshalContainerAccessible(p uintptr) (interface{}, error) {
 	return wrapContainerAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ContainerAccessibleClass: instance of this type is always passed by
+// reference.
+type ContainerAccessibleClass struct {
+	*containerAccessibleClass
+}
+
+// containerAccessibleClass is the struct that's finalized.
+type containerAccessibleClass struct {
+	native *C.GtkContainerAccessibleClass
+}
+
+func (c *ContainerAccessibleClass) ParentClass() *WidgetAccessibleClass {
+	valptr := &c.native.parent_class
+	var v *WidgetAccessibleClass // out
+	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

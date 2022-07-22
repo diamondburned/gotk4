@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -131,11 +132,9 @@ var _ IOStreamer = (*IOStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeIOStream,
-		GoType:       reflect.TypeOf((*IOStream)(nil)),
-		InitClass:    initClassIOStream,
-		ClassSize:    uint32(unsafe.Sizeof(C.GIOStream{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GIOStreamClass{})),
+		GType:     GTypeIOStream,
+		GoType:    reflect.TypeOf((*IOStream)(nil)),
+		InitClass: initClassIOStream,
 	})
 }
 
@@ -161,6 +160,10 @@ func initClassIOStream(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ OutputStream() OutputStreamer }); ok {
 		pclass.get_output_stream = (*[0]byte)(C._gotk4_gio2_IOStreamClass_get_output_stream)
+	}
+	if goval, ok := goval.(interface{ InitIOStream(*IOStreamClass) }); ok {
+		klass := (*IOStreamClass)(gextras.NewStructNative(gclass))
+		goval.InitIOStream(klass)
 	}
 }
 
@@ -620,4 +623,14 @@ func IOStreamSpliceFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// IOStreamClass: instance of this type is always passed by reference.
+type IOStreamClass struct {
+	*ioStreamClass
+}
+
+// ioStreamClass is the struct that's finalized.
+type ioStreamClass struct {
+	native *C.GIOStreamClass
 }

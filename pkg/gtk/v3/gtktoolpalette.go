@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -147,7 +148,19 @@ var (
 	_ coreglib.Objector = (*ToolPalette)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeToolPalette,
+		GoType:    reflect.TypeOf((*ToolPalette)(nil)),
+		InitClass: initClassToolPalette,
+	})
+}
+
 func initClassToolPalette(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitToolPalette(*ToolPaletteClass) }); ok {
+		klass := (*ToolPaletteClass)(gextras.NewStructNative(gclass))
+		goval.InitToolPalette(klass)
+	}
 }
 
 func wrapToolPalette(obj *coreglib.Object) *ToolPalette {
@@ -722,4 +735,22 @@ func ToolPaletteGetDragTargetItem() *TargetEntry {
 	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _targetEntry
+}
+
+// ToolPaletteClass: instance of this type is always passed by reference.
+type ToolPaletteClass struct {
+	*toolPaletteClass
+}
+
+// toolPaletteClass is the struct that's finalized.
+type toolPaletteClass struct {
+	native *C.GtkToolPaletteClass
+}
+
+// ParentClass: parent class.
+func (t *ToolPaletteClass) ParentClass() *ContainerClass {
+	valptr := &t.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

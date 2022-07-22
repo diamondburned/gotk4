@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// WaylandGLContextOverrider contains methods that are overridable.
-type WaylandGLContextOverrider interface {
-}
-
 // WaylandGLContext: wayland implementation of GdkGLContext.
 type WaylandGLContext struct {
 	_ [0]func() // equal guard
@@ -38,9 +34,6 @@ type WaylandGLContext struct {
 var (
 	_ gdk.GLContexter = (*WaylandGLContext)(nil)
 )
-
-func initClassWaylandGLContext(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapWaylandGLContext(obj *coreglib.Object) *WaylandGLContext {
 	return &WaylandGLContext{

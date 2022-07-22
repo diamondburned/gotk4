@@ -169,11 +169,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTreeSelection,
-		GoType:       reflect.TypeOf((*TreeSelection)(nil)),
-		InitClass:    initClassTreeSelection,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeSelection{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeSelectionClass{})),
+		GType:     GTypeTreeSelection,
+		GoType:    reflect.TypeOf((*TreeSelection)(nil)),
+		InitClass: initClassTreeSelection,
 	})
 }
 
@@ -183,6 +181,10 @@ func initClassTreeSelection(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_TreeSelectionClass_changed)
+	}
+	if goval, ok := goval.(interface{ InitTreeSelection(*TreeSelectionClass) }); ok {
+		klass := (*TreeSelectionClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeSelection(klass)
 	}
 }
 
@@ -652,4 +654,14 @@ func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(startPath)
 	runtime.KeepAlive(endPath)
+}
+
+// TreeSelectionClass: instance of this type is always passed by reference.
+type TreeSelectionClass struct {
+	*treeSelectionClass
+}
+
+// treeSelectionClass is the struct that's finalized.
+type treeSelectionClass struct {
+	native *C.GtkTreeSelectionClass
 }

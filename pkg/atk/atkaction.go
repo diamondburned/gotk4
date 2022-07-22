@@ -605,3 +605,19 @@ func (action *Action) SetDescription(i int, desc string) bool {
 
 	return _ok
 }
+
+// ActionIface interface should be supported by any object that can perform one
+// or more actions. The interface provides the standard mechanism for an
+// assistive technology to determine what those actions are as well as tell the
+// object to perform them. Any object that can be manipulated should support
+// this interface.
+//
+// An instance of this type is always passed by reference.
+type ActionIface struct {
+	*actionIface
+}
+
+// actionIface is the struct that's finalized.
+type actionIface struct {
+	native *C.AtkActionIface
+}

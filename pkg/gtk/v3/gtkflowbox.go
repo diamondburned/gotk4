@@ -238,11 +238,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFlowBox,
-		GoType:       reflect.TypeOf((*FlowBox)(nil)),
-		InitClass:    initClassFlowBox,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFlowBox{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFlowBoxClass{})),
+		GType:     GTypeFlowBox,
+		GoType:    reflect.TypeOf((*FlowBox)(nil)),
+		InitClass: initClassFlowBox,
 	})
 }
 
@@ -278,6 +276,10 @@ func initClassFlowBox(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ UnselectAll() }); ok {
 		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_unselect_all)
+	}
+	if goval, ok := goval.(interface{ InitFlowBox(*FlowBoxClass) }); ok {
+		klass := (*FlowBoxClass)(gextras.NewStructNative(gclass))
+		goval.InitFlowBox(klass)
 	}
 }
 
@@ -1305,11 +1307,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeFlowBoxChild,
-		GoType:       reflect.TypeOf((*FlowBoxChild)(nil)),
-		InitClass:    initClassFlowBoxChild,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkFlowBoxChild{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkFlowBoxChildClass{})),
+		GType:     GTypeFlowBoxChild,
+		GoType:    reflect.TypeOf((*FlowBoxChild)(nil)),
+		InitClass: initClassFlowBoxChild,
 	})
 }
 
@@ -1319,6 +1319,10 @@ func initClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_FlowBoxChildClass_activate)
+	}
+	if goval, ok := goval.(interface{ InitFlowBoxChild(*FlowBoxChildClass) }); ok {
+		klass := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
+		goval.InitFlowBoxChild(klass)
 	}
 }
 
@@ -1469,4 +1473,38 @@ func (child *FlowBoxChild) IsSelected() bool {
 	}
 
 	return _ok
+}
+
+// FlowBoxChildClass: instance of this type is always passed by reference.
+type FlowBoxChildClass struct {
+	*flowBoxChildClass
+}
+
+// flowBoxChildClass is the struct that's finalized.
+type flowBoxChildClass struct {
+	native *C.GtkFlowBoxChildClass
+}
+
+func (f *FlowBoxChildClass) ParentClass() *BinClass {
+	valptr := &f.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
+}
+
+// FlowBoxClass: instance of this type is always passed by reference.
+type FlowBoxClass struct {
+	*flowBoxClass
+}
+
+// flowBoxClass is the struct that's finalized.
+type flowBoxClass struct {
+	native *C.GtkFlowBoxClass
+}
+
+func (f *FlowBoxClass) ParentClass() *ContainerClass {
+	valptr := &f.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

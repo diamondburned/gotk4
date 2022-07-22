@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -63,11 +64,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeMisc,
-		GoType:       reflect.TypeOf((*Misc)(nil)),
-		InitClass:    initClassMisc,
-		ClassSize:    uint32(unsafe.Sizeof(C.AtkMisc{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.AtkMiscClass{})),
+		GType:     GTypeMisc,
+		GoType:    reflect.TypeOf((*Misc)(nil)),
+		InitClass: initClassMisc,
 	})
 }
 
@@ -81,6 +80,10 @@ func initClassMisc(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ThreadsLeave() }); ok {
 		pclass.threads_leave = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_leave)
+	}
+	if goval, ok := goval.(interface{ InitMisc(*MiscClass) }); ok {
+		klass := (*MiscClass)(gextras.NewStructNative(gclass))
+		goval.InitMisc(klass)
 	}
 }
 
@@ -162,4 +165,28 @@ func MiscGetInstance() *Misc {
 	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _misc
+}
+
+// MiscClass: usage of AtkMisc is deprecated since 2.12 and heavily discouraged.
+//
+// An instance of this type is always passed by reference.
+type MiscClass struct {
+	*miscClass
+}
+
+// miscClass is the struct that's finalized.
+type miscClass struct {
+	native *C.AtkMiscClass
+}
+
+func (m *MiscClass) Vfuncs() [32]unsafe.Pointer {
+	valptr := &m.native.vfuncs
+	var v [32]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 32; i++ {
+			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return v
 }

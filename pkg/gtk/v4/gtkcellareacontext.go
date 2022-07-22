@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -132,11 +133,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellAreaContext,
-		GoType:       reflect.TypeOf((*CellAreaContext)(nil)),
-		InitClass:    initClassCellAreaContext,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellAreaContext{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellAreaContextClass{})),
+		GType:     GTypeCellAreaContext,
+		GoType:    reflect.TypeOf((*CellAreaContext)(nil)),
+		InitClass: initClassCellAreaContext,
 	})
 }
 
@@ -162,6 +161,10 @@ func initClassCellAreaContext(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Reset() }); ok {
 		pclass.reset = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_reset)
+	}
+	if goval, ok := goval.(interface{ InitCellAreaContext(*CellAreaContextClass) }); ok {
+		klass := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
+		goval.InitCellAreaContext(klass)
 	}
 }
 
@@ -551,4 +554,14 @@ func (context *CellAreaContext) Reset() {
 
 	C.gtk_cell_area_context_reset(_arg0)
 	runtime.KeepAlive(context)
+}
+
+// CellAreaContextClass: instance of this type is always passed by reference.
+type CellAreaContextClass struct {
+	*cellAreaContextClass
+}
+
+// cellAreaContextClass is the struct that's finalized.
+type cellAreaContextClass struct {
+	native *C.GtkCellAreaContextClass
 }

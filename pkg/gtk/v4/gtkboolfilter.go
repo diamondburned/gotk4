@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -40,7 +42,19 @@ var (
 	_ coreglib.Objector = (*BoolFilter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeBoolFilter,
+		GoType:    reflect.TypeOf((*BoolFilter)(nil)),
+		InitClass: initClassBoolFilter,
+	})
+}
+
 func initClassBoolFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitBoolFilter(*BoolFilterClass) }); ok {
+		klass := (*BoolFilterClass)(gextras.NewStructNative(gclass))
+		goval.InitBoolFilter(klass)
+	}
 }
 
 func wrapBoolFilter(obj *coreglib.Object) *BoolFilter {
@@ -187,4 +201,21 @@ func (self *BoolFilter) SetInvert(invert bool) {
 	C.gtk_bool_filter_set_invert(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(invert)
+}
+
+// BoolFilterClass: instance of this type is always passed by reference.
+type BoolFilterClass struct {
+	*boolFilterClass
+}
+
+// boolFilterClass is the struct that's finalized.
+type boolFilterClass struct {
+	native *C.GtkBoolFilterClass
+}
+
+func (b *BoolFilterClass) ParentClass() *FilterClass {
+	valptr := &b.native.parent_class
+	var v *FilterClass // out
+	v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

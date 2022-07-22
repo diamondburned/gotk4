@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -43,7 +45,19 @@ var (
 	_ coreglib.Objector = (*CharsetConverter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCharsetConverter,
+		GoType:    reflect.TypeOf((*CharsetConverter)(nil)),
+		InitClass: initClassCharsetConverter,
+	})
+}
+
 func initClassCharsetConverter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCharsetConverter(*CharsetConverterClass) }); ok {
+		klass := (*CharsetConverterClass)(gextras.NewStructNative(gclass))
+		goval.InitCharsetConverter(klass)
+	}
 }
 
 func wrapCharsetConverter(obj *coreglib.Object) *CharsetConverter {
@@ -163,4 +177,14 @@ func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 	C.g_charset_converter_set_use_fallback(_arg0, _arg1)
 	runtime.KeepAlive(converter)
 	runtime.KeepAlive(useFallback)
+}
+
+// CharsetConverterClass: instance of this type is always passed by reference.
+type CharsetConverterClass struct {
+	*charsetConverterClass
+}
+
+// charsetConverterClass is the struct that's finalized.
+type charsetConverterClass struct {
+	native *C.GCharsetConverterClass
 }

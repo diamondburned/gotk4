@@ -436,3 +436,15 @@ func TLSBackendGetDefault() *TLSBackend {
 
 	return _tlsBackend
 }
+
+// TLSBackendInterface provides an interface for describing TLS-related types.
+//
+// An instance of this type is always passed by reference.
+type TLSBackendInterface struct {
+	*tlsBackendInterface
+}
+
+// tlsBackendInterface is the struct that's finalized.
+type tlsBackendInterface struct {
+	native *C.GTlsBackendInterface
+}

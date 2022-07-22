@@ -116,10 +116,6 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 	return (f & other) == other
 }
 
-// FrameClockOverrider contains methods that are overridable.
-type FrameClockOverrider interface {
-}
-
 // FrameClock: GdkFrameClock tells the application when to update and repaint a
 // surface.
 //
@@ -171,9 +167,6 @@ type FrameClocker interface {
 }
 
 var _ FrameClocker = (*FrameClock)(nil)
-
-func initClassFrameClock(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapFrameClock(obj *coreglib.Object) *FrameClock {
 	return &FrameClock{

@@ -163,10 +163,6 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 	return (i & other) == other
 }
 
-// IconInfoOverrider contains methods that are overridable.
-type IconInfoOverrider interface {
-}
-
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
 	_ [0]func() // equal guard
@@ -176,9 +172,6 @@ type IconInfo struct {
 var (
 	_ coreglib.Objector = (*IconInfo)(nil)
 )
-
-func initClassIconInfo(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapIconInfo(obj *coreglib.Object) *IconInfo {
 	return &IconInfo{
@@ -1181,11 +1174,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeIconTheme,
-		GoType:       reflect.TypeOf((*IconTheme)(nil)),
-		InitClass:    initClassIconTheme,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkIconTheme{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkIconThemeClass{})),
+		GType:     GTypeIconTheme,
+		GoType:    reflect.TypeOf((*IconTheme)(nil)),
+		InitClass: initClassIconTheme,
 	})
 }
 
@@ -1195,6 +1186,10 @@ func initClassIconTheme(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_IconThemeClass_changed)
+	}
+	if goval, ok := goval.(interface{ InitIconTheme(*IconThemeClass) }); ok {
+		klass := (*IconThemeClass)(gextras.NewStructNative(gclass))
+		goval.InitIconTheme(klass)
 	}
 }
 
@@ -2275,4 +2270,14 @@ func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _iconTheme
+}
+
+// IconThemeClass: instance of this type is always passed by reference.
+type IconThemeClass struct {
+	*iconThemeClass
+}
+
+// iconThemeClass is the struct that's finalized.
+type iconThemeClass struct {
+	native *C.GtkIconThemeClass
 }

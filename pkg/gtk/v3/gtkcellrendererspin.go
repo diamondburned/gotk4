@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -52,7 +54,19 @@ var (
 	_ CellRendererer = (*CellRendererSpin)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeCellRendererSpin,
+		GoType:    reflect.TypeOf((*CellRendererSpin)(nil)),
+		InitClass: initClassCellRendererSpin,
+	})
+}
+
 func initClassCellRendererSpin(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitCellRendererSpin(*CellRendererSpinClass) }); ok {
+		klass := (*CellRendererSpinClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererSpin(klass)
+	}
 }
 
 func wrapCellRendererSpin(obj *coreglib.Object) *CellRendererSpin {
@@ -87,4 +101,21 @@ func NewCellRendererSpin() *CellRendererSpin {
 	_cellRendererSpin = wrapCellRendererSpin(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererSpin
+}
+
+// CellRendererSpinClass: instance of this type is always passed by reference.
+type CellRendererSpinClass struct {
+	*cellRendererSpinClass
+}
+
+// cellRendererSpinClass is the struct that's finalized.
+type cellRendererSpinClass struct {
+	native *C.GtkCellRendererSpinClass
+}
+
+func (c *CellRendererSpinClass) Parent() *CellRendererTextClass {
+	valptr := &c.native.parent
+	var v *CellRendererTextClass // out
+	v = (*CellRendererTextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -124,11 +125,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePaned,
-		GoType:       reflect.TypeOf((*Paned)(nil)),
-		InitClass:    initClassPaned,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkPaned{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkPanedClass{})),
+		GType:     GTypePaned,
+		GoType:    reflect.TypeOf((*Paned)(nil)),
+		InitClass: initClassPaned,
 	})
 }
 
@@ -158,6 +157,10 @@ func initClassPaned(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ToggleHandleFocus() bool }); ok {
 		pclass.toggle_handle_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_toggle_handle_focus)
+	}
+	if goval, ok := goval.(interface{ InitPaned(*PanedClass) }); ok {
+		klass := (*PanedClass)(gextras.NewStructNative(gclass))
+		goval.InitPaned(klass)
 	}
 }
 
@@ -808,4 +811,21 @@ func (paned *Paned) SetWideHandle(wide bool) {
 	C.gtk_paned_set_wide_handle(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(wide)
+}
+
+// PanedClass: instance of this type is always passed by reference.
+type PanedClass struct {
+	*panedClass
+}
+
+// panedClass is the struct that's finalized.
+type panedClass struct {
+	native *C.GtkPanedClass
+}
+
+func (p *PanedClass) ParentClass() *ContainerClass {
+	valptr := &p.native.parent_class
+	var v *ContainerClass // out
+	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

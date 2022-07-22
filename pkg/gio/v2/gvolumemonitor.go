@@ -176,11 +176,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeVolumeMonitor,
-		GoType:       reflect.TypeOf((*VolumeMonitor)(nil)),
-		InitClass:    initClassVolumeMonitor,
-		ClassSize:    uint32(unsafe.Sizeof(C.GVolumeMonitor{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GVolumeMonitorClass{})),
+		GType:     GTypeVolumeMonitor,
+		GoType:    reflect.TypeOf((*VolumeMonitor)(nil)),
+		InitClass: initClassVolumeMonitor,
 	})
 }
 
@@ -254,6 +252,10 @@ func initClassVolumeMonitor(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ VolumeRemoved(volume Volumer) }); ok {
 		pclass.volume_removed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_removed)
+	}
+	if goval, ok := goval.(interface{ InitVolumeMonitor(*VolumeMonitorClass) }); ok {
+		klass := (*VolumeMonitorClass)(gextras.NewStructNative(gclass))
+		goval.InitVolumeMonitor(klass)
 	}
 }
 
@@ -1427,4 +1429,14 @@ func VolumeMonitorGet() *VolumeMonitor {
 	_volumeMonitor = wrapVolumeMonitor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _volumeMonitor
+}
+
+// VolumeMonitorClass: instance of this type is always passed by reference.
+type VolumeMonitorClass struct {
+	*volumeMonitorClass
+}
+
+// volumeMonitorClass is the struct that's finalized.
+type volumeMonitorClass struct {
+	native *C.GVolumeMonitorClass
 }

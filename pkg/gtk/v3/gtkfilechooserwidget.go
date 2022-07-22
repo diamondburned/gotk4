@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -65,7 +67,19 @@ var (
 	_ Containerer       = (*FileChooserWidget)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFileChooserWidget,
+		GoType:    reflect.TypeOf((*FileChooserWidget)(nil)),
+		InitClass: initClassFileChooserWidget,
+	})
+}
+
 func initClassFileChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFileChooserWidget(*FileChooserWidgetClass) }); ok {
+		klass := (*FileChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitFileChooserWidget(klass)
+	}
 }
 
 func wrapFileChooserWidget(obj *coreglib.Object) *FileChooserWidget {
@@ -466,4 +480,22 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	_fileChooserWidget = wrapFileChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fileChooserWidget
+}
+
+// FileChooserWidgetClass: instance of this type is always passed by reference.
+type FileChooserWidgetClass struct {
+	*fileChooserWidgetClass
+}
+
+// fileChooserWidgetClass is the struct that's finalized.
+type fileChooserWidgetClass struct {
+	native *C.GtkFileChooserWidgetClass
+}
+
+// ParentClass: parent class.
+func (f *FileChooserWidgetClass) ParentClass() *BoxClass {
+	valptr := &f.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

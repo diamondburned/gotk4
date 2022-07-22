@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// ATContextOverrider contains methods that are overridable.
-type ATContextOverrider interface {
-}
-
 // ATContext: GtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
 //
@@ -56,9 +52,6 @@ type ATContexter interface {
 }
 
 var _ ATContexter = (*ATContext)(nil)
-
-func initClassATContext(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapATContext(obj *coreglib.Object) *ATContext {
 	return &ATContext{

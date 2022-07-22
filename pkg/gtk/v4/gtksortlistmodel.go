@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -51,7 +53,19 @@ var (
 	_ coreglib.Objector = (*SortListModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSortListModel,
+		GoType:    reflect.TypeOf((*SortListModel)(nil)),
+		InitClass: initClassSortListModel,
+	})
+}
+
 func initClassSortListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSortListModel(*SortListModelClass) }); ok {
+		klass := (*SortListModelClass)(gextras.NewStructNative(gclass))
+		goval.InitSortListModel(klass)
+	}
 }
 
 func wrapSortListModel(obj *coreglib.Object) *SortListModel {
@@ -294,4 +308,14 @@ func (self *SortListModel) SetSorter(sorter *Sorter) {
 	C.gtk_sort_list_model_set_sorter(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
+}
+
+// SortListModelClass: instance of this type is always passed by reference.
+type SortListModelClass struct {
+	*sortListModelClass
+}
+
+// sortListModelClass is the struct that's finalized.
+type sortListModelClass struct {
+	native *C.GtkSortListModelClass
 }

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -61,7 +63,19 @@ var (
 	_ Containerer       = (*FontChooserWidget)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeFontChooserWidget,
+		GoType:    reflect.TypeOf((*FontChooserWidget)(nil)),
+		InitClass: initClassFontChooserWidget,
+	})
+}
+
 func initClassFontChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitFontChooserWidget(*FontChooserWidgetClass) }); ok {
+		klass := (*FontChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.InitFontChooserWidget(klass)
+	}
 }
 
 func wrapFontChooserWidget(obj *coreglib.Object) *FontChooserWidget {
@@ -113,4 +127,22 @@ func NewFontChooserWidget() *FontChooserWidget {
 	_fontChooserWidget = wrapFontChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _fontChooserWidget
+}
+
+// FontChooserWidgetClass: instance of this type is always passed by reference.
+type FontChooserWidgetClass struct {
+	*fontChooserWidgetClass
+}
+
+// fontChooserWidgetClass is the struct that's finalized.
+type fontChooserWidgetClass struct {
+	native *C.GtkFontChooserWidgetClass
+}
+
+// ParentClass: parent class.
+func (f *FontChooserWidgetClass) ParentClass() *BoxClass {
+	valptr := &f.native.parent_class
+	var v *BoxClass // out
+	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

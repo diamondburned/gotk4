@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -47,7 +49,19 @@ var (
 	_ coreglib.Objector = (*MultiSorter)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMultiSorter,
+		GoType:    reflect.TypeOf((*MultiSorter)(nil)),
+		InitClass: initClassMultiSorter,
+	})
+}
+
 func initClassMultiSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMultiSorter(*MultiSorterClass) }); ok {
+		klass := (*MultiSorterClass)(gextras.NewStructNative(gclass))
+		goval.InitMultiSorter(klass)
+	}
 }
 
 func wrapMultiSorter(obj *coreglib.Object) *MultiSorter {
@@ -132,4 +146,21 @@ func (self *MultiSorter) Remove(position uint) {
 	C.gtk_multi_sorter_remove(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)
+}
+
+// MultiSorterClass: instance of this type is always passed by reference.
+type MultiSorterClass struct {
+	*multiSorterClass
+}
+
+// multiSorterClass is the struct that's finalized.
+type multiSorterClass struct {
+	native *C.GtkMultiSorterClass
+}
+
+func (m *MultiSorterClass) ParentClass() *SorterClass {
+	valptr := &m.native.parent_class
+	var v *SorterClass // out
+	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

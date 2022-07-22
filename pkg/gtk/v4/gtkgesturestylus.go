@@ -31,10 +31,6 @@ func init() {
 	})
 }
 
-// GestureStylusOverrider contains methods that are overridable.
-type GestureStylusOverrider interface {
-}
-
 // GestureStylus: GtkGestureStylus is a GtkGesture specific to stylus input.
 //
 // The provided signals just relay the basic information of the stylus events.
@@ -46,9 +42,6 @@ type GestureStylus struct {
 var (
 	_ Gesturer = (*GestureStylus)(nil)
 )
-
-func initClassGestureStylus(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureStylus(obj *coreglib.Object) *GestureStylus {
 	return &GestureStylus{

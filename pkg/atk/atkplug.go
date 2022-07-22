@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -37,7 +38,7 @@ type PlugOverrider interface {
 // Plug: see Socket.
 type Plug struct {
 	_ [0]func() // equal guard
-	ObjectClass
+	AtkObject
 
 	*coreglib.Object
 	Component
@@ -49,11 +50,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypePlug,
-		GoType:       reflect.TypeOf((*Plug)(nil)),
-		InitClass:    initClassPlug,
-		ClassSize:    uint32(unsafe.Sizeof(C.AtkPlug{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.AtkPlugClass{})),
+		GType:     GTypePlug,
+		GoType:    reflect.TypeOf((*Plug)(nil)),
+		InitClass: initClassPlug,
 	})
 }
 
@@ -63,6 +62,10 @@ func initClassPlug(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ ObjectID() string }); ok {
 		pclass.get_object_id = (*[0]byte)(C._gotk4_atk1_PlugClass_get_object_id)
+	}
+	if goval, ok := goval.(interface{ InitPlug(*PlugClass) }); ok {
+		klass := (*PlugClass)(gextras.NewStructNative(gclass))
+		goval.InitPlug(klass)
 	}
 }
 
@@ -80,7 +83,7 @@ func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
 
 func wrapPlug(obj *coreglib.Object) *Plug {
 	return &Plug{
-		ObjectClass: ObjectClass{
+		AtkObject: AtkObject{
 			Object: obj,
 		},
 		Object: obj,
@@ -155,7 +158,7 @@ func (plug *Plug) ID() string {
 //
 //    - child to be set as accessible child of plug.
 //
-func (plug *Plug) SetChild(child *ObjectClass) {
+func (plug *Plug) SetChild(child *AtkObject) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
 
@@ -165,4 +168,21 @@ func (plug *Plug) SetChild(child *ObjectClass) {
 	C.atk_plug_set_child(_arg0, _arg1)
 	runtime.KeepAlive(plug)
 	runtime.KeepAlive(child)
+}
+
+// PlugClass: instance of this type is always passed by reference.
+type PlugClass struct {
+	*plugClass
+}
+
+// plugClass is the struct that's finalized.
+type plugClass struct {
+	native *C.AtkPlugClass
+}
+
+func (p *PlugClass) ParentClass() *ObjectClass {
+	valptr := &p.native.parent_class
+	var v *ObjectClass // out
+	v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

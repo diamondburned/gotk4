@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -124,11 +125,9 @@ var _ TLSConnectioner = (*TLSConnection)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeTLSConnection,
-		GoType:       reflect.TypeOf((*TLSConnection)(nil)),
-		InitClass:    initClassTLSConnection,
-		ClassSize:    uint32(unsafe.Sizeof(C.GTlsConnection{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GTlsConnectionClass{})),
+		GType:     GTypeTLSConnection,
+		GoType:    reflect.TypeOf((*TLSConnection)(nil)),
+		InitClass: initClassTLSConnection,
 	})
 }
 
@@ -158,6 +157,10 @@ func initClassTLSConnection(gclass unsafe.Pointer, goval any) {
 		HandshakeFinish(result AsyncResulter) error
 	}); ok {
 		pclass.handshake_finish = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake_finish)
+	}
+	if goval, ok := goval.(interface{ InitTLSConnection(*TLSConnectionClass) }); ok {
+		klass := (*TLSConnectionClass)(gextras.NewStructNative(gclass))
+		goval.InitTLSConnection(klass)
 	}
 }
 
@@ -1075,4 +1078,21 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	C.g_tls_connection_set_use_system_certdb(_arg0, _arg1)
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSystemCertdb)
+}
+
+// TLSConnectionClass: instance of this type is always passed by reference.
+type TLSConnectionClass struct {
+	*tlsConnectionClass
+}
+
+// tlsConnectionClass is the struct that's finalized.
+type tlsConnectionClass struct {
+	native *C.GTlsConnectionClass
+}
+
+func (t *TLSConnectionClass) ParentClass() *IOStreamClass {
+	valptr := &t.native.parent_class
+	var v *IOStreamClass // out
+	v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

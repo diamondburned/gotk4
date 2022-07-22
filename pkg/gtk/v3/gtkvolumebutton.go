@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -43,7 +45,19 @@ var (
 	_ Binner            = (*VolumeButton)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeVolumeButton,
+		GoType:    reflect.TypeOf((*VolumeButton)(nil)),
+		InitClass: initClassVolumeButton,
+	})
+}
+
 func initClassVolumeButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitVolumeButton(*VolumeButtonClass) }); ok {
+		klass := (*VolumeButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitVolumeButton(klass)
+	}
 }
 
 func wrapVolumeButton(obj *coreglib.Object) *VolumeButton {
@@ -115,4 +129,21 @@ func NewVolumeButton() *VolumeButton {
 	_volumeButton = wrapVolumeButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _volumeButton
+}
+
+// VolumeButtonClass: instance of this type is always passed by reference.
+type VolumeButtonClass struct {
+	*volumeButtonClass
+}
+
+// volumeButtonClass is the struct that's finalized.
+type volumeButtonClass struct {
+	native *C.GtkVolumeButtonClass
+}
+
+func (v *VolumeButtonClass) ParentClass() *ScaleButtonClass {
+	valptr := &v.native.parent_class
+	var v *ScaleButtonClass // out
+	v = (*ScaleButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

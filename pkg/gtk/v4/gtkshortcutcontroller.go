@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// ShortcutControllerOverrider contains methods that are overridable.
-type ShortcutControllerOverrider interface {
-}
-
 // ShortcutController: GtkShortcutController is an event controller that manages
 // shortcuts.
 //
@@ -85,9 +81,6 @@ var (
 	_ EventControllerer = (*ShortcutController)(nil)
 	_ coreglib.Objector = (*ShortcutController)(nil)
 )
-
-func initClassShortcutController(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapShortcutController(obj *coreglib.Object) *ShortcutController {
 	return &ShortcutController{

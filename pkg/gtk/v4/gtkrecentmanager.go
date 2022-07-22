@@ -154,11 +154,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeRecentManager,
-		GoType:       reflect.TypeOf((*RecentManager)(nil)),
-		InitClass:    initClassRecentManager,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkRecentManager{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkRecentManagerClass{})),
+		GType:     GTypeRecentManager,
+		GoType:    reflect.TypeOf((*RecentManager)(nil)),
+		InitClass: initClassRecentManager,
 	})
 }
 
@@ -168,6 +166,10 @@ func initClassRecentManager(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_RecentManagerClass_changed)
+	}
+	if goval, ok := goval.(interface{ InitRecentManager(*RecentManagerClass) }); ok {
+		klass := (*RecentManagerClass)(gextras.NewStructNative(gclass))
+		goval.InitRecentManager(klass)
 	}
 }
 
@@ -1343,4 +1345,16 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	}
 
 	return _ok
+}
+
+// RecentManagerClass contains only private data.
+//
+// An instance of this type is always passed by reference.
+type RecentManagerClass struct {
+	*recentManagerClass
+}
+
+// recentManagerClass is the struct that's finalized.
+type recentManagerClass struct {
+	native *C.GtkRecentManagerClass
 }

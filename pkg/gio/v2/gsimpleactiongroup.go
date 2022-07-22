@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -44,7 +45,19 @@ var (
 	_ coreglib.Objector = (*SimpleActionGroup)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSimpleActionGroup,
+		GoType:    reflect.TypeOf((*SimpleActionGroup)(nil)),
+		InitClass: initClassSimpleActionGroup,
+	})
+}
+
 func initClassSimpleActionGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSimpleActionGroup(*SimpleActionGroupClass) }); ok {
+		klass := (*SimpleActionGroupClass)(gextras.NewStructNative(gclass))
+		goval.InitSimpleActionGroup(klass)
+	}
 }
 
 func wrapSimpleActionGroup(obj *coreglib.Object) *SimpleActionGroup {
@@ -195,4 +208,14 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 	C.g_simple_action_group_remove(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)
+}
+
+// SimpleActionGroupClass: instance of this type is always passed by reference.
+type SimpleActionGroupClass struct {
+	*simpleActionGroupClass
+}
+
+// simpleActionGroupClass is the struct that's finalized.
+type simpleActionGroupClass struct {
+	native *C.GSimpleActionGroupClass
 }

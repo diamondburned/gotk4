@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -77,7 +79,19 @@ var (
 	_ Widgetter = (*TreeExpander)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTreeExpander,
+		GoType:    reflect.TypeOf((*TreeExpander)(nil)),
+		InitClass: initClassTreeExpander,
+	})
+}
+
 func initClassTreeExpander(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitTreeExpander(*TreeExpanderClass) }); ok {
+		klass := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
+		goval.InitTreeExpander(klass)
+	}
 }
 
 func wrapTreeExpander(obj *coreglib.Object) *TreeExpander {
@@ -247,4 +261,21 @@ func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	C.gtk_tree_expander_set_list_row(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(listRow)
+}
+
+// TreeExpanderClass: instance of this type is always passed by reference.
+type TreeExpanderClass struct {
+	*treeExpanderClass
+}
+
+// treeExpanderClass is the struct that's finalized.
+type treeExpanderClass struct {
+	native *C.GtkTreeExpanderClass
+}
+
+func (t *TreeExpanderClass) ParentClass() *WidgetClass {
+	valptr := &t.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

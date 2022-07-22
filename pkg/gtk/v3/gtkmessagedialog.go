@@ -4,10 +4,12 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -131,7 +133,19 @@ var (
 	_ Binner = (*MessageDialog)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeMessageDialog,
+		GoType:    reflect.TypeOf((*MessageDialog)(nil)),
+		InitClass: initClassMessageDialog,
+	})
+}
+
 func initClassMessageDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitMessageDialog(*MessageDialogClass) }); ok {
+		klass := (*MessageDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitMessageDialog(klass)
+	}
 }
 
 func wrapMessageDialog(obj *coreglib.Object) *MessageDialog {
@@ -283,6 +297,23 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 	runtime.KeepAlive(messageDialog)
 	runtime.KeepAlive(str)
+}
+
+// MessageDialogClass: instance of this type is always passed by reference.
+type MessageDialogClass struct {
+	*messageDialogClass
+}
+
+// messageDialogClass is the struct that's finalized.
+type messageDialogClass struct {
+	native *C.GtkMessageDialogClass
+}
+
+func (m *MessageDialogClass) ParentClass() *DialogClass {
+	valptr := &m.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }
 
 // NewMessageDialog creates a new message dialog. This is a simple

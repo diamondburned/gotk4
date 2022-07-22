@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -34,7 +36,7 @@ type NotebookPageAccessibleOverrider interface {
 
 type NotebookPageAccessible struct {
 	_ [0]func() // equal guard
-	atk.ObjectClass
+	atk.AtkObject
 
 	*coreglib.Object
 	atk.Component
@@ -44,12 +46,26 @@ var (
 	_ coreglib.Objector = (*NotebookPageAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeNotebookPageAccessible,
+		GoType:    reflect.TypeOf((*NotebookPageAccessible)(nil)),
+		InitClass: initClassNotebookPageAccessible,
+	})
+}
+
 func initClassNotebookPageAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitNotebookPageAccessible(*NotebookPageAccessibleClass)
+	}); ok {
+		klass := (*NotebookPageAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitNotebookPageAccessible(klass)
+	}
 }
 
 func wrapNotebookPageAccessible(obj *coreglib.Object) *NotebookPageAccessible {
 	return &NotebookPageAccessible{
-		ObjectClass: atk.ObjectClass{
+		AtkObject: atk.AtkObject{
 			Object: obj,
 		},
 		Object: obj,
@@ -96,4 +112,22 @@ func (page *NotebookPageAccessible) Invalidate() {
 
 	C.gtk_notebook_page_accessible_invalidate(_arg0)
 	runtime.KeepAlive(page)
+}
+
+// NotebookPageAccessibleClass: instance of this type is always passed by
+// reference.
+type NotebookPageAccessibleClass struct {
+	*notebookPageAccessibleClass
+}
+
+// notebookPageAccessibleClass is the struct that's finalized.
+type notebookPageAccessibleClass struct {
+	native *C.GtkNotebookPageAccessibleClass
+}
+
+func (n *NotebookPageAccessibleClass) ParentClass() *atk.ObjectClass {
+	valptr := &n.native.parent_class
+	var v *atk.ObjectClass // out
+	v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

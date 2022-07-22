@@ -1239,11 +1239,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeListBoxRow,
-		GoType:       reflect.TypeOf((*ListBoxRow)(nil)),
-		InitClass:    initClassListBoxRow,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkListBoxRow{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkListBoxRowClass{})),
+		GType:     GTypeListBoxRow,
+		GoType:    reflect.TypeOf((*ListBoxRow)(nil)),
+		InitClass: initClassListBoxRow,
 	})
 }
 
@@ -1253,6 +1251,10 @@ func initClassListBoxRow(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ListBoxRowClass_activate)
+	}
+	if goval, ok := goval.(interface{ InitListBoxRow(*ListBoxRowClass) }); ok {
+		klass := (*ListBoxRowClass)(gextras.NewStructNative(gclass))
+		goval.InitListBoxRow(klass)
 	}
 }
 
@@ -1628,4 +1630,22 @@ func (row *ListBoxRow) SetSelectable(selectable bool) {
 	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(selectable)
+}
+
+// ListBoxRowClass: instance of this type is always passed by reference.
+type ListBoxRowClass struct {
+	*listBoxRowClass
+}
+
+// listBoxRowClass is the struct that's finalized.
+type listBoxRowClass struct {
+	native *C.GtkListBoxRowClass
+}
+
+// ParentClass: parent class.
+func (l *ListBoxRowClass) ParentClass() *WidgetClass {
+	valptr := &l.native.parent_class
+	var v *WidgetClass // out
+	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

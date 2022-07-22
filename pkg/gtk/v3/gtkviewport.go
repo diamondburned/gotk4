@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -64,7 +66,19 @@ var (
 	_ coreglib.Objector = (*Viewport)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeViewport,
+		GoType:    reflect.TypeOf((*Viewport)(nil)),
+		InitClass: initClassViewport,
+	})
+}
+
 func initClassViewport(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitViewport(*ViewportClass) }); ok {
+		klass := (*ViewportClass)(gextras.NewStructNative(gclass))
+		goval.InitViewport(klass)
+	}
 }
 
 func wrapViewport(obj *coreglib.Object) *Viewport {
@@ -338,4 +352,22 @@ func (viewport *Viewport) SetVAdjustment(adjustment *Adjustment) {
 	C.gtk_viewport_set_vadjustment(_arg0, _arg1)
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(adjustment)
+}
+
+// ViewportClass: instance of this type is always passed by reference.
+type ViewportClass struct {
+	*viewportClass
+}
+
+// viewportClass is the struct that's finalized.
+type viewportClass struct {
+	native *C.GtkViewportClass
+}
+
+// ParentClass: parent class.
+func (v *ViewportClass) ParentClass() *BinClass {
+	valptr := &v.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -82,7 +83,19 @@ var (
 	_ coreglib.Objector = (*ListStore)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeListStore,
+		GoType:    reflect.TypeOf((*ListStore)(nil)),
+		InitClass: initClassListStore,
+	})
+}
+
 func initClassListStore(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitListStore(*ListStoreClass) }); ok {
+		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
+		goval.InitListStore(klass)
+	}
 }
 
 func wrapListStore(obj *coreglib.Object) *ListStore {
@@ -636,4 +649,14 @@ func (store *ListStore) Swap(a, b *TreeIter) {
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
+}
+
+// ListStoreClass: instance of this type is always passed by reference.
+type ListStoreClass struct {
+	*listStoreClass
+}
+
+// listStoreClass is the struct that's finalized.
+type listStoreClass struct {
+	native *C.GtkListStoreClass
 }

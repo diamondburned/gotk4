@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,21 @@ var (
 	_ IOStreamer = (*TCPWrapperConnection)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeTCPWrapperConnection,
+		GoType:    reflect.TypeOf((*TCPWrapperConnection)(nil)),
+		InitClass: initClassTCPWrapperConnection,
+	})
+}
+
 func initClassTCPWrapperConnection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitTCPWrapperConnection(*TCPWrapperConnectionClass)
+	}); ok {
+		klass := (*TCPWrapperConnectionClass)(gextras.NewStructNative(gclass))
+		goval.InitTCPWrapperConnection(klass)
+	}
 }
 
 func wrapTCPWrapperConnection(obj *coreglib.Object) *TCPWrapperConnection {
@@ -128,4 +144,22 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	}
 
 	return _ioStream
+}
+
+// TCPWrapperConnectionClass: instance of this type is always passed by
+// reference.
+type TCPWrapperConnectionClass struct {
+	*tcpWrapperConnectionClass
+}
+
+// tcpWrapperConnectionClass is the struct that's finalized.
+type tcpWrapperConnectionClass struct {
+	native *C.GTcpWrapperConnectionClass
+}
+
+func (t *TCPWrapperConnectionClass) ParentClass() *TCPConnectionClass {
+	valptr := &t.native.parent_class
+	var v *TCPConnectionClass // out
+	v = (*TCPConnectionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

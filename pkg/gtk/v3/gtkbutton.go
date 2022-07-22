@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -103,11 +104,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeButton,
-		GoType:       reflect.TypeOf((*Button)(nil)),
-		InitClass:    initClassButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkButtonClass{})),
+		GType:     GTypeButton,
+		GoType:    reflect.TypeOf((*Button)(nil)),
+		InitClass: initClassButton,
 	})
 }
 
@@ -137,6 +136,10 @@ func initClassButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Released() }); ok {
 		pclass.released = (*[0]byte)(C._gotk4_gtk3_ButtonClass_released)
+	}
+	if goval, ok := goval.(interface{ InitButton(*ButtonClass) }); ok {
+		klass := (*ButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitButton(klass)
 	}
 }
 
@@ -1060,4 +1063,22 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
+}
+
+// ButtonClass: instance of this type is always passed by reference.
+type ButtonClass struct {
+	*buttonClass
+}
+
+// buttonClass is the struct that's finalized.
+type buttonClass struct {
+	native *C.GtkButtonClass
+}
+
+// ParentClass: parent class.
+func (b *ButtonClass) ParentClass() *BinClass {
+	valptr := &b.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

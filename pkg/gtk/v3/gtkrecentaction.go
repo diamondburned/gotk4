@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -50,7 +52,19 @@ var (
 	_ coreglib.Objector = (*RecentAction)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRecentAction,
+		GoType:    reflect.TypeOf((*RecentAction)(nil)),
+		InitClass: initClassRecentAction,
+	})
+}
+
 func initClassRecentAction(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitRecentAction(*RecentActionClass) }); ok {
+		klass := (*RecentActionClass)(gextras.NewStructNative(gclass))
+		goval.InitRecentAction(klass)
+	}
 }
 
 func wrapRecentAction(obj *coreglib.Object) *RecentAction {
@@ -234,4 +248,21 @@ func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(showNumbers)
+}
+
+// RecentActionClass: instance of this type is always passed by reference.
+type RecentActionClass struct {
+	*recentActionClass
+}
+
+// recentActionClass is the struct that's finalized.
+type recentActionClass struct {
+	native *C.GtkRecentActionClass
+}
+
+func (r *RecentActionClass) ParentClass() *ActionClass {
+	valptr := &r.native.parent_class
+	var v *ActionClass // out
+	v = (*ActionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

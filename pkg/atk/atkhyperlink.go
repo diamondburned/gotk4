@@ -9,6 +9,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -114,7 +115,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - object associated with this hyperlinks i-th anchor.
 	//
-	GetObject(i int) *ObjectClass
+	GetObject(i int) *AtkObject
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	//
@@ -179,11 +180,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeHyperlink,
-		GoType:       reflect.TypeOf((*Hyperlink)(nil)),
-		InitClass:    initClassHyperlink,
-		ClassSize:    uint32(unsafe.Sizeof(C.AtkHyperlink{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.AtkHyperlinkClass{})),
+		GType:     GTypeHyperlink,
+		GoType:    reflect.TypeOf((*Hyperlink)(nil)),
+		InitClass: initClassHyperlink,
 	})
 }
 
@@ -199,7 +198,7 @@ func initClassHyperlink(gclass unsafe.Pointer, goval any) {
 		pclass.get_n_anchors = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
 	}
 
-	if _, ok := goval.(interface{ GetObject(i int) *ObjectClass }); ok {
+	if _, ok := goval.(interface{ GetObject(i int) *AtkObject }); ok {
 		pclass.get_object = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_object)
 	}
 
@@ -225,6 +224,10 @@ func initClassHyperlink(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ LinkState() uint }); ok {
 		pclass.link_state = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_state)
+	}
+	if goval, ok := goval.(interface{ InitHyperlink(*HyperlinkClass) }); ok {
+		klass := (*HyperlinkClass)(gextras.NewStructNative(gclass))
+		goval.InitHyperlink(klass)
 	}
 }
 
@@ -255,7 +258,7 @@ func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint
 //export _gotk4_atk1_HyperlinkClass_get_object
 func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
 	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GetObject(i int) *ObjectClass })
+	iface := goval.(interface{ GetObject(i int) *AtkObject })
 
 	var _i int // out
 
@@ -437,7 +440,7 @@ func (link_ *Hyperlink) NAnchors() int {
 //
 //    - object associated with this hyperlinks i-th anchor.
 //
-func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
+func (link_ *Hyperlink) GetObject(i int) *AtkObject {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
 	var _cret *C.AtkObject    // in
@@ -449,7 +452,7 @@ func (link_ *Hyperlink) GetObject(i int) *ObjectClass {
 	runtime.KeepAlive(link_)
 	runtime.KeepAlive(i)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 
@@ -588,4 +591,14 @@ func (link_ *Hyperlink) IsValid() bool {
 	}
 
 	return _ok
+}
+
+// HyperlinkClass: instance of this type is always passed by reference.
+type HyperlinkClass struct {
+	*hyperlinkClass
+}
+
+// hyperlinkClass is the struct that's finalized.
+type hyperlinkClass struct {
+	native *C.AtkHyperlinkClass
 }

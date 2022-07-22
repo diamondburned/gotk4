@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -47,7 +49,19 @@ var (
 	_ coreglib.Objector = (*SliceListModel)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeSliceListModel,
+		GoType:    reflect.TypeOf((*SliceListModel)(nil)),
+		InitClass: initClassSliceListModel,
+	})
+}
+
 func initClassSliceListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitSliceListModel(*SliceListModelClass) }); ok {
+		klass := (*SliceListModelClass)(gextras.NewStructNative(gclass))
+		goval.InitSliceListModel(klass)
+	}
 }
 
 func wrapSliceListModel(obj *coreglib.Object) *SliceListModel {
@@ -236,4 +250,14 @@ func (self *SliceListModel) SetSize(size uint) {
 	C.gtk_slice_list_model_set_size(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(size)
+}
+
+// SliceListModelClass: instance of this type is always passed by reference.
+type SliceListModelClass struct {
+	*sliceListModelClass
+}
+
+// sliceListModelClass is the struct that's finalized.
+type sliceListModelClass struct {
+	native *C.GtkSliceListModelClass
 }

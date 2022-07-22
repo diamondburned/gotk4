@@ -317,11 +317,9 @@ var _ Resolverer = (*Resolver)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeResolver,
-		GoType:       reflect.TypeOf((*Resolver)(nil)),
-		InitClass:    initClassResolver,
-		ClassSize:    uint32(unsafe.Sizeof(C.GResolver{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GResolverClass{})),
+		GType:     GTypeResolver,
+		GoType:    reflect.TypeOf((*Resolver)(nil)),
+		InitClass: initClassResolver,
 	})
 }
 
@@ -385,6 +383,10 @@ func initClassResolver(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Reload() }); ok {
 		pclass.reload = (*[0]byte)(C._gotk4_gio2_ResolverClass_reload)
+	}
+	if goval, ok := goval.(interface{ InitResolver(*ResolverClass) }); ok {
+		klass := (*ResolverClass)(gextras.NewStructNative(gclass))
+		goval.InitResolver(klass)
 	}
 }
 
@@ -1594,4 +1596,14 @@ func ResolverGetDefault() Resolverer {
 	}
 
 	return _resolver
+}
+
+// ResolverClass: instance of this type is always passed by reference.
+type ResolverClass struct {
+	*resolverClass
+}
+
+// resolverClass is the struct that's finalized.
+type resolverClass struct {
+	native *C.GResolverClass
 }

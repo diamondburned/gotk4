@@ -32,10 +32,6 @@ func init() {
 	})
 }
 
-// GestureMultiPressOverrider contains methods that are overridable.
-type GestureMultiPressOverrider interface {
-}
-
 // GestureMultiPress is a Gesture implementation able to recognize multiple
 // clicks on a nearby zone, which can be listened for through the
 // GestureMultiPress::pressed signal. Whenever time or distance between clicks
@@ -53,9 +49,6 @@ type GestureMultiPress struct {
 var (
 	_ Gesturer = (*GestureMultiPress)(nil)
 )
-
-func initClassGestureMultiPress(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGestureMultiPress(obj *coreglib.Object) *GestureMultiPress {
 	return &GestureMultiPress{

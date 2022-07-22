@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -60,7 +62,19 @@ var (
 	_ IMContexter = (*IMContextSimple)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeIMContextSimple,
+		GoType:    reflect.TypeOf((*IMContextSimple)(nil)),
+		InitClass: initClassIMContextSimple,
+	})
+}
+
 func initClassIMContextSimple(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitIMContextSimple(*IMContextSimpleClass) }); ok {
+		klass := (*IMContextSimpleClass)(gextras.NewStructNative(gclass))
+		goval.InitIMContextSimple(klass)
+	}
 }
 
 func wrapIMContextSimple(obj *coreglib.Object) *IMContextSimple {
@@ -110,4 +124,21 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	C.gtk_im_context_simple_add_compose_file(_arg0, _arg1)
 	runtime.KeepAlive(contextSimple)
 	runtime.KeepAlive(composeFile)
+}
+
+// IMContextSimpleClass: instance of this type is always passed by reference.
+type IMContextSimpleClass struct {
+	*imContextSimpleClass
+}
+
+// imContextSimpleClass is the struct that's finalized.
+type imContextSimpleClass struct {
+	native *C.GtkIMContextSimpleClass
+}
+
+func (i *IMContextSimpleClass) ParentClass() *IMContextClass {
+	valptr := &i.native.parent_class
+	var v *IMContextClass // out
+	v = (*IMContextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

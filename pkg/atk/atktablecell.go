@@ -80,7 +80,7 @@ type TableCellOverrider interface {
 	//
 	//    - object: atk object for the containing table.
 	//
-	Table() *ObjectClass
+	Table() *AtkObject
 }
 
 // TableCell: being Table a component which present elements ordered via rows
@@ -93,7 +93,7 @@ type TableCellOverrider interface {
 // underlying type by calling Cast().
 type TableCell struct {
 	_ [0]func() // equal guard
-	ObjectClass
+	AtkObject
 }
 
 var (
@@ -115,7 +115,7 @@ type TableCeller interface {
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int
 	// Table returns a reference to the accessible of the containing table.
-	Table() *ObjectClass
+	Table() *AtkObject
 }
 
 var _ TableCeller = (*TableCell)(nil)
@@ -202,7 +202,7 @@ func _gotk4_atk1_TableCellIface_get_table(arg0 *C.AtkTableCell) (cret *C.AtkObje
 
 func wrapTableCell(obj *coreglib.Object) *TableCell {
 	return &TableCell{
-		ObjectClass: ObjectClass{
+		AtkObject: AtkObject{
 			Object: obj,
 		},
 	}
@@ -341,7 +341,7 @@ func (cell *TableCell) RowSpan() int {
 //
 //    - object: atk object for the containing table.
 //
-func (cell *TableCell) Table() *ObjectClass {
+func (cell *TableCell) Table() *AtkObject {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in
 
@@ -350,9 +350,21 @@ func (cell *TableCell) Table() *ObjectClass {
 	_cret = C.atk_table_cell_get_table(_arg0)
 	runtime.KeepAlive(cell)
 
-	var _object *ObjectClass // out
+	var _object *AtkObject // out
 
 	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _object
+}
+
+// TableCellIface: atkTableCell is an interface for cells inside an Table.
+//
+// An instance of this type is always passed by reference.
+type TableCellIface struct {
+	*tableCellIface
+}
+
+// tableCellIface is the struct that's finalized.
+type tableCellIface struct {
+	native *C.AtkTableCellIface
 }

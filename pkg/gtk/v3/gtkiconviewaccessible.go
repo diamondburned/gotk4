@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -42,7 +44,21 @@ var (
 	_ coreglib.Objector = (*IconViewAccessible)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeIconViewAccessible,
+		GoType:    reflect.TypeOf((*IconViewAccessible)(nil)),
+		InitClass: initClassIconViewAccessible,
+	})
+}
+
 func initClassIconViewAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitIconViewAccessible(*IconViewAccessibleClass)
+	}); ok {
+		klass := (*IconViewAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.InitIconViewAccessible(klass)
+	}
 }
 
 func wrapIconViewAccessible(obj *coreglib.Object) *IconViewAccessible {
@@ -50,7 +66,7 @@ func wrapIconViewAccessible(obj *coreglib.Object) *IconViewAccessible {
 		ContainerAccessible: ContainerAccessible{
 			WidgetAccessible: WidgetAccessible{
 				Accessible: Accessible{
-					ObjectClass: atk.ObjectClass{
+					AtkObject: atk.AtkObject{
 						Object: obj,
 					},
 				},
@@ -67,4 +83,21 @@ func wrapIconViewAccessible(obj *coreglib.Object) *IconViewAccessible {
 
 func marshalIconViewAccessible(p uintptr) (interface{}, error) {
 	return wrapIconViewAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// IconViewAccessibleClass: instance of this type is always passed by reference.
+type IconViewAccessibleClass struct {
+	*iconViewAccessibleClass
+}
+
+// iconViewAccessibleClass is the struct that's finalized.
+type iconViewAccessibleClass struct {
+	native *C.GtkIconViewAccessibleClass
+}
+
+func (i *IconViewAccessibleClass) ParentClass() *ContainerAccessibleClass {
+	valptr := &i.native.parent_class
+	var v *ContainerAccessibleClass // out
+	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

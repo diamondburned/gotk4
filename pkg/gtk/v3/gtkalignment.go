@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -58,7 +60,19 @@ var (
 	_ Binner = (*Alignment)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeAlignment,
+		GoType:    reflect.TypeOf((*Alignment)(nil)),
+		InitClass: initClassAlignment,
+	})
+}
+
 func initClassAlignment(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitAlignment(*AlignmentClass) }); ok {
+		klass := (*AlignmentClass)(gextras.NewStructNative(gclass))
+		goval.InitAlignment(klass)
+	}
 }
 
 func wrapAlignment(obj *coreglib.Object) *Alignment {
@@ -243,4 +257,22 @@ func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, p
 	runtime.KeepAlive(paddingBottom)
 	runtime.KeepAlive(paddingLeft)
 	runtime.KeepAlive(paddingRight)
+}
+
+// AlignmentClass: instance of this type is always passed by reference.
+type AlignmentClass struct {
+	*alignmentClass
+}
+
+// alignmentClass is the struct that's finalized.
+type alignmentClass struct {
+	native *C.GtkAlignmentClass
+}
+
+// ParentClass: parent class.
+func (a *AlignmentClass) ParentClass() *BinClass {
+	valptr := &a.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

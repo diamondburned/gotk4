@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -57,11 +58,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeCellRendererText,
-		GoType:       reflect.TypeOf((*CellRendererText)(nil)),
-		InitClass:    initClassCellRendererText,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRendererText{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererTextClass{})),
+		GType:     GTypeCellRendererText,
+		GoType:    reflect.TypeOf((*CellRendererText)(nil)),
+		InitClass: initClassCellRendererText,
 	})
 }
 
@@ -71,6 +70,10 @@ func initClassCellRendererText(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ Edited(path, newText string) }); ok {
 		pclass.edited = (*[0]byte)(C._gotk4_gtk4_CellRendererTextClass_edited)
+	}
+	if goval, ok := goval.(interface{ InitCellRendererText(*CellRendererTextClass) }); ok {
+		klass := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
+		goval.InitCellRendererText(klass)
 	}
 }
 
@@ -178,4 +181,21 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)
+}
+
+// CellRendererTextClass: instance of this type is always passed by reference.
+type CellRendererTextClass struct {
+	*cellRendererTextClass
+}
+
+// cellRendererTextClass is the struct that's finalized.
+type cellRendererTextClass struct {
+	native *C.GtkCellRendererTextClass
+}
+
+func (c *CellRendererTextClass) ParentClass() *CellRendererClass {
+	valptr := &c.native.parent_class
+	var v *CellRendererClass // out
+	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

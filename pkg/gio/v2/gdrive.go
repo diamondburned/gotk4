@@ -1086,3 +1086,15 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 
 	return _goerr
 }
+
+// DriveIface: interface for creating #GDrive implementations.
+//
+// An instance of this type is always passed by reference.
+type DriveIface struct {
+	*driveIface
+}
+
+// driveIface is the struct that's finalized.
+type driveIface struct {
+	native *C.GDriveIface
+}

@@ -3,9 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -84,7 +86,21 @@ var (
 	_ Binner            = (*RecentChooserDialog)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeRecentChooserDialog,
+		GoType:    reflect.TypeOf((*RecentChooserDialog)(nil)),
+		InitClass: initClassRecentChooserDialog,
+	})
+}
+
 func initClassRecentChooserDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		InitRecentChooserDialog(*RecentChooserDialogClass)
+	}); ok {
+		klass := (*RecentChooserDialogClass)(gextras.NewStructNative(gclass))
+		goval.InitRecentChooserDialog(klass)
+	}
 }
 
 func wrapRecentChooserDialog(obj *coreglib.Object) *RecentChooserDialog {
@@ -118,4 +134,22 @@ func wrapRecentChooserDialog(obj *coreglib.Object) *RecentChooserDialog {
 
 func marshalRecentChooserDialog(p uintptr) (interface{}, error) {
 	return wrapRecentChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// RecentChooserDialogClass: instance of this type is always passed by
+// reference.
+type RecentChooserDialogClass struct {
+	*recentChooserDialogClass
+}
+
+// recentChooserDialogClass is the struct that's finalized.
+type recentChooserDialogClass struct {
+	native *C.GtkRecentChooserDialogClass
+}
+
+func (r *RecentChooserDialogClass) ParentClass() *DialogClass {
+	valptr := &r.native.parent_class
+	var v *DialogClass // out
+	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

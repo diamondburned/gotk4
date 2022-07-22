@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -48,7 +50,19 @@ var (
 	_ Ranger = (*VScale)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeVScale,
+		GoType:    reflect.TypeOf((*VScale)(nil)),
+		InitClass: initClassVScale,
+	})
+}
+
 func initClassVScale(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitVScale(*VScaleClass) }); ok {
+		klass := (*VScaleClass)(gextras.NewStructNative(gclass))
+		goval.InitVScale(klass)
+	}
 }
 
 func wrapVScale(obj *coreglib.Object) *VScale {
@@ -150,4 +164,21 @@ func NewVScaleWithRange(min, max, step float64) *VScale {
 	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _vScale
+}
+
+// VScaleClass: instance of this type is always passed by reference.
+type VScaleClass struct {
+	*vScaleClass
+}
+
+// vScaleClass is the struct that's finalized.
+type vScaleClass struct {
+	native *C.GtkVScaleClass
+}
+
+func (v *VScaleClass) ParentClass() *ScaleClass {
+	valptr := &v.native.parent_class
+	var v *ScaleClass // out
+	v = (*ScaleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

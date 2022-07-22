@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// GLTextureOverrider contains methods that are overridable.
-type GLTextureOverrider interface {
-}
-
 // GLTexture: gdkTexture representing a GL texture object.
 type GLTexture struct {
 	_ [0]func() // equal guard
@@ -38,9 +34,6 @@ type GLTexture struct {
 var (
 	_ Texturer = (*GLTexture)(nil)
 )
-
-func initClassGLTexture(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapGLTexture(obj *coreglib.Object) *GLTexture {
 	return &GLTexture{

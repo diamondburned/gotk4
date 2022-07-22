@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -75,11 +76,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeAppChooserButton,
-		GoType:       reflect.TypeOf((*AppChooserButton)(nil)),
-		InitClass:    initClassAppChooserButton,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkAppChooserButton{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkAppChooserButtonClass{})),
+		GType:     GTypeAppChooserButton,
+		GoType:    reflect.TypeOf((*AppChooserButton)(nil)),
+		InitClass: initClassAppChooserButton,
 	})
 }
 
@@ -89,6 +88,10 @@ func initClassAppChooserButton(gclass unsafe.Pointer, goval any) {
 
 	if _, ok := goval.(interface{ CustomItemActivated(itemName string) }); ok {
 		pclass.custom_item_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserButtonClass_custom_item_activated)
+	}
+	if goval, ok := goval.(interface{ InitAppChooserButton(*AppChooserButtonClass) }); ok {
+		klass := (*AppChooserButtonClass)(gextras.NewStructNative(gclass))
+		goval.InitAppChooserButton(klass)
 	}
 }
 
@@ -419,4 +422,22 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
+}
+
+// AppChooserButtonClass: instance of this type is always passed by reference.
+type AppChooserButtonClass struct {
+	*appChooserButtonClass
+}
+
+// appChooserButtonClass is the struct that's finalized.
+type appChooserButtonClass struct {
+	native *C.GtkAppChooserButtonClass
+}
+
+// ParentClass: parent class.
+func (a *AppChooserButtonClass) ParentClass() *ComboBoxClass {
+	valptr := &a.native.parent_class
+	var v *ComboBoxClass // out
+	v = (*ComboBoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

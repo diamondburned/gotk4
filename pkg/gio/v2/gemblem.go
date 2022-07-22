@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// EmblemOverrider contains methods that are overridable.
-type EmblemOverrider interface {
-}
-
 // Emblem is an implementation of #GIcon that supports having an emblem, which
 // is an icon with additional properties. It can than be added to a Icon.
 //
@@ -44,9 +40,6 @@ type Emblem struct {
 var (
 	_ coreglib.Objector = (*Emblem)(nil)
 )
-
-func initClassEmblem(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapEmblem(obj *coreglib.Object) *Emblem {
 	return &Emblem{

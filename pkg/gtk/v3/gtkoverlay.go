@@ -84,11 +84,9 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:        GTypeOverlay,
-		GoType:       reflect.TypeOf((*Overlay)(nil)),
-		InitClass:    initClassOverlay,
-		ClassSize:    uint32(unsafe.Sizeof(C.GtkOverlay{})),
-		InstanceSize: uint32(unsafe.Sizeof(C.GtkOverlayClass{})),
+		GType:     GTypeOverlay,
+		GoType:    reflect.TypeOf((*Overlay)(nil)),
+		InitClass: initClassOverlay,
 	})
 }
 
@@ -100,6 +98,10 @@ func initClassOverlay(gclass unsafe.Pointer, goval any) {
 		ChildPosition(widget Widgetter, allocation *Allocation) bool
 	}); ok {
 		pclass.get_child_position = (*[0]byte)(C._gotk4_gtk3_OverlayClass_get_child_position)
+	}
+	if goval, ok := goval.(interface{ InitOverlay(*OverlayClass) }); ok {
+		klass := (*OverlayClass)(gextras.NewStructNative(gclass))
+		goval.InitOverlay(klass)
 	}
 }
 
@@ -349,4 +351,22 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(passThrough)
+}
+
+// OverlayClass: instance of this type is always passed by reference.
+type OverlayClass struct {
+	*overlayClass
+}
+
+// overlayClass is the struct that's finalized.
+type overlayClass struct {
+	native *C.GtkOverlayClass
+}
+
+// ParentClass: parent class.
+func (o *OverlayClass) ParentClass() *BinClass {
+	valptr := &o.native.parent_class
+	var v *BinClass // out
+	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -39,7 +41,19 @@ var (
 	_ SocketAddresser = (*ProxyAddress)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeProxyAddress,
+		GoType:    reflect.TypeOf((*ProxyAddress)(nil)),
+		InitClass: initClassProxyAddress,
+	})
+}
+
 func initClassProxyAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitProxyAddress(*ProxyAddressClass) }); ok {
+		klass := (*ProxyAddressClass)(gextras.NewStructNative(gclass))
+		goval.InitProxyAddress(klass)
+	}
 }
 
 func wrapProxyAddress(obj *coreglib.Object) *ProxyAddress {
@@ -285,4 +299,23 @@ func (proxy *ProxyAddress) Username() string {
 	}
 
 	return _utf8
+}
+
+// ProxyAddressClass class structure for Address.
+//
+// An instance of this type is always passed by reference.
+type ProxyAddressClass struct {
+	*proxyAddressClass
+}
+
+// proxyAddressClass is the struct that's finalized.
+type proxyAddressClass struct {
+	native *C.GProxyAddressClass
+}
+
+func (p *ProxyAddressClass) ParentClass() *InetSocketAddressClass {
+	valptr := &p.native.parent_class
+	var v *InetSocketAddressClass // out
+	v = (*InetSocketAddressClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
+	return v
 }

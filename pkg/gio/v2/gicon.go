@@ -398,3 +398,16 @@ func NewIconForString(str string) (*Icon, error) {
 
 	return _icon, _goerr
 }
+
+// IconIface is used to implement GIcon types for various different systems. See
+// Icon and Icon for examples of how to implement this interface.
+//
+// An instance of this type is always passed by reference.
+type IconIface struct {
+	*iconIface
+}
+
+// iconIface is the struct that's finalized.
+type iconIface struct {
+	native *C.GIconIface
+}

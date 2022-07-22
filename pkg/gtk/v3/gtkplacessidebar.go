@@ -120,10 +120,6 @@ func (p PlacesOpenFlags) Has(other PlacesOpenFlags) bool {
 	return (p & other) == other
 }
 
-// PlacesSidebarOverrider contains methods that are overridable.
-type PlacesSidebarOverrider interface {
-}
-
 // PlacesSidebar is a widget that displays a list of frequently-used places in
 // the file system: the user’s home directory, the user’s bookmarks, and volumes
 // and drives. This widget is used as a sidebar in FileChooser and may be used
@@ -170,9 +166,6 @@ type PlacesSidebar struct {
 var (
 	_ Binner = (*PlacesSidebar)(nil)
 )
-
-func initClassPlacesSidebar(gclass unsafe.Pointer, goval any) {
-}
 
 func wrapPlacesSidebar(obj *coreglib.Object) *PlacesSidebar {
 	return &PlacesSidebar{

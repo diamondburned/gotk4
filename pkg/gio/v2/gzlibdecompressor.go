@@ -3,9 +3,11 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -41,7 +43,19 @@ var (
 	_ coreglib.Objector = (*ZlibDecompressor)(nil)
 )
 
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:     GTypeZlibDecompressor,
+		GoType:    reflect.TypeOf((*ZlibDecompressor)(nil)),
+		InitClass: initClassZlibDecompressor,
+	})
+}
+
 func initClassZlibDecompressor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ InitZlibDecompressor(*ZlibDecompressorClass) }); ok {
+		klass := (*ZlibDecompressorClass)(gextras.NewStructNative(gclass))
+		goval.InitZlibDecompressor(klass)
+	}
 }
 
 func wrapZlibDecompressor(obj *coreglib.Object) *ZlibDecompressor {
@@ -109,4 +123,14 @@ func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	}
 
 	return _fileInfo
+}
+
+// ZlibDecompressorClass: instance of this type is always passed by reference.
+type ZlibDecompressorClass struct {
+	*zlibDecompressorClass
+}
+
+// zlibDecompressorClass is the struct that's finalized.
+type zlibDecompressorClass struct {
+	native *C.GZlibDecompressorClass
 }

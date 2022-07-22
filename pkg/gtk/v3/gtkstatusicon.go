@@ -135,8 +135,8 @@ func init() {
 		GType:        GTypeStatusIcon,
 		GoType:       reflect.TypeOf((*StatusIcon)(nil)),
 		InitClass:    initClassStatusIcon,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkStatusIcon{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkStatusIconClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkStatusIcon{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkStatusIconClass{})),
 	})
 }
 

@@ -98,8 +98,8 @@ func init() {
 		GType:        GTypeCellRendererAccel,
 		GoType:       reflect.TypeOf((*CellRendererAccel)(nil)),
 		InitClass:    initClassCellRendererAccel,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellRendererAccel{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellRendererAccelClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCellRendererAccel{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCellRendererAccelClass{})),
 	})
 }
 

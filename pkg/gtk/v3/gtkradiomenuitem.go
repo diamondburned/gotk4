@@ -69,8 +69,8 @@ func init() {
 		GType:        GTypeRadioMenuItem,
 		GoType:       reflect.TypeOf((*RadioMenuItem)(nil)),
 		InitClass:    initClassRadioMenuItem,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkRadioMenuItem{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkRadioMenuItemClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkRadioMenuItem{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkRadioMenuItemClass{})),
 	})
 }
 

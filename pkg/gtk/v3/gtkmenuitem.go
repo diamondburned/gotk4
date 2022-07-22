@@ -115,8 +115,8 @@ func init() {
 		GType:        GTypeMenuItem,
 		GoType:       reflect.TypeOf((*MenuItem)(nil)),
 		InitClass:    initClassMenuItem,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkMenuItem{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkMenuItemClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkMenuItem{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkMenuItemClass{})),
 	})
 }
 

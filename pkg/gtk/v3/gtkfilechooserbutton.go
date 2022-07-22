@@ -85,8 +85,8 @@ func init() {
 		GType:        GTypeFileChooserButton,
 		GoType:       reflect.TypeOf((*FileChooserButton)(nil)),
 		InitClass:    initClassFileChooserButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkFileChooserButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkFileChooserButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkFileChooserButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkFileChooserButtonClass{})),
 	})
 }
 

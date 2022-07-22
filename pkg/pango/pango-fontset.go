@@ -156,8 +156,8 @@ func init() {
 		GType:        GTypeFontset,
 		GoType:       reflect.TypeOf((*Fontset)(nil)),
 		InitClass:    initClassFontset,
-		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontset{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontsetClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontset{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontsetClass{})),
 	})
 }
 

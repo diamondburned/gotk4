@@ -62,8 +62,8 @@ func init() {
 		GType:        GTypeFontButton,
 		GoType:       reflect.TypeOf((*FontButton)(nil)),
 		InitClass:    initClassFontButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkFontButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkFontButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkFontButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkFontButtonClass{})),
 	})
 }
 

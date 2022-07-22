@@ -124,8 +124,8 @@ func init() {
 		GType:        GTypeComboBox,
 		GoType:       reflect.TypeOf((*ComboBox)(nil)),
 		InitClass:    initClassComboBox,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkComboBox{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkComboBoxClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkComboBox{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkComboBoxClass{})),
 	})
 }
 

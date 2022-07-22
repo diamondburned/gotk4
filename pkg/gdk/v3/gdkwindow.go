@@ -896,8 +896,8 @@ func init() {
 		GType:        GTypeWindow,
 		GoType:       reflect.TypeOf((*Window)(nil)),
 		InitClass:    initClassWindow,
-		ClassSize:    uint16(unsafe.Sizeof(C.GdkWindow{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GdkWindowClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GdkWindow{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GdkWindowClass{})),
 	})
 }
 

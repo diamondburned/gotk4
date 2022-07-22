@@ -241,8 +241,8 @@ func init() {
 		GType:        GTypeFlowBox,
 		GoType:       reflect.TypeOf((*FlowBox)(nil)),
 		InitClass:    initClassFlowBox,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkFlowBox{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkFlowBoxClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkFlowBox{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkFlowBoxClass{})),
 	})
 }
 
@@ -1308,8 +1308,8 @@ func init() {
 		GType:        GTypeFlowBoxChild,
 		GoType:       reflect.TypeOf((*FlowBoxChild)(nil)),
 		InitClass:    initClassFlowBoxChild,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkFlowBoxChild{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkFlowBoxChildClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkFlowBoxChild{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkFlowBoxChildClass{})),
 	})
 }
 

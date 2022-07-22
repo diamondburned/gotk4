@@ -127,8 +127,8 @@ func init() {
 		GType:        GTypeCSSProvider,
 		GoType:       reflect.TypeOf((*CSSProvider)(nil)),
 		InitClass:    initClassCSSProvider,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCssProvider{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCssProviderClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCssProvider{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCssProviderClass{})),
 	})
 }
 

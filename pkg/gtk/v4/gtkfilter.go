@@ -171,8 +171,8 @@ func init() {
 		GType:        GTypeFilter,
 		GoType:       reflect.TypeOf((*Filter)(nil)),
 		InitClass:    initClassFilter,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkFilter{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkFilterClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkFilter{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkFilterClass{})),
 	})
 }
 

@@ -221,8 +221,8 @@ func init() {
 		GType:        GTypeThemingEngine,
 		GoType:       reflect.TypeOf((*ThemingEngine)(nil)),
 		InitClass:    initClassThemingEngine,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkThemingEngine{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkThemingEngineClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkThemingEngine{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkThemingEngineClass{})),
 	})
 }
 

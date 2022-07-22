@@ -91,8 +91,8 @@ func init() {
 		GType:        GTypeNativeDialog,
 		GoType:       reflect.TypeOf((*NativeDialog)(nil)),
 		InitClass:    initClassNativeDialog,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkNativeDialog{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkNativeDialogClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkNativeDialog{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkNativeDialogClass{})),
 	})
 }
 

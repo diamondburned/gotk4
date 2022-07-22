@@ -72,8 +72,8 @@ func init() {
 		GType:        GTypeToolItem,
 		GoType:       reflect.TypeOf((*ToolItem)(nil)),
 		InitClass:    initClassToolItem,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkToolItem{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkToolItemClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkToolItem{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkToolItemClass{})),
 	})
 }
 

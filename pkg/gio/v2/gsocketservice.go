@@ -76,8 +76,8 @@ func init() {
 		GType:        GTypeSocketService,
 		GoType:       reflect.TypeOf((*SocketService)(nil)),
 		InitClass:    initClassSocketService,
-		ClassSize:    uint16(unsafe.Sizeof(C.GSocketService{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GSocketServiceClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GSocketService{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GSocketServiceClass{})),
 	})
 }
 

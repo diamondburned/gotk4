@@ -54,8 +54,8 @@ func init() {
 		GType:        GTypeRadioAction,
 		GoType:       reflect.TypeOf((*RadioAction)(nil)),
 		InitClass:    initClassRadioAction,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkRadioAction{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkRadioActionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkRadioAction{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkRadioActionClass{})),
 	})
 }
 

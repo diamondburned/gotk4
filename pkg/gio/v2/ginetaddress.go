@@ -60,8 +60,8 @@ func init() {
 		GType:        GTypeInetAddress,
 		GoType:       reflect.TypeOf((*InetAddress)(nil)),
 		InitClass:    initClassInetAddress,
-		ClassSize:    uint16(unsafe.Sizeof(C.GInetAddress{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GInetAddressClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GInetAddress{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GInetAddressClass{})),
 	})
 }
 

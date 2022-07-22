@@ -179,8 +179,8 @@ func init() {
 		GType:        GTypeSorter,
 		GoType:       reflect.TypeOf((*Sorter)(nil)),
 		InitClass:    initClassSorter,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkSorter{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkSorterClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkSorter{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkSorterClass{})),
 	})
 }
 

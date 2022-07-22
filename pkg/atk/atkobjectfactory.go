@@ -54,8 +54,8 @@ func init() {
 		GType:        GTypeObjectFactory,
 		GoType:       reflect.TypeOf((*ObjectFactory)(nil)),
 		InitClass:    initClassObjectFactory,
-		ClassSize:    uint16(unsafe.Sizeof(C.AtkObjectFactory{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.AtkObjectFactoryClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.AtkObjectFactory{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.AtkObjectFactoryClass{})),
 	})
 }
 

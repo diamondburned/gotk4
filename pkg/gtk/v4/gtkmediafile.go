@@ -71,8 +71,8 @@ func init() {
 		GType:        GTypeMediaFile,
 		GoType:       reflect.TypeOf((*MediaFile)(nil)),
 		InitClass:    initClassMediaFile,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkMediaFile{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkMediaFileClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkMediaFile{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkMediaFileClass{})),
 	})
 }
 

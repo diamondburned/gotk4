@@ -73,8 +73,8 @@ func init() {
 		GType:        GTypeLinkButton,
 		GoType:       reflect.TypeOf((*LinkButton)(nil)),
 		InitClass:    initClassLinkButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkLinkButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkLinkButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkLinkButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkLinkButtonClass{})),
 	})
 }
 

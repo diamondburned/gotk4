@@ -134,8 +134,8 @@ func init() {
 		GType:        GTypeIOStream,
 		GoType:       reflect.TypeOf((*IOStream)(nil)),
 		InitClass:    initClassIOStream,
-		ClassSize:    uint16(unsafe.Sizeof(C.GIOStream{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GIOStreamClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GIOStream{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GIOStreamClass{})),
 	})
 }
 

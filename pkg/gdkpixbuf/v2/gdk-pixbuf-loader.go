@@ -116,8 +116,8 @@ func init() {
 		GType:        GTypePixbufLoader,
 		GoType:       reflect.TypeOf((*PixbufLoader)(nil)),
 		InitClass:    initClassPixbufLoader,
-		ClassSize:    uint16(unsafe.Sizeof(C.GdkPixbufLoader{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GdkPixbufLoaderClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GdkPixbufLoader{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GdkPixbufLoaderClass{})),
 	})
 }
 

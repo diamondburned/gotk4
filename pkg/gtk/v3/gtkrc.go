@@ -1010,8 +1010,8 @@ func init() {
 		GType:        GTypeRCStyle,
 		GoType:       reflect.TypeOf((*RCStyle)(nil)),
 		InitClass:    initClassRCStyle,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkRcStyle{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkRcStyleClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkRcStyle{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkRcStyleClass{})),
 	})
 }
 

@@ -172,8 +172,8 @@ func init() {
 		GType:        GTypeTreeSelection,
 		GoType:       reflect.TypeOf((*TreeSelection)(nil)),
 		InitClass:    initClassTreeSelection,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkTreeSelection{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkTreeSelectionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeSelection{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeSelectionClass{})),
 	})
 }
 

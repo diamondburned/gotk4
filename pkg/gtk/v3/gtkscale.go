@@ -141,8 +141,8 @@ func init() {
 		GType:        GTypeScale,
 		GoType:       reflect.TypeOf((*Scale)(nil)),
 		InitClass:    initClassScale,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkScale{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkScaleClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkScale{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkScaleClass{})),
 	})
 }
 

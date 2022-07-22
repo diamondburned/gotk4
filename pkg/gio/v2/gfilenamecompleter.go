@@ -50,8 +50,8 @@ func init() {
 		GType:        GTypeFilenameCompleter,
 		GoType:       reflect.TypeOf((*FilenameCompleter)(nil)),
 		InitClass:    initClassFilenameCompleter,
-		ClassSize:    uint16(unsafe.Sizeof(C.GFilenameCompleter{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GFilenameCompleterClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GFilenameCompleter{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GFilenameCompleterClass{})),
 	})
 }
 

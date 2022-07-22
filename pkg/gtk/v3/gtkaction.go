@@ -148,8 +148,8 @@ func init() {
 		GType:        GTypeAction,
 		GoType:       reflect.TypeOf((*Action)(nil)),
 		InitClass:    initClassAction,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkAction{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkActionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkAction{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkActionClass{})),
 	})
 }
 

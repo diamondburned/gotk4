@@ -186,8 +186,8 @@ func init() {
 		GType:        GTypeIconView,
 		GoType:       reflect.TypeOf((*IconView)(nil)),
 		InitClass:    initClassIconView,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkIconView{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkIconViewClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkIconView{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkIconViewClass{})),
 	})
 }
 

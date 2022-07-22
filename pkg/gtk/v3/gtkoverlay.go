@@ -87,8 +87,8 @@ func init() {
 		GType:        GTypeOverlay,
 		GoType:       reflect.TypeOf((*Overlay)(nil)),
 		InitClass:    initClassOverlay,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkOverlay{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkOverlayClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkOverlay{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkOverlayClass{})),
 	})
 }
 

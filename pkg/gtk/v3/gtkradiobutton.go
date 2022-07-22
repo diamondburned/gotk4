@@ -112,8 +112,8 @@ func init() {
 		GType:        GTypeRadioButton,
 		GoType:       reflect.TypeOf((*RadioButton)(nil)),
 		InitClass:    initClassRadioButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkRadioButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkRadioButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkRadioButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkRadioButtonClass{})),
 	})
 }
 

@@ -194,8 +194,8 @@ func init() {
 		GType:        GTypeTextBuffer,
 		GoType:       reflect.TypeOf((*TextBuffer)(nil)),
 		InitClass:    initClassTextBuffer,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkTextBuffer{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkTextBufferClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextBuffer{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextBufferClass{})),
 	})
 }
 

@@ -85,8 +85,8 @@ func init() {
 		GType:        GTypeSearchEntry,
 		GoType:       reflect.TypeOf((*SearchEntry)(nil)),
 		InitClass:    initClassSearchEntry,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkSearchEntry{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkSearchEntryClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkSearchEntry{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkSearchEntryClass{})),
 	})
 }
 

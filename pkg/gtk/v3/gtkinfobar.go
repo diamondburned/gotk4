@@ -130,8 +130,8 @@ func init() {
 		GType:        GTypeInfoBar,
 		GoType:       reflect.TypeOf((*InfoBar)(nil)),
 		InitClass:    initClassInfoBar,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkInfoBar{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkInfoBarClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkInfoBar{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkInfoBarClass{})),
 	})
 }
 

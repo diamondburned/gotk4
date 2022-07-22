@@ -247,8 +247,8 @@ func init() {
 		GType:        GTypeApplication,
 		GoType:       reflect.TypeOf((*Application)(nil)),
 		InitClass:    initClassApplication,
-		ClassSize:    uint16(unsafe.Sizeof(C.GApplication{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GApplicationClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GApplication{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GApplicationClass{})),
 	})
 }
 

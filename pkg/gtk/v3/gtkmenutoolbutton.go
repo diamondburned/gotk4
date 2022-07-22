@@ -70,8 +70,8 @@ func init() {
 		GType:        GTypeMenuToolButton,
 		GoType:       reflect.TypeOf((*MenuToolButton)(nil)),
 		InitClass:    initClassMenuToolButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkMenuToolButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkMenuToolButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkMenuToolButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkMenuToolButtonClass{})),
 	})
 }
 

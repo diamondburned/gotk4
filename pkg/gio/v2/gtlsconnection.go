@@ -127,8 +127,8 @@ func init() {
 		GType:        GTypeTLSConnection,
 		GoType:       reflect.TypeOf((*TLSConnection)(nil)),
 		InitClass:    initClassTLSConnection,
-		ClassSize:    uint16(unsafe.Sizeof(C.GTlsConnection{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GTlsConnectionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GTlsConnection{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GTlsConnectionClass{})),
 	})
 }
 

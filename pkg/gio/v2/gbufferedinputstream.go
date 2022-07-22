@@ -114,8 +114,8 @@ func init() {
 		GType:        GTypeBufferedInputStream,
 		GoType:       reflect.TypeOf((*BufferedInputStream)(nil)),
 		InitClass:    initClassBufferedInputStream,
-		ClassSize:    uint16(unsafe.Sizeof(C.GBufferedInputStream{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GBufferedInputStreamClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GBufferedInputStream{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GBufferedInputStreamClass{})),
 	})
 }
 

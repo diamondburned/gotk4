@@ -168,8 +168,8 @@ func init() {
 		GType:        GTypeDrawingArea,
 		GoType:       reflect.TypeOf((*DrawingArea)(nil)),
 		InitClass:    initClassDrawingArea,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkDrawingArea{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkDrawingAreaClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkDrawingArea{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkDrawingAreaClass{})),
 	})
 }
 

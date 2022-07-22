@@ -61,8 +61,8 @@ func init() {
 		GType:        GTypeDBusObjectSkeleton,
 		GoType:       reflect.TypeOf((*DBusObjectSkeleton)(nil)),
 		InitClass:    initClassDBusObjectSkeleton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GDBusObjectSkeleton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GDBusObjectSkeletonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GDBusObjectSkeleton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GDBusObjectSkeletonClass{})),
 	})
 }
 

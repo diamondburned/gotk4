@@ -75,8 +75,8 @@ func init() {
 		GType:        GTypeSwitch,
 		GoType:       reflect.TypeOf((*Switch)(nil)),
 		InitClass:    initClassSwitch,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkSwitch{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkSwitchClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkSwitch{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkSwitchClass{})),
 	})
 }
 

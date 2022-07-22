@@ -71,8 +71,8 @@ func init() {
 		GType:        GTypeCheckMenuItem,
 		GoType:       reflect.TypeOf((*CheckMenuItem)(nil)),
 		InitClass:    initClassCheckMenuItem,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkCheckMenuItem{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkCheckMenuItemClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkCheckMenuItem{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkCheckMenuItemClass{})),
 	})
 }
 

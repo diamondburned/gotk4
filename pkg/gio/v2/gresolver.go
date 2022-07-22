@@ -320,8 +320,8 @@ func init() {
 		GType:        GTypeResolver,
 		GoType:       reflect.TypeOf((*Resolver)(nil)),
 		InitClass:    initClassResolver,
-		ClassSize:    uint16(unsafe.Sizeof(C.GResolver{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GResolverClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GResolver{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GResolverClass{})),
 	})
 }
 

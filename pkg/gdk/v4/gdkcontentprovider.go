@@ -119,8 +119,8 @@ func init() {
 		GType:        GTypeContentProvider,
 		GoType:       reflect.TypeOf((*ContentProvider)(nil)),
 		InitClass:    initClassContentProvider,
-		ClassSize:    uint16(unsafe.Sizeof(C.GdkContentProvider{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GdkContentProviderClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GdkContentProvider{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GdkContentProviderClass{})),
 	})
 }
 

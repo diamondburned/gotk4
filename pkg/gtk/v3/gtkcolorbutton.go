@@ -65,8 +65,8 @@ func init() {
 		GType:        GTypeColorButton,
 		GoType:       reflect.TypeOf((*ColorButton)(nil)),
 		InitClass:    initClassColorButton,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkColorButton{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkColorButtonClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkColorButton{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkColorButtonClass{})),
 	})
 }
 

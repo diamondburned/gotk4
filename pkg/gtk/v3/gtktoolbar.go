@@ -134,8 +134,8 @@ func init() {
 		GType:        GTypeToolbar,
 		GoType:       reflect.TypeOf((*Toolbar)(nil)),
 		InitClass:    initClassToolbar,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkToolbar{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkToolbarClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkToolbar{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkToolbarClass{})),
 	})
 }
 

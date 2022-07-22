@@ -127,8 +127,8 @@ func init() {
 		GType:        GTypePaned,
 		GoType:       reflect.TypeOf((*Paned)(nil)),
 		InitClass:    initClassPaned,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkPaned{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkPanedClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkPaned{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkPanedClass{})),
 	})
 }
 

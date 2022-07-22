@@ -484,8 +484,8 @@ func init() {
 		GType:        GTypePrintOperation,
 		GoType:       reflect.TypeOf((*PrintOperation)(nil)),
 		InitClass:    initClassPrintOperation,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkPrintOperation{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkPrintOperationClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkPrintOperation{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkPrintOperationClass{})),
 	})
 }
 

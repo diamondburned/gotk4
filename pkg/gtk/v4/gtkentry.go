@@ -176,8 +176,8 @@ func init() {
 		GType:        GTypeEntry,
 		GoType:       reflect.TypeOf((*Entry)(nil)),
 		InitClass:    initClassEntry,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkEntry{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkEntryClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkEntry{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkEntryClass{})),
 	})
 }
 

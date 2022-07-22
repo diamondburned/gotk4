@@ -274,8 +274,8 @@ func init() {
 		GType:        GTypeTextView,
 		GoType:       reflect.TypeOf((*TextView)(nil)),
 		InitClass:    initClassTextView,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkTextView{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkTextViewClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkTextView{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkTextViewClass{})),
 	})
 }
 

@@ -139,8 +139,8 @@ func init() {
 		GType:        GTypeMenuAttributeIter,
 		GoType:       reflect.TypeOf((*MenuAttributeIter)(nil)),
 		InitClass:    initClassMenuAttributeIter,
-		ClassSize:    uint16(unsafe.Sizeof(C.GMenuAttributeIter{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GMenuAttributeIterClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GMenuAttributeIter{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GMenuAttributeIterClass{})),
 	})
 }
 
@@ -391,8 +391,8 @@ func init() {
 		GType:        GTypeMenuLinkIter,
 		GoType:       reflect.TypeOf((*MenuLinkIter)(nil)),
 		InitClass:    initClassMenuLinkIter,
-		ClassSize:    uint16(unsafe.Sizeof(C.GMenuLinkIter{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GMenuLinkIterClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GMenuLinkIter{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GMenuLinkIterClass{})),
 	})
 }
 
@@ -866,8 +866,8 @@ func init() {
 		GType:        GTypeMenuModel,
 		GoType:       reflect.TypeOf((*MenuModel)(nil)),
 		InitClass:    initClassMenuModel,
-		ClassSize:    uint16(unsafe.Sizeof(C.GMenuModel{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GMenuModelClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GMenuModel{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GMenuModelClass{})),
 	})
 }
 

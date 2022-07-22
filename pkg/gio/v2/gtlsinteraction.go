@@ -168,8 +168,8 @@ func init() {
 		GType:        GTypeTLSInteraction,
 		GoType:       reflect.TypeOf((*TLSInteraction)(nil)),
 		InitClass:    initClassTLSInteraction,
-		ClassSize:    uint16(unsafe.Sizeof(C.GTlsInteraction{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GTlsInteractionClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GTlsInteraction{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GTlsInteractionClass{})),
 	})
 }
 

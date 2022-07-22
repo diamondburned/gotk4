@@ -132,8 +132,8 @@ func init() {
 		GType:        GTypeDBusObjectManagerClient,
 		GoType:       reflect.TypeOf((*DBusObjectManagerClient)(nil)),
 		InitClass:    initClassDBusObjectManagerClient,
-		ClassSize:    uint16(unsafe.Sizeof(C.GDBusObjectManagerClient{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GDBusObjectManagerClientClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GDBusObjectManagerClient{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GDBusObjectManagerClientClass{})),
 	})
 }
 

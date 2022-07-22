@@ -96,8 +96,8 @@ func init() {
 		GType:        GTypeStatusbar,
 		GoType:       reflect.TypeOf((*Statusbar)(nil)),
 		InitClass:    initClassStatusbar,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkStatusbar{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkStatusbarClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkStatusbar{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkStatusbarClass{})),
 	})
 }
 

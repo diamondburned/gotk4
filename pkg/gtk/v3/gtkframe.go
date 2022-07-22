@@ -92,8 +92,8 @@ func init() {
 		GType:        GTypeFrame,
 		GoType:       reflect.TypeOf((*Frame)(nil)),
 		InitClass:    initClassFrame,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkFrame{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkFrameClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkFrame{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkFrameClass{})),
 	})
 }
 

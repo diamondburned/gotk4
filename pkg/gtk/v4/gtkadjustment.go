@@ -58,8 +58,8 @@ func init() {
 		GType:        GTypeAdjustment,
 		GoType:       reflect.TypeOf((*Adjustment)(nil)),
 		InitClass:    initClassAdjustment,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkAdjustment{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkAdjustmentClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkAdjustment{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkAdjustmentClass{})),
 	})
 }
 

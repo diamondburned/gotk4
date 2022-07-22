@@ -169,8 +169,8 @@ func init() {
 		GType:        GTypeTreeViewColumn,
 		GoType:       reflect.TypeOf((*TreeViewColumn)(nil)),
 		InitClass:    initClassTreeViewColumn,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkTreeViewColumn{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkTreeViewColumnClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkTreeViewColumn{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkTreeViewColumnClass{})),
 	})
 }
 

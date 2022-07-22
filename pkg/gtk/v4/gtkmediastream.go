@@ -138,8 +138,8 @@ func init() {
 		GType:        GTypeMediaStream,
 		GoType:       reflect.TypeOf((*MediaStream)(nil)),
 		InitClass:    initClassMediaStream,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkMediaStream{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkMediaStreamClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkMediaStream{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkMediaStreamClass{})),
 	})
 }
 

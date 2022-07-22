@@ -151,8 +151,8 @@ func init() {
 		GType:        GTypeStyleContext,
 		GoType:       reflect.TypeOf((*StyleContext)(nil)),
 		InitClass:    initClassStyleContext,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkStyleContext{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkStyleContextClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkStyleContext{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkStyleContextClass{})),
 	})
 }
 

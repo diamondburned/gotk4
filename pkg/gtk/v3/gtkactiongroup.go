@@ -119,8 +119,8 @@ func init() {
 		GType:        GTypeActionGroup,
 		GoType:       reflect.TypeOf((*ActionGroup)(nil)),
 		InitClass:    initClassActionGroup,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkActionGroup{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkActionGroupClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkActionGroup{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkActionGroupClass{})),
 	})
 }
 

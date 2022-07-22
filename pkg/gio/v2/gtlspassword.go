@@ -64,8 +64,8 @@ func init() {
 		GType:        GTypeTLSPassword,
 		GoType:       reflect.TypeOf((*TLSPassword)(nil)),
 		InitClass:    initClassTLSPassword,
-		ClassSize:    uint16(unsafe.Sizeof(C.GTlsPassword{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GTlsPasswordClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GTlsPassword{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GTlsPasswordClass{})),
 	})
 }
 

@@ -83,8 +83,8 @@ func init() {
 		GType:        GTypeFileMonitor,
 		GoType:       reflect.TypeOf((*FileMonitor)(nil)),
 		InitClass:    initClassFileMonitor,
-		ClassSize:    uint16(unsafe.Sizeof(C.GFileMonitor{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GFileMonitorClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GFileMonitor{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GFileMonitorClass{})),
 	})
 }
 

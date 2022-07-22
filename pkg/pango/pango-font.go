@@ -433,8 +433,8 @@ func init() {
 		GType:        GTypeFont,
 		GoType:       reflect.TypeOf((*Font)(nil)),
 		InitClass:    initClassFont,
-		ClassSize:    uint16(unsafe.Sizeof(C.PangoFont{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.PangoFont{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontClass{})),
 	})
 }
 
@@ -980,8 +980,8 @@ func init() {
 		GType:        GTypeFontFace,
 		GoType:       reflect.TypeOf((*FontFace)(nil)),
 		InitClass:    initClassFontFace,
-		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontFace{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontFaceClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontFace{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontFaceClass{})),
 	})
 }
 
@@ -1354,8 +1354,8 @@ func init() {
 		GType:        GTypeFontFamily,
 		GoType:       reflect.TypeOf((*FontFamily)(nil)),
 		InitClass:    initClassFontFamily,
-		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontFamily{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontFamilyClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.PangoFontFamily{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.PangoFontFamilyClass{})),
 	})
 }
 

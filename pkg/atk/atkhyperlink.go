@@ -182,8 +182,8 @@ func init() {
 		GType:        GTypeHyperlink,
 		GoType:       reflect.TypeOf((*Hyperlink)(nil)),
 		InitClass:    initClassHyperlink,
-		ClassSize:    uint16(unsafe.Sizeof(C.AtkHyperlink{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.AtkHyperlinkClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.AtkHyperlink{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.AtkHyperlinkClass{})),
 	})
 }
 

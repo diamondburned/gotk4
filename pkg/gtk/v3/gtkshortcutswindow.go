@@ -95,8 +95,8 @@ func init() {
 		GType:        GTypeShortcutsWindow,
 		GoType:       reflect.TypeOf((*ShortcutsWindow)(nil)),
 		InitClass:    initClassShortcutsWindow,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkShortcutsWindow{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkShortcutsWindowClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkShortcutsWindow{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkShortcutsWindowClass{})),
 	})
 }
 

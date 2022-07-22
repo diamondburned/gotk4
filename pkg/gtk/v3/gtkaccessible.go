@@ -66,8 +66,8 @@ func init() {
 		GType:        GTypeAccessible,
 		GoType:       reflect.TypeOf((*Accessible)(nil)),
 		InitClass:    initClassAccessible,
-		ClassSize:    uint16(unsafe.Sizeof(C.GtkAccessible{})),
-		InstanceSize: uint16(unsafe.Sizeof(C.GtkAccessibleClass{})),
+		ClassSize:    uint32(unsafe.Sizeof(C.GtkAccessible{})),
+		InstanceSize: uint32(unsafe.Sizeof(C.GtkAccessibleClass{})),
 	})
 }
 

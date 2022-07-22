@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeSwitchAccessible returns the GType for the type SwitchAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSwitchAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_switch_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSwitchAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeSwitchAccessible = coreglib.Type(C.gtk_switch_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSwitchAccessible, F: marshalSwitchAccessible},
+	})
 }
 
 // SwitchAccessibleOverrider contains methods that are overridable.

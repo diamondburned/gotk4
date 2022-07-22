@@ -22,15 +22,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeEntryCompletion returns the GType for the type EntryCompletion.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEntryCompletion() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_entry_completion_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEntryCompletion)
-	return gtype
+// GType values.
+var (
+	GTypeEntryCompletion = coreglib.Type(C.gtk_entry_completion_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEntryCompletion, F: marshalEntryCompletion},
+	})
 }
 
 // EntryCompletionMatchFunc: function which decides whether the row indicated by

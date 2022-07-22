@@ -33,26 +33,17 @@ import (
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectUnmount(gpointer, GMountOperation*, guintptr);
 import "C"
 
-// GTypePlacesOpenFlags returns the GType for the type PlacesOpenFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePlacesOpenFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_places_open_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPlacesOpenFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypePlacesOpenFlags = coreglib.Type(C.gtk_places_open_flags_get_type())
+	GTypePlacesSidebar   = coreglib.Type(C.gtk_places_sidebar_get_type())
+)
 
-// GTypePlacesSidebar returns the GType for the type PlacesSidebar.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePlacesSidebar() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_places_sidebar_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPlacesSidebar)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePlacesOpenFlags, F: marshalPlacesOpenFlags},
+		coreglib.TypeMarshaler{T: GTypePlacesSidebar, F: marshalPlacesSidebar},
+	})
 }
 
 // PlacesOpenFlags: these flags serve two purposes. First, the application can

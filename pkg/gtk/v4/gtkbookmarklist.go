@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeBookmarkList returns the GType for the type BookmarkList.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBookmarkList() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_bookmark_list_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBookmarkList)
-	return gtype
+// GType values.
+var (
+	GTypeBookmarkList = coreglib.Type(C.gtk_bookmark_list_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBookmarkList, F: marshalBookmarkList},
+	})
 }
 
 // BookmarkListOverrider contains methods that are overridable.

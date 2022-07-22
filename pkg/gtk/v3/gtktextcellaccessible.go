@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeTextCellAccessible returns the GType for the type TextCellAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextCellAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_cell_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextCellAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeTextCellAccessible = coreglib.Type(C.gtk_text_cell_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTextCellAccessible, F: marshalTextCellAccessible},
+	})
 }
 
 // TextCellAccessibleOverrider contains methods that are overridable.

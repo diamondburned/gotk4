@@ -24,15 +24,15 @@ import (
 // extern gint _gotk4_gio2_DatagramBasedInterface_send_messages(GDatagramBased*, GOutputMessage*, guint, gint, gint64, GCancellable*, GError**);
 import "C"
 
-// GTypeDatagramBased returns the GType for the type DatagramBased.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDatagramBased() coreglib.Type {
-	gtype := coreglib.Type(C.g_datagram_based_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDatagramBased)
-	return gtype
+// GType values.
+var (
+	GTypeDatagramBased = coreglib.Type(C.g_datagram_based_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDatagramBased, F: marshalDatagramBased},
+	})
 }
 
 // DatagramBasedOverrider contains methods that are overridable.

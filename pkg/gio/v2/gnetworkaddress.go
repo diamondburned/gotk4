@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeNetworkAddress returns the GType for the type NetworkAddress.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNetworkAddress() coreglib.Type {
-	gtype := coreglib.Type(C.g_network_address_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkAddress)
-	return gtype
+// GType values.
+var (
+	GTypeNetworkAddress = coreglib.Type(C.g_network_address_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeNetworkAddress, F: marshalNetworkAddress},
+	})
 }
 
 // NetworkAddressOverrider contains methods that are overridable.

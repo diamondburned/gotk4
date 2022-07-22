@@ -14,26 +14,17 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeShortcutType returns the GType for the type ShortcutType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcut_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeShortcutType      = coreglib.Type(C.gtk_shortcut_type_get_type())
+	GTypeShortcutsShortcut = coreglib.Type(C.gtk_shortcuts_shortcut_get_type())
+)
 
-// GTypeShortcutsShortcut returns the GType for the type ShortcutsShortcut.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutsShortcut() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcuts_shortcut_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsShortcut)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeShortcutType, F: marshalShortcutType},
+		coreglib.TypeMarshaler{T: GTypeShortcutsShortcut, F: marshalShortcutsShortcut},
+	})
 }
 
 // ShortcutType specifies the kind of shortcut that is being described.

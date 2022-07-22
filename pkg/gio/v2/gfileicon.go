@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeFileIcon returns the GType for the type FileIcon.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileIcon() coreglib.Type {
-	gtype := coreglib.Type(C.g_file_icon_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileIcon)
-	return gtype
+// GType values.
+var (
+	GTypeFileIcon = coreglib.Type(C.g_file_icon_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileIcon, F: marshalFileIcon},
+	})
 }
 
 // FileIconOverrider contains methods that are overridable.

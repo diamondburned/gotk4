@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeFrameTimings returns the GType for the type FrameTimings.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFrameTimings() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_frame_timings_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFrameTimings)
-	return gtype
+// GType values.
+var (
+	GTypeFrameTimings = coreglib.Type(C.gdk_frame_timings_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFrameTimings, F: marshalFrameTimings},
+	})
 }
 
 // FrameTimings: GdkFrameTimings object holds timing information for a single

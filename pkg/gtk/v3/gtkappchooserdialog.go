@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeAppChooserDialog returns the GType for the type AppChooserDialog.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAppChooserDialog() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_app_chooser_dialog_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAppChooserDialog)
-	return gtype
+// GType values.
+var (
+	GTypeAppChooserDialog = coreglib.Type(C.gtk_app_chooser_dialog_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAppChooserDialog, F: marshalAppChooserDialog},
+	})
 }
 
 // AppChooserDialogOverrider contains methods that are overridable.

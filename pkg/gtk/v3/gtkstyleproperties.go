@@ -19,37 +19,19 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeStyleProperties returns the GType for the type StyleProperties.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStyleProperties() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_style_properties_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStyleProperties)
-	return gtype
-}
+// GType values.
+var (
+	GTypeStyleProperties = coreglib.Type(C.gtk_style_properties_get_type())
+	GTypeGradient        = coreglib.Type(C.gtk_gradient_get_type())
+	GTypeSymbolicColor   = coreglib.Type(C.gtk_symbolic_color_get_type())
+)
 
-// GTypeGradient returns the GType for the type Gradient.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGradient() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gradient_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGradient)
-	return gtype
-}
-
-// GTypeSymbolicColor returns the GType for the type SymbolicColor.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSymbolicColor() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_symbolic_color_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSymbolicColor)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStyleProperties, F: marshalStyleProperties},
+		coreglib.TypeMarshaler{T: GTypeGradient, F: marshalGradient},
+		coreglib.TypeMarshaler{T: GTypeSymbolicColor, F: marshalSymbolicColor},
+	})
 }
 
 // StylePropertiesOverrider contains methods that are overridable.

@@ -22,15 +22,15 @@ import (
 // extern void _gotk4_pango1_FontMapClass_list_families(PangoFontMap*, PangoFontFamily***, int*);
 import "C"
 
-// GTypeFontMap returns the GType for the type FontMap.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontMap() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_map_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontMap)
-	return gtype
+// GType values.
+var (
+	GTypeFontMap = coreglib.Type(C.pango_font_map_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFontMap, F: marshalFontMap},
+	})
 }
 
 // FontMapOverrider contains methods that are overridable.

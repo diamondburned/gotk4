@@ -22,15 +22,15 @@ import (
 // extern void _gotk4_gtk3_ScaleButton_ConnectValueChanged(gpointer, gdouble, guintptr);
 import "C"
 
-// GTypeScaleButton returns the GType for the type ScaleButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScaleButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scale_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScaleButton)
-	return gtype
+// GType values.
+var (
+	GTypeScaleButton = coreglib.Type(C.gtk_scale_button_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeScaleButton, F: marshalScaleButton},
+	})
 }
 
 // ScaleButtonOverrider contains methods that are overridable.

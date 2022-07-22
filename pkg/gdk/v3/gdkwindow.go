@@ -28,125 +28,35 @@ import (
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
-// GTypeFullscreenMode returns the GType for the type FullscreenMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFullscreenMode() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_fullscreen_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFullscreenMode)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFullscreenMode       = coreglib.Type(C.gdk_fullscreen_mode_get_type())
+	GTypeGravity              = coreglib.Type(C.gdk_gravity_get_type())
+	GTypeWindowEdge           = coreglib.Type(C.gdk_window_edge_get_type())
+	GTypeWindowType           = coreglib.Type(C.gdk_window_type_get_type())
+	GTypeWindowWindowClass    = coreglib.Type(C.gdk_window_window_class_get_type())
+	GTypeAnchorHints          = coreglib.Type(C.gdk_anchor_hints_get_type())
+	GTypeWMDecoration         = coreglib.Type(C.gdk_wm_decoration_get_type())
+	GTypeWMFunction           = coreglib.Type(C.gdk_wm_function_get_type())
+	GTypeWindowAttributesType = coreglib.Type(C.gdk_window_attributes_type_get_type())
+	GTypeWindowHints          = coreglib.Type(C.gdk_window_hints_get_type())
+	GTypeWindow               = coreglib.Type(C.gdk_window_get_type())
+)
 
-// GTypeGravity returns the GType for the type Gravity.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGravity() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_gravity_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGravity)
-	return gtype
-}
-
-// GTypeWindowEdge returns the GType for the type WindowEdge.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindowEdge() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_edge_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindowEdge)
-	return gtype
-}
-
-// GTypeWindowType returns the GType for the type WindowType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindowType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindowType)
-	return gtype
-}
-
-// GTypeWindowWindowClass returns the GType for the type WindowWindowClass.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindowWindowClass() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_window_class_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindowWindowClass)
-	return gtype
-}
-
-// GTypeAnchorHints returns the GType for the type AnchorHints.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAnchorHints() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_anchor_hints_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAnchorHints)
-	return gtype
-}
-
-// GTypeWMDecoration returns the GType for the type WMDecoration.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWMDecoration() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_wm_decoration_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWMDecoration)
-	return gtype
-}
-
-// GTypeWMFunction returns the GType for the type WMFunction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWMFunction() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_wm_function_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWMFunction)
-	return gtype
-}
-
-// GTypeWindowAttributesType returns the GType for the type WindowAttributesType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindowAttributesType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_attributes_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindowAttributesType)
-	return gtype
-}
-
-// GTypeWindowHints returns the GType for the type WindowHints.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindowHints() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_hints_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindowHints)
-	return gtype
-}
-
-// GTypeWindow returns the GType for the type Window.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindow() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindow)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFullscreenMode, F: marshalFullscreenMode},
+		coreglib.TypeMarshaler{T: GTypeGravity, F: marshalGravity},
+		coreglib.TypeMarshaler{T: GTypeWindowEdge, F: marshalWindowEdge},
+		coreglib.TypeMarshaler{T: GTypeWindowType, F: marshalWindowType},
+		coreglib.TypeMarshaler{T: GTypeWindowWindowClass, F: marshalWindowWindowClass},
+		coreglib.TypeMarshaler{T: GTypeAnchorHints, F: marshalAnchorHints},
+		coreglib.TypeMarshaler{T: GTypeWMDecoration, F: marshalWMDecoration},
+		coreglib.TypeMarshaler{T: GTypeWMFunction, F: marshalWMFunction},
+		coreglib.TypeMarshaler{T: GTypeWindowAttributesType, F: marshalWindowAttributesType},
+		coreglib.TypeMarshaler{T: GTypeWindowHints, F: marshalWindowHints},
+		coreglib.TypeMarshaler{T: GTypeWindow, F: marshalWindow},
+	})
 }
 
 // FullscreenMode indicates which monitor (in a multi-head setup) a window

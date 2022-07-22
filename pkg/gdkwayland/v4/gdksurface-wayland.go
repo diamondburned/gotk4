@@ -14,37 +14,19 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeWaylandPopup returns the GType for the type WaylandPopup.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWaylandPopup() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_wayland_popup_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandPopup)
-	return gtype
-}
+// GType values.
+var (
+	GTypeWaylandPopup    = coreglib.Type(C.gdk_wayland_popup_get_type())
+	GTypeWaylandSurface  = coreglib.Type(C.gdk_wayland_surface_get_type())
+	GTypeWaylandToplevel = coreglib.Type(C.gdk_wayland_toplevel_get_type())
+)
 
-// GTypeWaylandSurface returns the GType for the type WaylandSurface.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWaylandSurface() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_wayland_surface_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandSurface)
-	return gtype
-}
-
-// GTypeWaylandToplevel returns the GType for the type WaylandToplevel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWaylandToplevel() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_wayland_toplevel_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandToplevel)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeWaylandPopup, F: marshalWaylandPopup},
+		coreglib.TypeMarshaler{T: GTypeWaylandSurface, F: marshalWaylandSurface},
+		coreglib.TypeMarshaler{T: GTypeWaylandToplevel, F: marshalWaylandToplevel},
+	})
 }
 
 // WaylandPopup: wayland implementation of GdkPopup.

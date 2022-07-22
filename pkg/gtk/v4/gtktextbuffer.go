@@ -47,15 +47,15 @@ import (
 // extern void _gotk4_gtk4_TextBuffer_ConnectUndo(gpointer, guintptr);
 import "C"
 
-// GTypeTextBuffer returns the GType for the type TextBuffer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextBuffer() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_buffer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextBuffer)
-	return gtype
+// GType values.
+var (
+	GTypeTextBuffer = coreglib.Type(C.gtk_text_buffer_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTextBuffer, F: marshalTextBuffer},
+	})
 }
 
 // TextBufferOverrider contains methods that are overridable.

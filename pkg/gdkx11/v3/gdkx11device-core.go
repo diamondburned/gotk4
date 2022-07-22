@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeX11DeviceCore returns the GType for the type X11DeviceCore.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeX11DeviceCore() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_x11_device_core_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalX11DeviceCore)
-	return gtype
+// GType values.
+var (
+	GTypeX11DeviceCore = coreglib.Type(C.gdk_x11_device_core_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeX11DeviceCore, F: marshalX11DeviceCore},
+	})
 }
 
 // X11DeviceCoreOverrider contains methods that are overridable.

@@ -15,15 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// GTypePoint3D returns the GType for the type Point3D.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePoint3D() coreglib.Type {
-	gtype := coreglib.Type(C.graphene_point3d_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPoint3D)
-	return gtype
+// GType values.
+var (
+	GTypePoint3D = coreglib.Type(C.graphene_point3d_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePoint3D, F: marshalPoint3D},
+	})
 }
 
 // Point3D: point with three components: X, Y, and Z.

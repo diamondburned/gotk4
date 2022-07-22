@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeRadioMenuItemAccessible returns the GType for the type RadioMenuItemAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRadioMenuItemAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_radio_menu_item_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRadioMenuItemAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeRadioMenuItemAccessible = coreglib.Type(C.gtk_radio_menu_item_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRadioMenuItemAccessible, F: marshalRadioMenuItemAccessible},
+	})
 }
 
 // RadioMenuItemAccessibleOverrider contains methods that are overridable.

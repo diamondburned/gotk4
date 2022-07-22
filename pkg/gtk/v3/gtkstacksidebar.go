@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeStackSidebar returns the GType for the type StackSidebar.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStackSidebar() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_stack_sidebar_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStackSidebar)
-	return gtype
+// GType values.
+var (
+	GTypeStackSidebar = coreglib.Type(C.gtk_stack_sidebar_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStackSidebar, F: marshalStackSidebar},
+	})
 }
 
 // StackSidebarOverrider contains methods that are overridable.

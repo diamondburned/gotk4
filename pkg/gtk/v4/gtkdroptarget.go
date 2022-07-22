@@ -21,15 +21,15 @@ import (
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 import "C"
 
-// GTypeDropTarget returns the GType for the type DropTarget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDropTarget() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_drop_target_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDropTarget)
-	return gtype
+// GType values.
+var (
+	GTypeDropTarget = coreglib.Type(C.gtk_drop_target_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDropTarget, F: marshalDropTarget},
+	})
 }
 
 // DropTargetOverrider contains methods that are overridable.

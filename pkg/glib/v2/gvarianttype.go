@@ -15,15 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// GTypeVariantType returns the GType for the type VariantType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVariantType() coreglib.Type {
-	gtype := coreglib.Type(C.g_variant_type_get_gtype())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVariantType)
-	return gtype
+// GType values.
+var (
+	GTypeVariantType = coreglib.Type(C.g_variant_type_get_gtype())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVariantType, F: marshalVariantType},
+	})
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,

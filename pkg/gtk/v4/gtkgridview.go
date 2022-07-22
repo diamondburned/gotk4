@@ -15,15 +15,15 @@ import (
 // extern void _gotk4_gtk4_GridView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
-// GTypeGridView returns the GType for the type GridView.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGridView() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_grid_view_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGridView)
-	return gtype
+// GType values.
+var (
+	GTypeGridView = coreglib.Type(C.gtk_grid_view_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGridView, F: marshalGridView},
+	})
 }
 
 // GridViewOverrider contains methods that are overridable.

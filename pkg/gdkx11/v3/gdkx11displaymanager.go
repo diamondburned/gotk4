@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeX11DisplayManager returns the GType for the type X11DisplayManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeX11DisplayManager() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_x11_display_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalX11DisplayManager)
-	return gtype
+// GType values.
+var (
+	GTypeX11DisplayManager = coreglib.Type(C.gdk_x11_display_manager_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeX11DisplayManager, F: marshalX11DisplayManager},
+	})
 }
 
 // X11DisplayManagerOverrider contains methods that are overridable.

@@ -13,15 +13,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeListItemFactory returns the GType for the type ListItemFactory.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeListItemFactory() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_list_item_factory_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalListItemFactory)
-	return gtype
+// GType values.
+var (
+	GTypeListItemFactory = coreglib.Type(C.gtk_list_item_factory_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeListItemFactory, F: marshalListItemFactory},
+	})
 }
 
 // ListItemFactoryOverrider contains methods that are overridable.

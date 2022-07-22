@@ -230,18 +230,21 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 	fpen.Words(`import "C"`)
 	fpen.EmptyLine()
 
-	for _, m := range f.header.Marshalers {
-		// Contrary to popular beliefs, RegisterGValueMarshalers is actually
-		// thread-safe.
-		fpen.Linef("// GType%s returns the GType for the type %[1]s.", m.GoTypeName)
-		fpen.Linef("//")
-		fpen.Linef("// This function has the side effect of registering a GValue marshaler")
-		fpen.Linef("// globally. Use this if you need that for any reason. The function is")
-		fpen.Linef("// concurrently safe to use.")
-		fpen.Linef("func GType%s() coreglib.Type {", m.GoTypeName)
-		fpen.Linef("  gtype := %s", m.GLibType())
-		fpen.Linef("  coreglib.RegisterGValueMarshaler(gtype, marshal%s)", m.GoTypeName)
-		fpen.Linef("  return gtype")
+	if len(f.header.Marshalers) > 0 {
+		fpen.Linef("// GType values.")
+		fpen.Linef("var (")
+		for _, m := range f.header.Marshalers {
+			fpen.Linef("GType%s = %s", m.GoTypeName, m.GLibType())
+		}
+		fpen.Linef(")")
+		fpen.EmptyLine()
+
+		fpen.Linef("func init() {")
+		fpen.Linef("  coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{")
+		for _, m := range f.header.Marshalers {
+			fpen.Linef("    coreglib.TypeMarshaler{T: GType%[1]s, F: marshal%[1]s},", m.GoTypeName)
+		}
+		fpen.Linef("  })")
 		fpen.Linef("}")
 		fpen.EmptyLine()
 	}
@@ -252,6 +255,7 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 		fpen.Words("func init() {")
 		fpen.Linef("  girepository.Require(%q, %q, girepository.LoadFlagLazy)", namespace.Name, namespace.Version)
 		fpen.Words("}")
+		fpen.EmptyLine()
 	}
 
 	fpen.Write(f.pen.Bytes())

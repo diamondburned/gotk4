@@ -50,26 +50,17 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeAppInfo returns the GType for the type AppInfo.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAppInfo() coreglib.Type {
-	gtype := coreglib.Type(C.g_app_info_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAppInfo)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAppInfo          = coreglib.Type(C.g_app_info_get_type())
+	GTypeAppLaunchContext = coreglib.Type(C.g_app_launch_context_get_type())
+)
 
-// GTypeAppLaunchContext returns the GType for the type AppLaunchContext.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAppLaunchContext() coreglib.Type {
-	gtype := coreglib.Type(C.g_app_launch_context_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAppLaunchContext)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAppInfo, F: marshalAppInfo},
+		coreglib.TypeMarshaler{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
+	})
 }
 
 // AppInfo and LaunchContext are used for describing and launching applications

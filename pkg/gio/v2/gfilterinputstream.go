@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeFilterInputStream returns the GType for the type FilterInputStream.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFilterInputStream() coreglib.Type {
-	gtype := coreglib.Type(C.g_filter_input_stream_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFilterInputStream)
-	return gtype
+// GType values.
+var (
+	GTypeFilterInputStream = coreglib.Type(C.g_filter_input_stream_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFilterInputStream, F: marshalFilterInputStream},
+	})
 }
 
 // FilterInputStreamOverrider contains methods that are overridable.

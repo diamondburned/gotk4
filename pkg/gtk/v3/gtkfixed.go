@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeFixed returns the GType for the type Fixed.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFixed() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_fixed_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFixed)
-	return gtype
+// GType values.
+var (
+	GTypeFixed = coreglib.Type(C.gtk_fixed_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFixed, F: marshalFixed},
+	})
 }
 
 // FixedOverrider contains methods that are overridable.

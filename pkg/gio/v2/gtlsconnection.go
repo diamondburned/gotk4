@@ -24,15 +24,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeTLSConnection returns the GType for the type TLSConnection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTLSConnection() coreglib.Type {
-	gtype := coreglib.Type(C.g_tls_connection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTLSConnection)
-	return gtype
+// GType values.
+var (
+	GTypeTLSConnection = coreglib.Type(C.g_tls_connection_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTLSConnection, F: marshalTLSConnection},
+	})
 }
 
 // TLSConnectionOverrider contains methods that are overridable.

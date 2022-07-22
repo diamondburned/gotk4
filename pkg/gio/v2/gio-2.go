@@ -24,191 +24,47 @@ import (
 // extern void _gotk4_gio2_SimpleAction_ConnectChangeState(gpointer, GVariant*, guintptr);
 import "C"
 
-// GTypeAppInfoMonitor returns the GType for the type AppInfoMonitor.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAppInfoMonitor() coreglib.Type {
-	gtype := coreglib.Type(C.g_app_info_monitor_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAppInfoMonitor)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAppInfoMonitor       = coreglib.Type(C.g_app_info_monitor_get_type())
+	GTypeBytesIcon            = coreglib.Type(C.g_bytes_icon_get_type())
+	GTypeDBusActionGroup      = coreglib.Type(C.g_dbus_action_group_get_type())
+	GTypeDBusAuthObserver     = coreglib.Type(C.g_dbus_auth_observer_get_type())
+	GTypeDBusConnection       = coreglib.Type(C.g_dbus_connection_get_type())
+	GTypeDBusMenuModel        = coreglib.Type(C.g_dbus_menu_model_get_type())
+	GTypeDBusMessage          = coreglib.Type(C.g_dbus_message_get_type())
+	GTypeDBusMethodInvocation = coreglib.Type(C.g_dbus_method_invocation_get_type())
+	GTypeDBusServer           = coreglib.Type(C.g_dbus_server_get_type())
+	GTypeMenu                 = coreglib.Type(C.g_menu_get_type())
+	GTypeMenuItem             = coreglib.Type(C.g_menu_item_get_type())
+	GTypeNotification         = coreglib.Type(C.g_notification_get_type())
+	GTypePropertyAction       = coreglib.Type(C.g_property_action_get_type())
+	GTypeSimpleAction         = coreglib.Type(C.g_simple_action_get_type())
+	GTypeSimpleIOStream       = coreglib.Type(C.g_simple_io_stream_get_type())
+	GTypeSimplePermission     = coreglib.Type(C.g_simple_permission_get_type())
+	GTypeTestDBus             = coreglib.Type(C.g_test_dbus_get_type())
+)
 
-// GTypeBytesIcon returns the GType for the type BytesIcon.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBytesIcon() coreglib.Type {
-	gtype := coreglib.Type(C.g_bytes_icon_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBytesIcon)
-	return gtype
-}
-
-// GTypeDBusActionGroup returns the GType for the type DBusActionGroup.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusActionGroup() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_action_group_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusActionGroup)
-	return gtype
-}
-
-// GTypeDBusAuthObserver returns the GType for the type DBusAuthObserver.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusAuthObserver() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_auth_observer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusAuthObserver)
-	return gtype
-}
-
-// GTypeDBusConnection returns the GType for the type DBusConnection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusConnection() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_connection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusConnection)
-	return gtype
-}
-
-// GTypeDBusMenuModel returns the GType for the type DBusMenuModel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusMenuModel() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_menu_model_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMenuModel)
-	return gtype
-}
-
-// GTypeDBusMessage returns the GType for the type DBusMessage.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusMessage() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_message_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessage)
-	return gtype
-}
-
-// GTypeDBusMethodInvocation returns the GType for the type DBusMethodInvocation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusMethodInvocation() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_method_invocation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMethodInvocation)
-	return gtype
-}
-
-// GTypeDBusServer returns the GType for the type DBusServer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusServer() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_server_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusServer)
-	return gtype
-}
-
-// GTypeMenu returns the GType for the type Menu.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMenu() coreglib.Type {
-	gtype := coreglib.Type(C.g_menu_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMenu)
-	return gtype
-}
-
-// GTypeMenuItem returns the GType for the type MenuItem.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMenuItem() coreglib.Type {
-	gtype := coreglib.Type(C.g_menu_item_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMenuItem)
-	return gtype
-}
-
-// GTypeNotification returns the GType for the type Notification.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotification() coreglib.Type {
-	gtype := coreglib.Type(C.g_notification_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotification)
-	return gtype
-}
-
-// GTypePropertyAction returns the GType for the type PropertyAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePropertyAction() coreglib.Type {
-	gtype := coreglib.Type(C.g_property_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPropertyAction)
-	return gtype
-}
-
-// GTypeSimpleAction returns the GType for the type SimpleAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSimpleAction() coreglib.Type {
-	gtype := coreglib.Type(C.g_simple_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleAction)
-	return gtype
-}
-
-// GTypeSimpleIOStream returns the GType for the type SimpleIOStream.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSimpleIOStream() coreglib.Type {
-	gtype := coreglib.Type(C.g_simple_io_stream_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleIOStream)
-	return gtype
-}
-
-// GTypeSimplePermission returns the GType for the type SimplePermission.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSimplePermission() coreglib.Type {
-	gtype := coreglib.Type(C.g_simple_permission_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSimplePermission)
-	return gtype
-}
-
-// GTypeTestDBus returns the GType for the type TestDBus.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTestDBus() coreglib.Type {
-	gtype := coreglib.Type(C.g_test_dbus_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTestDBus)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAppInfoMonitor, F: marshalAppInfoMonitor},
+		coreglib.TypeMarshaler{T: GTypeBytesIcon, F: marshalBytesIcon},
+		coreglib.TypeMarshaler{T: GTypeDBusActionGroup, F: marshalDBusActionGroup},
+		coreglib.TypeMarshaler{T: GTypeDBusAuthObserver, F: marshalDBusAuthObserver},
+		coreglib.TypeMarshaler{T: GTypeDBusConnection, F: marshalDBusConnection},
+		coreglib.TypeMarshaler{T: GTypeDBusMenuModel, F: marshalDBusMenuModel},
+		coreglib.TypeMarshaler{T: GTypeDBusMessage, F: marshalDBusMessage},
+		coreglib.TypeMarshaler{T: GTypeDBusMethodInvocation, F: marshalDBusMethodInvocation},
+		coreglib.TypeMarshaler{T: GTypeDBusServer, F: marshalDBusServer},
+		coreglib.TypeMarshaler{T: GTypeMenu, F: marshalMenu},
+		coreglib.TypeMarshaler{T: GTypeMenuItem, F: marshalMenuItem},
+		coreglib.TypeMarshaler{T: GTypeNotification, F: marshalNotification},
+		coreglib.TypeMarshaler{T: GTypePropertyAction, F: marshalPropertyAction},
+		coreglib.TypeMarshaler{T: GTypeSimpleAction, F: marshalSimpleAction},
+		coreglib.TypeMarshaler{T: GTypeSimpleIOStream, F: marshalSimpleIOStream},
+		coreglib.TypeMarshaler{T: GTypeSimplePermission, F: marshalSimplePermission},
+		coreglib.TypeMarshaler{T: GTypeTestDBus, F: marshalTestDBus},
+	})
 }
 
 // ResolverErrorQuark gets the #GResolver Error Quark.

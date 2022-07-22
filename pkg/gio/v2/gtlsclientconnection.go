@@ -16,15 +16,15 @@ import (
 // extern void _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(GTlsClientConnection*, GTlsClientConnection*);
 import "C"
 
-// GTypeTLSClientConnection returns the GType for the type TLSClientConnection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTLSClientConnection() coreglib.Type {
-	gtype := coreglib.Type(C.g_tls_client_connection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTLSClientConnection)
-	return gtype
+// GType values.
+var (
+	GTypeTLSClientConnection = coreglib.Type(C.g_tls_client_connection_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTLSClientConnection, F: marshalTLSClientConnection},
+	})
 }
 
 // TLSClientConnectionOverrider contains methods that are overridable.

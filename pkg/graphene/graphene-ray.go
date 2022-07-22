@@ -16,15 +16,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// GTypeRay returns the GType for the type Ray.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRay() coreglib.Type {
-	gtype := coreglib.Type(C.graphene_ray_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRay)
-	return gtype
+// GType values.
+var (
+	GTypeRay = coreglib.Type(C.graphene_ray_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRay, F: marshalRay},
+	})
 }
 
 // RayIntersectionKind: type of intersection.

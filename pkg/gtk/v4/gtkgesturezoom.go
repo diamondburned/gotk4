@@ -15,15 +15,15 @@ import (
 // extern void _gotk4_gtk4_GestureZoom_ConnectScaleChanged(gpointer, gdouble, guintptr);
 import "C"
 
-// GTypeGestureZoom returns the GType for the type GestureZoom.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGestureZoom() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_zoom_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGestureZoom)
-	return gtype
+// GType values.
+var (
+	GTypeGestureZoom = coreglib.Type(C.gtk_gesture_zoom_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGestureZoom, F: marshalGestureZoom},
+	})
 }
 
 // GestureZoomOverrider contains methods that are overridable.

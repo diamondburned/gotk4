@@ -19,15 +19,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeSimpleAsyncResult returns the GType for the type SimpleAsyncResult.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSimpleAsyncResult() coreglib.Type {
-	gtype := coreglib.Type(C.g_simple_async_result_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSimpleAsyncResult)
-	return gtype
+// GType values.
+var (
+	GTypeSimpleAsyncResult = coreglib.Type(C.g_simple_async_result_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSimpleAsyncResult, F: marshalSimpleAsyncResult},
+	})
 }
 
 // SimpleAsyncReportGErrorInIdle reports an error in an idle function. Similar

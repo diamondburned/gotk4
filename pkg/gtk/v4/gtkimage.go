@@ -18,26 +18,17 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeImageType returns the GType for the type ImageType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeImageType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_image_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalImageType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeImageType = coreglib.Type(C.gtk_image_type_get_type())
+	GTypeImage     = coreglib.Type(C.gtk_image_get_type())
+)
 
-// GTypeImage returns the GType for the type Image.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeImage() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_image_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalImage)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeImageType, F: marshalImageType},
+		coreglib.TypeMarshaler{T: GTypeImage, F: marshalImage},
+	})
 }
 
 // ImageType describes the image data representation used by a gtk.Image.

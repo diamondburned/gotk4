@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeRGBA returns the GType for the type RGBA.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRGBA() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_rgba_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRGBA)
-	return gtype
+// GType values.
+var (
+	GTypeRGBA = coreglib.Type(C.gdk_rgba_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRGBA, F: marshalRGBA},
+	})
 }
 
 // RGBA is used to represent a (possibly translucent) color, in a way that is

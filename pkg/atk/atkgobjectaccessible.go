@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeGObjectAccessible returns the GType for the type GObjectAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGObjectAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.atk_gobject_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGObjectAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeGObjectAccessible = coreglib.Type(C.atk_gobject_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGObjectAccessible, F: marshalGObjectAccessible},
+	})
 }
 
 // GObjectAccessibleOverrider contains methods that are overridable.

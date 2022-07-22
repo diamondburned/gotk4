@@ -15,15 +15,15 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeBidiType returns the GType for the type BidiType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBidiType() coreglib.Type {
-	gtype := coreglib.Type(C.pango_bidi_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBidiType)
-	return gtype
+// GType values.
+var (
+	GTypeBidiType = coreglib.Type(C.pango_bidi_type_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBidiType, F: marshalBidiType},
+	})
 }
 
 // BidiType: PangoBidiType represents the bidirectional character type of a

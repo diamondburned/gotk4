@@ -21,26 +21,17 @@ import (
 // extern GType _gotk4_gtk3_BuilderClass_get_type_from_name(GtkBuilder*, char*);
 import "C"
 
-// GTypeBuilderError returns the GType for the type BuilderError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBuilderError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_builder_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderError)
-	return gtype
-}
+// GType values.
+var (
+	GTypeBuilderError = coreglib.Type(C.gtk_builder_error_get_type())
+	GTypeBuilder      = coreglib.Type(C.gtk_builder_get_type())
+)
 
-// GTypeBuilder returns the GType for the type Builder.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBuilder() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_builder_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBuilder)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBuilderError, F: marshalBuilderError},
+		coreglib.TypeMarshaler{T: GTypeBuilder, F: marshalBuilder},
+	})
 }
 
 // BuilderError: error codes that identify various errors that can occur while

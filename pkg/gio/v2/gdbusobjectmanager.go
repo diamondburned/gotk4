@@ -27,15 +27,15 @@ import (
 // extern void _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(gpointer, GDBusObject*, guintptr);
 import "C"
 
-// GTypeDBusObjectManager returns the GType for the type DBusObjectManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusObjectManager() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_object_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManager)
-	return gtype
+// GType values.
+var (
+	GTypeDBusObjectManager = coreglib.Type(C.g_dbus_object_manager_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDBusObjectManager, F: marshalDBusObjectManager},
+	})
 }
 
 // DBusObjectManagerOverrider contains methods that are overridable.

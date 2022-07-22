@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleClass_update_cache(GtkCellAccessible*, gboolean);
 import "C"
 
-// GTypeCellAccessible returns the GType for the type CellAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeCellAccessible = coreglib.Type(C.gtk_cell_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCellAccessible, F: marshalCellAccessible},
+	})
 }
 
 // CellAccessibleOverrider contains methods that are overridable.

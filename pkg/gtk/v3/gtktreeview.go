@@ -60,26 +60,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeTreeViewDropPosition returns the GType for the type TreeViewDropPosition.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeViewDropPosition() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_view_drop_position_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewDropPosition)
-	return gtype
-}
+// GType values.
+var (
+	GTypeTreeViewDropPosition = coreglib.Type(C.gtk_tree_view_drop_position_get_type())
+	GTypeTreeView             = coreglib.Type(C.gtk_tree_view_get_type())
+)
 
-// GTypeTreeView returns the GType for the type TreeView.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeView() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_view_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeView)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTreeViewDropPosition, F: marshalTreeViewDropPosition},
+		coreglib.TypeMarshaler{T: GTypeTreeView, F: marshalTreeView},
+	})
 }
 
 // TreeViewDropPosition: enum for determining where a dropped row goes.

@@ -32,26 +32,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeAssistantPageType returns the GType for the type AssistantPageType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAssistantPageType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_assistant_page_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAssistantPageType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAssistantPageType = coreglib.Type(C.gtk_assistant_page_type_get_type())
+	GTypeAssistant         = coreglib.Type(C.gtk_assistant_get_type())
+)
 
-// GTypeAssistant returns the GType for the type Assistant.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAssistant() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_assistant_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAssistant)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAssistantPageType, F: marshalAssistantPageType},
+		coreglib.TypeMarshaler{T: GTypeAssistant, F: marshalAssistant},
+	})
 }
 
 // AssistantPageType: enum for determining the page role inside the Assistant.

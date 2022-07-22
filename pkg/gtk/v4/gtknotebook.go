@@ -26,37 +26,19 @@ import (
 // extern void _gotk4_gtk4_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
 import "C"
 
-// GTypeNotebookTab returns the GType for the type NotebookTab.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotebookTab() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_notebook_tab_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotebookTab)
-	return gtype
-}
+// GType values.
+var (
+	GTypeNotebookTab  = coreglib.Type(C.gtk_notebook_tab_get_type())
+	GTypeNotebook     = coreglib.Type(C.gtk_notebook_get_type())
+	GTypeNotebookPage = coreglib.Type(C.gtk_notebook_page_get_type())
+)
 
-// GTypeNotebook returns the GType for the type Notebook.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotebook() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_notebook_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotebook)
-	return gtype
-}
-
-// GTypeNotebookPage returns the GType for the type NotebookPage.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotebookPage() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_notebook_page_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotebookPage)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeNotebookTab, F: marshalNotebookTab},
+		coreglib.TypeMarshaler{T: GTypeNotebook, F: marshalNotebook},
+		coreglib.TypeMarshaler{T: GTypeNotebookPage, F: marshalNotebookPage},
+	})
 }
 
 // NotebookTab: parameter used in the action signals of GtkNotebook.

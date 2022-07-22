@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gtk4_CssProvider_ConnectParsingError(gpointer, GtkCssSection*, GError*, guintptr);
 import "C"
 
-// GTypeCSSProvider returns the GType for the type CSSProvider.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCSSProvider() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_css_provider_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCSSProvider)
-	return gtype
+// GType values.
+var (
+	GTypeCSSProvider = coreglib.Type(C.gtk_css_provider_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCSSProvider, F: marshalCSSProvider},
+	})
 }
 
 // CSSProviderOverrider contains methods that are overridable.

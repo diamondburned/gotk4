@@ -15,26 +15,17 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeInterpType returns the GType for the type InterpType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInterpType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_interp_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInterpType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeInterpType     = coreglib.Type(C.gdk_interp_type_get_type())
+	GTypePixbufRotation = coreglib.Type(C.gdk_pixbuf_rotation_get_type())
+)
 
-// GTypePixbufRotation returns the GType for the type PixbufRotation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePixbufRotation() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_pixbuf_rotation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufRotation)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeInterpType, F: marshalInterpType},
+		coreglib.TypeMarshaler{T: GTypePixbufRotation, F: marshalPixbufRotation},
+	})
 }
 
 // InterpType: interpolation modes for scaling functions.

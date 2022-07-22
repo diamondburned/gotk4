@@ -17,103 +17,31 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeAxisUse returns the GType for the type AxisUse.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAxisUse() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_axis_use_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAxisUse)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAxisUse        = coreglib.Type(C.gdk_axis_use_get_type())
+	GTypeGLError        = coreglib.Type(C.gdk_gl_error_get_type())
+	GTypeGravity        = coreglib.Type(C.gdk_gravity_get_type())
+	GTypeVulkanError    = coreglib.Type(C.gdk_vulkan_error_get_type())
+	GTypeAxisFlags      = coreglib.Type(C.gdk_axis_flags_get_type())
+	GTypeDragAction     = coreglib.Type(C.gdk_drag_action_get_type())
+	GTypeModifierType   = coreglib.Type(C.gdk_modifier_type_get_type())
+	GTypeContentFormats = coreglib.Type(C.gdk_content_formats_get_type())
+	GTypeRectangle      = coreglib.Type(C.gdk_rectangle_get_type())
+)
 
-// GTypeGLError returns the GType for the type GLError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGLError() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_gl_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGLError)
-	return gtype
-}
-
-// GTypeGravity returns the GType for the type Gravity.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGravity() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_gravity_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGravity)
-	return gtype
-}
-
-// GTypeVulkanError returns the GType for the type VulkanError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVulkanError() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_vulkan_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVulkanError)
-	return gtype
-}
-
-// GTypeAxisFlags returns the GType for the type AxisFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAxisFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_axis_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAxisFlags)
-	return gtype
-}
-
-// GTypeDragAction returns the GType for the type DragAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDragAction() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_drag_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDragAction)
-	return gtype
-}
-
-// GTypeModifierType returns the GType for the type ModifierType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeModifierType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_modifier_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalModifierType)
-	return gtype
-}
-
-// GTypeContentFormats returns the GType for the type ContentFormats.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeContentFormats() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_content_formats_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalContentFormats)
-	return gtype
-}
-
-// GTypeRectangle returns the GType for the type Rectangle.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRectangle() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_rectangle_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRectangle)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAxisUse, F: marshalAxisUse},
+		coreglib.TypeMarshaler{T: GTypeGLError, F: marshalGLError},
+		coreglib.TypeMarshaler{T: GTypeGravity, F: marshalGravity},
+		coreglib.TypeMarshaler{T: GTypeVulkanError, F: marshalVulkanError},
+		coreglib.TypeMarshaler{T: GTypeAxisFlags, F: marshalAxisFlags},
+		coreglib.TypeMarshaler{T: GTypeDragAction, F: marshalDragAction},
+		coreglib.TypeMarshaler{T: GTypeModifierType, F: marshalModifierType},
+		coreglib.TypeMarshaler{T: GTypeContentFormats, F: marshalContentFormats},
+		coreglib.TypeMarshaler{T: GTypeRectangle, F: marshalRectangle},
+	})
 }
 
 // ACTION_ALL defines all possible DND actions.

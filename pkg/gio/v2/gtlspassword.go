@@ -17,15 +17,15 @@ import (
 // extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(GTlsPassword*, gsize*);
 import "C"
 
-// GTypeTLSPassword returns the GType for the type TLSPassword.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTLSPassword() coreglib.Type {
-	gtype := coreglib.Type(C.g_tls_password_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTLSPassword)
-	return gtype
+// GType values.
+var (
+	GTypeTLSPassword = coreglib.Type(C.g_tls_password_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTLSPassword, F: marshalTLSPassword},
+	})
 }
 
 // TLSPasswordOverrider contains methods that are overridable.

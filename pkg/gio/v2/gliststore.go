@@ -18,15 +18,15 @@ import (
 // extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
-// GTypeListStore returns the GType for the type ListStore.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeListStore() coreglib.Type {
-	gtype := coreglib.Type(C.g_list_store_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalListStore)
-	return gtype
+// GType values.
+var (
+	GTypeListStore = coreglib.Type(C.g_list_store_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeListStore, F: marshalListStore},
+	})
 }
 
 // ListStoreOverrider contains methods that are overridable.

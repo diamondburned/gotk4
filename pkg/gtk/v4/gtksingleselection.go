@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeSingleSelection returns the GType for the type SingleSelection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSingleSelection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_single_selection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSingleSelection)
-	return gtype
+// GType values.
+var (
+	GTypeSingleSelection = coreglib.Type(C.gtk_single_selection_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSingleSelection, F: marshalSingleSelection},
+	})
 }
 
 // SingleSelectionOverrider contains methods that are overridable.

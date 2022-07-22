@@ -18,15 +18,15 @@ import (
 // extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(GAsyncResult*);
 import "C"
 
-// GTypeAsyncResult returns the GType for the type AsyncResult.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAsyncResult() coreglib.Type {
-	gtype := coreglib.Type(C.g_async_result_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAsyncResult)
-	return gtype
+// GType values.
+var (
+	GTypeAsyncResult = coreglib.Type(C.g_async_result_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAsyncResult, F: marshalAsyncResult},
+	})
 }
 
 // AsyncResultOverrider contains methods that are overridable.

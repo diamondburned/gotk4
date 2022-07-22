@@ -21,15 +21,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeTask returns the GType for the type Task.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTask() coreglib.Type {
-	gtype := coreglib.Type(C.g_task_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTask)
-	return gtype
+// GType values.
+var (
+	GTypeTask = coreglib.Type(C.g_task_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTask, F: marshalTask},
+	})
 }
 
 // TaskOverrider contains methods that are overridable.

@@ -28,26 +28,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeFontChooserLevel returns the GType for the type FontChooserLevel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontChooserLevel() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_font_chooser_level_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontChooserLevel)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFontChooserLevel = coreglib.Type(C.gtk_font_chooser_level_get_type())
+	GTypeFontChooser      = coreglib.Type(C.gtk_font_chooser_get_type())
+)
 
-// GTypeFontChooser returns the GType for the type FontChooser.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontChooser() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_font_chooser_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontChooser)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFontChooserLevel, F: marshalFontChooserLevel},
+		coreglib.TypeMarshaler{T: GTypeFontChooser, F: marshalFontChooser},
+	})
 }
 
 // FontChooserLevel specifies the granularity of font selection that is desired

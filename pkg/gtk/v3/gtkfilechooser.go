@@ -26,48 +26,21 @@ import (
 // extern void _gotk4_gtk3_FileChooser_ConnectUpdatePreview(gpointer, guintptr);
 import "C"
 
-// GTypeFileChooserAction returns the GType for the type FileChooserAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileChooserAction() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_chooser_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserAction)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFileChooserAction       = coreglib.Type(C.gtk_file_chooser_action_get_type())
+	GTypeFileChooserConfirmation = coreglib.Type(C.gtk_file_chooser_confirmation_get_type())
+	GTypeFileChooserError        = coreglib.Type(C.gtk_file_chooser_error_get_type())
+	GTypeFileChooser             = coreglib.Type(C.gtk_file_chooser_get_type())
+)
 
-// GTypeFileChooserConfirmation returns the GType for the type FileChooserConfirmation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileChooserConfirmation() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_chooser_confirmation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserConfirmation)
-	return gtype
-}
-
-// GTypeFileChooserError returns the GType for the type FileChooserError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileChooserError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_chooser_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserError)
-	return gtype
-}
-
-// GTypeFileChooser returns the GType for the type FileChooser.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileChooser() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_chooser_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooser)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileChooserAction, F: marshalFileChooserAction},
+		coreglib.TypeMarshaler{T: GTypeFileChooserConfirmation, F: marshalFileChooserConfirmation},
+		coreglib.TypeMarshaler{T: GTypeFileChooserError, F: marshalFileChooserError},
+		coreglib.TypeMarshaler{T: GTypeFileChooser, F: marshalFileChooser},
+	})
 }
 
 // FileChooserAction describes whether a FileChooser is being used to open

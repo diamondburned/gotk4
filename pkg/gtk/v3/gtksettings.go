@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeSettings returns the GType for the type Settings.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSettings() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_settings_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSettings)
-	return gtype
+// GType values.
+var (
+	GTypeSettings = coreglib.Type(C.gtk_settings_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSettings, F: marshalSettings},
+	})
 }
 
 // SettingsOverrider contains methods that are overridable.

@@ -26,15 +26,15 @@ import (
 // extern void _gotk4_gtk3_Action_ConnectActivate(gpointer, guintptr);
 import "C"
 
-// GTypeAction returns the GType for the type Action.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAction() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAction)
-	return gtype
+// GType values.
+var (
+	GTypeAction = coreglib.Type(C.gtk_action_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAction, F: marshalAction},
+	})
 }
 
 // ActionOverrider contains methods that are overridable.

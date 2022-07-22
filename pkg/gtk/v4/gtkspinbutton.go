@@ -19,37 +19,19 @@ import (
 // extern void _gotk4_gtk4_SpinButton_ConnectWrapped(gpointer, guintptr);
 import "C"
 
-// GTypeSpinButtonUpdatePolicy returns the GType for the type SpinButtonUpdatePolicy.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSpinButtonUpdatePolicy() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_spin_button_update_policy_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSpinButtonUpdatePolicy)
-	return gtype
-}
+// GType values.
+var (
+	GTypeSpinButtonUpdatePolicy = coreglib.Type(C.gtk_spin_button_update_policy_get_type())
+	GTypeSpinType               = coreglib.Type(C.gtk_spin_type_get_type())
+	GTypeSpinButton             = coreglib.Type(C.gtk_spin_button_get_type())
+)
 
-// GTypeSpinType returns the GType for the type SpinType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSpinType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_spin_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSpinType)
-	return gtype
-}
-
-// GTypeSpinButton returns the GType for the type SpinButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSpinButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_spin_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSpinButton)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSpinButtonUpdatePolicy, F: marshalSpinButtonUpdatePolicy},
+		coreglib.TypeMarshaler{T: GTypeSpinType, F: marshalSpinType},
+		coreglib.TypeMarshaler{T: GTypeSpinButton, F: marshalSpinButton},
+	})
 }
 
 // INPUT_ERROR: constant to return from a signal handler for the ::input signal

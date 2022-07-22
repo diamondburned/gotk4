@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeToplevelAccessible returns the GType for the type ToplevelAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeToplevelAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_toplevel_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalToplevelAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeToplevelAccessible = coreglib.Type(C.gtk_toplevel_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeToplevelAccessible, F: marshalToplevelAccessible},
+	})
 }
 
 // ToplevelAccessibleOverrider contains methods that are overridable.

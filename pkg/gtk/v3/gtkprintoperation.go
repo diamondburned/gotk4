@@ -42,59 +42,23 @@ import (
 // extern void _gotk4_gtk3_PrintOperation_ConnectUpdateCustomWidget(gpointer, GtkWidget*, GtkPageSetup*, GtkPrintSettings*, guintptr);
 import "C"
 
-// GTypePrintError returns the GType for the type PrintError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintError)
-	return gtype
-}
+// GType values.
+var (
+	GTypePrintError           = coreglib.Type(C.gtk_print_error_get_type())
+	GTypePrintOperationAction = coreglib.Type(C.gtk_print_operation_action_get_type())
+	GTypePrintOperationResult = coreglib.Type(C.gtk_print_operation_result_get_type())
+	GTypePrintStatus          = coreglib.Type(C.gtk_print_status_get_type())
+	GTypePrintOperation       = coreglib.Type(C.gtk_print_operation_get_type())
+)
 
-// GTypePrintOperationAction returns the GType for the type PrintOperationAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintOperationAction() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_operation_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintOperationAction)
-	return gtype
-}
-
-// GTypePrintOperationResult returns the GType for the type PrintOperationResult.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintOperationResult() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_operation_result_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintOperationResult)
-	return gtype
-}
-
-// GTypePrintStatus returns the GType for the type PrintStatus.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintStatus() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_status_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintStatus)
-	return gtype
-}
-
-// GTypePrintOperation returns the GType for the type PrintOperation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintOperation() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_operation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintOperation)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePrintError, F: marshalPrintError},
+		coreglib.TypeMarshaler{T: GTypePrintOperationAction, F: marshalPrintOperationAction},
+		coreglib.TypeMarshaler{T: GTypePrintOperationResult, F: marshalPrintOperationResult},
+		coreglib.TypeMarshaler{T: GTypePrintStatus, F: marshalPrintStatus},
+		coreglib.TypeMarshaler{T: GTypePrintOperation, F: marshalPrintOperation},
+	})
 }
 
 // PrintError: error codes that identify various errors that can occur while

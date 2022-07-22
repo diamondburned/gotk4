@@ -16,15 +16,15 @@ import (
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectLeave(gpointer, guintptr);
 import "C"
 
-// GTypeEventControllerFocus returns the GType for the type EventControllerFocus.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventControllerFocus() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_event_controller_focus_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerFocus)
-	return gtype
+// GType values.
+var (
+	GTypeEventControllerFocus = coreglib.Type(C.gtk_event_controller_focus_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEventControllerFocus, F: marshalEventControllerFocus},
+	})
 }
 
 // EventControllerFocusOverrider contains methods that are overridable.

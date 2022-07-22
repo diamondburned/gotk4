@@ -19,15 +19,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeDataInputStream returns the GType for the type DataInputStream.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDataInputStream() coreglib.Type {
-	gtype := coreglib.Type(C.g_data_input_stream_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDataInputStream)
-	return gtype
+// GType values.
+var (
+	GTypeDataInputStream = coreglib.Type(C.g_data_input_stream_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDataInputStream, F: marshalDataInputStream},
+	})
 }
 
 // DataInputStreamOverrider contains methods that are overridable.

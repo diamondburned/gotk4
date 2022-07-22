@@ -19,26 +19,17 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeEditableProperties returns the GType for the type EditableProperties.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEditableProperties() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_editable_properties_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEditableProperties)
-	return gtype
-}
+// GType values.
+var (
+	GTypeEditableProperties = coreglib.Type(C.gtk_editable_properties_get_type())
+	GTypeDebugFlags         = coreglib.Type(C.gtk_debug_flags_get_type())
+)
 
-// GTypeDebugFlags returns the GType for the type DebugFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDebugFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_debug_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDebugFlags)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEditableProperties, F: marshalEditableProperties},
+		coreglib.TypeMarshaler{T: GTypeDebugFlags, F: marshalDebugFlags},
+	})
 }
 
 // The function returns the following values:

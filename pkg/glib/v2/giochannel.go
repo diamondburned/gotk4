@@ -18,15 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// GTypeIOChannel returns the GType for the type IOChannel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIOChannel() coreglib.Type {
-	gtype := coreglib.Type(C.g_io_channel_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIOChannel)
-	return gtype
+// GType values.
+var (
+	GTypeIOChannel = coreglib.Type(C.g_io_channel_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeIOChannel, F: marshalIOChannel},
+	})
 }
 
 const WIN32_MSG_HANDLE = 19981206

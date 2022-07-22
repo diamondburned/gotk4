@@ -18,26 +18,17 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeFontSelection returns the GType for the type FontSelection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontSelection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_font_selection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontSelection)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFontSelection       = coreglib.Type(C.gtk_font_selection_get_type())
+	GTypeFontSelectionDialog = coreglib.Type(C.gtk_font_selection_dialog_get_type())
+)
 
-// GTypeFontSelectionDialog returns the GType for the type FontSelectionDialog.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontSelectionDialog() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_font_selection_dialog_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontSelectionDialog)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFontSelection, F: marshalFontSelection},
+		coreglib.TypeMarshaler{T: GTypeFontSelectionDialog, F: marshalFontSelectionDialog},
+	})
 }
 
 // FontSelectionOverrider contains methods that are overridable.

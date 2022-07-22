@@ -17,26 +17,17 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeAnchorHints returns the GType for the type AnchorHints.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAnchorHints() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_anchor_hints_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAnchorHints)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAnchorHints = coreglib.Type(C.gdk_anchor_hints_get_type())
+	GTypePopupLayout = coreglib.Type(C.gdk_popup_layout_get_type())
+)
 
-// GTypePopupLayout returns the GType for the type PopupLayout.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePopupLayout() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_popup_layout_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPopupLayout)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAnchorHints, F: marshalAnchorHints},
+		coreglib.TypeMarshaler{T: GTypePopupLayout, F: marshalPopupLayout},
+	})
 }
 
 // AnchorHints: positioning hints for aligning a surface relative to a

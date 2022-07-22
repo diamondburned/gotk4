@@ -17,15 +17,15 @@ import (
 // extern gboolean _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 import "C"
 
-// GTypeShortcutsSection returns the GType for the type ShortcutsSection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutsSection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcuts_section_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsSection)
-	return gtype
+// GType values.
+var (
+	GTypeShortcutsSection = coreglib.Type(C.gtk_shortcuts_section_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeShortcutsSection, F: marshalShortcutsSection},
+	})
 }
 
 // ShortcutsSectionOverrider contains methods that are overridable.

@@ -17,15 +17,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeCustomFilter returns the GType for the type CustomFilter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCustomFilter() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_custom_filter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCustomFilter)
-	return gtype
+// GType values.
+var (
+	GTypeCustomFilter = coreglib.Type(C.gtk_custom_filter_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCustomFilter, F: marshalCustomFilter},
+	})
 }
 
 // CustomFilterFunc: user function that is called to determine if the item

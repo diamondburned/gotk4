@@ -23,26 +23,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeFont returns the GType for the type Font.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFont() coreglib.Type {
-	gtype := coreglib.Type(C.pango_cairo_font_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFont)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFont    = coreglib.Type(C.pango_cairo_font_get_type())
+	GTypeFontMap = coreglib.Type(C.pango_cairo_font_map_get_type())
+)
 
-// GTypeFontMap returns the GType for the type FontMap.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontMap() coreglib.Type {
-	gtype := coreglib.Type(C.pango_cairo_font_map_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontMap)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFont, F: marshalFont},
+		coreglib.TypeMarshaler{T: GTypeFontMap, F: marshalFontMap},
+	})
 }
 
 // ShapeRendererFunc: function type for rendering attributes of type

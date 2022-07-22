@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeArrowAccessible returns the GType for the type ArrowAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeArrowAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_arrow_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalArrowAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeArrowAccessible = coreglib.Type(C.gtk_arrow_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeArrowAccessible, F: marshalArrowAccessible},
+	})
 }
 
 // ArrowAccessibleOverrider contains methods that are overridable.

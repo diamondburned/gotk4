@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeEntryAccessible returns the GType for the type EntryAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEntryAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_entry_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEntryAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeEntryAccessible = coreglib.Type(C.gtk_entry_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEntryAccessible, F: marshalEntryAccessible},
+	})
 }
 
 // EntryAccessibleOverrider contains methods that are overridable.

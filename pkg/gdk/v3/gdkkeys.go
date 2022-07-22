@@ -19,15 +19,15 @@ import (
 // extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
 import "C"
 
-// GTypeKeymap returns the GType for the type Keymap.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeKeymap() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_keymap_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalKeymap)
-	return gtype
+// GType values.
+var (
+	GTypeKeymap = coreglib.Type(C.gdk_keymap_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeKeymap, F: marshalKeymap},
+	})
 }
 
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval

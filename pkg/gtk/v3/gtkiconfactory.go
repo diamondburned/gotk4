@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeIconFactory returns the GType for the type IconFactory.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconFactory() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_factory_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconFactory)
-	return gtype
+// GType values.
+var (
+	GTypeIconFactory = coreglib.Type(C.gtk_icon_factory_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeIconFactory, F: marshalIconFactory},
+	})
 }
 
 // IconSizeFromName looks up the icon size associated with name.

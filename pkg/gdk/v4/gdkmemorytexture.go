@@ -17,26 +17,17 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeMemoryFormat returns the GType for the type MemoryFormat.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMemoryFormat() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_memory_format_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryFormat)
-	return gtype
-}
+// GType values.
+var (
+	GTypeMemoryFormat  = coreglib.Type(C.gdk_memory_format_get_type())
+	GTypeMemoryTexture = coreglib.Type(C.gdk_memory_texture_get_type())
+)
 
-// GTypeMemoryTexture returns the GType for the type MemoryTexture.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMemoryTexture() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_memory_texture_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryTexture)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMemoryFormat, F: marshalMemoryFormat},
+		coreglib.TypeMarshaler{T: GTypeMemoryTexture, F: marshalMemoryTexture},
+	})
 }
 
 // MemoryFormat: GdkMemoryFormat describes a format that bytes can have in

@@ -17,26 +17,17 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeShapeFlags returns the GType for the type ShapeFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShapeFlags() coreglib.Type {
-	gtype := coreglib.Type(C.pango_shape_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShapeFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeShapeFlags  = coreglib.Type(C.pango_shape_flags_get_type())
+	GTypeGlyphString = coreglib.Type(C.pango_glyph_string_get_type())
+)
 
-// GTypeGlyphString returns the GType for the type GlyphString.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGlyphString() coreglib.Type {
-	gtype := coreglib.Type(C.pango_glyph_string_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGlyphString)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeShapeFlags, F: marshalShapeFlags},
+		coreglib.TypeMarshaler{T: GTypeGlyphString, F: marshalGlyphString},
+	})
 }
 
 // GlyphUnit: PangoGlyphUnit type is used to store dimensions within Pango.

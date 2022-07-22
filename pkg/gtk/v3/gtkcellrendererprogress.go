@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeCellRendererProgress returns the GType for the type CellRendererProgress.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellRendererProgress() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_renderer_progress_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererProgress)
-	return gtype
+// GType values.
+var (
+	GTypeCellRendererProgress = coreglib.Type(C.gtk_cell_renderer_progress_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCellRendererProgress, F: marshalCellRendererProgress},
+	})
 }
 
 // CellRendererProgressOverrider contains methods that are overridable.

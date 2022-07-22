@@ -15,15 +15,15 @@ import (
 // extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
 import "C"
 
-// GTypeShortcutManager returns the GType for the type ShortcutManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutManager() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcut_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutManager)
-	return gtype
+// GType values.
+var (
+	GTypeShortcutManager = coreglib.Type(C.gtk_shortcut_manager_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeShortcutManager, F: marshalShortcutManager},
+	})
 }
 
 // ShortcutManagerOverrider contains methods that are overridable.

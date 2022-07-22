@@ -24,26 +24,17 @@ import (
 // extern void _gotk4_gdk3_FrameClock_ConnectUpdate(gpointer, guintptr);
 import "C"
 
-// GTypeFrameClockPhase returns the GType for the type FrameClockPhase.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFrameClockPhase() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_frame_clock_phase_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFrameClockPhase)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFrameClockPhase = coreglib.Type(C.gdk_frame_clock_phase_get_type())
+	GTypeFrameClock      = coreglib.Type(C.gdk_frame_clock_get_type())
+)
 
-// GTypeFrameClock returns the GType for the type FrameClock.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFrameClock() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_frame_clock_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFrameClock)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFrameClockPhase, F: marshalFrameClockPhase},
+		coreglib.TypeMarshaler{T: GTypeFrameClock, F: marshalFrameClock},
+	})
 }
 
 // FrameClockPhase is used to represent the different paint clock phases that

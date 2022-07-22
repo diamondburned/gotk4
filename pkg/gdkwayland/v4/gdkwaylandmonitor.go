@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeWaylandMonitor returns the GType for the type WaylandMonitor.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWaylandMonitor() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_wayland_monitor_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandMonitor)
-	return gtype
+// GType values.
+var (
+	GTypeWaylandMonitor = coreglib.Type(C.gdk_wayland_monitor_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeWaylandMonitor, F: marshalWaylandMonitor},
+	})
 }
 
 // WaylandMonitorOverrider contains methods that are overridable.

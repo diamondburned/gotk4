@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeShortcutsGroup returns the GType for the type ShortcutsGroup.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutsGroup() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcuts_group_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsGroup)
-	return gtype
+// GType values.
+var (
+	GTypeShortcutsGroup = coreglib.Type(C.gtk_shortcuts_group_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeShortcutsGroup, F: marshalShortcutsGroup},
+	})
 }
 
 // ShortcutsGroupOverrider contains methods that are overridable.

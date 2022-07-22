@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeRadioToolButton returns the GType for the type RadioToolButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRadioToolButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_radio_tool_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRadioToolButton)
-	return gtype
+// GType values.
+var (
+	GTypeRadioToolButton = coreglib.Type(C.gtk_radio_tool_button_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRadioToolButton, F: marshalRadioToolButton},
+	})
 }
 
 // RadioToolButtonOverrider contains methods that are overridable.

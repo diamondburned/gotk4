@@ -23,15 +23,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeTreeSelection returns the GType for the type TreeSelection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeSelection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_selection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeSelection)
-	return gtype
+// GType values.
+var (
+	GTypeTreeSelection = coreglib.Type(C.gtk_tree_selection_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTreeSelection, F: marshalTreeSelection},
+	})
 }
 
 // TreeSelectionForEachFunc: function used by

@@ -25,15 +25,15 @@ import (
 // extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
 import "C"
 
-// GTypeMountOperation returns the GType for the type MountOperation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMountOperation() coreglib.Type {
-	gtype := coreglib.Type(C.g_mount_operation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMountOperation)
-	return gtype
+// GType values.
+var (
+	GTypeMountOperation = coreglib.Type(C.g_mount_operation_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMountOperation, F: marshalMountOperation},
+	})
 }
 
 // MountOperationOverrider contains methods that are overridable.

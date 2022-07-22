@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeCellRendererSpinner returns the GType for the type CellRendererSpinner.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellRendererSpinner() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_renderer_spinner_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererSpinner)
-	return gtype
+// GType values.
+var (
+	GTypeCellRendererSpinner = coreglib.Type(C.gtk_cell_renderer_spinner_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCellRendererSpinner, F: marshalCellRendererSpinner},
+	})
 }
 
 // CellRendererSpinnerOverrider contains methods that are overridable.

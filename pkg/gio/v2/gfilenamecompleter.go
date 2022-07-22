@@ -17,15 +17,15 @@ import (
 // extern void _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(gpointer, guintptr);
 import "C"
 
-// GTypeFilenameCompleter returns the GType for the type FilenameCompleter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFilenameCompleter() coreglib.Type {
-	gtype := coreglib.Type(C.g_filename_completer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFilenameCompleter)
-	return gtype
+// GType values.
+var (
+	GTypeFilenameCompleter = coreglib.Type(C.g_filename_completer_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFilenameCompleter, F: marshalFilenameCompleter},
+	})
 }
 
 // FilenameCompleterOverrider contains methods that are overridable.

@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeContentFormatsBuilder returns the GType for the type ContentFormatsBuilder.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeContentFormatsBuilder() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_content_formats_builder_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalContentFormatsBuilder)
-	return gtype
+// GType values.
+var (
+	GTypeContentFormatsBuilder = coreglib.Type(C.gdk_content_formats_builder_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeContentFormatsBuilder, F: marshalContentFormatsBuilder},
+	})
 }
 
 // InternMIMEType canonicalizes the given mime type and interns the result.

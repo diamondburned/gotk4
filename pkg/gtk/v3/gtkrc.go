@@ -24,59 +24,23 @@ import (
 // extern void _gotk4_gtk3_RcStyleClass_merge(GtkRcStyle*, GtkRcStyle*);
 import "C"
 
-// GTypePathPriorityType returns the GType for the type PathPriorityType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePathPriorityType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_path_priority_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPathPriorityType)
-	return gtype
-}
+// GType values.
+var (
+	GTypePathPriorityType = coreglib.Type(C.gtk_path_priority_type_get_type())
+	GTypePathType         = coreglib.Type(C.gtk_path_type_get_type())
+	GTypeRCTokenType      = coreglib.Type(C.gtk_rc_token_type_get_type())
+	GTypeRCFlags          = coreglib.Type(C.gtk_rc_flags_get_type())
+	GTypeRCStyle          = coreglib.Type(C.gtk_rc_style_get_type())
+)
 
-// GTypePathType returns the GType for the type PathType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePathType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_path_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPathType)
-	return gtype
-}
-
-// GTypeRCTokenType returns the GType for the type RCTokenType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRCTokenType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_rc_token_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRCTokenType)
-	return gtype
-}
-
-// GTypeRCFlags returns the GType for the type RCFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRCFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_rc_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRCFlags)
-	return gtype
-}
-
-// GTypeRCStyle returns the GType for the type RCStyle.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRCStyle() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_rc_style_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRCStyle)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePathPriorityType, F: marshalPathPriorityType},
+		coreglib.TypeMarshaler{T: GTypePathType, F: marshalPathType},
+		coreglib.TypeMarshaler{T: GTypeRCTokenType, F: marshalRCTokenType},
+		coreglib.TypeMarshaler{T: GTypeRCFlags, F: marshalRCFlags},
+		coreglib.TypeMarshaler{T: GTypeRCStyle, F: marshalRCStyle},
+	})
 }
 
 const PATH_PRIO_MASK = 15

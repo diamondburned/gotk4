@@ -24,15 +24,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeFileEnumerator returns the GType for the type FileEnumerator.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileEnumerator() coreglib.Type {
-	gtype := coreglib.Type(C.g_file_enumerator_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileEnumerator)
-	return gtype
+// GType values.
+var (
+	GTypeFileEnumerator = coreglib.Type(C.g_file_enumerator_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileEnumerator, F: marshalFileEnumerator},
+	})
 }
 
 // FileEnumeratorOverrider contains methods that are overridable.

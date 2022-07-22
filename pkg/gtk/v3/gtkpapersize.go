@@ -19,15 +19,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypePaperSize returns the GType for the type PaperSize.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePaperSize() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_paper_size_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPaperSize)
-	return gtype
+// GType values.
+var (
+	GTypePaperSize = coreglib.Type(C.gtk_paper_size_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePaperSize, F: marshalPaperSize},
+	})
 }
 
 // PAPER_NAME_A3: name for the A3 paper size.

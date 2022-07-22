@@ -23,15 +23,15 @@ import (
 // extern void _gotk4_gtk3_Gesture_ConnectUpdate(gpointer, GdkEventSequence*, guintptr);
 import "C"
 
-// GTypeGesture returns the GType for the type Gesture.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGesture() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGesture)
-	return gtype
+// GType values.
+var (
+	GTypeGesture = coreglib.Type(C.gtk_gesture_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGesture, F: marshalGesture},
+	})
 }
 
 // GestureOverrider contains methods that are overridable.

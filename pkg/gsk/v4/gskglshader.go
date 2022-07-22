@@ -18,26 +18,17 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// GTypeGLShader returns the GType for the type GLShader.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGLShader() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_gl_shader_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGLShader)
-	return gtype
-}
+// GType values.
+var (
+	GTypeGLShader          = coreglib.Type(C.gsk_gl_shader_get_type())
+	GTypeShaderArgsBuilder = coreglib.Type(C.gsk_shader_args_builder_get_type())
+)
 
-// GTypeShaderArgsBuilder returns the GType for the type ShaderArgsBuilder.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShaderArgsBuilder() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_shader_args_builder_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShaderArgsBuilder)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGLShader, F: marshalGLShader},
+		coreglib.TypeMarshaler{T: GTypeShaderArgsBuilder, F: marshalShaderArgsBuilder},
+	})
 }
 
 // GLShaderOverrider contains methods that are overridable.

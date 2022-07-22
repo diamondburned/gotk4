@@ -21,26 +21,17 @@ import (
 // }
 import "C"
 
-// GTypeButtonsType returns the GType for the type ButtonsType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeButtonsType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_buttons_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalButtonsType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeButtonsType   = coreglib.Type(C.gtk_buttons_type_get_type())
+	GTypeMessageDialog = coreglib.Type(C.gtk_message_dialog_get_type())
+)
 
-// GTypeMessageDialog returns the GType for the type MessageDialog.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMessageDialog() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_message_dialog_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMessageDialog)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeButtonsType, F: marshalButtonsType},
+		coreglib.TypeMarshaler{T: GTypeMessageDialog, F: marshalMessageDialog},
+	})
 }
 
 // ButtonsType: prebuilt sets of buttons for the dialog. If none of these

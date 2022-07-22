@@ -18,26 +18,17 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypePadActionType returns the GType for the type PadActionType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePadActionType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_pad_action_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPadActionType)
-	return gtype
-}
+// GType values.
+var (
+	GTypePadActionType = coreglib.Type(C.gtk_pad_action_type_get_type())
+	GTypePadController = coreglib.Type(C.gtk_pad_controller_get_type())
+)
 
-// GTypePadController returns the GType for the type PadController.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePadController() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_pad_controller_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPadController)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePadActionType, F: marshalPadActionType},
+		coreglib.TypeMarshaler{T: GTypePadController, F: marshalPadController},
+	})
 }
 
 // PadActionType: type of a pad action.

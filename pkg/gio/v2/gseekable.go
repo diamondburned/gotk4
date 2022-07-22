@@ -22,15 +22,15 @@ import (
 // extern goffset _gotk4_gio2_SeekableIface_tell(GSeekable*);
 import "C"
 
-// GTypeSeekable returns the GType for the type Seekable.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSeekable() coreglib.Type {
-	gtype := coreglib.Type(C.g_seekable_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSeekable)
-	return gtype
+// GType values.
+var (
+	GTypeSeekable = coreglib.Type(C.g_seekable_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSeekable, F: marshalSeekable},
+	})
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that

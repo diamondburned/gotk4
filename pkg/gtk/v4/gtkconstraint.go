@@ -14,26 +14,17 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeConstraintTarget returns the GType for the type ConstraintTarget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstraintTarget() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constraint_target_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintTarget)
-	return gtype
-}
+// GType values.
+var (
+	GTypeConstraintTarget = coreglib.Type(C.gtk_constraint_target_get_type())
+	GTypeConstraint       = coreglib.Type(C.gtk_constraint_get_type())
+)
 
-// GTypeConstraint returns the GType for the type Constraint.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstraint() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constraint_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstraint)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeConstraintTarget, F: marshalConstraintTarget},
+		coreglib.TypeMarshaler{T: GTypeConstraint, F: marshalConstraint},
+	})
 }
 
 // ConstraintTargetOverrider contains methods that are overridable.

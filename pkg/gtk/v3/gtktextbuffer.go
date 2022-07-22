@@ -47,26 +47,17 @@ import (
 // extern void _gotk4_gtk3_TextBuffer_ConnectRemoveTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
 import "C"
 
-// GTypeTextBufferTargetInfo returns the GType for the type TextBufferTargetInfo.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextBufferTargetInfo() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_buffer_target_info_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextBufferTargetInfo)
-	return gtype
-}
+// GType values.
+var (
+	GTypeTextBufferTargetInfo = coreglib.Type(C.gtk_text_buffer_target_info_get_type())
+	GTypeTextBuffer           = coreglib.Type(C.gtk_text_buffer_get_type())
+)
 
-// GTypeTextBuffer returns the GType for the type TextBuffer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextBuffer() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_buffer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextBuffer)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTextBufferTargetInfo, F: marshalTextBufferTargetInfo},
+		coreglib.TypeMarshaler{T: GTypeTextBuffer, F: marshalTextBuffer},
+	})
 }
 
 // TextBufferTargetInfo: these values are used as “info” for the targets

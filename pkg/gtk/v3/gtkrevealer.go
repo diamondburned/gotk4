@@ -18,26 +18,17 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeRevealerTransitionType returns the GType for the type RevealerTransitionType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRevealerTransitionType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_revealer_transition_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRevealerTransitionType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeRevealerTransitionType = coreglib.Type(C.gtk_revealer_transition_type_get_type())
+	GTypeRevealer               = coreglib.Type(C.gtk_revealer_get_type())
+)
 
-// GTypeRevealer returns the GType for the type Revealer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRevealer() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_revealer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRevealer)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRevealerTransitionType, F: marshalRevealerTransitionType},
+		coreglib.TypeMarshaler{T: GTypeRevealer, F: marshalRevealer},
+	})
 }
 
 // RevealerTransitionType: these enumeration values describe the possible

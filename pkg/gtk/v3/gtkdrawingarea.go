@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeDrawingArea returns the GType for the type DrawingArea.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDrawingArea() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_drawing_area_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDrawingArea)
-	return gtype
+// GType values.
+var (
+	GTypeDrawingArea = coreglib.Type(C.gtk_drawing_area_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDrawingArea, F: marshalDrawingArea},
+	})
 }
 
 // DrawingAreaOverrider contains methods that are overridable.

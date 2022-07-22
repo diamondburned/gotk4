@@ -14,15 +14,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeSpinner returns the GType for the type Spinner.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSpinner() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_spinner_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSpinner)
-	return gtype
+// GType values.
+var (
+	GTypeSpinner = coreglib.Type(C.gtk_spinner_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSpinner, F: marshalSpinner},
+	})
 }
 
 // Spinner: GtkSpinner widget displays an icon-size spinning animation.

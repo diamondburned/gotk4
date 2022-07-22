@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gtk4_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
 import "C"
 
-// GTypeFrame returns the GType for the type Frame.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFrame() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_frame_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFrame)
-	return gtype
+// GType values.
+var (
+	GTypeFrame = coreglib.Type(C.gtk_frame_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFrame, F: marshalFrame},
+	})
 }
 
 // FrameOverrider contains methods that are overridable.

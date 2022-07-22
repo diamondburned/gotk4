@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeRendererCellAccessible returns the GType for the type RendererCellAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRendererCellAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_renderer_cell_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRendererCellAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeRendererCellAccessible = coreglib.Type(C.gtk_renderer_cell_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRendererCellAccessible, F: marshalRendererCellAccessible},
+	})
 }
 
 // RendererCellAccessibleOverrider contains methods that are overridable.

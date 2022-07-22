@@ -22,26 +22,17 @@ import (
 // extern gboolean _gotk4_gtk3_AccelGroup_ConnectAccelActivate(gpointer, GObject, guint, GdkModifierType, guintptr);
 import "C"
 
-// GTypeAccelFlags returns the GType for the type AccelFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccelFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accel_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccelFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAccelFlags = coreglib.Type(C.gtk_accel_flags_get_type())
+	GTypeAccelGroup = coreglib.Type(C.gtk_accel_group_get_type())
+)
 
-// GTypeAccelGroup returns the GType for the type AccelGroup.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccelGroup() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accel_group_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccelGroup)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAccelFlags, F: marshalAccelFlags},
+		coreglib.TypeMarshaler{T: GTypeAccelGroup, F: marshalAccelGroup},
+	})
 }
 
 // AccelFlags: accelerator flags used with gtk_accel_group_connect().

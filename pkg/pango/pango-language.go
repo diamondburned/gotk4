@@ -15,15 +15,15 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeLanguage returns the GType for the type Language.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeLanguage() coreglib.Type {
-	gtype := coreglib.Type(C.pango_language_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalLanguage)
-	return gtype
+// GType values.
+var (
+	GTypeLanguage = coreglib.Type(C.pango_language_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeLanguage, F: marshalLanguage},
+	})
 }
 
 // Language: PangoLanguage structure is used to represent a language.

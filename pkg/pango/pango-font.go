@@ -34,114 +34,33 @@ import (
 // extern void _gotk4_pango1_FontFamilyClass_list_faces(PangoFontFamily*, PangoFontFace***, int*);
 import "C"
 
-// GTypeStretch returns the GType for the type Stretch.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStretch() coreglib.Type {
-	gtype := coreglib.Type(C.pango_stretch_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStretch)
-	return gtype
-}
+// GType values.
+var (
+	GTypeStretch         = coreglib.Type(C.pango_stretch_get_type())
+	GTypeStyle           = coreglib.Type(C.pango_style_get_type())
+	GTypeVariant         = coreglib.Type(C.pango_variant_get_type())
+	GTypeWeight          = coreglib.Type(C.pango_weight_get_type())
+	GTypeFontMask        = coreglib.Type(C.pango_font_mask_get_type())
+	GTypeFont            = coreglib.Type(C.pango_font_get_type())
+	GTypeFontFace        = coreglib.Type(C.pango_font_face_get_type())
+	GTypeFontFamily      = coreglib.Type(C.pango_font_family_get_type())
+	GTypeFontDescription = coreglib.Type(C.pango_font_description_get_type())
+	GTypeFontMetrics     = coreglib.Type(C.pango_font_metrics_get_type())
+)
 
-// GTypeStyle returns the GType for the type Style.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStyle() coreglib.Type {
-	gtype := coreglib.Type(C.pango_style_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStyle)
-	return gtype
-}
-
-// GTypeVariant returns the GType for the type Variant.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVariant() coreglib.Type {
-	gtype := coreglib.Type(C.pango_variant_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVariant)
-	return gtype
-}
-
-// GTypeWeight returns the GType for the type Weight.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWeight() coreglib.Type {
-	gtype := coreglib.Type(C.pango_weight_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWeight)
-	return gtype
-}
-
-// GTypeFontMask returns the GType for the type FontMask.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontMask() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_mask_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontMask)
-	return gtype
-}
-
-// GTypeFont returns the GType for the type Font.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFont() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFont)
-	return gtype
-}
-
-// GTypeFontFace returns the GType for the type FontFace.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontFace() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_face_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontFace)
-	return gtype
-}
-
-// GTypeFontFamily returns the GType for the type FontFamily.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontFamily() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_family_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontFamily)
-	return gtype
-}
-
-// GTypeFontDescription returns the GType for the type FontDescription.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontDescription() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_description_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontDescription)
-	return gtype
-}
-
-// GTypeFontMetrics returns the GType for the type FontMetrics.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontMetrics() coreglib.Type {
-	gtype := coreglib.Type(C.pango_font_metrics_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontMetrics)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStretch, F: marshalStretch},
+		coreglib.TypeMarshaler{T: GTypeStyle, F: marshalStyle},
+		coreglib.TypeMarshaler{T: GTypeVariant, F: marshalVariant},
+		coreglib.TypeMarshaler{T: GTypeWeight, F: marshalWeight},
+		coreglib.TypeMarshaler{T: GTypeFontMask, F: marshalFontMask},
+		coreglib.TypeMarshaler{T: GTypeFont, F: marshalFont},
+		coreglib.TypeMarshaler{T: GTypeFontFace, F: marshalFontFace},
+		coreglib.TypeMarshaler{T: GTypeFontFamily, F: marshalFontFamily},
+		coreglib.TypeMarshaler{T: GTypeFontDescription, F: marshalFontDescription},
+		coreglib.TypeMarshaler{T: GTypeFontMetrics, F: marshalFontMetrics},
+	})
 }
 
 // Stretch: enumeration specifying the width of the font relative to other

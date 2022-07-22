@@ -19,15 +19,15 @@ import (
 // extern void _gotk4_gtk4_EventControllerKey_ConnectKeyReleased(gpointer, guint, guint, GdkModifierType, guintptr);
 import "C"
 
-// GTypeEventControllerKey returns the GType for the type EventControllerKey.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventControllerKey() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_event_controller_key_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerKey)
-	return gtype
+// GType values.
+var (
+	GTypeEventControllerKey = coreglib.Type(C.gtk_event_controller_key_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEventControllerKey, F: marshalEventControllerKey},
+	})
 }
 
 // EventControllerKeyOverrider contains methods that are overridable.

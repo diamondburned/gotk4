@@ -25,15 +25,15 @@ import (
 // extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, GdkEventOwnerChange*, guintptr);
 import "C"
 
-// GTypeClipboard returns the GType for the type Clipboard.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeClipboard() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_clipboard_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalClipboard)
-	return gtype
+// GType values.
+var (
+	GTypeClipboard = coreglib.Type(C.gtk_clipboard_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeClipboard, F: marshalClipboard},
+	})
 }
 
 // ClipboardImageReceivedFunc: function to be called when the results of

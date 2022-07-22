@@ -13,15 +13,15 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// GTypeCairoRenderer returns the GType for the type CairoRenderer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCairoRenderer() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_cairo_renderer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCairoRenderer)
-	return gtype
+// GType values.
+var (
+	GTypeCairoRenderer = coreglib.Type(C.gsk_cairo_renderer_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCairoRenderer, F: marshalCairoRenderer},
+	})
 }
 
 // CairoRendererOverrider contains methods that are overridable.

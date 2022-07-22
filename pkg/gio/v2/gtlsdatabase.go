@@ -29,15 +29,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeTLSDatabase returns the GType for the type TLSDatabase.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTLSDatabase() coreglib.Type {
-	gtype := coreglib.Type(C.g_tls_database_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTLSDatabase)
-	return gtype
+// GType values.
+var (
+	GTypeTLSDatabase = coreglib.Type(C.g_tls_database_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTLSDatabase, F: marshalTLSDatabase},
+	})
 }
 
 // TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT: purpose used to verify the client

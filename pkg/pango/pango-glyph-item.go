@@ -15,26 +15,17 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeGlyphItem returns the GType for the type GlyphItem.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGlyphItem() coreglib.Type {
-	gtype := coreglib.Type(C.pango_glyph_item_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGlyphItem)
-	return gtype
-}
+// GType values.
+var (
+	GTypeGlyphItem     = coreglib.Type(C.pango_glyph_item_get_type())
+	GTypeGlyphItemIter = coreglib.Type(C.pango_glyph_item_iter_get_type())
+)
 
-// GTypeGlyphItemIter returns the GType for the type GlyphItemIter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGlyphItemIter() coreglib.Type {
-	gtype := coreglib.Type(C.pango_glyph_item_iter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGlyphItemIter)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGlyphItem, F: marshalGlyphItem},
+		coreglib.TypeMarshaler{T: GTypeGlyphItemIter, F: marshalGlyphItemIter},
+	})
 }
 
 // GlyphItem: PangoGlyphItem is a pair of a PangoItem and the glyphs resulting

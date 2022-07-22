@@ -17,125 +17,35 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeAxisUse returns the GType for the type AxisUse.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAxisUse() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_axis_use_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAxisUse)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAxisUse        = coreglib.Type(C.gdk_axis_use_get_type())
+	GTypeByteOrder      = coreglib.Type(C.gdk_byte_order_get_type())
+	GTypeGLError        = coreglib.Type(C.gdk_gl_error_get_type())
+	GTypeGrabOwnership  = coreglib.Type(C.gdk_grab_ownership_get_type())
+	GTypeGrabStatus     = coreglib.Type(C.gdk_grab_status_get_type())
+	GTypeModifierIntent = coreglib.Type(C.gdk_modifier_intent_get_type())
+	GTypeWindowTypeHint = coreglib.Type(C.gdk_window_type_hint_get_type())
+	GTypeAxisFlags      = coreglib.Type(C.gdk_axis_flags_get_type())
+	GTypeEventMask      = coreglib.Type(C.gdk_event_mask_get_type())
+	GTypeModifierType   = coreglib.Type(C.gdk_modifier_type_get_type())
+	GTypeRectangle      = coreglib.Type(C.gdk_rectangle_get_type())
+)
 
-// GTypeByteOrder returns the GType for the type ByteOrder.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeByteOrder() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_byte_order_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalByteOrder)
-	return gtype
-}
-
-// GTypeGLError returns the GType for the type GLError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGLError() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_gl_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGLError)
-	return gtype
-}
-
-// GTypeGrabOwnership returns the GType for the type GrabOwnership.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGrabOwnership() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_grab_ownership_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGrabOwnership)
-	return gtype
-}
-
-// GTypeGrabStatus returns the GType for the type GrabStatus.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGrabStatus() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_grab_status_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGrabStatus)
-	return gtype
-}
-
-// GTypeModifierIntent returns the GType for the type ModifierIntent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeModifierIntent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_modifier_intent_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalModifierIntent)
-	return gtype
-}
-
-// GTypeWindowTypeHint returns the GType for the type WindowTypeHint.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWindowTypeHint() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_window_type_hint_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWindowTypeHint)
-	return gtype
-}
-
-// GTypeAxisFlags returns the GType for the type AxisFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAxisFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_axis_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAxisFlags)
-	return gtype
-}
-
-// GTypeEventMask returns the GType for the type EventMask.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventMask() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_event_mask_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventMask)
-	return gtype
-}
-
-// GTypeModifierType returns the GType for the type ModifierType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeModifierType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_modifier_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalModifierType)
-	return gtype
-}
-
-// GTypeRectangle returns the GType for the type Rectangle.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRectangle() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_rectangle_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRectangle)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAxisUse, F: marshalAxisUse},
+		coreglib.TypeMarshaler{T: GTypeByteOrder, F: marshalByteOrder},
+		coreglib.TypeMarshaler{T: GTypeGLError, F: marshalGLError},
+		coreglib.TypeMarshaler{T: GTypeGrabOwnership, F: marshalGrabOwnership},
+		coreglib.TypeMarshaler{T: GTypeGrabStatus, F: marshalGrabStatus},
+		coreglib.TypeMarshaler{T: GTypeModifierIntent, F: marshalModifierIntent},
+		coreglib.TypeMarshaler{T: GTypeWindowTypeHint, F: marshalWindowTypeHint},
+		coreglib.TypeMarshaler{T: GTypeAxisFlags, F: marshalAxisFlags},
+		coreglib.TypeMarshaler{T: GTypeEventMask, F: marshalEventMask},
+		coreglib.TypeMarshaler{T: GTypeModifierType, F: marshalModifierType},
+		coreglib.TypeMarshaler{T: GTypeRectangle, F: marshalRectangle},
+	})
 }
 
 // CURRENT_TIME represents the current time, and can be used anywhere a time is

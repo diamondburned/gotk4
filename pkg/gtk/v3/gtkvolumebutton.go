@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeVolumeButton returns the GType for the type VolumeButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVolumeButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_volume_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVolumeButton)
-	return gtype
+// GType values.
+var (
+	GTypeVolumeButton = coreglib.Type(C.gtk_volume_button_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVolumeButton, F: marshalVolumeButton},
+	})
 }
 
 // VolumeButtonOverrider contains methods that are overridable.

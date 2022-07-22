@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeDBusObjectProxy returns the GType for the type DBusObjectProxy.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusObjectProxy() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_object_proxy_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectProxy)
-	return gtype
+// GType values.
+var (
+	GTypeDBusObjectProxy = coreglib.Type(C.g_dbus_object_proxy_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDBusObjectProxy, F: marshalDBusObjectProxy},
+	})
 }
 
 // DBusObjectProxyOverrider contains methods that are overridable.

@@ -23,26 +23,17 @@ import (
 // extern void _gotk4_gtk3_CssProvider_ConnectParsingError(gpointer, GtkCssSection*, GError*, guintptr);
 import "C"
 
-// GTypeCSSProviderError returns the GType for the type CSSProviderError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCSSProviderError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_css_provider_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCSSProviderError)
-	return gtype
-}
+// GType values.
+var (
+	GTypeCSSProviderError = coreglib.Type(C.gtk_css_provider_error_get_type())
+	GTypeCSSProvider      = coreglib.Type(C.gtk_css_provider_get_type())
+)
 
-// GTypeCSSProvider returns the GType for the type CSSProvider.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCSSProvider() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_css_provider_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCSSProvider)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCSSProviderError, F: marshalCSSProviderError},
+		coreglib.TypeMarshaler{T: GTypeCSSProvider, F: marshalCSSProvider},
+	})
 }
 
 // CSSProviderError: error codes for GTK_CSS_PROVIDER_ERROR.

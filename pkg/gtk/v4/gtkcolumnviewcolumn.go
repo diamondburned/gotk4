@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeColumnViewColumn returns the GType for the type ColumnViewColumn.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeColumnViewColumn() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_column_view_column_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalColumnViewColumn)
-	return gtype
+// GType values.
+var (
+	GTypeColumnViewColumn = coreglib.Type(C.gtk_column_view_column_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeColumnViewColumn, F: marshalColumnViewColumn},
+	})
 }
 
 // ColumnViewColumnOverrider contains methods that are overridable.

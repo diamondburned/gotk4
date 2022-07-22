@@ -17,37 +17,19 @@ import (
 // extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
 import "C"
 
-// GTypeBuilderClosureFlags returns the GType for the type BuilderClosureFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBuilderClosureFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_builder_closure_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderClosureFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeBuilderClosureFlags = coreglib.Type(C.gtk_builder_closure_flags_get_type())
+	GTypeBuilderScope        = coreglib.Type(C.gtk_builder_scope_get_type())
+	GTypeBuilderCScope       = coreglib.Type(C.gtk_builder_cscope_get_type())
+)
 
-// GTypeBuilderScope returns the GType for the type BuilderScope.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBuilderScope() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_builder_scope_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderScope)
-	return gtype
-}
-
-// GTypeBuilderCScope returns the GType for the type BuilderCScope.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBuilderCScope() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_builder_cscope_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderCScope)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBuilderClosureFlags, F: marshalBuilderClosureFlags},
+		coreglib.TypeMarshaler{T: GTypeBuilderScope, F: marshalBuilderScope},
+		coreglib.TypeMarshaler{T: GTypeBuilderCScope, F: marshalBuilderCScope},
+	})
 }
 
 // BuilderClosureFlags: list of flags that can be passed to

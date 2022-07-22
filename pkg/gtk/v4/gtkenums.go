@@ -16,620 +16,125 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeAccessibleAutocomplete returns the GType for the type AccessibleAutocomplete.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleAutocomplete() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_autocomplete_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleAutocomplete)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAccessibleAutocomplete   = coreglib.Type(C.gtk_accessible_autocomplete_get_type())
+	GTypeAccessibleInvalidState   = coreglib.Type(C.gtk_accessible_invalid_state_get_type())
+	GTypeAccessibleProperty       = coreglib.Type(C.gtk_accessible_property_get_type())
+	GTypeAccessibleRelation       = coreglib.Type(C.gtk_accessible_relation_get_type())
+	GTypeAccessibleRole           = coreglib.Type(C.gtk_accessible_role_get_type())
+	GTypeAccessibleSort           = coreglib.Type(C.gtk_accessible_sort_get_type())
+	GTypeAccessibleState          = coreglib.Type(C.gtk_accessible_state_get_type())
+	GTypeAccessibleTristate       = coreglib.Type(C.gtk_accessible_tristate_get_type())
+	GTypeAlign                    = coreglib.Type(C.gtk_align_get_type())
+	GTypeArrowType                = coreglib.Type(C.gtk_arrow_type_get_type())
+	GTypeBaselinePosition         = coreglib.Type(C.gtk_baseline_position_get_type())
+	GTypeBorderStyle              = coreglib.Type(C.gtk_border_style_get_type())
+	GTypeConstraintAttribute      = coreglib.Type(C.gtk_constraint_attribute_get_type())
+	GTypeConstraintRelation       = coreglib.Type(C.gtk_constraint_relation_get_type())
+	GTypeConstraintStrength       = coreglib.Type(C.gtk_constraint_strength_get_type())
+	GTypeConstraintVflParserError = coreglib.Type(C.gtk_constraint_vfl_parser_error_get_type())
+	GTypeDeleteType               = coreglib.Type(C.gtk_delete_type_get_type())
+	GTypeDirectionType            = coreglib.Type(C.gtk_direction_type_get_type())
+	GTypeEventSequenceState       = coreglib.Type(C.gtk_event_sequence_state_get_type())
+	GTypeIconSize                 = coreglib.Type(C.gtk_icon_size_get_type())
+	GTypeInputPurpose             = coreglib.Type(C.gtk_input_purpose_get_type())
+	GTypeJustification            = coreglib.Type(C.gtk_justification_get_type())
+	GTypeLevelBarMode             = coreglib.Type(C.gtk_level_bar_mode_get_type())
+	GTypeMessageType              = coreglib.Type(C.gtk_message_type_get_type())
+	GTypeMovementStep             = coreglib.Type(C.gtk_movement_step_get_type())
+	GTypeNumberUpLayout           = coreglib.Type(C.gtk_number_up_layout_get_type())
+	GTypeOrdering                 = coreglib.Type(C.gtk_ordering_get_type())
+	GTypeOrientation              = coreglib.Type(C.gtk_orientation_get_type())
+	GTypeOverflow                 = coreglib.Type(C.gtk_overflow_get_type())
+	GTypePackType                 = coreglib.Type(C.gtk_pack_type_get_type())
+	GTypePageOrientation          = coreglib.Type(C.gtk_page_orientation_get_type())
+	GTypePageSet                  = coreglib.Type(C.gtk_page_set_get_type())
+	GTypePanDirection             = coreglib.Type(C.gtk_pan_direction_get_type())
+	GTypePositionType             = coreglib.Type(C.gtk_position_type_get_type())
+	GTypePrintDuplex              = coreglib.Type(C.gtk_print_duplex_get_type())
+	GTypePrintPages               = coreglib.Type(C.gtk_print_pages_get_type())
+	GTypePrintQuality             = coreglib.Type(C.gtk_print_quality_get_type())
+	GTypePropagationLimit         = coreglib.Type(C.gtk_propagation_limit_get_type())
+	GTypePropagationPhase         = coreglib.Type(C.gtk_propagation_phase_get_type())
+	GTypeScrollStep               = coreglib.Type(C.gtk_scroll_step_get_type())
+	GTypeScrollType               = coreglib.Type(C.gtk_scroll_type_get_type())
+	GTypeScrollablePolicy         = coreglib.Type(C.gtk_scrollable_policy_get_type())
+	GTypeSelectionMode            = coreglib.Type(C.gtk_selection_mode_get_type())
+	GTypeSensitivityType          = coreglib.Type(C.gtk_sensitivity_type_get_type())
+	GTypeShortcutScope            = coreglib.Type(C.gtk_shortcut_scope_get_type())
+	GTypeSizeGroupMode            = coreglib.Type(C.gtk_size_group_mode_get_type())
+	GTypeSizeRequestMode          = coreglib.Type(C.gtk_size_request_mode_get_type())
+	GTypeSortType                 = coreglib.Type(C.gtk_sort_type_get_type())
+	GTypeSystemSetting            = coreglib.Type(C.gtk_system_setting_get_type())
+	GTypeTextDirection            = coreglib.Type(C.gtk_text_direction_get_type())
+	GTypeTreeViewGridLines        = coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
+	GTypeUnit                     = coreglib.Type(C.gtk_unit_get_type())
+	GTypeWrapMode                 = coreglib.Type(C.gtk_wrap_mode_get_type())
+	GTypeInputHints               = coreglib.Type(C.gtk_input_hints_get_type())
+	GTypePickFlags                = coreglib.Type(C.gtk_pick_flags_get_type())
+	GTypeStateFlags               = coreglib.Type(C.gtk_state_flags_get_type())
+)
 
-// GTypeAccessibleInvalidState returns the GType for the type AccessibleInvalidState.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleInvalidState() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_invalid_state_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleInvalidState)
-	return gtype
-}
-
-// GTypeAccessibleProperty returns the GType for the type AccessibleProperty.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleProperty() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_property_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleProperty)
-	return gtype
-}
-
-// GTypeAccessibleRelation returns the GType for the type AccessibleRelation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleRelation() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_relation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleRelation)
-	return gtype
-}
-
-// GTypeAccessibleRole returns the GType for the type AccessibleRole.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleRole() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_role_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleRole)
-	return gtype
-}
-
-// GTypeAccessibleSort returns the GType for the type AccessibleSort.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleSort() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_sort_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleSort)
-	return gtype
-}
-
-// GTypeAccessibleState returns the GType for the type AccessibleState.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleState() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_state_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleState)
-	return gtype
-}
-
-// GTypeAccessibleTristate returns the GType for the type AccessibleTristate.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAccessibleTristate() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_accessible_tristate_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAccessibleTristate)
-	return gtype
-}
-
-// GTypeAlign returns the GType for the type Align.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAlign() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_align_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAlign)
-	return gtype
-}
-
-// GTypeArrowType returns the GType for the type ArrowType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeArrowType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_arrow_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalArrowType)
-	return gtype
-}
-
-// GTypeBaselinePosition returns the GType for the type BaselinePosition.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBaselinePosition() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_baseline_position_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBaselinePosition)
-	return gtype
-}
-
-// GTypeBorderStyle returns the GType for the type BorderStyle.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBorderStyle() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_border_style_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBorderStyle)
-	return gtype
-}
-
-// GTypeConstraintAttribute returns the GType for the type ConstraintAttribute.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstraintAttribute() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constraint_attribute_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintAttribute)
-	return gtype
-}
-
-// GTypeConstraintRelation returns the GType for the type ConstraintRelation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstraintRelation() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constraint_relation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintRelation)
-	return gtype
-}
-
-// GTypeConstraintStrength returns the GType for the type ConstraintStrength.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstraintStrength() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constraint_strength_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintStrength)
-	return gtype
-}
-
-// GTypeConstraintVflParserError returns the GType for the type ConstraintVflParserError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstraintVflParserError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constraint_vfl_parser_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintVflParserError)
-	return gtype
-}
-
-// GTypeDeleteType returns the GType for the type DeleteType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDeleteType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_delete_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDeleteType)
-	return gtype
-}
-
-// GTypeDirectionType returns the GType for the type DirectionType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDirectionType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_direction_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDirectionType)
-	return gtype
-}
-
-// GTypeEventSequenceState returns the GType for the type EventSequenceState.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventSequenceState() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_event_sequence_state_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventSequenceState)
-	return gtype
-}
-
-// GTypeIconSize returns the GType for the type IconSize.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconSize() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_size_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconSize)
-	return gtype
-}
-
-// GTypeInputPurpose returns the GType for the type InputPurpose.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInputPurpose() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_input_purpose_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInputPurpose)
-	return gtype
-}
-
-// GTypeJustification returns the GType for the type Justification.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeJustification() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_justification_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalJustification)
-	return gtype
-}
-
-// GTypeLevelBarMode returns the GType for the type LevelBarMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeLevelBarMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_level_bar_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalLevelBarMode)
-	return gtype
-}
-
-// GTypeMessageType returns the GType for the type MessageType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMessageType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_message_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMessageType)
-	return gtype
-}
-
-// GTypeMovementStep returns the GType for the type MovementStep.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMovementStep() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_movement_step_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMovementStep)
-	return gtype
-}
-
-// GTypeNumberUpLayout returns the GType for the type NumberUpLayout.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNumberUpLayout() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_number_up_layout_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNumberUpLayout)
-	return gtype
-}
-
-// GTypeOrdering returns the GType for the type Ordering.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeOrdering() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_ordering_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalOrdering)
-	return gtype
-}
-
-// GTypeOrientation returns the GType for the type Orientation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeOrientation() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_orientation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalOrientation)
-	return gtype
-}
-
-// GTypeOverflow returns the GType for the type Overflow.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeOverflow() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_overflow_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalOverflow)
-	return gtype
-}
-
-// GTypePackType returns the GType for the type PackType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePackType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_pack_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPackType)
-	return gtype
-}
-
-// GTypePageOrientation returns the GType for the type PageOrientation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePageOrientation() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_page_orientation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPageOrientation)
-	return gtype
-}
-
-// GTypePageSet returns the GType for the type PageSet.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePageSet() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_page_set_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPageSet)
-	return gtype
-}
-
-// GTypePanDirection returns the GType for the type PanDirection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePanDirection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_pan_direction_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPanDirection)
-	return gtype
-}
-
-// GTypePositionType returns the GType for the type PositionType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePositionType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_position_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPositionType)
-	return gtype
-}
-
-// GTypePrintDuplex returns the GType for the type PrintDuplex.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintDuplex() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_duplex_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintDuplex)
-	return gtype
-}
-
-// GTypePrintPages returns the GType for the type PrintPages.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintPages() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_pages_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintPages)
-	return gtype
-}
-
-// GTypePrintQuality returns the GType for the type PrintQuality.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePrintQuality() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_print_quality_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPrintQuality)
-	return gtype
-}
-
-// GTypePropagationLimit returns the GType for the type PropagationLimit.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePropagationLimit() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_propagation_limit_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPropagationLimit)
-	return gtype
-}
-
-// GTypePropagationPhase returns the GType for the type PropagationPhase.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePropagationPhase() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_propagation_phase_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPropagationPhase)
-	return gtype
-}
-
-// GTypeScrollStep returns the GType for the type ScrollStep.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollStep() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scroll_step_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollStep)
-	return gtype
-}
-
-// GTypeScrollType returns the GType for the type ScrollType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scroll_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollType)
-	return gtype
-}
-
-// GTypeScrollablePolicy returns the GType for the type ScrollablePolicy.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollablePolicy() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scrollable_policy_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollablePolicy)
-	return gtype
-}
-
-// GTypeSelectionMode returns the GType for the type SelectionMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSelectionMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_selection_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionMode)
-	return gtype
-}
-
-// GTypeSensitivityType returns the GType for the type SensitivityType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSensitivityType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_sensitivity_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSensitivityType)
-	return gtype
-}
-
-// GTypeShortcutScope returns the GType for the type ShortcutScope.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutScope() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcut_scope_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutScope)
-	return gtype
-}
-
-// GTypeSizeGroupMode returns the GType for the type SizeGroupMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSizeGroupMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_size_group_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSizeGroupMode)
-	return gtype
-}
-
-// GTypeSizeRequestMode returns the GType for the type SizeRequestMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSizeRequestMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_size_request_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSizeRequestMode)
-	return gtype
-}
-
-// GTypeSortType returns the GType for the type SortType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSortType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_sort_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSortType)
-	return gtype
-}
-
-// GTypeSystemSetting returns the GType for the type SystemSetting.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSystemSetting() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_system_setting_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSystemSetting)
-	return gtype
-}
-
-// GTypeTextDirection returns the GType for the type TextDirection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextDirection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_direction_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextDirection)
-	return gtype
-}
-
-// GTypeTreeViewGridLines returns the GType for the type TreeViewGridLines.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeViewGridLines() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewGridLines)
-	return gtype
-}
-
-// GTypeUnit returns the GType for the type Unit.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeUnit() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_unit_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalUnit)
-	return gtype
-}
-
-// GTypeWrapMode returns the GType for the type WrapMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWrapMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_wrap_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWrapMode)
-	return gtype
-}
-
-// GTypeInputHints returns the GType for the type InputHints.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInputHints() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_input_hints_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInputHints)
-	return gtype
-}
-
-// GTypePickFlags returns the GType for the type PickFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePickFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_pick_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPickFlags)
-	return gtype
-}
-
-// GTypeStateFlags returns the GType for the type StateFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStateFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_state_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStateFlags)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAccessibleAutocomplete, F: marshalAccessibleAutocomplete},
+		coreglib.TypeMarshaler{T: GTypeAccessibleInvalidState, F: marshalAccessibleInvalidState},
+		coreglib.TypeMarshaler{T: GTypeAccessibleProperty, F: marshalAccessibleProperty},
+		coreglib.TypeMarshaler{T: GTypeAccessibleRelation, F: marshalAccessibleRelation},
+		coreglib.TypeMarshaler{T: GTypeAccessibleRole, F: marshalAccessibleRole},
+		coreglib.TypeMarshaler{T: GTypeAccessibleSort, F: marshalAccessibleSort},
+		coreglib.TypeMarshaler{T: GTypeAccessibleState, F: marshalAccessibleState},
+		coreglib.TypeMarshaler{T: GTypeAccessibleTristate, F: marshalAccessibleTristate},
+		coreglib.TypeMarshaler{T: GTypeAlign, F: marshalAlign},
+		coreglib.TypeMarshaler{T: GTypeArrowType, F: marshalArrowType},
+		coreglib.TypeMarshaler{T: GTypeBaselinePosition, F: marshalBaselinePosition},
+		coreglib.TypeMarshaler{T: GTypeBorderStyle, F: marshalBorderStyle},
+		coreglib.TypeMarshaler{T: GTypeConstraintAttribute, F: marshalConstraintAttribute},
+		coreglib.TypeMarshaler{T: GTypeConstraintRelation, F: marshalConstraintRelation},
+		coreglib.TypeMarshaler{T: GTypeConstraintStrength, F: marshalConstraintStrength},
+		coreglib.TypeMarshaler{T: GTypeConstraintVflParserError, F: marshalConstraintVflParserError},
+		coreglib.TypeMarshaler{T: GTypeDeleteType, F: marshalDeleteType},
+		coreglib.TypeMarshaler{T: GTypeDirectionType, F: marshalDirectionType},
+		coreglib.TypeMarshaler{T: GTypeEventSequenceState, F: marshalEventSequenceState},
+		coreglib.TypeMarshaler{T: GTypeIconSize, F: marshalIconSize},
+		coreglib.TypeMarshaler{T: GTypeInputPurpose, F: marshalInputPurpose},
+		coreglib.TypeMarshaler{T: GTypeJustification, F: marshalJustification},
+		coreglib.TypeMarshaler{T: GTypeLevelBarMode, F: marshalLevelBarMode},
+		coreglib.TypeMarshaler{T: GTypeMessageType, F: marshalMessageType},
+		coreglib.TypeMarshaler{T: GTypeMovementStep, F: marshalMovementStep},
+		coreglib.TypeMarshaler{T: GTypeNumberUpLayout, F: marshalNumberUpLayout},
+		coreglib.TypeMarshaler{T: GTypeOrdering, F: marshalOrdering},
+		coreglib.TypeMarshaler{T: GTypeOrientation, F: marshalOrientation},
+		coreglib.TypeMarshaler{T: GTypeOverflow, F: marshalOverflow},
+		coreglib.TypeMarshaler{T: GTypePackType, F: marshalPackType},
+		coreglib.TypeMarshaler{T: GTypePageOrientation, F: marshalPageOrientation},
+		coreglib.TypeMarshaler{T: GTypePageSet, F: marshalPageSet},
+		coreglib.TypeMarshaler{T: GTypePanDirection, F: marshalPanDirection},
+		coreglib.TypeMarshaler{T: GTypePositionType, F: marshalPositionType},
+		coreglib.TypeMarshaler{T: GTypePrintDuplex, F: marshalPrintDuplex},
+		coreglib.TypeMarshaler{T: GTypePrintPages, F: marshalPrintPages},
+		coreglib.TypeMarshaler{T: GTypePrintQuality, F: marshalPrintQuality},
+		coreglib.TypeMarshaler{T: GTypePropagationLimit, F: marshalPropagationLimit},
+		coreglib.TypeMarshaler{T: GTypePropagationPhase, F: marshalPropagationPhase},
+		coreglib.TypeMarshaler{T: GTypeScrollStep, F: marshalScrollStep},
+		coreglib.TypeMarshaler{T: GTypeScrollType, F: marshalScrollType},
+		coreglib.TypeMarshaler{T: GTypeScrollablePolicy, F: marshalScrollablePolicy},
+		coreglib.TypeMarshaler{T: GTypeSelectionMode, F: marshalSelectionMode},
+		coreglib.TypeMarshaler{T: GTypeSensitivityType, F: marshalSensitivityType},
+		coreglib.TypeMarshaler{T: GTypeShortcutScope, F: marshalShortcutScope},
+		coreglib.TypeMarshaler{T: GTypeSizeGroupMode, F: marshalSizeGroupMode},
+		coreglib.TypeMarshaler{T: GTypeSizeRequestMode, F: marshalSizeRequestMode},
+		coreglib.TypeMarshaler{T: GTypeSortType, F: marshalSortType},
+		coreglib.TypeMarshaler{T: GTypeSystemSetting, F: marshalSystemSetting},
+		coreglib.TypeMarshaler{T: GTypeTextDirection, F: marshalTextDirection},
+		coreglib.TypeMarshaler{T: GTypeTreeViewGridLines, F: marshalTreeViewGridLines},
+		coreglib.TypeMarshaler{T: GTypeUnit, F: marshalUnit},
+		coreglib.TypeMarshaler{T: GTypeWrapMode, F: marshalWrapMode},
+		coreglib.TypeMarshaler{T: GTypeInputHints, F: marshalInputHints},
+		coreglib.TypeMarshaler{T: GTypePickFlags, F: marshalPickFlags},
+		coreglib.TypeMarshaler{T: GTypeStateFlags, F: marshalStateFlags},
+	})
 }
 
 // ACCESSIBLE_VALUE_UNDEFINED: undefined value. The accessible attribute is

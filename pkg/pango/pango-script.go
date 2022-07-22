@@ -16,26 +16,17 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeScript returns the GType for the type Script.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScript() coreglib.Type {
-	gtype := coreglib.Type(C.pango_script_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScript)
-	return gtype
-}
+// GType values.
+var (
+	GTypeScript     = coreglib.Type(C.pango_script_get_type())
+	GTypeScriptIter = coreglib.Type(C.pango_script_iter_get_type())
+)
 
-// GTypeScriptIter returns the GType for the type ScriptIter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScriptIter() coreglib.Type {
-	gtype := coreglib.Type(C.pango_script_iter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScriptIter)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeScript, F: marshalScript},
+		coreglib.TypeMarshaler{T: GTypeScriptIter, F: marshalScriptIter},
+	})
 }
 
 // Script: PangoScript enumeration identifies different writing systems.

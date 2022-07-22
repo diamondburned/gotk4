@@ -14,15 +14,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeShortcutLabel returns the GType for the type ShortcutLabel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutLabel() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcut_label_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutLabel)
-	return gtype
+// GType values.
+var (
+	GTypeShortcutLabel = coreglib.Type(C.gtk_shortcut_label_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeShortcutLabel, F: marshalShortcutLabel},
+	})
 }
 
 // ShortcutLabelOverrider contains methods that are overridable.

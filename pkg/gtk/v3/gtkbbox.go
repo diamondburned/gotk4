@@ -18,26 +18,17 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeButtonBoxStyle returns the GType for the type ButtonBoxStyle.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeButtonBoxStyle() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_button_box_style_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalButtonBoxStyle)
-	return gtype
-}
+// GType values.
+var (
+	GTypeButtonBoxStyle = coreglib.Type(C.gtk_button_box_style_get_type())
+	GTypeButtonBox      = coreglib.Type(C.gtk_button_box_get_type())
+)
 
-// GTypeButtonBox returns the GType for the type ButtonBox.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeButtonBox() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_button_box_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalButtonBox)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeButtonBoxStyle, F: marshalButtonBoxStyle},
+		coreglib.TypeMarshaler{T: GTypeButtonBox, F: marshalButtonBox},
+	})
 }
 
 // ButtonBoxStyle: used to dictate the style that a ButtonBox uses to layout the

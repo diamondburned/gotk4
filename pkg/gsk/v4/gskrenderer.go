@@ -19,15 +19,15 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// GTypeRenderer returns the GType for the type Renderer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRenderer() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_renderer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRenderer)
-	return gtype
+// GType values.
+var (
+	GTypeRenderer = coreglib.Type(C.gsk_renderer_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRenderer, F: marshalRenderer},
+	})
 }
 
 // RendererOverrider contains methods that are overridable.

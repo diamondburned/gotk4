@@ -38,15 +38,15 @@ import (
 // extern void _gotk4_gtk4_CellArea_ConnectRemoveEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, guintptr);
 import "C"
 
-// GTypeCellArea returns the GType for the type CellArea.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellArea() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_area_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellArea)
-	return gtype
+// GType values.
+var (
+	GTypeCellArea = coreglib.Type(C.gtk_cell_area_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCellArea, F: marshalCellArea},
+	})
 }
 
 // CellAllocCallback: type of the callback functions used for iterating over the

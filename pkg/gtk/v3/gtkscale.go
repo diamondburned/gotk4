@@ -23,15 +23,15 @@ import (
 // extern void _gotk4_gtk3_ScaleClass_get_layout_offsets(GtkScale*, gint*, gint*);
 import "C"
 
-// GTypeScale returns the GType for the type Scale.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScale() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scale_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScale)
-	return gtype
+// GType values.
+var (
+	GTypeScale = coreglib.Type(C.gtk_scale_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeScale, F: marshalScale},
+	})
 }
 
 // ScaleOverrider contains methods that are overridable.

@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeEventController returns the GType for the type EventController.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventController() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_event_controller_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventController)
-	return gtype
+// GType values.
+var (
+	GTypeEventController = coreglib.Type(C.gtk_event_controller_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEventController, F: marshalEventController},
+	})
 }
 
 // EventControllerOverrider contains methods that are overridable.

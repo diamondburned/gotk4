@@ -18,81 +18,27 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeCClosureExpression returns the GType for the type CClosureExpression.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCClosureExpression() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cclosure_expression_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCClosureExpression)
-	return gtype
-}
+// GType values.
+var (
+	GTypeCClosureExpression = coreglib.Type(C.gtk_cclosure_expression_get_type())
+	GTypeClosureExpression  = coreglib.Type(C.gtk_closure_expression_get_type())
+	GTypeConstantExpression = coreglib.Type(C.gtk_constant_expression_get_type())
+	GTypeExpression         = coreglib.Type(C.gtk_expression_get_type())
+	GTypeObjectExpression   = coreglib.Type(C.gtk_object_expression_get_type())
+	GTypePropertyExpression = coreglib.Type(C.gtk_property_expression_get_type())
+	GTypeExpressionWatch    = coreglib.Type(C.gtk_expression_watch_get_type())
+)
 
-// GTypeClosureExpression returns the GType for the type ClosureExpression.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeClosureExpression() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_closure_expression_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalClosureExpression)
-	return gtype
-}
-
-// GTypeConstantExpression returns the GType for the type ConstantExpression.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConstantExpression() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_constant_expression_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConstantExpression)
-	return gtype
-}
-
-// GTypeExpression returns the GType for the type Expression.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeExpression() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_expression_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalExpression)
-	return gtype
-}
-
-// GTypeObjectExpression returns the GType for the type ObjectExpression.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeObjectExpression() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_object_expression_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalObjectExpression)
-	return gtype
-}
-
-// GTypePropertyExpression returns the GType for the type PropertyExpression.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePropertyExpression() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_property_expression_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPropertyExpression)
-	return gtype
-}
-
-// GTypeExpressionWatch returns the GType for the type ExpressionWatch.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeExpressionWatch() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_expression_watch_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalExpressionWatch)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCClosureExpression, F: marshalCClosureExpression},
+		coreglib.TypeMarshaler{T: GTypeClosureExpression, F: marshalClosureExpression},
+		coreglib.TypeMarshaler{T: GTypeConstantExpression, F: marshalConstantExpression},
+		coreglib.TypeMarshaler{T: GTypeExpression, F: marshalExpression},
+		coreglib.TypeMarshaler{T: GTypeObjectExpression, F: marshalObjectExpression},
+		coreglib.TypeMarshaler{T: GTypePropertyExpression, F: marshalPropertyExpression},
+		coreglib.TypeMarshaler{T: GTypeExpressionWatch, F: marshalExpressionWatch},
+	})
 }
 
 // ExpressionNotify: callback called by gtk_expression_watch() when the

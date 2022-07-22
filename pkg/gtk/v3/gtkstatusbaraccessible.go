@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeStatusbarAccessible returns the GType for the type StatusbarAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStatusbarAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_statusbar_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStatusbarAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeStatusbarAccessible = coreglib.Type(C.gtk_statusbar_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStatusbarAccessible, F: marshalStatusbarAccessible},
+	})
 }
 
 // StatusbarAccessibleOverrider contains methods that are overridable.

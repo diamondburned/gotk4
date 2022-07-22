@@ -19,37 +19,19 @@ import (
 // extern void _gotk4_gtk4_Sorter_ConnectChanged(gpointer, GtkSorterChange, guintptr);
 import "C"
 
-// GTypeSorterChange returns the GType for the type SorterChange.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSorterChange() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_sorter_change_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSorterChange)
-	return gtype
-}
+// GType values.
+var (
+	GTypeSorterChange = coreglib.Type(C.gtk_sorter_change_get_type())
+	GTypeSorterOrder  = coreglib.Type(C.gtk_sorter_order_get_type())
+	GTypeSorter       = coreglib.Type(C.gtk_sorter_get_type())
+)
 
-// GTypeSorterOrder returns the GType for the type SorterOrder.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSorterOrder() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_sorter_order_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSorterOrder)
-	return gtype
-}
-
-// GTypeSorter returns the GType for the type Sorter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSorter() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_sorter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSorter)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSorterChange, F: marshalSorterChange},
+		coreglib.TypeMarshaler{T: GTypeSorterOrder, F: marshalSorterOrder},
+		coreglib.TypeMarshaler{T: GTypeSorter, F: marshalSorter},
+	})
 }
 
 // SorterChange describes changes in a sorter in more detail and allows users to

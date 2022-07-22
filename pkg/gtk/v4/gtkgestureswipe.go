@@ -15,15 +15,15 @@ import (
 // extern void _gotk4_gtk4_GestureSwipe_ConnectSwipe(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// GTypeGestureSwipe returns the GType for the type GestureSwipe.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGestureSwipe() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_swipe_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGestureSwipe)
-	return gtype
+// GType values.
+var (
+	GTypeGestureSwipe = coreglib.Type(C.gtk_gesture_swipe_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGestureSwipe, F: marshalGestureSwipe},
+	})
 }
 
 // GestureSwipeOverrider contains methods that are overridable.

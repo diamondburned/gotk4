@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypePopoverAccessible returns the GType for the type PopoverAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePopoverAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_popover_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverAccessible)
-	return gtype
+// GType values.
+var (
+	GTypePopoverAccessible = coreglib.Type(C.gtk_popover_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePopoverAccessible, F: marshalPopoverAccessible},
+	})
 }
 
 // PopoverAccessibleOverrider contains methods that are overridable.

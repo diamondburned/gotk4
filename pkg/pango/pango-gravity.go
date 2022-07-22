@@ -16,26 +16,17 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeGravity returns the GType for the type Gravity.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGravity() coreglib.Type {
-	gtype := coreglib.Type(C.pango_gravity_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGravity)
-	return gtype
-}
+// GType values.
+var (
+	GTypeGravity     = coreglib.Type(C.pango_gravity_get_type())
+	GTypeGravityHint = coreglib.Type(C.pango_gravity_hint_get_type())
+)
 
-// GTypeGravityHint returns the GType for the type GravityHint.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGravityHint() coreglib.Type {
-	gtype := coreglib.Type(C.pango_gravity_hint_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGravityHint)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGravity, F: marshalGravity},
+		coreglib.TypeMarshaler{T: GTypeGravityHint, F: marshalGravityHint},
+	})
 }
 
 // Gravity: PangoGravity represents the orientation of glyphs in a segment of

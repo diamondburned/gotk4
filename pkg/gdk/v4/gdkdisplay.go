@@ -21,15 +21,15 @@ import (
 // extern void _gotk4_gdk4_Display_ConnectSettingChanged(gpointer, gchar*, guintptr);
 import "C"
 
-// GTypeDisplay returns the GType for the type Display.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDisplay() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_display_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDisplay)
-	return gtype
+// GType values.
+var (
+	GTypeDisplay = coreglib.Type(C.gdk_display_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDisplay, F: marshalDisplay},
+	})
 }
 
 // Display: GdkDisplay objects are the GDK representation of a workstation.

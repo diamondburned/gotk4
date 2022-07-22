@@ -17,48 +17,21 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeFullscreenMode returns the GType for the type FullscreenMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFullscreenMode() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_fullscreen_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFullscreenMode)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFullscreenMode = coreglib.Type(C.gdk_fullscreen_mode_get_type())
+	GTypeSurfaceEdge    = coreglib.Type(C.gdk_surface_edge_get_type())
+	GTypeToplevelState  = coreglib.Type(C.gdk_toplevel_state_get_type())
+	GTypeToplevel       = coreglib.Type(C.gdk_toplevel_get_type())
+)
 
-// GTypeSurfaceEdge returns the GType for the type SurfaceEdge.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSurfaceEdge() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_surface_edge_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSurfaceEdge)
-	return gtype
-}
-
-// GTypeToplevelState returns the GType for the type ToplevelState.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeToplevelState() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_toplevel_state_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalToplevelState)
-	return gtype
-}
-
-// GTypeToplevel returns the GType for the type Toplevel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeToplevel() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_toplevel_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalToplevel)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFullscreenMode, F: marshalFullscreenMode},
+		coreglib.TypeMarshaler{T: GTypeSurfaceEdge, F: marshalSurfaceEdge},
+		coreglib.TypeMarshaler{T: GTypeToplevelState, F: marshalToplevelState},
+		coreglib.TypeMarshaler{T: GTypeToplevel, F: marshalToplevel},
+	})
 }
 
 // FullscreenMode indicates which monitor a surface should span over when in

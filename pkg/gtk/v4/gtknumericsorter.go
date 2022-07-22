@@ -14,15 +14,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeNumericSorter returns the GType for the type NumericSorter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNumericSorter() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_numeric_sorter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNumericSorter)
-	return gtype
+// GType values.
+var (
+	GTypeNumericSorter = coreglib.Type(C.gtk_numeric_sorter_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeNumericSorter, F: marshalNumericSorter},
+	})
 }
 
 // NumericSorterOverrider contains methods that are overridable.

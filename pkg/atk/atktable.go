@@ -57,15 +57,15 @@ import (
 // extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
 import "C"
 
-// GTypeTable returns the GType for the type Table.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTable() coreglib.Type {
-	gtype := coreglib.Type(C.atk_table_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTable)
-	return gtype
+// GType values.
+var (
+	GTypeTable = coreglib.Type(C.atk_table_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTable, F: marshalTable},
+	})
 }
 
 // TableOverrider contains methods that are overridable.

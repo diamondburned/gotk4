@@ -16,15 +16,15 @@ import (
 // extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
 import "C"
 
-// GTypePlug returns the GType for the type Plug.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePlug() coreglib.Type {
-	gtype := coreglib.Type(C.atk_plug_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPlug)
-	return gtype
+// GType values.
+var (
+	GTypePlug = coreglib.Type(C.atk_plug_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePlug, F: marshalPlug},
+	})
 }
 
 // PlugOverrider contains methods that are overridable.

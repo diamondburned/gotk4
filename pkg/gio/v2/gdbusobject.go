@@ -22,15 +22,15 @@ import (
 // extern void _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(gpointer, GDBusInterface*, guintptr);
 import "C"
 
-// GTypeDBusObject returns the GType for the type DBusObject.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusObject() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_object_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObject)
-	return gtype
+// GType values.
+var (
+	GTypeDBusObject = coreglib.Type(C.g_dbus_object_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDBusObject, F: marshalDBusObject},
+	})
 }
 
 // DBusObjectOverrider contains methods that are overridable.

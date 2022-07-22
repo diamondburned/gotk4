@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeX11Keymap returns the GType for the type X11Keymap.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeX11Keymap() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_x11_keymap_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalX11Keymap)
-	return gtype
+// GType values.
+var (
+	GTypeX11Keymap = coreglib.Type(C.gdk_x11_keymap_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeX11Keymap, F: marshalX11Keymap},
+	})
 }
 
 // X11KeymapOverrider contains methods that are overridable.

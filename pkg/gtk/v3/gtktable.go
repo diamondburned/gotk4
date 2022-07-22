@@ -19,26 +19,17 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeAttachOptions returns the GType for the type AttachOptions.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAttachOptions() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_attach_options_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAttachOptions)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAttachOptions = coreglib.Type(C.gtk_attach_options_get_type())
+	GTypeTable         = coreglib.Type(C.gtk_table_get_type())
+)
 
-// GTypeTable returns the GType for the type Table.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTable() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_table_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTable)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAttachOptions, F: marshalAttachOptions},
+		coreglib.TypeMarshaler{T: GTypeTable, F: marshalTable},
+	})
 }
 
 // AttachOptions denotes the expansion properties that a widget will have when

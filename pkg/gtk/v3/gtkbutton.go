@@ -31,15 +31,15 @@ import (
 // extern void _gotk4_gtk3_Button_ConnectReleased(gpointer, guintptr);
 import "C"
 
-// GTypeButton returns the GType for the type Button.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalButton)
-	return gtype
+// GType values.
+var (
+	GTypeButton = coreglib.Type(C.gtk_button_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeButton, F: marshalButton},
+	})
 }
 
 // ButtonOverrider contains methods that are overridable.

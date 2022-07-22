@@ -17,37 +17,19 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeSettingsSchema returns the GType for the type SettingsSchema.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSettingsSchema() coreglib.Type {
-	gtype := coreglib.Type(C.g_settings_schema_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsSchema)
-	return gtype
-}
+// GType values.
+var (
+	GTypeSettingsSchema       = coreglib.Type(C.g_settings_schema_get_type())
+	GTypeSettingsSchemaKey    = coreglib.Type(C.g_settings_schema_key_get_type())
+	GTypeSettingsSchemaSource = coreglib.Type(C.g_settings_schema_source_get_type())
+)
 
-// GTypeSettingsSchemaKey returns the GType for the type SettingsSchemaKey.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSettingsSchemaKey() coreglib.Type {
-	gtype := coreglib.Type(C.g_settings_schema_key_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsSchemaKey)
-	return gtype
-}
-
-// GTypeSettingsSchemaSource returns the GType for the type SettingsSchemaSource.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSettingsSchemaSource() coreglib.Type {
-	gtype := coreglib.Type(C.g_settings_schema_source_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsSchemaSource)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSettingsSchema, F: marshalSettingsSchema},
+		coreglib.TypeMarshaler{T: GTypeSettingsSchemaKey, F: marshalSettingsSchemaKey},
+		coreglib.TypeMarshaler{T: GTypeSettingsSchemaSource, F: marshalSettingsSchemaSource},
+	})
 }
 
 // SettingsSchema and Schema APIs provide a mechanism for advanced control over

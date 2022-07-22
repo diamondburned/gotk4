@@ -14,15 +14,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeGrid returns the GType for the type Grid.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGrid() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_grid_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGrid)
-	return gtype
+// GType values.
+var (
+	GTypeGrid = coreglib.Type(C.gtk_grid_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGrid, F: marshalGrid},
+	})
 }
 
 // GridOverrider contains methods that are overridable.

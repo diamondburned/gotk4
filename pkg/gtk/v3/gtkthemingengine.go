@@ -39,15 +39,15 @@ import (
 // extern void _gotk4_gtk3_ThemingEngineClass_render_slider(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkOrientation);
 import "C"
 
-// GTypeThemingEngine returns the GType for the type ThemingEngine.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeThemingEngine() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_theming_engine_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalThemingEngine)
-	return gtype
+// GType values.
+var (
+	GTypeThemingEngine = coreglib.Type(C.gtk_theming_engine_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeThemingEngine, F: marshalThemingEngine},
+	})
 }
 
 // ThemingEngineOverrider contains methods that are overridable.

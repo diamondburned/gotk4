@@ -13,15 +13,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeColorChooserWidget returns the GType for the type ColorChooserWidget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeColorChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_color_chooser_widget_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalColorChooserWidget)
-	return gtype
+// GType values.
+var (
+	GTypeColorChooserWidget = coreglib.Type(C.gtk_color_chooser_widget_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeColorChooserWidget, F: marshalColorChooserWidget},
+	})
 }
 
 // ColorChooserWidget: GtkColorChooserWidget widget lets the user select a

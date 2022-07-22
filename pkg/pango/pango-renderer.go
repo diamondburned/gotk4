@@ -28,26 +28,17 @@ import (
 // extern void _gotk4_pango1_RendererClass_prepare_run(PangoRenderer*, PangoLayoutRun*);
 import "C"
 
-// GTypeRenderPart returns the GType for the type RenderPart.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRenderPart() coreglib.Type {
-	gtype := coreglib.Type(C.pango_render_part_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRenderPart)
-	return gtype
-}
+// GType values.
+var (
+	GTypeRenderPart = coreglib.Type(C.pango_render_part_get_type())
+	GTypeRenderer   = coreglib.Type(C.pango_renderer_get_type())
+)
 
-// GTypeRenderer returns the GType for the type Renderer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRenderer() coreglib.Type {
-	gtype := coreglib.Type(C.pango_renderer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRenderer)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRenderPart, F: marshalRenderPart},
+		coreglib.TypeMarshaler{T: GTypeRenderer, F: marshalRenderer},
+	})
 }
 
 // RenderPart defines different items to render for such purposes as setting

@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gdk3_DeviceManager_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
 import "C"
 
-// GTypeDeviceManager returns the GType for the type DeviceManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDeviceManager() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_device_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceManager)
-	return gtype
+// GType values.
+var (
+	GTypeDeviceManager = coreglib.Type(C.gdk_device_manager_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDeviceManager, F: marshalDeviceManager},
+	})
 }
 
 // DeviceManager: in addition to a single pointer and keyboard for user

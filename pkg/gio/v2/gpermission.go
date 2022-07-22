@@ -23,15 +23,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypePermission returns the GType for the type Permission.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePermission() coreglib.Type {
-	gtype := coreglib.Type(C.g_permission_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPermission)
-	return gtype
+// GType values.
+var (
+	GTypePermission = coreglib.Type(C.g_permission_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePermission, F: marshalPermission},
+	})
 }
 
 // PermissionOverrider contains methods that are overridable.

@@ -18,26 +18,17 @@ import (
 // #include <glib.h>
 import "C"
 
-// GTypeMatchInfo returns the GType for the type MatchInfo.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMatchInfo() coreglib.Type {
-	gtype := coreglib.Type(C.g_match_info_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMatchInfo)
-	return gtype
-}
+// GType values.
+var (
+	GTypeMatchInfo = coreglib.Type(C.g_match_info_get_type())
+	GTypeRegex     = coreglib.Type(C.g_regex_get_type())
+)
 
-// GTypeRegex returns the GType for the type Regex.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRegex() coreglib.Type {
-	gtype := coreglib.Type(C.g_regex_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRegex)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMatchInfo, F: marshalMatchInfo},
+		coreglib.TypeMarshaler{T: GTypeRegex, F: marshalRegex},
+	})
 }
 
 // RegexError: error codes returned by regular expressions functions.

@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeRegistry returns the GType for the type Registry.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRegistry() coreglib.Type {
-	gtype := coreglib.Type(C.atk_registry_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRegistry)
-	return gtype
+// GType values.
+var (
+	GTypeRegistry = coreglib.Type(C.atk_registry_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRegistry, F: marshalRegistry},
+	})
 }
 
 // GetDefaultRegistry gets a default implementation of the ObjectFactory/type

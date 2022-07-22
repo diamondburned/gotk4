@@ -17,15 +17,15 @@ import (
 // extern void _gotk4_gio2_ConverterIface_reset(GConverter*);
 import "C"
 
-// GTypeConverter returns the GType for the type Converter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConverter() coreglib.Type {
-	gtype := coreglib.Type(C.g_converter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConverter)
-	return gtype
+// GType values.
+var (
+	GTypeConverter = coreglib.Type(C.g_converter_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeConverter, F: marshalConverter},
+	})
 }
 
 // ConverterOverrider contains methods that are overridable.

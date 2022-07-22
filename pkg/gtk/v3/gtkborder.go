@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeBorder returns the GType for the type Border.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBorder() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_border_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBorder)
-	return gtype
+// GType values.
+var (
+	GTypeBorder = coreglib.Type(C.gtk_border_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBorder, F: marshalBorder},
+	})
 }
 
 // Border: struct that specifies a border around a rectangular area that can be

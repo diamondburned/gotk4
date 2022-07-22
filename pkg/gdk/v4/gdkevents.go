@@ -16,235 +16,55 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeCrossingMode returns the GType for the type CrossingMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCrossingMode() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_crossing_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCrossingMode)
-	return gtype
-}
+// GType values.
+var (
+	GTypeCrossingMode         = coreglib.Type(C.gdk_crossing_mode_get_type())
+	GTypeEventType            = coreglib.Type(C.gdk_event_type_get_type())
+	GTypeKeyMatch             = coreglib.Type(C.gdk_key_match_get_type())
+	GTypeNotifyType           = coreglib.Type(C.gdk_notify_type_get_type())
+	GTypeScrollDirection      = coreglib.Type(C.gdk_scroll_direction_get_type())
+	GTypeTouchpadGesturePhase = coreglib.Type(C.gdk_touchpad_gesture_phase_get_type())
+	GTypeButtonEvent          = coreglib.Type(C.gdk_button_event_get_type())
+	GTypeCrossingEvent        = coreglib.Type(C.gdk_crossing_event_get_type())
+	GTypeDNDEvent             = coreglib.Type(C.gdk_dnd_event_get_type())
+	GTypeDeleteEvent          = coreglib.Type(C.gdk_delete_event_get_type())
+	GTypeEvent                = coreglib.Type(C.gdk_event_get_type())
+	GTypeFocusEvent           = coreglib.Type(C.gdk_focus_event_get_type())
+	GTypeGrabBrokenEvent      = coreglib.Type(C.gdk_grab_broken_event_get_type())
+	GTypeKeyEvent             = coreglib.Type(C.gdk_key_event_get_type())
+	GTypeMotionEvent          = coreglib.Type(C.gdk_motion_event_get_type())
+	GTypePadEvent             = coreglib.Type(C.gdk_pad_event_get_type())
+	GTypeProximityEvent       = coreglib.Type(C.gdk_proximity_event_get_type())
+	GTypeScrollEvent          = coreglib.Type(C.gdk_scroll_event_get_type())
+	GTypeTouchEvent           = coreglib.Type(C.gdk_touch_event_get_type())
+	GTypeTouchpadEvent        = coreglib.Type(C.gdk_touchpad_event_get_type())
+	GTypeEventSequence        = coreglib.Type(C.gdk_event_sequence_get_type())
+)
 
-// GTypeEventType returns the GType for the type EventType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_event_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventType)
-	return gtype
-}
-
-// GTypeKeyMatch returns the GType for the type KeyMatch.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeKeyMatch() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_key_match_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalKeyMatch)
-	return gtype
-}
-
-// GTypeNotifyType returns the GType for the type NotifyType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotifyType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_notify_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotifyType)
-	return gtype
-}
-
-// GTypeScrollDirection returns the GType for the type ScrollDirection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollDirection() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_scroll_direction_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollDirection)
-	return gtype
-}
-
-// GTypeTouchpadGesturePhase returns the GType for the type TouchpadGesturePhase.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTouchpadGesturePhase() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_touchpad_gesture_phase_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTouchpadGesturePhase)
-	return gtype
-}
-
-// GTypeButtonEvent returns the GType for the type ButtonEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeButtonEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_button_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalButtonEvent)
-	return gtype
-}
-
-// GTypeCrossingEvent returns the GType for the type CrossingEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCrossingEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_crossing_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCrossingEvent)
-	return gtype
-}
-
-// GTypeDNDEvent returns the GType for the type DNDEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDNDEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_dnd_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDNDEvent)
-	return gtype
-}
-
-// GTypeDeleteEvent returns the GType for the type DeleteEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDeleteEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_delete_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDeleteEvent)
-	return gtype
-}
-
-// GTypeEvent returns the GType for the type Event.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEvent)
-	return gtype
-}
-
-// GTypeFocusEvent returns the GType for the type FocusEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFocusEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_focus_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFocusEvent)
-	return gtype
-}
-
-// GTypeGrabBrokenEvent returns the GType for the type GrabBrokenEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGrabBrokenEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_grab_broken_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGrabBrokenEvent)
-	return gtype
-}
-
-// GTypeKeyEvent returns the GType for the type KeyEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeKeyEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_key_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalKeyEvent)
-	return gtype
-}
-
-// GTypeMotionEvent returns the GType for the type MotionEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMotionEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_motion_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMotionEvent)
-	return gtype
-}
-
-// GTypePadEvent returns the GType for the type PadEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePadEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_pad_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPadEvent)
-	return gtype
-}
-
-// GTypeProximityEvent returns the GType for the type ProximityEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeProximityEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_proximity_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalProximityEvent)
-	return gtype
-}
-
-// GTypeScrollEvent returns the GType for the type ScrollEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_scroll_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollEvent)
-	return gtype
-}
-
-// GTypeTouchEvent returns the GType for the type TouchEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTouchEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_touch_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTouchEvent)
-	return gtype
-}
-
-// GTypeTouchpadEvent returns the GType for the type TouchpadEvent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTouchpadEvent() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_touchpad_event_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTouchpadEvent)
-	return gtype
-}
-
-// GTypeEventSequence returns the GType for the type EventSequence.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventSequence() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_event_sequence_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventSequence)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCrossingMode, F: marshalCrossingMode},
+		coreglib.TypeMarshaler{T: GTypeEventType, F: marshalEventType},
+		coreglib.TypeMarshaler{T: GTypeKeyMatch, F: marshalKeyMatch},
+		coreglib.TypeMarshaler{T: GTypeNotifyType, F: marshalNotifyType},
+		coreglib.TypeMarshaler{T: GTypeScrollDirection, F: marshalScrollDirection},
+		coreglib.TypeMarshaler{T: GTypeTouchpadGesturePhase, F: marshalTouchpadGesturePhase},
+		coreglib.TypeMarshaler{T: GTypeButtonEvent, F: marshalButtonEvent},
+		coreglib.TypeMarshaler{T: GTypeCrossingEvent, F: marshalCrossingEvent},
+		coreglib.TypeMarshaler{T: GTypeDNDEvent, F: marshalDNDEvent},
+		coreglib.TypeMarshaler{T: GTypeDeleteEvent, F: marshalDeleteEvent},
+		coreglib.TypeMarshaler{T: GTypeEvent, F: marshalEvent},
+		coreglib.TypeMarshaler{T: GTypeFocusEvent, F: marshalFocusEvent},
+		coreglib.TypeMarshaler{T: GTypeGrabBrokenEvent, F: marshalGrabBrokenEvent},
+		coreglib.TypeMarshaler{T: GTypeKeyEvent, F: marshalKeyEvent},
+		coreglib.TypeMarshaler{T: GTypeMotionEvent, F: marshalMotionEvent},
+		coreglib.TypeMarshaler{T: GTypePadEvent, F: marshalPadEvent},
+		coreglib.TypeMarshaler{T: GTypeProximityEvent, F: marshalProximityEvent},
+		coreglib.TypeMarshaler{T: GTypeScrollEvent, F: marshalScrollEvent},
+		coreglib.TypeMarshaler{T: GTypeTouchEvent, F: marshalTouchEvent},
+		coreglib.TypeMarshaler{T: GTypeTouchpadEvent, F: marshalTouchpadEvent},
+		coreglib.TypeMarshaler{T: GTypeEventSequence, F: marshalEventSequence},
+	})
 }
 
 // BUTTON_MIDDLE: middle button.

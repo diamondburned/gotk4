@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeDTLSServerConnection returns the GType for the type DTLSServerConnection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDTLSServerConnection() coreglib.Type {
-	gtype := coreglib.Type(C.g_dtls_server_connection_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDTLSServerConnection)
-	return gtype
+// GType values.
+var (
+	GTypeDTLSServerConnection = coreglib.Type(C.g_dtls_server_connection_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDTLSServerConnection, F: marshalDTLSServerConnection},
+	})
 }
 
 // DTLSServerConnectionOverrider contains methods that are overridable.

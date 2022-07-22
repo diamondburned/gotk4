@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeRelation returns the GType for the type Relation.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRelation() coreglib.Type {
-	gtype := coreglib.Type(C.atk_relation_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRelation)
-	return gtype
+// GType values.
+var (
+	GTypeRelation = coreglib.Type(C.atk_relation_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRelation, F: marshalRelation},
+	})
 }
 
 // RelationTypeForName: get the RelationType type corresponding to a relation

@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeFilterListModel returns the GType for the type FilterListModel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFilterListModel() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_filter_list_model_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFilterListModel)
-	return gtype
+// GType values.
+var (
+	GTypeFilterListModel = coreglib.Type(C.gtk_filter_list_model_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFilterListModel, F: marshalFilterListModel},
+	})
 }
 
 // FilterListModelOverrider contains methods that are overridable.

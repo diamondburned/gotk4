@@ -15,15 +15,15 @@ import (
 // extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, GdkEvent*, guintptr);
 import "C"
 
-// GTypeEventControllerLegacy returns the GType for the type EventControllerLegacy.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEventControllerLegacy() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_event_controller_legacy_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerLegacy)
-	return gtype
+// GType values.
+var (
+	GTypeEventControllerLegacy = coreglib.Type(C.gtk_event_controller_legacy_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeEventControllerLegacy, F: marshalEventControllerLegacy},
+	})
 }
 
 // EventControllerLegacyOverrider contains methods that are overridable.

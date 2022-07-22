@@ -29,15 +29,15 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleParentIface_update_relationset(GtkCellAccessibleParent*, GtkCellAccessible*, AtkRelationSet*);
 import "C"
 
-// GTypeCellAccessibleParent returns the GType for the type CellAccessibleParent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellAccessibleParent() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_accessible_parent_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellAccessibleParent)
-	return gtype
+// GType values.
+var (
+	GTypeCellAccessibleParent = coreglib.Type(C.gtk_cell_accessible_parent_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCellAccessibleParent, F: marshalCellAccessibleParent},
+	})
 }
 
 // CellAccessibleParentOverrider contains methods that are overridable.

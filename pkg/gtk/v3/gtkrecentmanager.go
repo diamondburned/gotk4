@@ -24,37 +24,19 @@ import (
 // extern void _gotk4_gtk3_RecentManager_ConnectChanged(gpointer, guintptr);
 import "C"
 
-// GTypeRecentManagerError returns the GType for the type RecentManagerError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentManagerError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_manager_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentManagerError)
-	return gtype
-}
+// GType values.
+var (
+	GTypeRecentManagerError = coreglib.Type(C.gtk_recent_manager_error_get_type())
+	GTypeRecentManager      = coreglib.Type(C.gtk_recent_manager_get_type())
+	GTypeRecentInfo         = coreglib.Type(C.gtk_recent_info_get_type())
+)
 
-// GTypeRecentManager returns the GType for the type RecentManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentManager() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentManager)
-	return gtype
-}
-
-// GTypeRecentInfo returns the GType for the type RecentInfo.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentInfo() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_info_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentInfo)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRecentManagerError, F: marshalRecentManagerError},
+		coreglib.TypeMarshaler{T: GTypeRecentManager, F: marshalRecentManager},
+		coreglib.TypeMarshaler{T: GTypeRecentInfo, F: marshalRecentInfo},
+	})
 }
 
 // RecentManagerError: error codes for RecentManager operations.

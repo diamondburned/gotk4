@@ -13,15 +13,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeListBase returns the GType for the type ListBase.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeListBase() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_list_base_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalListBase)
-	return gtype
+// GType values.
+var (
+	GTypeListBase = coreglib.Type(C.gtk_list_base_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeListBase, F: marshalListBase},
+	})
 }
 
 // ListBaseOverrider contains methods that are overridable.

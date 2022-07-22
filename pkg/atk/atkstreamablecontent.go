@@ -20,15 +20,15 @@ import (
 // extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(AtkStreamableContent*);
 import "C"
 
-// GTypeStreamableContent returns the GType for the type StreamableContent.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStreamableContent() coreglib.Type {
-	gtype := coreglib.Type(C.atk_streamable_content_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStreamableContent)
-	return gtype
+// GType values.
+var (
+	GTypeStreamableContent = coreglib.Type(C.atk_streamable_content_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStreamableContent, F: marshalStreamableContent},
+	})
 }
 
 // StreamableContentOverrider contains methods that are overridable.

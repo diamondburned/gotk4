@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// GTypeDropControllerMotion returns the GType for the type DropControllerMotion.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDropControllerMotion() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_drop_controller_motion_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDropControllerMotion)
-	return gtype
+// GType values.
+var (
+	GTypeDropControllerMotion = coreglib.Type(C.gtk_drop_controller_motion_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDropControllerMotion, F: marshalDropControllerMotion},
+	})
 }
 
 // DropControllerMotionOverrider contains methods that are overridable.

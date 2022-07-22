@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeRecentAction returns the GType for the type RecentAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentAction() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentAction)
-	return gtype
+// GType values.
+var (
+	GTypeRecentAction = coreglib.Type(C.gtk_recent_action_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRecentAction, F: marshalRecentAction},
+	})
 }
 
 // RecentActionOverrider contains methods that are overridable.

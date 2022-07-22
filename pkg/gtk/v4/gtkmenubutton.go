@@ -18,15 +18,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeMenuButton returns the GType for the type MenuButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMenuButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_menu_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMenuButton)
-	return gtype
+// GType values.
+var (
+	GTypeMenuButton = coreglib.Type(C.gtk_menu_button_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMenuButton, F: marshalMenuButton},
+	})
 }
 
 // MenuButtonCreatePopupFunc: user-provided callback function to create a popup

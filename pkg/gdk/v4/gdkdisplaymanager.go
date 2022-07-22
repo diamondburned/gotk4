@@ -16,15 +16,15 @@ import (
 // extern void _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(gpointer, GdkDisplay*, guintptr);
 import "C"
 
-// GTypeDisplayManager returns the GType for the type DisplayManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDisplayManager() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_display_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDisplayManager)
-	return gtype
+// GType values.
+var (
+	GTypeDisplayManager = coreglib.Type(C.gdk_display_manager_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDisplayManager, F: marshalDisplayManager},
+	})
 }
 
 // SetAllowedBackends sets a list of backends that GDK should try to use.

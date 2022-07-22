@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeToggleButtonAccessible returns the GType for the type ToggleButtonAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeToggleButtonAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_toggle_button_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalToggleButtonAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeToggleButtonAccessible = coreglib.Type(C.gtk_toggle_button_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeToggleButtonAccessible, F: marshalToggleButtonAccessible},
+	})
 }
 
 // ToggleButtonAccessibleOverrider contains methods that are overridable.

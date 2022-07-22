@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeDeviceToolType returns the GType for the type DeviceToolType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDeviceToolType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_device_tool_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceToolType)
-	return gtype
+// GType values.
+var (
+	GTypeDeviceToolType = coreglib.Type(C.gdk_device_tool_type_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDeviceToolType, F: marshalDeviceToolType},
+	})
 }
 
 // DeviceToolType indicates the specific type of tool being used being a tablet.

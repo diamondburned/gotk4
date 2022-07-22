@@ -20,37 +20,19 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeFileAttributeMatcher returns the GType for the type FileAttributeMatcher.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileAttributeMatcher() coreglib.Type {
-	gtype := coreglib.Type(C.g_file_attribute_matcher_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeMatcher)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFileAttributeMatcher = coreglib.Type(C.g_file_attribute_matcher_get_type())
+	GTypeResource             = coreglib.Type(C.g_resource_get_type())
+	GTypeSrvTarget            = coreglib.Type(C.g_srv_target_get_type())
+)
 
-// GTypeResource returns the GType for the type Resource.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeResource() coreglib.Type {
-	gtype := coreglib.Type(C.g_resource_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalResource)
-	return gtype
-}
-
-// GTypeSrvTarget returns the GType for the type SrvTarget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSrvTarget() coreglib.Type {
-	gtype := coreglib.Type(C.g_srv_target_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSrvTarget)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileAttributeMatcher, F: marshalFileAttributeMatcher},
+		coreglib.TypeMarshaler{T: GTypeResource, F: marshalResource},
+		coreglib.TypeMarshaler{T: GTypeSrvTarget, F: marshalSrvTarget},
+	})
 }
 
 // AsyncReadyCallback: type definition for a function that will be called back

@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 import "C"
 
-// GTypeListModel returns the GType for the type ListModel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeListModel() coreglib.Type {
-	gtype := coreglib.Type(C.g_list_model_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalListModel)
-	return gtype
+// GType values.
+var (
+	GTypeListModel = coreglib.Type(C.g_list_model_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeListModel, F: marshalListModel},
+	})
 }
 
 // ListModelOverrider contains methods that are overridable.

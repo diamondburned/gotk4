@@ -21,15 +21,15 @@ import (
 // extern void _gotk4_gtk3_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// GTypeGestureStylus returns the GType for the type GestureStylus.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGestureStylus() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_stylus_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGestureStylus)
-	return gtype
+// GType values.
+var (
+	GTypeGestureStylus = coreglib.Type(C.gtk_gesture_stylus_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGestureStylus, F: marshalGestureStylus},
+	})
 }
 
 // GestureStylusOverrider contains methods that are overridable.

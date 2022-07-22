@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeTreeStore returns the GType for the type TreeStore.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeStore() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_store_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeStore)
-	return gtype
+// GType values.
+var (
+	GTypeTreeStore = coreglib.Type(C.gtk_tree_store_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTreeStore, F: marshalTreeStore},
+	})
 }
 
 // TreeStoreOverrider contains methods that are overridable.

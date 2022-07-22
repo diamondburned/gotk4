@@ -27,26 +27,17 @@ import (
 // extern void _gotk4_gtk3_Application_ConnectWindowRemoved(gpointer, GtkWindow*, guintptr);
 import "C"
 
-// GTypeApplicationInhibitFlags returns the GType for the type ApplicationInhibitFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeApplicationInhibitFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_application_inhibit_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalApplicationInhibitFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeApplicationInhibitFlags = coreglib.Type(C.gtk_application_inhibit_flags_get_type())
+	GTypeApplication             = coreglib.Type(C.gtk_application_get_type())
+)
 
-// GTypeApplication returns the GType for the type Application.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeApplication() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_application_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalApplication)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeApplicationInhibitFlags, F: marshalApplicationInhibitFlags},
+		coreglib.TypeMarshaler{T: GTypeApplication, F: marshalApplication},
+	})
 }
 
 // ApplicationInhibitFlags types of user actions that may be blocked by

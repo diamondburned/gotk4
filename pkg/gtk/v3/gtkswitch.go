@@ -22,15 +22,15 @@ import (
 // extern void _gotk4_gtk3_Switch_ConnectActivate(gpointer, guintptr);
 import "C"
 
-// GTypeSwitch returns the GType for the type Switch.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSwitch() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_switch_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSwitch)
-	return gtype
+// GType values.
+var (
+	GTypeSwitch = coreglib.Type(C.gtk_switch_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSwitch, F: marshalSwitch},
+	})
 }
 
 // SwitchOverrider contains methods that are overridable.

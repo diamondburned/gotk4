@@ -17,15 +17,15 @@ import (
 // extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
 import "C"
 
-// GTypeSocketConnectable returns the GType for the type SocketConnectable.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSocketConnectable() coreglib.Type {
-	gtype := coreglib.Type(C.g_socket_connectable_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSocketConnectable)
-	return gtype
+// GType values.
+var (
+	GTypeSocketConnectable = coreglib.Type(C.g_socket_connectable_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSocketConnectable, F: marshalSocketConnectable},
+	})
 }
 
 // SocketConnectableOverrider contains methods that are overridable.

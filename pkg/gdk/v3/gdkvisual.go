@@ -16,26 +16,17 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeVisualType returns the GType for the type VisualType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVisualType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_visual_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVisualType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeVisualType = coreglib.Type(C.gdk_visual_type_get_type())
+	GTypeVisual     = coreglib.Type(C.gdk_visual_get_type())
+)
 
-// GTypeVisual returns the GType for the type Visual.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVisual() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_visual_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVisual)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVisualType, F: marshalVisualType},
+		coreglib.TypeMarshaler{T: GTypeVisual, F: marshalVisual},
+	})
 }
 
 // VisualType: set of values that describe the manner in which the pixel values

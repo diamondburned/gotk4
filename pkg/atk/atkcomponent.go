@@ -33,37 +33,19 @@ import (
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
 import "C"
 
-// GTypeScrollType returns the GType for the type ScrollType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollType() coreglib.Type {
-	gtype := coreglib.Type(C.atk_scroll_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeScrollType = coreglib.Type(C.atk_scroll_type_get_type())
+	GTypeComponent  = coreglib.Type(C.atk_component_get_type())
+	GTypeRectangle  = coreglib.Type(C.atk_rectangle_get_type())
+)
 
-// GTypeComponent returns the GType for the type Component.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeComponent() coreglib.Type {
-	gtype := coreglib.Type(C.atk_component_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalComponent)
-	return gtype
-}
-
-// GTypeRectangle returns the GType for the type Rectangle.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRectangle() coreglib.Type {
-	gtype := coreglib.Type(C.atk_rectangle_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRectangle)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeScrollType, F: marshalScrollType},
+		coreglib.TypeMarshaler{T: GTypeComponent, F: marshalComponent},
+		coreglib.TypeMarshaler{T: GTypeRectangle, F: marshalRectangle},
+	})
 }
 
 // ScrollType specifies where an object should be placed on the screen when

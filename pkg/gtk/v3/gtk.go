@@ -22,70 +22,25 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeMovementStep returns the GType for the type MovementStep.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMovementStep() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_movement_step_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMovementStep)
-	return gtype
-}
+// GType values.
+var (
+	GTypeMovementStep        = coreglib.Type(C.gtk_movement_step_get_type())
+	GTypeNotebookTab         = coreglib.Type(C.gtk_notebook_tab_get_type())
+	GTypeResizeMode          = coreglib.Type(C.gtk_resize_mode_get_type())
+	GTypeScrollStep          = coreglib.Type(C.gtk_scroll_step_get_type())
+	GTypeDebugFlag           = coreglib.Type(C.gtk_debug_flag_get_type())
+	GTypeEntryIconAccessible = coreglib.Type(C.gtk_entry_icon_accessible_get_type())
+)
 
-// GTypeNotebookTab returns the GType for the type NotebookTab.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotebookTab() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_notebook_tab_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotebookTab)
-	return gtype
-}
-
-// GTypeResizeMode returns the GType for the type ResizeMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeResizeMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_resize_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalResizeMode)
-	return gtype
-}
-
-// GTypeScrollStep returns the GType for the type ScrollStep.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScrollStep() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scroll_step_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScrollStep)
-	return gtype
-}
-
-// GTypeDebugFlag returns the GType for the type DebugFlag.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDebugFlag() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_debug_flag_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDebugFlag)
-	return gtype
-}
-
-// GTypeEntryIconAccessible returns the GType for the type EntryIconAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeEntryIconAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_entry_icon_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalEntryIconAccessible)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMovementStep, F: marshalMovementStep},
+		coreglib.TypeMarshaler{T: GTypeNotebookTab, F: marshalNotebookTab},
+		coreglib.TypeMarshaler{T: GTypeResizeMode, F: marshalResizeMode},
+		coreglib.TypeMarshaler{T: GTypeScrollStep, F: marshalScrollStep},
+		coreglib.TypeMarshaler{T: GTypeDebugFlag, F: marshalDebugFlag},
+		coreglib.TypeMarshaler{T: GTypeEntryIconAccessible, F: marshalEntryIconAccessible},
+	})
 }
 
 // The function returns the following values:

@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeMenuItemAccessible returns the GType for the type MenuItemAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMenuItemAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_menu_item_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMenuItemAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeMenuItemAccessible = coreglib.Type(C.gtk_menu_item_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMenuItemAccessible, F: marshalMenuItemAccessible},
+	})
 }
 
 // MenuItemAccessibleOverrider contains methods that are overridable.

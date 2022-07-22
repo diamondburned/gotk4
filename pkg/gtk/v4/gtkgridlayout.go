@@ -14,26 +14,17 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeGridLayout returns the GType for the type GridLayout.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGridLayout() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_grid_layout_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGridLayout)
-	return gtype
-}
+// GType values.
+var (
+	GTypeGridLayout      = coreglib.Type(C.gtk_grid_layout_get_type())
+	GTypeGridLayoutChild = coreglib.Type(C.gtk_grid_layout_child_get_type())
+)
 
-// GTypeGridLayoutChild returns the GType for the type GridLayoutChild.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGridLayoutChild() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_grid_layout_child_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGridLayoutChild)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGridLayout, F: marshalGridLayout},
+		coreglib.TypeMarshaler{T: GTypeGridLayoutChild, F: marshalGridLayoutChild},
+	})
 }
 
 // GridLayoutOverrider contains methods that are overridable.

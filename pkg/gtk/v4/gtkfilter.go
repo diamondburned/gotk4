@@ -19,37 +19,19 @@ import (
 // extern void _gotk4_gtk4_Filter_ConnectChanged(gpointer, GtkFilterChange, guintptr);
 import "C"
 
-// GTypeFilterChange returns the GType for the type FilterChange.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFilterChange() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_filter_change_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFilterChange)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFilterChange = coreglib.Type(C.gtk_filter_change_get_type())
+	GTypeFilterMatch  = coreglib.Type(C.gtk_filter_match_get_type())
+	GTypeFilter       = coreglib.Type(C.gtk_filter_get_type())
+)
 
-// GTypeFilterMatch returns the GType for the type FilterMatch.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFilterMatch() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_filter_match_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFilterMatch)
-	return gtype
-}
-
-// GTypeFilter returns the GType for the type Filter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFilter() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_filter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFilter)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFilterChange, F: marshalFilterChange},
+		coreglib.TypeMarshaler{T: GTypeFilterMatch, F: marshalFilterMatch},
+		coreglib.TypeMarshaler{T: GTypeFilter, F: marshalFilter},
+	})
 }
 
 // FilterChange describes changes in a filter in more detail and allows objects

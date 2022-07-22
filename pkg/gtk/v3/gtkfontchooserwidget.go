@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeFontChooserWidget returns the GType for the type FontChooserWidget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_font_chooser_widget_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontChooserWidget)
-	return gtype
+// GType values.
+var (
+	GTypeFontChooserWidget = coreglib.Type(C.gtk_font_chooser_widget_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFontChooserWidget, F: marshalFontChooserWidget},
+	})
 }
 
 // FontChooserWidgetOverrider contains methods that are overridable.

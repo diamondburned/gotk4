@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeX11Surface returns the GType for the type X11Surface.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeX11Surface() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_x11_surface_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalX11Surface)
-	return gtype
+// GType values.
+var (
+	GTypeX11Surface = coreglib.Type(C.gdk_x11_surface_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeX11Surface, F: marshalX11Surface},
+	})
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.

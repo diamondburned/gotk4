@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeBufferedOutputStream returns the GType for the type BufferedOutputStream.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBufferedOutputStream() coreglib.Type {
-	gtype := coreglib.Type(C.g_buffered_output_stream_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBufferedOutputStream)
-	return gtype
+// GType values.
+var (
+	GTypeBufferedOutputStream = coreglib.Type(C.g_buffered_output_stream_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBufferedOutputStream, F: marshalBufferedOutputStream},
+	})
 }
 
 // BufferedOutputStreamOverrider contains methods that are overridable.

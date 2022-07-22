@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypePanedAccessible returns the GType for the type PanedAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePanedAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_paned_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPanedAccessible)
-	return gtype
+// GType values.
+var (
+	GTypePanedAccessible = coreglib.Type(C.gtk_paned_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePanedAccessible, F: marshalPanedAccessible},
+	})
 }
 
 // PanedAccessibleOverrider contains methods that are overridable.

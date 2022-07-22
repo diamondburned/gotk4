@@ -25,26 +25,17 @@ import (
 // extern void _gotk4_gtk3_StyleContext_ConnectChanged(gpointer, guintptr);
 import "C"
 
-// GTypeStyleContextPrintFlags returns the GType for the type StyleContextPrintFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStyleContextPrintFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_style_context_print_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStyleContextPrintFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeStyleContextPrintFlags = coreglib.Type(C.gtk_style_context_print_flags_get_type())
+	GTypeStyleContext           = coreglib.Type(C.gtk_style_context_get_type())
+)
 
-// GTypeStyleContext returns the GType for the type StyleContext.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStyleContext() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_style_context_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStyleContext)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStyleContextPrintFlags, F: marshalStyleContextPrintFlags},
+		coreglib.TypeMarshaler{T: GTypeStyleContext, F: marshalStyleContext},
+	})
 }
 
 // STYLE_CLASS_ACCELERATOR: CSS class to match an accelerator.

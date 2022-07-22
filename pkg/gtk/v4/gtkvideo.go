@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeVideo returns the GType for the type Video.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVideo() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_video_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVideo)
-	return gtype
+// GType values.
+var (
+	GTypeVideo = coreglib.Type(C.gtk_video_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVideo, F: marshalVideo},
+	})
 }
 
 // VideoOverrider contains methods that are overridable.

@@ -15,15 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// GTypeVec4 returns the GType for the type Vec4.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVec4() coreglib.Type {
-	gtype := coreglib.Type(C.graphene_vec4_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVec4)
-	return gtype
+// GType values.
+var (
+	GTypeVec4 = coreglib.Type(C.graphene_vec4_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVec4, F: marshalVec4},
+	})
 }
 
 // Vec4: structure capable of holding a vector with four dimensions: x, y, z,

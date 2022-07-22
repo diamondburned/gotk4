@@ -20,15 +20,15 @@ import (
 // extern void _gotk4_gtk3_ToolButton_ConnectClicked(gpointer, guintptr);
 import "C"
 
-// GTypeToolButton returns the GType for the type ToolButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeToolButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tool_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalToolButton)
-	return gtype
+// GType values.
+var (
+	GTypeToolButton = coreglib.Type(C.gtk_tool_button_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeToolButton, F: marshalToolButton},
+	})
 }
 
 // ToolButtonOverrider contains methods that are overridable.

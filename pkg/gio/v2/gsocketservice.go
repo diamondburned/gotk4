@@ -17,15 +17,15 @@ import (
 // extern gboolean _gotk4_gio2_SocketService_ConnectIncoming(gpointer, GSocketConnection*, GObject, guintptr);
 import "C"
 
-// GTypeSocketService returns the GType for the type SocketService.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSocketService() coreglib.Type {
-	gtype := coreglib.Type(C.g_socket_service_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSocketService)
-	return gtype
+// GType values.
+var (
+	GTypeSocketService = coreglib.Type(C.g_socket_service_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSocketService, F: marshalSocketService},
+	})
 }
 
 // SocketServiceOverrider contains methods that are overridable.

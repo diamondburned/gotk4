@@ -21,37 +21,19 @@ import (
 // extern void _gotk4_gtk4_Dialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
-// GTypeResponseType returns the GType for the type ResponseType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeResponseType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_response_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalResponseType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeResponseType = coreglib.Type(C.gtk_response_type_get_type())
+	GTypeDialogFlags  = coreglib.Type(C.gtk_dialog_flags_get_type())
+	GTypeDialog       = coreglib.Type(C.gtk_dialog_get_type())
+)
 
-// GTypeDialogFlags returns the GType for the type DialogFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDialogFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_dialog_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDialogFlags)
-	return gtype
-}
-
-// GTypeDialog returns the GType for the type Dialog.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDialog() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_dialog_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDialog)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeResponseType, F: marshalResponseType},
+		coreglib.TypeMarshaler{T: GTypeDialogFlags, F: marshalDialogFlags},
+		coreglib.TypeMarshaler{T: GTypeDialog, F: marshalDialog},
+	})
 }
 
 // ResponseType: predefined values for use as response ids in

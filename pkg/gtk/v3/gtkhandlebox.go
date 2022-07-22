@@ -22,15 +22,15 @@ import (
 // extern void _gotk4_gtk3_HandleBox_ConnectChildDetached(gpointer, GtkWidget*, guintptr);
 import "C"
 
-// GTypeHandleBox returns the GType for the type HandleBox.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeHandleBox() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_handle_box_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalHandleBox)
-	return gtype
+// GType values.
+var (
+	GTypeHandleBox = coreglib.Type(C.gtk_handle_box_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeHandleBox, F: marshalHandleBox},
+	})
 }
 
 // HandleBoxOverrider contains methods that are overridable.

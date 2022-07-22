@@ -45,15 +45,15 @@ import (
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, GVolume*, guintptr);
 import "C"
 
-// GTypeVolumeMonitor returns the GType for the type VolumeMonitor.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVolumeMonitor() coreglib.Type {
-	gtype := coreglib.Type(C.g_volume_monitor_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVolumeMonitor)
-	return gtype
+// GType values.
+var (
+	GTypeVolumeMonitor = coreglib.Type(C.g_volume_monitor_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVolumeMonitor, F: marshalVolumeMonitor},
+	})
 }
 
 // VOLUME_MONITOR_EXTENSION_POINT_NAME: extension point for volume monitor

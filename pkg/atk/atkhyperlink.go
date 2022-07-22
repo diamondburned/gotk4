@@ -27,26 +27,17 @@ import (
 // extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
 import "C"
 
-// GTypeHyperlinkStateFlags returns the GType for the type HyperlinkStateFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeHyperlinkStateFlags() coreglib.Type {
-	gtype := coreglib.Type(C.atk_hyperlink_state_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalHyperlinkStateFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeHyperlinkStateFlags = coreglib.Type(C.atk_hyperlink_state_flags_get_type())
+	GTypeHyperlink           = coreglib.Type(C.atk_hyperlink_get_type())
+)
 
-// GTypeHyperlink returns the GType for the type Hyperlink.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeHyperlink() coreglib.Type {
-	gtype := coreglib.Type(C.atk_hyperlink_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalHyperlink)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeHyperlinkStateFlags, F: marshalHyperlinkStateFlags},
+		coreglib.TypeMarshaler{T: GTypeHyperlink, F: marshalHyperlink},
+	})
 }
 
 // HyperlinkStateFlags describes the type of link.

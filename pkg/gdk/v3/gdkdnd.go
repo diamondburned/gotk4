@@ -16,37 +16,19 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeDragCancelReason returns the GType for the type DragCancelReason.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDragCancelReason() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_drag_cancel_reason_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDragCancelReason)
-	return gtype
-}
+// GType values.
+var (
+	GTypeDragCancelReason = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
+	GTypeDragProtocol     = coreglib.Type(C.gdk_drag_protocol_get_type())
+	GTypeDragAction       = coreglib.Type(C.gdk_drag_action_get_type())
+)
 
-// GTypeDragProtocol returns the GType for the type DragProtocol.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDragProtocol() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_drag_protocol_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDragProtocol)
-	return gtype
-}
-
-// GTypeDragAction returns the GType for the type DragAction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDragAction() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_drag_action_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDragAction)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDragCancelReason, F: marshalDragCancelReason},
+		coreglib.TypeMarshaler{T: GTypeDragProtocol, F: marshalDragProtocol},
+		coreglib.TypeMarshaler{T: GTypeDragAction, F: marshalDragAction},
+	})
 }
 
 // DragCancelReason: used in DragContext to the reason of a cancelled DND

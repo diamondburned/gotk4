@@ -31,48 +31,21 @@ import (
 // extern void _gotk4_gtk3_IconTheme_ConnectChanged(gpointer, guintptr);
 import "C"
 
-// GTypeIconThemeError returns the GType for the type IconThemeError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconThemeError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_theme_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconThemeError)
-	return gtype
-}
+// GType values.
+var (
+	GTypeIconThemeError  = coreglib.Type(C.gtk_icon_theme_error_get_type())
+	GTypeIconLookupFlags = coreglib.Type(C.gtk_icon_lookup_flags_get_type())
+	GTypeIconInfo        = coreglib.Type(C.gtk_icon_info_get_type())
+	GTypeIconTheme       = coreglib.Type(C.gtk_icon_theme_get_type())
+)
 
-// GTypeIconLookupFlags returns the GType for the type IconLookupFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconLookupFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_lookup_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconLookupFlags)
-	return gtype
-}
-
-// GTypeIconInfo returns the GType for the type IconInfo.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconInfo() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_info_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconInfo)
-	return gtype
-}
-
-// GTypeIconTheme returns the GType for the type IconTheme.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconTheme() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_theme_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconTheme)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeIconThemeError, F: marshalIconThemeError},
+		coreglib.TypeMarshaler{T: GTypeIconLookupFlags, F: marshalIconLookupFlags},
+		coreglib.TypeMarshaler{T: GTypeIconInfo, F: marshalIconInfo},
+		coreglib.TypeMarshaler{T: GTypeIconTheme, F: marshalIconTheme},
+	})
 }
 
 // IconThemeError: error codes for GtkIconTheme operations.

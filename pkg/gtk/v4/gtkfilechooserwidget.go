@@ -26,15 +26,15 @@ import (
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectUpFolder(gpointer, guintptr);
 import "C"
 
-// GTypeFileChooserWidget returns the GType for the type FileChooserWidget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_chooser_widget_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserWidget)
-	return gtype
+// GType values.
+var (
+	GTypeFileChooserWidget = coreglib.Type(C.gtk_file_chooser_widget_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileChooserWidget, F: marshalFileChooserWidget},
+	})
 }
 
 // FileChooserWidget: GtkFileChooserWidget is a widget for choosing files.

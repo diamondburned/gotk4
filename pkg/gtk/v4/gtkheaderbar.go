@@ -14,15 +14,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeHeaderBar returns the GType for the type HeaderBar.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeHeaderBar() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_header_bar_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalHeaderBar)
-	return gtype
+// GType values.
+var (
+	GTypeHeaderBar = coreglib.Type(C.gtk_header_bar_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeHeaderBar, F: marshalHeaderBar},
+	})
 }
 
 // HeaderBar: GtkHeaderBar is a widget for creating custom title bars for

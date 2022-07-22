@@ -17,15 +17,15 @@ import (
 // extern gboolean _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(gpointer, GDBusInterfaceSkeleton*, GDBusMethodInvocation*, guintptr);
 import "C"
 
-// GTypeDBusObjectSkeleton returns the GType for the type DBusObjectSkeleton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDBusObjectSkeleton() coreglib.Type {
-	gtype := coreglib.Type(C.g_dbus_object_skeleton_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectSkeleton)
-	return gtype
+// GType values.
+var (
+	GTypeDBusObjectSkeleton = coreglib.Type(C.g_dbus_object_skeleton_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDBusObjectSkeleton, F: marshalDBusObjectSkeleton},
+	})
 }
 
 // DBusObjectSkeletonOverrider contains methods that are overridable.

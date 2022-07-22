@@ -14,15 +14,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeActionBar returns the GType for the type ActionBar.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeActionBar() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_action_bar_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalActionBar)
-	return gtype
+// GType values.
+var (
+	GTypeActionBar = coreglib.Type(C.gtk_action_bar_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeActionBar, F: marshalActionBar},
+	})
 }
 
 // ActionBar: GtkActionBar is designed to present contextual actions.

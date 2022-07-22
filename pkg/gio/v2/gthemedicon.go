@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeThemedIcon returns the GType for the type ThemedIcon.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeThemedIcon() coreglib.Type {
-	gtype := coreglib.Type(C.g_themed_icon_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalThemedIcon)
-	return gtype
+// GType values.
+var (
+	GTypeThemedIcon = coreglib.Type(C.g_themed_icon_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeThemedIcon, F: marshalThemedIcon},
+	})
 }
 
 // ThemedIconOverrider contains methods that are overridable.

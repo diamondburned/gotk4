@@ -36,37 +36,19 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeRecentChooserError returns the GType for the type RecentChooserError.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentChooserError() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_chooser_error_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserError)
-	return gtype
-}
+// GType values.
+var (
+	GTypeRecentChooserError = coreglib.Type(C.gtk_recent_chooser_error_get_type())
+	GTypeRecentSortType     = coreglib.Type(C.gtk_recent_sort_type_get_type())
+	GTypeRecentChooser      = coreglib.Type(C.gtk_recent_chooser_get_type())
+)
 
-// GTypeRecentSortType returns the GType for the type RecentSortType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentSortType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_sort_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentSortType)
-	return gtype
-}
-
-// GTypeRecentChooser returns the GType for the type RecentChooser.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentChooser() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_chooser_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooser)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRecentChooserError, F: marshalRecentChooserError},
+		coreglib.TypeMarshaler{T: GTypeRecentSortType, F: marshalRecentSortType},
+		coreglib.TypeMarshaler{T: GTypeRecentChooser, F: marshalRecentChooser},
+	})
 }
 
 // RecentChooserError: these identify the various errors that can occur while

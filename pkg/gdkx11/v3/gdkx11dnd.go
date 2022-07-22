@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeX11DragContext returns the GType for the type X11DragContext.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeX11DragContext() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_x11_drag_context_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalX11DragContext)
-	return gtype
+// GType values.
+var (
+	GTypeX11DragContext = coreglib.Type(C.gdk_x11_drag_context_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeX11DragContext, F: marshalX11DragContext},
+	})
 }
 
 // X11DragContextOverrider contains methods that are overridable.

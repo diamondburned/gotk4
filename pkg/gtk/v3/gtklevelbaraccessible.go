@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeLevelBarAccessible returns the GType for the type LevelBarAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeLevelBarAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_level_bar_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalLevelBarAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeLevelBarAccessible = coreglib.Type(C.gtk_level_bar_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeLevelBarAccessible, F: marshalLevelBarAccessible},
+	})
 }
 
 // LevelBarAccessibleOverrider contains methods that are overridable.

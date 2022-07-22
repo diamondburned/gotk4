@@ -28,15 +28,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeFileOutputStream returns the GType for the type FileOutputStream.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileOutputStream() coreglib.Type {
-	gtype := coreglib.Type(C.g_file_output_stream_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileOutputStream)
-	return gtype
+// GType values.
+var (
+	GTypeFileOutputStream = coreglib.Type(C.g_file_output_stream_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileOutputStream, F: marshalFileOutputStream},
+	})
 }
 
 // FileOutputStreamOverrider contains methods that are overridable.

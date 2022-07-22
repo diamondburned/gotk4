@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeIMContextSimple returns the GType for the type IMContextSimple.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIMContextSimple() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_im_context_simple_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIMContextSimple)
-	return gtype
+// GType values.
+var (
+	GTypeIMContextSimple = coreglib.Type(C.gtk_im_context_simple_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeIMContextSimple, F: marshalIMContextSimple},
+	})
 }
 
 // MAX_COMPOSE_LEN: maximum length of sequences in compose tables.

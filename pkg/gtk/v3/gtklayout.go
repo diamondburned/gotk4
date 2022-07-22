@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeLayout returns the GType for the type Layout.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeLayout() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_layout_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalLayout)
-	return gtype
+// GType values.
+var (
+	GTypeLayout = coreglib.Type(C.gtk_layout_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeLayout, F: marshalLayout},
+	})
 }
 
 // LayoutOverrider contains methods that are overridable.

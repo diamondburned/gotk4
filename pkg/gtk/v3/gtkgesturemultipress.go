@@ -21,15 +21,15 @@ import (
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectStopped(gpointer, guintptr);
 import "C"
 
-// GTypeGestureMultiPress returns the GType for the type GestureMultiPress.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGestureMultiPress() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_multi_press_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGestureMultiPress)
-	return gtype
+// GType values.
+var (
+	GTypeGestureMultiPress = coreglib.Type(C.gtk_gesture_multi_press_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGestureMultiPress, F: marshalGestureMultiPress},
+	})
 }
 
 // GestureMultiPressOverrider contains methods that are overridable.

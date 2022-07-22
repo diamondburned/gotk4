@@ -22,48 +22,21 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeIconSet returns the GType for the type IconSet.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconSet() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_set_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconSet)
-	return gtype
-}
+// GType values.
+var (
+	GTypeIconSet       = coreglib.Type(C.gtk_icon_set_get_type())
+	GTypeIconSource    = coreglib.Type(C.gtk_icon_source_get_type())
+	GTypeSelectionData = coreglib.Type(C.gtk_selection_data_get_type())
+	GTypeWidgetPath    = coreglib.Type(C.gtk_widget_path_get_type())
+)
 
-// GTypeIconSource returns the GType for the type IconSource.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeIconSource() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_icon_source_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalIconSource)
-	return gtype
-}
-
-// GTypeSelectionData returns the GType for the type SelectionData.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSelectionData() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_selection_data_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionData)
-	return gtype
-}
-
-// GTypeWidgetPath returns the GType for the type WidgetPath.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeWidgetPath() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_widget_path_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalWidgetPath)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeIconSet, F: marshalIconSet},
+		coreglib.TypeMarshaler{T: GTypeIconSource, F: marshalIconSource},
+		coreglib.TypeMarshaler{T: GTypeSelectionData, F: marshalSelectionData},
+		coreglib.TypeMarshaler{T: GTypeWidgetPath, F: marshalWidgetPath},
+	})
 }
 
 // IconSet: instance of this type is always passed by reference.

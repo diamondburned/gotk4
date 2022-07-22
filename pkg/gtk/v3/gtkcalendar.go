@@ -36,26 +36,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeCalendarDisplayOptions returns the GType for the type CalendarDisplayOptions.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCalendarDisplayOptions() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_calendar_display_options_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCalendarDisplayOptions)
-	return gtype
-}
+// GType values.
+var (
+	GTypeCalendarDisplayOptions = coreglib.Type(C.gtk_calendar_display_options_get_type())
+	GTypeCalendar               = coreglib.Type(C.gtk_calendar_get_type())
+)
 
-// GTypeCalendar returns the GType for the type Calendar.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCalendar() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_calendar_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCalendar)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCalendarDisplayOptions, F: marshalCalendarDisplayOptions},
+		coreglib.TypeMarshaler{T: GTypeCalendar, F: marshalCalendar},
+	})
 }
 
 // CalendarDisplayOptions: these options can be used to influence the display

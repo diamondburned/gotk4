@@ -30,15 +30,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeContentProvider returns the GType for the type ContentProvider.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeContentProvider() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_content_provider_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalContentProvider)
-	return gtype
+// GType values.
+var (
+	GTypeContentProvider = coreglib.Type(C.gdk_content_provider_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeContentProvider, F: marshalContentProvider},
+	})
 }
 
 // ContentProviderOverrider contains methods that are overridable.

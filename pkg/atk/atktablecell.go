@@ -19,15 +19,15 @@ import (
 // extern gint _gotk4_atk1_TableCellIface_get_row_span(AtkTableCell*);
 import "C"
 
-// GTypeTableCell returns the GType for the type TableCell.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTableCell() coreglib.Type {
-	gtype := coreglib.Type(C.atk_table_cell_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTableCell)
-	return gtype
+// GType values.
+var (
+	GTypeTableCell = coreglib.Type(C.atk_table_cell_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTableCell, F: marshalTableCell},
+	})
 }
 
 // TableCellOverrider contains methods that are overridable.

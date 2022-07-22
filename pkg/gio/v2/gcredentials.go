@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeCredentials returns the GType for the type Credentials.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCredentials() coreglib.Type {
-	gtype := coreglib.Type(C.g_credentials_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCredentials)
-	return gtype
+// GType values.
+var (
+	GTypeCredentials = coreglib.Type(C.g_credentials_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCredentials, F: marshalCredentials},
+	})
 }
 
 // CredentialsOverrider contains methods that are overridable.

@@ -17,15 +17,15 @@ import (
 // extern void _gotk4_gtk3_GestureRotate_ConnectAngleChanged(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// GTypeGestureRotate returns the GType for the type GestureRotate.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGestureRotate() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_rotate_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGestureRotate)
-	return gtype
+// GType values.
+var (
+	GTypeGestureRotate = coreglib.Type(C.gtk_gesture_rotate_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGestureRotate, F: marshalGestureRotate},
+	})
 }
 
 // GestureRotateOverrider contains methods that are overridable.

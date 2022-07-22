@@ -22,15 +22,15 @@ import (
 // extern void _gotk4_atk1_Document_ConnectReload(gpointer, guintptr);
 import "C"
 
-// GTypeDocument returns the GType for the type Document.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDocument() coreglib.Type {
-	gtype := coreglib.Type(C.atk_document_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDocument)
-	return gtype
+// GType values.
+var (
+	GTypeDocument = coreglib.Type(C.atk_document_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDocument, F: marshalDocument},
+	})
 }
 
 // Document interface should be supported by any object whose content is a

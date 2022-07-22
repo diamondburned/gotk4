@@ -27,26 +27,17 @@ import (
 // extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
 import "C"
 
-// GTypeValueType returns the GType for the type ValueType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeValueType() coreglib.Type {
-	gtype := coreglib.Type(C.atk_value_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalValueType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeValueType = coreglib.Type(C.atk_value_type_get_type())
+	GTypeValue     = coreglib.Type(C.atk_value_get_type())
+)
 
-// GTypeValue returns the GType for the type Value.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeValue() coreglib.Type {
-	gtype := coreglib.Type(C.atk_value_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalValue)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeValueType, F: marshalValueType},
+		coreglib.TypeMarshaler{T: GTypeValue, F: marshalValue},
+	})
 }
 
 // ValueType: default types for a given value. Those are defined in order to

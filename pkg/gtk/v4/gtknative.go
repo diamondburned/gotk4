@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeNativeSurface returns the GType for the type NativeSurface.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNativeSurface() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_native_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNativeSurface)
-	return gtype
+// GType values.
+var (
+	GTypeNativeSurface = coreglib.Type(C.gtk_native_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeNativeSurface, F: marshalNativeSurface},
+	})
 }
 
 // NativeSurfaceOverrider contains methods that are overridable.

@@ -46,48 +46,21 @@ import (
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
 import "C"
 
-// GTypeLayer returns the GType for the type Layer.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeLayer() coreglib.Type {
-	gtype := coreglib.Type(C.atk_layer_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalLayer)
-	return gtype
-}
+// GType values.
+var (
+	GTypeLayer            = coreglib.Type(C.atk_layer_get_type())
+	GTypeRole             = coreglib.Type(C.atk_role_get_type())
+	GTypeImplementorIface = coreglib.Type(C.atk_implementor_get_type())
+	GTypeObjectClass      = coreglib.Type(C.atk_object_get_type())
+)
 
-// GTypeRole returns the GType for the type Role.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRole() coreglib.Type {
-	gtype := coreglib.Type(C.atk_role_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRole)
-	return gtype
-}
-
-// GTypeImplementorIface returns the GType for the type ImplementorIface.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeImplementorIface() coreglib.Type {
-	gtype := coreglib.Type(C.atk_implementor_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalImplementorIface)
-	return gtype
-}
-
-// GTypeObjectClass returns the GType for the type ObjectClass.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeObjectClass() coreglib.Type {
-	gtype := coreglib.Type(C.atk_object_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalObjectClass)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeLayer, F: marshalLayer},
+		coreglib.TypeMarshaler{T: GTypeRole, F: marshalRole},
+		coreglib.TypeMarshaler{T: GTypeImplementorIface, F: marshalImplementorIface},
+		coreglib.TypeMarshaler{T: GTypeObjectClass, F: marshalObjectClass},
+	})
 }
 
 // AttributeSet: this is a singly-linked list (a List) of Attribute. It is used

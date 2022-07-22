@@ -15,15 +15,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeFlattenListModel returns the GType for the type FlattenListModel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFlattenListModel() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_flatten_list_model_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFlattenListModel)
-	return gtype
+// GType values.
+var (
+	GTypeFlattenListModel = coreglib.Type(C.gtk_flatten_list_model_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFlattenListModel, F: marshalFlattenListModel},
+	})
 }
 
 // FlattenListModelOverrider contains methods that are overridable.

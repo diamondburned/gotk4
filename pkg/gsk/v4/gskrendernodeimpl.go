@@ -13,279 +13,63 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// GTypeBlendNode returns the GType for the type BlendNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBlendNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_blend_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBlendNode)
-	return gtype
-}
+// GType values.
+var (
+	GTypeBlendNode                   = coreglib.Type(C.gsk_blend_node_get_type())
+	GTypeBlurNode                    = coreglib.Type(C.gsk_blur_node_get_type())
+	GTypeBorderNode                  = coreglib.Type(C.gsk_border_node_get_type())
+	GTypeCairoNode                   = coreglib.Type(C.gsk_cairo_node_get_type())
+	GTypeClipNode                    = coreglib.Type(C.gsk_clip_node_get_type())
+	GTypeColorMatrixNode             = coreglib.Type(C.gsk_color_matrix_node_get_type())
+	GTypeColorNode                   = coreglib.Type(C.gsk_color_node_get_type())
+	GTypeConicGradientNode           = coreglib.Type(C.gsk_conic_gradient_node_get_type())
+	GTypeContainerNode               = coreglib.Type(C.gsk_container_node_get_type())
+	GTypeCrossFadeNode               = coreglib.Type(C.gsk_cross_fade_node_get_type())
+	GTypeDebugNode                   = coreglib.Type(C.gsk_debug_node_get_type())
+	GTypeGLShaderNode                = coreglib.Type(C.gsk_gl_shader_node_get_type())
+	GTypeInsetShadowNode             = coreglib.Type(C.gsk_inset_shadow_node_get_type())
+	GTypeLinearGradientNode          = coreglib.Type(C.gsk_linear_gradient_node_get_type())
+	GTypeOpacityNode                 = coreglib.Type(C.gsk_opacity_node_get_type())
+	GTypeOutsetShadowNode            = coreglib.Type(C.gsk_outset_shadow_node_get_type())
+	GTypeRadialGradientNode          = coreglib.Type(C.gsk_radial_gradient_node_get_type())
+	GTypeRepeatNode                  = coreglib.Type(C.gsk_repeat_node_get_type())
+	GTypeRepeatingLinearGradientNode = coreglib.Type(C.gsk_repeating_linear_gradient_node_get_type())
+	GTypeRepeatingRadialGradientNode = coreglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
+	GTypeRoundedClipNode             = coreglib.Type(C.gsk_rounded_clip_node_get_type())
+	GTypeShadowNode                  = coreglib.Type(C.gsk_shadow_node_get_type())
+	GTypeTextNode                    = coreglib.Type(C.gsk_text_node_get_type())
+	GTypeTextureNode                 = coreglib.Type(C.gsk_texture_node_get_type())
+	GTypeTransformNode               = coreglib.Type(C.gsk_transform_node_get_type())
+)
 
-// GTypeBlurNode returns the GType for the type BlurNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBlurNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_blur_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBlurNode)
-	return gtype
-}
-
-// GTypeBorderNode returns the GType for the type BorderNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeBorderNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_border_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalBorderNode)
-	return gtype
-}
-
-// GTypeCairoNode returns the GType for the type CairoNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCairoNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_cairo_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCairoNode)
-	return gtype
-}
-
-// GTypeClipNode returns the GType for the type ClipNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeClipNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_clip_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalClipNode)
-	return gtype
-}
-
-// GTypeColorMatrixNode returns the GType for the type ColorMatrixNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeColorMatrixNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_color_matrix_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalColorMatrixNode)
-	return gtype
-}
-
-// GTypeColorNode returns the GType for the type ColorNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeColorNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_color_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalColorNode)
-	return gtype
-}
-
-// GTypeConicGradientNode returns the GType for the type ConicGradientNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeConicGradientNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_conic_gradient_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalConicGradientNode)
-	return gtype
-}
-
-// GTypeContainerNode returns the GType for the type ContainerNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeContainerNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_container_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalContainerNode)
-	return gtype
-}
-
-// GTypeCrossFadeNode returns the GType for the type CrossFadeNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCrossFadeNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_cross_fade_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCrossFadeNode)
-	return gtype
-}
-
-// GTypeDebugNode returns the GType for the type DebugNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDebugNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_debug_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDebugNode)
-	return gtype
-}
-
-// GTypeGLShaderNode returns the GType for the type GLShaderNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGLShaderNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_gl_shader_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGLShaderNode)
-	return gtype
-}
-
-// GTypeInsetShadowNode returns the GType for the type InsetShadowNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInsetShadowNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_inset_shadow_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInsetShadowNode)
-	return gtype
-}
-
-// GTypeLinearGradientNode returns the GType for the type LinearGradientNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeLinearGradientNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_linear_gradient_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalLinearGradientNode)
-	return gtype
-}
-
-// GTypeOpacityNode returns the GType for the type OpacityNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeOpacityNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_opacity_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalOpacityNode)
-	return gtype
-}
-
-// GTypeOutsetShadowNode returns the GType for the type OutsetShadowNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeOutsetShadowNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_outset_shadow_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalOutsetShadowNode)
-	return gtype
-}
-
-// GTypeRadialGradientNode returns the GType for the type RadialGradientNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRadialGradientNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_radial_gradient_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRadialGradientNode)
-	return gtype
-}
-
-// GTypeRepeatNode returns the GType for the type RepeatNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRepeatNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_repeat_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRepeatNode)
-	return gtype
-}
-
-// GTypeRepeatingLinearGradientNode returns the GType for the type RepeatingLinearGradientNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRepeatingLinearGradientNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_repeating_linear_gradient_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRepeatingLinearGradientNode)
-	return gtype
-}
-
-// GTypeRepeatingRadialGradientNode returns the GType for the type RepeatingRadialGradientNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRepeatingRadialGradientNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRepeatingRadialGradientNode)
-	return gtype
-}
-
-// GTypeRoundedClipNode returns the GType for the type RoundedClipNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRoundedClipNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_rounded_clip_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRoundedClipNode)
-	return gtype
-}
-
-// GTypeShadowNode returns the GType for the type ShadowNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShadowNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_shadow_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShadowNode)
-	return gtype
-}
-
-// GTypeTextNode returns the GType for the type TextNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_text_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextNode)
-	return gtype
-}
-
-// GTypeTextureNode returns the GType for the type TextureNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextureNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_texture_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextureNode)
-	return gtype
-}
-
-// GTypeTransformNode returns the GType for the type TransformNode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTransformNode() coreglib.Type {
-	gtype := coreglib.Type(C.gsk_transform_node_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTransformNode)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeBlendNode, F: marshalBlendNode},
+		coreglib.TypeMarshaler{T: GTypeBlurNode, F: marshalBlurNode},
+		coreglib.TypeMarshaler{T: GTypeBorderNode, F: marshalBorderNode},
+		coreglib.TypeMarshaler{T: GTypeCairoNode, F: marshalCairoNode},
+		coreglib.TypeMarshaler{T: GTypeClipNode, F: marshalClipNode},
+		coreglib.TypeMarshaler{T: GTypeColorMatrixNode, F: marshalColorMatrixNode},
+		coreglib.TypeMarshaler{T: GTypeColorNode, F: marshalColorNode},
+		coreglib.TypeMarshaler{T: GTypeConicGradientNode, F: marshalConicGradientNode},
+		coreglib.TypeMarshaler{T: GTypeContainerNode, F: marshalContainerNode},
+		coreglib.TypeMarshaler{T: GTypeCrossFadeNode, F: marshalCrossFadeNode},
+		coreglib.TypeMarshaler{T: GTypeDebugNode, F: marshalDebugNode},
+		coreglib.TypeMarshaler{T: GTypeGLShaderNode, F: marshalGLShaderNode},
+		coreglib.TypeMarshaler{T: GTypeInsetShadowNode, F: marshalInsetShadowNode},
+		coreglib.TypeMarshaler{T: GTypeLinearGradientNode, F: marshalLinearGradientNode},
+		coreglib.TypeMarshaler{T: GTypeOpacityNode, F: marshalOpacityNode},
+		coreglib.TypeMarshaler{T: GTypeOutsetShadowNode, F: marshalOutsetShadowNode},
+		coreglib.TypeMarshaler{T: GTypeRadialGradientNode, F: marshalRadialGradientNode},
+		coreglib.TypeMarshaler{T: GTypeRepeatNode, F: marshalRepeatNode},
+		coreglib.TypeMarshaler{T: GTypeRepeatingLinearGradientNode, F: marshalRepeatingLinearGradientNode},
+		coreglib.TypeMarshaler{T: GTypeRepeatingRadialGradientNode, F: marshalRepeatingRadialGradientNode},
+		coreglib.TypeMarshaler{T: GTypeRoundedClipNode, F: marshalRoundedClipNode},
+		coreglib.TypeMarshaler{T: GTypeShadowNode, F: marshalShadowNode},
+		coreglib.TypeMarshaler{T: GTypeTextNode, F: marshalTextNode},
+		coreglib.TypeMarshaler{T: GTypeTextureNode, F: marshalTextureNode},
+		coreglib.TypeMarshaler{T: GTypeTransformNode, F: marshalTransformNode},
+	})
 }
 
 // BlendNode: render node applying a blending function between its two child

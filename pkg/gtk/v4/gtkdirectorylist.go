@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeDirectoryList returns the GType for the type DirectoryList.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDirectoryList() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_directory_list_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDirectoryList)
-	return gtype
+// GType values.
+var (
+	GTypeDirectoryList = coreglib.Type(C.gtk_directory_list_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDirectoryList, F: marshalDirectoryList},
+	})
 }
 
 // DirectoryListOverrider contains methods that are overridable.

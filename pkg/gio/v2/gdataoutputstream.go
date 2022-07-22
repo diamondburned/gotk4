@@ -17,15 +17,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeDataOutputStream returns the GType for the type DataOutputStream.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDataOutputStream() coreglib.Type {
-	gtype := coreglib.Type(C.g_data_output_stream_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDataOutputStream)
-	return gtype
+// GType values.
+var (
+	GTypeDataOutputStream = coreglib.Type(C.g_data_output_stream_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDataOutputStream, F: marshalDataOutputStream},
+	})
 }
 
 // DataOutputStreamOverrider contains methods that are overridable.

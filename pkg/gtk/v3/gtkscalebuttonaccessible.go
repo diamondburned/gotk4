@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeScaleButtonAccessible returns the GType for the type ScaleButtonAccessible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeScaleButtonAccessible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_scale_button_accessible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalScaleButtonAccessible)
-	return gtype
+// GType values.
+var (
+	GTypeScaleButtonAccessible = coreglib.Type(C.gtk_scale_button_accessible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeScaleButtonAccessible, F: marshalScaleButtonAccessible},
+	})
 }
 
 // ScaleButtonAccessibleOverrider contains methods that are overridable.

@@ -19,37 +19,19 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeTargetFlags returns the GType for the type TargetFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTargetFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_target_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTargetFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeTargetFlags = coreglib.Type(C.gtk_target_flags_get_type())
+	GTypeTargetEntry = coreglib.Type(C.gtk_target_entry_get_type())
+	GTypeTargetList  = coreglib.Type(C.gtk_target_list_get_type())
+)
 
-// GTypeTargetEntry returns the GType for the type TargetEntry.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTargetEntry() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_target_entry_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTargetEntry)
-	return gtype
-}
-
-// GTypeTargetList returns the GType for the type TargetList.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTargetList() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_target_list_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTargetList)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTargetFlags, F: marshalTargetFlags},
+		coreglib.TypeMarshaler{T: GTypeTargetEntry, F: marshalTargetEntry},
+		coreglib.TypeMarshaler{T: GTypeTargetList, F: marshalTargetList},
+	})
 }
 
 // TargetFlags enumeration is used to specify constraints on a TargetEntry.

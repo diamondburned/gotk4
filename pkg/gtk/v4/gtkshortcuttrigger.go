@@ -15,59 +15,23 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeAlternativeTrigger returns the GType for the type AlternativeTrigger.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAlternativeTrigger() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_alternative_trigger_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAlternativeTrigger)
-	return gtype
-}
+// GType values.
+var (
+	GTypeAlternativeTrigger = coreglib.Type(C.gtk_alternative_trigger_get_type())
+	GTypeKeyvalTrigger      = coreglib.Type(C.gtk_keyval_trigger_get_type())
+	GTypeMnemonicTrigger    = coreglib.Type(C.gtk_mnemonic_trigger_get_type())
+	GTypeNeverTrigger       = coreglib.Type(C.gtk_never_trigger_get_type())
+	GTypeShortcutTrigger    = coreglib.Type(C.gtk_shortcut_trigger_get_type())
+)
 
-// GTypeKeyvalTrigger returns the GType for the type KeyvalTrigger.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeKeyvalTrigger() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_keyval_trigger_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalKeyvalTrigger)
-	return gtype
-}
-
-// GTypeMnemonicTrigger returns the GType for the type MnemonicTrigger.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMnemonicTrigger() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_mnemonic_trigger_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMnemonicTrigger)
-	return gtype
-}
-
-// GTypeNeverTrigger returns the GType for the type NeverTrigger.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNeverTrigger() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_never_trigger_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNeverTrigger)
-	return gtype
-}
-
-// GTypeShortcutTrigger returns the GType for the type ShortcutTrigger.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeShortcutTrigger() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_shortcut_trigger_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutTrigger)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAlternativeTrigger, F: marshalAlternativeTrigger},
+		coreglib.TypeMarshaler{T: GTypeKeyvalTrigger, F: marshalKeyvalTrigger},
+		coreglib.TypeMarshaler{T: GTypeMnemonicTrigger, F: marshalMnemonicTrigger},
+		coreglib.TypeMarshaler{T: GTypeNeverTrigger, F: marshalNeverTrigger},
+		coreglib.TypeMarshaler{T: GTypeShortcutTrigger, F: marshalShortcutTrigger},
+	})
 }
 
 // AlternativeTriggerOverrider contains methods that are overridable.

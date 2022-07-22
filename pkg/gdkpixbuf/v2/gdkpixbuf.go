@@ -17,15 +17,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypePixbufSimpleAnimIter returns the GType for the type PixbufSimpleAnimIter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePixbufSimpleAnimIter() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufSimpleAnimIter)
-	return gtype
+// GType values.
+var (
+	GTypePixbufSimpleAnimIter = coreglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePixbufSimpleAnimIter, F: marshalPixbufSimpleAnimIter},
+	})
 }
 
 // The function returns the following values:

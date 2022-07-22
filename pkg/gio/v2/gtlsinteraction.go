@@ -23,15 +23,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeTLSInteraction returns the GType for the type TLSInteraction.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTLSInteraction() coreglib.Type {
-	gtype := coreglib.Type(C.g_tls_interaction_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTLSInteraction)
-	return gtype
+// GType values.
+var (
+	GTypeTLSInteraction = coreglib.Type(C.g_tls_interaction_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTLSInteraction, F: marshalTLSInteraction},
+	})
 }
 
 // TLSInteractionOverrider contains methods that are overridable.

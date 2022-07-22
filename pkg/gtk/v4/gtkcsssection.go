@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeCSSSection returns the GType for the type CSSSection.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCSSSection() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_css_section_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCSSSection)
-	return gtype
+// GType values.
+var (
+	GTypeCSSSection = coreglib.Type(C.gtk_css_section_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCSSSection, F: marshalCSSSection},
+	})
 }
 
 // CSSSection defines a part of a CSS document.

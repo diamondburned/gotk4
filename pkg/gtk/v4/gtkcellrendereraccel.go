@@ -17,26 +17,17 @@ import (
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(gpointer, gchar*, guint, GdkModifierType, guint, guintptr);
 import "C"
 
-// GTypeCellRendererAccelMode returns the GType for the type CellRendererAccelMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellRendererAccelMode() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_renderer_accel_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererAccelMode)
-	return gtype
-}
+// GType values.
+var (
+	GTypeCellRendererAccelMode = coreglib.Type(C.gtk_cell_renderer_accel_mode_get_type())
+	GTypeCellRendererAccel     = coreglib.Type(C.gtk_cell_renderer_accel_get_type())
+)
 
-// GTypeCellRendererAccel returns the GType for the type CellRendererAccel.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCellRendererAccel() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_cell_renderer_accel_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererAccel)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCellRendererAccelMode, F: marshalCellRendererAccelMode},
+		coreglib.TypeMarshaler{T: GTypeCellRendererAccel, F: marshalCellRendererAccel},
+	})
 }
 
 // CellRendererAccelMode determines if the edited accelerators are GTK

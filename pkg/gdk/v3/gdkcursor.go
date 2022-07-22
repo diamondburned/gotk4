@@ -18,26 +18,17 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeCursorType returns the GType for the type CursorType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCursorType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_cursor_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCursorType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeCursorType = coreglib.Type(C.gdk_cursor_type_get_type())
+	GTypeCursor     = coreglib.Type(C.gdk_cursor_get_type())
+)
 
-// GTypeCursor returns the GType for the type Cursor.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCursor() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_cursor_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCursor)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCursorType, F: marshalCursorType},
+		coreglib.TypeMarshaler{T: GTypeCursor, F: marshalCursor},
+	})
 }
 
 // CursorType: predefined cursors.

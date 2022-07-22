@@ -17,26 +17,17 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeButtonRole returns the GType for the type ButtonRole.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeButtonRole() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_button_role_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalButtonRole)
-	return gtype
-}
+// GType values.
+var (
+	GTypeButtonRole  = coreglib.Type(C.gtk_button_role_get_type())
+	GTypeModelButton = coreglib.Type(C.gtk_model_button_get_type())
+)
 
-// GTypeModelButton returns the GType for the type ModelButton.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeModelButton() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_model_button_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalModelButton)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeButtonRole, F: marshalButtonRole},
+		coreglib.TypeMarshaler{T: GTypeModelButton, F: marshalModelButton},
+	})
 }
 
 // ButtonRole: role specifies the desired appearance of a ModelButton.

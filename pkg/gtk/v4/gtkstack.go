@@ -15,37 +15,19 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeStackTransitionType returns the GType for the type StackTransitionType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStackTransitionType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_stack_transition_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStackTransitionType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeStackTransitionType = coreglib.Type(C.gtk_stack_transition_type_get_type())
+	GTypeStack               = coreglib.Type(C.gtk_stack_get_type())
+	GTypeStackPage           = coreglib.Type(C.gtk_stack_page_get_type())
+)
 
-// GTypeStack returns the GType for the type Stack.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStack() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_stack_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStack)
-	return gtype
-}
-
-// GTypeStackPage returns the GType for the type StackPage.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStackPage() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_stack_page_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStackPage)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStackTransitionType, F: marshalStackTransitionType},
+		coreglib.TypeMarshaler{T: GTypeStack, F: marshalStack},
+		coreglib.TypeMarshaler{T: GTypeStackPage, F: marshalStackPage},
+	})
 }
 
 // StackTransitionType: possible transitions between pages in a GtkStack widget.

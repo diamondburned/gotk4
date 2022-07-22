@@ -18,48 +18,21 @@ import (
 // extern void _gotk4_gdk3_Device_ConnectToolChanged(gpointer, GdkDeviceTool*, guintptr);
 import "C"
 
-// GTypeDeviceType returns the GType for the type DeviceType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDeviceType() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_device_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeDeviceType  = coreglib.Type(C.gdk_device_type_get_type())
+	GTypeInputMode   = coreglib.Type(C.gdk_input_mode_get_type())
+	GTypeInputSource = coreglib.Type(C.gdk_input_source_get_type())
+	GTypeDevice      = coreglib.Type(C.gdk_device_get_type())
+)
 
-// GTypeInputMode returns the GType for the type InputMode.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInputMode() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_input_mode_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInputMode)
-	return gtype
-}
-
-// GTypeInputSource returns the GType for the type InputSource.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInputSource() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_input_source_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInputSource)
-	return gtype
-}
-
-// GTypeDevice returns the GType for the type Device.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDevice() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_device_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDevice)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDeviceType, F: marshalDeviceType},
+		coreglib.TypeMarshaler{T: GTypeInputMode, F: marshalInputMode},
+		coreglib.TypeMarshaler{T: GTypeInputSource, F: marshalInputSource},
+		coreglib.TypeMarshaler{T: GTypeDevice, F: marshalDevice},
+	})
 }
 
 const MAX_TIMECOORD_AXES = 128

@@ -15,15 +15,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypeX11Window returns the GType for the type X11Window.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeX11Window() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_x11_window_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalX11Window)
-	return gtype
+// GType values.
+var (
+	GTypeX11Window = coreglib.Type(C.gdk_x11_window_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeX11Window, F: marshalX11Window},
+	})
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.

@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeMenuBar returns the GType for the type MenuBar.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeMenuBar() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_menu_bar_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalMenuBar)
-	return gtype
+// GType values.
+var (
+	GTypeMenuBar = coreglib.Type(C.gtk_menu_bar_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeMenuBar, F: marshalMenuBar},
+	})
 }
 
 // MenuBarOverrider contains methods that are overridable.

@@ -18,15 +18,15 @@ import (
 // extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
 import "C"
 
-// GTypeInitable returns the GType for the type Initable.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInitable() coreglib.Type {
-	gtype := coreglib.Type(C.g_initable_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInitable)
-	return gtype
+// GType values.
+var (
+	GTypeInitable = coreglib.Type(C.g_initable_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeInitable, F: marshalInitable},
+	})
 }
 
 // InitableOverrider contains methods that are overridable.

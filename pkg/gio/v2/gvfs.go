@@ -30,15 +30,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeVFS returns the GType for the type VFS.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeVFS() coreglib.Type {
-	gtype := coreglib.Type(C.g_vfs_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalVFS)
-	return gtype
+// GType values.
+var (
+	GTypeVFS = coreglib.Type(C.g_vfs_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeVFS, F: marshalVFS},
+	})
 }
 
 // VFS_EXTENSION_POINT_NAME: extension point for #GVfs functionality. See

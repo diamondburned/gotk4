@@ -23,26 +23,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeFileFilterFlags returns the GType for the type FileFilterFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileFilterFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_filter_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileFilterFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFileFilterFlags = coreglib.Type(C.gtk_file_filter_flags_get_type())
+	GTypeFileFilter      = coreglib.Type(C.gtk_file_filter_get_type())
+)
 
-// GTypeFileFilter returns the GType for the type FileFilter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileFilter() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_filter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileFilter)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileFilterFlags, F: marshalFileFilterFlags},
+		coreglib.TypeMarshaler{T: GTypeFileFilter, F: marshalFileFilter},
+	})
 }
 
 // FileFilterFlags: these flags indicate what parts of a FileFilterInfo struct

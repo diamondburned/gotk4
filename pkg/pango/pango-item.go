@@ -15,15 +15,15 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeItem returns the GType for the type Item.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeItem() coreglib.Type {
-	gtype := coreglib.Type(C.pango_item_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalItem)
-	return gtype
+// GType values.
+var (
+	GTypeItem = coreglib.Type(C.pango_item_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeItem, F: marshalItem},
+	})
 }
 
 // ANALYSIS_FLAG_CENTERED_BASELINE: whether the segment should be shifted to

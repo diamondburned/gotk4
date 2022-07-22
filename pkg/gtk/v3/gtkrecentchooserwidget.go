@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeRecentChooserWidget returns the GType for the type RecentChooserWidget.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentChooserWidget() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_chooser_widget_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserWidget)
-	return gtype
+// GType values.
+var (
+	GTypeRecentChooserWidget = coreglib.Type(C.gtk_recent_chooser_widget_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRecentChooserWidget, F: marshalRecentChooserWidget},
+	})
 }
 
 // RecentChooserWidgetOverrider contains methods that are overridable.

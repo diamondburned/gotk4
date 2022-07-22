@@ -15,15 +15,15 @@ import (
 // extern void _gotk4_gtk4_GesturePan_ConnectPan(gpointer, GtkPanDirection, gdouble, guintptr);
 import "C"
 
-// GTypeGesturePan returns the GType for the type GesturePan.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeGesturePan() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_gesture_pan_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalGesturePan)
-	return gtype
+// GType values.
+var (
+	GTypeGesturePan = coreglib.Type(C.gtk_gesture_pan_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeGesturePan, F: marshalGesturePan},
+	})
 }
 
 // GesturePanOverrider contains methods that are overridable.

@@ -19,15 +19,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeTextAttributes returns the GType for the type TextAttributes.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTextAttributes() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_attributes_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTextAttributes)
-	return gtype
+// GType values.
+var (
+	GTypeTextAttributes = coreglib.Type(C.gtk_text_attributes_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTextAttributes, F: marshalTextAttributes},
+	})
 }
 
 // TextAppearance: instance of this type is always passed by reference.

@@ -13,15 +13,15 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// GTypeCustomLayout returns the GType for the type CustomLayout.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeCustomLayout() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_custom_layout_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalCustomLayout)
-	return gtype
+// GType values.
+var (
+	GTypeCustomLayout = coreglib.Type(C.gtk_custom_layout_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCustomLayout, F: marshalCustomLayout},
+	})
 }
 
 // CustomLayoutOverrider contains methods that are overridable.

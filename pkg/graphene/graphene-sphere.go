@@ -15,15 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// GTypeSphere returns the GType for the type Sphere.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSphere() coreglib.Type {
-	gtype := coreglib.Type(C.graphene_sphere_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSphere)
-	return gtype
+// GType values.
+var (
+	GTypeSphere = coreglib.Type(C.graphene_sphere_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSphere, F: marshalSphere},
+	})
 }
 
 // Sphere: sphere, represented by its center and radius.

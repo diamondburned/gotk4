@@ -18,15 +18,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeInvisible returns the GType for the type Invisible.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeInvisible() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_invisible_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalInvisible)
-	return gtype
+// GType values.
+var (
+	GTypeInvisible = coreglib.Type(C.gtk_invisible_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeInvisible, F: marshalInvisible},
+	})
 }
 
 // InvisibleOverrider contains methods that are overridable.

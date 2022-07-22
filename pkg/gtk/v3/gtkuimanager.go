@@ -35,26 +35,17 @@ import (
 // extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, GtkAction*, guintptr);
 import "C"
 
-// GTypeUIManagerItemType returns the GType for the type UIManagerItemType.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeUIManagerItemType() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_ui_manager_item_type_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalUIManagerItemType)
-	return gtype
-}
+// GType values.
+var (
+	GTypeUIManagerItemType = coreglib.Type(C.gtk_ui_manager_item_type_get_type())
+	GTypeUIManager         = coreglib.Type(C.gtk_ui_manager_get_type())
+)
 
-// GTypeUIManager returns the GType for the type UIManager.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeUIManager() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_ui_manager_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalUIManager)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeUIManagerItemType, F: marshalUIManagerItemType},
+		coreglib.TypeMarshaler{T: GTypeUIManager, F: marshalUIManager},
+	})
 }
 
 // UIManagerItemType: these enumeration values are used by

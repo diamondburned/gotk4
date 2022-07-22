@@ -14,15 +14,15 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// GTypePixbuf returns the GType for the type Pixbuf.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePixbuf() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_pixbuf_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPixbuf)
-	return gtype
+// GType values.
+var (
+	GTypePixbuf = coreglib.Type(C.gdk_pixbuf_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePixbuf, F: marshalPixbuf},
+	})
 }
 
 // Pixbuf: pixel buffer.

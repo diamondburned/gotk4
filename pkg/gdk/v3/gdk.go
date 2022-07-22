@@ -22,37 +22,19 @@ import (
 // extern void _gotk4_gdk3_DragContext_ConnectDropPerformed(gpointer, gint, guintptr);
 import "C"
 
-// GTypeStatus returns the GType for the type Status.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeStatus() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_status_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalStatus)
-	return gtype
-}
+// GType values.
+var (
+	GTypeStatus      = coreglib.Type(C.gdk_status_get_type())
+	GTypeDeviceTool  = coreglib.Type(C.gdk_device_tool_get_type())
+	GTypeDragContext = coreglib.Type(C.gdk_drag_context_get_type())
+)
 
-// GTypeDeviceTool returns the GType for the type DeviceTool.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDeviceTool() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_device_tool_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceTool)
-	return gtype
-}
-
-// GTypeDragContext returns the GType for the type DragContext.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDragContext() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_drag_context_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDragContext)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeStatus, F: marshalStatus},
+		coreglib.TypeMarshaler{T: GTypeDeviceTool, F: marshalDeviceTool},
+		coreglib.TypeMarshaler{T: GTypeDragContext, F: marshalDragContext},
+	})
 }
 
 // The function returns the following values:

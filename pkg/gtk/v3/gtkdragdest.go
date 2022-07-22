@@ -20,15 +20,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeDestDefaults returns the GType for the type DestDefaults.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeDestDefaults() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_dest_defaults_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalDestDefaults)
-	return gtype
+// GType values.
+var (
+	GTypeDestDefaults = coreglib.Type(C.gtk_dest_defaults_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeDestDefaults, F: marshalDestDefaults},
+	})
 }
 
 // DestDefaults enumeration specifies the various types of action that will be

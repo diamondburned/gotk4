@@ -26,15 +26,15 @@ import (
 // extern void _gotk4_gtk4_Range_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
-// GTypeRange returns the GType for the type Range.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRange() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_range_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRange)
-	return gtype
+// GType values.
+var (
+	GTypeRange = coreglib.Type(C.gtk_range_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRange, F: marshalRange},
+	})
 }
 
 // RangeOverrider contains methods that are overridable.

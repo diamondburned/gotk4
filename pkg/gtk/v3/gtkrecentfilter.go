@@ -22,26 +22,17 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// GTypeRecentFilterFlags returns the GType for the type RecentFilterFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentFilterFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_filter_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentFilterFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypeRecentFilterFlags = coreglib.Type(C.gtk_recent_filter_flags_get_type())
+	GTypeRecentFilter      = coreglib.Type(C.gtk_recent_filter_get_type())
+)
 
-// GTypeRecentFilter returns the GType for the type RecentFilter.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeRecentFilter() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_recent_filter_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalRecentFilter)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeRecentFilterFlags, F: marshalRecentFilterFlags},
+		coreglib.TypeMarshaler{T: GTypeRecentFilter, F: marshalRecentFilter},
+	})
 }
 
 // RecentFilterFlags: these flags indicate what parts of a RecentFilterInfo

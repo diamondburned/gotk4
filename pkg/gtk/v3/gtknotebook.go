@@ -38,15 +38,15 @@ import (
 // extern void _gotk4_gtk3_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
 import "C"
 
-// GTypeNotebook returns the GType for the type Notebook.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeNotebook() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_notebook_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalNotebook)
-	return gtype
+// GType values.
+var (
+	GTypeNotebook = coreglib.Type(C.gtk_notebook_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeNotebook, F: marshalNotebook},
+	})
 }
 
 // NotebookOverrider contains methods that are overridable.

@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeAlignment returns the GType for the type Alignment.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAlignment() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_alignment_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAlignment)
-	return gtype
+// GType values.
+var (
+	GTypeAlignment = coreglib.Type(C.gtk_alignment_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAlignment, F: marshalAlignment},
+	})
 }
 
 // AlignmentOverrider contains methods that are overridable.

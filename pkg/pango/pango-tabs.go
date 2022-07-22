@@ -16,26 +16,17 @@ import (
 // #include <pango/pango.h>
 import "C"
 
-// GTypeTabAlign returns the GType for the type TabAlign.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTabAlign() coreglib.Type {
-	gtype := coreglib.Type(C.pango_tab_align_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTabAlign)
-	return gtype
-}
+// GType values.
+var (
+	GTypeTabAlign = coreglib.Type(C.pango_tab_align_get_type())
+	GTypeTabArray = coreglib.Type(C.pango_tab_array_get_type())
+)
 
-// GTypeTabArray returns the GType for the type TabArray.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTabArray() coreglib.Type {
-	gtype := coreglib.Type(C.pango_tab_array_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTabArray)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTabAlign, F: marshalTabAlign},
+		coreglib.TypeMarshaler{T: GTypeTabArray, F: marshalTabArray},
+	})
 }
 
 // TabAlign: PangoTabAlign specifies where a tab stop appears relative to the

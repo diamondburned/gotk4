@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypePopoverMenu returns the GType for the type PopoverMenu.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePopoverMenu() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_popover_menu_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverMenu)
-	return gtype
+// GType values.
+var (
+	GTypePopoverMenu = coreglib.Type(C.gtk_popover_menu_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePopoverMenu, F: marshalPopoverMenu},
+	})
 }
 
 // PopoverMenuOverrider contains methods that are overridable.

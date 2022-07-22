@@ -16,15 +16,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeFileChooserDialog returns the GType for the type FileChooserDialog.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFileChooserDialog() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_file_chooser_dialog_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserDialog)
-	return gtype
+// GType values.
+var (
+	GTypeFileChooserDialog = coreglib.Type(C.gtk_file_chooser_dialog_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFileChooserDialog, F: marshalFileChooserDialog},
+	})
 }
 
 // FileChooserDialogOverrider contains methods that are overridable.

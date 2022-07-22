@@ -23,15 +23,15 @@ import (
 // extern void _gotk4_gtk3_Socket_ConnectPlugAdded(gpointer, guintptr);
 import "C"
 
-// GTypeSocket returns the GType for the type Socket.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSocket() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_socket_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSocket)
-	return gtype
+// GType values.
+var (
+	GTypeSocket = coreglib.Type(C.gtk_socket_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSocket, F: marshalSocket},
+	})
 }
 
 // SocketOverrider contains methods that are overridable.

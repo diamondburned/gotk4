@@ -22,15 +22,15 @@ import (
 // extern gboolean _gotk4_gtk3_Overlay_ConnectGetChildPosition(gpointer, GtkWidget*, GdkRectangle*, guintptr);
 import "C"
 
-// GTypeOverlay returns the GType for the type Overlay.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeOverlay() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_overlay_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalOverlay)
-	return gtype
+// GType values.
+var (
+	GTypeOverlay = coreglib.Type(C.gtk_overlay_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeOverlay, F: marshalOverlay},
+	})
 }
 
 // OverlayOverrider contains methods that are overridable.

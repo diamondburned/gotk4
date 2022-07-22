@@ -16,15 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// GTypeTimeZone returns the GType for the type TimeZone.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTimeZone() coreglib.Type {
-	gtype := coreglib.Type(C.g_time_zone_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTimeZone)
-	return gtype
+// GType values.
+var (
+	GTypeTimeZone = coreglib.Type(C.g_time_zone_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTimeZone, F: marshalTimeZone},
+	})
 }
 
 // TimeType disambiguates a given time in two ways.

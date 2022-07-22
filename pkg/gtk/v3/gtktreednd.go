@@ -22,26 +22,17 @@ import (
 // extern gboolean _gotk4_gtk3_TreeDragSourceIface_row_draggable(GtkTreeDragSource*, GtkTreePath*);
 import "C"
 
-// GTypeTreeDragDest returns the GType for the type TreeDragDest.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeDragDest() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_drag_dest_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeDragDest)
-	return gtype
-}
+// GType values.
+var (
+	GTypeTreeDragDest   = coreglib.Type(C.gtk_tree_drag_dest_get_type())
+	GTypeTreeDragSource = coreglib.Type(C.gtk_tree_drag_source_get_type())
+)
 
-// GTypeTreeDragSource returns the GType for the type TreeDragSource.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeTreeDragSource() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_tree_drag_source_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalTreeDragSource)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeTreeDragDest, F: marshalTreeDragDest},
+		coreglib.TypeMarshaler{T: GTypeTreeDragSource, F: marshalTreeDragSource},
+	})
 }
 
 // TreeGetRowDragData obtains a tree_model and path from selection data of

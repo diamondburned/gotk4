@@ -20,26 +20,17 @@ import (
 // extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 import "C"
 
-// GTypeFontset returns the GType for the type Fontset.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontset() coreglib.Type {
-	gtype := coreglib.Type(C.pango_fontset_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontset)
-	return gtype
-}
+// GType values.
+var (
+	GTypeFontset       = coreglib.Type(C.pango_fontset_get_type())
+	GTypeFontsetSimple = coreglib.Type(C.pango_fontset_simple_get_type())
+)
 
-// GTypeFontsetSimple returns the GType for the type FontsetSimple.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeFontsetSimple() coreglib.Type {
-	gtype := coreglib.Type(C.pango_fontset_simple_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalFontsetSimple)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeFontset, F: marshalFontset},
+		coreglib.TypeMarshaler{T: GTypeFontsetSimple, F: marshalFontsetSimple},
+	})
 }
 
 // FontsetForEachFunc: callback used by pango_fontset_foreach() when enumerating

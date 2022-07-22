@@ -20,15 +20,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// GTypeAsyncInitable returns the GType for the type AsyncInitable.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeAsyncInitable() coreglib.Type {
-	gtype := coreglib.Type(C.g_async_initable_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalAsyncInitable)
-	return gtype
+// GType values.
+var (
+	GTypeAsyncInitable = coreglib.Type(C.g_async_initable_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeAsyncInitable, F: marshalAsyncInitable},
+	})
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the

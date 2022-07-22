@@ -24,26 +24,17 @@ import (
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateSize(gpointer, guintptr);
 import "C"
 
-// GTypePaintableFlags returns the GType for the type PaintableFlags.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePaintableFlags() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_paintable_flags_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPaintableFlags)
-	return gtype
-}
+// GType values.
+var (
+	GTypePaintableFlags = coreglib.Type(C.gdk_paintable_flags_get_type())
+	GTypePaintable      = coreglib.Type(C.gdk_paintable_get_type())
+)
 
-// GTypePaintable returns the GType for the type Paintable.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypePaintable() coreglib.Type {
-	gtype := coreglib.Type(C.gdk_paintable_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalPaintable)
-	return gtype
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypePaintableFlags, F: marshalPaintableFlags},
+		coreglib.TypeMarshaler{T: GTypePaintable, F: marshalPaintable},
+	})
 }
 
 // PaintableFlags flags about a paintable object.

@@ -28,15 +28,15 @@ import (
 // extern void _gotk4_gtk4_Text_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
-// GTypeText returns the GType for the type Text.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeText() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_text_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalText)
-	return gtype
+// GType values.
+var (
+	GTypeText = coreglib.Type(C.gtk_text_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeText, F: marshalText},
+	})
 }
 
 // Text: GtkText widget is a single-line text entry widget.

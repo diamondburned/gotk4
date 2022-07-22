@@ -17,15 +17,15 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// GTypeSeparatorToolItem returns the GType for the type SeparatorToolItem.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeSeparatorToolItem() coreglib.Type {
-	gtype := coreglib.Type(C.gtk_separator_tool_item_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalSeparatorToolItem)
-	return gtype
+// GType values.
+var (
+	GTypeSeparatorToolItem = coreglib.Type(C.gtk_separator_tool_item_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSeparatorToolItem, F: marshalSeparatorToolItem},
+	})
 }
 
 // SeparatorToolItemOverrider contains methods that are overridable.

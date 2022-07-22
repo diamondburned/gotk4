@@ -18,15 +18,15 @@ import (
 // extern void _gotk4_gio2_ActionMapInterface_remove_action(GActionMap*, gchar*);
 import "C"
 
-// GTypeActionMap returns the GType for the type ActionMap.
-//
-// This function has the side effect of registering a GValue marshaler
-// globally. Use this if you need that for any reason. The function is
-// concurrently safe to use.
-func GTypeActionMap() coreglib.Type {
-	gtype := coreglib.Type(C.g_action_map_get_type())
-	coreglib.RegisterGValueMarshaler(gtype, marshalActionMap)
-	return gtype
+// GType values.
+var (
+	GTypeActionMap = coreglib.Type(C.g_action_map_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeActionMap, F: marshalActionMap},
+	})
 }
 
 // ActionMapOverrider contains methods that are overridable.

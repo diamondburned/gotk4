@@ -39,3 +39,7 @@ For contributing guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 [MPLv2]: https://www.mozilla.org/en-US/MPL/
 [MIT]: https://opensource.org/licenses/MIT
 [gotk3]: https://github.com/gotk3/gotk3
+
+Some small snippets of code were taken from
+[tinyzimmer's go-glib](https://github.com/tinyzimmer/go-glib), which implements
+type subclassing.

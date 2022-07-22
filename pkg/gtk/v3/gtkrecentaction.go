@@ -54,9 +54,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRecentAction,
-		GoType:    reflect.TypeOf((*RecentAction)(nil)),
-		InitClass: initClassRecentAction,
+		GType:         GTypeRecentAction,
+		GoType:        reflect.TypeOf((*RecentAction)(nil)),
+		InitClass:     initClassRecentAction,
+		FinalizeClass: finalizeClassRecentAction,
 	})
 }
 
@@ -64,6 +65,13 @@ func initClassRecentAction(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRecentAction(*RecentActionClass) }); ok {
 		klass := (*RecentActionClass)(gextras.NewStructNative(gclass))
 		goval.InitRecentAction(klass)
+	}
+}
+
+func finalizeClassRecentAction(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRecentAction(*RecentActionClass) }); ok {
+		klass := (*RecentActionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRecentAction(klass)
 	}
 }
 
@@ -262,7 +270,7 @@ type recentActionClass struct {
 
 func (r *RecentActionClass) ParentClass() *ActionClass {
 	valptr := &r.native.parent_class
-	var v *ActionClass // out
-	v = (*ActionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ActionClass // out
+	_v = (*ActionClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

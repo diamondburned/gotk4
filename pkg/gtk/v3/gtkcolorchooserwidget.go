@@ -68,9 +68,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeColorChooserWidget,
-		GoType:    reflect.TypeOf((*ColorChooserWidget)(nil)),
-		InitClass: initClassColorChooserWidget,
+		GType:         GTypeColorChooserWidget,
+		GoType:        reflect.TypeOf((*ColorChooserWidget)(nil)),
+		InitClass:     initClassColorChooserWidget,
+		FinalizeClass: finalizeClassColorChooserWidget,
 	})
 }
 
@@ -80,6 +81,15 @@ func initClassColorChooserWidget(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ColorChooserWidgetClass)(gextras.NewStructNative(gclass))
 		goval.InitColorChooserWidget(klass)
+	}
+}
+
+func finalizeClassColorChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeColorChooserWidget(*ColorChooserWidgetClass)
+	}); ok {
+		klass := (*ColorChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeColorChooserWidget(klass)
 	}
 }
 
@@ -147,7 +157,7 @@ type colorChooserWidgetClass struct {
 // ParentClass: parent class.
 func (c *ColorChooserWidgetClass) ParentClass() *BoxClass {
 	valptr := &c.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

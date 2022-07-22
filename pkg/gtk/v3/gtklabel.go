@@ -86,9 +86,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLabel,
-		GoType:    reflect.TypeOf((*Label)(nil)),
-		InitClass: initClassLabel,
+		GType:         GTypeLabel,
+		GoType:        reflect.TypeOf((*Label)(nil)),
+		InitClass:     initClassLabel,
+		FinalizeClass: finalizeClassLabel,
 	})
 }
 
@@ -116,6 +117,13 @@ func initClassLabel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitLabel(*LabelClass) }); ok {
 		klass := (*LabelClass)(gextras.NewStructNative(gclass))
 		goval.InitLabel(klass)
+	}
+}
+
+func finalizeClassLabel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeLabel(*LabelClass) }); ok {
+		klass := (*LabelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLabel(klass)
 	}
 }
 
@@ -1620,7 +1628,7 @@ type labelClass struct {
 
 func (l *LabelClass) ParentClass() *MiscClass {
 	valptr := &l.native.parent_class
-	var v *MiscClass // out
-	v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MiscClass // out
+	_v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

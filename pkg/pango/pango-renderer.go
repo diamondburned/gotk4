@@ -242,9 +242,10 @@ var _ Rendererer = (*Renderer)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRenderer,
-		GoType:    reflect.TypeOf((*Renderer)(nil)),
-		InitClass: initClassRenderer,
+		GType:         GTypeRenderer,
+		GoType:        reflect.TypeOf((*Renderer)(nil)),
+		InitClass:     initClassRenderer,
+		FinalizeClass: finalizeClassRenderer,
 	})
 }
 
@@ -310,6 +311,13 @@ func initClassRenderer(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRenderer(*RendererClass) }); ok {
 		klass := (*RendererClass)(gextras.NewStructNative(gclass))
 		goval.InitRenderer(klass)
+	}
+}
+
+func finalizeClassRenderer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRenderer(*RendererClass) }); ok {
+		klass := (*RendererClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRenderer(klass)
 	}
 }
 

@@ -69,9 +69,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCheckMenuItem,
-		GoType:    reflect.TypeOf((*CheckMenuItem)(nil)),
-		InitClass: initClassCheckMenuItem,
+		GType:         GTypeCheckMenuItem,
+		GoType:        reflect.TypeOf((*CheckMenuItem)(nil)),
+		InitClass:     initClassCheckMenuItem,
+		FinalizeClass: finalizeClassCheckMenuItem,
 	})
 }
 
@@ -89,6 +90,13 @@ func initClassCheckMenuItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCheckMenuItem(*CheckMenuItemClass) }); ok {
 		klass := (*CheckMenuItemClass)(gextras.NewStructNative(gclass))
 		goval.InitCheckMenuItem(klass)
+	}
+}
+
+func finalizeClassCheckMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCheckMenuItem(*CheckMenuItemClass) }); ok {
+		klass := (*CheckMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCheckMenuItem(klass)
 	}
 }
 
@@ -424,7 +432,7 @@ type checkMenuItemClass struct {
 // ParentClass: parent class.
 func (c *CheckMenuItemClass) ParentClass() *MenuItemClass {
 	valptr := &c.native.parent_class
-	var v *MenuItemClass // out
-	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuItemClass // out
+	_v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

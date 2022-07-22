@@ -1239,9 +1239,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeListBoxRow,
-		GoType:    reflect.TypeOf((*ListBoxRow)(nil)),
-		InitClass: initClassListBoxRow,
+		GType:         GTypeListBoxRow,
+		GoType:        reflect.TypeOf((*ListBoxRow)(nil)),
+		InitClass:     initClassListBoxRow,
+		FinalizeClass: finalizeClassListBoxRow,
 	})
 }
 
@@ -1255,6 +1256,13 @@ func initClassListBoxRow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitListBoxRow(*ListBoxRowClass) }); ok {
 		klass := (*ListBoxRowClass)(gextras.NewStructNative(gclass))
 		goval.InitListBoxRow(klass)
+	}
+}
+
+func finalizeClassListBoxRow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeListBoxRow(*ListBoxRowClass) }); ok {
+		klass := (*ListBoxRowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeListBoxRow(klass)
 	}
 }
 
@@ -1645,7 +1653,7 @@ type listBoxRowClass struct {
 // ParentClass: parent class.
 func (l *ListBoxRowClass) ParentClass() *WidgetClass {
 	valptr := &l.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

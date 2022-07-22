@@ -51,9 +51,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeInvisible,
-		GoType:    reflect.TypeOf((*Invisible)(nil)),
-		InitClass: initClassInvisible,
+		GType:         GTypeInvisible,
+		GoType:        reflect.TypeOf((*Invisible)(nil)),
+		InitClass:     initClassInvisible,
+		FinalizeClass: finalizeClassInvisible,
 	})
 }
 
@@ -61,6 +62,13 @@ func initClassInvisible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitInvisible(*InvisibleClass) }); ok {
 		klass := (*InvisibleClass)(gextras.NewStructNative(gclass))
 		goval.InitInvisible(klass)
+	}
+}
+
+func finalizeClassInvisible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeInvisible(*InvisibleClass) }); ok {
+		klass := (*InvisibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeInvisible(klass)
 	}
 }
 
@@ -186,7 +194,7 @@ type invisibleClass struct {
 
 func (i *InvisibleClass) ParentClass() *WidgetClass {
 	valptr := &i.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

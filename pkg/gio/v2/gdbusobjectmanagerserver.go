@@ -64,9 +64,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDBusObjectManagerServer,
-		GoType:    reflect.TypeOf((*DBusObjectManagerServer)(nil)),
-		InitClass: initClassDBusObjectManagerServer,
+		GType:         GTypeDBusObjectManagerServer,
+		GoType:        reflect.TypeOf((*DBusObjectManagerServer)(nil)),
+		InitClass:     initClassDBusObjectManagerServer,
+		FinalizeClass: finalizeClassDBusObjectManagerServer,
 	})
 }
 
@@ -76,6 +77,15 @@ func initClassDBusObjectManagerServer(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*DBusObjectManagerServerClass)(gextras.NewStructNative(gclass))
 		goval.InitDBusObjectManagerServer(klass)
+	}
+}
+
+func finalizeClassDBusObjectManagerServer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeDBusObjectManagerServer(*DBusObjectManagerServerClass)
+	}); ok {
+		klass := (*DBusObjectManagerServerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDBusObjectManagerServer(klass)
 	}
 }
 

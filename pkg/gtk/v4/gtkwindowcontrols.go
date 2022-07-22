@@ -90,9 +90,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeWindowControls,
-		GoType:    reflect.TypeOf((*WindowControls)(nil)),
-		InitClass: initClassWindowControls,
+		GType:         GTypeWindowControls,
+		GoType:        reflect.TypeOf((*WindowControls)(nil)),
+		InitClass:     initClassWindowControls,
+		FinalizeClass: finalizeClassWindowControls,
 	})
 }
 
@@ -100,6 +101,13 @@ func initClassWindowControls(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitWindowControls(*WindowControlsClass) }); ok {
 		klass := (*WindowControlsClass)(gextras.NewStructNative(gclass))
 		goval.InitWindowControls(klass)
+	}
+}
+
+func finalizeClassWindowControls(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeWindowControls(*WindowControlsClass) }); ok {
+		klass := (*WindowControlsClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeWindowControls(klass)
 	}
 }
 
@@ -290,7 +298,7 @@ type windowControlsClass struct {
 
 func (w *WindowControlsClass) ParentClass() *WidgetClass {
 	valptr := &w.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

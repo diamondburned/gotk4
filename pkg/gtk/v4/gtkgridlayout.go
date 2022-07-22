@@ -58,9 +58,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeGridLayout,
-		GoType:    reflect.TypeOf((*GridLayout)(nil)),
-		InitClass: initClassGridLayout,
+		GType:         GTypeGridLayout,
+		GoType:        reflect.TypeOf((*GridLayout)(nil)),
+		InitClass:     initClassGridLayout,
+		FinalizeClass: finalizeClassGridLayout,
 	})
 }
 
@@ -68,6 +69,13 @@ func initClassGridLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitGridLayout(*GridLayoutClass) }); ok {
 		klass := (*GridLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitGridLayout(klass)
+	}
+}
+
+func finalizeClassGridLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeGridLayout(*GridLayoutClass) }); ok {
+		klass := (*GridLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeGridLayout(klass)
 	}
 }
 
@@ -388,9 +396,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeGridLayoutChild,
-		GoType:    reflect.TypeOf((*GridLayoutChild)(nil)),
-		InitClass: initClassGridLayoutChild,
+		GType:         GTypeGridLayoutChild,
+		GoType:        reflect.TypeOf((*GridLayoutChild)(nil)),
+		InitClass:     initClassGridLayoutChild,
+		FinalizeClass: finalizeClassGridLayoutChild,
 	})
 }
 
@@ -398,6 +407,13 @@ func initClassGridLayoutChild(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitGridLayoutChild(*GridLayoutChildClass) }); ok {
 		klass := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
 		goval.InitGridLayoutChild(klass)
+	}
+}
+
+func finalizeClassGridLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeGridLayoutChild(*GridLayoutChildClass) }); ok {
+		klass := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeGridLayoutChild(klass)
 	}
 }
 
@@ -585,9 +601,9 @@ type gridLayoutChildClass struct {
 
 func (g *GridLayoutChildClass) ParentClass() *LayoutChildClass {
 	valptr := &g.native.parent_class
-	var v *LayoutChildClass // out
-	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutChildClass // out
+	_v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // GridLayoutClass: instance of this type is always passed by reference.
@@ -602,7 +618,7 @@ type gridLayoutClass struct {
 
 func (g *GridLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &g.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

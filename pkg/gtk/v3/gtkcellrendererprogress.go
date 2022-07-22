@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellRendererProgress,
-		GoType:    reflect.TypeOf((*CellRendererProgress)(nil)),
-		InitClass: initClassCellRendererProgress,
+		GType:         GTypeCellRendererProgress,
+		GoType:        reflect.TypeOf((*CellRendererProgress)(nil)),
+		InitClass:     initClassCellRendererProgress,
+		FinalizeClass: finalizeClassCellRendererProgress,
 	})
 }
 
@@ -61,6 +62,15 @@ func initClassCellRendererProgress(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*CellRendererProgressClass)(gextras.NewStructNative(gclass))
 		goval.InitCellRendererProgress(klass)
+	}
+}
+
+func finalizeClassCellRendererProgress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeCellRendererProgress(*CellRendererProgressClass)
+	}); ok {
+		klass := (*CellRendererProgressClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellRendererProgress(klass)
 	}
 }
 
@@ -112,7 +122,7 @@ type cellRendererProgressClass struct {
 
 func (c *CellRendererProgressClass) ParentClass() *CellRendererClass {
 	valptr := &c.native.parent_class
-	var v *CellRendererClass // out
-	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *CellRendererClass // out
+	_v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

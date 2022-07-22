@@ -57,9 +57,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSpinner,
-		GoType:    reflect.TypeOf((*Spinner)(nil)),
-		InitClass: initClassSpinner,
+		GType:         GTypeSpinner,
+		GoType:        reflect.TypeOf((*Spinner)(nil)),
+		InitClass:     initClassSpinner,
+		FinalizeClass: finalizeClassSpinner,
 	})
 }
 
@@ -67,6 +68,13 @@ func initClassSpinner(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSpinner(*SpinnerClass) }); ok {
 		klass := (*SpinnerClass)(gextras.NewStructNative(gclass))
 		goval.InitSpinner(klass)
+	}
+}
+
+func finalizeClassSpinner(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSpinner(*SpinnerClass) }); ok {
+		klass := (*SpinnerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSpinner(klass)
 	}
 }
 
@@ -141,7 +149,7 @@ type spinnerClass struct {
 
 func (s *SpinnerClass) ParentClass() *WidgetClass {
 	valptr := &s.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

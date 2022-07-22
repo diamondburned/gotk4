@@ -73,9 +73,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSwitch,
-		GoType:    reflect.TypeOf((*Switch)(nil)),
-		InitClass: initClassSwitch,
+		GType:         GTypeSwitch,
+		GoType:        reflect.TypeOf((*Switch)(nil)),
+		InitClass:     initClassSwitch,
+		FinalizeClass: finalizeClassSwitch,
 	})
 }
 
@@ -93,6 +94,13 @@ func initClassSwitch(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSwitch(*SwitchClass) }); ok {
 		klass := (*SwitchClass)(gextras.NewStructNative(gclass))
 		goval.InitSwitch(klass)
+	}
+}
+
+func finalizeClassSwitch(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSwitch(*SwitchClass) }); ok {
+		klass := (*SwitchClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSwitch(klass)
 	}
 }
 
@@ -355,7 +363,7 @@ type switchClass struct {
 // ParentClass: parent class.
 func (s *SwitchClass) ParentClass() *WidgetClass {
 	valptr := &s.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

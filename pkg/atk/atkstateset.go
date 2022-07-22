@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStateSet,
-		GoType:    reflect.TypeOf((*StateSet)(nil)),
-		InitClass: initClassStateSet,
+		GType:         GTypeStateSet,
+		GoType:        reflect.TypeOf((*StateSet)(nil)),
+		InitClass:     initClassStateSet,
+		FinalizeClass: finalizeClassStateSet,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassStateSet(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStateSet(*StateSetClass) }); ok {
 		klass := (*StateSetClass)(gextras.NewStructNative(gclass))
 		goval.InitStateSet(klass)
+	}
+}
+
+func finalizeClassStateSet(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStateSet(*StateSetClass) }); ok {
+		klass := (*StateSetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStateSet(klass)
 	}
 }
 

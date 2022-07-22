@@ -56,9 +56,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVideo,
-		GoType:    reflect.TypeOf((*Video)(nil)),
-		InitClass: initClassVideo,
+		GType:         GTypeVideo,
+		GoType:        reflect.TypeOf((*Video)(nil)),
+		InitClass:     initClassVideo,
+		FinalizeClass: finalizeClassVideo,
 	})
 }
 
@@ -66,6 +67,13 @@ func initClassVideo(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVideo(*VideoClass) }); ok {
 		klass := (*VideoClass)(gextras.NewStructNative(gclass))
 		goval.InitVideo(klass)
+	}
+}
+
+func finalizeClassVideo(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVideo(*VideoClass) }); ok {
+		klass := (*VideoClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVideo(klass)
 	}
 }
 
@@ -489,7 +497,7 @@ type videoClass struct {
 
 func (v *VideoClass) ParentClass() *WidgetClass {
 	valptr := &v.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

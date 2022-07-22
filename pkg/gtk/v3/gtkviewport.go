@@ -68,9 +68,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeViewport,
-		GoType:    reflect.TypeOf((*Viewport)(nil)),
-		InitClass: initClassViewport,
+		GType:         GTypeViewport,
+		GoType:        reflect.TypeOf((*Viewport)(nil)),
+		InitClass:     initClassViewport,
+		FinalizeClass: finalizeClassViewport,
 	})
 }
 
@@ -78,6 +79,13 @@ func initClassViewport(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitViewport(*ViewportClass) }); ok {
 		klass := (*ViewportClass)(gextras.NewStructNative(gclass))
 		goval.InitViewport(klass)
+	}
+}
+
+func finalizeClassViewport(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeViewport(*ViewportClass) }); ok {
+		klass := (*ViewportClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeViewport(klass)
 	}
 }
 
@@ -367,7 +375,7 @@ type viewportClass struct {
 // ParentClass: parent class.
 func (v *ViewportClass) ParentClass() *BinClass {
 	valptr := &v.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

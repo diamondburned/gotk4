@@ -48,9 +48,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBinLayout,
-		GoType:    reflect.TypeOf((*BinLayout)(nil)),
-		InitClass: initClassBinLayout,
+		GType:         GTypeBinLayout,
+		GoType:        reflect.TypeOf((*BinLayout)(nil)),
+		InitClass:     initClassBinLayout,
+		FinalizeClass: finalizeClassBinLayout,
 	})
 }
 
@@ -58,6 +59,13 @@ func initClassBinLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBinLayout(*BinLayoutClass) }); ok {
 		klass := (*BinLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitBinLayout(klass)
+	}
+}
+
+func finalizeClassBinLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBinLayout(*BinLayoutClass) }); ok {
+		klass := (*BinLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBinLayout(klass)
 	}
 }
 
@@ -103,7 +111,7 @@ type binLayoutClass struct {
 
 func (b *BinLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &b.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

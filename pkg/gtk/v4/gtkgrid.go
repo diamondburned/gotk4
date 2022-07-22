@@ -129,9 +129,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeGrid,
-		GoType:    reflect.TypeOf((*Grid)(nil)),
-		InitClass: initClassGrid,
+		GType:         GTypeGrid,
+		GoType:        reflect.TypeOf((*Grid)(nil)),
+		InitClass:     initClassGrid,
+		FinalizeClass: finalizeClassGrid,
 	})
 }
 
@@ -139,6 +140,13 @@ func initClassGrid(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitGrid(*GridClass) }); ok {
 		klass := (*GridClass)(gextras.NewStructNative(gclass))
 		goval.InitGrid(klass)
+	}
+}
+
+func finalizeClassGrid(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeGrid(*GridClass) }); ok {
+		klass := (*GridClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeGrid(klass)
 	}
 }
 
@@ -776,7 +784,7 @@ type gridClass struct {
 // ParentClass: parent class.
 func (g *GridClass) ParentClass() *WidgetClass {
 	valptr := &g.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -128,9 +128,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeInfoBar,
-		GoType:    reflect.TypeOf((*InfoBar)(nil)),
-		InitClass: initClassInfoBar,
+		GType:         GTypeInfoBar,
+		GoType:        reflect.TypeOf((*InfoBar)(nil)),
+		InitClass:     initClassInfoBar,
+		FinalizeClass: finalizeClassInfoBar,
 	})
 }
 
@@ -148,6 +149,13 @@ func initClassInfoBar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitInfoBar(*InfoBarClass) }); ok {
 		klass := (*InfoBarClass)(gextras.NewStructNative(gclass))
 		goval.InitInfoBar(klass)
+	}
+}
+
+func finalizeClassInfoBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeInfoBar(*InfoBarClass) }); ok {
+		klass := (*InfoBarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeInfoBar(klass)
 	}
 }
 
@@ -588,7 +596,7 @@ type infoBarClass struct {
 
 func (i *InfoBarClass) ParentClass() *BoxClass {
 	valptr := &i.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

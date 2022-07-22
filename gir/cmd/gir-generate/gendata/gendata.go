@@ -385,6 +385,9 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.GdkPixbufAnimationClass"),
 	AbsoluteFilter("C.GdkPixbufAnimationIterClass"),
 
+	// Missing.
+	AbsoluteFilter("Gtk-3.HeaderBarAccessibleClass"),
+
 	// Already handled in GLibAliases.
 	AbsoluteFilter("C.g_source_remove"),
 }

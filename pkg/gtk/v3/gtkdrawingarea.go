@@ -120,9 +120,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDrawingArea,
-		GoType:    reflect.TypeOf((*DrawingArea)(nil)),
-		InitClass: initClassDrawingArea,
+		GType:         GTypeDrawingArea,
+		GoType:        reflect.TypeOf((*DrawingArea)(nil)),
+		InitClass:     initClassDrawingArea,
+		FinalizeClass: finalizeClassDrawingArea,
 	})
 }
 
@@ -130,6 +131,13 @@ func initClassDrawingArea(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitDrawingArea(*DrawingAreaClass) }); ok {
 		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
 		goval.InitDrawingArea(klass)
+	}
+}
+
+func finalizeClassDrawingArea(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeDrawingArea(*DrawingAreaClass) }); ok {
+		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDrawingArea(klass)
 	}
 }
 
@@ -184,7 +192,7 @@ type drawingAreaClass struct {
 
 func (d *DrawingAreaClass) ParentClass() *WidgetClass {
 	valptr := &d.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

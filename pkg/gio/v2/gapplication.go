@@ -244,9 +244,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeApplication,
-		GoType:    reflect.TypeOf((*Application)(nil)),
-		InitClass: initClassApplication,
+		GType:         GTypeApplication,
+		GoType:        reflect.TypeOf((*Application)(nil)),
+		InitClass:     initClassApplication,
+		FinalizeClass: finalizeClassApplication,
 	})
 }
 
@@ -328,6 +329,13 @@ func initClassApplication(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitApplication(*ApplicationClass) }); ok {
 		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
 		goval.InitApplication(klass)
+	}
+}
+
+func finalizeClassApplication(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeApplication(*ApplicationClass) }); ok {
+		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeApplication(klass)
 	}
 }
 

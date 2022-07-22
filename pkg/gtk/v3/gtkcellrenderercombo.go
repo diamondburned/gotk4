@@ -56,9 +56,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellRendererCombo,
-		GoType:    reflect.TypeOf((*CellRendererCombo)(nil)),
-		InitClass: initClassCellRendererCombo,
+		GType:         GTypeCellRendererCombo,
+		GoType:        reflect.TypeOf((*CellRendererCombo)(nil)),
+		InitClass:     initClassCellRendererCombo,
+		FinalizeClass: finalizeClassCellRendererCombo,
 	})
 }
 
@@ -66,6 +67,13 @@ func initClassCellRendererCombo(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellRendererCombo(*CellRendererComboClass) }); ok {
 		klass := (*CellRendererComboClass)(gextras.NewStructNative(gclass))
 		goval.InitCellRendererCombo(klass)
+	}
+}
+
+func finalizeClassCellRendererCombo(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellRendererCombo(*CellRendererComboClass) }); ok {
+		klass := (*CellRendererComboClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellRendererCombo(klass)
 	}
 }
 
@@ -157,7 +165,7 @@ type cellRendererComboClass struct {
 
 func (c *CellRendererComboClass) Parent() *CellRendererTextClass {
 	valptr := &c.native.parent
-	var v *CellRendererTextClass // out
-	v = (*CellRendererTextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *CellRendererTextClass // out
+	_v = (*CellRendererTextClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

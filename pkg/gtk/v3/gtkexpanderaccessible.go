@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeExpanderAccessible,
-		GoType:    reflect.TypeOf((*ExpanderAccessible)(nil)),
-		InitClass: initClassExpanderAccessible,
+		GType:         GTypeExpanderAccessible,
+		GoType:        reflect.TypeOf((*ExpanderAccessible)(nil)),
+		InitClass:     initClassExpanderAccessible,
+		FinalizeClass: finalizeClassExpanderAccessible,
 	})
 }
 
@@ -58,6 +59,15 @@ func initClassExpanderAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ExpanderAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitExpanderAccessible(klass)
+	}
+}
+
+func finalizeClassExpanderAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeExpanderAccessible(*ExpanderAccessibleClass)
+	}); ok {
+		klass := (*ExpanderAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeExpanderAccessible(klass)
 	}
 }
 
@@ -97,7 +107,7 @@ type expanderAccessibleClass struct {
 
 func (e *ExpanderAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &e.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

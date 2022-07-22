@@ -70,9 +70,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeToolItem,
-		GoType:    reflect.TypeOf((*ToolItem)(nil)),
-		InitClass: initClassToolItem,
+		GType:         GTypeToolItem,
+		GoType:        reflect.TypeOf((*ToolItem)(nil)),
+		InitClass:     initClassToolItem,
+		FinalizeClass: finalizeClassToolItem,
 	})
 }
 
@@ -90,6 +91,13 @@ func initClassToolItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitToolItem(*ToolItemClass) }); ok {
 		klass := (*ToolItemClass)(gextras.NewStructNative(gclass))
 		goval.InitToolItem(klass)
+	}
+}
+
+func finalizeClassToolItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeToolItem(*ToolItemClass) }); ok {
+		klass := (*ToolItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeToolItem(klass)
 	}
 }
 
@@ -934,7 +942,7 @@ type toolItemClass struct {
 // ParentClass: parent class.
 func (t *ToolItemClass) ParentClass() *BinClass {
 	valptr := &t.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTextViewAccessible,
-		GoType:    reflect.TypeOf((*TextViewAccessible)(nil)),
-		InitClass: initClassTextViewAccessible,
+		GType:         GTypeTextViewAccessible,
+		GoType:        reflect.TypeOf((*TextViewAccessible)(nil)),
+		InitClass:     initClassTextViewAccessible,
+		FinalizeClass: finalizeClassTextViewAccessible,
 	})
 }
 
@@ -61,6 +62,15 @@ func initClassTextViewAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*TextViewAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitTextViewAccessible(klass)
+	}
+}
+
+func finalizeClassTextViewAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeTextViewAccessible(*TextViewAccessibleClass)
+	}); ok {
+		klass := (*TextViewAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTextViewAccessible(klass)
 	}
 }
 
@@ -107,7 +117,7 @@ type textViewAccessibleClass struct {
 
 func (t *TextViewAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &t.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

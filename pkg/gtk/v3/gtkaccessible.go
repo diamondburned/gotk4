@@ -64,9 +64,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAccessible,
-		GoType:    reflect.TypeOf((*Accessible)(nil)),
-		InitClass: initClassAccessible,
+		GType:         GTypeAccessible,
+		GoType:        reflect.TypeOf((*Accessible)(nil)),
+		InitClass:     initClassAccessible,
+		FinalizeClass: finalizeClassAccessible,
 	})
 }
 
@@ -88,6 +89,13 @@ func initClassAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAccessible(*AccessibleClass) }); ok {
 		klass := (*AccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitAccessible(klass)
+	}
+}
+
+func finalizeClassAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAccessible(*AccessibleClass) }); ok {
+		klass := (*AccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAccessible(klass)
 	}
 }
 
@@ -215,7 +223,7 @@ type accessibleClass struct {
 
 func (a *AccessibleClass) ParentClass() *atk.ObjectClass {
 	valptr := &a.native.parent_class
-	var v *atk.ObjectClass // out
-	v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *atk.ObjectClass // out
+	_v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

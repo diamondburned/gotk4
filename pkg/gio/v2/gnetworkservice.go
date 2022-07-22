@@ -51,9 +51,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNetworkService,
-		GoType:    reflect.TypeOf((*NetworkService)(nil)),
-		InitClass: initClassNetworkService,
+		GType:         GTypeNetworkService,
+		GoType:        reflect.TypeOf((*NetworkService)(nil)),
+		InitClass:     initClassNetworkService,
+		FinalizeClass: finalizeClassNetworkService,
 	})
 }
 
@@ -61,6 +62,13 @@ func initClassNetworkService(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNetworkService(*NetworkServiceClass) }); ok {
 		klass := (*NetworkServiceClass)(gextras.NewStructNative(gclass))
 		goval.InitNetworkService(klass)
+	}
+}
+
+func finalizeClassNetworkService(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNetworkService(*NetworkServiceClass) }); ok {
+		klass := (*NetworkServiceClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNetworkService(klass)
 	}
 }
 

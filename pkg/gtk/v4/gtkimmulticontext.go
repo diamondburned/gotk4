@@ -48,9 +48,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeIMMulticontext,
-		GoType:    reflect.TypeOf((*IMMulticontext)(nil)),
-		InitClass: initClassIMMulticontext,
+		GType:         GTypeIMMulticontext,
+		GoType:        reflect.TypeOf((*IMMulticontext)(nil)),
+		InitClass:     initClassIMMulticontext,
+		FinalizeClass: finalizeClassIMMulticontext,
 	})
 }
 
@@ -58,6 +59,13 @@ func initClassIMMulticontext(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitIMMulticontext(*IMMulticontextClass) }); ok {
 		klass := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
 		goval.InitIMMulticontext(klass)
+	}
+}
+
+func finalizeClassIMMulticontext(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeIMMulticontext(*IMMulticontextClass) }); ok {
+		klass := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeIMMulticontext(klass)
 	}
 }
 
@@ -147,7 +155,7 @@ type imMulticontextClass struct {
 
 func (i *IMMulticontextClass) ParentClass() *IMContextClass {
 	valptr := &i.native.parent_class
-	var v *IMContextClass // out
-	v = (*IMContextClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *IMContextClass // out
+	_v = (*IMContextClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

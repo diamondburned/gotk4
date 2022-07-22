@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHButtonBox,
-		GoType:    reflect.TypeOf((*HButtonBox)(nil)),
-		InitClass: initClassHButtonBox,
+		GType:         GTypeHButtonBox,
+		GoType:        reflect.TypeOf((*HButtonBox)(nil)),
+		InitClass:     initClassHButtonBox,
+		FinalizeClass: finalizeClassHButtonBox,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassHButtonBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHButtonBox(*HButtonBoxClass) }); ok {
 		klass := (*HButtonBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitHButtonBox(klass)
+	}
+}
+
+func finalizeClassHButtonBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHButtonBox(*HButtonBoxClass) }); ok {
+		klass := (*HButtonBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHButtonBox(klass)
 	}
 }
 
@@ -121,7 +129,7 @@ type hButtonBoxClass struct {
 
 func (h *HButtonBoxClass) ParentClass() *ButtonBoxClass {
 	valptr := &h.native.parent_class
-	var v *ButtonBoxClass // out
-	v = (*ButtonBoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ButtonBoxClass // out
+	_v = (*ButtonBoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

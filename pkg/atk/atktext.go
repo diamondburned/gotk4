@@ -2494,33 +2494,33 @@ func marshalTextRange(p uintptr) (interface{}, error) {
 // Bounds: rectangle giving the bounds of the text range.
 func (t *TextRange) Bounds() *TextRectangle {
 	valptr := &t.native.bounds
-	var v *TextRectangle // out
-	v = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *TextRectangle // out
+	_v = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // StartOffset: start offset of a AtkTextRange.
 func (t *TextRange) StartOffset() int {
 	valptr := &t.native.start_offset
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // EndOffset: end offset of a AtkTextRange.
 func (t *TextRange) EndOffset() int {
 	valptr := &t.native.end_offset
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Content: text in the text range.
 func (t *TextRange) Content() string {
 	valptr := &t.native.content
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // StartOffset: start offset of a AtkTextRange.
@@ -2573,33 +2573,33 @@ func NewTextRectangle(x, y, width, height int) TextRectangle {
 // X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) X() int {
 	valptr := &t.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Y: vertical coordinate of a rectangle.
 func (t *TextRectangle) Y() int {
 	valptr := &t.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Width: width of a rectangle.
 func (t *TextRectangle) Width() int {
 	valptr := &t.native.width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Height: height of a rectangle.
 func (t *TextRectangle) Height() int {
 	valptr := &t.native.height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // X: horizontal coordinate of a rectangle.

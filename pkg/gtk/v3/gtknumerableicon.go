@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNumerableIcon,
-		GoType:    reflect.TypeOf((*NumerableIcon)(nil)),
-		InitClass: initClassNumerableIcon,
+		GType:         GTypeNumerableIcon,
+		GoType:        reflect.TypeOf((*NumerableIcon)(nil)),
+		InitClass:     initClassNumerableIcon,
+		FinalizeClass: finalizeClassNumerableIcon,
 	})
 }
 
@@ -62,6 +63,13 @@ func initClassNumerableIcon(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNumerableIcon(*NumerableIconClass) }); ok {
 		klass := (*NumerableIconClass)(gextras.NewStructNative(gclass))
 		goval.InitNumerableIcon(klass)
+	}
+}
+
+func finalizeClassNumerableIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNumerableIcon(*NumerableIconClass) }); ok {
+		klass := (*NumerableIconClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNumerableIcon(klass)
 	}
 }
 
@@ -444,19 +452,19 @@ type numerableIconClass struct {
 
 func (n *NumerableIconClass) ParentClass() *gio.EmblemedIconClass {
 	valptr := &n.native.parent_class
-	var v *gio.EmblemedIconClass // out
-	v = (*gio.EmblemedIconClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gio.EmblemedIconClass // out
+	_v = (*gio.EmblemedIconClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (n *NumerableIconClass) Padding() [16]unsafe.Pointer {
 	valptr := &n.native.padding
-	var v [16]unsafe.Pointer // out
+	var _v [16]unsafe.Pointer // out
 	{
 		src := &*valptr
 		for i := 0; i < 16; i++ {
-			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
 	}
-	return v
+	return _v
 }

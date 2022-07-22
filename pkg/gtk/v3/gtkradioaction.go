@@ -51,9 +51,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRadioAction,
-		GoType:    reflect.TypeOf((*RadioAction)(nil)),
-		InitClass: initClassRadioAction,
+		GType:         GTypeRadioAction,
+		GoType:        reflect.TypeOf((*RadioAction)(nil)),
+		InitClass:     initClassRadioAction,
+		FinalizeClass: finalizeClassRadioAction,
 	})
 }
 
@@ -67,6 +68,13 @@ func initClassRadioAction(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRadioAction(*RadioActionClass) }); ok {
 		klass := (*RadioActionClass)(gextras.NewStructNative(gclass))
 		goval.InitRadioAction(klass)
+	}
+}
+
+func finalizeClassRadioAction(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRadioAction(*RadioActionClass) }); ok {
+		klass := (*RadioActionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRadioAction(klass)
 	}
 }
 
@@ -354,7 +362,7 @@ type radioActionClass struct {
 
 func (r *RadioActionClass) ParentClass() *ToggleActionClass {
 	valptr := &r.native.parent_class
-	var v *ToggleActionClass // out
-	v = (*ToggleActionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ToggleActionClass // out
+	_v = (*ToggleActionClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

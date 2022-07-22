@@ -78,9 +78,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCustomFilter,
-		GoType:    reflect.TypeOf((*CustomFilter)(nil)),
-		InitClass: initClassCustomFilter,
+		GType:         GTypeCustomFilter,
+		GoType:        reflect.TypeOf((*CustomFilter)(nil)),
+		InitClass:     initClassCustomFilter,
+		FinalizeClass: finalizeClassCustomFilter,
 	})
 }
 
@@ -88,6 +89,13 @@ func initClassCustomFilter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCustomFilter(*CustomFilterClass) }); ok {
 		klass := (*CustomFilterClass)(gextras.NewStructNative(gclass))
 		goval.InitCustomFilter(klass)
+	}
+}
+
+func finalizeClassCustomFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCustomFilter(*CustomFilterClass) }); ok {
+		klass := (*CustomFilterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCustomFilter(klass)
 	}
 }
 
@@ -184,7 +192,7 @@ type customFilterClass struct {
 
 func (c *CustomFilterClass) ParentClass() *FilterClass {
 	valptr := &c.native.parent_class
-	var v *FilterClass // out
-	v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *FilterClass // out
+	_v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

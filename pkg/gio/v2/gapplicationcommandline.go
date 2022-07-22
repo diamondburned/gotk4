@@ -138,9 +138,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeApplicationCommandLine,
-		GoType:    reflect.TypeOf((*ApplicationCommandLine)(nil)),
-		InitClass: initClassApplicationCommandLine,
+		GType:         GTypeApplicationCommandLine,
+		GoType:        reflect.TypeOf((*ApplicationCommandLine)(nil)),
+		InitClass:     initClassApplicationCommandLine,
+		FinalizeClass: finalizeClassApplicationCommandLine,
 	})
 }
 
@@ -164,6 +165,15 @@ func initClassApplicationCommandLine(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ApplicationCommandLineClass)(gextras.NewStructNative(gclass))
 		goval.InitApplicationCommandLine(klass)
+	}
+}
+
+func finalizeClassApplicationCommandLine(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeApplicationCommandLine(*ApplicationCommandLineClass)
+	}); ok {
+		klass := (*ApplicationCommandLineClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeApplicationCommandLine(klass)
 	}
 }
 

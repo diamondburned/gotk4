@@ -62,9 +62,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTLSPassword,
-		GoType:    reflect.TypeOf((*TLSPassword)(nil)),
-		InitClass: initClassTLSPassword,
+		GType:         GTypeTLSPassword,
+		GoType:        reflect.TypeOf((*TLSPassword)(nil)),
+		InitClass:     initClassTLSPassword,
+		FinalizeClass: finalizeClassTLSPassword,
 	})
 }
 
@@ -82,6 +83,13 @@ func initClassTLSPassword(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTLSPassword(*TLSPasswordClass) }); ok {
 		klass := (*TLSPasswordClass)(gextras.NewStructNative(gclass))
 		goval.InitTLSPassword(klass)
+	}
+}
+
+func finalizeClassTLSPassword(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTLSPassword(*TLSPasswordClass) }); ok {
+		klass := (*TLSPasswordClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTLSPassword(klass)
 	}
 }
 

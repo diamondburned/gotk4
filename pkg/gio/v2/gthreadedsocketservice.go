@@ -65,9 +65,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeThreadedSocketService,
-		GoType:    reflect.TypeOf((*ThreadedSocketService)(nil)),
-		InitClass: initClassThreadedSocketService,
+		GType:         GTypeThreadedSocketService,
+		GoType:        reflect.TypeOf((*ThreadedSocketService)(nil)),
+		InitClass:     initClassThreadedSocketService,
+		FinalizeClass: finalizeClassThreadedSocketService,
 	})
 }
 
@@ -85,6 +86,15 @@ func initClassThreadedSocketService(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ThreadedSocketServiceClass)(gextras.NewStructNative(gclass))
 		goval.InitThreadedSocketService(klass)
+	}
+}
+
+func finalizeClassThreadedSocketService(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeThreadedSocketService(*ThreadedSocketServiceClass)
+	}); ok {
+		klass := (*ThreadedSocketServiceClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeThreadedSocketService(klass)
 	}
 }
 
@@ -201,7 +211,7 @@ type threadedSocketServiceClass struct {
 
 func (t *ThreadedSocketServiceClass) ParentClass() *SocketServiceClass {
 	valptr := &t.native.parent_class
-	var v *SocketServiceClass // out
-	v = (*SocketServiceClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SocketServiceClass // out
+	_v = (*SocketServiceClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

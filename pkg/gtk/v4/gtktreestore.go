@@ -72,9 +72,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeStore,
-		GoType:    reflect.TypeOf((*TreeStore)(nil)),
-		InitClass: initClassTreeStore,
+		GType:         GTypeTreeStore,
+		GoType:        reflect.TypeOf((*TreeStore)(nil)),
+		InitClass:     initClassTreeStore,
+		FinalizeClass: finalizeClassTreeStore,
 	})
 }
 
@@ -82,6 +83,13 @@ func initClassTreeStore(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeStore(*TreeStoreClass) }); ok {
 		klass := (*TreeStoreClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeStore(klass)
+	}
+}
+
+func finalizeClassTreeStore(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeStore(*TreeStoreClass) }); ok {
+		klass := (*TreeStoreClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeStore(klass)
 	}
 }
 

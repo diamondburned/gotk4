@@ -43,9 +43,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeProxyAddress,
-		GoType:    reflect.TypeOf((*ProxyAddress)(nil)),
-		InitClass: initClassProxyAddress,
+		GType:         GTypeProxyAddress,
+		GoType:        reflect.TypeOf((*ProxyAddress)(nil)),
+		InitClass:     initClassProxyAddress,
+		FinalizeClass: finalizeClassProxyAddress,
 	})
 }
 
@@ -53,6 +54,13 @@ func initClassProxyAddress(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitProxyAddress(*ProxyAddressClass) }); ok {
 		klass := (*ProxyAddressClass)(gextras.NewStructNative(gclass))
 		goval.InitProxyAddress(klass)
+	}
+}
+
+func finalizeClassProxyAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeProxyAddress(*ProxyAddressClass) }); ok {
+		klass := (*ProxyAddressClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeProxyAddress(klass)
 	}
 }
 
@@ -315,7 +323,7 @@ type proxyAddressClass struct {
 
 func (p *ProxyAddressClass) ParentClass() *InetSocketAddressClass {
 	valptr := &p.native.parent_class
-	var v *InetSocketAddressClass // out
-	v = (*InetSocketAddressClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *InetSocketAddressClass // out
+	_v = (*InetSocketAddressClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

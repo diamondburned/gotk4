@@ -57,9 +57,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeShortcut,
-		GoType:    reflect.TypeOf((*Shortcut)(nil)),
-		InitClass: initClassShortcut,
+		GType:         GTypeShortcut,
+		GoType:        reflect.TypeOf((*Shortcut)(nil)),
+		InitClass:     initClassShortcut,
+		FinalizeClass: finalizeClassShortcut,
 	})
 }
 
@@ -67,6 +68,13 @@ func initClassShortcut(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitShortcut(*ShortcutClass) }); ok {
 		klass := (*ShortcutClass)(gextras.NewStructNative(gclass))
 		goval.InitShortcut(klass)
+	}
+}
+
+func finalizeClassShortcut(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeShortcut(*ShortcutClass) }); ok {
+		klass := (*ShortcutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeShortcut(klass)
 	}
 }
 

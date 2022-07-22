@@ -68,9 +68,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocketListener,
-		GoType:    reflect.TypeOf((*SocketListener)(nil)),
-		InitClass: initClassSocketListener,
+		GType:         GTypeSocketListener,
+		GoType:        reflect.TypeOf((*SocketListener)(nil)),
+		InitClass:     initClassSocketListener,
+		FinalizeClass: finalizeClassSocketListener,
 	})
 }
 
@@ -90,6 +91,13 @@ func initClassSocketListener(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSocketListener(*SocketListenerClass) }); ok {
 		klass := (*SocketListenerClass)(gextras.NewStructNative(gclass))
 		goval.InitSocketListener(klass)
+	}
+}
+
+func finalizeClassSocketListener(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSocketListener(*SocketListenerClass) }); ok {
+		klass := (*SocketListenerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocketListener(klass)
 	}
 }
 

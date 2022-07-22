@@ -166,9 +166,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTLSInteraction,
-		GoType:    reflect.TypeOf((*TLSInteraction)(nil)),
-		InitClass: initClassTLSInteraction,
+		GType:         GTypeTLSInteraction,
+		GoType:        reflect.TypeOf((*TLSInteraction)(nil)),
+		InitClass:     initClassTLSInteraction,
+		FinalizeClass: finalizeClassTLSInteraction,
 	})
 }
 
@@ -202,6 +203,13 @@ func initClassTLSInteraction(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTLSInteraction(*TLSInteractionClass) }); ok {
 		klass := (*TLSInteractionClass)(gextras.NewStructNative(gclass))
 		goval.InitTLSInteraction(klass)
+	}
+}
+
+func finalizeClassTLSInteraction(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTLSInteraction(*TLSInteractionClass) }); ok {
+		klass := (*TLSInteractionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTLSInteraction(klass)
 	}
 }
 

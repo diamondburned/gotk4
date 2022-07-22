@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRadioButtonAccessible,
-		GoType:    reflect.TypeOf((*RadioButtonAccessible)(nil)),
-		InitClass: initClassRadioButtonAccessible,
+		GType:         GTypeRadioButtonAccessible,
+		GoType:        reflect.TypeOf((*RadioButtonAccessible)(nil)),
+		InitClass:     initClassRadioButtonAccessible,
+		FinalizeClass: finalizeClassRadioButtonAccessible,
 	})
 }
 
@@ -56,6 +57,15 @@ func initClassRadioButtonAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*RadioButtonAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitRadioButtonAccessible(klass)
+	}
+}
+
+func finalizeClassRadioButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeRadioButtonAccessible(*RadioButtonAccessibleClass)
+	}); ok {
+		klass := (*RadioButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRadioButtonAccessible(klass)
 	}
 }
 
@@ -104,7 +114,7 @@ type radioButtonAccessibleClass struct {
 
 func (r *RadioButtonAccessibleClass) ParentClass() *ToggleButtonAccessibleClass {
 	valptr := &r.native.parent_class
-	var v *ToggleButtonAccessibleClass // out
-	v = (*ToggleButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ToggleButtonAccessibleClass // out
+	_v = (*ToggleButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

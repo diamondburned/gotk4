@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMediaControls,
-		GoType:    reflect.TypeOf((*MediaControls)(nil)),
-		InitClass: initClassMediaControls,
+		GType:         GTypeMediaControls,
+		GoType:        reflect.TypeOf((*MediaControls)(nil)),
+		InitClass:     initClassMediaControls,
+		FinalizeClass: finalizeClassMediaControls,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassMediaControls(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMediaControls(*MediaControlsClass) }); ok {
 		klass := (*MediaControlsClass)(gextras.NewStructNative(gclass))
 		goval.InitMediaControls(klass)
+	}
+}
+
+func finalizeClassMediaControls(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMediaControls(*MediaControlsClass) }); ok {
+		klass := (*MediaControlsClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMediaControls(klass)
 	}
 }
 
@@ -182,7 +190,7 @@ type mediaControlsClass struct {
 
 func (m *MediaControlsClass) ParentClass() *WidgetClass {
 	valptr := &m.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

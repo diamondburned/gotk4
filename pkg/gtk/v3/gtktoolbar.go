@@ -132,9 +132,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeToolbar,
-		GoType:    reflect.TypeOf((*Toolbar)(nil)),
-		InitClass: initClassToolbar,
+		GType:         GTypeToolbar,
+		GoType:        reflect.TypeOf((*Toolbar)(nil)),
+		InitClass:     initClassToolbar,
+		FinalizeClass: finalizeClassToolbar,
 	})
 }
 
@@ -158,6 +159,13 @@ func initClassToolbar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitToolbar(*ToolbarClass) }); ok {
 		klass := (*ToolbarClass)(gextras.NewStructNative(gclass))
 		goval.InitToolbar(klass)
+	}
+}
+
+func finalizeClassToolbar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeToolbar(*ToolbarClass) }); ok {
+		klass := (*ToolbarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeToolbar(klass)
 	}
 }
 
@@ -787,7 +795,7 @@ type toolbarClass struct {
 
 func (t *ToolbarClass) ParentClass() *ContainerClass {
 	valptr := &t.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

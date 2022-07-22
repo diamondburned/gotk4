@@ -102,9 +102,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeModelSort,
-		GoType:    reflect.TypeOf((*TreeModelSort)(nil)),
-		InitClass: initClassTreeModelSort,
+		GType:         GTypeTreeModelSort,
+		GoType:        reflect.TypeOf((*TreeModelSort)(nil)),
+		InitClass:     initClassTreeModelSort,
+		FinalizeClass: finalizeClassTreeModelSort,
 	})
 }
 
@@ -112,6 +113,13 @@ func initClassTreeModelSort(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeModelSort(*TreeModelSortClass) }); ok {
 		klass := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeModelSort(klass)
+	}
+}
+
+func finalizeClassTreeModelSort(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeModelSort(*TreeModelSortClass) }); ok {
+		klass := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeModelSort(klass)
 	}
 }
 

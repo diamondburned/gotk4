@@ -256,9 +256,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeModelFilter,
-		GoType:    reflect.TypeOf((*TreeModelFilter)(nil)),
-		InitClass: initClassTreeModelFilter,
+		GType:         GTypeTreeModelFilter,
+		GoType:        reflect.TypeOf((*TreeModelFilter)(nil)),
+		InitClass:     initClassTreeModelFilter,
+		FinalizeClass: finalizeClassTreeModelFilter,
 	})
 }
 
@@ -280,6 +281,13 @@ func initClassTreeModelFilter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeModelFilter(*TreeModelFilterClass) }); ok {
 		klass := (*TreeModelFilterClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeModelFilter(klass)
+	}
+}
+
+func finalizeClassTreeModelFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeModelFilter(*TreeModelFilterClass) }); ok {
+		klass := (*TreeModelFilterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeModelFilter(klass)
 	}
 }
 

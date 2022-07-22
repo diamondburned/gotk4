@@ -94,9 +94,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStatusbar,
-		GoType:    reflect.TypeOf((*Statusbar)(nil)),
-		InitClass: initClassStatusbar,
+		GType:         GTypeStatusbar,
+		GoType:        reflect.TypeOf((*Statusbar)(nil)),
+		InitClass:     initClassStatusbar,
+		FinalizeClass: finalizeClassStatusbar,
 	})
 }
 
@@ -118,6 +119,13 @@ func initClassStatusbar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStatusbar(*StatusbarClass) }); ok {
 		klass := (*StatusbarClass)(gextras.NewStructNative(gclass))
 		goval.InitStatusbar(klass)
+	}
+}
+
+func finalizeClassStatusbar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStatusbar(*StatusbarClass) }); ok {
+		klass := (*StatusbarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStatusbar(klass)
 	}
 }
 
@@ -421,14 +429,14 @@ type statusbarClass struct {
 
 func (s *StatusbarClass) ParentClass() *BoxClass {
 	valptr := &s.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (s *StatusbarClass) Reserved() unsafe.Pointer {
 	valptr := &s.native.reserved
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }

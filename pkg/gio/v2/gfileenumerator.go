@@ -129,9 +129,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileEnumerator,
-		GoType:    reflect.TypeOf((*FileEnumerator)(nil)),
-		InitClass: initClassFileEnumerator,
+		GType:         GTypeFileEnumerator,
+		GoType:        reflect.TypeOf((*FileEnumerator)(nil)),
+		InitClass:     initClassFileEnumerator,
+		FinalizeClass: finalizeClassFileEnumerator,
 	})
 }
 
@@ -165,6 +166,13 @@ func initClassFileEnumerator(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileEnumerator(*FileEnumeratorClass) }); ok {
 		klass := (*FileEnumeratorClass)(gextras.NewStructNative(gclass))
 		goval.InitFileEnumerator(klass)
+	}
+}
+
+func finalizeClassFileEnumerator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileEnumerator(*FileEnumeratorClass) }); ok {
+		klass := (*FileEnumeratorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileEnumerator(klass)
 	}
 }
 

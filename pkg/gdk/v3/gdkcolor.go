@@ -73,34 +73,34 @@ func NewColor(pixel uint32, red, green, blue uint16) Color {
 // screen. Not used anymore.
 func (c *Color) Pixel() uint32 {
 	valptr := &c.native.pixel
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Red: red component of the color. This is a value between 0 and 65535, with
 // 65535 indicating full intensity.
 func (c *Color) Red() uint16 {
 	valptr := &c.native.red
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Green: green component of the color.
 func (c *Color) Green() uint16 {
 	valptr := &c.native.green
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Blue: blue component of the color.
 func (c *Color) Blue() uint16 {
 	valptr := &c.native.blue
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Pixel: for allocated colors, the pixel value used to draw this color on the

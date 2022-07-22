@@ -177,9 +177,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStack,
-		GoType:    reflect.TypeOf((*Stack)(nil)),
-		InitClass: initClassStack,
+		GType:         GTypeStack,
+		GoType:        reflect.TypeOf((*Stack)(nil)),
+		InitClass:     initClassStack,
+		FinalizeClass: finalizeClassStack,
 	})
 }
 
@@ -187,6 +188,13 @@ func initClassStack(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStack(*StackClass) }); ok {
 		klass := (*StackClass)(gextras.NewStructNative(gclass))
 		goval.InitStack(klass)
+	}
+}
+
+func finalizeClassStack(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStack(*StackClass) }); ok {
+		klass := (*StackClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStack(klass)
 	}
 }
 
@@ -788,7 +796,7 @@ type stackClass struct {
 
 func (s *StackClass) ParentClass() *ContainerClass {
 	valptr := &s.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

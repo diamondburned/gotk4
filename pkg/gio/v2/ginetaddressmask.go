@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeInetAddressMask,
-		GoType:    reflect.TypeOf((*InetAddressMask)(nil)),
-		InitClass: initClassInetAddressMask,
+		GType:         GTypeInetAddressMask,
+		GoType:        reflect.TypeOf((*InetAddressMask)(nil)),
+		InitClass:     initClassInetAddressMask,
+		FinalizeClass: finalizeClassInetAddressMask,
 	})
 }
 
@@ -59,6 +60,13 @@ func initClassInetAddressMask(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitInetAddressMask(*InetAddressMaskClass) }); ok {
 		klass := (*InetAddressMaskClass)(gextras.NewStructNative(gclass))
 		goval.InitInetAddressMask(klass)
+	}
+}
+
+func finalizeClassInetAddressMask(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeInetAddressMask(*InetAddressMaskClass) }); ok {
+		klass := (*InetAddressMaskClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeInetAddressMask(klass)
 	}
 }
 

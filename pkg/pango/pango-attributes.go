@@ -1546,9 +1546,9 @@ type attrClass struct {
 // Type: type ID for this attribute.
 func (a *AttrClass) Type() AttrType {
 	valptr := &a.native._type
-	var v AttrType // out
-	v = AttrType(*valptr)
-	return v
+	var _v AttrType // out
+	_v = AttrType(*valptr)
+	return _v
 }
 
 // AttrColor: PangoAttrColor structure is used to represent attributes that are
@@ -1567,17 +1567,17 @@ type attrColor struct {
 // Attr: common portion of the attribute.
 func (a *AttrColor) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Color: PangoColor which is the value of the attribute.
 func (a *AttrColor) Color() *Color {
 	valptr := &a.native.color
-	var v *Color // out
-	v = (*Color)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Color // out
+	_v = (*Color)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // AttrFloat: PangoAttrFloat structure is used to represent attributes with a
@@ -1596,17 +1596,17 @@ type attrFloat struct {
 // Attr: common portion of the attribute.
 func (a *AttrFloat) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Value: value of the attribute.
 func (a *AttrFloat) Value() float64 {
 	valptr := &a.native.value
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Value: value of the attribute.
@@ -1631,17 +1631,17 @@ type attrFontDesc struct {
 // Attr: common portion of the attribute.
 func (a *AttrFontDesc) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Desc: font description which is the value of this attribute.
 func (a *AttrFontDesc) Desc() *FontDescription {
 	valptr := &a.native.desc
-	var v *FontDescription // out
-	v = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *FontDescription // out
+	_v = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // NewAttrFontDesc: create a new font description attribute.
@@ -1696,17 +1696,17 @@ type attrFontFeatures struct {
 // Attr: common portion of the attribute.
 func (a *AttrFontFeatures) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Features: featues, as a string in CSS syntax.
 func (a *AttrFontFeatures) Features() string {
 	valptr := &a.native.features
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
@@ -1759,17 +1759,17 @@ type attrInt struct {
 // Attr: common portion of the attribute.
 func (a *AttrInt) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Value: value of the attribute.
 func (a *AttrInt) Value() int {
 	valptr := &a.native.value
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Value: value of the attribute.
@@ -1978,17 +1978,17 @@ type attrLanguage struct {
 // Attr: common portion of the attribute.
 func (a *AttrLanguage) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Value: PangoLanguage which is the value of the attribute.
 func (a *AttrLanguage) Value() *Language {
 	valptr := &a.native.value
-	var v *Language // out
-	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *Language // out
+	_v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // NewAttrLanguage: create a new language tag attribute.
@@ -2461,18 +2461,18 @@ type attrSize struct {
 // Attr: common portion of the attribute.
 func (a *AttrSize) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Size: size of font, in units of 1/PANGO_SCALE of a point (for
 // PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE).
 func (a *AttrSize) Size() int {
 	valptr := &a.native.size
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Size: size of font, in units of 1/PANGO_SCALE of a point (for
@@ -2564,17 +2564,17 @@ type attrString struct {
 // Attr: common portion of the attribute.
 func (a *AttrString) Attr() *Attribute {
 	valptr := &a.native.attr
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Attribute // out
+	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Value: string which is the value of the attribute.
 func (a *AttrString) Value() string {
 	valptr := &a.native.value
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Attribute: PangoAttribute structure represents the common portions of all
@@ -2604,26 +2604,26 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 // Klass class structure holding information about the type of the attribute.
 func (a *Attribute) Klass() *AttrClass {
 	valptr := &a.native.klass
-	var v *AttrClass // out
-	v = (*AttrClass)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *AttrClass // out
+	_v = (*AttrClass)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // StartIndex: start index of the range (in bytes).
 func (a *Attribute) StartIndex() uint {
 	valptr := &a.native.start_index
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // EndIndex: end index of the range (in bytes). The character at this index is
 // not included in the range.
 func (a *Attribute) EndIndex() uint {
 	valptr := &a.native.end_index
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // StartIndex: start index of the range (in bytes).
@@ -2772,25 +2772,25 @@ func NewColor(red, green, blue uint16) Color {
 // Red: value of red component.
 func (c *Color) Red() uint16 {
 	valptr := &c.native.red
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Green: value of green component.
 func (c *Color) Green() uint16 {
 	valptr := &c.native.green
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Blue: value of blue component.
 func (c *Color) Blue() uint16 {
 	valptr := &c.native.blue
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Red: value of red component.

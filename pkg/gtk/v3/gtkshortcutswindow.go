@@ -93,9 +93,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeShortcutsWindow,
-		GoType:    reflect.TypeOf((*ShortcutsWindow)(nil)),
-		InitClass: initClassShortcutsWindow,
+		GType:         GTypeShortcutsWindow,
+		GoType:        reflect.TypeOf((*ShortcutsWindow)(nil)),
+		InitClass:     initClassShortcutsWindow,
+		FinalizeClass: finalizeClassShortcutsWindow,
 	})
 }
 
@@ -113,6 +114,13 @@ func initClassShortcutsWindow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitShortcutsWindow(*ShortcutsWindowClass) }); ok {
 		klass := (*ShortcutsWindowClass)(gextras.NewStructNative(gclass))
 		goval.InitShortcutsWindow(klass)
+	}
+}
+
+func finalizeClassShortcutsWindow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeShortcutsWindow(*ShortcutsWindowClass) }); ok {
+		klass := (*ShortcutsWindowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeShortcutsWindow(klass)
 	}
 }
 
@@ -219,7 +227,7 @@ type shortcutsWindowClass struct {
 
 func (s *ShortcutsWindowClass) ParentClass() *WindowClass {
 	valptr := &s.native.parent_class
-	var v *WindowClass // out
-	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WindowClass // out
+	_v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

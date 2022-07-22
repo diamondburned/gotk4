@@ -82,49 +82,49 @@ func NewMatrix(xx, xy, yx, yy, x0, y0 float64) Matrix {
 // XX: 1st component of the transformation matrix.
 func (m *Matrix) XX() float64 {
 	valptr := &m.native.xx
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // XY: 2nd component of the transformation matrix.
 func (m *Matrix) XY() float64 {
 	valptr := &m.native.xy
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YX: 3rd component of the transformation matrix.
 func (m *Matrix) YX() float64 {
 	valptr := &m.native.yx
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YY: 4th component of the transformation matrix.
 func (m *Matrix) YY() float64 {
 	valptr := &m.native.yy
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // X0: x translation.
 func (m *Matrix) X0() float64 {
 	valptr := &m.native.x0
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y0: y translation.
 func (m *Matrix) Y0() float64 {
 	valptr := &m.native.y0
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // XX: 1st component of the transformation matrix.

@@ -109,9 +109,10 @@ var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocketAddressEnumerator,
-		GoType:    reflect.TypeOf((*SocketAddressEnumerator)(nil)),
-		InitClass: initClassSocketAddressEnumerator,
+		GType:         GTypeSocketAddressEnumerator,
+		GoType:        reflect.TypeOf((*SocketAddressEnumerator)(nil)),
+		InitClass:     initClassSocketAddressEnumerator,
+		FinalizeClass: finalizeClassSocketAddressEnumerator,
 	})
 }
 
@@ -135,6 +136,15 @@ func initClassSocketAddressEnumerator(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*SocketAddressEnumeratorClass)(gextras.NewStructNative(gclass))
 		goval.InitSocketAddressEnumerator(klass)
+	}
+}
+
+func finalizeClassSocketAddressEnumerator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeSocketAddressEnumerator(*SocketAddressEnumeratorClass)
+	}); ok {
+		klass := (*SocketAddressEnumeratorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocketAddressEnumerator(klass)
 	}
 }
 

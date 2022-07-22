@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSpinnerAccessible,
-		GoType:    reflect.TypeOf((*SpinnerAccessible)(nil)),
-		InitClass: initClassSpinnerAccessible,
+		GType:         GTypeSpinnerAccessible,
+		GoType:        reflect.TypeOf((*SpinnerAccessible)(nil)),
+		InitClass:     initClassSpinnerAccessible,
+		FinalizeClass: finalizeClassSpinnerAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassSpinnerAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSpinnerAccessible(*SpinnerAccessibleClass) }); ok {
 		klass := (*SpinnerAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitSpinnerAccessible(klass)
+	}
+}
+
+func finalizeClassSpinnerAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSpinnerAccessible(*SpinnerAccessibleClass) }); ok {
+		klass := (*SpinnerAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSpinnerAccessible(klass)
 	}
 }
 
@@ -93,7 +101,7 @@ type spinnerAccessibleClass struct {
 
 func (s *SpinnerAccessibleClass) ParentClass() *WidgetAccessibleClass {
 	valptr := &s.native.parent_class
-	var v *WidgetAccessibleClass // out
-	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetAccessibleClass // out
+	_v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

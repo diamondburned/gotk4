@@ -71,9 +71,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLinkButton,
-		GoType:    reflect.TypeOf((*LinkButton)(nil)),
-		InitClass: initClassLinkButton,
+		GType:         GTypeLinkButton,
+		GoType:        reflect.TypeOf((*LinkButton)(nil)),
+		InitClass:     initClassLinkButton,
+		FinalizeClass: finalizeClassLinkButton,
 	})
 }
 
@@ -87,6 +88,13 @@ func initClassLinkButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitLinkButton(*LinkButtonClass) }); ok {
 		klass := (*LinkButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitLinkButton(klass)
+	}
+}
+
+func finalizeClassLinkButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeLinkButton(*LinkButtonClass) }); ok {
+		klass := (*LinkButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLinkButton(klass)
 	}
 }
 

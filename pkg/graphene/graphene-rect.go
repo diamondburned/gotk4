@@ -57,17 +57,17 @@ func marshalRect(p uintptr) (interface{}, error) {
 // Origin coordinates of the origin of the rectangle.
 func (r *Rect) Origin() *Point {
 	valptr := &r.native.origin
-	var v *Point // out
-	v = (*Point)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Point // out
+	_v = (*Point)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Size: size of the rectangle.
 func (r *Rect) Size() *Size {
 	valptr := &r.native.size
-	var v *Size // out
-	v = (*Size)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Size // out
+	_v = (*Size)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // ContainsPoint checks whether a #graphene_rect_t contains the given

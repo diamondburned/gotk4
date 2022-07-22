@@ -1295,33 +1295,33 @@ func NewRectangle(x, y, width, height int) Rectangle {
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) X() int {
 	valptr := &r.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Y coordinate of the top side of the rectangle.
 func (r *Rectangle) Y() int {
 	valptr := &r.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) Width() int {
 	valptr := &r.native.width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) Height() int {
 	valptr := &r.native.height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // X coordinate of the left side of the rectangle.

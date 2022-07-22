@@ -55,9 +55,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSortListModel,
-		GoType:    reflect.TypeOf((*SortListModel)(nil)),
-		InitClass: initClassSortListModel,
+		GType:         GTypeSortListModel,
+		GoType:        reflect.TypeOf((*SortListModel)(nil)),
+		InitClass:     initClassSortListModel,
+		FinalizeClass: finalizeClassSortListModel,
 	})
 }
 
@@ -65,6 +66,13 @@ func initClassSortListModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSortListModel(*SortListModelClass) }); ok {
 		klass := (*SortListModelClass)(gextras.NewStructNative(gclass))
 		goval.InitSortListModel(klass)
+	}
+}
+
+func finalizeClassSortListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSortListModel(*SortListModelClass) }); ok {
+		klass := (*SortListModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSortListModel(klass)
 	}
 }
 

@@ -166,9 +166,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeViewColumn,
-		GoType:    reflect.TypeOf((*TreeViewColumn)(nil)),
-		InitClass: initClassTreeViewColumn,
+		GType:         GTypeTreeViewColumn,
+		GoType:        reflect.TypeOf((*TreeViewColumn)(nil)),
+		InitClass:     initClassTreeViewColumn,
+		FinalizeClass: finalizeClassTreeViewColumn,
 	})
 }
 
@@ -182,6 +183,13 @@ func initClassTreeViewColumn(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeViewColumn(*TreeViewColumnClass) }); ok {
 		klass := (*TreeViewColumnClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeViewColumn(klass)
+	}
+}
+
+func finalizeClassTreeViewColumn(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeViewColumn(*TreeViewColumnClass) }); ok {
+		klass := (*TreeViewColumnClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeViewColumn(klass)
 	}
 }
 

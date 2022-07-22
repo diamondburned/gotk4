@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLinkButtonAccessible,
-		GoType:    reflect.TypeOf((*LinkButtonAccessible)(nil)),
-		InitClass: initClassLinkButtonAccessible,
+		GType:         GTypeLinkButtonAccessible,
+		GoType:        reflect.TypeOf((*LinkButtonAccessible)(nil)),
+		InitClass:     initClassLinkButtonAccessible,
+		FinalizeClass: finalizeClassLinkButtonAccessible,
 	})
 }
 
@@ -59,6 +60,15 @@ func initClassLinkButtonAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*LinkButtonAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitLinkButtonAccessible(klass)
+	}
+}
+
+func finalizeClassLinkButtonAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeLinkButtonAccessible(*LinkButtonAccessibleClass)
+	}); ok {
+		klass := (*LinkButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLinkButtonAccessible(klass)
 	}
 }
 
@@ -109,7 +119,7 @@ type linkButtonAccessibleClass struct {
 
 func (l *LinkButtonAccessibleClass) ParentClass() *ButtonAccessibleClass {
 	valptr := &l.native.parent_class
-	var v *ButtonAccessibleClass // out
-	v = (*ButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ButtonAccessibleClass // out
+	_v = (*ButtonAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

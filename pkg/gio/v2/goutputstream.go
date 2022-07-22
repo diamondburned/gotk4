@@ -162,9 +162,10 @@ var _ OutputStreamer = (*OutputStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeOutputStream,
-		GoType:    reflect.TypeOf((*OutputStream)(nil)),
-		InitClass: initClassOutputStream,
+		GType:         GTypeOutputStream,
+		GoType:        reflect.TypeOf((*OutputStream)(nil)),
+		InitClass:     initClassOutputStream,
+		FinalizeClass: finalizeClassOutputStream,
 	})
 }
 
@@ -222,6 +223,13 @@ func initClassOutputStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitOutputStream(*OutputStreamClass) }); ok {
 		klass := (*OutputStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitOutputStream(klass)
+	}
+}
+
+func finalizeClassOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeOutputStream(*OutputStreamClass) }); ok {
+		klass := (*OutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeOutputStream(klass)
 	}
 }
 

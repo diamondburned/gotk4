@@ -116,9 +116,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeActionGroup,
-		GoType:    reflect.TypeOf((*ActionGroup)(nil)),
-		InitClass: initClassActionGroup,
+		GType:         GTypeActionGroup,
+		GoType:        reflect.TypeOf((*ActionGroup)(nil)),
+		InitClass:     initClassActionGroup,
+		FinalizeClass: finalizeClassActionGroup,
 	})
 }
 
@@ -134,6 +135,13 @@ func initClassActionGroup(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitActionGroup(*ActionGroupClass) }); ok {
 		klass := (*ActionGroupClass)(gextras.NewStructNative(gclass))
 		goval.InitActionGroup(klass)
+	}
+}
+
+func finalizeClassActionGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeActionGroup(*ActionGroupClass) }); ok {
+		klass := (*ActionGroupClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeActionGroup(klass)
 	}
 }
 
@@ -777,17 +785,17 @@ type actionEntry struct {
 // Name: name of the action.
 func (a *ActionEntry) Name() string {
 	valptr := &a.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // StockID: stock id for the action, or the name of an icon from the icon theme.
 func (a *ActionEntry) StockID() string {
 	valptr := &a.native.stock_id
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Label: label for the action. This field should typically be marked for
@@ -795,27 +803,27 @@ func (a *ActionEntry) StockID() string {
 // the label of the stock item with id stock_id is used.
 func (a *ActionEntry) Label() string {
 	valptr := &a.native.label
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Accelerator: accelerator for the action, in the format understood by
 // gtk_accelerator_parse().
 func (a *ActionEntry) Accelerator() string {
 	valptr := &a.native.accelerator
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Tooltip: tooltip for the action. This field should typically be marked for
 // translation, see gtk_action_group_set_translation_domain().
 func (a *ActionEntry) Tooltip() string {
 	valptr := &a.native.tooltip
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ActionGroupClass: instance of this type is always passed by reference.
@@ -846,53 +854,53 @@ type radioActionEntry struct {
 // Name: name of the action.
 func (r *RadioActionEntry) Name() string {
 	valptr := &r.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // StockID: stock id for the action, or the name of an icon from the icon theme.
 func (r *RadioActionEntry) StockID() string {
 	valptr := &r.native.stock_id
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Label: label for the action. This field should typically be marked for
 // translation, see gtk_action_group_set_translation_domain().
 func (r *RadioActionEntry) Label() string {
 	valptr := &r.native.label
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Accelerator: accelerator for the action, in the format understood by
 // gtk_accelerator_parse().
 func (r *RadioActionEntry) Accelerator() string {
 	valptr := &r.native.accelerator
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Tooltip: tooltip for the action. This field should typically be marked for
 // translation, see gtk_action_group_set_translation_domain().
 func (r *RadioActionEntry) Tooltip() string {
 	valptr := &r.native.tooltip
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Value: value to set on the radio action. See
 // gtk_radio_action_get_current_value().
 func (r *RadioActionEntry) Value() int {
 	valptr := &r.native.value
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Value: value to set on the radio action. See
@@ -920,54 +928,54 @@ type toggleActionEntry struct {
 // Name: name of the action.
 func (t *ToggleActionEntry) Name() string {
 	valptr := &t.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // StockID: stock id for the action, or the name of an icon from the icon theme.
 func (t *ToggleActionEntry) StockID() string {
 	valptr := &t.native.stock_id
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Label: label for the action. This field should typically be marked for
 // translation, see gtk_action_group_set_translation_domain().
 func (t *ToggleActionEntry) Label() string {
 	valptr := &t.native.label
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Accelerator: accelerator for the action, in the format understood by
 // gtk_accelerator_parse().
 func (t *ToggleActionEntry) Accelerator() string {
 	valptr := &t.native.accelerator
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Tooltip: tooltip for the action. This field should typically be marked for
 // translation, see gtk_action_group_set_translation_domain().
 func (t *ToggleActionEntry) Tooltip() string {
 	valptr := &t.native.tooltip
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // IsActive: initial state of the toggle action.
 func (t *ToggleActionEntry) IsActive() bool {
 	valptr := &t.native.is_active
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // IsActive: initial state of the toggle action.

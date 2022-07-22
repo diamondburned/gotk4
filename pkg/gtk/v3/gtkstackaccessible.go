@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStackAccessible,
-		GoType:    reflect.TypeOf((*StackAccessible)(nil)),
-		InitClass: initClassStackAccessible,
+		GType:         GTypeStackAccessible,
+		GoType:        reflect.TypeOf((*StackAccessible)(nil)),
+		InitClass:     initClassStackAccessible,
+		FinalizeClass: finalizeClassStackAccessible,
 	})
 }
 
@@ -54,6 +55,13 @@ func initClassStackAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStackAccessible(*StackAccessibleClass) }); ok {
 		klass := (*StackAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitStackAccessible(klass)
+	}
+}
+
+func finalizeClassStackAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStackAccessible(*StackAccessibleClass) }); ok {
+		klass := (*StackAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStackAccessible(klass)
 	}
 }
 
@@ -90,7 +98,7 @@ type stackAccessibleClass struct {
 
 func (s *StackAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &s.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

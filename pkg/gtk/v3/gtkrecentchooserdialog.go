@@ -88,9 +88,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRecentChooserDialog,
-		GoType:    reflect.TypeOf((*RecentChooserDialog)(nil)),
-		InitClass: initClassRecentChooserDialog,
+		GType:         GTypeRecentChooserDialog,
+		GoType:        reflect.TypeOf((*RecentChooserDialog)(nil)),
+		InitClass:     initClassRecentChooserDialog,
+		FinalizeClass: finalizeClassRecentChooserDialog,
 	})
 }
 
@@ -100,6 +101,15 @@ func initClassRecentChooserDialog(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*RecentChooserDialogClass)(gextras.NewStructNative(gclass))
 		goval.InitRecentChooserDialog(klass)
+	}
+}
+
+func finalizeClassRecentChooserDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeRecentChooserDialog(*RecentChooserDialogClass)
+	}); ok {
+		klass := (*RecentChooserDialogClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRecentChooserDialog(klass)
 	}
 }
 
@@ -149,7 +159,7 @@ type recentChooserDialogClass struct {
 
 func (r *RecentChooserDialogClass) ParentClass() *DialogClass {
 	valptr := &r.native.parent_class
-	var v *DialogClass // out
-	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *DialogClass // out
+	_v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

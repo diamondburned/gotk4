@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeZlibCompressor,
-		GoType:    reflect.TypeOf((*ZlibCompressor)(nil)),
-		InitClass: initClassZlibCompressor,
+		GType:         GTypeZlibCompressor,
+		GoType:        reflect.TypeOf((*ZlibCompressor)(nil)),
+		InitClass:     initClassZlibCompressor,
+		FinalizeClass: finalizeClassZlibCompressor,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassZlibCompressor(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitZlibCompressor(*ZlibCompressorClass) }); ok {
 		klass := (*ZlibCompressorClass)(gextras.NewStructNative(gclass))
 		goval.InitZlibCompressor(klass)
+	}
+}
+
+func finalizeClassZlibCompressor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeZlibCompressor(*ZlibCompressorClass) }); ok {
+		klass := (*ZlibCompressorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeZlibCompressor(klass)
 	}
 }
 

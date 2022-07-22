@@ -196,9 +196,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileChooserDialog,
-		GoType:    reflect.TypeOf((*FileChooserDialog)(nil)),
-		InitClass: initClassFileChooserDialog,
+		GType:         GTypeFileChooserDialog,
+		GoType:        reflect.TypeOf((*FileChooserDialog)(nil)),
+		InitClass:     initClassFileChooserDialog,
+		FinalizeClass: finalizeClassFileChooserDialog,
 	})
 }
 
@@ -206,6 +207,13 @@ func initClassFileChooserDialog(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileChooserDialog(*FileChooserDialogClass) }); ok {
 		klass := (*FileChooserDialogClass)(gextras.NewStructNative(gclass))
 		goval.InitFileChooserDialog(klass)
+	}
+}
+
+func finalizeClassFileChooserDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileChooserDialog(*FileChooserDialogClass) }); ok {
+		klass := (*FileChooserDialogClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileChooserDialog(klass)
 	}
 }
 
@@ -254,7 +262,7 @@ type fileChooserDialogClass struct {
 
 func (f *FileChooserDialogClass) ParentClass() *DialogClass {
 	valptr := &f.native.parent_class
-	var v *DialogClass // out
-	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *DialogClass // out
+	_v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

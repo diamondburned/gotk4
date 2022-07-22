@@ -533,9 +533,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSettings,
-		GoType:    reflect.TypeOf((*Settings)(nil)),
-		InitClass: initClassSettings,
+		GType:         GTypeSettings,
+		GoType:        reflect.TypeOf((*Settings)(nil)),
+		InitClass:     initClassSettings,
+		FinalizeClass: finalizeClassSettings,
 	})
 }
 
@@ -563,6 +564,13 @@ func initClassSettings(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSettings(*SettingsClass) }); ok {
 		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
 		goval.InitSettings(klass)
+	}
+}
+
+func finalizeClassSettings(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSettings(*SettingsClass) }); ok {
+		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSettings(klass)
 	}
 }
 
@@ -2515,12 +2523,12 @@ type settingsClass struct {
 
 func (s *SettingsClass) Padding() [20]unsafe.Pointer {
 	valptr := &s.native.padding
-	var v [20]unsafe.Pointer // out
+	var _v [20]unsafe.Pointer // out
 	{
 		src := &*valptr
 		for i := 0; i < 20; i++ {
-			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
 	}
-	return v
+	return _v
 }

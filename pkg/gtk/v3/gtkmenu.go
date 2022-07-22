@@ -109,9 +109,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenu,
-		GoType:    reflect.TypeOf((*Menu)(nil)),
-		InitClass: initClassMenu,
+		GType:         GTypeMenu,
+		GoType:        reflect.TypeOf((*Menu)(nil)),
+		InitClass:     initClassMenu,
+		FinalizeClass: finalizeClassMenu,
 	})
 }
 
@@ -119,6 +120,13 @@ func initClassMenu(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenu(*MenuClass) }); ok {
 		klass := (*MenuClass)(gextras.NewStructNative(gclass))
 		goval.InitMenu(klass)
+	}
+}
+
+func finalizeClassMenu(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenu(*MenuClass) }); ok {
+		klass := (*MenuClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenu(klass)
 	}
 }
 
@@ -1016,7 +1024,7 @@ type menuClass struct {
 
 func (m *MenuClass) ParentClass() *MenuShellClass {
 	valptr := &m.native.parent_class
-	var v *MenuShellClass // out
-	v = (*MenuShellClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuShellClass // out
+	_v = (*MenuShellClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

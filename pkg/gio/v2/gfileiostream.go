@@ -147,9 +147,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileIOStream,
-		GoType:    reflect.TypeOf((*FileIOStream)(nil)),
-		InitClass: initClassFileIOStream,
+		GType:         GTypeFileIOStream,
+		GoType:        reflect.TypeOf((*FileIOStream)(nil)),
+		InitClass:     initClassFileIOStream,
+		FinalizeClass: finalizeClassFileIOStream,
 	})
 }
 
@@ -199,6 +200,13 @@ func initClassFileIOStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileIOStream(*FileIOStreamClass) }); ok {
 		klass := (*FileIOStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitFileIOStream(klass)
+	}
+}
+
+func finalizeClassFileIOStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileIOStream(*FileIOStreamClass) }); ok {
+		klass := (*FileIOStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileIOStream(klass)
 	}
 }
 
@@ -561,7 +569,7 @@ type fileIOStreamClass struct {
 
 func (f *FileIOStreamClass) ParentClass() *IOStreamClass {
 	valptr := &f.native.parent_class
-	var v *IOStreamClass // out
-	v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *IOStreamClass // out
+	_v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

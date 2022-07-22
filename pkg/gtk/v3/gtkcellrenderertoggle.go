@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellRendererToggle,
-		GoType:    reflect.TypeOf((*CellRendererToggle)(nil)),
-		InitClass: initClassCellRendererToggle,
+		GType:         GTypeCellRendererToggle,
+		GoType:        reflect.TypeOf((*CellRendererToggle)(nil)),
+		InitClass:     initClassCellRendererToggle,
+		FinalizeClass: finalizeClassCellRendererToggle,
 	})
 }
 
@@ -70,6 +71,15 @@ func initClassCellRendererToggle(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*CellRendererToggleClass)(gextras.NewStructNative(gclass))
 		goval.InitCellRendererToggle(klass)
+	}
+}
+
+func finalizeClassCellRendererToggle(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeCellRendererToggle(*CellRendererToggleClass)
+	}); ok {
+		klass := (*CellRendererToggleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellRendererToggle(klass)
 	}
 }
 
@@ -302,7 +312,7 @@ type cellRendererToggleClass struct {
 
 func (c *CellRendererToggleClass) ParentClass() *CellRendererClass {
 	valptr := &c.native.parent_class
-	var v *CellRendererClass // out
-	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *CellRendererClass // out
+	_v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

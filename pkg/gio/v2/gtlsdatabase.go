@@ -293,9 +293,10 @@ var _ TLSDatabaser = (*TLSDatabase)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTLSDatabase,
-		GoType:    reflect.TypeOf((*TLSDatabase)(nil)),
-		InitClass: initClassTLSDatabase,
+		GType:         GTypeTLSDatabase,
+		GoType:        reflect.TypeOf((*TLSDatabase)(nil)),
+		InitClass:     initClassTLSDatabase,
+		FinalizeClass: finalizeClassTLSDatabase,
 	})
 }
 
@@ -359,6 +360,13 @@ func initClassTLSDatabase(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTLSDatabase(*TLSDatabaseClass) }); ok {
 		klass := (*TLSDatabaseClass)(gextras.NewStructNative(gclass))
 		goval.InitTLSDatabase(klass)
+	}
+}
+
+func finalizeClassTLSDatabase(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTLSDatabase(*TLSDatabaseClass) }); ok {
+		klass := (*TLSDatabaseClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTLSDatabase(klass)
 	}
 }
 

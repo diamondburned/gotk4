@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBoxLayout,
-		GoType:    reflect.TypeOf((*BoxLayout)(nil)),
-		InitClass: initClassBoxLayout,
+		GType:         GTypeBoxLayout,
+		GoType:        reflect.TypeOf((*BoxLayout)(nil)),
+		InitClass:     initClassBoxLayout,
+		FinalizeClass: finalizeClassBoxLayout,
 	})
 }
 
@@ -69,6 +70,13 @@ func initClassBoxLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBoxLayout(*BoxLayoutClass) }); ok {
 		klass := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitBoxLayout(klass)
+	}
+}
+
+func finalizeClassBoxLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBoxLayout(*BoxLayoutClass) }); ok {
+		klass := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBoxLayout(klass)
 	}
 }
 
@@ -257,7 +265,7 @@ type boxLayoutClass struct {
 
 func (b *BoxLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &b.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

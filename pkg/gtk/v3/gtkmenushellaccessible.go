@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuShellAccessible,
-		GoType:    reflect.TypeOf((*MenuShellAccessible)(nil)),
-		InitClass: initClassMenuShellAccessible,
+		GType:         GTypeMenuShellAccessible,
+		GoType:        reflect.TypeOf((*MenuShellAccessible)(nil)),
+		InitClass:     initClassMenuShellAccessible,
+		FinalizeClass: finalizeClassMenuShellAccessible,
 	})
 }
 
@@ -58,6 +59,15 @@ func initClassMenuShellAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*MenuShellAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuShellAccessible(klass)
+	}
+}
+
+func finalizeClassMenuShellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeMenuShellAccessible(*MenuShellAccessibleClass)
+	}); ok {
+		klass := (*MenuShellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuShellAccessible(klass)
 	}
 }
 
@@ -98,7 +108,7 @@ type menuShellAccessibleClass struct {
 
 func (m *MenuShellAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &m.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

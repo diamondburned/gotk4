@@ -83,9 +83,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeScrollbar,
-		GoType:    reflect.TypeOf((*Scrollbar)(nil)),
-		InitClass: initClassScrollbar,
+		GType:         GTypeScrollbar,
+		GoType:        reflect.TypeOf((*Scrollbar)(nil)),
+		InitClass:     initClassScrollbar,
+		FinalizeClass: finalizeClassScrollbar,
 	})
 }
 
@@ -93,6 +94,13 @@ func initClassScrollbar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitScrollbar(*ScrollbarClass) }); ok {
 		klass := (*ScrollbarClass)(gextras.NewStructNative(gclass))
 		goval.InitScrollbar(klass)
+	}
+}
+
+func finalizeClassScrollbar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeScrollbar(*ScrollbarClass) }); ok {
+		klass := (*ScrollbarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeScrollbar(klass)
 	}
 }
 
@@ -167,7 +175,7 @@ type scrollbarClass struct {
 
 func (s *ScrollbarClass) ParentClass() *RangeClass {
 	valptr := &s.native.parent_class
-	var v *RangeClass // out
-	v = (*RangeClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *RangeClass // out
+	_v = (*RangeClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

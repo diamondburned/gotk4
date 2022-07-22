@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNoOpObjectFactory,
-		GoType:    reflect.TypeOf((*NoOpObjectFactory)(nil)),
-		InitClass: initClassNoOpObjectFactory,
+		GType:         GTypeNoOpObjectFactory,
+		GoType:        reflect.TypeOf((*NoOpObjectFactory)(nil)),
+		InitClass:     initClassNoOpObjectFactory,
+		FinalizeClass: finalizeClassNoOpObjectFactory,
 	})
 }
 
@@ -54,6 +55,13 @@ func initClassNoOpObjectFactory(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNoOpObjectFactory(*NoOpObjectFactoryClass) }); ok {
 		klass := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
 		goval.InitNoOpObjectFactory(klass)
+	}
+}
+
+func finalizeClassNoOpObjectFactory(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNoOpObjectFactory(*NoOpObjectFactoryClass) }); ok {
+		klass := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNoOpObjectFactory(klass)
 	}
 }
 
@@ -100,7 +108,7 @@ type noOpObjectFactoryClass struct {
 
 func (n *NoOpObjectFactoryClass) ParentClass() *ObjectFactoryClass {
 	valptr := &n.native.parent_class
-	var v *ObjectFactoryClass // out
-	v = (*ObjectFactoryClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ObjectFactoryClass // out
+	_v = (*ObjectFactoryClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

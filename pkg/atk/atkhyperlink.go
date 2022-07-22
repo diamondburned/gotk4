@@ -180,9 +180,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHyperlink,
-		GoType:    reflect.TypeOf((*Hyperlink)(nil)),
-		InitClass: initClassHyperlink,
+		GType:         GTypeHyperlink,
+		GoType:        reflect.TypeOf((*Hyperlink)(nil)),
+		InitClass:     initClassHyperlink,
+		FinalizeClass: finalizeClassHyperlink,
 	})
 }
 
@@ -228,6 +229,13 @@ func initClassHyperlink(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHyperlink(*HyperlinkClass) }); ok {
 		klass := (*HyperlinkClass)(gextras.NewStructNative(gclass))
 		goval.InitHyperlink(klass)
+	}
+}
+
+func finalizeClassHyperlink(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHyperlink(*HyperlinkClass) }); ok {
+		klass := (*HyperlinkClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHyperlink(klass)
 	}
 }
 

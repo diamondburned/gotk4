@@ -124,9 +124,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCSSProvider,
-		GoType:    reflect.TypeOf((*CSSProvider)(nil)),
-		InitClass: initClassCSSProvider,
+		GType:         GTypeCSSProvider,
+		GoType:        reflect.TypeOf((*CSSProvider)(nil)),
+		InitClass:     initClassCSSProvider,
+		FinalizeClass: finalizeClassCSSProvider,
 	})
 }
 
@@ -142,6 +143,13 @@ func initClassCSSProvider(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCSSProvider(*CSSProviderClass) }); ok {
 		klass := (*CSSProviderClass)(gextras.NewStructNative(gclass))
 		goval.InitCSSProvider(klass)
+	}
+}
+
+func finalizeClassCSSProvider(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCSSProvider(*CSSProviderClass) }); ok {
+		klass := (*CSSProviderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCSSProvider(klass)
 	}
 }
 

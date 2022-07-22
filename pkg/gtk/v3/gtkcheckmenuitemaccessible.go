@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCheckMenuItemAccessible,
-		GoType:    reflect.TypeOf((*CheckMenuItemAccessible)(nil)),
-		InitClass: initClassCheckMenuItemAccessible,
+		GType:         GTypeCheckMenuItemAccessible,
+		GoType:        reflect.TypeOf((*CheckMenuItemAccessible)(nil)),
+		InitClass:     initClassCheckMenuItemAccessible,
+		FinalizeClass: finalizeClassCheckMenuItemAccessible,
 	})
 }
 
@@ -56,6 +57,15 @@ func initClassCheckMenuItemAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitCheckMenuItemAccessible(klass)
+	}
+}
+
+func finalizeClassCheckMenuItemAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeCheckMenuItemAccessible(*CheckMenuItemAccessibleClass)
+	}); ok {
+		klass := (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCheckMenuItemAccessible(klass)
 	}
 }
 
@@ -102,7 +112,7 @@ type checkMenuItemAccessibleClass struct {
 
 func (c *CheckMenuItemAccessibleClass) ParentClass() *MenuItemAccessibleClass {
 	valptr := &c.native.parent_class
-	var v *MenuItemAccessibleClass // out
-	v = (*MenuItemAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuItemAccessibleClass // out
+	_v = (*MenuItemAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

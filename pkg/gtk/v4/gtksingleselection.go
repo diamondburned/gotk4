@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSingleSelection,
-		GoType:    reflect.TypeOf((*SingleSelection)(nil)),
-		InitClass: initClassSingleSelection,
+		GType:         GTypeSingleSelection,
+		GoType:        reflect.TypeOf((*SingleSelection)(nil)),
+		InitClass:     initClassSingleSelection,
+		FinalizeClass: finalizeClassSingleSelection,
 	})
 }
 
@@ -62,6 +63,13 @@ func initClassSingleSelection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSingleSelection(*SingleSelectionClass) }); ok {
 		klass := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
 		goval.InitSingleSelection(klass)
+	}
+}
+
+func finalizeClassSingleSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSingleSelection(*SingleSelectionClass) }); ok {
+		klass := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSingleSelection(klass)
 	}
 }
 

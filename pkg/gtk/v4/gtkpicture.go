@@ -92,9 +92,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePicture,
-		GoType:    reflect.TypeOf((*Picture)(nil)),
-		InitClass: initClassPicture,
+		GType:         GTypePicture,
+		GoType:        reflect.TypeOf((*Picture)(nil)),
+		InitClass:     initClassPicture,
+		FinalizeClass: finalizeClassPicture,
 	})
 }
 
@@ -102,6 +103,13 @@ func initClassPicture(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPicture(*PictureClass) }); ok {
 		klass := (*PictureClass)(gextras.NewStructNative(gclass))
 		goval.InitPicture(klass)
+	}
+}
+
+func finalizeClassPicture(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePicture(*PictureClass) }); ok {
+		klass := (*PictureClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePicture(klass)
 	}
 }
 
@@ -661,7 +669,7 @@ type pictureClass struct {
 
 func (p *PictureClass) ParentClass() *WidgetClass {
 	valptr := &p.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

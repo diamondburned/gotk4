@@ -74,9 +74,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFixedLayout,
-		GoType:    reflect.TypeOf((*FixedLayout)(nil)),
-		InitClass: initClassFixedLayout,
+		GType:         GTypeFixedLayout,
+		GoType:        reflect.TypeOf((*FixedLayout)(nil)),
+		InitClass:     initClassFixedLayout,
+		FinalizeClass: finalizeClassFixedLayout,
 	})
 }
 
@@ -84,6 +85,13 @@ func initClassFixedLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFixedLayout(*FixedLayoutClass) }); ok {
 		klass := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitFixedLayout(klass)
+	}
+}
+
+func finalizeClassFixedLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFixedLayout(*FixedLayoutClass) }); ok {
+		klass := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFixedLayout(klass)
 	}
 }
 
@@ -133,9 +141,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFixedLayoutChild,
-		GoType:    reflect.TypeOf((*FixedLayoutChild)(nil)),
-		InitClass: initClassFixedLayoutChild,
+		GType:         GTypeFixedLayoutChild,
+		GoType:        reflect.TypeOf((*FixedLayoutChild)(nil)),
+		InitClass:     initClassFixedLayoutChild,
+		FinalizeClass: finalizeClassFixedLayoutChild,
 	})
 }
 
@@ -143,6 +152,13 @@ func initClassFixedLayoutChild(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFixedLayoutChild(*FixedLayoutChildClass) }); ok {
 		klass := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
 		goval.InitFixedLayoutChild(klass)
+	}
+}
+
+func finalizeClassFixedLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFixedLayoutChild(*FixedLayoutChildClass) }); ok {
+		klass := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFixedLayoutChild(klass)
 	}
 }
 
@@ -219,9 +235,9 @@ type fixedLayoutChildClass struct {
 
 func (f *FixedLayoutChildClass) ParentClass() *LayoutChildClass {
 	valptr := &f.native.parent_class
-	var v *LayoutChildClass // out
-	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutChildClass // out
+	_v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // FixedLayoutClass: instance of this type is always passed by reference.
@@ -236,7 +252,7 @@ type fixedLayoutClass struct {
 
 func (f *FixedLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &f.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

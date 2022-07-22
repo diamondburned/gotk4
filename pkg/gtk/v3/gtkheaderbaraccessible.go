@@ -3,11 +3,7 @@
 package gtk
 
 import (
-	"reflect"
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -17,10 +13,6 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// HeaderBarAccessibleOverrider contains methods that are overridable.
-type HeaderBarAccessibleOverrider interface {
-}
-
 type HeaderBarAccessible struct {
 	_ [0]func() // equal guard
 	ContainerAccessible
@@ -29,23 +21,6 @@ type HeaderBarAccessible struct {
 var (
 	_ coreglib.Objector = (*HeaderBarAccessible)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHeaderBarAccessible,
-		GoType:    reflect.TypeOf((*HeaderBarAccessible)(nil)),
-		InitClass: initClassHeaderBarAccessible,
-	})
-}
-
-func initClassHeaderBarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitHeaderBarAccessible(*HeaderBarAccessibleClass)
-	}); ok {
-		klass := (*HeaderBarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitHeaderBarAccessible(klass)
-	}
-}
 
 func wrapHeaderBarAccessible(obj *coreglib.Object) *HeaderBarAccessible {
 	return &HeaderBarAccessible{
@@ -62,22 +37,4 @@ func wrapHeaderBarAccessible(obj *coreglib.Object) *HeaderBarAccessible {
 			},
 		},
 	}
-}
-
-// HeaderBarAccessibleClass: instance of this type is always passed by
-// reference.
-type HeaderBarAccessibleClass struct {
-	*headerBarAccessibleClass
-}
-
-// headerBarAccessibleClass is the struct that's finalized.
-type headerBarAccessibleClass struct {
-	native *C.GtkHeaderBarAccessibleClass
-}
-
-func (h *HeaderBarAccessibleClass) ParentClass() *ContainerAccessibleClass {
-	valptr := &h.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
 }

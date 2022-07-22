@@ -534,9 +534,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAccelGroup,
-		GoType:    reflect.TypeOf((*AccelGroup)(nil)),
-		InitClass: initClassAccelGroup,
+		GType:         GTypeAccelGroup,
+		GoType:        reflect.TypeOf((*AccelGroup)(nil)),
+		InitClass:     initClassAccelGroup,
+		FinalizeClass: finalizeClassAccelGroup,
 	})
 }
 
@@ -544,6 +545,13 @@ func initClassAccelGroup(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAccelGroup(*AccelGroupClass) }); ok {
 		klass := (*AccelGroupClass)(gextras.NewStructNative(gclass))
 		goval.InitAccelGroup(klass)
+	}
+}
+
+func finalizeClassAccelGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAccelGroup(*AccelGroupClass) }); ok {
+		klass := (*AccelGroupClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAccelGroup(klass)
 	}
 }
 
@@ -941,16 +949,16 @@ type accelGroupEntry struct {
 
 func (a *AccelGroupEntry) Key() *AccelKey {
 	valptr := &a.native.key
-	var v *AccelKey // out
-	v = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *AccelKey // out
+	_v = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (a *AccelGroupEntry) AccelPathQuark() glib.Quark {
 	valptr := &a.native.accel_path_quark
-	var v glib.Quark // out
-	v = uint32(*valptr)
-	return v
+	var _v glib.Quark // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // AccelKey: instance of this type is always passed by reference.
@@ -966,17 +974,17 @@ type accelKey struct {
 // AccelKey: accelerator keyval.
 func (a *AccelKey) AccelKey() uint {
 	valptr := &a.native.accel_key
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // AccelMods: accelerator modifiers.
 func (a *AccelKey) AccelMods() gdk.ModifierType {
 	valptr := &a.native.accel_mods
-	var v gdk.ModifierType // out
-	v = gdk.ModifierType(*valptr)
-	return v
+	var _v gdk.ModifierType // out
+	_v = gdk.ModifierType(*valptr)
+	return _v
 }
 
 // AccelKey: accelerator keyval.

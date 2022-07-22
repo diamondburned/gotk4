@@ -154,9 +154,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRecentManager,
-		GoType:    reflect.TypeOf((*RecentManager)(nil)),
-		InitClass: initClassRecentManager,
+		GType:         GTypeRecentManager,
+		GoType:        reflect.TypeOf((*RecentManager)(nil)),
+		InitClass:     initClassRecentManager,
+		FinalizeClass: finalizeClassRecentManager,
 	})
 }
 
@@ -170,6 +171,13 @@ func initClassRecentManager(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRecentManager(*RecentManagerClass) }); ok {
 		klass := (*RecentManagerClass)(gextras.NewStructNative(gclass))
 		goval.InitRecentManager(klass)
+	}
+}
+
+func finalizeClassRecentManager(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRecentManager(*RecentManagerClass) }); ok {
+		klass := (*RecentManagerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRecentManager(klass)
 	}
 }
 
@@ -584,35 +592,35 @@ type recentData struct {
 // resource to be displayed, or NULL;.
 func (r *RecentData) DisplayName() string {
 	valptr := &r.native.display_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Description: UTF-8 encoded string, containing a short description of the
 // resource, or NULL;.
 func (r *RecentData) Description() string {
 	valptr := &r.native.description
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // MIMEType: MIME type of the resource;.
 func (r *RecentData) MIMEType() string {
 	valptr := &r.native.mime_type
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // AppName: name of the application that is registering this recently used
 // resource;.
 func (r *RecentData) AppName() string {
 	valptr := &r.native.app_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // AppExec: command line used to launch this resource; may contain the “\f” and
@@ -620,15 +628,15 @@ func (r *RecentData) AppName() string {
 // URI respectively when the command line is retrieved;.
 func (r *RecentData) AppExec() string {
 	valptr := &r.native.app_exec
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Groups: vector of strings containing groups names;.
 func (r *RecentData) Groups() []string {
 	valptr := &r.native.groups
-	var v []string // out
+	var _v []string // out
 	{
 		var i int
 		var z *C.char
@@ -637,23 +645,23 @@ func (r *RecentData) Groups() []string {
 		}
 
 		src := unsafe.Slice(*valptr, i)
-		v = make([]string, i)
+		_v = make([]string, i)
 		for i := range src {
-			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			_v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 		}
 	}
-	return v
+	return _v
 }
 
 // IsPrivate: whether this resource should be displayed only by the applications
 // that have registered it or not.
 func (r *RecentData) IsPrivate() bool {
 	valptr := &r.native.is_private
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // IsPrivate: whether this resource should be displayed only by the applications

@@ -796,12 +796,12 @@ type fontChooserIface struct {
 
 func (f *FontChooserIface) Padding() [10]unsafe.Pointer {
 	valptr := &f.native.padding
-	var v [10]unsafe.Pointer // out
+	var _v [10]unsafe.Pointer // out
 	{
 		src := &*valptr
 		for i := 0; i < 10; i++ {
-			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
 	}
-	return v
+	return _v
 }

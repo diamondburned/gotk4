@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHSV,
-		GoType:    reflect.TypeOf((*HSV)(nil)),
-		InitClass: initClassHSV,
+		GType:         GTypeHSV,
+		GoType:        reflect.TypeOf((*HSV)(nil)),
+		InitClass:     initClassHSV,
+		FinalizeClass: finalizeClassHSV,
 	})
 }
 
@@ -79,6 +80,13 @@ func initClassHSV(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHSV(*HSVClass) }); ok {
 		klass := (*HSVClass)(gextras.NewStructNative(gclass))
 		goval.InitHSV(klass)
+	}
+}
+
+func finalizeClassHSV(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHSV(*HSVClass) }); ok {
+		klass := (*HSVClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHSV(klass)
 	}
 }
 
@@ -332,7 +340,7 @@ type hsvClass struct {
 
 func (h *HSVClass) ParentClass() *WidgetClass {
 	valptr := &h.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

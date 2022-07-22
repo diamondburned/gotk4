@@ -479,9 +479,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePrintOperation,
-		GoType:    reflect.TypeOf((*PrintOperation)(nil)),
-		InitClass: initClassPrintOperation,
+		GType:         GTypePrintOperation,
+		GoType:        reflect.TypeOf((*PrintOperation)(nil)),
+		InitClass:     initClassPrintOperation,
+		FinalizeClass: finalizeClassPrintOperation,
 	})
 }
 
@@ -543,6 +544,13 @@ func initClassPrintOperation(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPrintOperation(*PrintOperationClass) }); ok {
 		klass := (*PrintOperationClass)(gextras.NewStructNative(gclass))
 		goval.InitPrintOperation(klass)
+	}
+}
+
+func finalizeClassPrintOperation(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePrintOperation(*PrintOperationClass) }); ok {
+		klass := (*PrintOperationClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePrintOperation(klass)
 	}
 }
 

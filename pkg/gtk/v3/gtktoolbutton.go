@@ -73,9 +73,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeToolButton,
-		GoType:    reflect.TypeOf((*ToolButton)(nil)),
-		InitClass: initClassToolButton,
+		GType:         GTypeToolButton,
+		GoType:        reflect.TypeOf((*ToolButton)(nil)),
+		InitClass:     initClassToolButton,
+		FinalizeClass: finalizeClassToolButton,
 	})
 }
 
@@ -89,6 +90,13 @@ func initClassToolButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitToolButton(*ToolButtonClass) }); ok {
 		klass := (*ToolButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitToolButton(klass)
+	}
+}
+
+func finalizeClassToolButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeToolButton(*ToolButtonClass) }); ok {
+		klass := (*ToolButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeToolButton(klass)
 	}
 }
 
@@ -581,14 +589,14 @@ type toolButtonClass struct {
 // ParentClass: parent class.
 func (t *ToolButtonClass) ParentClass() *ToolItemClass {
 	valptr := &t.native.parent_class
-	var v *ToolItemClass // out
-	v = (*ToolItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ToolItemClass // out
+	_v = (*ToolItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (t *ToolButtonClass) ButtonType() coreglib.Type {
 	valptr := &t.native.button_type
-	var v coreglib.Type // out
-	v = coreglib.Type(*valptr)
-	return v
+	var _v coreglib.Type // out
+	_v = coreglib.Type(*valptr)
+	return _v
 }

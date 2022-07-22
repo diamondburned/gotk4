@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHeaderBar,
-		GoType:    reflect.TypeOf((*HeaderBar)(nil)),
-		InitClass: initClassHeaderBar,
+		GType:         GTypeHeaderBar,
+		GoType:        reflect.TypeOf((*HeaderBar)(nil)),
+		InitClass:     initClassHeaderBar,
+		FinalizeClass: finalizeClassHeaderBar,
 	})
 }
 
@@ -69,6 +70,13 @@ func initClassHeaderBar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHeaderBar(*HeaderBarClass) }); ok {
 		klass := (*HeaderBarClass)(gextras.NewStructNative(gclass))
 		goval.InitHeaderBar(klass)
+	}
+}
+
+func finalizeClassHeaderBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHeaderBar(*HeaderBarClass) }); ok {
+		klass := (*HeaderBarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHeaderBar(klass)
 	}
 }
 
@@ -480,7 +488,7 @@ type headerBarClass struct {
 
 func (h *HeaderBarClass) ParentClass() *ContainerClass {
 	valptr := &h.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

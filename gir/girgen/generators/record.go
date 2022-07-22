@@ -350,7 +350,7 @@ func (rg *RecordGenerator) getters() {
 
 		// Use *valptr instead of valptr, since the generator would generate a
 		// &*valptr with it, effectively nullifying the copying.
-		value := typeconv.NewFieldValue("*valptr", "v", field)
+		value := typeconv.NewFieldValue("*valptr", "_v", field)
 
 		// Double-check if we have a method with the existing name.
 		if fieldCollides(value.Name) {
@@ -413,7 +413,7 @@ func (rg *RecordGenerator) getters() {
 		case typeconv.ConvertCToGo: // getter
 			b.Linef(converted.Out.Declare)
 			b.Linef(converted.Conversion)
-			b.Linef("return v")
+			b.Linef("return _v")
 
 			rg.Getters = append(rg.Getters, recordGetter{
 				Name:         strcases.SnakeToGo(true, converted.Name),

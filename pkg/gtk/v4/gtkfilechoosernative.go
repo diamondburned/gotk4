@@ -193,9 +193,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileChooserNative,
-		GoType:    reflect.TypeOf((*FileChooserNative)(nil)),
-		InitClass: initClassFileChooserNative,
+		GType:         GTypeFileChooserNative,
+		GoType:        reflect.TypeOf((*FileChooserNative)(nil)),
+		InitClass:     initClassFileChooserNative,
+		FinalizeClass: finalizeClassFileChooserNative,
 	})
 }
 
@@ -203,6 +204,13 @@ func initClassFileChooserNative(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileChooserNative(*FileChooserNativeClass) }); ok {
 		klass := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
 		goval.InitFileChooserNative(klass)
+	}
+}
+
+func finalizeClassFileChooserNative(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileChooserNative(*FileChooserNativeClass) }); ok {
+		klass := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileChooserNative(klass)
 	}
 }
 
@@ -395,7 +403,7 @@ type fileChooserNativeClass struct {
 
 func (f *FileChooserNativeClass) ParentClass() *NativeDialogClass {
 	valptr := &f.native.parent_class
-	var v *NativeDialogClass // out
-	v = (*NativeDialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *NativeDialogClass // out
+	_v = (*NativeDialogClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

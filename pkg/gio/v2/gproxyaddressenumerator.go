@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeProxyAddressEnumerator,
-		GoType:    reflect.TypeOf((*ProxyAddressEnumerator)(nil)),
-		InitClass: initClassProxyAddressEnumerator,
+		GType:         GTypeProxyAddressEnumerator,
+		GoType:        reflect.TypeOf((*ProxyAddressEnumerator)(nil)),
+		InitClass:     initClassProxyAddressEnumerator,
+		FinalizeClass: finalizeClassProxyAddressEnumerator,
 	})
 }
 
@@ -61,6 +62,15 @@ func initClassProxyAddressEnumerator(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ProxyAddressEnumeratorClass)(gextras.NewStructNative(gclass))
 		goval.InitProxyAddressEnumerator(klass)
+	}
+}
+
+func finalizeClassProxyAddressEnumerator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeProxyAddressEnumerator(*ProxyAddressEnumeratorClass)
+	}); ok {
+		klass := (*ProxyAddressEnumeratorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeProxyAddressEnumerator(klass)
 	}
 }
 

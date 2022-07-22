@@ -103,9 +103,10 @@ var _ Ranger = (*Range)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRange,
-		GoType:    reflect.TypeOf((*Range)(nil)),
-		InitClass: initClassRange,
+		GType:         GTypeRange,
+		GoType:        reflect.TypeOf((*Range)(nil)),
+		InitClass:     initClassRange,
+		FinalizeClass: finalizeClassRange,
 	})
 }
 
@@ -143,6 +144,13 @@ func initClassRange(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRange(*RangeClass) }); ok {
 		klass := (*RangeClass)(gextras.NewStructNative(gclass))
 		goval.InitRange(klass)
+	}
+}
+
+func finalizeClassRange(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRange(*RangeClass) }); ok {
+		klass := (*RangeClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRange(klass)
 	}
 }
 
@@ -1047,21 +1055,21 @@ type rangeClass struct {
 
 func (r *RangeClass) ParentClass() *WidgetClass {
 	valptr := &r.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (r *RangeClass) SliderDetail() string {
 	valptr := &r.native.slider_detail
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (r *RangeClass) StepperDetail() string {
 	valptr := &r.native.stepper_detail
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

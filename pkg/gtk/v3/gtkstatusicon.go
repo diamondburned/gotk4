@@ -132,9 +132,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStatusIcon,
-		GoType:    reflect.TypeOf((*StatusIcon)(nil)),
-		InitClass: initClassStatusIcon,
+		GType:         GTypeStatusIcon,
+		GoType:        reflect.TypeOf((*StatusIcon)(nil)),
+		InitClass:     initClassStatusIcon,
+		FinalizeClass: finalizeClassStatusIcon,
 	})
 }
 
@@ -182,6 +183,13 @@ func initClassStatusIcon(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStatusIcon(*StatusIconClass) }); ok {
 		klass := (*StatusIconClass)(gextras.NewStructNative(gclass))
 		goval.InitStatusIcon(klass)
+	}
+}
+
+func finalizeClassStatusIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStatusIcon(*StatusIconClass) }); ok {
+		klass := (*StatusIconClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStatusIcon(klass)
 	}
 }
 

@@ -91,11 +91,15 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .GLibTypeStruct }}
 	{{ if .IsClass }}
 
+	{{ Import . "unsafe" }}
+	{{ Import . "reflect" }}
+
 	func init() {
 		coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-			GType:     GType{{ .StructName }},
-			GoType:    reflect.TypeOf((*{{ .StructName }})(nil)),
-			InitClass: initClass{{ .StructName }},
+			GType:         GType{{ .StructName }},
+			GoType:        reflect.TypeOf((*{{ .StructName }})(nil)),
+			InitClass:     initClass{{ .StructName }},
+			FinalizeClass: finalizeClass{{ .StructName }},
 		})
 	}
 
@@ -129,8 +133,17 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 			goval.Init{{ .StructName }}(klass)
 		}
 	}
+
+	func finalizeClass{{ .StructName }}(gclass unsafe.Pointer, goval any) {
+		{{-  ImportCore . "gextras"  -}}
+		if goval, ok := goval.(interface { Finalize{{ .StructName }}(*{{ .GLibTypeStruct.Name }}) }); ok {
+			klass := (*{{ .GLibTypeStruct.Name }})(gextras.NewStructNative(gclass))
+			goval.Finalize{{ .StructName }}(klass)
+		}
+	}
 	{{ else }}
 	func ifaceInit{{ .InterfaceName }}(gifacePtr, data C.gpointer) {
+		{{- Import . "unsafe" -}}
 		{{- if .GLibTypeStruct.VirtualMethods }}
 
 		{{- if .IsRuntimeLinkMode}}
@@ -162,6 +175,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .HasMarshaler }}
 	func marshal{{ .StructName }}(p uintptr) (interface{}, error) {
+		{{- Import . "unsafe" -}}
 		return {{ $wrapper }}(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 	}
 	{{ end }}
@@ -253,7 +267,6 @@ func (d ifacegenData) IsRuntimeLinkMode() bool {
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
 	writer := FileWriterFromType(gen, igen)
 	writer.Header().NeedsExternGLib()
-	writer.Header().Import("unsafe")
 	// TOOD: add gbox
 
 	// Import for implementation types.

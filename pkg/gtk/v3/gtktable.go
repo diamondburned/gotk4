@@ -125,9 +125,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTable,
-		GoType:    reflect.TypeOf((*Table)(nil)),
-		InitClass: initClassTable,
+		GType:         GTypeTable,
+		GoType:        reflect.TypeOf((*Table)(nil)),
+		InitClass:     initClassTable,
+		FinalizeClass: finalizeClassTable,
 	})
 }
 
@@ -135,6 +136,13 @@ func initClassTable(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTable(*TableClass) }); ok {
 		klass := (*TableClass)(gextras.NewStructNative(gclass))
 		goval.InitTable(klass)
+	}
+}
+
+func finalizeClassTable(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTable(*TableClass) }); ok {
+		klass := (*TableClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTable(klass)
 	}
 }
 
@@ -647,7 +655,7 @@ type tableChild struct {
 
 func (t *TableChild) Widget() Widgetter {
 	valptr := &t.native.widget
-	var v Widgetter // out
+	var _v Widgetter // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -663,51 +671,51 @@ func (t *TableChild) Widget() Widgetter {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 func (t *TableChild) LeftAttach() uint16 {
 	valptr := &t.native.left_attach
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableChild) RightAttach() uint16 {
 	valptr := &t.native.right_attach
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableChild) TopAttach() uint16 {
 	valptr := &t.native.top_attach
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableChild) BottomAttach() uint16 {
 	valptr := &t.native.bottom_attach
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableChild) Xpadding() uint16 {
 	valptr := &t.native.xpadding
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableChild) Ypadding() uint16 {
 	valptr := &t.native.ypadding
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableChild) SetLeftAttach(leftAttach uint16) {
@@ -752,9 +760,9 @@ type tableClass struct {
 
 func (t *TableClass) ParentClass() *ContainerClass {
 	valptr := &t.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // TableRowCol: instance of this type is always passed by reference.
@@ -769,23 +777,23 @@ type tableRowCol struct {
 
 func (t *TableRowCol) Requisition() uint16 {
 	valptr := &t.native.requisition
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableRowCol) Allocation() uint16 {
 	valptr := &t.native.allocation
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableRowCol) Spacing() uint16 {
 	valptr := &t.native.spacing
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 func (t *TableRowCol) SetRequisition(requisition uint16) {

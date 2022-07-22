@@ -64,9 +64,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeScaleButton,
-		GoType:    reflect.TypeOf((*ScaleButton)(nil)),
-		InitClass: initClassScaleButton,
+		GType:         GTypeScaleButton,
+		GoType:        reflect.TypeOf((*ScaleButton)(nil)),
+		InitClass:     initClassScaleButton,
+		FinalizeClass: finalizeClassScaleButton,
 	})
 }
 
@@ -80,6 +81,13 @@ func initClassScaleButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitScaleButton(*ScaleButtonClass) }); ok {
 		klass := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitScaleButton(klass)
+	}
+}
+
+func finalizeClassScaleButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeScaleButton(*ScaleButtonClass) }); ok {
+		klass := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeScaleButton(klass)
 	}
 }
 
@@ -469,7 +477,7 @@ type scaleButtonClass struct {
 
 func (s *ScaleButtonClass) ParentClass() *WidgetClass {
 	valptr := &s.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

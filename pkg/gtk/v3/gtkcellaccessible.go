@@ -54,9 +54,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellAccessible,
-		GoType:    reflect.TypeOf((*CellAccessible)(nil)),
-		InitClass: initClassCellAccessible,
+		GType:         GTypeCellAccessible,
+		GoType:        reflect.TypeOf((*CellAccessible)(nil)),
+		InitClass:     initClassCellAccessible,
+		FinalizeClass: finalizeClassCellAccessible,
 	})
 }
 
@@ -70,6 +71,13 @@ func initClassCellAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellAccessible(*CellAccessibleClass) }); ok {
 		klass := (*CellAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitCellAccessible(klass)
+	}
+}
+
+func finalizeClassCellAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellAccessible(*CellAccessibleClass) }); ok {
+		klass := (*CellAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellAccessible(klass)
 	}
 }
 
@@ -128,7 +136,7 @@ type cellAccessibleClass struct {
 
 func (c *CellAccessibleClass) ParentClass() *AccessibleClass {
 	valptr := &c.native.parent_class
-	var v *AccessibleClass // out
-	v = (*AccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *AccessibleClass // out
+	_v = (*AccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

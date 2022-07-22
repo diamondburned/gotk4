@@ -169,9 +169,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFilter,
-		GoType:    reflect.TypeOf((*Filter)(nil)),
-		InitClass: initClassFilter,
+		GType:         GTypeFilter,
+		GoType:        reflect.TypeOf((*Filter)(nil)),
+		InitClass:     initClassFilter,
+		FinalizeClass: finalizeClassFilter,
 	})
 }
 
@@ -191,6 +192,13 @@ func initClassFilter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFilter(*FilterClass) }); ok {
 		klass := (*FilterClass)(gextras.NewStructNative(gclass))
 		goval.InitFilter(klass)
+	}
+}
+
+func finalizeClassFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFilter(*FilterClass) }); ok {
+		klass := (*FilterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFilter(klass)
 	}
 }
 

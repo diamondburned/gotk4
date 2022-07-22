@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeObjectFactory,
-		GoType:    reflect.TypeOf((*ObjectFactory)(nil)),
-		InitClass: initClassObjectFactory,
+		GType:         GTypeObjectFactory,
+		GoType:        reflect.TypeOf((*ObjectFactory)(nil)),
+		InitClass:     initClassObjectFactory,
+		FinalizeClass: finalizeClassObjectFactory,
 	})
 }
 
@@ -68,6 +69,13 @@ func initClassObjectFactory(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitObjectFactory(*ObjectFactoryClass) }); ok {
 		klass := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
 		goval.InitObjectFactory(klass)
+	}
+}
+
+func finalizeClassObjectFactory(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeObjectFactory(*ObjectFactoryClass) }); ok {
+		klass := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeObjectFactory(klass)
 	}
 }
 

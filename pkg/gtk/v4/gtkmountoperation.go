@@ -56,9 +56,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMountOperation,
-		GoType:    reflect.TypeOf((*MountOperation)(nil)),
-		InitClass: initClassMountOperation,
+		GType:         GTypeMountOperation,
+		GoType:        reflect.TypeOf((*MountOperation)(nil)),
+		InitClass:     initClassMountOperation,
+		FinalizeClass: finalizeClassMountOperation,
 	})
 }
 
@@ -66,6 +67,13 @@ func initClassMountOperation(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMountOperation(*MountOperationClass) }); ok {
 		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
 		goval.InitMountOperation(klass)
+	}
+}
+
+func finalizeClassMountOperation(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMountOperation(*MountOperationClass) }); ok {
+		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMountOperation(klass)
 	}
 }
 
@@ -236,7 +244,7 @@ type mountOperationClass struct {
 // ParentClass: parent class.
 func (m *MountOperationClass) ParentClass() *gio.MountOperationClass {
 	valptr := &m.native.parent_class
-	var v *gio.MountOperationClass // out
-	v = (*gio.MountOperationClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gio.MountOperationClass // out
+	_v = (*gio.MountOperationClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

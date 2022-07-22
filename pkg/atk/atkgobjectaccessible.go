@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeGObjectAccessible,
-		GoType:    reflect.TypeOf((*GObjectAccessible)(nil)),
-		InitClass: initClassGObjectAccessible,
+		GType:         GTypeGObjectAccessible,
+		GoType:        reflect.TypeOf((*GObjectAccessible)(nil)),
+		InitClass:     initClassGObjectAccessible,
+		FinalizeClass: finalizeClassGObjectAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassGObjectAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitGObjectAccessible(*GObjectAccessibleClass) }); ok {
 		klass := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitGObjectAccessible(klass)
+	}
+}
+
+func finalizeClassGObjectAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeGObjectAccessible(*GObjectAccessibleClass) }); ok {
+		klass := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeGObjectAccessible(klass)
 	}
 }
 

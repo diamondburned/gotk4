@@ -55,23 +55,23 @@ type analysis struct {
 // ShapeEngine: unused.
 func (a *Analysis) ShapeEngine() unsafe.Pointer {
 	valptr := &a.native.shape_engine
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // LangEngine: unused.
 func (a *Analysis) LangEngine() unsafe.Pointer {
 	valptr := &a.native.lang_engine
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Font: font for this segment.
 func (a *Analysis) Font() Fonter {
 	valptr := &a.native.font
-	var v Fonter // out
+	var _v Fonter // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -87,49 +87,49 @@ func (a *Analysis) Font() Fonter {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.Fonter")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // Level: bidirectional level for this segment.
 func (a *Analysis) Level() byte {
 	valptr := &a.native.level
-	var v byte // out
-	v = byte(*valptr)
-	return v
+	var _v byte // out
+	_v = byte(*valptr)
+	return _v
 }
 
 // Gravity: glyph orientation for this segment (A PangoGravity).
 func (a *Analysis) Gravity() byte {
 	valptr := &a.native.gravity
-	var v byte // out
-	v = byte(*valptr)
-	return v
+	var _v byte // out
+	_v = byte(*valptr)
+	return _v
 }
 
 // Flags: boolean flags for this segment (Since: 1.16).
 func (a *Analysis) Flags() byte {
 	valptr := &a.native.flags
-	var v byte // out
-	v = byte(*valptr)
-	return v
+	var _v byte // out
+	_v = byte(*valptr)
+	return _v
 }
 
 // Script: detected script for this segment (A PangoScript) (Since: 1.18).
 func (a *Analysis) Script() byte {
 	valptr := &a.native.script
-	var v byte // out
-	v = byte(*valptr)
-	return v
+	var _v byte // out
+	_v = byte(*valptr)
+	return _v
 }
 
 // Language: detected language for this segment.
 func (a *Analysis) Language() *Language {
 	valptr := &a.native.language
-	var v *Language // out
-	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *Language // out
+	_v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Level: bidirectional level for this segment.
@@ -197,33 +197,33 @@ func NewItem() *Item {
 // Offset: byte offset of the start of this item in text.
 func (i *Item) Offset() int {
 	valptr := &i.native.offset
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Length: length of this item in bytes.
 func (i *Item) Length() int {
 	valptr := &i.native.length
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // NumChars: number of Unicode characters in the item.
 func (i *Item) NumChars() int {
 	valptr := &i.native.num_chars
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Analysis analysis results for the item.
 func (i *Item) Analysis() *Analysis {
 	valptr := &i.native.analysis
-	var v *Analysis // out
-	v = (*Analysis)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Analysis // out
+	_v = (*Analysis)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Offset: byte offset of the start of this item in text.

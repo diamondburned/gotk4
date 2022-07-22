@@ -177,9 +177,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSorter,
-		GoType:    reflect.TypeOf((*Sorter)(nil)),
-		InitClass: initClassSorter,
+		GType:         GTypeSorter,
+		GoType:        reflect.TypeOf((*Sorter)(nil)),
+		InitClass:     initClassSorter,
+		FinalizeClass: finalizeClassSorter,
 	})
 }
 
@@ -199,6 +200,13 @@ func initClassSorter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSorter(*SorterClass) }); ok {
 		klass := (*SorterClass)(gextras.NewStructNative(gclass))
 		goval.InitSorter(klass)
+	}
+}
+
+func finalizeClassSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSorter(*SorterClass) }); ok {
+		klass := (*SorterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSorter(klass)
 	}
 }
 

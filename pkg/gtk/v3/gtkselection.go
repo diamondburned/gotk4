@@ -204,17 +204,17 @@ func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
 // Target: string representation of the target type.
 func (t *TargetEntry) Target() string {
 	valptr := &t.native.target
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Flags for DND.
 func (t *TargetEntry) Flags() uint {
 	valptr := &t.native.flags
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Info: application-assigned integer ID which will get passed as a parameter to
@@ -222,9 +222,9 @@ func (t *TargetEntry) Flags() uint {
 // the target type without extensive string compares.
 func (t *TargetEntry) Info() uint {
 	valptr := &t.native.info
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Flags for DND.

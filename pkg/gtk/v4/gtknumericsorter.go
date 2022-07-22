@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNumericSorter,
-		GoType:    reflect.TypeOf((*NumericSorter)(nil)),
-		InitClass: initClassNumericSorter,
+		GType:         GTypeNumericSorter,
+		GoType:        reflect.TypeOf((*NumericSorter)(nil)),
+		InitClass:     initClassNumericSorter,
+		FinalizeClass: finalizeClassNumericSorter,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassNumericSorter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNumericSorter(*NumericSorterClass) }); ok {
 		klass := (*NumericSorterClass)(gextras.NewStructNative(gclass))
 		goval.InitNumericSorter(klass)
+	}
+}
+
+func finalizeClassNumericSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNumericSorter(*NumericSorterClass) }); ok {
+		klass := (*NumericSorterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNumericSorter(klass)
 	}
 }
 
@@ -219,7 +227,7 @@ type numericSorterClass struct {
 
 func (n *NumericSorterClass) ParentClass() *SorterClass {
 	valptr := &n.native.parent_class
-	var v *SorterClass // out
-	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SorterClass // out
+	_v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

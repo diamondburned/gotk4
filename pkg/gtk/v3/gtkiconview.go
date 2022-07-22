@@ -183,9 +183,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeIconView,
-		GoType:    reflect.TypeOf((*IconView)(nil)),
-		InitClass: initClassIconView,
+		GType:         GTypeIconView,
+		GoType:        reflect.TypeOf((*IconView)(nil)),
+		InitClass:     initClassIconView,
+		FinalizeClass: finalizeClassIconView,
 	})
 }
 
@@ -229,6 +230,13 @@ func initClassIconView(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitIconView(*IconViewClass) }); ok {
 		klass := (*IconViewClass)(gextras.NewStructNative(gclass))
 		goval.InitIconView(klass)
+	}
+}
+
+func finalizeClassIconView(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeIconView(*IconViewClass) }); ok {
+		klass := (*IconViewClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeIconView(klass)
 	}
 }
 
@@ -2283,7 +2291,7 @@ type iconViewClass struct {
 
 func (i *IconViewClass) ParentClass() *ContainerClass {
 	valptr := &i.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

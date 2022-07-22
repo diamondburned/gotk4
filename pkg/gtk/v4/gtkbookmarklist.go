@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBookmarkList,
-		GoType:    reflect.TypeOf((*BookmarkList)(nil)),
-		InitClass: initClassBookmarkList,
+		GType:         GTypeBookmarkList,
+		GoType:        reflect.TypeOf((*BookmarkList)(nil)),
+		InitClass:     initClassBookmarkList,
+		FinalizeClass: finalizeClassBookmarkList,
 	})
 }
 
@@ -62,6 +63,13 @@ func initClassBookmarkList(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBookmarkList(*BookmarkListClass) }); ok {
 		klass := (*BookmarkListClass)(gextras.NewStructNative(gclass))
 		goval.InitBookmarkList(klass)
+	}
+}
+
+func finalizeClassBookmarkList(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBookmarkList(*BookmarkListClass) }); ok {
+		klass := (*BookmarkListClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBookmarkList(klass)
 	}
 }
 

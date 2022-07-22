@@ -75,9 +75,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeExpander,
-		GoType:    reflect.TypeOf((*Expander)(nil)),
-		InitClass: initClassExpander,
+		GType:         GTypeExpander,
+		GoType:        reflect.TypeOf((*Expander)(nil)),
+		InitClass:     initClassExpander,
+		FinalizeClass: finalizeClassExpander,
 	})
 }
 
@@ -91,6 +92,13 @@ func initClassExpander(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitExpander(*ExpanderClass) }); ok {
 		klass := (*ExpanderClass)(gextras.NewStructNative(gclass))
 		goval.InitExpander(klass)
+	}
+}
+
+func finalizeClassExpander(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeExpander(*ExpanderClass) }); ok {
+		klass := (*ExpanderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeExpander(klass)
 	}
 }
 
@@ -623,7 +631,7 @@ type expanderClass struct {
 // ParentClass: parent class.
 func (e *ExpanderClass) ParentClass() *BinClass {
 	valptr := &e.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

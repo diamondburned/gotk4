@@ -60,9 +60,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontButton,
-		GoType:    reflect.TypeOf((*FontButton)(nil)),
-		InitClass: initClassFontButton,
+		GType:         GTypeFontButton,
+		GoType:        reflect.TypeOf((*FontButton)(nil)),
+		InitClass:     initClassFontButton,
+		FinalizeClass: finalizeClassFontButton,
 	})
 }
 
@@ -76,6 +77,13 @@ func initClassFontButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontButton(*FontButtonClass) }); ok {
 		klass := (*FontButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitFontButton(klass)
+	}
+}
+
+func finalizeClassFontButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontButton(*FontButtonClass) }); ok {
+		klass := (*FontButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontButton(klass)
 	}
 }
 
@@ -505,7 +513,7 @@ type fontButtonClass struct {
 
 func (f *FontButtonClass) ParentClass() *ButtonClass {
 	valptr := &f.native.parent_class
-	var v *ButtonClass // out
-	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ButtonClass // out
+	_v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

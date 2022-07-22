@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSwitchAccessible,
-		GoType:    reflect.TypeOf((*SwitchAccessible)(nil)),
-		InitClass: initClassSwitchAccessible,
+		GType:         GTypeSwitchAccessible,
+		GoType:        reflect.TypeOf((*SwitchAccessible)(nil)),
+		InitClass:     initClassSwitchAccessible,
+		FinalizeClass: finalizeClassSwitchAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassSwitchAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSwitchAccessible(*SwitchAccessibleClass) }); ok {
 		klass := (*SwitchAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitSwitchAccessible(klass)
+	}
+}
+
+func finalizeClassSwitchAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSwitchAccessible(*SwitchAccessibleClass) }); ok {
+		klass := (*SwitchAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSwitchAccessible(klass)
 	}
 }
 
@@ -93,7 +101,7 @@ type switchAccessibleClass struct {
 
 func (s *SwitchAccessibleClass) ParentClass() *WidgetAccessibleClass {
 	valptr := &s.native.parent_class
-	var v *WidgetAccessibleClass // out
-	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetAccessibleClass // out
+	_v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

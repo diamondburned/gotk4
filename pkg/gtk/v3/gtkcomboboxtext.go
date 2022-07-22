@@ -93,9 +93,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeComboBoxText,
-		GoType:    reflect.TypeOf((*ComboBoxText)(nil)),
-		InitClass: initClassComboBoxText,
+		GType:         GTypeComboBoxText,
+		GoType:        reflect.TypeOf((*ComboBoxText)(nil)),
+		InitClass:     initClassComboBoxText,
+		FinalizeClass: finalizeClassComboBoxText,
 	})
 }
 
@@ -103,6 +104,13 @@ func initClassComboBoxText(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitComboBoxText(*ComboBoxTextClass) }); ok {
 		klass := (*ComboBoxTextClass)(gextras.NewStructNative(gclass))
 		goval.InitComboBoxText(klass)
+	}
+}
+
+func finalizeClassComboBoxText(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeComboBoxText(*ComboBoxTextClass) }); ok {
+		klass := (*ComboBoxTextClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeComboBoxText(klass)
 	}
 }
 
@@ -421,7 +429,7 @@ type comboBoxTextClass struct {
 
 func (c *ComboBoxTextClass) ParentClass() *ComboBoxClass {
 	valptr := &c.native.parent_class
-	var v *ComboBoxClass // out
-	v = (*ComboBoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ComboBoxClass // out
+	_v = (*ComboBoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

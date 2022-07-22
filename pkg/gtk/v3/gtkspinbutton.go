@@ -201,9 +201,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSpinButton,
-		GoType:    reflect.TypeOf((*SpinButton)(nil)),
-		InitClass: initClassSpinButton,
+		GType:         GTypeSpinButton,
+		GoType:        reflect.TypeOf((*SpinButton)(nil)),
+		InitClass:     initClassSpinButton,
+		FinalizeClass: finalizeClassSpinButton,
 	})
 }
 
@@ -233,6 +234,13 @@ func initClassSpinButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSpinButton(*SpinButtonClass) }); ok {
 		klass := (*SpinButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitSpinButton(klass)
+	}
+}
+
+func finalizeClassSpinButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSpinButton(*SpinButtonClass) }); ok {
+		klass := (*SpinButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSpinButton(klass)
 	}
 }
 
@@ -1041,7 +1049,7 @@ type spinButtonClass struct {
 
 func (s *SpinButtonClass) ParentClass() *EntryClass {
 	valptr := &s.native.parent_class
-	var v *EntryClass // out
-	v = (*EntryClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *EntryClass // out
+	_v = (*EntryClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

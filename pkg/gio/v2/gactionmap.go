@@ -343,9 +343,9 @@ type actionEntry struct {
 // Name: name of the action.
 func (a *ActionEntry) Name() string {
 	valptr := &a.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ParameterType: type of the parameter that must be passed to the activate
@@ -353,9 +353,9 @@ func (a *ActionEntry) Name() string {
 // no parameter).
 func (a *ActionEntry) ParameterType() string {
 	valptr := &a.native.parameter_type
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // State: initial state for this action, given in [GVariant text
@@ -364,9 +364,9 @@ func (a *ActionEntry) ParameterType() string {
 // actions should give NULL here.
 func (a *ActionEntry) State() string {
 	valptr := &a.native.state
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ActionMapInterface: virtual function table for Map.

@@ -317,9 +317,10 @@ var _ Containerer = (*Container)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeContainer,
-		GoType:    reflect.TypeOf((*Container)(nil)),
-		InitClass: initClassContainer,
+		GType:         GTypeContainer,
+		GoType:        reflect.TypeOf((*Container)(nil)),
+		InitClass:     initClassContainer,
+		FinalizeClass: finalizeClassContainer,
 	})
 }
 
@@ -359,6 +360,13 @@ func initClassContainer(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitContainer(*ContainerClass) }); ok {
 		klass := (*ContainerClass)(gextras.NewStructNative(gclass))
 		goval.InitContainer(klass)
+	}
+}
+
+func finalizeClassContainer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeContainer(*ContainerClass) }); ok {
+		klass := (*ContainerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeContainer(klass)
 	}
 }
 
@@ -1478,9 +1486,9 @@ type containerClass struct {
 // ParentClass: parent class.
 func (c *ContainerClass) ParentClass() *WidgetClass {
 	valptr := &c.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // HandleBorderWidth modifies a subclass of ContainerClass to automatically add

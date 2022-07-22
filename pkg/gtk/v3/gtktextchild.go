@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTextChildAnchor,
-		GoType:    reflect.TypeOf((*TextChildAnchor)(nil)),
-		InitClass: initClassTextChildAnchor,
+		GType:         GTypeTextChildAnchor,
+		GoType:        reflect.TypeOf((*TextChildAnchor)(nil)),
+		InitClass:     initClassTextChildAnchor,
+		FinalizeClass: finalizeClassTextChildAnchor,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassTextChildAnchor(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTextChildAnchor(*TextChildAnchorClass) }); ok {
 		klass := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
 		goval.InitTextChildAnchor(klass)
+	}
+}
+
+func finalizeClassTextChildAnchor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTextChildAnchor(*TextChildAnchorClass) }); ok {
+		klass := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTextChildAnchor(klass)
 	}
 }
 

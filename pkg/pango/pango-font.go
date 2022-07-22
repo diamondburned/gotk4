@@ -430,9 +430,10 @@ var _ Fonter = (*Font)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFont,
-		GoType:    reflect.TypeOf((*Font)(nil)),
-		InitClass: initClassFont,
+		GType:         GTypeFont,
+		GoType:        reflect.TypeOf((*Font)(nil)),
+		InitClass:     initClassFont,
+		FinalizeClass: finalizeClassFont,
 	})
 }
 
@@ -472,6 +473,13 @@ func initClassFont(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFont(*FontClass) }); ok {
 		klass := (*FontClass)(gextras.NewStructNative(gclass))
 		goval.InitFont(klass)
+	}
+}
+
+func finalizeClassFont(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFont(*FontClass) }); ok {
+		klass := (*FontClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFont(klass)
 	}
 }
 
@@ -979,9 +987,10 @@ var _ FontFacer = (*FontFace)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontFace,
-		GoType:    reflect.TypeOf((*FontFace)(nil)),
-		InitClass: initClassFontFace,
+		GType:         GTypeFontFace,
+		GoType:        reflect.TypeOf((*FontFace)(nil)),
+		InitClass:     initClassFontFace,
+		FinalizeClass: finalizeClassFontFace,
 	})
 }
 
@@ -1011,6 +1020,13 @@ func initClassFontFace(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontFace(*FontFaceClass) }); ok {
 		klass := (*FontFaceClass)(gextras.NewStructNative(gclass))
 		goval.InitFontFace(klass)
+	}
+}
+
+func finalizeClassFontFace(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontFace(*FontFaceClass) }); ok {
+		klass := (*FontFaceClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontFace(klass)
 	}
 }
 
@@ -1355,9 +1371,10 @@ var _ FontFamilier = (*FontFamily)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontFamily,
-		GoType:    reflect.TypeOf((*FontFamily)(nil)),
-		InitClass: initClassFontFamily,
+		GType:         GTypeFontFamily,
+		GoType:        reflect.TypeOf((*FontFamily)(nil)),
+		InitClass:     initClassFontFamily,
+		FinalizeClass: finalizeClassFontFamily,
 	})
 }
 
@@ -1387,6 +1404,13 @@ func initClassFontFamily(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontFamily(*FontFamilyClass) }); ok {
 		klass := (*FontFamilyClass)(gextras.NewStructNative(gclass))
 		goval.InitFontFamily(klass)
+	}
+}
+
+func finalizeClassFontFamily(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontFamily(*FontFamilyClass) }); ok {
+		klass := (*FontFamilyClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontFamily(klass)
 	}
 }
 

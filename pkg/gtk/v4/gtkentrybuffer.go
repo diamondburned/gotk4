@@ -126,9 +126,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeEntryBuffer,
-		GoType:    reflect.TypeOf((*EntryBuffer)(nil)),
-		InitClass: initClassEntryBuffer,
+		GType:         GTypeEntryBuffer,
+		GoType:        reflect.TypeOf((*EntryBuffer)(nil)),
+		InitClass:     initClassEntryBuffer,
+		FinalizeClass: finalizeClassEntryBuffer,
 	})
 }
 
@@ -168,6 +169,13 @@ func initClassEntryBuffer(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitEntryBuffer(*EntryBufferClass) }); ok {
 		klass := (*EntryBufferClass)(gextras.NewStructNative(gclass))
 		goval.InitEntryBuffer(klass)
+	}
+}
+
+func finalizeClassEntryBuffer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeEntryBuffer(*EntryBufferClass) }); ok {
+		klass := (*EntryBufferClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeEntryBuffer(klass)
 	}
 }
 

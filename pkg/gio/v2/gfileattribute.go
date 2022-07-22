@@ -41,25 +41,25 @@ type fileAttributeInfo struct {
 // Name: name of the attribute.
 func (f *FileAttributeInfo) Name() string {
 	valptr := &f.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Type type of the attribute.
 func (f *FileAttributeInfo) Type() FileAttributeType {
 	valptr := &f.native._type
-	var v FileAttributeType // out
-	v = FileAttributeType(*valptr)
-	return v
+	var _v FileAttributeType // out
+	_v = FileAttributeType(*valptr)
+	return _v
 }
 
 // Flags: set of AttributeInfoFlags.
 func (f *FileAttributeInfo) Flags() FileAttributeInfoFlags {
 	valptr := &f.native.flags
-	var v FileAttributeInfoFlags // out
-	v = FileAttributeInfoFlags(*valptr)
-	return v
+	var _v FileAttributeInfoFlags // out
+	_v = FileAttributeInfoFlags(*valptr)
+	return _v
 }
 
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
@@ -102,17 +102,17 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 // Infos: array of AttributeInfos.
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	valptr := &f.native.infos
-	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *FileAttributeInfo // out
+	_v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // NInfos: number of values in the array.
 func (f *FileAttributeInfoList) NInfos() int {
 	valptr := &f.native.n_infos
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // NInfos: number of values in the array.

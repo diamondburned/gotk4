@@ -159,9 +159,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeEntryCompletion,
-		GoType:    reflect.TypeOf((*EntryCompletion)(nil)),
-		InitClass: initClassEntryCompletion,
+		GType:         GTypeEntryCompletion,
+		GoType:        reflect.TypeOf((*EntryCompletion)(nil)),
+		InitClass:     initClassEntryCompletion,
+		FinalizeClass: finalizeClassEntryCompletion,
 	})
 }
 
@@ -195,6 +196,13 @@ func initClassEntryCompletion(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitEntryCompletion(*EntryCompletionClass) }); ok {
 		klass := (*EntryCompletionClass)(gextras.NewStructNative(gclass))
 		goval.InitEntryCompletion(klass)
+	}
+}
+
+func finalizeClassEntryCompletion(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeEntryCompletion(*EntryCompletionClass) }); ok {
+		klass := (*EntryCompletionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeEntryCompletion(klass)
 	}
 }
 

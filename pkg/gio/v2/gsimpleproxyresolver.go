@@ -51,9 +51,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSimpleProxyResolver,
-		GoType:    reflect.TypeOf((*SimpleProxyResolver)(nil)),
-		InitClass: initClassSimpleProxyResolver,
+		GType:         GTypeSimpleProxyResolver,
+		GoType:        reflect.TypeOf((*SimpleProxyResolver)(nil)),
+		InitClass:     initClassSimpleProxyResolver,
+		FinalizeClass: finalizeClassSimpleProxyResolver,
 	})
 }
 
@@ -63,6 +64,15 @@ func initClassSimpleProxyResolver(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*SimpleProxyResolverClass)(gextras.NewStructNative(gclass))
 		goval.InitSimpleProxyResolver(klass)
+	}
+}
+
+func finalizeClassSimpleProxyResolver(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeSimpleProxyResolver(*SimpleProxyResolverClass)
+	}); ok {
+		klass := (*SimpleProxyResolverClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSimpleProxyResolver(klass)
 	}
 }
 

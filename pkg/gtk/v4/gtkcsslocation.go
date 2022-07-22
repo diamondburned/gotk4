@@ -63,42 +63,42 @@ func NewCSSLocation(bytes, chars, lines, lineBytes, lineChars uint) CSSLocation 
 // Bytes: number of bytes parsed since the beginning.
 func (c *CSSLocation) Bytes() uint {
 	valptr := &c.native.bytes
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Chars: number of characters parsed since the beginning.
 func (c *CSSLocation) Chars() uint {
 	valptr := &c.native.chars
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Lines: number of full lines that have been parsed If you want to display this
 // as a line number, you need to add 1 to this.
 func (c *CSSLocation) Lines() uint {
 	valptr := &c.native.lines
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // LineBytes: number of bytes parsed since the last line break.
 func (c *CSSLocation) LineBytes() uint {
 	valptr := &c.native.line_bytes
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // LineChars: number of characters parsed since the last line break.
 func (c *CSSLocation) LineChars() uint {
 	valptr := &c.native.line_chars
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Bytes: number of bytes parsed since the beginning.

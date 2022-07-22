@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeWindowAccessible,
-		GoType:    reflect.TypeOf((*WindowAccessible)(nil)),
-		InitClass: initClassWindowAccessible,
+		GType:         GTypeWindowAccessible,
+		GoType:        reflect.TypeOf((*WindowAccessible)(nil)),
+		InitClass:     initClassWindowAccessible,
+		FinalizeClass: finalizeClassWindowAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassWindowAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitWindowAccessible(*WindowAccessibleClass) }); ok {
 		klass := (*WindowAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitWindowAccessible(klass)
+	}
+}
+
+func finalizeClassWindowAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeWindowAccessible(*WindowAccessibleClass) }); ok {
+		klass := (*WindowAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeWindowAccessible(klass)
 	}
 }
 
@@ -97,7 +105,7 @@ type windowAccessibleClass struct {
 
 func (w *WindowAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &w.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

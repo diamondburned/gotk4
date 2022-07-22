@@ -137,9 +137,10 @@ var _ FontMapper = (*FontMap)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontMap,
-		GoType:    reflect.TypeOf((*FontMap)(nil)),
-		InitClass: initClassFontMap,
+		GType:         GTypeFontMap,
+		GoType:        reflect.TypeOf((*FontMap)(nil)),
+		InitClass:     initClassFontMap,
+		FinalizeClass: finalizeClassFontMap,
 	})
 }
 
@@ -179,6 +180,13 @@ func initClassFontMap(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontMap(*FontMapClass) }); ok {
 		klass := (*FontMapClass)(gextras.NewStructNative(gclass))
 		goval.InitFontMap(klass)
+	}
+}
+
+func finalizeClassFontMap(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontMap(*FontMapClass) }); ok {
+		klass := (*FontMapClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontMap(klass)
 	}
 }
 
@@ -595,7 +603,7 @@ type fontMapClass struct {
 // fonts of this fonts loaded with this fontmap.
 func (f *FontMapClass) ShapeEngineType() string {
 	valptr := &f.native.shape_engine_type
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

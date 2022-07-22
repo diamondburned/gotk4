@@ -1930,33 +1930,33 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 // Stamp: unique stamp to catch invalid iterators.
 func (t *TreeIter) Stamp() int {
 	valptr := &t.native.stamp
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // UserData: model-specific data.
 func (t *TreeIter) UserData() unsafe.Pointer {
 	valptr := &t.native.user_data
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // UserData2: model-specific data.
 func (t *TreeIter) UserData2() unsafe.Pointer {
 	valptr := &t.native.user_data2
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // UserData3: model-specific data.
 func (t *TreeIter) UserData3() unsafe.Pointer {
 	valptr := &t.native.user_data3
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Stamp: unique stamp to catch invalid iterators.

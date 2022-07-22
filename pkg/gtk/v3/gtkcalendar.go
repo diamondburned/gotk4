@@ -193,9 +193,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCalendar,
-		GoType:    reflect.TypeOf((*Calendar)(nil)),
-		InitClass: initClassCalendar,
+		GType:         GTypeCalendar,
+		GoType:        reflect.TypeOf((*Calendar)(nil)),
+		InitClass:     initClassCalendar,
+		FinalizeClass: finalizeClassCalendar,
 	})
 }
 
@@ -233,6 +234,13 @@ func initClassCalendar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCalendar(*CalendarClass) }); ok {
 		klass := (*CalendarClass)(gextras.NewStructNative(gclass))
 		goval.InitCalendar(klass)
+	}
+}
+
+func finalizeClassCalendar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCalendar(*CalendarClass) }); ok {
+		klass := (*CalendarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCalendar(klass)
 	}
 }
 
@@ -796,7 +804,7 @@ type calendarClass struct {
 
 func (c *CalendarClass) ParentClass() *WidgetClass {
 	valptr := &c.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

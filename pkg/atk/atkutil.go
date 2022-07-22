@@ -322,9 +322,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeUtil,
-		GoType:    reflect.TypeOf((*Util)(nil)),
-		InitClass: initClassUtil,
+		GType:         GTypeUtil,
+		GoType:        reflect.TypeOf((*Util)(nil)),
+		InitClass:     initClassUtil,
+		FinalizeClass: finalizeClassUtil,
 	})
 }
 
@@ -332,6 +333,13 @@ func initClassUtil(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitUtil(*UtilClass) }); ok {
 		klass := (*UtilClass)(gextras.NewStructNative(gclass))
 		goval.InitUtil(klass)
+	}
+}
+
+func finalizeClassUtil(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeUtil(*UtilClass) }); ok {
+		klass := (*UtilClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeUtil(klass)
 	}
 }
 
@@ -361,9 +369,9 @@ type keyEventStruct struct {
 // ATK_KEY_EVENT_RELEASE.
 func (k *KeyEventStruct) Type() int {
 	valptr := &k.native._type
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // State: bitmask representing the state of the modifier keys immediately after
@@ -372,26 +380,26 @@ func (k *KeyEventStruct) Type() int {
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) State() uint {
 	valptr := &k.native.state
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Keyval: guint representing a keysym value corresponding to those used by GDK
 // and X11: see /usr/X11/include/keysymdef.h.
 func (k *KeyEventStruct) Keyval() uint {
 	valptr := &k.native.keyval
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Length: length of member #string.
 func (k *KeyEventStruct) Length() int {
 	valptr := &k.native.length
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // String: string containing one of the following: either a string approximating
@@ -401,18 +409,18 @@ func (k *KeyEventStruct) Length() int {
 // instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
 func (k *KeyEventStruct) String() string {
 	valptr := &k.native.string
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Keycode: raw hardware code that generated the key event. This field is raraly
 // useful.
 func (k *KeyEventStruct) Keycode() uint16 {
 	valptr := &k.native.keycode
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Timestamp: timestamp in milliseconds indicating when the event occurred.
@@ -421,9 +429,9 @@ func (k *KeyEventStruct) Keycode() uint16 {
 // another.
 func (k *KeyEventStruct) Timestamp() uint32 {
 	valptr := &k.native.timestamp
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or

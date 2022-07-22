@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeToplevelAccessible,
-		GoType:    reflect.TypeOf((*ToplevelAccessible)(nil)),
-		InitClass: initClassToplevelAccessible,
+		GType:         GTypeToplevelAccessible,
+		GoType:        reflect.TypeOf((*ToplevelAccessible)(nil)),
+		InitClass:     initClassToplevelAccessible,
+		FinalizeClass: finalizeClassToplevelAccessible,
 	})
 }
 
@@ -57,6 +58,15 @@ func initClassToplevelAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ToplevelAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitToplevelAccessible(klass)
+	}
+}
+
+func finalizeClassToplevelAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeToplevelAccessible(*ToplevelAccessibleClass)
+	}); ok {
+		klass := (*ToplevelAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeToplevelAccessible(klass)
 	}
 }
 
@@ -110,7 +120,7 @@ type toplevelAccessibleClass struct {
 
 func (t *ToplevelAccessibleClass) ParentClass() *atk.ObjectClass {
 	valptr := &t.native.parent_class
-	var v *atk.ObjectClass // out
-	v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *atk.ObjectClass // out
+	_v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

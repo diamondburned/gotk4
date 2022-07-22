@@ -62,9 +62,10 @@ var _ Binner = (*Bin)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBin,
-		GoType:    reflect.TypeOf((*Bin)(nil)),
-		InitClass: initClassBin,
+		GType:         GTypeBin,
+		GoType:        reflect.TypeOf((*Bin)(nil)),
+		InitClass:     initClassBin,
+		FinalizeClass: finalizeClassBin,
 	})
 }
 
@@ -72,6 +73,13 @@ func initClassBin(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBin(*BinClass) }); ok {
 		klass := (*BinClass)(gextras.NewStructNative(gclass))
 		goval.InitBin(klass)
+	}
+}
+
+func finalizeClassBin(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBin(*BinClass) }); ok {
+		klass := (*BinClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBin(klass)
 	}
 }
 
@@ -159,7 +167,7 @@ type binClass struct {
 // ParentClass: parent class.
 func (b *BinClass) ParentClass() *ContainerClass {
 	valptr := &b.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

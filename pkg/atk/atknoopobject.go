@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNoOpObject,
-		GoType:    reflect.TypeOf((*NoOpObject)(nil)),
-		InitClass: initClassNoOpObject,
+		GType:         GTypeNoOpObject,
+		GoType:        reflect.TypeOf((*NoOpObject)(nil)),
+		InitClass:     initClassNoOpObject,
+		FinalizeClass: finalizeClassNoOpObject,
 	})
 }
 
@@ -69,6 +70,13 @@ func initClassNoOpObject(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNoOpObject(*NoOpObjectClass) }); ok {
 		klass := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
 		goval.InitNoOpObject(klass)
+	}
+}
+
+func finalizeClassNoOpObject(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNoOpObject(*NoOpObjectClass) }); ok {
+		klass := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNoOpObject(klass)
 	}
 }
 
@@ -164,7 +172,7 @@ type noOpObjectClass struct {
 
 func (n *NoOpObjectClass) ParentClass() *ObjectClass {
 	valptr := &n.native.parent_class
-	var v *ObjectClass // out
-	v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ObjectClass // out
+	_v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

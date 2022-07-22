@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVScale,
-		GoType:    reflect.TypeOf((*VScale)(nil)),
-		InitClass: initClassVScale,
+		GType:         GTypeVScale,
+		GoType:        reflect.TypeOf((*VScale)(nil)),
+		InitClass:     initClassVScale,
+		FinalizeClass: finalizeClassVScale,
 	})
 }
 
@@ -62,6 +63,13 @@ func initClassVScale(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVScale(*VScaleClass) }); ok {
 		klass := (*VScaleClass)(gextras.NewStructNative(gclass))
 		goval.InitVScale(klass)
+	}
+}
+
+func finalizeClassVScale(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVScale(*VScaleClass) }); ok {
+		klass := (*VScaleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVScale(klass)
 	}
 }
 
@@ -178,7 +186,7 @@ type vScaleClass struct {
 
 func (v *VScaleClass) ParentClass() *ScaleClass {
 	valptr := &v.native.parent_class
-	var v *ScaleClass // out
-	v = (*ScaleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ScaleClass // out
+	_v = (*ScaleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

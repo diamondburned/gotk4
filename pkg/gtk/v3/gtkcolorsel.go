@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeColorSelection,
-		GoType:    reflect.TypeOf((*ColorSelection)(nil)),
-		InitClass: initClassColorSelection,
+		GType:         GTypeColorSelection,
+		GoType:        reflect.TypeOf((*ColorSelection)(nil)),
+		InitClass:     initClassColorSelection,
+		FinalizeClass: finalizeClassColorSelection,
 	})
 }
 
@@ -66,6 +67,13 @@ func initClassColorSelection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitColorSelection(*ColorSelectionClass) }); ok {
 		klass := (*ColorSelectionClass)(gextras.NewStructNative(gclass))
 		goval.InitColorSelection(klass)
+	}
+}
+
+func finalizeClassColorSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeColorSelection(*ColorSelectionClass) }); ok {
+		klass := (*ColorSelectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeColorSelection(klass)
 	}
 }
 
@@ -630,7 +638,7 @@ type colorSelectionClass struct {
 // ParentClass: parent class.
 func (c *ColorSelectionClass) ParentClass() *BoxClass {
 	valptr := &c.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -82,9 +82,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSearchEntry,
-		GoType:    reflect.TypeOf((*SearchEntry)(nil)),
-		InitClass: initClassSearchEntry,
+		GType:         GTypeSearchEntry,
+		GoType:        reflect.TypeOf((*SearchEntry)(nil)),
+		InitClass:     initClassSearchEntry,
+		FinalizeClass: finalizeClassSearchEntry,
 	})
 }
 
@@ -110,6 +111,13 @@ func initClassSearchEntry(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSearchEntry(*SearchEntryClass) }); ok {
 		klass := (*SearchEntryClass)(gextras.NewStructNative(gclass))
 		goval.InitSearchEntry(klass)
+	}
+}
+
+func finalizeClassSearchEntry(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSearchEntry(*SearchEntryClass) }); ok {
+		klass := (*SearchEntryClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSearchEntry(klass)
 	}
 }
 
@@ -360,7 +368,7 @@ type searchEntryClass struct {
 
 func (s *SearchEntryClass) ParentClass() *EntryClass {
 	valptr := &s.native.parent_class
-	var v *EntryClass // out
-	v = (*EntryClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *EntryClass // out
+	_v = (*EntryClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

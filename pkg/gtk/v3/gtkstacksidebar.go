@@ -60,9 +60,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStackSidebar,
-		GoType:    reflect.TypeOf((*StackSidebar)(nil)),
-		InitClass: initClassStackSidebar,
+		GType:         GTypeStackSidebar,
+		GoType:        reflect.TypeOf((*StackSidebar)(nil)),
+		InitClass:     initClassStackSidebar,
+		FinalizeClass: finalizeClassStackSidebar,
 	})
 }
 
@@ -70,6 +71,13 @@ func initClassStackSidebar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStackSidebar(*StackSidebarClass) }); ok {
 		klass := (*StackSidebarClass)(gextras.NewStructNative(gclass))
 		goval.InitStackSidebar(klass)
+	}
+}
+
+func finalizeClassStackSidebar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStackSidebar(*StackSidebarClass) }); ok {
+		klass := (*StackSidebarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStackSidebar(klass)
 	}
 }
 
@@ -174,7 +182,7 @@ type stackSidebarClass struct {
 
 func (s *StackSidebarClass) ParentClass() *BinClass {
 	valptr := &s.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

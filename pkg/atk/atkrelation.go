@@ -128,9 +128,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRelation,
-		GoType:    reflect.TypeOf((*Relation)(nil)),
-		InitClass: initClassRelation,
+		GType:         GTypeRelation,
+		GoType:        reflect.TypeOf((*Relation)(nil)),
+		InitClass:     initClassRelation,
+		FinalizeClass: finalizeClassRelation,
 	})
 }
 
@@ -138,6 +139,13 @@ func initClassRelation(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRelation(*RelationClass) }); ok {
 		klass := (*RelationClass)(gextras.NewStructNative(gclass))
 		goval.InitRelation(klass)
+	}
+}
+
+func finalizeClassRelation(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRelation(*RelationClass) }); ok {
+		klass := (*RelationClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRelation(klass)
 	}
 }
 

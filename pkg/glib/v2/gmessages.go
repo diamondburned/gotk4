@@ -907,9 +907,9 @@ type logField struct {
 // Key: field name (UTF-8 string).
 func (l *LogField) Key() string {
 	valptr := &l.native.key
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func init() {

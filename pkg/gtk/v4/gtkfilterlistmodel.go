@@ -54,9 +54,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFilterListModel,
-		GoType:    reflect.TypeOf((*FilterListModel)(nil)),
-		InitClass: initClassFilterListModel,
+		GType:         GTypeFilterListModel,
+		GoType:        reflect.TypeOf((*FilterListModel)(nil)),
+		InitClass:     initClassFilterListModel,
+		FinalizeClass: finalizeClassFilterListModel,
 	})
 }
 
@@ -64,6 +65,13 @@ func initClassFilterListModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFilterListModel(*FilterListModelClass) }); ok {
 		klass := (*FilterListModelClass)(gextras.NewStructNative(gclass))
 		goval.InitFilterListModel(klass)
+	}
+}
+
+func finalizeClassFilterListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFilterListModel(*FilterListModelClass) }); ok {
+		klass := (*FilterListModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFilterListModel(klass)
 	}
 }
 

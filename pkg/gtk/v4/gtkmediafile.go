@@ -69,9 +69,10 @@ var _ MediaFiler = (*MediaFile)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMediaFile,
-		GoType:    reflect.TypeOf((*MediaFile)(nil)),
-		InitClass: initClassMediaFile,
+		GType:         GTypeMediaFile,
+		GoType:        reflect.TypeOf((*MediaFile)(nil)),
+		InitClass:     initClassMediaFile,
+		FinalizeClass: finalizeClassMediaFile,
 	})
 }
 
@@ -89,6 +90,13 @@ func initClassMediaFile(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMediaFile(*MediaFileClass) }); ok {
 		klass := (*MediaFileClass)(gextras.NewStructNative(gclass))
 		goval.InitMediaFile(klass)
+	}
+}
+
+func finalizeClassMediaFile(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMediaFile(*MediaFileClass) }); ok {
+		klass := (*MediaFileClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMediaFile(klass)
 	}
 }
 
@@ -454,7 +462,7 @@ type mediaFileClass struct {
 
 func (m *MediaFileClass) ParentClass() *MediaStreamClass {
 	valptr := &m.native.parent_class
-	var v *MediaStreamClass // out
-	v = (*MediaStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MediaStreamClass // out
+	_v = (*MediaStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

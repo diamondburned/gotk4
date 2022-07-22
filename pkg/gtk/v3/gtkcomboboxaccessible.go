@@ -48,9 +48,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeComboBoxAccessible,
-		GoType:    reflect.TypeOf((*ComboBoxAccessible)(nil)),
-		InitClass: initClassComboBoxAccessible,
+		GType:         GTypeComboBoxAccessible,
+		GoType:        reflect.TypeOf((*ComboBoxAccessible)(nil)),
+		InitClass:     initClassComboBoxAccessible,
+		FinalizeClass: finalizeClassComboBoxAccessible,
 	})
 }
 
@@ -60,6 +61,15 @@ func initClassComboBoxAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ComboBoxAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitComboBoxAccessible(klass)
+	}
+}
+
+func finalizeClassComboBoxAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeComboBoxAccessible(*ComboBoxAccessibleClass)
+	}); ok {
+		klass := (*ComboBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeComboBoxAccessible(klass)
 	}
 }
 
@@ -103,7 +113,7 @@ type comboBoxAccessibleClass struct {
 
 func (c *ComboBoxAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &c.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

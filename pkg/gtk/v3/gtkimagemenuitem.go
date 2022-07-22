@@ -70,9 +70,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeImageMenuItem,
-		GoType:    reflect.TypeOf((*ImageMenuItem)(nil)),
-		InitClass: initClassImageMenuItem,
+		GType:         GTypeImageMenuItem,
+		GoType:        reflect.TypeOf((*ImageMenuItem)(nil)),
+		InitClass:     initClassImageMenuItem,
+		FinalizeClass: finalizeClassImageMenuItem,
 	})
 }
 
@@ -80,6 +81,13 @@ func initClassImageMenuItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitImageMenuItem(*ImageMenuItemClass) }); ok {
 		klass := (*ImageMenuItemClass)(gextras.NewStructNative(gclass))
 		goval.InitImageMenuItem(klass)
+	}
+}
+
+func finalizeClassImageMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeImageMenuItem(*ImageMenuItemClass) }); ok {
+		klass := (*ImageMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeImageMenuItem(klass)
 	}
 }
 
@@ -460,7 +468,7 @@ type imageMenuItemClass struct {
 // ParentClass: parent class.
 func (i *ImageMenuItemClass) ParentClass() *MenuItemClass {
 	valptr := &i.native.parent_class
-	var v *MenuItemClass // out
-	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuItemClass // out
+	_v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

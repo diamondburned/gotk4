@@ -81,9 +81,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeExpander,
-		GoType:    reflect.TypeOf((*TreeExpander)(nil)),
-		InitClass: initClassTreeExpander,
+		GType:         GTypeTreeExpander,
+		GoType:        reflect.TypeOf((*TreeExpander)(nil)),
+		InitClass:     initClassTreeExpander,
+		FinalizeClass: finalizeClassTreeExpander,
 	})
 }
 
@@ -91,6 +92,13 @@ func initClassTreeExpander(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeExpander(*TreeExpanderClass) }); ok {
 		klass := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeExpander(klass)
+	}
+}
+
+func finalizeClassTreeExpander(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeExpander(*TreeExpanderClass) }); ok {
+		klass := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeExpander(klass)
 	}
 }
 
@@ -275,7 +283,7 @@ type treeExpanderClass struct {
 
 func (t *TreeExpanderClass) ParentClass() *WidgetClass {
 	valptr := &t.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

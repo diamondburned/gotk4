@@ -71,9 +71,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTextMark,
-		GoType:    reflect.TypeOf((*TextMark)(nil)),
-		InitClass: initClassTextMark,
+		GType:         GTypeTextMark,
+		GoType:        reflect.TypeOf((*TextMark)(nil)),
+		InitClass:     initClassTextMark,
+		FinalizeClass: finalizeClassTextMark,
 	})
 }
 
@@ -81,6 +82,13 @@ func initClassTextMark(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTextMark(*TextMarkClass) }); ok {
 		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
 		goval.InitTextMark(klass)
+	}
+}
+
+func finalizeClassTextMark(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTextMark(*TextMarkClass) }); ok {
+		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTextMark(klass)
 	}
 }
 

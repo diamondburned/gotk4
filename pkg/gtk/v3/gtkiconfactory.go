@@ -324,9 +324,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeIconFactory,
-		GoType:    reflect.TypeOf((*IconFactory)(nil)),
-		InitClass: initClassIconFactory,
+		GType:         GTypeIconFactory,
+		GoType:        reflect.TypeOf((*IconFactory)(nil)),
+		InitClass:     initClassIconFactory,
+		FinalizeClass: finalizeClassIconFactory,
 	})
 }
 
@@ -334,6 +335,13 @@ func initClassIconFactory(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitIconFactory(*IconFactoryClass) }); ok {
 		klass := (*IconFactoryClass)(gextras.NewStructNative(gclass))
 		goval.InitIconFactory(klass)
+	}
+}
+
+func finalizeClassIconFactory(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeIconFactory(*IconFactoryClass) }); ok {
+		klass := (*IconFactoryClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeIconFactory(klass)
 	}
 }
 

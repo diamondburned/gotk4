@@ -180,9 +180,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeApplication,
-		GoType:    reflect.TypeOf((*Application)(nil)),
-		InitClass: initClassApplication,
+		GType:         GTypeApplication,
+		GoType:        reflect.TypeOf((*Application)(nil)),
+		InitClass:     initClassApplication,
+		FinalizeClass: finalizeClassApplication,
 	})
 }
 
@@ -200,6 +201,13 @@ func initClassApplication(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitApplication(*ApplicationClass) }); ok {
 		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
 		goval.InitApplication(klass)
+	}
+}
+
+func finalizeClassApplication(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeApplication(*ApplicationClass) }); ok {
+		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeApplication(klass)
 	}
 }
 
@@ -940,7 +948,7 @@ type applicationClass struct {
 // ParentClass: parent class.
 func (a *ApplicationClass) ParentClass() *gio.ApplicationClass {
 	valptr := &a.native.parent_class
-	var v *gio.ApplicationClass // out
-	v = (*gio.ApplicationClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gio.ApplicationClass // out
+	_v = (*gio.ApplicationClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

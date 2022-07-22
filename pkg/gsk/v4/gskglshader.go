@@ -149,9 +149,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeGLShader,
-		GoType:    reflect.TypeOf((*GLShader)(nil)),
-		InitClass: initClassGLShader,
+		GType:         GTypeGLShader,
+		GoType:        reflect.TypeOf((*GLShader)(nil)),
+		InitClass:     initClassGLShader,
+		FinalizeClass: finalizeClassGLShader,
 	})
 }
 
@@ -159,6 +160,13 @@ func initClassGLShader(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitGLShader(*GLShaderClass) }); ok {
 		klass := (*GLShaderClass)(gextras.NewStructNative(gclass))
 		goval.InitGLShader(klass)
+	}
+}
+
+func finalizeClassGLShader(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeGLShader(*GLShaderClass) }); ok {
+		klass := (*GLShaderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeGLShader(klass)
 	}
 }
 

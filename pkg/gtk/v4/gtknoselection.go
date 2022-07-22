@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNoSelection,
-		GoType:    reflect.TypeOf((*NoSelection)(nil)),
-		InitClass: initClassNoSelection,
+		GType:         GTypeNoSelection,
+		GoType:        reflect.TypeOf((*NoSelection)(nil)),
+		InitClass:     initClassNoSelection,
+		FinalizeClass: finalizeClassNoSelection,
 	})
 }
 
@@ -60,6 +61,13 @@ func initClassNoSelection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNoSelection(*NoSelectionClass) }); ok {
 		klass := (*NoSelectionClass)(gextras.NewStructNative(gclass))
 		goval.InitNoSelection(klass)
+	}
+}
+
+func finalizeClassNoSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNoSelection(*NoSelectionClass) }); ok {
+		klass := (*NoSelectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNoSelection(klass)
 	}
 }
 

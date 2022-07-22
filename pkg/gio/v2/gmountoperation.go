@@ -103,9 +103,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMountOperation,
-		GoType:    reflect.TypeOf((*MountOperation)(nil)),
-		InitClass: initClassMountOperation,
+		GType:         GTypeMountOperation,
+		GoType:        reflect.TypeOf((*MountOperation)(nil)),
+		InitClass:     initClassMountOperation,
+		FinalizeClass: finalizeClassMountOperation,
 	})
 }
 
@@ -143,6 +144,13 @@ func initClassMountOperation(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMountOperation(*MountOperationClass) }); ok {
 		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
 		goval.InitMountOperation(klass)
+	}
+}
+
+func finalizeClassMountOperation(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMountOperation(*MountOperationClass) }); ok {
+		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMountOperation(klass)
 	}
 }
 

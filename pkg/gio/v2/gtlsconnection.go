@@ -125,9 +125,10 @@ var _ TLSConnectioner = (*TLSConnection)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTLSConnection,
-		GoType:    reflect.TypeOf((*TLSConnection)(nil)),
-		InitClass: initClassTLSConnection,
+		GType:         GTypeTLSConnection,
+		GoType:        reflect.TypeOf((*TLSConnection)(nil)),
+		InitClass:     initClassTLSConnection,
+		FinalizeClass: finalizeClassTLSConnection,
 	})
 }
 
@@ -161,6 +162,13 @@ func initClassTLSConnection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTLSConnection(*TLSConnectionClass) }); ok {
 		klass := (*TLSConnectionClass)(gextras.NewStructNative(gclass))
 		goval.InitTLSConnection(klass)
+	}
+}
+
+func finalizeClassTLSConnection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTLSConnection(*TLSConnectionClass) }); ok {
+		klass := (*TLSConnectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTLSConnection(klass)
 	}
 }
 
@@ -1092,7 +1100,7 @@ type tlsConnectionClass struct {
 
 func (t *TLSConnectionClass) ParentClass() *IOStreamClass {
 	valptr := &t.native.parent_class
-	var v *IOStreamClass // out
-	v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *IOStreamClass // out
+	_v = (*IOStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCustomSorter,
-		GoType:    reflect.TypeOf((*CustomSorter)(nil)),
-		InitClass: initClassCustomSorter,
+		GType:         GTypeCustomSorter,
+		GoType:        reflect.TypeOf((*CustomSorter)(nil)),
+		InitClass:     initClassCustomSorter,
+		FinalizeClass: finalizeClassCustomSorter,
 	})
 }
 
@@ -59,6 +60,13 @@ func initClassCustomSorter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCustomSorter(*CustomSorterClass) }); ok {
 		klass := (*CustomSorterClass)(gextras.NewStructNative(gclass))
 		goval.InitCustomSorter(klass)
+	}
+}
+
+func finalizeClassCustomSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCustomSorter(*CustomSorterClass) }); ok {
+		klass := (*CustomSorterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCustomSorter(klass)
 	}
 }
 
@@ -152,7 +160,7 @@ type customSorterClass struct {
 
 func (c *CustomSorterClass) ParentClass() *SorterClass {
 	valptr := &c.native.parent_class
-	var v *SorterClass // out
-	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SorterClass // out
+	_v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

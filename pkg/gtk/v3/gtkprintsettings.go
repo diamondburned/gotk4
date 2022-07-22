@@ -1999,17 +1999,17 @@ func NewPageRange(start, end int) PageRange {
 // Start: start of page range.
 func (p *PageRange) Start() int {
 	valptr := &p.native.start
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // End: end of page range.
 func (p *PageRange) End() int {
 	valptr := &p.native.end
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Start: start of page range.

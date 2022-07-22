@@ -171,9 +171,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVFS,
-		GoType:    reflect.TypeOf((*VFS)(nil)),
-		InitClass: initClassVFS,
+		GType:         GTypeVFS,
+		GoType:        reflect.TypeOf((*VFS)(nil)),
+		InitClass:     initClassVFS,
+		FinalizeClass: finalizeClassVFS,
 	})
 }
 
@@ -223,6 +224,13 @@ func initClassVFS(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVFS(*VFSClass) }); ok {
 		klass := (*VFSClass)(gextras.NewStructNative(gclass))
 		goval.InitVFS(klass)
+	}
+}
+
+func finalizeClassVFS(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVFS(*VFSClass) }); ok {
+		klass := (*VFSClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVFS(klass)
 	}
 }
 

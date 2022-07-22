@@ -893,9 +893,10 @@ var _ Windower = (*Window)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeWindow,
-		GoType:    reflect.TypeOf((*Window)(nil)),
-		InitClass: initClassWindow,
+		GType:         GTypeWindow,
+		GoType:        reflect.TypeOf((*Window)(nil)),
+		InitClass:     initClassWindow,
+		FinalizeClass: finalizeClassWindow,
 	})
 }
 
@@ -923,6 +924,13 @@ func initClassWindow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitWindow(*WindowClass) }); ok {
 		klass := (*WindowClass)(gextras.NewStructNative(gclass))
 		goval.InitWindow(klass)
+	}
+}
+
+func finalizeClassWindow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeWindow(*WindowClass) }); ok {
+		klass := (*WindowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeWindow(klass)
 	}
 }
 
@@ -5830,94 +5838,94 @@ type geometry struct {
 // only).
 func (g *Geometry) MinWidth() int {
 	valptr := &g.native.min_width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // MinHeight: minimum height of window (or -1 to use requisition, with Window
 // only).
 func (g *Geometry) MinHeight() int {
 	valptr := &g.native.min_height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // MaxWidth: maximum width of window (or -1 to use requisition, with Window
 // only).
 func (g *Geometry) MaxWidth() int {
 	valptr := &g.native.max_width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // MaxHeight: maximum height of window (or -1 to use requisition, with Window
 // only).
 func (g *Geometry) MaxHeight() int {
 	valptr := &g.native.max_height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // BaseWidth: allowed window widths are base_width + width_inc * N where N is
 // any integer (-1 allowed with Window).
 func (g *Geometry) BaseWidth() int {
 	valptr := &g.native.base_width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // BaseHeight: allowed window widths are base_height + height_inc * N where N is
 // any integer (-1 allowed with Window).
 func (g *Geometry) BaseHeight() int {
 	valptr := &g.native.base_height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // WidthInc: width resize increment.
 func (g *Geometry) WidthInc() int {
 	valptr := &g.native.width_inc
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // HeightInc: height resize increment.
 func (g *Geometry) HeightInc() int {
 	valptr := &g.native.height_inc
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // MinAspect: minimum width/height ratio.
 func (g *Geometry) MinAspect() float64 {
 	valptr := &g.native.min_aspect
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // MaxAspect: maximum width/height ratio.
 func (g *Geometry) MaxAspect() float64 {
 	valptr := &g.native.max_aspect
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // WinGravity: window gravity, see gtk_window_set_gravity().
 func (g *Geometry) WinGravity() Gravity {
 	valptr := &g.native.win_gravity
-	var v Gravity // out
-	v = Gravity(*valptr)
-	return v
+	var _v Gravity // out
+	_v = Gravity(*valptr)
+	return _v
 }
 
 // MinWidth: minimum width of window (or -1 to use requisition, with Window
@@ -6001,80 +6009,80 @@ type windowAttr struct {
 // Title: title of the window (for toplevel windows).
 func (w *WindowAttr) Title() string {
 	valptr := &w.native.title
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // EventMask: event mask (see gdk_window_set_events()).
 func (w *WindowAttr) EventMask() int {
 	valptr := &w.native.event_mask
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // X coordinate relative to parent window (see gdk_window_move()).
 func (w *WindowAttr) X() int {
 	valptr := &w.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Y coordinate relative to parent window (see gdk_window_move()).
 func (w *WindowAttr) Y() int {
 	valptr := &w.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Width: width of window.
 func (w *WindowAttr) Width() int {
 	valptr := &w.native.width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Height: height of window.
 func (w *WindowAttr) Height() int {
 	valptr := &w.native.height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Wclass (normal window) or K_INPUT_ONLY (invisible window that receives
 // events).
 func (w *WindowAttr) Wclass() WindowWindowClass {
 	valptr := &w.native.wclass
-	var v WindowWindowClass // out
-	v = WindowWindowClass(*valptr)
-	return v
+	var _v WindowWindowClass // out
+	_v = WindowWindowClass(*valptr)
+	return _v
 }
 
 // Visual for window.
 func (w *WindowAttr) Visual() *Visual {
 	valptr := &w.native.visual
-	var v *Visual // out
-	v = wrapVisual(coreglib.Take(unsafe.Pointer(*valptr)))
-	return v
+	var _v *Visual // out
+	_v = wrapVisual(coreglib.Take(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // WindowType: type of window.
 func (w *WindowAttr) WindowType() WindowType {
 	valptr := &w.native.window_type
-	var v WindowType // out
-	v = WindowType(*valptr)
-	return v
+	var _v WindowType // out
+	_v = WindowType(*valptr)
+	return _v
 }
 
 // Cursor: cursor for the window (see gdk_window_set_cursor()).
 func (w *WindowAttr) Cursor() Cursorrer {
 	valptr := &w.native.cursor
-	var v Cursorrer // out
+	var _v Cursorrer // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -6090,43 +6098,43 @@ func (w *WindowAttr) Cursor() Cursorrer {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Cursorrer")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // WmclassName: don’t use (see gtk_window_set_wmclass()).
 func (w *WindowAttr) WmclassName() string {
 	valptr := &w.native.wmclass_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // WmclassClass: don’t use (see gtk_window_set_wmclass()).
 func (w *WindowAttr) WmclassClass() string {
 	valptr := &w.native.wmclass_class
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // OverrideRedirect: TRUE to bypass the window manager.
 func (w *WindowAttr) OverrideRedirect() bool {
 	valptr := &w.native.override_redirect
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // TypeHint: hint of the function of the window.
 func (w *WindowAttr) TypeHint() WindowTypeHint {
 	valptr := &w.native.type_hint
-	var v WindowTypeHint // out
-	v = WindowTypeHint(*valptr)
-	return v
+	var _v WindowTypeHint // out
+	_v = WindowTypeHint(*valptr)
+	return _v
 }
 
 // EventMask: event mask (see gdk_window_set_events()).

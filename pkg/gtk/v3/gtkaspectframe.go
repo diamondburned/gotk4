@@ -55,9 +55,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAspectFrame,
-		GoType:    reflect.TypeOf((*AspectFrame)(nil)),
-		InitClass: initClassAspectFrame,
+		GType:         GTypeAspectFrame,
+		GoType:        reflect.TypeOf((*AspectFrame)(nil)),
+		InitClass:     initClassAspectFrame,
+		FinalizeClass: finalizeClassAspectFrame,
 	})
 }
 
@@ -65,6 +66,13 @@ func initClassAspectFrame(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAspectFrame(*AspectFrameClass) }); ok {
 		klass := (*AspectFrameClass)(gextras.NewStructNative(gclass))
 		goval.InitAspectFrame(klass)
+	}
+}
+
+func finalizeClassAspectFrame(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAspectFrame(*AspectFrameClass) }); ok {
+		klass := (*AspectFrameClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAspectFrame(klass)
 	}
 }
 
@@ -193,7 +201,7 @@ type aspectFrameClass struct {
 // ParentClass: parent class.
 func (a *AspectFrameClass) ParentClass() *FrameClass {
 	valptr := &a.native.parent_class
-	var v *FrameClass // out
-	v = (*FrameClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *FrameClass // out
+	_v = (*FrameClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

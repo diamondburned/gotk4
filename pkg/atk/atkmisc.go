@@ -64,9 +64,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMisc,
-		GoType:    reflect.TypeOf((*Misc)(nil)),
-		InitClass: initClassMisc,
+		GType:         GTypeMisc,
+		GoType:        reflect.TypeOf((*Misc)(nil)),
+		InitClass:     initClassMisc,
+		FinalizeClass: finalizeClassMisc,
 	})
 }
 
@@ -84,6 +85,13 @@ func initClassMisc(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMisc(*MiscClass) }); ok {
 		klass := (*MiscClass)(gextras.NewStructNative(gclass))
 		goval.InitMisc(klass)
+	}
+}
+
+func finalizeClassMisc(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMisc(*MiscClass) }); ok {
+		klass := (*MiscClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMisc(klass)
 	}
 }
 
@@ -181,12 +189,12 @@ type miscClass struct {
 
 func (m *MiscClass) Vfuncs() [32]unsafe.Pointer {
 	valptr := &m.native.vfuncs
-	var v [32]unsafe.Pointer // out
+	var _v [32]unsafe.Pointer // out
 	{
 		src := &*valptr
 		for i := 0; i < 32; i++ {
-			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
 	}
-	return v
+	return _v
 }

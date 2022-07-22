@@ -118,9 +118,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeGLArea,
-		GoType:    reflect.TypeOf((*GLArea)(nil)),
-		InitClass: initClassGLArea,
+		GType:         GTypeGLArea,
+		GoType:        reflect.TypeOf((*GLArea)(nil)),
+		InitClass:     initClassGLArea,
+		FinalizeClass: finalizeClassGLArea,
 	})
 }
 
@@ -140,6 +141,13 @@ func initClassGLArea(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitGLArea(*GLAreaClass) }); ok {
 		klass := (*GLAreaClass)(gextras.NewStructNative(gclass))
 		goval.InitGLArea(klass)
+	}
+}
+
+func finalizeClassGLArea(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeGLArea(*GLAreaClass) }); ok {
+		klass := (*GLAreaClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeGLArea(klass)
 	}
 }
 

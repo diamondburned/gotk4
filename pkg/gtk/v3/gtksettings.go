@@ -77,9 +77,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSettings,
-		GoType:    reflect.TypeOf((*Settings)(nil)),
-		InitClass: initClassSettings,
+		GType:         GTypeSettings,
+		GoType:        reflect.TypeOf((*Settings)(nil)),
+		InitClass:     initClassSettings,
+		FinalizeClass: finalizeClassSettings,
 	})
 }
 
@@ -87,6 +88,13 @@ func initClassSettings(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSettings(*SettingsClass) }); ok {
 		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
 		goval.InitSettings(klass)
+	}
+}
+
+func finalizeClassSettings(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSettings(*SettingsClass) }); ok {
+		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSettings(klass)
 	}
 }
 
@@ -305,7 +313,7 @@ type settingsValue struct {
 // “XProperty” for other sources.
 func (s *SettingsValue) Origin() string {
 	valptr := &s.native.origin
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

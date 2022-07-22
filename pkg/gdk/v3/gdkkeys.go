@@ -880,9 +880,9 @@ func NewKeymapKey(keycode uint, group, level int) KeymapKey {
 // Keycode: hardware keycode. This is an identifying number for a physical key.
 func (k *KeymapKey) Keycode() uint {
 	valptr := &k.native.keycode
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Group indicates movement in a horizontal direction. Usually groups are used
@@ -891,9 +891,9 @@ func (k *KeymapKey) Keycode() uint {
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int {
 	valptr := &k.native.group
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Level indicates which symbol on the key will be used, in a vertical
@@ -904,9 +904,9 @@ func (k *KeymapKey) Group() int {
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int {
 	valptr := &k.native.level
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.

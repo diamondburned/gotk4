@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeToggleAction,
-		GoType:    reflect.TypeOf((*ToggleAction)(nil)),
-		InitClass: initClassToggleAction,
+		GType:         GTypeToggleAction,
+		GoType:        reflect.TypeOf((*ToggleAction)(nil)),
+		InitClass:     initClassToggleAction,
+		FinalizeClass: finalizeClassToggleAction,
 	})
 }
 
@@ -68,6 +69,13 @@ func initClassToggleAction(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitToggleAction(*ToggleActionClass) }); ok {
 		klass := (*ToggleActionClass)(gextras.NewStructNative(gclass))
 		goval.InitToggleAction(klass)
+	}
+}
+
+func finalizeClassToggleAction(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeToggleAction(*ToggleActionClass) }); ok {
+		klass := (*ToggleActionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeToggleAction(klass)
 	}
 }
 
@@ -291,7 +299,7 @@ type toggleActionClass struct {
 
 func (t *ToggleActionClass) ParentClass() *ActionClass {
 	valptr := &t.native.parent_class
-	var v *ActionClass // out
-	v = (*ActionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ActionClass // out
+	_v = (*ActionClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

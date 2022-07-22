@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePopoverAccessible,
-		GoType:    reflect.TypeOf((*PopoverAccessible)(nil)),
-		InitClass: initClassPopoverAccessible,
+		GType:         GTypePopoverAccessible,
+		GoType:        reflect.TypeOf((*PopoverAccessible)(nil)),
+		InitClass:     initClassPopoverAccessible,
+		FinalizeClass: finalizeClassPopoverAccessible,
 	})
 }
 
@@ -54,6 +55,13 @@ func initClassPopoverAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPopoverAccessible(*PopoverAccessibleClass) }); ok {
 		klass := (*PopoverAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitPopoverAccessible(klass)
+	}
+}
+
+func finalizeClassPopoverAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePopoverAccessible(*PopoverAccessibleClass) }); ok {
+		klass := (*PopoverAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePopoverAccessible(klass)
 	}
 }
 
@@ -90,7 +98,7 @@ type popoverAccessibleClass struct {
 
 func (p *PopoverAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &p.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

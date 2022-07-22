@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLevelBarAccessible,
-		GoType:    reflect.TypeOf((*LevelBarAccessible)(nil)),
-		InitClass: initClassLevelBarAccessible,
+		GType:         GTypeLevelBarAccessible,
+		GoType:        reflect.TypeOf((*LevelBarAccessible)(nil)),
+		InitClass:     initClassLevelBarAccessible,
+		FinalizeClass: finalizeClassLevelBarAccessible,
 	})
 }
 
@@ -58,6 +59,15 @@ func initClassLevelBarAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*LevelBarAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitLevelBarAccessible(klass)
+	}
+}
+
+func finalizeClassLevelBarAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeLevelBarAccessible(*LevelBarAccessibleClass)
+	}); ok {
+		klass := (*LevelBarAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLevelBarAccessible(klass)
 	}
 }
 
@@ -95,7 +105,7 @@ type levelBarAccessibleClass struct {
 
 func (l *LevelBarAccessibleClass) ParentClass() *WidgetAccessibleClass {
 	valptr := &l.native.parent_class
-	var v *WidgetAccessibleClass // out
-	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetAccessibleClass // out
+	_v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

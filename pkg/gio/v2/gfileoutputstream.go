@@ -141,9 +141,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileOutputStream,
-		GoType:    reflect.TypeOf((*FileOutputStream)(nil)),
-		InitClass: initClassFileOutputStream,
+		GType:         GTypeFileOutputStream,
+		GoType:        reflect.TypeOf((*FileOutputStream)(nil)),
+		InitClass:     initClassFileOutputStream,
+		FinalizeClass: finalizeClassFileOutputStream,
 	})
 }
 
@@ -193,6 +194,13 @@ func initClassFileOutputStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileOutputStream(*FileOutputStreamClass) }); ok {
 		klass := (*FileOutputStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitFileOutputStream(klass)
+	}
+}
+
+func finalizeClassFileOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileOutputStream(*FileOutputStreamClass) }); ok {
+		klass := (*FileOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileOutputStream(klass)
 	}
 }
 
@@ -555,7 +563,7 @@ type fileOutputStreamClass struct {
 
 func (f *FileOutputStreamClass) ParentClass() *OutputStreamClass {
 	valptr := &f.native.parent_class
-	var v *OutputStreamClass // out
-	v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *OutputStreamClass // out
+	_v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

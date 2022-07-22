@@ -225,9 +225,9 @@ type optionEntry struct {
 // specify the option as --groupname-long_name.
 func (o *OptionEntry) LongName() string {
 	valptr := &o.native.long_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ShortName: if an option has a short name, it can be specified -short_name in
@@ -235,25 +235,25 @@ func (o *OptionEntry) LongName() string {
 // '-', or zero if the option has no short name.
 func (o *OptionEntry) ShortName() byte {
 	valptr := &o.native.short_name
-	var v byte // out
-	v = byte(*valptr)
-	return v
+	var _v byte // out
+	_v = byte(*valptr)
+	return _v
 }
 
 // Flags from Flags.
 func (o *OptionEntry) Flags() int {
 	valptr := &o.native.flags
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Arg: type of the option, as a Arg.
 func (o *OptionEntry) Arg() OptionArg {
 	valptr := &o.native.arg
-	var v OptionArg // out
-	v = OptionArg(*valptr)
-	return v
+	var _v OptionArg // out
+	_v = OptionArg(*valptr)
+	return _v
 }
 
 // ArgData: if the arg type is G_OPTION_ARG_CALLBACK, then arg_data must point
@@ -270,9 +270,9 @@ func (o *OptionEntry) Arg() OptionArg {
 // freed using g_strfreev().
 func (o *OptionEntry) ArgData() unsafe.Pointer {
 	valptr := &o.native.arg_data
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Description: description for the option in --help output. The description is
@@ -280,9 +280,9 @@ func (o *OptionEntry) ArgData() unsafe.Pointer {
 // g_option_group_set_translation_domain().
 func (o *OptionEntry) Description() string {
 	valptr := &o.native.description
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ArgDescription: placeholder to use for the extra argument parsed by the
@@ -290,9 +290,9 @@ func (o *OptionEntry) Description() string {
 // translate_func of the group, see g_option_group_set_translation_domain().
 func (o *OptionEntry) ArgDescription() string {
 	valptr := &o.native.arg_description
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ShortName: if an option has a short name, it can be specified -short_name in

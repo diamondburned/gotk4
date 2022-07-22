@@ -80,9 +80,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocket,
-		GoType:    reflect.TypeOf((*Socket)(nil)),
-		InitClass: initClassSocket,
+		GType:         GTypeSocket,
+		GoType:        reflect.TypeOf((*Socket)(nil)),
+		InitClass:     initClassSocket,
+		FinalizeClass: finalizeClassSocket,
 	})
 }
 
@@ -96,6 +97,13 @@ func initClassSocket(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSocket(*SocketClass) }); ok {
 		klass := (*SocketClass)(gextras.NewStructNative(gclass))
 		goval.InitSocket(klass)
+	}
+}
+
+func finalizeClassSocket(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSocket(*SocketClass) }); ok {
+		klass := (*SocketClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocket(klass)
 	}
 }
 
@@ -207,7 +215,7 @@ type socketClass struct {
 
 func (s *SocketClass) ParentClass() *ObjectClass {
 	valptr := &s.native.parent_class
-	var v *ObjectClass // out
-	v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ObjectClass // out
+	_v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

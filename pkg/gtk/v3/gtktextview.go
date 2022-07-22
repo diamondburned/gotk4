@@ -271,9 +271,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTextView,
-		GoType:    reflect.TypeOf((*TextView)(nil)),
-		InitClass: initClassTextView,
+		GType:         GTypeTextView,
+		GoType:        reflect.TypeOf((*TextView)(nil)),
+		InitClass:     initClassTextView,
+		FinalizeClass: finalizeClassTextView,
 	})
 }
 
@@ -343,6 +344,13 @@ func initClassTextView(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTextView(*TextViewClass) }); ok {
 		klass := (*TextViewClass)(gextras.NewStructNative(gclass))
 		goval.InitTextView(klass)
+	}
+}
+
+func finalizeClassTextView(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTextView(*TextViewClass) }); ok {
+		klass := (*TextViewClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTextView(klass)
 	}
 }
 
@@ -3113,7 +3121,7 @@ type textViewClass struct {
 // ParentClass: object class structure needs to be the first.
 func (t *TextViewClass) ParentClass() *ContainerClass {
 	valptr := &t.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

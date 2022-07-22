@@ -502,9 +502,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeView,
-		GoType:    reflect.TypeOf((*TreeView)(nil)),
-		InitClass: initClassTreeView,
+		GType:         GTypeTreeView,
+		GoType:        reflect.TypeOf((*TreeView)(nil)),
+		InitClass:     initClassTreeView,
+		FinalizeClass: finalizeClassTreeView,
 	})
 }
 
@@ -588,6 +589,13 @@ func initClassTreeView(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeView(*TreeViewClass) }); ok {
 		klass := (*TreeViewClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeView(klass)
+	}
+}
+
+func finalizeClassTreeView(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeView(*TreeViewClass) }); ok {
+		klass := (*TreeViewClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeView(klass)
 	}
 }
 
@@ -4125,7 +4133,7 @@ type treeViewClass struct {
 
 func (t *TreeViewClass) ParentClass() *ContainerClass {
 	valptr := &t.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

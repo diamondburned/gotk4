@@ -136,9 +136,10 @@ var _ MenuSheller = (*MenuShell)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuShell,
-		GoType:    reflect.TypeOf((*MenuShell)(nil)),
-		InitClass: initClassMenuShell,
+		GType:         GTypeMenuShell,
+		GoType:        reflect.TypeOf((*MenuShell)(nil)),
+		InitClass:     initClassMenuShell,
+		FinalizeClass: finalizeClassMenuShell,
 	})
 }
 
@@ -188,6 +189,13 @@ func initClassMenuShell(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenuShell(*MenuShellClass) }); ok {
 		klass := (*MenuShellClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuShell(klass)
+	}
+}
+
+func finalizeClassMenuShell(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenuShell(*MenuShellClass) }); ok {
+		klass := (*MenuShellClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuShell(klass)
 	}
 }
 
@@ -967,7 +975,7 @@ type menuShellClass struct {
 
 func (m *MenuShellClass) ParentClass() *ContainerClass {
 	valptr := &m.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

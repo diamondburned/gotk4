@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFlowBoxChildAccessible,
-		GoType:    reflect.TypeOf((*FlowBoxChildAccessible)(nil)),
-		InitClass: initClassFlowBoxChildAccessible,
+		GType:         GTypeFlowBoxChildAccessible,
+		GoType:        reflect.TypeOf((*FlowBoxChildAccessible)(nil)),
+		InitClass:     initClassFlowBoxChildAccessible,
+		FinalizeClass: finalizeClassFlowBoxChildAccessible,
 	})
 }
 
@@ -56,6 +57,15 @@ func initClassFlowBoxChildAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*FlowBoxChildAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitFlowBoxChildAccessible(klass)
+	}
+}
+
+func finalizeClassFlowBoxChildAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeFlowBoxChildAccessible(*FlowBoxChildAccessibleClass)
+	}); ok {
+		klass := (*FlowBoxChildAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFlowBoxChildAccessible(klass)
 	}
 }
 
@@ -93,7 +103,7 @@ type flowBoxChildAccessibleClass struct {
 
 func (f *FlowBoxChildAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &f.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

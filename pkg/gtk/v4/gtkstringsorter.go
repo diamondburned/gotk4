@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStringSorter,
-		GoType:    reflect.TypeOf((*StringSorter)(nil)),
-		InitClass: initClassStringSorter,
+		GType:         GTypeStringSorter,
+		GoType:        reflect.TypeOf((*StringSorter)(nil)),
+		InitClass:     initClassStringSorter,
+		FinalizeClass: finalizeClassStringSorter,
 	})
 }
 
@@ -59,6 +60,13 @@ func initClassStringSorter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStringSorter(*StringSorterClass) }); ok {
 		klass := (*StringSorterClass)(gextras.NewStructNative(gclass))
 		goval.InitStringSorter(klass)
+	}
+}
+
+func finalizeClassStringSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStringSorter(*StringSorterClass) }); ok {
+		klass := (*StringSorterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStringSorter(klass)
 	}
 }
 
@@ -224,7 +232,7 @@ type stringSorterClass struct {
 
 func (s *StringSorterClass) ParentClass() *SorterClass {
 	valptr := &s.native.parent_class
-	var v *SorterClass // out
-	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SorterClass // out
+	_v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -67,9 +67,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCheckButton,
-		GoType:    reflect.TypeOf((*CheckButton)(nil)),
-		InitClass: initClassCheckButton,
+		GType:         GTypeCheckButton,
+		GoType:        reflect.TypeOf((*CheckButton)(nil)),
+		InitClass:     initClassCheckButton,
+		FinalizeClass: finalizeClassCheckButton,
 	})
 }
 
@@ -83,6 +84,13 @@ func initClassCheckButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCheckButton(*CheckButtonClass) }); ok {
 		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitCheckButton(klass)
+	}
+}
+
+func finalizeClassCheckButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCheckButton(*CheckButtonClass) }); ok {
+		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCheckButton(klass)
 	}
 }
 
@@ -237,7 +245,7 @@ type checkButtonClass struct {
 
 func (c *CheckButtonClass) ParentClass() *ToggleButtonClass {
 	valptr := &c.native.parent_class
-	var v *ToggleButtonClass // out
-	v = (*ToggleButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ToggleButtonClass // out
+	_v = (*ToggleButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

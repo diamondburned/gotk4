@@ -55,9 +55,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeConstraintGuide,
-		GoType:    reflect.TypeOf((*ConstraintGuide)(nil)),
-		InitClass: initClassConstraintGuide,
+		GType:         GTypeConstraintGuide,
+		GoType:        reflect.TypeOf((*ConstraintGuide)(nil)),
+		InitClass:     initClassConstraintGuide,
+		FinalizeClass: finalizeClassConstraintGuide,
 	})
 }
 
@@ -65,6 +66,13 @@ func initClassConstraintGuide(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitConstraintGuide(*ConstraintGuideClass) }); ok {
 		klass := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
 		goval.InitConstraintGuide(klass)
+	}
+}
+
+func finalizeClassConstraintGuide(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeConstraintGuide(*ConstraintGuideClass) }); ok {
+		klass := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeConstraintGuide(klass)
 	}
 }
 

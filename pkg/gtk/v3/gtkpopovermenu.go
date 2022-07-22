@@ -113,9 +113,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePopoverMenu,
-		GoType:    reflect.TypeOf((*PopoverMenu)(nil)),
-		InitClass: initClassPopoverMenu,
+		GType:         GTypePopoverMenu,
+		GoType:        reflect.TypeOf((*PopoverMenu)(nil)),
+		InitClass:     initClassPopoverMenu,
+		FinalizeClass: finalizeClassPopoverMenu,
 	})
 }
 
@@ -123,6 +124,13 @@ func initClassPopoverMenu(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPopoverMenu(*PopoverMenuClass) }); ok {
 		klass := (*PopoverMenuClass)(gextras.NewStructNative(gclass))
 		goval.InitPopoverMenu(klass)
+	}
+}
+
+func finalizeClassPopoverMenu(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePopoverMenu(*PopoverMenuClass) }); ok {
+		klass := (*PopoverMenuClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePopoverMenu(klass)
 	}
 }
 
@@ -208,7 +216,7 @@ type popoverMenuClass struct {
 
 func (p *PopoverMenuClass) ParentClass() *PopoverClass {
 	valptr := &p.native.parent_class
-	var v *PopoverClass // out
-	v = (*PopoverClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *PopoverClass // out
+	_v = (*PopoverClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

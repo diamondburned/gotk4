@@ -116,9 +116,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeContentProvider,
-		GoType:    reflect.TypeOf((*ContentProvider)(nil)),
-		InitClass: initClassContentProvider,
+		GType:         GTypeContentProvider,
+		GoType:        reflect.TypeOf((*ContentProvider)(nil)),
+		InitClass:     initClassContentProvider,
+		FinalizeClass: finalizeClassContentProvider,
 	})
 }
 
@@ -160,6 +161,13 @@ func initClassContentProvider(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitContentProvider(*ContentProviderClass) }); ok {
 		klass := (*ContentProviderClass)(gextras.NewStructNative(gclass))
 		goval.InitContentProvider(klass)
+	}
+}
+
+func finalizeClassContentProvider(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeContentProvider(*ContentProviderClass) }); ok {
+		klass := (*ContentProviderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeContentProvider(klass)
 	}
 }
 

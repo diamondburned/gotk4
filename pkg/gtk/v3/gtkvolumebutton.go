@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVolumeButton,
-		GoType:    reflect.TypeOf((*VolumeButton)(nil)),
-		InitClass: initClassVolumeButton,
+		GType:         GTypeVolumeButton,
+		GoType:        reflect.TypeOf((*VolumeButton)(nil)),
+		InitClass:     initClassVolumeButton,
+		FinalizeClass: finalizeClassVolumeButton,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassVolumeButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVolumeButton(*VolumeButtonClass) }); ok {
 		klass := (*VolumeButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitVolumeButton(klass)
+	}
+}
+
+func finalizeClassVolumeButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVolumeButton(*VolumeButtonClass) }); ok {
+		klass := (*VolumeButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVolumeButton(klass)
 	}
 }
 
@@ -143,7 +151,7 @@ type volumeButtonClass struct {
 
 func (v *VolumeButtonClass) ParentClass() *ScaleButtonClass {
 	valptr := &v.native.parent_class
-	var v *ScaleButtonClass // out
-	v = (*ScaleButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ScaleButtonClass // out
+	_v = (*ScaleButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

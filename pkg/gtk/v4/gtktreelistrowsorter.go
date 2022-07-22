@@ -53,9 +53,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeListRowSorter,
-		GoType:    reflect.TypeOf((*TreeListRowSorter)(nil)),
-		InitClass: initClassTreeListRowSorter,
+		GType:         GTypeTreeListRowSorter,
+		GoType:        reflect.TypeOf((*TreeListRowSorter)(nil)),
+		InitClass:     initClassTreeListRowSorter,
+		FinalizeClass: finalizeClassTreeListRowSorter,
 	})
 }
 
@@ -63,6 +64,13 @@ func initClassTreeListRowSorter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeListRowSorter(*TreeListRowSorterClass) }); ok {
 		klass := (*TreeListRowSorterClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeListRowSorter(klass)
+	}
+}
+
+func finalizeClassTreeListRowSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeListRowSorter(*TreeListRowSorterClass) }); ok {
+		klass := (*TreeListRowSorterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeListRowSorter(klass)
 	}
 }
 
@@ -170,7 +178,7 @@ type treeListRowSorterClass struct {
 
 func (t *TreeListRowSorterClass) ParentClass() *SorterClass {
 	valptr := &t.native.parent_class
-	var v *SorterClass // out
-	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SorterClass // out
+	_v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

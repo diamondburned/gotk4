@@ -63,9 +63,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellAreaBox,
-		GoType:    reflect.TypeOf((*CellAreaBox)(nil)),
-		InitClass: initClassCellAreaBox,
+		GType:         GTypeCellAreaBox,
+		GoType:        reflect.TypeOf((*CellAreaBox)(nil)),
+		InitClass:     initClassCellAreaBox,
+		FinalizeClass: finalizeClassCellAreaBox,
 	})
 }
 
@@ -73,6 +74,13 @@ func initClassCellAreaBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellAreaBox(*CellAreaBoxClass) }); ok {
 		klass := (*CellAreaBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitCellAreaBox(klass)
+	}
+}
+
+func finalizeClassCellAreaBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellAreaBox(*CellAreaBoxClass) }); ok {
+		klass := (*CellAreaBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellAreaBox(klass)
 	}
 }
 

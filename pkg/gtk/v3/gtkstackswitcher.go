@@ -66,9 +66,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStackSwitcher,
-		GoType:    reflect.TypeOf((*StackSwitcher)(nil)),
-		InitClass: initClassStackSwitcher,
+		GType:         GTypeStackSwitcher,
+		GoType:        reflect.TypeOf((*StackSwitcher)(nil)),
+		InitClass:     initClassStackSwitcher,
+		FinalizeClass: finalizeClassStackSwitcher,
 	})
 }
 
@@ -76,6 +77,13 @@ func initClassStackSwitcher(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStackSwitcher(*StackSwitcherClass) }); ok {
 		klass := (*StackSwitcherClass)(gextras.NewStructNative(gclass))
 		goval.InitStackSwitcher(klass)
+	}
+}
+
+func finalizeClassStackSwitcher(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStackSwitcher(*StackSwitcherClass) }); ok {
+		klass := (*StackSwitcherClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStackSwitcher(klass)
 	}
 }
 
@@ -182,7 +190,7 @@ type stackSwitcherClass struct {
 
 func (s *StackSwitcherClass) ParentClass() *BoxClass {
 	valptr := &s.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

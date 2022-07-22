@@ -58,9 +58,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeInetAddress,
-		GoType:    reflect.TypeOf((*InetAddress)(nil)),
-		InitClass: initClassInetAddress,
+		GType:         GTypeInetAddress,
+		GoType:        reflect.TypeOf((*InetAddress)(nil)),
+		InitClass:     initClassInetAddress,
+		FinalizeClass: finalizeClassInetAddress,
 	})
 }
 
@@ -74,6 +75,13 @@ func initClassInetAddress(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitInetAddress(*InetAddressClass) }); ok {
 		klass := (*InetAddressClass)(gextras.NewStructNative(gclass))
 		goval.InitInetAddress(klass)
+	}
+}
+
+func finalizeClassInetAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeInetAddress(*InetAddressClass) }); ok {
+		klass := (*InetAddressClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeInetAddress(klass)
 	}
 }
 

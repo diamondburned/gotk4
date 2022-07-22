@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCancellable,
-		GoType:    reflect.TypeOf((*Cancellable)(nil)),
-		InitClass: initClassCancellable,
+		GType:         GTypeCancellable,
+		GoType:        reflect.TypeOf((*Cancellable)(nil)),
+		InitClass:     initClassCancellable,
+		FinalizeClass: finalizeClassCancellable,
 	})
 }
 
@@ -65,6 +66,13 @@ func initClassCancellable(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCancellable(*CancellableClass) }); ok {
 		klass := (*CancellableClass)(gextras.NewStructNative(gclass))
 		goval.InitCancellable(klass)
+	}
+}
+
+func finalizeClassCancellable(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCancellable(*CancellableClass) }); ok {
+		klass := (*CancellableClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCancellable(klass)
 	}
 }
 

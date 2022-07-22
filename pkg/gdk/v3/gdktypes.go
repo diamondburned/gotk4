@@ -881,17 +881,17 @@ func NewPoint(x, y int) Point {
 // X: x coordinate of the point.
 func (p *Point) X() int {
 	valptr := &p.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Y: y coordinate of the point.
 func (p *Point) Y() int {
 	valptr := &p.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // X: x coordinate of the point.
@@ -949,30 +949,30 @@ func NewRectangle(x, y, width, height int) Rectangle {
 
 func (r *Rectangle) X() int {
 	valptr := &r.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (r *Rectangle) Y() int {
 	valptr := &r.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (r *Rectangle) Width() int {
 	valptr := &r.native.width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (r *Rectangle) Height() int {
 	valptr := &r.native.height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (r *Rectangle) SetX(x int) {

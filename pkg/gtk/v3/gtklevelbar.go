@@ -99,9 +99,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLevelBar,
-		GoType:    reflect.TypeOf((*LevelBar)(nil)),
-		InitClass: initClassLevelBar,
+		GType:         GTypeLevelBar,
+		GoType:        reflect.TypeOf((*LevelBar)(nil)),
+		InitClass:     initClassLevelBar,
+		FinalizeClass: finalizeClassLevelBar,
 	})
 }
 
@@ -115,6 +116,13 @@ func initClassLevelBar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitLevelBar(*LevelBarClass) }); ok {
 		klass := (*LevelBarClass)(gextras.NewStructNative(gclass))
 		goval.InitLevelBar(klass)
+	}
+}
+
+func finalizeClassLevelBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeLevelBar(*LevelBarClass) }); ok {
+		klass := (*LevelBarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLevelBar(klass)
 	}
 }
 

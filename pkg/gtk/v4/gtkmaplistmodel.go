@@ -107,9 +107,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMapListModel,
-		GoType:    reflect.TypeOf((*MapListModel)(nil)),
-		InitClass: initClassMapListModel,
+		GType:         GTypeMapListModel,
+		GoType:        reflect.TypeOf((*MapListModel)(nil)),
+		InitClass:     initClassMapListModel,
+		FinalizeClass: finalizeClassMapListModel,
 	})
 }
 
@@ -117,6 +118,13 @@ func initClassMapListModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMapListModel(*MapListModelClass) }); ok {
 		klass := (*MapListModelClass)(gextras.NewStructNative(gclass))
 		goval.InitMapListModel(klass)
+	}
+}
+
+func finalizeClassMapListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMapListModel(*MapListModelClass) }); ok {
+		klass := (*MapListModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMapListModel(klass)
 	}
 }
 

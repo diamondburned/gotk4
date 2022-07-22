@@ -346,17 +346,17 @@ type dBusErrorEntry struct {
 // ErrorCode: error code.
 func (d *DBusErrorEntry) ErrorCode() int {
 	valptr := &d.native.error_code
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // DBusErrorName d-Bus error name to associate with error_code.
 func (d *DBusErrorEntry) DBusErrorName() string {
 	valptr := &d.native.dbus_error_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ErrorCode: error code.

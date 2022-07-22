@@ -62,9 +62,10 @@ var _ LayoutChilder = (*LayoutChild)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLayoutChild,
-		GoType:    reflect.TypeOf((*LayoutChild)(nil)),
-		InitClass: initClassLayoutChild,
+		GType:         GTypeLayoutChild,
+		GoType:        reflect.TypeOf((*LayoutChild)(nil)),
+		InitClass:     initClassLayoutChild,
+		FinalizeClass: finalizeClassLayoutChild,
 	})
 }
 
@@ -72,6 +73,13 @@ func initClassLayoutChild(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitLayoutChild(*LayoutChildClass) }); ok {
 		klass := (*LayoutChildClass)(gextras.NewStructNative(gclass))
 		goval.InitLayoutChild(klass)
+	}
+}
+
+func finalizeClassLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeLayoutChild(*LayoutChildClass) }); ok {
+		klass := (*LayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLayoutChild(klass)
 	}
 }
 

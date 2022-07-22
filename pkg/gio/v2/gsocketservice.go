@@ -74,9 +74,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocketService,
-		GoType:    reflect.TypeOf((*SocketService)(nil)),
-		InitClass: initClassSocketService,
+		GType:         GTypeSocketService,
+		GoType:        reflect.TypeOf((*SocketService)(nil)),
+		InitClass:     initClassSocketService,
+		FinalizeClass: finalizeClassSocketService,
 	})
 }
 
@@ -92,6 +93,13 @@ func initClassSocketService(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSocketService(*SocketServiceClass) }); ok {
 		klass := (*SocketServiceClass)(gextras.NewStructNative(gclass))
 		goval.InitSocketService(klass)
+	}
+}
+
+func finalizeClassSocketService(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSocketService(*SocketServiceClass) }); ok {
+		klass := (*SocketServiceClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocketService(klass)
 	}
 }
 
@@ -270,7 +278,7 @@ type socketServiceClass struct {
 
 func (s *SocketServiceClass) ParentClass() *SocketListenerClass {
 	valptr := &s.native.parent_class
-	var v *SocketListenerClass // out
-	v = (*SocketListenerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SocketListenerClass // out
+	_v = (*SocketListenerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

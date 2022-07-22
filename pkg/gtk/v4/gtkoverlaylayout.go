@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeOverlayLayout,
-		GoType:    reflect.TypeOf((*OverlayLayout)(nil)),
-		InitClass: initClassOverlayLayout,
+		GType:         GTypeOverlayLayout,
+		GoType:        reflect.TypeOf((*OverlayLayout)(nil)),
+		InitClass:     initClassOverlayLayout,
+		FinalizeClass: finalizeClassOverlayLayout,
 	})
 }
 
@@ -60,6 +61,13 @@ func initClassOverlayLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitOverlayLayout(*OverlayLayoutClass) }); ok {
 		klass := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitOverlayLayout(klass)
+	}
+}
+
+func finalizeClassOverlayLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeOverlayLayout(*OverlayLayoutClass) }); ok {
+		klass := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeOverlayLayout(klass)
 	}
 }
 
@@ -110,9 +118,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeOverlayLayoutChild,
-		GoType:    reflect.TypeOf((*OverlayLayoutChild)(nil)),
-		InitClass: initClassOverlayLayoutChild,
+		GType:         GTypeOverlayLayoutChild,
+		GoType:        reflect.TypeOf((*OverlayLayoutChild)(nil)),
+		InitClass:     initClassOverlayLayoutChild,
+		FinalizeClass: finalizeClassOverlayLayoutChild,
 	})
 }
 
@@ -122,6 +131,15 @@ func initClassOverlayLayoutChild(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
 		goval.InitOverlayLayoutChild(klass)
+	}
+}
+
+func finalizeClassOverlayLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeOverlayLayoutChild(*OverlayLayoutChildClass)
+	}); ok {
+		klass := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeOverlayLayoutChild(klass)
 	}
 }
 
@@ -237,9 +255,9 @@ type overlayLayoutChildClass struct {
 
 func (o *OverlayLayoutChildClass) ParentClass() *LayoutChildClass {
 	valptr := &o.native.parent_class
-	var v *LayoutChildClass // out
-	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutChildClass // out
+	_v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // OverlayLayoutClass: instance of this type is always passed by reference.
@@ -254,7 +272,7 @@ type overlayLayoutClass struct {
 
 func (o *OverlayLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &o.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

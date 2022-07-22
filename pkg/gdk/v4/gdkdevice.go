@@ -678,25 +678,25 @@ type timeCoord struct {
 // Time: timestamp for this event.
 func (t *TimeCoord) Time() uint32 {
 	valptr := &t.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Flags indicating what axes are present.
 func (t *TimeCoord) Flags() AxisFlags {
 	valptr := &t.native.flags
-	var v AxisFlags // out
-	v = AxisFlags(*valptr)
-	return v
+	var _v AxisFlags // out
+	_v = AxisFlags(*valptr)
+	return _v
 }
 
 // Axes axis values.
 func (t *TimeCoord) Axes() [12]float64 {
 	valptr := &t.native.axes
-	var v [12]float64 // out
-	v = *(*[12]float64)(unsafe.Pointer(&*valptr))
-	return v
+	var _v [12]float64 // out
+	_v = *(*[12]float64)(unsafe.Pointer(&*valptr))
+	return _v
 }
 
 // Time: timestamp for this event.

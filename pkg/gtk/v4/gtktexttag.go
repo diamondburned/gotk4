@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTextTag,
-		GoType:    reflect.TypeOf((*TextTag)(nil)),
-		InitClass: initClassTextTag,
+		GType:         GTypeTextTag,
+		GoType:        reflect.TypeOf((*TextTag)(nil)),
+		InitClass:     initClassTextTag,
+		FinalizeClass: finalizeClassTextTag,
 	})
 }
 
@@ -69,6 +70,13 @@ func initClassTextTag(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTextTag(*TextTagClass) }); ok {
 		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
 		goval.InitTextTag(klass)
+	}
+}
+
+func finalizeClassTextTag(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTextTag(*TextTagClass) }); ok {
+		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTextTag(klass)
 	}
 }
 

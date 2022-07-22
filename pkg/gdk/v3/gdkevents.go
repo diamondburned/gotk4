@@ -1054,15 +1054,15 @@ type eventAny struct {
 // Type: type of the event.
 func (e *EventAny) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventAny) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1078,17 +1078,17 @@ func (e *EventAny) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventAny) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1156,15 +1156,15 @@ type eventButton struct {
 // GDK_3BUTTON_PRESS or GDK_BUTTON_RELEASE).
 func (e *EventButton) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventButton) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1180,58 +1180,58 @@ func (e *EventButton) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventButton) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventButton) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X: x coordinate of the pointer relative to the window.
 func (e *EventButton) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y: y coordinate of the pointer relative to the window.
 func (e *EventButton) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Axes: x, y translated to the axes of device, or NULL if device is the mouse.
 func (e *EventButton) Axes() *float64 {
 	valptr := &e.native.axes
-	var v *float64 // out
-	v = (*float64)(unsafe.Pointer(*valptr))
-	return v
+	var _v *float64 // out
+	_v = (*float64)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventButton) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // Button: button which was pressed or released, numbered from 1 to 5. Normally
@@ -1240,16 +1240,16 @@ func (e *EventButton) State() ModifierType {
 // pressing both mouse buttons together.
 func (e *EventButton) Button() uint {
 	valptr := &e.native.button
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventButton) Device() Devicer {
 	valptr := &e.native.device
-	var v Devicer // out
+	var _v Devicer // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1265,25 +1265,25 @@ func (e *EventButton) Device() Devicer {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // XRoot: x coordinate of the pointer relative to the root of the screen.
 func (e *EventButton) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer relative to the root of the screen.
 func (e *EventButton) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1346,15 +1346,15 @@ type eventConfigure struct {
 // Type: type of the event (GDK_CONFIGURE).
 func (e *EventConfigure) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventConfigure) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1370,49 +1370,49 @@ func (e *EventConfigure) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventConfigure) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // X: new x coordinate of the window, relative to its parent.
 func (e *EventConfigure) X() int {
 	valptr := &e.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Y: new y coordinate of the window, relative to its parent.
 func (e *EventConfigure) Y() int {
 	valptr := &e.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Width: new width of the window.
 func (e *EventConfigure) Width() int {
 	valptr := &e.native.width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Height: new height of the window.
 func (e *EventConfigure) Height() int {
 	valptr := &e.native.height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1460,15 +1460,15 @@ type eventCrossing struct {
 // Type: type of the event (GDK_ENTER_NOTIFY or GDK_LEAVE_NOTIFY).
 func (e *EventCrossing) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventCrossing) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1484,23 +1484,23 @@ func (e *EventCrossing) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventCrossing) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Subwindow: window that was entered or left.
 func (e *EventCrossing) Subwindow() Windower {
 	valptr := &e.native.subwindow
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1516,49 +1516,49 @@ func (e *EventCrossing) Subwindow() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventCrossing) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X: x coordinate of the pointer relative to the window.
 func (e *EventCrossing) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y: y coordinate of the pointer relative to the window.
 func (e *EventCrossing) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // XRoot: x coordinate of the pointer relative to the root of the screen.
 func (e *EventCrossing) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer relative to the root of the screen.
 func (e *EventCrossing) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Mode: crossing mode (GDK_CROSSING_NORMAL, GDK_CROSSING_GRAB,
@@ -1568,9 +1568,9 @@ func (e *EventCrossing) YRoot() float64 {
 // never native.
 func (e *EventCrossing) Mode() CrossingMode {
 	valptr := &e.native.mode
-	var v CrossingMode // out
-	v = CrossingMode(*valptr)
-	return v
+	var _v CrossingMode // out
+	_v = CrossingMode(*valptr)
+	return _v
 }
 
 // Detail: kind of crossing that happened (GDK_NOTIFY_INFERIOR,
@@ -1578,28 +1578,28 @@ func (e *EventCrossing) Mode() CrossingMode {
 // GDK_NOTIFY_NONLINEAR_VIRTUAL).
 func (e *EventCrossing) Detail() NotifyType {
 	valptr := &e.native.detail
-	var v NotifyType // out
-	v = NotifyType(*valptr)
-	return v
+	var _v NotifyType // out
+	_v = NotifyType(*valptr)
+	return _v
 }
 
 // Focus: TRUE if window is the focus window or an inferior.
 func (e *EventCrossing) Focus() bool {
 	valptr := &e.native.focus
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventCrossing) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1662,15 +1662,15 @@ type eventDND struct {
 // GDK_DRAG_STATUS, GDK_DROP_START or GDK_DROP_FINISHED).
 func (e *EventDND) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventDND) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1686,51 +1686,51 @@ func (e *EventDND) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventDND) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Context for the current DND operation.
 func (e *EventDND) Context() *DragContext {
 	valptr := &e.native.context
-	var v *DragContext // out
-	v = wrapDragContext(coreglib.Take(unsafe.Pointer(*valptr)))
-	return v
+	var _v *DragContext // out
+	_v = wrapDragContext(coreglib.Take(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventDND) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // XRoot: x coordinate of the pointer relative to the root of the screen, only
 // set for GDK_DRAG_MOTION and GDK_DROP_START.
 func (e *EventDND) XRoot() int16 {
 	valptr := &e.native.x_root
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer relative to the root of the screen, only
 // set for GDK_DRAG_MOTION and GDK_DROP_START.
 func (e *EventDND) YRoot() int16 {
 	valptr := &e.native.y_root
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1775,15 +1775,15 @@ type eventExpose struct {
 // Type: type of the event (GDK_EXPOSE or GDK_DAMAGE).
 func (e *EventExpose) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventExpose) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1799,40 +1799,40 @@ func (e *EventExpose) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventExpose) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Area: bounding box of region.
 func (e *EventExpose) Area() *Rectangle {
 	valptr := &e.native.area
-	var v *Rectangle // out
-	v = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *Rectangle // out
+	_v = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Region: region that needs to be redrawn.
 func (e *EventExpose) Region() *cairo.Region {
 	valptr := &e.native.region
-	var v *cairo.Region // out
+	var _v *cairo.Region // out
 	{
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*valptr)}
-		v = (*cairo.Region)(unsafe.Pointer(_pp))
+		_v = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(*valptr)
-	runtime.SetFinalizer(v, func(v *cairo.Region) {
+	runtime.SetFinalizer(_v, func(v *cairo.Region) {
 		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
 	})
-	return v
+	return _v
 }
 
 // Count: number of contiguous GDK_EXPOSE events following this one. The only
@@ -1841,9 +1841,9 @@ func (e *EventExpose) Region() *cairo.Region {
 // this is not normally needed.
 func (e *EventExpose) Count() int {
 	valptr := &e.native.count
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1876,15 +1876,15 @@ type eventFocus struct {
 // Type: type of the event (GDK_FOCUS_CHANGE).
 func (e *EventFocus) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventFocus) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1900,26 +1900,26 @@ func (e *EventFocus) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventFocus) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // In: TRUE if the window has gained the keyboard focus, FALSE if it has lost
 // the focus.
 func (e *EventFocus) In() int16 {
 	valptr := &e.native.in
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -1954,16 +1954,16 @@ type eventGrabBroken struct {
 // Type: type of the event (GDK_GRAB_BROKEN).
 func (e *EventGrabBroken) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event, i.e. the window that previously
 // owned the grab.
 func (e *EventGrabBroken) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -1979,45 +1979,45 @@ func (e *EventGrabBroken) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventGrabBroken) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Keyboard: TRUE if a keyboard grab was broken, FALSE if a pointer grab was
 // broken.
 func (e *EventGrabBroken) Keyboard() bool {
 	valptr := &e.native.keyboard
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // Implicit: TRUE if the broken grab was implicit.
 func (e *EventGrabBroken) Implicit() bool {
 	valptr := &e.native.implicit
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // GrabWindow: if this event is caused by another grab in the same application,
 // grab_window contains the new grab window. Otherwise grab_window is NULL.
 func (e *EventGrabBroken) GrabWindow() Windower {
 	valptr := &e.native.grab_window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2033,9 +2033,9 @@ func (e *EventGrabBroken) GrabWindow() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2076,15 +2076,15 @@ type eventKey struct {
 // Type: type of the event (GDK_KEY_PRESS or GDK_KEY_RELEASE).
 func (e *EventKey) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventKey) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2100,51 +2100,51 @@ func (e *EventKey) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventKey) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventKey) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventKey) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // Keyval: key that was pressed or released. See the gdk/gdkkeysyms.h header
 // file for a complete list of GDK key codes.
 func (e *EventKey) Keyval() uint {
 	valptr := &e.native.keyval
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Length: length of string.
 func (e *EventKey) Length() int {
 	valptr := &e.native.length
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // String: string containing an approximation of the text that would result from
@@ -2158,25 +2158,25 @@ func (e *EventKey) Length() int {
 // at length is necessary to distinguish it from the an empty translation.
 func (e *EventKey) String() string {
 	valptr := &e.native.string
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // HardwareKeycode: raw code of the key that was pressed or released.
 func (e *EventKey) HardwareKeycode() uint16 {
 	valptr := &e.native.hardware_keycode
-	var v uint16 // out
-	v = uint16(*valptr)
-	return v
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
 }
 
 // Group: keyboard group.
 func (e *EventKey) Group() byte {
 	valptr := &e.native.group
-	var v byte // out
-	v = byte(*valptr)
-	return v
+	var _v byte // out
+	_v = byte(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2231,15 +2231,15 @@ type eventMotion struct {
 // Type: type of the event.
 func (e *EventMotion) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventMotion) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2255,74 +2255,74 @@ func (e *EventMotion) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventMotion) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventMotion) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X: x coordinate of the pointer relative to the window.
 func (e *EventMotion) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y: y coordinate of the pointer relative to the window.
 func (e *EventMotion) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Axes: x, y translated to the axes of device, or NULL if device is the mouse.
 func (e *EventMotion) Axes() *float64 {
 	valptr := &e.native.axes
-	var v *float64 // out
-	v = (*float64)(unsafe.Pointer(*valptr))
-	return v
+	var _v *float64 // out
+	_v = (*float64)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventMotion) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // IsHint: set to 1 if this event is just a hint, see the
 // GDK_POINTER_MOTION_HINT_MASK value of EventMask.
 func (e *EventMotion) IsHint() int16 {
 	valptr := &e.native.is_hint
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventMotion) Device() Devicer {
 	valptr := &e.native.device
-	var v Devicer // out
+	var _v Devicer // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2338,25 +2338,25 @@ func (e *EventMotion) Device() Devicer {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // XRoot: x coordinate of the pointer relative to the root of the screen.
 func (e *EventMotion) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer relative to the root of the screen.
 func (e *EventMotion) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2432,15 +2432,15 @@ type eventPadAxis struct {
 // Type: type of the event (GDK_PAD_RING or GDK_PAD_STRIP).
 func (e *EventPadAxis) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventPadAxis) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2456,59 +2456,59 @@ func (e *EventPadAxis) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventPadAxis) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventPadAxis) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Group: pad group the ring/strip belongs to. A GDK_SOURCE_TABLET_PAD device
 // may have one or more groups containing a set of buttons/rings/strips each.
 func (e *EventPadAxis) Group() uint {
 	valptr := &e.native.group
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Index: number of strip/ring that was interacted. This number is 0-indexed.
 func (e *EventPadAxis) Index() uint {
 	valptr := &e.native.index
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
 func (e *EventPadAxis) Mode() uint {
 	valptr := &e.native.mode
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Value: current value for the given axis.
 func (e *EventPadAxis) Value() float64 {
 	valptr := &e.native.value
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2565,15 +2565,15 @@ type eventPadButton struct {
 // Type: type of the event (GDK_PAD_BUTTON_PRESS or GDK_PAD_BUTTON_RELEASE).
 func (e *EventPadButton) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventPadButton) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2589,51 +2589,51 @@ func (e *EventPadButton) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventPadButton) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventPadButton) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Group: pad group the button belongs to. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
 func (e *EventPadButton) Group() uint {
 	valptr := &e.native.group
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Button: pad button that was pressed.
 func (e *EventPadButton) Button() uint {
 	valptr := &e.native.button
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Mode: current mode of group. Different groups in a GDK_SOURCE_TABLET_PAD
 // device may have different current modes.
 func (e *EventPadButton) Mode() uint {
 	valptr := &e.native.mode
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2684,15 +2684,15 @@ type eventPadGroupMode struct {
 // Type: type of the event (GDK_PAD_GROUP_MODE).
 func (e *EventPadGroupMode) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventPadGroupMode) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2708,43 +2708,43 @@ func (e *EventPadGroupMode) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventPadGroupMode) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventPadGroupMode) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Group: pad group that is switching mode. A GDK_SOURCE_TABLET_PAD device may
 // have one or more groups containing a set of buttons/rings/strips each.
 func (e *EventPadGroupMode) Group() uint {
 	valptr := &e.native.group
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Mode: new mode of group. Different groups in a GDK_SOURCE_TABLET_PAD device
 // may have different current modes.
 func (e *EventPadGroupMode) Mode() uint {
 	valptr := &e.native.mode
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2808,15 +2808,15 @@ type eventProximity struct {
 // Type: type of the event (GDK_PROXIMITY_IN or GDK_PROXIMITY_OUT).
 func (e *EventProximity) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventProximity) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2832,32 +2832,32 @@ func (e *EventProximity) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventProximity) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventProximity) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventProximity) Device() Devicer {
 	valptr := &e.native.device
-	var v Devicer // out
+	var _v Devicer // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2873,9 +2873,9 @@ func (e *EventProximity) Device() Devicer {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -2911,15 +2911,15 @@ type eventScroll struct {
 // Type: type of the event (GDK_SCROLL).
 func (e *EventScroll) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventScroll) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -2935,66 +2935,66 @@ func (e *EventScroll) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventScroll) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventScroll) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X: x coordinate of the pointer relative to the window.
 func (e *EventScroll) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y: y coordinate of the pointer relative to the window.
 func (e *EventScroll) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventScroll) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // Direction: direction to scroll to (one of GDK_SCROLL_UP, GDK_SCROLL_DOWN,
 // GDK_SCROLL_LEFT, GDK_SCROLL_RIGHT or GDK_SCROLL_SMOOTH).
 func (e *EventScroll) Direction() ScrollDirection {
 	valptr := &e.native.direction
-	var v ScrollDirection // out
-	v = ScrollDirection(*valptr)
-	return v
+	var _v ScrollDirection // out
+	_v = ScrollDirection(*valptr)
+	return _v
 }
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventScroll) Device() Devicer {
 	valptr := &e.native.device
-	var v Devicer // out
+	var _v Devicer // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3010,41 +3010,41 @@ func (e *EventScroll) Device() Devicer {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // XRoot: x coordinate of the pointer relative to the root of the screen.
 func (e *EventScroll) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer relative to the root of the screen.
 func (e *EventScroll) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // DeltaX: x coordinate of the scroll delta.
 func (e *EventScroll) DeltaX() float64 {
 	valptr := &e.native.delta_x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // DeltaY: y coordinate of the scroll delta.
 func (e *EventScroll) DeltaY() float64 {
 	valptr := &e.native.delta_y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -3138,15 +3138,15 @@ type eventSetting struct {
 // Type: type of the event (GDK_SETTING).
 func (e *EventSetting) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventSetting) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3162,34 +3162,34 @@ func (e *EventSetting) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventSetting) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Action: what happened to the setting (GDK_SETTING_ACTION_NEW,
 // GDK_SETTING_ACTION_CHANGED or GDK_SETTING_ACTION_DELETED).
 func (e *EventSetting) Action() SettingAction {
 	valptr := &e.native.action
-	var v SettingAction // out
-	v = SettingAction(*valptr)
-	return v
+	var _v SettingAction // out
+	_v = SettingAction(*valptr)
+	return _v
 }
 
 // Name: name of the setting.
 func (e *EventSetting) Name() string {
 	valptr := &e.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -3222,15 +3222,15 @@ type eventTouch struct {
 // GDK_TOUCH_CANCEL).
 func (e *EventTouch) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventTouch) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3246,84 +3246,84 @@ func (e *EventTouch) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventTouch) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventTouch) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X: x coordinate of the pointer relative to the window.
 func (e *EventTouch) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y: y coordinate of the pointer relative to the window.
 func (e *EventTouch) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Axes: x, y translated to the axes of device, or NULL if device is the mouse.
 func (e *EventTouch) Axes() *float64 {
 	valptr := &e.native.axes
-	var v *float64 // out
-	v = (*float64)(unsafe.Pointer(*valptr))
-	return v
+	var _v *float64 // out
+	_v = (*float64)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouch) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // Sequence: event sequence that the event belongs to.
 func (e *EventTouch) Sequence() *EventSequence {
 	valptr := &e.native.sequence
-	var v *EventSequence // out
-	v = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *EventSequence // out
+	_v = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // EmulatingPointer: whether the event should be used for emulating pointer
 // event.
 func (e *EventTouch) EmulatingPointer() bool {
 	valptr := &e.native.emulating_pointer
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }
 
 // Device: master device that the event originated from. Use
 // gdk_event_get_source_device() to get the slave device.
 func (e *EventTouch) Device() Devicer {
 	valptr := &e.native.device
-	var v Devicer // out
+	var _v Devicer // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3339,25 +3339,25 @@ func (e *EventTouch) Device() Devicer {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // XRoot: x coordinate of the pointer relative to the root of the screen.
 func (e *EventTouch) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer relative to the root of the screen.
 func (e *EventTouch) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -3420,15 +3420,15 @@ type eventTouchpadPinch struct {
 // Type: type of the event (GDK_TOUCHPAD_PINCH).
 func (e *EventTouchpadPinch) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventTouchpadPinch) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3444,116 +3444,116 @@ func (e *EventTouchpadPinch) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventTouchpadPinch) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Phase: current phase of the gesture.
 func (e *EventTouchpadPinch) Phase() int8 {
 	valptr := &e.native.phase
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // NFingers: number of fingers triggering the pinch.
 func (e *EventTouchpadPinch) NFingers() int8 {
 	valptr := &e.native.n_fingers
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventTouchpadPinch) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X coordinate of the pointer.
 func (e *EventTouchpadPinch) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y coordinate of the pointer.
 func (e *EventTouchpadPinch) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Dx: movement delta in the X axis of the swipe focal point.
 func (e *EventTouchpadPinch) Dx() float64 {
 	valptr := &e.native.dx
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Dy: movement delta in the Y axis of the swipe focal point.
 func (e *EventTouchpadPinch) Dy() float64 {
 	valptr := &e.native.dy
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // AngleDelta: angle change in radians, negative angles denote counter-clockwise
 // movements.
 func (e *EventTouchpadPinch) AngleDelta() float64 {
 	valptr := &e.native.angle_delta
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Scale: current scale, relative to that at the time of the corresponding
 // GDK_TOUCHPAD_GESTURE_PHASE_BEGIN event.
 func (e *EventTouchpadPinch) Scale() float64 {
 	valptr := &e.native.scale
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // XRoot: x coordinate of the pointer, relative to the root of the screen.
 func (e *EventTouchpadPinch) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer, relative to the root of the screen.
 func (e *EventTouchpadPinch) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouchpadPinch) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -3645,15 +3645,15 @@ type eventTouchpadSwipe struct {
 // Type: type of the event (GDK_TOUCHPAD_SWIPE).
 func (e *EventTouchpadSwipe) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventTouchpadSwipe) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3669,98 +3669,98 @@ func (e *EventTouchpadSwipe) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventTouchpadSwipe) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Phase: current phase of the gesture.
 func (e *EventTouchpadSwipe) Phase() int8 {
 	valptr := &e.native.phase
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // NFingers: number of fingers triggering the swipe.
 func (e *EventTouchpadSwipe) NFingers() int8 {
 	valptr := &e.native.n_fingers
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // Time: time of the event in milliseconds.
 func (e *EventTouchpadSwipe) Time() uint32 {
 	valptr := &e.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // X coordinate of the pointer.
 func (e *EventTouchpadSwipe) X() float64 {
 	valptr := &e.native.x
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Y coordinate of the pointer.
 func (e *EventTouchpadSwipe) Y() float64 {
 	valptr := &e.native.y
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Dx: movement delta in the X axis of the swipe focal point.
 func (e *EventTouchpadSwipe) Dx() float64 {
 	valptr := &e.native.dx
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Dy: movement delta in the Y axis of the swipe focal point.
 func (e *EventTouchpadSwipe) Dy() float64 {
 	valptr := &e.native.dy
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // XRoot: x coordinate of the pointer, relative to the root of the screen.
 func (e *EventTouchpadSwipe) XRoot() float64 {
 	valptr := &e.native.x_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // YRoot: y coordinate of the pointer, relative to the root of the screen.
 func (e *EventTouchpadSwipe) YRoot() float64 {
 	valptr := &e.native.y_root
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // State: bit-mask representing the state of the modifier keys (e.g. Control,
 // Shift and Alt) and the pointer buttons. See ModifierType.
 func (e *EventTouchpadSwipe) State() ModifierType {
 	valptr := &e.native.state
-	var v ModifierType // out
-	v = ModifierType(*valptr)
-	return v
+	var _v ModifierType // out
+	_v = ModifierType(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -3842,15 +3842,15 @@ type eventVisibility struct {
 // Type: type of the event (GDK_VISIBILITY_NOTIFY).
 func (e *EventVisibility) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventVisibility) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3866,26 +3866,26 @@ func (e *EventVisibility) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventVisibility) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // State: new visibility state (GDK_VISIBILITY_FULLY_OBSCURED,
 // GDK_VISIBILITY_PARTIAL or GDK_VISIBILITY_UNOBSCURED).
 func (e *EventVisibility) State() VisibilityState {
 	valptr := &e.native.state
-	var v VisibilityState // out
-	v = VisibilityState(*valptr)
-	return v
+	var _v VisibilityState // out
+	_v = VisibilityState(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
@@ -3909,15 +3909,15 @@ type eventWindowState struct {
 // Type: type of the event (GDK_WINDOW_STATE).
 func (e *EventWindowState) Type() EventType {
 	valptr := &e.native._type
-	var v EventType // out
-	v = EventType(*valptr)
-	return v
+	var _v EventType // out
+	_v = EventType(*valptr)
+	return _v
 }
 
 // Window: window which received the event.
 func (e *EventWindowState) Window() Windower {
 	valptr := &e.native.window
-	var v Windower // out
+	var _v Windower // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -3933,33 +3933,33 @@ func (e *EventWindowState) Window() Windower {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.
 func (e *EventWindowState) SendEvent() int8 {
 	valptr := &e.native.send_event
-	var v int8 // out
-	v = int8(*valptr)
-	return v
+	var _v int8 // out
+	_v = int8(*valptr)
+	return _v
 }
 
 // ChangedMask: mask specifying what flags have changed.
 func (e *EventWindowState) ChangedMask() WindowState {
 	valptr := &e.native.changed_mask
-	var v WindowState // out
-	v = WindowState(*valptr)
-	return v
+	var _v WindowState // out
+	_v = WindowState(*valptr)
+	return _v
 }
 
 // NewWindowState: new window state, a combination of WindowState bits.
 func (e *EventWindowState) NewWindowState() WindowState {
 	valptr := &e.native.new_window_state
-	var v WindowState // out
-	v = WindowState(*valptr)
-	return v
+	var _v WindowState // out
+	_v = WindowState(*valptr)
+	return _v
 }
 
 // SendEvent: TRUE if the event was sent explicitly.

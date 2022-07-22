@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSimpleActionGroup,
-		GoType:    reflect.TypeOf((*SimpleActionGroup)(nil)),
-		InitClass: initClassSimpleActionGroup,
+		GType:         GTypeSimpleActionGroup,
+		GoType:        reflect.TypeOf((*SimpleActionGroup)(nil)),
+		InitClass:     initClassSimpleActionGroup,
+		FinalizeClass: finalizeClassSimpleActionGroup,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassSimpleActionGroup(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSimpleActionGroup(*SimpleActionGroupClass) }); ok {
 		klass := (*SimpleActionGroupClass)(gextras.NewStructNative(gclass))
 		goval.InitSimpleActionGroup(klass)
+	}
+}
+
+func finalizeClassSimpleActionGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSimpleActionGroup(*SimpleActionGroupClass) }); ok {
+		klass := (*SimpleActionGroupClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSimpleActionGroup(klass)
 	}
 }
 

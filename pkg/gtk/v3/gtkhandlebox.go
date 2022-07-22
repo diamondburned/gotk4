@@ -77,9 +77,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHandleBox,
-		GoType:    reflect.TypeOf((*HandleBox)(nil)),
-		InitClass: initClassHandleBox,
+		GType:         GTypeHandleBox,
+		GoType:        reflect.TypeOf((*HandleBox)(nil)),
+		InitClass:     initClassHandleBox,
+		FinalizeClass: finalizeClassHandleBox,
 	})
 }
 
@@ -97,6 +98,13 @@ func initClassHandleBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHandleBox(*HandleBoxClass) }); ok {
 		klass := (*HandleBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitHandleBox(klass)
+	}
+}
+
+func finalizeClassHandleBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHandleBox(*HandleBoxClass) }); ok {
+		klass := (*HandleBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHandleBox(klass)
 	}
 }
 
@@ -471,7 +479,7 @@ type handleBoxClass struct {
 // ParentClass: parent class.
 func (h *HandleBoxClass) ParentClass() *BinClass {
 	valptr := &h.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

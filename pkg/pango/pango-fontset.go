@@ -153,9 +153,10 @@ var _ Fontsetter = (*Fontset)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontset,
-		GoType:    reflect.TypeOf((*Fontset)(nil)),
-		InitClass: initClassFontset,
+		GType:         GTypeFontset,
+		GoType:        reflect.TypeOf((*Fontset)(nil)),
+		InitClass:     initClassFontset,
+		FinalizeClass: finalizeClassFontset,
 	})
 }
 
@@ -177,6 +178,13 @@ func initClassFontset(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontset(*FontsetClass) }); ok {
 		klass := (*FontsetClass)(gextras.NewStructNative(gclass))
 		goval.InitFontset(klass)
+	}
+}
+
+func finalizeClassFontset(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontset(*FontsetClass) }); ok {
+		klass := (*FontsetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontset(klass)
 	}
 }
 

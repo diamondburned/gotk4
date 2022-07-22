@@ -211,17 +211,17 @@ func NewTimeVal(tvSec, tvUsec int32) TimeVal {
 // TvSec: seconds.
 func (t *TimeVal) TvSec() int32 {
 	valptr := &t.native.tv_sec
-	var v int32 // out
-	v = int32(*valptr)
-	return v
+	var _v int32 // out
+	_v = int32(*valptr)
+	return _v
 }
 
 // TvUsec: microseconds.
 func (t *TimeVal) TvUsec() int32 {
 	valptr := &t.native.tv_usec
-	var v int32 // out
-	v = int32(*valptr)
-	return v
+	var _v int32 // out
+	_v = int32(*valptr)
+	return _v
 }
 
 // TvSec: seconds.

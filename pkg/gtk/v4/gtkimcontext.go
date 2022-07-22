@@ -323,9 +323,10 @@ var _ IMContexter = (*IMContext)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeIMContext,
-		GoType:    reflect.TypeOf((*IMContext)(nil)),
-		InitClass: initClassIMContext,
+		GType:         GTypeIMContext,
+		GoType:        reflect.TypeOf((*IMContext)(nil)),
+		InitClass:     initClassIMContext,
+		FinalizeClass: finalizeClassIMContext,
 	})
 }
 
@@ -415,6 +416,13 @@ func initClassIMContext(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitIMContext(*IMContextClass) }); ok {
 		klass := (*IMContextClass)(gextras.NewStructNative(gclass))
 		goval.InitIMContext(klass)
+	}
+}
+
+func finalizeClassIMContext(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeIMContext(*IMContextClass) }); ok {
+		klass := (*IMContextClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeIMContext(klass)
 	}
 }
 

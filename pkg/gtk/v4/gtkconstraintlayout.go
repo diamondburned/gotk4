@@ -208,9 +208,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeConstraintLayout,
-		GoType:    reflect.TypeOf((*ConstraintLayout)(nil)),
-		InitClass: initClassConstraintLayout,
+		GType:         GTypeConstraintLayout,
+		GoType:        reflect.TypeOf((*ConstraintLayout)(nil)),
+		InitClass:     initClassConstraintLayout,
+		FinalizeClass: finalizeClassConstraintLayout,
 	})
 }
 
@@ -218,6 +219,13 @@ func initClassConstraintLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitConstraintLayout(*ConstraintLayoutClass) }); ok {
 		klass := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitConstraintLayout(klass)
+	}
+}
+
+func finalizeClassConstraintLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeConstraintLayout(*ConstraintLayoutClass) }); ok {
+		klass := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeConstraintLayout(klass)
 	}
 }
 
@@ -593,9 +601,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeConstraintLayoutChild,
-		GoType:    reflect.TypeOf((*ConstraintLayoutChild)(nil)),
-		InitClass: initClassConstraintLayoutChild,
+		GType:         GTypeConstraintLayoutChild,
+		GoType:        reflect.TypeOf((*ConstraintLayoutChild)(nil)),
+		InitClass:     initClassConstraintLayoutChild,
+		FinalizeClass: finalizeClassConstraintLayoutChild,
 	})
 }
 
@@ -605,6 +614,15 @@ func initClassConstraintLayoutChild(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
 		goval.InitConstraintLayoutChild(klass)
+	}
+}
+
+func finalizeClassConstraintLayoutChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeConstraintLayoutChild(*ConstraintLayoutChildClass)
+	}); ok {
+		klass := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeConstraintLayoutChild(klass)
 	}
 }
 
@@ -633,9 +651,9 @@ type constraintLayoutChildClass struct {
 
 func (c *ConstraintLayoutChildClass) ParentClass() *LayoutChildClass {
 	valptr := &c.native.parent_class
-	var v *LayoutChildClass // out
-	v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutChildClass // out
+	_v = (*LayoutChildClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // ConstraintLayoutClass: instance of this type is always passed by reference.
@@ -650,7 +668,7 @@ type constraintLayoutClass struct {
 
 func (c *ConstraintLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &c.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

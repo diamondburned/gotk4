@@ -656,17 +656,17 @@ type inputVector struct {
 // Buffer: pointer to a buffer where data will be written.
 func (i *InputVector) Buffer() unsafe.Pointer {
 	valptr := &i.native.buffer
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Size: available size in buffer.
 func (i *InputVector) Size() uint {
 	valptr := &i.native.size
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Size: available size in buffer.
@@ -710,17 +710,17 @@ type outputVector struct {
 // Buffer: pointer to a buffer of data to read.
 func (o *OutputVector) Buffer() unsafe.Pointer {
 	valptr := &o.native.buffer
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Size: size of buffer.
 func (o *OutputVector) Size() uint {
 	valptr := &o.native.size
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Size: size of buffer.

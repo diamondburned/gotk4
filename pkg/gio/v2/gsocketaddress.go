@@ -92,9 +92,10 @@ var _ SocketAddresser = (*SocketAddress)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocketAddress,
-		GoType:    reflect.TypeOf((*SocketAddress)(nil)),
-		InitClass: initClassSocketAddress,
+		GType:         GTypeSocketAddress,
+		GoType:        reflect.TypeOf((*SocketAddress)(nil)),
+		InitClass:     initClassSocketAddress,
+		FinalizeClass: finalizeClassSocketAddress,
 	})
 }
 
@@ -118,6 +119,13 @@ func initClassSocketAddress(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSocketAddress(*SocketAddressClass) }); ok {
 		klass := (*SocketAddressClass)(gextras.NewStructNative(gclass))
 		goval.InitSocketAddress(klass)
+	}
+}
+
+func finalizeClassSocketAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSocketAddress(*SocketAddressClass) }); ok {
+		klass := (*SocketAddressClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocketAddress(klass)
 	}
 }
 

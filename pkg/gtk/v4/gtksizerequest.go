@@ -76,25 +76,25 @@ type requestedSize struct {
 // Data: client pointer.
 func (r *RequestedSize) Data() unsafe.Pointer {
 	valptr := &r.native.data
-	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v unsafe.Pointer // out
+	_v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) MinimumSize() int {
 	valptr := &r.native.minimum_size
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) NaturalSize() int {
 	valptr := &r.native.natural_size
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.

@@ -58,9 +58,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellRendererText,
-		GoType:    reflect.TypeOf((*CellRendererText)(nil)),
-		InitClass: initClassCellRendererText,
+		GType:         GTypeCellRendererText,
+		GoType:        reflect.TypeOf((*CellRendererText)(nil)),
+		InitClass:     initClassCellRendererText,
+		FinalizeClass: finalizeClassCellRendererText,
 	})
 }
 
@@ -74,6 +75,13 @@ func initClassCellRendererText(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellRendererText(*CellRendererTextClass) }); ok {
 		klass := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
 		goval.InitCellRendererText(klass)
+	}
+}
+
+func finalizeClassCellRendererText(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellRendererText(*CellRendererTextClass) }); ok {
+		klass := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellRendererText(klass)
 	}
 }
 
@@ -195,7 +203,7 @@ type cellRendererTextClass struct {
 
 func (c *CellRendererTextClass) ParentClass() *CellRendererClass {
 	valptr := &c.native.parent_class
-	var v *CellRendererClass // out
-	v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *CellRendererClass // out
+	_v = (*CellRendererClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

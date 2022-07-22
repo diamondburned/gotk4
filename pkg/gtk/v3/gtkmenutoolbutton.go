@@ -68,9 +68,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuToolButton,
-		GoType:    reflect.TypeOf((*MenuToolButton)(nil)),
-		InitClass: initClassMenuToolButton,
+		GType:         GTypeMenuToolButton,
+		GoType:        reflect.TypeOf((*MenuToolButton)(nil)),
+		InitClass:     initClassMenuToolButton,
+		FinalizeClass: finalizeClassMenuToolButton,
 	})
 }
 
@@ -84,6 +85,13 @@ func initClassMenuToolButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenuToolButton(*MenuToolButtonClass) }); ok {
 		klass := (*MenuToolButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuToolButton(klass)
+	}
+}
+
+func finalizeClassMenuToolButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenuToolButton(*MenuToolButtonClass) }); ok {
+		klass := (*MenuToolButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuToolButton(klass)
 	}
 }
 
@@ -350,7 +358,7 @@ type menuToolButtonClass struct {
 // ParentClass: parent class.
 func (m *MenuToolButtonClass) ParentClass() *ToolButtonClass {
 	valptr := &m.native.parent_class
-	var v *ToolButtonClass // out
-	v = (*ToolButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ToolButtonClass // out
+	_v = (*ToolButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -66,9 +66,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRadioMenuItem,
-		GoType:    reflect.TypeOf((*RadioMenuItem)(nil)),
-		InitClass: initClassRadioMenuItem,
+		GType:         GTypeRadioMenuItem,
+		GoType:        reflect.TypeOf((*RadioMenuItem)(nil)),
+		InitClass:     initClassRadioMenuItem,
+		FinalizeClass: finalizeClassRadioMenuItem,
 	})
 }
 
@@ -82,6 +83,13 @@ func initClassRadioMenuItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRadioMenuItem(*RadioMenuItemClass) }); ok {
 		klass := (*RadioMenuItemClass)(gextras.NewStructNative(gclass))
 		goval.InitRadioMenuItem(klass)
+	}
+}
+
+func finalizeClassRadioMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRadioMenuItem(*RadioMenuItemClass) }); ok {
+		klass := (*RadioMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRadioMenuItem(klass)
 	}
 }
 
@@ -490,7 +498,7 @@ type radioMenuItemClass struct {
 
 func (r *RadioMenuItemClass) ParentClass() *CheckMenuItemClass {
 	valptr := &r.native.parent_class
-	var v *CheckMenuItemClass // out
-	v = (*CheckMenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *CheckMenuItemClass // out
+	_v = (*CheckMenuItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -27,40 +27,40 @@ type imContextInfo struct {
 // ContextID: unique identification string of the input method.
 func (i *IMContextInfo) ContextID() string {
 	valptr := &i.native.context_id
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ContextName: human-readable name of the input method.
 func (i *IMContextInfo) ContextName() string {
 	valptr := &i.native.context_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Domain: translation domain to be used with dgettext().
 func (i *IMContextInfo) Domain() string {
 	valptr := &i.native.domain
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // DomainDirname: name of locale directory for use with bindtextdomain().
 func (i *IMContextInfo) DomainDirname() string {
 	valptr := &i.native.domain_dirname
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // DefaultLocales: colon-separated list of locales where this input method
 // should be the default. The asterisk “*” sets the default for all locales.
 func (i *IMContextInfo) DefaultLocales() string {
 	valptr := &i.native.default_locales
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

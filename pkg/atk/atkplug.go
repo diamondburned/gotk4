@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePlug,
-		GoType:    reflect.TypeOf((*Plug)(nil)),
-		InitClass: initClassPlug,
+		GType:         GTypePlug,
+		GoType:        reflect.TypeOf((*Plug)(nil)),
+		InitClass:     initClassPlug,
+		FinalizeClass: finalizeClassPlug,
 	})
 }
 
@@ -66,6 +67,13 @@ func initClassPlug(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPlug(*PlugClass) }); ok {
 		klass := (*PlugClass)(gextras.NewStructNative(gclass))
 		goval.InitPlug(klass)
+	}
+}
+
+func finalizeClassPlug(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePlug(*PlugClass) }); ok {
+		klass := (*PlugClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePlug(klass)
 	}
 }
 
@@ -182,7 +190,7 @@ type plugClass struct {
 
 func (p *PlugClass) ParentClass() *ObjectClass {
 	valptr := &p.native.parent_class
-	var v *ObjectClass // out
-	v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ObjectClass // out
+	_v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

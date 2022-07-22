@@ -354,9 +354,10 @@ var _ CellRendererer = (*CellRenderer)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellRenderer,
-		GoType:    reflect.TypeOf((*CellRenderer)(nil)),
-		InitClass: initClassCellRenderer,
+		GType:         GTypeCellRenderer,
+		GoType:        reflect.TypeOf((*CellRenderer)(nil)),
+		InitClass:     initClassCellRenderer,
+		FinalizeClass: finalizeClassCellRenderer,
 	})
 }
 
@@ -428,6 +429,13 @@ func initClassCellRenderer(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellRenderer(*CellRendererClass) }); ok {
 		klass := (*CellRendererClass)(gextras.NewStructNative(gclass))
 		goval.InitCellRenderer(klass)
+	}
+}
+
+func finalizeClassCellRenderer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellRenderer(*CellRendererClass) }); ok {
+		klass := (*CellRendererClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellRenderer(klass)
 	}
 }
 

@@ -87,9 +87,10 @@ var _ TLSCertificater = (*TLSCertificate)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTLSCertificate,
-		GoType:    reflect.TypeOf((*TLSCertificate)(nil)),
-		InitClass: initClassTLSCertificate,
+		GType:         GTypeTLSCertificate,
+		GoType:        reflect.TypeOf((*TLSCertificate)(nil)),
+		InitClass:     initClassTLSCertificate,
+		FinalizeClass: finalizeClassTLSCertificate,
 	})
 }
 
@@ -105,6 +106,13 @@ func initClassTLSCertificate(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTLSCertificate(*TLSCertificateClass) }); ok {
 		klass := (*TLSCertificateClass)(gextras.NewStructNative(gclass))
 		goval.InitTLSCertificate(klass)
+	}
+}
+
+func finalizeClassTLSCertificate(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTLSCertificate(*TLSCertificateClass) }); ok {
+		klass := (*TLSCertificateClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTLSCertificate(klass)
 	}
 }
 

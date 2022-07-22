@@ -81,9 +81,10 @@ var _ FileMonitorrer = (*FileMonitor)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileMonitor,
-		GoType:    reflect.TypeOf((*FileMonitor)(nil)),
-		InitClass: initClassFileMonitor,
+		GType:         GTypeFileMonitor,
+		GoType:        reflect.TypeOf((*FileMonitor)(nil)),
+		InitClass:     initClassFileMonitor,
+		FinalizeClass: finalizeClassFileMonitor,
 	})
 }
 
@@ -103,6 +104,13 @@ func initClassFileMonitor(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileMonitor(*FileMonitorClass) }); ok {
 		klass := (*FileMonitorClass)(gextras.NewStructNative(gclass))
 		goval.InitFileMonitor(klass)
+	}
+}
+
+func finalizeClassFileMonitor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileMonitor(*FileMonitorClass) }); ok {
+		klass := (*FileMonitorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileMonitor(klass)
 	}
 }
 

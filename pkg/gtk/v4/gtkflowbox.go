@@ -1200,9 +1200,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFlowBoxChild,
-		GoType:    reflect.TypeOf((*FlowBoxChild)(nil)),
-		InitClass: initClassFlowBoxChild,
+		GType:         GTypeFlowBoxChild,
+		GoType:        reflect.TypeOf((*FlowBoxChild)(nil)),
+		InitClass:     initClassFlowBoxChild,
+		FinalizeClass: finalizeClassFlowBoxChild,
 	})
 }
 
@@ -1216,6 +1217,13 @@ func initClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFlowBoxChild(*FlowBoxChildClass) }); ok {
 		klass := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
 		goval.InitFlowBoxChild(klass)
+	}
+}
+
+func finalizeClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFlowBoxChild(*FlowBoxChildClass) }); ok {
+		klass := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFlowBoxChild(klass)
 	}
 }
 

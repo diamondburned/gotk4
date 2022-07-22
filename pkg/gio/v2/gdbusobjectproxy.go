@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDBusObjectProxy,
-		GoType:    reflect.TypeOf((*DBusObjectProxy)(nil)),
-		InitClass: initClassDBusObjectProxy,
+		GType:         GTypeDBusObjectProxy,
+		GoType:        reflect.TypeOf((*DBusObjectProxy)(nil)),
+		InitClass:     initClassDBusObjectProxy,
+		FinalizeClass: finalizeClassDBusObjectProxy,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassDBusObjectProxy(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitDBusObjectProxy(*DBusObjectProxyClass) }); ok {
 		klass := (*DBusObjectProxyClass)(gextras.NewStructNative(gclass))
 		goval.InitDBusObjectProxy(klass)
+	}
+}
+
+func finalizeClassDBusObjectProxy(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeDBusObjectProxy(*DBusObjectProxyClass) }); ok {
+		klass := (*DBusObjectProxyClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDBusObjectProxy(klass)
 	}
 }
 

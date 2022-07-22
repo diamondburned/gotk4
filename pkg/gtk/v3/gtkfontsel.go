@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontSelection,
-		GoType:    reflect.TypeOf((*FontSelection)(nil)),
-		InitClass: initClassFontSelection,
+		GType:         GTypeFontSelection,
+		GoType:        reflect.TypeOf((*FontSelection)(nil)),
+		InitClass:     initClassFontSelection,
+		FinalizeClass: finalizeClassFontSelection,
 	})
 }
 
@@ -59,6 +60,13 @@ func initClassFontSelection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontSelection(*FontSelectionClass) }); ok {
 		klass := (*FontSelectionClass)(gextras.NewStructNative(gclass))
 		goval.InitFontSelection(klass)
+	}
+}
+
+func finalizeClassFontSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontSelection(*FontSelectionClass) }); ok {
+		klass := (*FontSelectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontSelection(klass)
 	}
 }
 
@@ -557,9 +565,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontSelectionDialog,
-		GoType:    reflect.TypeOf((*FontSelectionDialog)(nil)),
-		InitClass: initClassFontSelectionDialog,
+		GType:         GTypeFontSelectionDialog,
+		GoType:        reflect.TypeOf((*FontSelectionDialog)(nil)),
+		InitClass:     initClassFontSelectionDialog,
+		FinalizeClass: finalizeClassFontSelectionDialog,
 	})
 }
 
@@ -569,6 +578,15 @@ func initClassFontSelectionDialog(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*FontSelectionDialogClass)(gextras.NewStructNative(gclass))
 		goval.InitFontSelectionDialog(klass)
+	}
+}
+
+func finalizeClassFontSelectionDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeFontSelectionDialog(*FontSelectionDialogClass)
+	}); ok {
+		klass := (*FontSelectionDialogClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontSelectionDialog(klass)
 	}
 }
 
@@ -876,9 +894,9 @@ type fontSelectionClass struct {
 
 func (f *FontSelectionClass) ParentClass() *BoxClass {
 	valptr := &f.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // FontSelectionDialogClass: instance of this type is always passed by
@@ -894,7 +912,7 @@ type fontSelectionDialogClass struct {
 
 func (f *FontSelectionDialogClass) ParentClass() *DialogClass {
 	valptr := &f.native.parent_class
-	var v *DialogClass // out
-	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *DialogClass // out
+	_v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

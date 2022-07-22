@@ -113,9 +113,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuItem,
-		GoType:    reflect.TypeOf((*MenuItem)(nil)),
-		InitClass: initClassMenuItem,
+		GType:         GTypeMenuItem,
+		GoType:        reflect.TypeOf((*MenuItem)(nil)),
+		InitClass:     initClassMenuItem,
+		FinalizeClass: finalizeClassMenuItem,
 	})
 }
 
@@ -153,6 +154,13 @@ func initClassMenuItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenuItem(*MenuItemClass) }); ok {
 		klass := (*MenuItemClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuItem(klass)
+	}
+}
+
+func finalizeClassMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenuItem(*MenuItemClass) }); ok {
+		klass := (*MenuItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuItem(klass)
 	}
 }
 
@@ -857,7 +865,7 @@ type menuItemClass struct {
 // ParentClass: parent class.
 func (m *MenuItemClass) ParentClass() *BinClass {
 	valptr := &m.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

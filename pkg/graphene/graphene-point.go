@@ -65,17 +65,17 @@ func NewPointAlloc() *Point {
 // X coordinate of the point.
 func (p *Point) X() float32 {
 	valptr := &p.native.x
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Y coordinate of the point.
 func (p *Point) Y() float32 {
 	valptr := &p.native.y
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // X coordinate of the point.

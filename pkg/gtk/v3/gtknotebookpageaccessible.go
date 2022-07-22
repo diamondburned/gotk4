@@ -48,9 +48,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNotebookPageAccessible,
-		GoType:    reflect.TypeOf((*NotebookPageAccessible)(nil)),
-		InitClass: initClassNotebookPageAccessible,
+		GType:         GTypeNotebookPageAccessible,
+		GoType:        reflect.TypeOf((*NotebookPageAccessible)(nil)),
+		InitClass:     initClassNotebookPageAccessible,
+		FinalizeClass: finalizeClassNotebookPageAccessible,
 	})
 }
 
@@ -60,6 +61,15 @@ func initClassNotebookPageAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*NotebookPageAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitNotebookPageAccessible(klass)
+	}
+}
+
+func finalizeClassNotebookPageAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeNotebookPageAccessible(*NotebookPageAccessibleClass)
+	}); ok {
+		klass := (*NotebookPageAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNotebookPageAccessible(klass)
 	}
 }
 
@@ -127,7 +137,7 @@ type notebookPageAccessibleClass struct {
 
 func (n *NotebookPageAccessibleClass) ParentClass() *atk.ObjectClass {
 	valptr := &n.native.parent_class
-	var v *atk.ObjectClass // out
-	v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *atk.ObjectClass // out
+	_v = (*atk.ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTearoffMenuItem,
-		GoType:    reflect.TypeOf((*TearoffMenuItem)(nil)),
-		InitClass: initClassTearoffMenuItem,
+		GType:         GTypeTearoffMenuItem,
+		GoType:        reflect.TypeOf((*TearoffMenuItem)(nil)),
+		InitClass:     initClassTearoffMenuItem,
+		FinalizeClass: finalizeClassTearoffMenuItem,
 	})
 }
 
@@ -69,6 +70,13 @@ func initClassTearoffMenuItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTearoffMenuItem(*TearoffMenuItemClass) }); ok {
 		klass := (*TearoffMenuItemClass)(gextras.NewStructNative(gclass))
 		goval.InitTearoffMenuItem(klass)
+	}
+}
+
+func finalizeClassTearoffMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTearoffMenuItem(*TearoffMenuItemClass) }); ok {
+		klass := (*TearoffMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTearoffMenuItem(klass)
 	}
 }
 
@@ -151,7 +159,7 @@ type tearoffMenuItemClass struct {
 // ParentClass: parent class.
 func (t *TearoffMenuItemClass) ParentClass() *MenuItemClass {
 	valptr := &t.native.parent_class
-	var v *MenuItemClass // out
-	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuItemClass // out
+	_v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

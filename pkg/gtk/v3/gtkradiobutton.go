@@ -109,9 +109,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRadioButton,
-		GoType:    reflect.TypeOf((*RadioButton)(nil)),
-		InitClass: initClassRadioButton,
+		GType:         GTypeRadioButton,
+		GoType:        reflect.TypeOf((*RadioButton)(nil)),
+		InitClass:     initClassRadioButton,
+		FinalizeClass: finalizeClassRadioButton,
 	})
 }
 
@@ -125,6 +126,13 @@ func initClassRadioButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRadioButton(*RadioButtonClass) }); ok {
 		klass := (*RadioButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitRadioButton(klass)
+	}
+}
+
+func finalizeClassRadioButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRadioButton(*RadioButtonClass) }); ok {
+		klass := (*RadioButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRadioButton(klass)
 	}
 }
 
@@ -540,7 +548,7 @@ type radioButtonClass struct {
 
 func (r *RadioButtonClass) ParentClass() *CheckButtonClass {
 	valptr := &r.native.parent_class
-	var v *CheckButtonClass // out
-	v = (*CheckButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *CheckButtonClass // out
+	_v = (*CheckButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

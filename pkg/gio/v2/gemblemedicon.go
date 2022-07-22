@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeEmblemedIcon,
-		GoType:    reflect.TypeOf((*EmblemedIcon)(nil)),
-		InitClass: initClassEmblemedIcon,
+		GType:         GTypeEmblemedIcon,
+		GoType:        reflect.TypeOf((*EmblemedIcon)(nil)),
+		InitClass:     initClassEmblemedIcon,
+		FinalizeClass: finalizeClassEmblemedIcon,
 	})
 }
 
@@ -60,6 +61,13 @@ func initClassEmblemedIcon(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitEmblemedIcon(*EmblemedIconClass) }); ok {
 		klass := (*EmblemedIconClass)(gextras.NewStructNative(gclass))
 		goval.InitEmblemedIcon(klass)
+	}
+}
+
+func finalizeClassEmblemedIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeEmblemedIcon(*EmblemedIconClass) }); ok {
+		klass := (*EmblemedIconClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeEmblemedIcon(klass)
 	}
 }
 

@@ -41,22 +41,22 @@ type roundedRect struct {
 // Bounds bounds of the rectangle.
 func (r *RoundedRect) Bounds() *graphene.Rect {
 	valptr := &r.native.bounds
-	var v *graphene.Rect // out
-	v = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *graphene.Rect // out
+	_v = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Corner: size of the 4 rounded corners.
 func (r *RoundedRect) Corner() [4]graphene.Size {
 	valptr := &r.native.corner
-	var v [4]graphene.Size // out
+	var _v [4]graphene.Size // out
 	{
 		src := &*valptr
 		for i := 0; i < 4; i++ {
-			v[i] = *(*graphene.Size)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
+			_v[i] = *(*graphene.Size)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
 	}
-	return v
+	return _v
 }
 
 // ContainsPoint checks if the given point is inside the rounded rectangle.

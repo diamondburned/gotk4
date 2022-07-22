@@ -1174,9 +1174,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeIconTheme,
-		GoType:    reflect.TypeOf((*IconTheme)(nil)),
-		InitClass: initClassIconTheme,
+		GType:         GTypeIconTheme,
+		GoType:        reflect.TypeOf((*IconTheme)(nil)),
+		InitClass:     initClassIconTheme,
+		FinalizeClass: finalizeClassIconTheme,
 	})
 }
 
@@ -1190,6 +1191,13 @@ func initClassIconTheme(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitIconTheme(*IconThemeClass) }); ok {
 		klass := (*IconThemeClass)(gextras.NewStructNative(gclass))
 		goval.InitIconTheme(klass)
+	}
+}
+
+func finalizeClassIconTheme(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeIconTheme(*IconThemeClass) }); ok {
+		klass := (*IconThemeClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeIconTheme(klass)
 	}
 }
 

@@ -70,9 +70,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSearchBar,
-		GoType:    reflect.TypeOf((*SearchBar)(nil)),
-		InitClass: initClassSearchBar,
+		GType:         GTypeSearchBar,
+		GoType:        reflect.TypeOf((*SearchBar)(nil)),
+		InitClass:     initClassSearchBar,
+		FinalizeClass: finalizeClassSearchBar,
 	})
 }
 
@@ -80,6 +81,13 @@ func initClassSearchBar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSearchBar(*SearchBarClass) }); ok {
 		klass := (*SearchBarClass)(gextras.NewStructNative(gclass))
 		goval.InitSearchBar(klass)
+	}
+}
+
+func finalizeClassSearchBar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSearchBar(*SearchBarClass) }); ok {
+		klass := (*SearchBarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSearchBar(klass)
 	}
 }
 
@@ -318,7 +326,7 @@ type searchBarClass struct {
 // ParentClass: parent class.
 func (s *SearchBarClass) ParentClass() *BinClass {
 	valptr := &s.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

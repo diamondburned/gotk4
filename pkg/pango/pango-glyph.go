@@ -309,25 +309,25 @@ type glyphGeometry struct {
 // Width: logical width to use for the the character.
 func (g *GlyphGeometry) Width() GlyphUnit {
 	valptr := &g.native.width
-	var v GlyphUnit // out
-	v = int32(*valptr)
-	return v
+	var _v GlyphUnit // out
+	_v = int32(*valptr)
+	return _v
 }
 
 // XOffset: horizontal offset from nominal character position.
 func (g *GlyphGeometry) XOffset() GlyphUnit {
 	valptr := &g.native.x_offset
-	var v GlyphUnit // out
-	v = int32(*valptr)
-	return v
+	var _v GlyphUnit // out
+	_v = int32(*valptr)
+	return _v
 }
 
 // YOffset: vertical offset from nominal character position.
 func (g *GlyphGeometry) YOffset() GlyphUnit {
 	valptr := &g.native.y_offset
-	var v GlyphUnit // out
-	v = int32(*valptr)
-	return v
+	var _v GlyphUnit // out
+	_v = int32(*valptr)
+	return _v
 }
 
 // GlyphInfo: PangoGlyphInfo structure represents a single glyph with
@@ -346,25 +346,25 @@ type glyphInfo struct {
 // Glyph: glyph itself.
 func (g *GlyphInfo) Glyph() Glyph {
 	valptr := &g.native.glyph
-	var v Glyph // out
-	v = uint32(*valptr)
-	return v
+	var _v Glyph // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Geometry: positional information about the glyph.
 func (g *GlyphInfo) Geometry() *GlyphGeometry {
 	valptr := &g.native.geometry
-	var v *GlyphGeometry // out
-	v = (*GlyphGeometry)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *GlyphGeometry // out
+	_v = (*GlyphGeometry)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Attr: visual attributes of the glyph.
 func (g *GlyphInfo) Attr() *GlyphVisAttr {
 	valptr := &g.native.attr
-	var v *GlyphVisAttr // out
-	v = (*GlyphVisAttr)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *GlyphVisAttr // out
+	_v = (*GlyphVisAttr)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // GlyphString: PangoGlyphString is used to store strings of glyphs with

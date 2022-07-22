@@ -190,9 +190,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAboutDialog,
-		GoType:    reflect.TypeOf((*AboutDialog)(nil)),
-		InitClass: initClassAboutDialog,
+		GType:         GTypeAboutDialog,
+		GoType:        reflect.TypeOf((*AboutDialog)(nil)),
+		InitClass:     initClassAboutDialog,
+		FinalizeClass: finalizeClassAboutDialog,
 	})
 }
 
@@ -206,6 +207,13 @@ func initClassAboutDialog(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAboutDialog(*AboutDialogClass) }); ok {
 		klass := (*AboutDialogClass)(gextras.NewStructNative(gclass))
 		goval.InitAboutDialog(klass)
+	}
+}
+
+func finalizeClassAboutDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAboutDialog(*AboutDialogClass) }); ok {
+		klass := (*AboutDialogClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAboutDialog(klass)
 	}
 }
 
@@ -1113,7 +1121,7 @@ type aboutDialogClass struct {
 
 func (a *AboutDialogClass) ParentClass() *DialogClass {
 	valptr := &a.native.parent_class
-	var v *DialogClass // out
-	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *DialogClass // out
+	_v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

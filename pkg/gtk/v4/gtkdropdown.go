@@ -72,9 +72,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDropDown,
-		GoType:    reflect.TypeOf((*DropDown)(nil)),
-		InitClass: initClassDropDown,
+		GType:         GTypeDropDown,
+		GoType:        reflect.TypeOf((*DropDown)(nil)),
+		InitClass:     initClassDropDown,
+		FinalizeClass: finalizeClassDropDown,
 	})
 }
 
@@ -82,6 +83,13 @@ func initClassDropDown(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitDropDown(*DropDownClass) }); ok {
 		klass := (*DropDownClass)(gextras.NewStructNative(gclass))
 		goval.InitDropDown(klass)
+	}
+}
+
+func finalizeClassDropDown(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeDropDown(*DropDownClass) }); ok {
+		klass := (*DropDownClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDropDown(klass)
 	}
 }
 
@@ -516,7 +524,7 @@ type dropDownClass struct {
 
 func (d *DropDownClass) ParentClass() *WidgetClass {
 	valptr := &d.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

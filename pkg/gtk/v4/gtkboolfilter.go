@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBoolFilter,
-		GoType:    reflect.TypeOf((*BoolFilter)(nil)),
-		InitClass: initClassBoolFilter,
+		GType:         GTypeBoolFilter,
+		GoType:        reflect.TypeOf((*BoolFilter)(nil)),
+		InitClass:     initClassBoolFilter,
+		FinalizeClass: finalizeClassBoolFilter,
 	})
 }
 
@@ -54,6 +55,13 @@ func initClassBoolFilter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBoolFilter(*BoolFilterClass) }); ok {
 		klass := (*BoolFilterClass)(gextras.NewStructNative(gclass))
 		goval.InitBoolFilter(klass)
+	}
+}
+
+func finalizeClassBoolFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBoolFilter(*BoolFilterClass) }); ok {
+		klass := (*BoolFilterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBoolFilter(klass)
 	}
 }
 
@@ -215,7 +223,7 @@ type boolFilterClass struct {
 
 func (b *BoolFilterClass) ParentClass() *FilterClass {
 	valptr := &b.native.parent_class
-	var v *FilterClass // out
-	v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *FilterClass // out
+	_v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

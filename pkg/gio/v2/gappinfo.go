@@ -1436,9 +1436,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAppLaunchContext,
-		GoType:    reflect.TypeOf((*AppLaunchContext)(nil)),
-		InitClass: initClassAppLaunchContext,
+		GType:         GTypeAppLaunchContext,
+		GoType:        reflect.TypeOf((*AppLaunchContext)(nil)),
+		InitClass:     initClassAppLaunchContext,
+		FinalizeClass: finalizeClassAppLaunchContext,
 	})
 }
 
@@ -1470,6 +1471,13 @@ func initClassAppLaunchContext(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAppLaunchContext(*AppLaunchContextClass) }); ok {
 		klass := (*AppLaunchContextClass)(gextras.NewStructNative(gclass))
 		goval.InitAppLaunchContext(klass)
+	}
+}
+
+func finalizeClassAppLaunchContext(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAppLaunchContext(*AppLaunchContextClass) }); ok {
+		klass := (*AppLaunchContextClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAppLaunchContext(klass)
 	}
 }
 

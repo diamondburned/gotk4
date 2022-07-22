@@ -317,9 +317,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBuilder,
-		GoType:    reflect.TypeOf((*Builder)(nil)),
-		InitClass: initClassBuilder,
+		GType:         GTypeBuilder,
+		GoType:        reflect.TypeOf((*Builder)(nil)),
+		InitClass:     initClassBuilder,
+		FinalizeClass: finalizeClassBuilder,
 	})
 }
 
@@ -335,6 +336,13 @@ func initClassBuilder(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBuilder(*BuilderClass) }); ok {
 		klass := (*BuilderClass)(gextras.NewStructNative(gclass))
 		goval.InitBuilder(klass)
+	}
+}
+
+func finalizeClassBuilder(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBuilder(*BuilderClass) }); ok {
+		klass := (*BuilderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBuilder(klass)
 	}
 }
 

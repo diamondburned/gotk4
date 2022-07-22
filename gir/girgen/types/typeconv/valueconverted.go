@@ -764,6 +764,12 @@ func (value *ValueConverted) InNamePtr(want int) string {
 	if ptr == "" {
 		return value.In.Name
 	}
+	if ptr == "&" && strings.HasPrefix(value.In.Name, "*") {
+		return strings.TrimPrefix(value.In.Name, "*")
+	}
+	if ptr == "*" && strings.HasPrefix(value.In.Name, "&") {
+		return strings.TrimPrefix(value.In.Name, "&")
+	}
 	return fmt.Sprintf("(%s%s)", ptr, value.In.Name)
 }
 

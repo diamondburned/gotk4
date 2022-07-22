@@ -54,9 +54,10 @@ var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNativeVolumeMonitor,
-		GoType:    reflect.TypeOf((*NativeVolumeMonitor)(nil)),
-		InitClass: initClassNativeVolumeMonitor,
+		GType:         GTypeNativeVolumeMonitor,
+		GoType:        reflect.TypeOf((*NativeVolumeMonitor)(nil)),
+		InitClass:     initClassNativeVolumeMonitor,
+		FinalizeClass: finalizeClassNativeVolumeMonitor,
 	})
 }
 
@@ -66,6 +67,15 @@ func initClassNativeVolumeMonitor(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*NativeVolumeMonitorClass)(gextras.NewStructNative(gclass))
 		goval.InitNativeVolumeMonitor(klass)
+	}
+}
+
+func finalizeClassNativeVolumeMonitor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeNativeVolumeMonitor(*NativeVolumeMonitorClass)
+	}); ok {
+		klass := (*NativeVolumeMonitorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNativeVolumeMonitor(klass)
 	}
 }
 
@@ -103,7 +113,7 @@ type nativeVolumeMonitorClass struct {
 
 func (n *NativeVolumeMonitorClass) ParentClass() *VolumeMonitorClass {
 	valptr := &n.native.parent_class
-	var v *VolumeMonitorClass // out
-	v = (*VolumeMonitorClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *VolumeMonitorClass // out
+	_v = (*VolumeMonitorClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

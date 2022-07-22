@@ -58,9 +58,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeWindowGroup,
-		GoType:    reflect.TypeOf((*WindowGroup)(nil)),
-		InitClass: initClassWindowGroup,
+		GType:         GTypeWindowGroup,
+		GoType:        reflect.TypeOf((*WindowGroup)(nil)),
+		InitClass:     initClassWindowGroup,
+		FinalizeClass: finalizeClassWindowGroup,
 	})
 }
 
@@ -68,6 +69,13 @@ func initClassWindowGroup(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitWindowGroup(*WindowGroupClass) }); ok {
 		klass := (*WindowGroupClass)(gextras.NewStructNative(gclass))
 		goval.InitWindowGroup(klass)
+	}
+}
+
+func finalizeClassWindowGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeWindowGroup(*WindowGroupClass) }); ok {
+		klass := (*WindowGroupClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeWindowGroup(klass)
 	}
 }
 

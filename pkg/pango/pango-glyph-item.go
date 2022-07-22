@@ -53,17 +53,17 @@ func marshalGlyphItem(p uintptr) (interface{}, error) {
 // Item: corresponding PangoItem.
 func (g *GlyphItem) Item() *Item {
 	valptr := &g.native.item
-	var v *Item // out
-	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *Item // out
+	_v = (*Item)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Glyphs: corresponding PangoGlyphString.
 func (g *GlyphItem) Glyphs() *GlyphString {
 	valptr := &g.native.glyphs
-	var v *GlyphString // out
-	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *GlyphString // out
+	_v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ApplyAttrs splits a shaped item (PangoGlyphItem) into multiple items based on
@@ -268,58 +268,58 @@ func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
 	valptr := &g.native.glyph_item
-	var v *GlyphItem // out
-	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *GlyphItem // out
+	_v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (g *GlyphItemIter) Text() string {
 	valptr := &g.native.text
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (g *GlyphItemIter) StartGlyph() int {
 	valptr := &g.native.start_glyph
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (g *GlyphItemIter) StartIndex() int {
 	valptr := &g.native.start_index
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (g *GlyphItemIter) StartChar() int {
 	valptr := &g.native.start_char
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (g *GlyphItemIter) EndGlyph() int {
 	valptr := &g.native.end_glyph
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (g *GlyphItemIter) EndIndex() int {
 	valptr := &g.native.end_index
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (g *GlyphItemIter) EndChar() int {
 	valptr := &g.native.end_char
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (g *GlyphItemIter) SetStartGlyph(startGlyph int) {

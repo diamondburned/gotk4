@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMemoryInputStream,
-		GoType:    reflect.TypeOf((*MemoryInputStream)(nil)),
-		InitClass: initClassMemoryInputStream,
+		GType:         GTypeMemoryInputStream,
+		GoType:        reflect.TypeOf((*MemoryInputStream)(nil)),
+		InitClass:     initClassMemoryInputStream,
+		FinalizeClass: finalizeClassMemoryInputStream,
 	})
 }
 
@@ -62,6 +63,13 @@ func initClassMemoryInputStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMemoryInputStream(*MemoryInputStreamClass) }); ok {
 		klass := (*MemoryInputStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitMemoryInputStream(klass)
+	}
+}
+
+func finalizeClassMemoryInputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMemoryInputStream(*MemoryInputStreamClass) }); ok {
+		klass := (*MemoryInputStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMemoryInputStream(klass)
 	}
 }
 
@@ -161,7 +169,7 @@ type memoryInputStreamClass struct {
 
 func (m *MemoryInputStreamClass) ParentClass() *InputStreamClass {
 	valptr := &m.native.parent_class
-	var v *InputStreamClass // out
-	v = (*InputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *InputStreamClass // out
+	_v = (*InputStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

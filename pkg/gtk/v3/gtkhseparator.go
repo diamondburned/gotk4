@@ -55,9 +55,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHSeparator,
-		GoType:    reflect.TypeOf((*HSeparator)(nil)),
-		InitClass: initClassHSeparator,
+		GType:         GTypeHSeparator,
+		GoType:        reflect.TypeOf((*HSeparator)(nil)),
+		InitClass:     initClassHSeparator,
+		FinalizeClass: finalizeClassHSeparator,
 	})
 }
 
@@ -65,6 +66,13 @@ func initClassHSeparator(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHSeparator(*HSeparatorClass) }); ok {
 		klass := (*HSeparatorClass)(gextras.NewStructNative(gclass))
 		goval.InitHSeparator(klass)
+	}
+}
+
+func finalizeClassHSeparator(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHSeparator(*HSeparatorClass) }); ok {
+		klass := (*HSeparatorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHSeparator(klass)
 	}
 }
 
@@ -127,7 +135,7 @@ type hSeparatorClass struct {
 
 func (h *HSeparatorClass) ParentClass() *SeparatorClass {
 	valptr := &h.native.parent_class
-	var v *SeparatorClass // out
-	v = (*SeparatorClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SeparatorClass // out
+	_v = (*SeparatorClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

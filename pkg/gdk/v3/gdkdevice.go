@@ -1259,17 +1259,17 @@ type timeCoord struct {
 // Time: timestamp for this event.
 func (t *TimeCoord) Time() uint32 {
 	valptr := &t.native.time
-	var v uint32 // out
-	v = uint32(*valptr)
-	return v
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Axes values of the device’s axes.
 func (t *TimeCoord) Axes() [128]float64 {
 	valptr := &t.native.axes
-	var v [128]float64 // out
-	v = *(*[128]float64)(unsafe.Pointer(&*valptr))
-	return v
+	var _v [128]float64 // out
+	_v = *(*[128]float64)(unsafe.Pointer(&*valptr))
+	return _v
 }
 
 // Time: timestamp for this event.

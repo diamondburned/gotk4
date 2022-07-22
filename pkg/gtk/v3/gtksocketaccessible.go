@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocketAccessible,
-		GoType:    reflect.TypeOf((*SocketAccessible)(nil)),
-		InitClass: initClassSocketAccessible,
+		GType:         GTypeSocketAccessible,
+		GoType:        reflect.TypeOf((*SocketAccessible)(nil)),
+		InitClass:     initClassSocketAccessible,
+		FinalizeClass: finalizeClassSocketAccessible,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassSocketAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSocketAccessible(*SocketAccessibleClass) }); ok {
 		klass := (*SocketAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitSocketAccessible(klass)
+	}
+}
+
+func finalizeClassSocketAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSocketAccessible(*SocketAccessibleClass) }); ok {
+		klass := (*SocketAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocketAccessible(klass)
 	}
 }
 
@@ -106,7 +114,7 @@ type socketAccessibleClass struct {
 
 func (s *SocketAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &s.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

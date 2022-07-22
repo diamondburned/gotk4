@@ -52,9 +52,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVScrollbar,
-		GoType:    reflect.TypeOf((*VScrollbar)(nil)),
-		InitClass: initClassVScrollbar,
+		GType:         GTypeVScrollbar,
+		GoType:        reflect.TypeOf((*VScrollbar)(nil)),
+		InitClass:     initClassVScrollbar,
+		FinalizeClass: finalizeClassVScrollbar,
 	})
 }
 
@@ -62,6 +63,13 @@ func initClassVScrollbar(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVScrollbar(*VScrollbarClass) }); ok {
 		klass := (*VScrollbarClass)(gextras.NewStructNative(gclass))
 		goval.InitVScrollbar(klass)
+	}
+}
+
+func finalizeClassVScrollbar(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVScrollbar(*VScrollbarClass) }); ok {
+		klass := (*VScrollbarClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVScrollbar(klass)
 	}
 }
 
@@ -136,7 +144,7 @@ type vScrollbarClass struct {
 
 func (v *VScrollbarClass) ParentClass() *ScrollbarClass {
 	valptr := &v.native.parent_class
-	var v *ScrollbarClass // out
-	v = (*ScrollbarClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ScrollbarClass // out
+	_v = (*ScrollbarClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSelectionFilterModel,
-		GoType:    reflect.TypeOf((*SelectionFilterModel)(nil)),
-		InitClass: initClassSelectionFilterModel,
+		GType:         GTypeSelectionFilterModel,
+		GoType:        reflect.TypeOf((*SelectionFilterModel)(nil)),
+		InitClass:     initClassSelectionFilterModel,
+		FinalizeClass: finalizeClassSelectionFilterModel,
 	})
 }
 
@@ -59,6 +60,15 @@ func initClassSelectionFilterModel(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*SelectionFilterModelClass)(gextras.NewStructNative(gclass))
 		goval.InitSelectionFilterModel(klass)
+	}
+}
+
+func finalizeClassSelectionFilterModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeSelectionFilterModel(*SelectionFilterModelClass)
+	}); ok {
+		klass := (*SelectionFilterModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSelectionFilterModel(klass)
 	}
 }
 

@@ -86,9 +86,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeListModel,
-		GoType:    reflect.TypeOf((*TreeListModel)(nil)),
-		InitClass: initClassTreeListModel,
+		GType:         GTypeTreeListModel,
+		GoType:        reflect.TypeOf((*TreeListModel)(nil)),
+		InitClass:     initClassTreeListModel,
+		FinalizeClass: finalizeClassTreeListModel,
 	})
 }
 
@@ -96,6 +97,13 @@ func initClassTreeListModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeListModel(*TreeListModelClass) }); ok {
 		klass := (*TreeListModelClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeListModel(klass)
+	}
+}
+
+func finalizeClassTreeListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeListModel(*TreeListModelClass) }); ok {
+		klass := (*TreeListModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeListModel(klass)
 	}
 }
 
@@ -380,9 +388,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeListRow,
-		GoType:    reflect.TypeOf((*TreeListRow)(nil)),
-		InitClass: initClassTreeListRow,
+		GType:         GTypeTreeListRow,
+		GoType:        reflect.TypeOf((*TreeListRow)(nil)),
+		InitClass:     initClassTreeListRow,
+		FinalizeClass: finalizeClassTreeListRow,
 	})
 }
 
@@ -390,6 +399,13 @@ func initClassTreeListRow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeListRow(*TreeListRowClass) }); ok {
 		klass := (*TreeListRowClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeListRow(klass)
+	}
+}
+
+func finalizeClassTreeListRow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeListRow(*TreeListRowClass) }); ok {
+		klass := (*TreeListRowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeListRow(klass)
 	}
 }
 

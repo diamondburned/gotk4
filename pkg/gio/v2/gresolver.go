@@ -317,9 +317,10 @@ var _ Resolverer = (*Resolver)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeResolver,
-		GoType:    reflect.TypeOf((*Resolver)(nil)),
-		InitClass: initClassResolver,
+		GType:         GTypeResolver,
+		GoType:        reflect.TypeOf((*Resolver)(nil)),
+		InitClass:     initClassResolver,
+		FinalizeClass: finalizeClassResolver,
 	})
 }
 
@@ -387,6 +388,13 @@ func initClassResolver(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitResolver(*ResolverClass) }); ok {
 		klass := (*ResolverClass)(gextras.NewStructNative(gclass))
 		goval.InitResolver(klass)
+	}
+}
+
+func finalizeClassResolver(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeResolver(*ResolverClass) }); ok {
+		klass := (*ResolverClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeResolver(klass)
 	}
 }
 

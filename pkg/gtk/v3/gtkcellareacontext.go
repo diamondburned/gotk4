@@ -136,9 +136,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellAreaContext,
-		GoType:    reflect.TypeOf((*CellAreaContext)(nil)),
-		InitClass: initClassCellAreaContext,
+		GType:         GTypeCellAreaContext,
+		GoType:        reflect.TypeOf((*CellAreaContext)(nil)),
+		InitClass:     initClassCellAreaContext,
+		FinalizeClass: finalizeClassCellAreaContext,
 	})
 }
 
@@ -168,6 +169,13 @@ func initClassCellAreaContext(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellAreaContext(*CellAreaContextClass) }); ok {
 		klass := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
 		goval.InitCellAreaContext(klass)
+	}
+}
+
+func finalizeClassCellAreaContext(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellAreaContext(*CellAreaContextClass) }); ok {
+		klass := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellAreaContext(klass)
 	}
 }
 

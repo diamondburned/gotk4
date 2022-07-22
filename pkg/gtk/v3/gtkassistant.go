@@ -181,9 +181,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAssistant,
-		GoType:    reflect.TypeOf((*Assistant)(nil)),
-		InitClass: initClassAssistant,
+		GType:         GTypeAssistant,
+		GoType:        reflect.TypeOf((*Assistant)(nil)),
+		InitClass:     initClassAssistant,
+		FinalizeClass: finalizeClassAssistant,
 	})
 }
 
@@ -209,6 +210,13 @@ func initClassAssistant(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAssistant(*AssistantClass) }); ok {
 		klass := (*AssistantClass)(gextras.NewStructNative(gclass))
 		goval.InitAssistant(klass)
+	}
+}
+
+func finalizeClassAssistant(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAssistant(*AssistantClass) }); ok {
+		klass := (*AssistantClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAssistant(klass)
 	}
 }
 
@@ -1176,7 +1184,7 @@ type assistantClass struct {
 // ParentClass: parent class.
 func (a *AssistantClass) ParentClass() *WindowClass {
 	valptr := &a.native.parent_class
-	var v *WindowClass // out
-	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WindowClass // out
+	_v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -2573,25 +2573,25 @@ func marshalLayoutLine(p uintptr) (interface{}, error) {
 // Layout: layout this line belongs to, might be NULL.
 func (l *LayoutLine) Layout() *Layout {
 	valptr := &l.native.layout
-	var v *Layout // out
-	v = wrapLayout(coreglib.Take(unsafe.Pointer(*valptr)))
-	return v
+	var _v *Layout // out
+	_v = wrapLayout(coreglib.Take(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // StartIndex: start of line as byte index into layout->text.
 func (l *LayoutLine) StartIndex() int {
 	valptr := &l.native.start_index
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Length: length of line in bytes.
 func (l *LayoutLine) Length() int {
 	valptr := &l.native.length
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // StartIndex: start of line as byte index into layout->text.

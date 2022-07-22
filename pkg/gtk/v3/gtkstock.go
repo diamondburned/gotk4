@@ -810,41 +810,41 @@ type stockItem struct {
 // StockID: identifier.
 func (s *StockItem) StockID() string {
 	valptr := &s.native.stock_id
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Label: user visible label.
 func (s *StockItem) Label() string {
 	valptr := &s.native.label
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Modifier type for keyboard accelerator.
 func (s *StockItem) Modifier() gdk.ModifierType {
 	valptr := &s.native.modifier
-	var v gdk.ModifierType // out
-	v = gdk.ModifierType(*valptr)
-	return v
+	var _v gdk.ModifierType // out
+	_v = gdk.ModifierType(*valptr)
+	return _v
 }
 
 // Keyval: keyboard accelerator.
 func (s *StockItem) Keyval() uint {
 	valptr := &s.native.keyval
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // TranslationDomain: translation domain of the menu or toolbar item.
 func (s *StockItem) TranslationDomain() string {
 	valptr := &s.native.translation_domain
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Keyval: keyboard accelerator.

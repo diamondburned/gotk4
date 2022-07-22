@@ -165,9 +165,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeImage,
-		GoType:    reflect.TypeOf((*Image)(nil)),
-		InitClass: initClassImage,
+		GType:         GTypeImage,
+		GoType:        reflect.TypeOf((*Image)(nil)),
+		InitClass:     initClassImage,
+		FinalizeClass: finalizeClassImage,
 	})
 }
 
@@ -175,6 +176,13 @@ func initClassImage(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitImage(*ImageClass) }); ok {
 		klass := (*ImageClass)(gextras.NewStructNative(gclass))
 		goval.InitImage(klass)
+	}
+}
+
+func finalizeClassImage(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeImage(*ImageClass) }); ok {
+		klass := (*ImageClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeImage(klass)
 	}
 }
 
@@ -1038,7 +1046,7 @@ type imageClass struct {
 
 func (i *ImageClass) ParentClass() *MiscClass {
 	valptr := &i.native.parent_class
-	var v *MiscClass // out
-	v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MiscClass // out
+	_v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

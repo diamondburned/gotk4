@@ -62,9 +62,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeColorButton,
-		GoType:    reflect.TypeOf((*ColorButton)(nil)),
-		InitClass: initClassColorButton,
+		GType:         GTypeColorButton,
+		GoType:        reflect.TypeOf((*ColorButton)(nil)),
+		InitClass:     initClassColorButton,
+		FinalizeClass: finalizeClassColorButton,
 	})
 }
 
@@ -78,6 +79,13 @@ func initClassColorButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitColorButton(*ColorButtonClass) }); ok {
 		klass := (*ColorButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitColorButton(klass)
+	}
+}
+
+func finalizeClassColorButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeColorButton(*ColorButtonClass) }); ok {
+		klass := (*ColorButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeColorButton(klass)
 	}
 }
 
@@ -432,7 +440,7 @@ type colorButtonClass struct {
 
 func (c *ColorButtonClass) ParentClass() *ButtonClass {
 	valptr := &c.native.parent_class
-	var v *ButtonClass // out
-	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ButtonClass // out
+	_v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

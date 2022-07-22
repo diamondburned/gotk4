@@ -132,9 +132,10 @@ var _ IOStreamer = (*IOStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeIOStream,
-		GoType:    reflect.TypeOf((*IOStream)(nil)),
-		InitClass: initClassIOStream,
+		GType:         GTypeIOStream,
+		GoType:        reflect.TypeOf((*IOStream)(nil)),
+		InitClass:     initClassIOStream,
+		FinalizeClass: finalizeClassIOStream,
 	})
 }
 
@@ -164,6 +165,13 @@ func initClassIOStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitIOStream(*IOStreamClass) }); ok {
 		klass := (*IOStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitIOStream(klass)
+	}
+}
+
+func finalizeClassIOStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeIOStream(*IOStreamClass) }); ok {
+		klass := (*IOStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeIOStream(klass)
 	}
 }
 

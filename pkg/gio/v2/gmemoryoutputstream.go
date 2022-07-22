@@ -53,9 +53,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMemoryOutputStream,
-		GoType:    reflect.TypeOf((*MemoryOutputStream)(nil)),
-		InitClass: initClassMemoryOutputStream,
+		GType:         GTypeMemoryOutputStream,
+		GoType:        reflect.TypeOf((*MemoryOutputStream)(nil)),
+		InitClass:     initClassMemoryOutputStream,
+		FinalizeClass: finalizeClassMemoryOutputStream,
 	})
 }
 
@@ -65,6 +66,15 @@ func initClassMemoryOutputStream(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*MemoryOutputStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitMemoryOutputStream(klass)
+	}
+}
+
+func finalizeClassMemoryOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeMemoryOutputStream(*MemoryOutputStreamClass)
+	}); ok {
+		klass := (*MemoryOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMemoryOutputStream(klass)
 	}
 }
 
@@ -258,7 +268,7 @@ type memoryOutputStreamClass struct {
 
 func (m *MemoryOutputStreamClass) ParentClass() *OutputStreamClass {
 	valptr := &m.native.parent_class
-	var v *OutputStreamClass // out
-	v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *OutputStreamClass // out
+	_v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

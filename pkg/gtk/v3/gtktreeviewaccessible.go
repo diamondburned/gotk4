@@ -49,9 +49,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeViewAccessible,
-		GoType:    reflect.TypeOf((*TreeViewAccessible)(nil)),
-		InitClass: initClassTreeViewAccessible,
+		GType:         GTypeTreeViewAccessible,
+		GoType:        reflect.TypeOf((*TreeViewAccessible)(nil)),
+		InitClass:     initClassTreeViewAccessible,
+		FinalizeClass: finalizeClassTreeViewAccessible,
 	})
 }
 
@@ -61,6 +62,15 @@ func initClassTreeViewAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*TreeViewAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeViewAccessible(klass)
+	}
+}
+
+func finalizeClassTreeViewAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeTreeViewAccessible(*TreeViewAccessibleClass)
+	}); ok {
+		klass := (*TreeViewAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeViewAccessible(klass)
 	}
 }
 
@@ -107,7 +117,7 @@ type treeViewAccessibleClass struct {
 
 func (t *TreeViewAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &t.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -53,9 +53,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSeparatorMenuItem,
-		GoType:    reflect.TypeOf((*SeparatorMenuItem)(nil)),
-		InitClass: initClassSeparatorMenuItem,
+		GType:         GTypeSeparatorMenuItem,
+		GoType:        reflect.TypeOf((*SeparatorMenuItem)(nil)),
+		InitClass:     initClassSeparatorMenuItem,
+		FinalizeClass: finalizeClassSeparatorMenuItem,
 	})
 }
 
@@ -63,6 +64,13 @@ func initClassSeparatorMenuItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSeparatorMenuItem(*SeparatorMenuItemClass) }); ok {
 		klass := (*SeparatorMenuItemClass)(gextras.NewStructNative(gclass))
 		goval.InitSeparatorMenuItem(klass)
+	}
+}
+
+func finalizeClassSeparatorMenuItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSeparatorMenuItem(*SeparatorMenuItemClass) }); ok {
+		klass := (*SeparatorMenuItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSeparatorMenuItem(klass)
 	}
 }
 
@@ -142,7 +150,7 @@ type separatorMenuItemClass struct {
 // ParentClass: parent class.
 func (s *SeparatorMenuItemClass) ParentClass() *MenuItemClass {
 	valptr := &s.native.parent_class
-	var v *MenuItemClass // out
-	v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuItemClass // out
+	_v = (*MenuItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

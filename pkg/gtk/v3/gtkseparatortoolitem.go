@@ -60,9 +60,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSeparatorToolItem,
-		GoType:    reflect.TypeOf((*SeparatorToolItem)(nil)),
-		InitClass: initClassSeparatorToolItem,
+		GType:         GTypeSeparatorToolItem,
+		GoType:        reflect.TypeOf((*SeparatorToolItem)(nil)),
+		InitClass:     initClassSeparatorToolItem,
+		FinalizeClass: finalizeClassSeparatorToolItem,
 	})
 }
 
@@ -70,6 +71,13 @@ func initClassSeparatorToolItem(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSeparatorToolItem(*SeparatorToolItemClass) }); ok {
 		klass := (*SeparatorToolItemClass)(gextras.NewStructNative(gclass))
 		goval.InitSeparatorToolItem(klass)
+	}
+}
+
+func finalizeClassSeparatorToolItem(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSeparatorToolItem(*SeparatorToolItemClass) }); ok {
+		klass := (*SeparatorToolItemClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSeparatorToolItem(klass)
 	}
 }
 
@@ -182,7 +190,7 @@ type separatorToolItemClass struct {
 // ParentClass: parent class.
 func (s *SeparatorToolItemClass) ParentClass() *ToolItemClass {
 	valptr := &s.native.parent_class
-	var v *ToolItemClass // out
-	v = (*ToolItemClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ToolItemClass // out
+	_v = (*ToolItemClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

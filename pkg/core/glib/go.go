@@ -256,6 +256,8 @@ type ClassTypeInfo struct {
 	// It should type assert goValue and sets the available functions into the
 	// gclass (*GObjectTypeClass) type parameter.
 	InitClass func(gclass unsafe.Pointer, goValue any)
+	// FinalizeClass will be called right before the class is finalized.
+	FinalizeClass func(gclass unsafe.Pointer, goValue any)
 	// ClassSize is the size of an ObjectClass. (optional)
 	ClassSize uint32
 	// InstanceSize is the size of an Object. (optional)
@@ -358,6 +360,10 @@ func _gotk4_gobject_finalize_class(gclass, data C.gpointer) {
 	}
 
 	private := privateV.(*privateGoInstance)
+
+	// Call the custom finalizer if any.
+	instance := private.instance()
+	subclass.parentType.FinalizeClass(unsafe.Pointer(gclass), instance)
 
 	// Unbind our instance from the global store.
 	gbox.Delete(uintptr(private.instanceID))

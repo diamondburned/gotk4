@@ -371,12 +371,12 @@ type colorChooserInterface struct {
 
 func (c *ColorChooserInterface) Padding() [12]unsafe.Pointer {
 	valptr := &c.native.padding
-	var v [12]unsafe.Pointer // out
+	var _v [12]unsafe.Pointer // out
 	{
 		src := &*valptr
 		for i := 0; i < 12; i++ {
-			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
 	}
-	return v
+	return _v
 }

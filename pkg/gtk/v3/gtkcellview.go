@@ -69,9 +69,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCellView,
-		GoType:    reflect.TypeOf((*CellView)(nil)),
-		InitClass: initClassCellView,
+		GType:         GTypeCellView,
+		GoType:        reflect.TypeOf((*CellView)(nil)),
+		InitClass:     initClassCellView,
+		FinalizeClass: finalizeClassCellView,
 	})
 }
 
@@ -79,6 +80,13 @@ func initClassCellView(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCellView(*CellViewClass) }); ok {
 		klass := (*CellViewClass)(gextras.NewStructNative(gclass))
 		goval.InitCellView(klass)
+	}
+}
+
+func finalizeClassCellView(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCellView(*CellViewClass) }); ok {
+		klass := (*CellViewClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCellView(klass)
 	}
 }
 
@@ -538,7 +546,7 @@ type cellViewClass struct {
 // ParentClass: parent class.
 func (c *CellViewClass) ParentClass() *WidgetClass {
 	valptr := &c.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

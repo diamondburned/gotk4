@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCharsetConverter,
-		GoType:    reflect.TypeOf((*CharsetConverter)(nil)),
-		InitClass: initClassCharsetConverter,
+		GType:         GTypeCharsetConverter,
+		GoType:        reflect.TypeOf((*CharsetConverter)(nil)),
+		InitClass:     initClassCharsetConverter,
+		FinalizeClass: finalizeClassCharsetConverter,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassCharsetConverter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCharsetConverter(*CharsetConverterClass) }); ok {
 		klass := (*CharsetConverterClass)(gextras.NewStructNative(gclass))
 		goval.InitCharsetConverter(klass)
+	}
+}
+
+func finalizeClassCharsetConverter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCharsetConverter(*CharsetConverterClass) }); ok {
+		klass := (*CharsetConverterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCharsetConverter(klass)
 	}
 }
 

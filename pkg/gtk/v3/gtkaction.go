@@ -145,9 +145,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAction,
-		GoType:    reflect.TypeOf((*Action)(nil)),
-		InitClass: initClassAction,
+		GType:         GTypeAction,
+		GoType:        reflect.TypeOf((*Action)(nil)),
+		InitClass:     initClassAction,
+		FinalizeClass: finalizeClassAction,
 	})
 }
 
@@ -181,6 +182,13 @@ func initClassAction(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAction(*ActionClass) }); ok {
 		klass := (*ActionClass)(gextras.NewStructNative(gclass))
 		goval.InitAction(klass)
+	}
+}
+
+func finalizeClassAction(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAction(*ActionClass) }); ok {
+		klass := (*ActionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAction(klass)
 	}
 }
 

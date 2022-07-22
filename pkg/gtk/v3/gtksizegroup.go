@@ -109,9 +109,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSizeGroup,
-		GoType:    reflect.TypeOf((*SizeGroup)(nil)),
-		InitClass: initClassSizeGroup,
+		GType:         GTypeSizeGroup,
+		GoType:        reflect.TypeOf((*SizeGroup)(nil)),
+		InitClass:     initClassSizeGroup,
+		FinalizeClass: finalizeClassSizeGroup,
 	})
 }
 
@@ -119,6 +120,13 @@ func initClassSizeGroup(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSizeGroup(*SizeGroupClass) }); ok {
 		klass := (*SizeGroupClass)(gextras.NewStructNative(gclass))
 		goval.InitSizeGroup(klass)
+	}
+}
+
+func finalizeClassSizeGroup(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSizeGroup(*SizeGroupClass) }); ok {
+		klass := (*SizeGroupClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSizeGroup(klass)
 	}
 }
 

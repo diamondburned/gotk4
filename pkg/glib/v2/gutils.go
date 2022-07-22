@@ -1014,17 +1014,17 @@ type debugKey struct {
 // Key: string.
 func (d *DebugKey) Key() string {
 	valptr := &d.native.key
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Value: flag.
 func (d *DebugKey) Value() uint {
 	valptr := &d.native.value
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Value: flag.

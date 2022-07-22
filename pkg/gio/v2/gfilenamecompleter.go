@@ -48,9 +48,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFilenameCompleter,
-		GoType:    reflect.TypeOf((*FilenameCompleter)(nil)),
-		InitClass: initClassFilenameCompleter,
+		GType:         GTypeFilenameCompleter,
+		GoType:        reflect.TypeOf((*FilenameCompleter)(nil)),
+		InitClass:     initClassFilenameCompleter,
+		FinalizeClass: finalizeClassFilenameCompleter,
 	})
 }
 
@@ -64,6 +65,13 @@ func initClassFilenameCompleter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFilenameCompleter(*FilenameCompleterClass) }); ok {
 		klass := (*FilenameCompleterClass)(gextras.NewStructNative(gclass))
 		goval.InitFilenameCompleter(klass)
+	}
+}
+
+func finalizeClassFilenameCompleter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFilenameCompleter(*FilenameCompleterClass) }); ok {
+		klass := (*FilenameCompleterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFilenameCompleter(klass)
 	}
 }
 

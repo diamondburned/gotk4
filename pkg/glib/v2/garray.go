@@ -32,18 +32,18 @@ type array struct {
 // added to the #GArray.
 func (a *Array) Data() string {
 	valptr := &a.native.data
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Len: number of elements in the #GArray not including the possible terminating
 // zero element.
 func (a *Array) Len() uint {
 	valptr := &a.native.len
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Len: number of elements in the #GArray not including the possible terminating
@@ -69,17 +69,17 @@ type byteArray struct {
 // added to the Array.
 func (b *ByteArray) Data() *byte {
 	valptr := &b.native.data
-	var v *byte // out
-	v = (*byte)(unsafe.Pointer(*valptr))
-	return v
+	var _v *byte // out
+	_v = (*byte)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Len: number of elements in the Array.
 func (b *ByteArray) Len() uint {
 	valptr := &b.native.len
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Len: number of elements in the Array.
@@ -366,17 +366,17 @@ type ptrArray struct {
 // grows.
 func (p *PtrArray) Pdata() *unsafe.Pointer {
 	valptr := &p.native.pdata
-	var v *unsafe.Pointer // out
-	v = (*unsafe.Pointer)(unsafe.Pointer(*valptr))
-	return v
+	var _v *unsafe.Pointer // out
+	_v = (*unsafe.Pointer)(unsafe.Pointer(*valptr))
+	return _v
 }
 
 // Len: number of pointers in the array.
 func (p *PtrArray) Len() uint {
 	valptr := &p.native.len
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Len: number of pointers in the array.

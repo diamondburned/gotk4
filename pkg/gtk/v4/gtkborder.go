@@ -67,33 +67,33 @@ func NewBorder() *Border {
 // Left: width of the left border.
 func (b *Border) Left() int16 {
 	valptr := &b.native.left
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // Right: width of the right border.
 func (b *Border) Right() int16 {
 	valptr := &b.native.right
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // Top: width of the top border.
 func (b *Border) Top() int16 {
 	valptr := &b.native.top
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // Bottom: width of the bottom border.
 func (b *Border) Bottom() int16 {
 	valptr := &b.native.bottom
-	var v int16 // out
-	v = int16(*valptr)
-	return v
+	var _v int16 // out
+	_v = int16(*valptr)
+	return _v
 }
 
 // Left: width of the left border.

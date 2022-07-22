@@ -635,18 +635,18 @@ type scannerConfig struct {
 // carriage-return and line-feed).
 func (s *ScannerConfig) CsetSkipCharacters() string {
 	valptr := &s.native.cset_skip_characters
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // CsetIdentifierFirst specifies the characters which can start identifiers (the
 // default is CSET_a_2_z, "_", and CSET_A_2_Z).
 func (s *ScannerConfig) CsetIdentifierFirst() string {
 	valptr := &s.native.cset_identifier_first
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // CsetIdentifierNth specifies the characters which can be used in identifiers,
@@ -654,9 +654,9 @@ func (s *ScannerConfig) CsetIdentifierFirst() string {
 // CSET_A_2_Z, CSET_LATINS, CSET_LATINC).
 func (s *ScannerConfig) CsetIdentifierNth() string {
 	valptr := &s.native.cset_identifier_nth
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // CpairCommentSingle specifies the characters at the start and end of
@@ -664,7 +664,7 @@ func (s *ScannerConfig) CsetIdentifierNth() string {
 // comments start with a '#' and continue until a '\n' (end of line).
 func (s *ScannerConfig) CpairCommentSingle() string {
 	valptr := &s.native.cpair_comment_single
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

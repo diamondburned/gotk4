@@ -89,9 +89,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFrame,
-		GoType:    reflect.TypeOf((*Frame)(nil)),
-		InitClass: initClassFrame,
+		GType:         GTypeFrame,
+		GoType:        reflect.TypeOf((*Frame)(nil)),
+		InitClass:     initClassFrame,
+		FinalizeClass: finalizeClassFrame,
 	})
 }
 
@@ -105,6 +106,13 @@ func initClassFrame(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFrame(*FrameClass) }); ok {
 		klass := (*FrameClass)(gextras.NewStructNative(gclass))
 		goval.InitFrame(klass)
+	}
+}
+
+func finalizeClassFrame(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFrame(*FrameClass) }); ok {
+		klass := (*FrameClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFrame(klass)
 	}
 }
 
@@ -398,7 +406,7 @@ type frameClass struct {
 // ParentClass: parent class.
 func (f *FrameClass) ParentClass() *BinClass {
 	valptr := &f.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

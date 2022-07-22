@@ -56,9 +56,10 @@ var ()
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAdjustment,
-		GoType:    reflect.TypeOf((*Adjustment)(nil)),
-		InitClass: initClassAdjustment,
+		GType:         GTypeAdjustment,
+		GoType:        reflect.TypeOf((*Adjustment)(nil)),
+		InitClass:     initClassAdjustment,
+		FinalizeClass: finalizeClassAdjustment,
 	})
 }
 
@@ -76,6 +77,13 @@ func initClassAdjustment(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAdjustment(*AdjustmentClass) }); ok {
 		klass := (*AdjustmentClass)(gextras.NewStructNative(gclass))
 		goval.InitAdjustment(klass)
+	}
+}
+
+func finalizeClassAdjustment(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAdjustment(*AdjustmentClass) }); ok {
+		klass := (*AdjustmentClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAdjustment(klass)
 	}
 }
 

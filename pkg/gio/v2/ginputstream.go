@@ -134,9 +134,10 @@ var _ InputStreamer = (*InputStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeInputStream,
-		GoType:    reflect.TypeOf((*InputStream)(nil)),
-		InitClass: initClassInputStream,
+		GType:         GTypeInputStream,
+		GoType:        reflect.TypeOf((*InputStream)(nil)),
+		InitClass:     initClassInputStream,
+		FinalizeClass: finalizeClassInputStream,
 	})
 }
 
@@ -176,6 +177,13 @@ func initClassInputStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitInputStream(*InputStreamClass) }); ok {
 		klass := (*InputStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitInputStream(klass)
+	}
+}
+
+func finalizeClassInputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeInputStream(*InputStreamClass) }); ok {
+		klass := (*InputStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeInputStream(klass)
 	}
 }
 

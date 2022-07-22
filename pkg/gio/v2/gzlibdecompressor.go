@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeZlibDecompressor,
-		GoType:    reflect.TypeOf((*ZlibDecompressor)(nil)),
-		InitClass: initClassZlibDecompressor,
+		GType:         GTypeZlibDecompressor,
+		GoType:        reflect.TypeOf((*ZlibDecompressor)(nil)),
+		InitClass:     initClassZlibDecompressor,
+		FinalizeClass: finalizeClassZlibDecompressor,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassZlibDecompressor(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitZlibDecompressor(*ZlibDecompressorClass) }); ok {
 		klass := (*ZlibDecompressorClass)(gextras.NewStructNative(gclass))
 		goval.InitZlibDecompressor(klass)
+	}
+}
+
+func finalizeClassZlibDecompressor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeZlibDecompressor(*ZlibDecompressorClass) }); ok {
+		klass := (*ZlibDecompressorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeZlibDecompressor(klass)
 	}
 }
 

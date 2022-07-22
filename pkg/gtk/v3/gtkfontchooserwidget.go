@@ -65,9 +65,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFontChooserWidget,
-		GoType:    reflect.TypeOf((*FontChooserWidget)(nil)),
-		InitClass: initClassFontChooserWidget,
+		GType:         GTypeFontChooserWidget,
+		GoType:        reflect.TypeOf((*FontChooserWidget)(nil)),
+		InitClass:     initClassFontChooserWidget,
+		FinalizeClass: finalizeClassFontChooserWidget,
 	})
 }
 
@@ -75,6 +76,13 @@ func initClassFontChooserWidget(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFontChooserWidget(*FontChooserWidgetClass) }); ok {
 		klass := (*FontChooserWidgetClass)(gextras.NewStructNative(gclass))
 		goval.InitFontChooserWidget(klass)
+	}
+}
+
+func finalizeClassFontChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFontChooserWidget(*FontChooserWidgetClass) }); ok {
+		klass := (*FontChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFontChooserWidget(klass)
 	}
 }
 
@@ -142,7 +150,7 @@ type fontChooserWidgetClass struct {
 // ParentClass: parent class.
 func (f *FontChooserWidgetClass) ParentClass() *BoxClass {
 	valptr := &f.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

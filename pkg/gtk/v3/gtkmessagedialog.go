@@ -135,9 +135,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMessageDialog,
-		GoType:    reflect.TypeOf((*MessageDialog)(nil)),
-		InitClass: initClassMessageDialog,
+		GType:         GTypeMessageDialog,
+		GoType:        reflect.TypeOf((*MessageDialog)(nil)),
+		InitClass:     initClassMessageDialog,
+		FinalizeClass: finalizeClassMessageDialog,
 	})
 }
 
@@ -145,6 +146,13 @@ func initClassMessageDialog(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMessageDialog(*MessageDialogClass) }); ok {
 		klass := (*MessageDialogClass)(gextras.NewStructNative(gclass))
 		goval.InitMessageDialog(klass)
+	}
+}
+
+func finalizeClassMessageDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMessageDialog(*MessageDialogClass) }); ok {
+		klass := (*MessageDialogClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMessageDialog(klass)
 	}
 }
 
@@ -311,9 +319,9 @@ type messageDialogClass struct {
 
 func (m *MessageDialogClass) ParentClass() *DialogClass {
 	valptr := &m.native.parent_class
-	var v *DialogClass // out
-	v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *DialogClass // out
+	_v = (*DialogClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // NewMessageDialog creates a new message dialog. This is a simple

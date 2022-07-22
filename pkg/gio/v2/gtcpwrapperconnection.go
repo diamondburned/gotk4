@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTCPWrapperConnection,
-		GoType:    reflect.TypeOf((*TCPWrapperConnection)(nil)),
-		InitClass: initClassTCPWrapperConnection,
+		GType:         GTypeTCPWrapperConnection,
+		GoType:        reflect.TypeOf((*TCPWrapperConnection)(nil)),
+		InitClass:     initClassTCPWrapperConnection,
+		FinalizeClass: finalizeClassTCPWrapperConnection,
 	})
 }
 
@@ -58,6 +59,15 @@ func initClassTCPWrapperConnection(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*TCPWrapperConnectionClass)(gextras.NewStructNative(gclass))
 		goval.InitTCPWrapperConnection(klass)
+	}
+}
+
+func finalizeClassTCPWrapperConnection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeTCPWrapperConnection(*TCPWrapperConnectionClass)
+	}); ok {
+		klass := (*TCPWrapperConnectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTCPWrapperConnection(klass)
 	}
 }
 
@@ -159,7 +169,7 @@ type tcpWrapperConnectionClass struct {
 
 func (t *TCPWrapperConnectionClass) ParentClass() *TCPConnectionClass {
 	valptr := &t.native.parent_class
-	var v *TCPConnectionClass // out
-	v = (*TCPConnectionClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *TCPConnectionClass // out
+	_v = (*TCPConnectionClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

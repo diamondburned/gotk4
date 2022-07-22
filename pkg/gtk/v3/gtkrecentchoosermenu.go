@@ -68,9 +68,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRecentChooserMenu,
-		GoType:    reflect.TypeOf((*RecentChooserMenu)(nil)),
-		InitClass: initClassRecentChooserMenu,
+		GType:         GTypeRecentChooserMenu,
+		GoType:        reflect.TypeOf((*RecentChooserMenu)(nil)),
+		InitClass:     initClassRecentChooserMenu,
+		FinalizeClass: finalizeClassRecentChooserMenu,
 	})
 }
 
@@ -78,6 +79,13 @@ func initClassRecentChooserMenu(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRecentChooserMenu(*RecentChooserMenuClass) }); ok {
 		klass := (*RecentChooserMenuClass)(gextras.NewStructNative(gclass))
 		goval.InitRecentChooserMenu(klass)
+	}
+}
+
+func finalizeClassRecentChooserMenu(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRecentChooserMenu(*RecentChooserMenuClass) }); ok {
+		klass := (*RecentChooserMenuClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRecentChooserMenu(klass)
 	}
 }
 
@@ -234,7 +242,7 @@ type recentChooserMenuClass struct {
 
 func (r *RecentChooserMenuClass) ParentClass() *MenuClass {
 	valptr := &r.native.parent_class
-	var v *MenuClass // out
-	v = (*MenuClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MenuClass // out
+	_v = (*MenuClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

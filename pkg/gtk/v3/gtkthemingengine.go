@@ -218,9 +218,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeThemingEngine,
-		GoType:    reflect.TypeOf((*ThemingEngine)(nil)),
-		InitClass: initClassThemingEngine,
+		GType:         GTypeThemingEngine,
+		GoType:        reflect.TypeOf((*ThemingEngine)(nil)),
+		InitClass:     initClassThemingEngine,
+		FinalizeClass: finalizeClassThemingEngine,
 	})
 }
 
@@ -326,6 +327,13 @@ func initClassThemingEngine(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitThemingEngine(*ThemingEngineClass) }); ok {
 		klass := (*ThemingEngineClass)(gextras.NewStructNative(gclass))
 		goval.InitThemingEngine(klass)
+	}
+}
+
+func finalizeClassThemingEngine(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeThemingEngine(*ThemingEngineClass) }); ok {
+		klass := (*ThemingEngineClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeThemingEngine(klass)
 	}
 }
 

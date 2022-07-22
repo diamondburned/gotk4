@@ -48,9 +48,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeEventBox,
-		GoType:    reflect.TypeOf((*EventBox)(nil)),
-		InitClass: initClassEventBox,
+		GType:         GTypeEventBox,
+		GoType:        reflect.TypeOf((*EventBox)(nil)),
+		InitClass:     initClassEventBox,
+		FinalizeClass: finalizeClassEventBox,
 	})
 }
 
@@ -58,6 +59,13 @@ func initClassEventBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitEventBox(*EventBoxClass) }); ok {
 		klass := (*EventBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitEventBox(klass)
+	}
+}
+
+func finalizeClassEventBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeEventBox(*EventBoxClass) }); ok {
+		klass := (*EventBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeEventBox(klass)
 	}
 }
 
@@ -240,7 +248,7 @@ type eventBoxClass struct {
 // ParentClass: parent class.
 func (e *EventBoxClass) ParentClass() *BinClass {
 	valptr := &e.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

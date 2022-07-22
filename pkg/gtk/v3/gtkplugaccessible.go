@@ -45,9 +45,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePlugAccessible,
-		GoType:    reflect.TypeOf((*PlugAccessible)(nil)),
-		InitClass: initClassPlugAccessible,
+		GType:         GTypePlugAccessible,
+		GoType:        reflect.TypeOf((*PlugAccessible)(nil)),
+		InitClass:     initClassPlugAccessible,
+		FinalizeClass: finalizeClassPlugAccessible,
 	})
 }
 
@@ -55,6 +56,13 @@ func initClassPlugAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPlugAccessible(*PlugAccessibleClass) }); ok {
 		klass := (*PlugAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitPlugAccessible(klass)
+	}
+}
+
+func finalizeClassPlugAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePlugAccessible(*PlugAccessibleClass) }); ok {
+		klass := (*PlugAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePlugAccessible(klass)
 	}
 }
 
@@ -117,7 +125,7 @@ type plugAccessibleClass struct {
 
 func (p *PlugAccessibleClass) ParentClass() *WindowAccessibleClass {
 	valptr := &p.native.parent_class
-	var v *WindowAccessibleClass // out
-	v = (*WindowAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WindowAccessibleClass // out
+	_v = (*WindowAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

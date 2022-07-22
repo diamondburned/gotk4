@@ -139,9 +139,10 @@ var _ Permissioner = (*Permission)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePermission,
-		GoType:    reflect.TypeOf((*Permission)(nil)),
-		InitClass: initClassPermission,
+		GType:         GTypePermission,
+		GoType:        reflect.TypeOf((*Permission)(nil)),
+		InitClass:     initClassPermission,
+		FinalizeClass: finalizeClassPermission,
 	})
 }
 
@@ -175,6 +176,13 @@ func initClassPermission(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPermission(*PermissionClass) }); ok {
 		klass := (*PermissionClass)(gextras.NewStructNative(gclass))
 		goval.InitPermission(klass)
+	}
+}
+
+func finalizeClassPermission(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePermission(*PermissionClass) }); ok {
+		klass := (*PermissionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePermission(klass)
 	}
 }
 
@@ -655,12 +663,12 @@ type permissionClass struct {
 
 func (p *PermissionClass) Reserved() [16]unsafe.Pointer {
 	valptr := &p.native.reserved
-	var v [16]unsafe.Pointer // out
+	var _v [16]unsafe.Pointer // out
 	{
 		src := &*valptr
 		for i := 0; i < 16; i++ {
-			v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
 	}
-	return v
+	return _v
 }

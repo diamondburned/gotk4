@@ -136,9 +136,10 @@ var _ MenuAttributeIterer = (*MenuAttributeIter)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuAttributeIter,
-		GoType:    reflect.TypeOf((*MenuAttributeIter)(nil)),
-		InitClass: initClassMenuAttributeIter,
+		GType:         GTypeMenuAttributeIter,
+		GoType:        reflect.TypeOf((*MenuAttributeIter)(nil)),
+		InitClass:     initClassMenuAttributeIter,
+		FinalizeClass: finalizeClassMenuAttributeIter,
 	})
 }
 
@@ -154,6 +155,13 @@ func initClassMenuAttributeIter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenuAttributeIter(*MenuAttributeIterClass) }); ok {
 		klass := (*MenuAttributeIterClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuAttributeIter(klass)
+	}
+}
+
+func finalizeClassMenuAttributeIter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenuAttributeIter(*MenuAttributeIterClass) }); ok {
+		klass := (*MenuAttributeIterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuAttributeIter(klass)
 	}
 }
 
@@ -390,9 +398,10 @@ var _ MenuLinkIterer = (*MenuLinkIter)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuLinkIter,
-		GoType:    reflect.TypeOf((*MenuLinkIter)(nil)),
-		InitClass: initClassMenuLinkIter,
+		GType:         GTypeMenuLinkIter,
+		GoType:        reflect.TypeOf((*MenuLinkIter)(nil)),
+		InitClass:     initClassMenuLinkIter,
+		FinalizeClass: finalizeClassMenuLinkIter,
 	})
 }
 
@@ -408,6 +417,13 @@ func initClassMenuLinkIter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenuLinkIter(*MenuLinkIterClass) }); ok {
 		klass := (*MenuLinkIterClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuLinkIter(klass)
+	}
+}
+
+func finalizeClassMenuLinkIter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenuLinkIter(*MenuLinkIterClass) }); ok {
+		klass := (*MenuLinkIterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuLinkIter(klass)
 	}
 }
 
@@ -867,9 +883,10 @@ var _ MenuModeller = (*MenuModel)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMenuModel,
-		GoType:    reflect.TypeOf((*MenuModel)(nil)),
-		InitClass: initClassMenuModel,
+		GType:         GTypeMenuModel,
+		GoType:        reflect.TypeOf((*MenuModel)(nil)),
+		InitClass:     initClassMenuModel,
+		FinalizeClass: finalizeClassMenuModel,
 	})
 }
 
@@ -923,6 +940,13 @@ func initClassMenuModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMenuModel(*MenuModelClass) }); ok {
 		klass := (*MenuModelClass)(gextras.NewStructNative(gclass))
 		goval.InitMenuModel(klass)
+	}
+}
+
+func finalizeClassMenuModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMenuModel(*MenuModelClass) }); ok {
+		klass := (*MenuModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMenuModel(klass)
 	}
 }
 

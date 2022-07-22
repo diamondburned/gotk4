@@ -201,9 +201,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNotebook,
-		GoType:    reflect.TypeOf((*Notebook)(nil)),
-		InitClass: initClassNotebook,
+		GType:         GTypeNotebook,
+		GoType:        reflect.TypeOf((*Notebook)(nil)),
+		InitClass:     initClassNotebook,
+		FinalizeClass: finalizeClassNotebook,
 	})
 }
 
@@ -265,6 +266,13 @@ func initClassNotebook(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNotebook(*NotebookClass) }); ok {
 		klass := (*NotebookClass)(gextras.NewStructNative(gclass))
 		goval.InitNotebook(klass)
+	}
+}
+
+func finalizeClassNotebook(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNotebook(*NotebookClass) }); ok {
+		klass := (*NotebookClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNotebook(klass)
 	}
 }
 
@@ -2267,7 +2275,7 @@ type notebookClass struct {
 
 func (n *NotebookClass) ParentClass() *ContainerClass {
 	valptr := &n.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

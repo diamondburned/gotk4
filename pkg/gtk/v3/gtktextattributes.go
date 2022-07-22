@@ -43,25 +43,25 @@ type textAppearance struct {
 // BgColor: background Color.
 func (t *TextAppearance) BgColor() *gdk.Color {
 	valptr := &t.native.bg_color
-	var v *gdk.Color // out
-	v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gdk.Color // out
+	_v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // FgColor: foreground Color.
 func (t *TextAppearance) FgColor() *gdk.Color {
 	valptr := &t.native.fg_color
-	var v *gdk.Color // out
-	v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gdk.Color // out
+	_v = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Rise: super/subscript rise, can be negative.
 func (t *TextAppearance) Rise() int {
 	valptr := &t.native.rise
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Rise: super/subscript rise, can be negative.
@@ -112,121 +112,121 @@ func NewTextAttributes() *TextAttributes {
 // Appearance for text.
 func (t *TextAttributes) Appearance() *TextAppearance {
 	valptr := &t.native.appearance
-	var v *TextAppearance // out
-	v = (*TextAppearance)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *TextAppearance // out
+	_v = (*TextAppearance)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Justification for text.
 func (t *TextAttributes) Justification() Justification {
 	valptr := &t.native.justification
-	var v Justification // out
-	v = Justification(*valptr)
-	return v
+	var _v Justification // out
+	_v = Justification(*valptr)
+	return _v
 }
 
 // Direction for text.
 func (t *TextAttributes) Direction() TextDirection {
 	valptr := &t.native.direction
-	var v TextDirection // out
-	v = TextDirection(*valptr)
-	return v
+	var _v TextDirection // out
+	_v = TextDirection(*valptr)
+	return _v
 }
 
 // Font for text.
 func (t *TextAttributes) Font() *pango.FontDescription {
 	valptr := &t.native.font
-	var v *pango.FontDescription // out
-	v = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *pango.FontDescription // out
+	_v = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // FontScale: font scale factor.
 func (t *TextAttributes) FontScale() float64 {
 	valptr := &t.native.font_scale
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // LeftMargin: width of the left margin in pixels.
 func (t *TextAttributes) LeftMargin() int {
 	valptr := &t.native.left_margin
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // RightMargin: width of the right margin in pixels.
 func (t *TextAttributes) RightMargin() int {
 	valptr := &t.native.right_margin
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Indent: amount to indent the paragraph, in pixels.
 func (t *TextAttributes) Indent() int {
 	valptr := &t.native.indent
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // PixelsAboveLines pixels of blank space above paragraphs.
 func (t *TextAttributes) PixelsAboveLines() int {
 	valptr := &t.native.pixels_above_lines
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // PixelsBelowLines pixels of blank space below paragraphs.
 func (t *TextAttributes) PixelsBelowLines() int {
 	valptr := &t.native.pixels_below_lines
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // PixelsInsideWrap pixels of blank space between wrapped lines in a paragraph.
 func (t *TextAttributes) PixelsInsideWrap() int {
 	valptr := &t.native.pixels_inside_wrap
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Tabs: custom TabArray for this text.
 func (t *TextAttributes) Tabs() *pango.TabArray {
 	valptr := &t.native.tabs
-	var v *pango.TabArray // out
-	v = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *pango.TabArray // out
+	_v = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // WrapMode for text.
 func (t *TextAttributes) WrapMode() WrapMode {
 	valptr := &t.native.wrap_mode
-	var v WrapMode // out
-	v = WrapMode(*valptr)
-	return v
+	var _v WrapMode // out
+	_v = WrapMode(*valptr)
+	return _v
 }
 
 // Language for text.
 func (t *TextAttributes) Language() *pango.Language {
 	valptr := &t.native.language
-	var v *pango.Language // out
-	v = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *pango.Language // out
+	_v = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // LetterSpacing: extra space to insert between graphemes, in Pango units.
 func (t *TextAttributes) LetterSpacing() int {
 	valptr := &t.native.letter_spacing
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // FontScale: font scale factor.

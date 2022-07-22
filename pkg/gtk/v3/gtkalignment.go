@@ -62,9 +62,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAlignment,
-		GoType:    reflect.TypeOf((*Alignment)(nil)),
-		InitClass: initClassAlignment,
+		GType:         GTypeAlignment,
+		GoType:        reflect.TypeOf((*Alignment)(nil)),
+		InitClass:     initClassAlignment,
+		FinalizeClass: finalizeClassAlignment,
 	})
 }
 
@@ -72,6 +73,13 @@ func initClassAlignment(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAlignment(*AlignmentClass) }); ok {
 		klass := (*AlignmentClass)(gextras.NewStructNative(gclass))
 		goval.InitAlignment(klass)
+	}
+}
+
+func finalizeClassAlignment(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAlignment(*AlignmentClass) }); ok {
+		klass := (*AlignmentClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAlignment(klass)
 	}
 }
 
@@ -272,7 +280,7 @@ type alignmentClass struct {
 // ParentClass: parent class.
 func (a *AlignmentClass) ParentClass() *BinClass {
 	valptr := &a.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

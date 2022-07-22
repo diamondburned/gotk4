@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCustomLayout,
-		GoType:    reflect.TypeOf((*CustomLayout)(nil)),
-		InitClass: initClassCustomLayout,
+		GType:         GTypeCustomLayout,
+		GoType:        reflect.TypeOf((*CustomLayout)(nil)),
+		InitClass:     initClassCustomLayout,
+		FinalizeClass: finalizeClassCustomLayout,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassCustomLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCustomLayout(*CustomLayoutClass) }); ok {
 		klass := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitCustomLayout(klass)
+	}
+}
+
+func finalizeClassCustomLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCustomLayout(*CustomLayoutClass) }); ok {
+		klass := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCustomLayout(klass)
 	}
 }
 
@@ -83,7 +91,7 @@ type customLayoutClass struct {
 
 func (c *CustomLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &c.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

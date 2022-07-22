@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePanedAccessible,
-		GoType:    reflect.TypeOf((*PanedAccessible)(nil)),
-		InitClass: initClassPanedAccessible,
+		GType:         GTypePanedAccessible,
+		GoType:        reflect.TypeOf((*PanedAccessible)(nil)),
+		InitClass:     initClassPanedAccessible,
+		FinalizeClass: finalizeClassPanedAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassPanedAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPanedAccessible(*PanedAccessibleClass) }); ok {
 		klass := (*PanedAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitPanedAccessible(klass)
+	}
+}
+
+func finalizeClassPanedAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePanedAccessible(*PanedAccessibleClass) }); ok {
+		klass := (*PanedAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePanedAccessible(klass)
 	}
 }
 
@@ -95,7 +103,7 @@ type panedAccessibleClass struct {
 
 func (p *PanedAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &p.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

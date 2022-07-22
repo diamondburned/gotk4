@@ -93,9 +93,10 @@ var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDBusInterfaceSkeleton,
-		GoType:    reflect.TypeOf((*DBusInterfaceSkeleton)(nil)),
-		InitClass: initClassDBusInterfaceSkeleton,
+		GType:         GTypeDBusInterfaceSkeleton,
+		GoType:        reflect.TypeOf((*DBusInterfaceSkeleton)(nil)),
+		InitClass:     initClassDBusInterfaceSkeleton,
+		FinalizeClass: finalizeClassDBusInterfaceSkeleton,
 	})
 }
 
@@ -125,6 +126,15 @@ func initClassDBusInterfaceSkeleton(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*DBusInterfaceSkeletonClass)(gextras.NewStructNative(gclass))
 		goval.InitDBusInterfaceSkeleton(klass)
+	}
+}
+
+func finalizeClassDBusInterfaceSkeleton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeDBusInterfaceSkeleton(*DBusInterfaceSkeletonClass)
+	}); ok {
+		klass := (*DBusInterfaceSkeletonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDBusInterfaceSkeleton(klass)
 	}
 }
 

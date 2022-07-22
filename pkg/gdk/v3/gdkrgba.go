@@ -70,34 +70,34 @@ func NewRGBA(red, green, blue, alpha float64) RGBA {
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Red() float64 {
 	valptr := &r.native.red
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Green: intensity of the green channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Green() float64 {
 	valptr := &r.native.green
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Blue() float64 {
 	valptr := &r.native.blue
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
 // opaque.
 func (r *RGBA) Alpha() float64 {
 	valptr := &r.native.alpha
-	var v float64 // out
-	v = float64(*valptr)
-	return v
+	var _v float64 // out
+	_v = float64(*valptr)
+	return _v
 }
 
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.

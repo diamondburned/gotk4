@@ -474,40 +474,40 @@ type fileFilterInfo struct {
 // Contains flags indicating which of the following fields need are filled.
 func (f *FileFilterInfo) Contains() FileFilterFlags {
 	valptr := &f.native.contains
-	var v FileFilterFlags // out
-	v = FileFilterFlags(*valptr)
-	return v
+	var _v FileFilterFlags // out
+	_v = FileFilterFlags(*valptr)
+	return _v
 }
 
 // Filename: filename of the file being tested.
 func (f *FileFilterInfo) Filename() string {
 	valptr := &f.native.filename
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // URI for the file being tested.
 func (f *FileFilterInfo) URI() string {
 	valptr := &f.native.uri
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // DisplayName: string that will be used to display the file in the file
 // chooser.
 func (f *FileFilterInfo) DisplayName() string {
 	valptr := &f.native.display_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // MIMEType: mime type of the file.
 func (f *FileFilterInfo) MIMEType() string {
 	valptr := &f.native.mime_type
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

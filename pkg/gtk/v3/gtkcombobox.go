@@ -104,9 +104,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeComboBox,
-		GoType:    reflect.TypeOf((*ComboBox)(nil)),
-		InitClass: initClassComboBox,
+		GType:         GTypeComboBox,
+		GoType:        reflect.TypeOf((*ComboBox)(nil)),
+		InitClass:     initClassComboBox,
+		FinalizeClass: finalizeClassComboBox,
 	})
 }
 
@@ -124,6 +125,13 @@ func initClassComboBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitComboBox(*ComboBoxClass) }); ok {
 		klass := (*ComboBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitComboBox(klass)
+	}
+}
+
+func finalizeClassComboBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeComboBox(*ComboBoxClass) }); ok {
+		klass := (*ComboBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeComboBox(klass)
 	}
 }
 
@@ -1318,7 +1326,7 @@ type comboBoxClass struct {
 // ParentClass: parent class.
 func (c *ComboBoxClass) ParentClass() *BinClass {
 	valptr := &c.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

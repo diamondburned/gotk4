@@ -64,9 +64,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeWidgetPaintable,
-		GoType:    reflect.TypeOf((*WidgetPaintable)(nil)),
-		InitClass: initClassWidgetPaintable,
+		GType:         GTypeWidgetPaintable,
+		GoType:        reflect.TypeOf((*WidgetPaintable)(nil)),
+		InitClass:     initClassWidgetPaintable,
+		FinalizeClass: finalizeClassWidgetPaintable,
 	})
 }
 
@@ -74,6 +75,13 @@ func initClassWidgetPaintable(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitWidgetPaintable(*WidgetPaintableClass) }); ok {
 		klass := (*WidgetPaintableClass)(gextras.NewStructNative(gclass))
 		goval.InitWidgetPaintable(klass)
+	}
+}
+
+func finalizeClassWidgetPaintable(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeWidgetPaintable(*WidgetPaintableClass) }); ok {
+		klass := (*WidgetPaintableClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeWidgetPaintable(klass)
 	}
 }
 

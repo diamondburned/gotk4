@@ -63,9 +63,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeOffscreenWindow,
-		GoType:    reflect.TypeOf((*OffscreenWindow)(nil)),
-		InitClass: initClassOffscreenWindow,
+		GType:         GTypeOffscreenWindow,
+		GoType:        reflect.TypeOf((*OffscreenWindow)(nil)),
+		InitClass:     initClassOffscreenWindow,
+		FinalizeClass: finalizeClassOffscreenWindow,
 	})
 }
 
@@ -73,6 +74,13 @@ func initClassOffscreenWindow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitOffscreenWindow(*OffscreenWindowClass) }); ok {
 		klass := (*OffscreenWindowClass)(gextras.NewStructNative(gclass))
 		goval.InitOffscreenWindow(klass)
+	}
+}
+
+func finalizeClassOffscreenWindow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeOffscreenWindow(*OffscreenWindowClass) }); ok {
+		klass := (*OffscreenWindowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeOffscreenWindow(klass)
 	}
 }
 
@@ -201,7 +209,7 @@ type offscreenWindowClass struct {
 // ParentClass: parent class.
 func (o *OffscreenWindowClass) ParentClass() *WindowClass {
 	valptr := &o.native.parent_class
-	var v *WindowClass // out
-	v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WindowClass // out
+	_v = (*WindowClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRangeAccessible,
-		GoType:    reflect.TypeOf((*RangeAccessible)(nil)),
-		InitClass: initClassRangeAccessible,
+		GType:         GTypeRangeAccessible,
+		GoType:        reflect.TypeOf((*RangeAccessible)(nil)),
+		InitClass:     initClassRangeAccessible,
+		FinalizeClass: finalizeClassRangeAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassRangeAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRangeAccessible(*RangeAccessibleClass) }); ok {
 		klass := (*RangeAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitRangeAccessible(klass)
+	}
+}
+
+func finalizeClassRangeAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRangeAccessible(*RangeAccessibleClass) }); ok {
+		klass := (*RangeAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRangeAccessible(klass)
 	}
 }
 
@@ -93,7 +101,7 @@ type rangeAccessibleClass struct {
 
 func (r *RangeAccessibleClass) ParentClass() *WidgetAccessibleClass {
 	valptr := &r.native.parent_class
-	var v *WidgetAccessibleClass // out
-	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetAccessibleClass // out
+	_v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

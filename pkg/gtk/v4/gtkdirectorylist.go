@@ -68,9 +68,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDirectoryList,
-		GoType:    reflect.TypeOf((*DirectoryList)(nil)),
-		InitClass: initClassDirectoryList,
+		GType:         GTypeDirectoryList,
+		GoType:        reflect.TypeOf((*DirectoryList)(nil)),
+		InitClass:     initClassDirectoryList,
+		FinalizeClass: finalizeClassDirectoryList,
 	})
 }
 
@@ -78,6 +79,13 @@ func initClassDirectoryList(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitDirectoryList(*DirectoryListClass) }); ok {
 		klass := (*DirectoryListClass)(gextras.NewStructNative(gclass))
 		goval.InitDirectoryList(klass)
+	}
+}
+
+func finalizeClassDirectoryList(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeDirectoryList(*DirectoryListClass) }); ok {
+		klass := (*DirectoryListClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDirectoryList(klass)
 	}
 }
 

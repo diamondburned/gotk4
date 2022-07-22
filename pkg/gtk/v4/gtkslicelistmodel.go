@@ -51,9 +51,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSliceListModel,
-		GoType:    reflect.TypeOf((*SliceListModel)(nil)),
-		InitClass: initClassSliceListModel,
+		GType:         GTypeSliceListModel,
+		GoType:        reflect.TypeOf((*SliceListModel)(nil)),
+		InitClass:     initClassSliceListModel,
+		FinalizeClass: finalizeClassSliceListModel,
 	})
 }
 
@@ -61,6 +62,13 @@ func initClassSliceListModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitSliceListModel(*SliceListModelClass) }); ok {
 		klass := (*SliceListModelClass)(gextras.NewStructNative(gclass))
 		goval.InitSliceListModel(klass)
+	}
+}
+
+func finalizeClassSliceListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeSliceListModel(*SliceListModelClass) }); ok {
+		klass := (*SliceListModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSliceListModel(klass)
 	}
 }
 

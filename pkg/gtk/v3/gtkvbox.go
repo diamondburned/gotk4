@@ -69,9 +69,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVBox,
-		GoType:    reflect.TypeOf((*VBox)(nil)),
-		InitClass: initClassVBox,
+		GType:         GTypeVBox,
+		GoType:        reflect.TypeOf((*VBox)(nil)),
+		InitClass:     initClassVBox,
+		FinalizeClass: finalizeClassVBox,
 	})
 }
 
@@ -79,6 +80,13 @@ func initClassVBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVBox(*VBoxClass) }); ok {
 		klass := (*VBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitVBox(klass)
+	}
+}
+
+func finalizeClassVBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVBox(*VBoxClass) }); ok {
+		klass := (*VBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVBox(klass)
 	}
 }
 
@@ -160,7 +168,7 @@ type vBoxClass struct {
 
 func (v *VBoxClass) ParentClass() *BoxClass {
 	valptr := &v.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

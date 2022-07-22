@@ -65,17 +65,17 @@ func NewSizeAlloc() *Size {
 // Width: width.
 func (s *Size) Width() float32 {
 	valptr := &s.native.width
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Height: height.
 func (s *Size) Height() float32 {
 	valptr := &s.native.height
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Width: width.

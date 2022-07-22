@@ -1204,9 +1204,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAtkObject,
-		GoType:    reflect.TypeOf((*AtkObject)(nil)),
-		InitClass: initClassAtkObject,
+		GType:         GTypeAtkObject,
+		GoType:        reflect.TypeOf((*AtkObject)(nil)),
+		InitClass:     initClassAtkObject,
+		FinalizeClass: finalizeClassAtkObject,
 	})
 }
 
@@ -1312,6 +1313,13 @@ func initClassAtkObject(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAtkObject(*ObjectClass) }); ok {
 		klass := (*ObjectClass)(gextras.NewStructNative(gclass))
 		goval.InitAtkObject(klass)
+	}
+}
+
+func finalizeClassAtkObject(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAtkObject(*ObjectClass) }); ok {
+		klass := (*ObjectClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAtkObject(klass)
 	}
 }
 
@@ -2400,17 +2408,17 @@ type attribute struct {
 // Name: attribute name.
 func (a *Attribute) Name() string {
 	valptr := &a.native.name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Value: value of the attribute, represented as a string.
 func (a *Attribute) Value() string {
 	valptr := &a.native.value
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // ObjectClass: instance of this type is always passed by reference.
@@ -2440,7 +2448,7 @@ type propertyValues struct {
 // PropertyName: name of the ATK property which has changed.
 func (p *PropertyValues) PropertyName() string {
 	valptr := &p.native.property_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

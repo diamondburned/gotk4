@@ -63,9 +63,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeArrow,
-		GoType:    reflect.TypeOf((*Arrow)(nil)),
-		InitClass: initClassArrow,
+		GType:         GTypeArrow,
+		GoType:        reflect.TypeOf((*Arrow)(nil)),
+		InitClass:     initClassArrow,
+		FinalizeClass: finalizeClassArrow,
 	})
 }
 
@@ -73,6 +74,13 @@ func initClassArrow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitArrow(*ArrowClass) }); ok {
 		klass := (*ArrowClass)(gextras.NewStructNative(gclass))
 		goval.InitArrow(klass)
+	}
+}
+
+func finalizeClassArrow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeArrow(*ArrowClass) }); ok {
+		klass := (*ArrowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeArrow(klass)
 	}
 }
 
@@ -167,7 +175,7 @@ type arrowClass struct {
 
 func (a *ArrowClass) ParentClass() *MiscClass {
 	valptr := &a.native.parent_class
-	var v *MiscClass // out
-	v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *MiscClass // out
+	_v = (*MiscClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -105,9 +105,9 @@ type bindingArg struct {
 // ArgType: implementation detail.
 func (b *BindingArg) ArgType() coreglib.Type {
 	valptr := &b.native.arg_type
-	var v coreglib.Type // out
-	v = coreglib.Type(*valptr)
-	return v
+	var _v coreglib.Type // out
+	_v = coreglib.Type(*valptr)
+	return _v
 }
 
 // BindingEntry: each key binding element of a binding sets binding list is
@@ -126,49 +126,49 @@ type bindingEntry struct {
 // Keyval: key value to match.
 func (b *BindingEntry) Keyval() uint {
 	valptr := &b.native.keyval
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Modifiers: key modifiers to match.
 func (b *BindingEntry) Modifiers() gdk.ModifierType {
 	valptr := &b.native.modifiers
-	var v gdk.ModifierType // out
-	v = gdk.ModifierType(*valptr)
-	return v
+	var _v gdk.ModifierType // out
+	_v = gdk.ModifierType(*valptr)
+	return _v
 }
 
 // BindingSet: binding set this entry belongs to.
 func (b *BindingEntry) BindingSet() *BindingSet {
 	valptr := &b.native.binding_set
-	var v *BindingSet // out
-	v = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *BindingSet // out
+	_v = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // SetNext: linked list of entries maintained by binding set.
 func (b *BindingEntry) SetNext() *BindingEntry {
 	valptr := &b.native.set_next
-	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *BindingEntry // out
+	_v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // HashNext: implementation detail.
 func (b *BindingEntry) HashNext() *BindingEntry {
 	valptr := &b.native.hash_next
-	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *BindingEntry // out
+	_v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Signals: action signals of this entry.
 func (b *BindingEntry) Signals() *BindingSignal {
 	valptr := &b.native.signals
-	var v *BindingSignal // out
-	v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *BindingSignal // out
+	_v = (*BindingSignal)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Keyval: key value to match.
@@ -330,33 +330,33 @@ type bindingSet struct {
 // SetName: unique name of this binding set.
 func (b *BindingSet) SetName() string {
 	valptr := &b.native.set_name
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Priority: unused.
 func (b *BindingSet) Priority() int {
 	valptr := &b.native.priority
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Entries: key binding entries in this binding set.
 func (b *BindingSet) Entries() *BindingEntry {
 	valptr := &b.native.entries
-	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *BindingEntry // out
+	_v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Current: implementation detail.
 func (b *BindingSet) Current() *BindingEntry {
 	valptr := &b.native.current
-	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
-	return v
+	var _v *BindingEntry // out
+	_v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // Priority: unused.

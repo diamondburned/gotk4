@@ -3324,17 +3324,17 @@ type colorStop struct {
 // Offset: offset of the color stop.
 func (c *ColorStop) Offset() float32 {
 	valptr := &c.native.offset
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Color: color at the given offset.
 func (c *ColorStop) Color() *gdk.RGBA {
 	valptr := &c.native.color
-	var v *gdk.RGBA // out
-	v = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gdk.RGBA // out
+	_v = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Offset: offset of the color stop.
@@ -3384,41 +3384,41 @@ func NewParseLocation(bytes, chars, lines, lineBytes, lineChars uint) ParseLocat
 // Bytes: offset of the location in the parse buffer, as bytes.
 func (p *ParseLocation) Bytes() uint {
 	valptr := &p.native.bytes
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Chars: offset of the location in the parse buffer, as characters.
 func (p *ParseLocation) Chars() uint {
 	valptr := &p.native.chars
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Lines: line of the location in the parse buffer.
 func (p *ParseLocation) Lines() uint {
 	valptr := &p.native.lines
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // LineBytes: position in the line, as bytes.
 func (p *ParseLocation) LineBytes() uint {
 	valptr := &p.native.line_bytes
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // LineChars: position in the line, as characters.
 func (p *ParseLocation) LineChars() uint {
 	valptr := &p.native.line_chars
-	var v uint // out
-	v = uint(*valptr)
-	return v
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
 }
 
 // Bytes: offset of the location in the parse buffer, as bytes.
@@ -3466,33 +3466,33 @@ type shadow struct {
 // Color: color of the shadow.
 func (s *Shadow) Color() *gdk.RGBA {
 	valptr := &s.native.color
-	var v *gdk.RGBA // out
-	v = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *gdk.RGBA // out
+	_v = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // Dx: horizontal offset of the shadow.
 func (s *Shadow) Dx() float32 {
 	valptr := &s.native.dx
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Dy: vertical offset of the shadow.
 func (s *Shadow) Dy() float32 {
 	valptr := &s.native.dy
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Radius radius of the shadow.
 func (s *Shadow) Radius() float32 {
 	valptr := &s.native.radius
-	var v float32 // out
-	v = float32(*valptr)
-	return v
+	var _v float32 // out
+	_v = float32(*valptr)
+	return _v
 }
 
 // Dx: horizontal offset of the shadow.

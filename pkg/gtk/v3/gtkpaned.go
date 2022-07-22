@@ -125,9 +125,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePaned,
-		GoType:    reflect.TypeOf((*Paned)(nil)),
-		InitClass: initClassPaned,
+		GType:         GTypePaned,
+		GoType:        reflect.TypeOf((*Paned)(nil)),
+		InitClass:     initClassPaned,
+		FinalizeClass: finalizeClassPaned,
 	})
 }
 
@@ -161,6 +162,13 @@ func initClassPaned(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPaned(*PanedClass) }); ok {
 		klass := (*PanedClass)(gextras.NewStructNative(gclass))
 		goval.InitPaned(klass)
+	}
+}
+
+func finalizeClassPaned(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePaned(*PanedClass) }); ok {
+		klass := (*PanedClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePaned(klass)
 	}
 }
 
@@ -825,7 +833,7 @@ type panedClass struct {
 
 func (p *PanedClass) ParentClass() *ContainerClass {
 	valptr := &p.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

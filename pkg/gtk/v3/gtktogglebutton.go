@@ -110,9 +110,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeToggleButton,
-		GoType:    reflect.TypeOf((*ToggleButton)(nil)),
-		InitClass: initClassToggleButton,
+		GType:         GTypeToggleButton,
+		GoType:        reflect.TypeOf((*ToggleButton)(nil)),
+		InitClass:     initClassToggleButton,
+		FinalizeClass: finalizeClassToggleButton,
 	})
 }
 
@@ -126,6 +127,13 @@ func initClassToggleButton(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitToggleButton(*ToggleButtonClass) }); ok {
 		klass := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
 		goval.InitToggleButton(klass)
+	}
+}
+
+func finalizeClassToggleButton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeToggleButton(*ToggleButtonClass) }); ok {
+		klass := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeToggleButton(klass)
 	}
 }
 
@@ -457,7 +465,7 @@ type toggleButtonClass struct {
 
 func (t *ToggleButtonClass) ParentClass() *ButtonClass {
 	valptr := &t.native.parent_class
-	var v *ButtonClass // out
-	v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ButtonClass // out
+	_v = (*ButtonClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -89,9 +89,10 @@ var _ NativeDialogger = (*NativeDialog)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeNativeDialog,
-		GoType:    reflect.TypeOf((*NativeDialog)(nil)),
-		InitClass: initClassNativeDialog,
+		GType:         GTypeNativeDialog,
+		GoType:        reflect.TypeOf((*NativeDialog)(nil)),
+		InitClass:     initClassNativeDialog,
+		FinalizeClass: finalizeClassNativeDialog,
 	})
 }
 
@@ -113,6 +114,13 @@ func initClassNativeDialog(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitNativeDialog(*NativeDialogClass) }); ok {
 		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
 		goval.InitNativeDialog(klass)
+	}
+}
+
+func finalizeClassNativeDialog(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeNativeDialog(*NativeDialogClass) }); ok {
+		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeNativeDialog(klass)
 	}
 }
 

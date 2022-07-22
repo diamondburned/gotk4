@@ -163,9 +163,10 @@ var _ LayoutManagerer = (*LayoutManager)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLayoutManager,
-		GoType:    reflect.TypeOf((*LayoutManager)(nil)),
-		InitClass: initClassLayoutManager,
+		GType:         GTypeLayoutManager,
+		GoType:        reflect.TypeOf((*LayoutManager)(nil)),
+		InitClass:     initClassLayoutManager,
+		FinalizeClass: finalizeClassLayoutManager,
 	})
 }
 
@@ -207,6 +208,13 @@ func initClassLayoutManager(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitLayoutManager(*LayoutManagerClass) }); ok {
 		klass := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
 		goval.InitLayoutManager(klass)
+	}
+}
+
+func finalizeClassLayoutManager(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeLayoutManager(*LayoutManagerClass) }); ok {
+		klass := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLayoutManager(klass)
 	}
 }
 
@@ -637,7 +645,7 @@ type layoutManagerClass struct {
 // LayoutChildType: type of LayoutChild used by this layout manager.
 func (l *LayoutManagerClass) LayoutChildType() coreglib.Type {
 	valptr := &l.native.layout_child_type
-	var v coreglib.Type // out
-	v = coreglib.Type(*valptr)
-	return v
+	var _v coreglib.Type // out
+	_v = coreglib.Type(*valptr)
+	return _v
 }

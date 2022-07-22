@@ -102,9 +102,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeConstraint,
-		GoType:    reflect.TypeOf((*Constraint)(nil)),
-		InitClass: initClassConstraint,
+		GType:         GTypeConstraint,
+		GoType:        reflect.TypeOf((*Constraint)(nil)),
+		InitClass:     initClassConstraint,
+		FinalizeClass: finalizeClassConstraint,
 	})
 }
 
@@ -112,6 +113,13 @@ func initClassConstraint(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitConstraint(*ConstraintClass) }); ok {
 		klass := (*ConstraintClass)(gextras.NewStructNative(gclass))
 		goval.InitConstraint(klass)
+	}
+}
+
+func finalizeClassConstraint(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeConstraint(*ConstraintClass) }); ok {
+		klass := (*ConstraintClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeConstraint(klass)
 	}
 }
 

@@ -6184,9 +6184,9 @@ type fileIface struct {
 // implementation supports thread-default contexts. Since 2.22.
 func (f *FileIface) SupportsThreadContexts() bool {
 	valptr := &f.native.supports_thread_contexts
-	var v bool // out
+	var _v bool // out
 	if *valptr != 0 {
-		v = true
+		_v = true
 	}
-	return v
+	return _v
 }

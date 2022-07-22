@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeCenterLayout,
-		GoType:    reflect.TypeOf((*CenterLayout)(nil)),
-		InitClass: initClassCenterLayout,
+		GType:         GTypeCenterLayout,
+		GoType:        reflect.TypeOf((*CenterLayout)(nil)),
+		InitClass:     initClassCenterLayout,
+		FinalizeClass: finalizeClassCenterLayout,
 	})
 }
 
@@ -60,6 +61,13 @@ func initClassCenterLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitCenterLayout(*CenterLayoutClass) }); ok {
 		klass := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitCenterLayout(klass)
+	}
+}
+
+func finalizeClassCenterLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeCenterLayout(*CenterLayoutClass) }); ok {
+		klass := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeCenterLayout(klass)
 	}
 }
 
@@ -362,7 +370,7 @@ type centerLayoutClass struct {
 
 func (c *CenterLayoutClass) ParentClass() *LayoutManagerClass {
 	valptr := &c.native.parent_class
-	var v *LayoutManagerClass // out
-	v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LayoutManagerClass // out
+	_v = (*LayoutManagerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

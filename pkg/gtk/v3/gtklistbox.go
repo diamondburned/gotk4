@@ -267,9 +267,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeListBox,
-		GoType:    reflect.TypeOf((*ListBox)(nil)),
-		InitClass: initClassListBox,
+		GType:         GTypeListBox,
+		GoType:        reflect.TypeOf((*ListBox)(nil)),
+		InitClass:     initClassListBox,
+		FinalizeClass: finalizeClassListBox,
 	})
 }
 
@@ -313,6 +314,13 @@ func initClassListBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitListBox(*ListBoxClass) }); ok {
 		klass := (*ListBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitListBox(klass)
+	}
+}
+
+func finalizeClassListBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeListBox(*ListBoxClass) }); ok {
+		klass := (*ListBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeListBox(klass)
 	}
 }
 
@@ -1277,9 +1285,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeListBoxRow,
-		GoType:    reflect.TypeOf((*ListBoxRow)(nil)),
-		InitClass: initClassListBoxRow,
+		GType:         GTypeListBoxRow,
+		GoType:        reflect.TypeOf((*ListBoxRow)(nil)),
+		InitClass:     initClassListBoxRow,
+		FinalizeClass: finalizeClassListBoxRow,
 	})
 }
 
@@ -1293,6 +1302,13 @@ func initClassListBoxRow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitListBoxRow(*ListBoxRowClass) }); ok {
 		klass := (*ListBoxRowClass)(gextras.NewStructNative(gclass))
 		goval.InitListBoxRow(klass)
+	}
+}
+
+func finalizeClassListBoxRow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeListBoxRow(*ListBoxRowClass) }); ok {
+		klass := (*ListBoxRowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeListBoxRow(klass)
 	}
 }
 
@@ -1621,9 +1637,9 @@ type listBoxClass struct {
 // ParentClass: parent class.
 func (l *ListBoxClass) ParentClass() *ContainerClass {
 	valptr := &l.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // ListBoxRowClass: instance of this type is always passed by reference.
@@ -1639,7 +1655,7 @@ type listBoxRowClass struct {
 // ParentClass: parent class.
 func (l *ListBoxRowClass) ParentClass() *BinClass {
 	valptr := &l.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

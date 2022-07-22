@@ -238,9 +238,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFlowBox,
-		GoType:    reflect.TypeOf((*FlowBox)(nil)),
-		InitClass: initClassFlowBox,
+		GType:         GTypeFlowBox,
+		GoType:        reflect.TypeOf((*FlowBox)(nil)),
+		InitClass:     initClassFlowBox,
+		FinalizeClass: finalizeClassFlowBox,
 	})
 }
 
@@ -280,6 +281,13 @@ func initClassFlowBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFlowBox(*FlowBoxClass) }); ok {
 		klass := (*FlowBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitFlowBox(klass)
+	}
+}
+
+func finalizeClassFlowBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFlowBox(*FlowBoxClass) }); ok {
+		klass := (*FlowBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFlowBox(klass)
 	}
 }
 
@@ -1307,9 +1315,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFlowBoxChild,
-		GoType:    reflect.TypeOf((*FlowBoxChild)(nil)),
-		InitClass: initClassFlowBoxChild,
+		GType:         GTypeFlowBoxChild,
+		GoType:        reflect.TypeOf((*FlowBoxChild)(nil)),
+		InitClass:     initClassFlowBoxChild,
+		FinalizeClass: finalizeClassFlowBoxChild,
 	})
 }
 
@@ -1323,6 +1332,13 @@ func initClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFlowBoxChild(*FlowBoxChildClass) }); ok {
 		klass := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
 		goval.InitFlowBoxChild(klass)
+	}
+}
+
+func finalizeClassFlowBoxChild(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFlowBoxChild(*FlowBoxChildClass) }); ok {
+		klass := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFlowBoxChild(klass)
 	}
 }
 
@@ -1487,9 +1503,9 @@ type flowBoxChildClass struct {
 
 func (f *FlowBoxChildClass) ParentClass() *BinClass {
 	valptr := &f.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 // FlowBoxClass: instance of this type is always passed by reference.
@@ -1504,7 +1520,7 @@ type flowBoxClass struct {
 
 func (f *FlowBoxClass) ParentClass() *ContainerClass {
 	valptr := &f.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -87,9 +87,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAppChooserWidget,
-		GoType:    reflect.TypeOf((*AppChooserWidget)(nil)),
-		InitClass: initClassAppChooserWidget,
+		GType:         GTypeAppChooserWidget,
+		GoType:        reflect.TypeOf((*AppChooserWidget)(nil)),
+		InitClass:     initClassAppChooserWidget,
+		FinalizeClass: finalizeClassAppChooserWidget,
 	})
 }
 
@@ -113,6 +114,13 @@ func initClassAppChooserWidget(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAppChooserWidget(*AppChooserWidgetClass) }); ok {
 		klass := (*AppChooserWidgetClass)(gextras.NewStructNative(gclass))
 		goval.InitAppChooserWidget(klass)
+	}
+}
+
+func finalizeClassAppChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAppChooserWidget(*AppChooserWidgetClass) }); ok {
+		klass := (*AppChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAppChooserWidget(klass)
 	}
 }
 
@@ -695,7 +703,7 @@ type appChooserWidgetClass struct {
 // ParentClass: parent class.
 func (a *AppChooserWidgetClass) ParentClass() *BoxClass {
 	valptr := &a.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

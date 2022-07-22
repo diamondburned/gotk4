@@ -51,9 +51,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMultiSorter,
-		GoType:    reflect.TypeOf((*MultiSorter)(nil)),
-		InitClass: initClassMultiSorter,
+		GType:         GTypeMultiSorter,
+		GoType:        reflect.TypeOf((*MultiSorter)(nil)),
+		InitClass:     initClassMultiSorter,
+		FinalizeClass: finalizeClassMultiSorter,
 	})
 }
 
@@ -61,6 +62,13 @@ func initClassMultiSorter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMultiSorter(*MultiSorterClass) }); ok {
 		klass := (*MultiSorterClass)(gextras.NewStructNative(gclass))
 		goval.InitMultiSorter(klass)
+	}
+}
+
+func finalizeClassMultiSorter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMultiSorter(*MultiSorterClass) }); ok {
+		klass := (*MultiSorterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMultiSorter(klass)
 	}
 }
 
@@ -160,7 +168,7 @@ type multiSorterClass struct {
 
 func (m *MultiSorterClass) ParentClass() *SorterClass {
 	valptr := &m.native.parent_class
-	var v *SorterClass // out
-	v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SorterClass // out
+	_v = (*SorterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

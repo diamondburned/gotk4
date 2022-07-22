@@ -71,9 +71,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeEditableLabel,
-		GoType:    reflect.TypeOf((*EditableLabel)(nil)),
-		InitClass: initClassEditableLabel,
+		GType:         GTypeEditableLabel,
+		GoType:        reflect.TypeOf((*EditableLabel)(nil)),
+		InitClass:     initClassEditableLabel,
+		FinalizeClass: finalizeClassEditableLabel,
 	})
 }
 
@@ -81,6 +82,13 @@ func initClassEditableLabel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitEditableLabel(*EditableLabelClass) }); ok {
 		klass := (*EditableLabelClass)(gextras.NewStructNative(gclass))
 		goval.InitEditableLabel(klass)
+	}
+}
+
+func finalizeClassEditableLabel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeEditableLabel(*EditableLabelClass) }); ok {
+		klass := (*EditableLabelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeEditableLabel(klass)
 	}
 }
 
@@ -223,7 +231,7 @@ type editableLabelClass struct {
 
 func (e *EditableLabelClass) ParentClass() *WidgetClass {
 	valptr := &e.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

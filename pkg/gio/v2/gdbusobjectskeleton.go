@@ -59,9 +59,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDBusObjectSkeleton,
-		GoType:    reflect.TypeOf((*DBusObjectSkeleton)(nil)),
-		InitClass: initClassDBusObjectSkeleton,
+		GType:         GTypeDBusObjectSkeleton,
+		GoType:        reflect.TypeOf((*DBusObjectSkeleton)(nil)),
+		InitClass:     initClassDBusObjectSkeleton,
+		FinalizeClass: finalizeClassDBusObjectSkeleton,
 	})
 }
 
@@ -79,6 +80,15 @@ func initClassDBusObjectSkeleton(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*DBusObjectSkeletonClass)(gextras.NewStructNative(gclass))
 		goval.InitDBusObjectSkeleton(klass)
+	}
+}
+
+func finalizeClassDBusObjectSkeleton(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeDBusObjectSkeleton(*DBusObjectSkeletonClass)
+	}); ok {
+		klass := (*DBusObjectSkeletonClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDBusObjectSkeleton(klass)
 	}
 }
 

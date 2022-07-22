@@ -78,9 +78,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFixed,
-		GoType:    reflect.TypeOf((*Fixed)(nil)),
-		InitClass: initClassFixed,
+		GType:         GTypeFixed,
+		GoType:        reflect.TypeOf((*Fixed)(nil)),
+		InitClass:     initClassFixed,
+		FinalizeClass: finalizeClassFixed,
 	})
 }
 
@@ -88,6 +89,13 @@ func initClassFixed(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFixed(*FixedClass) }); ok {
 		klass := (*FixedClass)(gextras.NewStructNative(gclass))
 		goval.InitFixed(klass)
+	}
+}
+
+func finalizeClassFixed(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFixed(*FixedClass) }); ok {
+		klass := (*FixedClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFixed(klass)
 	}
 }
 
@@ -320,7 +328,7 @@ type fixedClass struct {
 
 func (f *FixedClass) ParentClass() *WidgetClass {
 	valptr := &f.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

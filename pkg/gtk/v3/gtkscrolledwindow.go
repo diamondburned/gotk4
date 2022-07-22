@@ -222,9 +222,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeScrolledWindow,
-		GoType:    reflect.TypeOf((*ScrolledWindow)(nil)),
-		InitClass: initClassScrolledWindow,
+		GType:         GTypeScrolledWindow,
+		GoType:        reflect.TypeOf((*ScrolledWindow)(nil)),
+		InitClass:     initClassScrolledWindow,
+		FinalizeClass: finalizeClassScrolledWindow,
 	})
 }
 
@@ -244,6 +245,13 @@ func initClassScrolledWindow(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitScrolledWindow(*ScrolledWindowClass) }); ok {
 		klass := (*ScrolledWindowClass)(gextras.NewStructNative(gclass))
 		goval.InitScrolledWindow(klass)
+	}
+}
+
+func finalizeClassScrolledWindow(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeScrolledWindow(*ScrolledWindowClass) }); ok {
+		klass := (*ScrolledWindowClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeScrolledWindow(klass)
 	}
 }
 
@@ -1285,14 +1293,14 @@ type scrolledWindowClass struct {
 // ParentClass: parent class.
 func (s *ScrolledWindowClass) ParentClass() *BinClass {
 	valptr := &s.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (s *ScrolledWindowClass) ScrollbarSpacing() int {
 	valptr := &s.native.scrollbar_spacing
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }

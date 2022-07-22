@@ -176,9 +176,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeVolumeMonitor,
-		GoType:    reflect.TypeOf((*VolumeMonitor)(nil)),
-		InitClass: initClassVolumeMonitor,
+		GType:         GTypeVolumeMonitor,
+		GoType:        reflect.TypeOf((*VolumeMonitor)(nil)),
+		InitClass:     initClassVolumeMonitor,
+		FinalizeClass: finalizeClassVolumeMonitor,
 	})
 }
 
@@ -256,6 +257,13 @@ func initClassVolumeMonitor(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitVolumeMonitor(*VolumeMonitorClass) }); ok {
 		klass := (*VolumeMonitorClass)(gextras.NewStructNative(gclass))
 		goval.InitVolumeMonitor(klass)
+	}
+}
+
+func finalizeClassVolumeMonitor(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeVolumeMonitor(*VolumeMonitorClass) }); ok {
+		klass := (*VolumeMonitorClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeVolumeMonitor(klass)
 	}
 }
 

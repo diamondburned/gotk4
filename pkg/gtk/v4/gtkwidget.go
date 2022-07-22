@@ -735,9 +735,10 @@ var _ Widgetter = (*Widget)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeWidget,
-		GoType:    reflect.TypeOf((*Widget)(nil)),
-		InitClass: initClassWidget,
+		GType:         GTypeWidget,
+		GoType:        reflect.TypeOf((*Widget)(nil)),
+		InitClass:     initClassWidget,
+		FinalizeClass: finalizeClassWidget,
 	})
 }
 
@@ -853,6 +854,13 @@ func initClassWidget(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitWidget(*WidgetClass) }); ok {
 		klass := (*WidgetClass)(gextras.NewStructNative(gclass))
 		goval.InitWidget(klass)
+	}
+}
+
+func finalizeClassWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeWidget(*WidgetClass) }); ok {
+		klass := (*WidgetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeWidget(klass)
 	}
 }
 
@@ -6296,17 +6304,17 @@ func NewRequisition() *Requisition {
 // Width widget’s desired width.
 func (r *Requisition) Width() int {
 	valptr := &r.native.width
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Height widget’s desired height.
 func (r *Requisition) Height() int {
 	valptr := &r.native.height
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 // Width widget’s desired width.

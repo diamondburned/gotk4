@@ -1629,9 +1629,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStyle,
-		GoType:    reflect.TypeOf((*Style)(nil)),
-		InitClass: initClassStyle,
+		GType:         GTypeStyle,
+		GoType:        reflect.TypeOf((*Style)(nil)),
+		InitClass:     initClassStyle,
+		FinalizeClass: finalizeClassStyle,
 	})
 }
 
@@ -1789,6 +1790,13 @@ func initClassStyle(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStyle(*StyleClass) }); ok {
 		klass := (*StyleClass)(gextras.NewStructNative(gclass))
 		goval.InitStyle(klass)
+	}
+}
+
+func finalizeClassStyle(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStyle(*StyleClass) }); ok {
+		klass := (*StyleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStyle(klass)
 	}
 }
 

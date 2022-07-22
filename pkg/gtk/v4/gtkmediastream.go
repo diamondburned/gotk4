@@ -136,9 +136,10 @@ var _ MediaStreamer = (*MediaStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMediaStream,
-		GoType:    reflect.TypeOf((*MediaStream)(nil)),
-		InitClass: initClassMediaStream,
+		GType:         GTypeMediaStream,
+		GoType:        reflect.TypeOf((*MediaStream)(nil)),
+		InitClass:     initClassMediaStream,
+		FinalizeClass: finalizeClassMediaStream,
 	})
 }
 
@@ -174,6 +175,13 @@ func initClassMediaStream(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMediaStream(*MediaStreamClass) }); ok {
 		klass := (*MediaStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitMediaStream(klass)
+	}
+}
+
+func finalizeClassMediaStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMediaStream(*MediaStreamClass) }); ok {
+		klass := (*MediaStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMediaStream(klass)
 	}
 }
 

@@ -169,9 +169,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeTreeSelection,
-		GoType:    reflect.TypeOf((*TreeSelection)(nil)),
-		InitClass: initClassTreeSelection,
+		GType:         GTypeTreeSelection,
+		GoType:        reflect.TypeOf((*TreeSelection)(nil)),
+		InitClass:     initClassTreeSelection,
+		FinalizeClass: finalizeClassTreeSelection,
 	})
 }
 
@@ -185,6 +186,13 @@ func initClassTreeSelection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitTreeSelection(*TreeSelectionClass) }); ok {
 		klass := (*TreeSelectionClass)(gextras.NewStructNative(gclass))
 		goval.InitTreeSelection(klass)
+	}
+}
+
+func finalizeClassTreeSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeTreeSelection(*TreeSelectionClass) }); ok {
+		klass := (*TreeSelectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeTreeSelection(klass)
 	}
 }
 

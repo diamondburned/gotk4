@@ -82,9 +82,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFixed,
-		GoType:    reflect.TypeOf((*Fixed)(nil)),
-		InitClass: initClassFixed,
+		GType:         GTypeFixed,
+		GoType:        reflect.TypeOf((*Fixed)(nil)),
+		InitClass:     initClassFixed,
+		FinalizeClass: finalizeClassFixed,
 	})
 }
 
@@ -92,6 +93,13 @@ func initClassFixed(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFixed(*FixedClass) }); ok {
 		klass := (*FixedClass)(gextras.NewStructNative(gclass))
 		goval.InitFixed(klass)
+	}
+}
+
+func finalizeClassFixed(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFixed(*FixedClass) }); ok {
+		klass := (*FixedClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFixed(klass)
 	}
 }
 
@@ -200,7 +208,7 @@ type fixedChild struct {
 
 func (f *FixedChild) Widget() Widgetter {
 	valptr := &f.native.widget
-	var v Widgetter // out
+	var _v Widgetter // out
 	{
 		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
@@ -216,23 +224,23 @@ func (f *FixedChild) Widget() Widgetter {
 		if !ok {
 			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
 		}
-		v = rv
+		_v = rv
 	}
-	return v
+	return _v
 }
 
 func (f *FixedChild) X() int {
 	valptr := &f.native.x
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (f *FixedChild) Y() int {
 	valptr := &f.native.y
-	var v int // out
-	v = int(*valptr)
-	return v
+	var _v int // out
+	_v = int(*valptr)
+	return _v
 }
 
 func (f *FixedChild) SetX(x int) {
@@ -257,7 +265,7 @@ type fixedClass struct {
 
 func (f *FixedClass) ParentClass() *ContainerClass {
 	valptr := &f.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

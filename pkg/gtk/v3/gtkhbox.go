@@ -63,9 +63,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeHBox,
-		GoType:    reflect.TypeOf((*HBox)(nil)),
-		InitClass: initClassHBox,
+		GType:         GTypeHBox,
+		GoType:        reflect.TypeOf((*HBox)(nil)),
+		InitClass:     initClassHBox,
+		FinalizeClass: finalizeClassHBox,
 	})
 }
 
@@ -73,6 +74,13 @@ func initClassHBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitHBox(*HBoxClass) }); ok {
 		klass := (*HBoxClass)(gextras.NewStructNative(gclass))
 		goval.InitHBox(klass)
+	}
+}
+
+func finalizeClassHBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeHBox(*HBoxClass) }); ok {
+		klass := (*HBoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeHBox(klass)
 	}
 }
 
@@ -154,7 +162,7 @@ type hBoxClass struct {
 
 func (h *HBoxClass) ParentClass() *BoxClass {
 	valptr := &h.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

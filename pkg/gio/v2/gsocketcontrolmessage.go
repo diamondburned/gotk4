@@ -105,9 +105,10 @@ var _ SocketControlMessager = (*SocketControlMessage)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeSocketControlMessage,
-		GoType:    reflect.TypeOf((*SocketControlMessage)(nil)),
-		InitClass: initClassSocketControlMessage,
+		GType:         GTypeSocketControlMessage,
+		GoType:        reflect.TypeOf((*SocketControlMessage)(nil)),
+		InitClass:     initClassSocketControlMessage,
+		FinalizeClass: finalizeClassSocketControlMessage,
 	})
 }
 
@@ -135,6 +136,15 @@ func initClassSocketControlMessage(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*SocketControlMessageClass)(gextras.NewStructNative(gclass))
 		goval.InitSocketControlMessage(klass)
+	}
+}
+
+func finalizeClassSocketControlMessage(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeSocketControlMessage(*SocketControlMessageClass)
+	}); ok {
+		klass := (*SocketControlMessageClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeSocketControlMessage(klass)
 	}
 }
 

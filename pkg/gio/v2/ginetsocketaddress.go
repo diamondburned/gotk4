@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeInetSocketAddress,
-		GoType:    reflect.TypeOf((*InetSocketAddress)(nil)),
-		InitClass: initClassInetSocketAddress,
+		GType:         GTypeInetSocketAddress,
+		GoType:        reflect.TypeOf((*InetSocketAddress)(nil)),
+		InitClass:     initClassInetSocketAddress,
+		FinalizeClass: finalizeClassInetSocketAddress,
 	})
 }
 
@@ -54,6 +55,13 @@ func initClassInetSocketAddress(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitInetSocketAddress(*InetSocketAddressClass) }); ok {
 		klass := (*InetSocketAddressClass)(gextras.NewStructNative(gclass))
 		goval.InitInetSocketAddress(klass)
+	}
+}
+
+func finalizeClassInetSocketAddress(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeInetSocketAddress(*InetSocketAddressClass) }); ok {
+		klass := (*InetSocketAddressClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeInetSocketAddress(klass)
 	}
 }
 
@@ -243,7 +251,7 @@ type inetSocketAddressClass struct {
 
 func (i *InetSocketAddressClass) ParentClass() *SocketAddressClass {
 	valptr := &i.native.parent_class
-	var v *SocketAddressClass // out
-	v = (*SocketAddressClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *SocketAddressClass // out
+	_v = (*SocketAddressClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

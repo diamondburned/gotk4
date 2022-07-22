@@ -44,9 +44,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFrameAccessible,
-		GoType:    reflect.TypeOf((*FrameAccessible)(nil)),
-		InitClass: initClassFrameAccessible,
+		GType:         GTypeFrameAccessible,
+		GoType:        reflect.TypeOf((*FrameAccessible)(nil)),
+		InitClass:     initClassFrameAccessible,
+		FinalizeClass: finalizeClassFrameAccessible,
 	})
 }
 
@@ -54,6 +55,13 @@ func initClassFrameAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFrameAccessible(*FrameAccessibleClass) }); ok {
 		klass := (*FrameAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitFrameAccessible(klass)
+	}
+}
+
+func finalizeClassFrameAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFrameAccessible(*FrameAccessibleClass) }); ok {
+		klass := (*FrameAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFrameAccessible(klass)
 	}
 }
 
@@ -90,7 +98,7 @@ type frameAccessibleClass struct {
 
 func (f *FrameAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &f.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

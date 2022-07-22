@@ -108,9 +108,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePopover,
-		GoType:    reflect.TypeOf((*Popover)(nil)),
-		InitClass: initClassPopover,
+		GType:         GTypePopover,
+		GoType:        reflect.TypeOf((*Popover)(nil)),
+		InitClass:     initClassPopover,
+		FinalizeClass: finalizeClassPopover,
 	})
 }
 
@@ -124,6 +125,13 @@ func initClassPopover(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPopover(*PopoverClass) }); ok {
 		klass := (*PopoverClass)(gextras.NewStructNative(gclass))
 		goval.InitPopover(klass)
+	}
+}
+
+func finalizeClassPopover(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePopover(*PopoverClass) }); ok {
+		klass := (*PopoverClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePopover(klass)
 	}
 }
 
@@ -698,7 +706,7 @@ type popoverClass struct {
 
 func (p *PopoverClass) ParentClass() *BinClass {
 	valptr := &p.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

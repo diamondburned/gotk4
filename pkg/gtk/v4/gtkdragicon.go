@@ -58,9 +58,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDragIcon,
-		GoType:    reflect.TypeOf((*DragIcon)(nil)),
-		InitClass: initClassDragIcon,
+		GType:         GTypeDragIcon,
+		GoType:        reflect.TypeOf((*DragIcon)(nil)),
+		InitClass:     initClassDragIcon,
+		FinalizeClass: finalizeClassDragIcon,
 	})
 }
 
@@ -68,6 +69,13 @@ func initClassDragIcon(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitDragIcon(*DragIconClass) }); ok {
 		klass := (*DragIconClass)(gextras.NewStructNative(gclass))
 		goval.InitDragIcon(klass)
+	}
+}
+
+func finalizeClassDragIcon(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeDragIcon(*DragIconClass) }); ok {
+		klass := (*DragIconClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDragIcon(klass)
 	}
 }
 
@@ -308,7 +316,7 @@ type dragIconClass struct {
 
 func (d *DragIconClass) ParentClass() *WidgetClass {
 	valptr := &d.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

@@ -53,9 +53,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeListStore,
-		GoType:    reflect.TypeOf((*ListStore)(nil)),
-		InitClass: initClassListStore,
+		GType:         GTypeListStore,
+		GoType:        reflect.TypeOf((*ListStore)(nil)),
+		InitClass:     initClassListStore,
+		FinalizeClass: finalizeClassListStore,
 	})
 }
 
@@ -63,6 +64,13 @@ func initClassListStore(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitListStore(*ListStoreClass) }); ok {
 		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
 		goval.InitListStore(klass)
+	}
+}
+
+func finalizeClassListStore(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeListStore(*ListStoreClass) }); ok {
+		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeListStore(klass)
 	}
 }
 

@@ -57,9 +57,10 @@ var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFilterOutputStream,
-		GoType:    reflect.TypeOf((*FilterOutputStream)(nil)),
-		InitClass: initClassFilterOutputStream,
+		GType:         GTypeFilterOutputStream,
+		GoType:        reflect.TypeOf((*FilterOutputStream)(nil)),
+		InitClass:     initClassFilterOutputStream,
+		FinalizeClass: finalizeClassFilterOutputStream,
 	})
 }
 
@@ -69,6 +70,15 @@ func initClassFilterOutputStream(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*FilterOutputStreamClass)(gextras.NewStructNative(gclass))
 		goval.InitFilterOutputStream(klass)
+	}
+}
+
+func finalizeClassFilterOutputStream(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeFilterOutputStream(*FilterOutputStreamClass)
+	}); ok {
+		klass := (*FilterOutputStreamClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFilterOutputStream(klass)
 	}
 }
 
@@ -189,7 +199,7 @@ type filterOutputStreamClass struct {
 
 func (f *FilterOutputStreamClass) ParentClass() *OutputStreamClass {
 	valptr := &f.native.parent_class
-	var v *OutputStreamClass // out
-	v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *OutputStreamClass // out
+	_v = (*OutputStreamClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

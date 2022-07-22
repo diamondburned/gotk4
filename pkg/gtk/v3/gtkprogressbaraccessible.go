@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeProgressBarAccessible,
-		GoType:    reflect.TypeOf((*ProgressBarAccessible)(nil)),
-		InitClass: initClassProgressBarAccessible,
+		GType:         GTypeProgressBarAccessible,
+		GoType:        reflect.TypeOf((*ProgressBarAccessible)(nil)),
+		InitClass:     initClassProgressBarAccessible,
+		FinalizeClass: finalizeClassProgressBarAccessible,
 	})
 }
 
@@ -58,6 +59,15 @@ func initClassProgressBarAccessible(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*ProgressBarAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitProgressBarAccessible(klass)
+	}
+}
+
+func finalizeClassProgressBarAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeProgressBarAccessible(*ProgressBarAccessibleClass)
+	}); ok {
+		klass := (*ProgressBarAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeProgressBarAccessible(klass)
 	}
 }
 
@@ -96,7 +106,7 @@ type progressBarAccessibleClass struct {
 
 func (p *ProgressBarAccessibleClass) ParentClass() *WidgetAccessibleClass {
 	valptr := &p.native.parent_class
-	var v *WidgetAccessibleClass // out
-	v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetAccessibleClass // out
+	_v = (*WidgetAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

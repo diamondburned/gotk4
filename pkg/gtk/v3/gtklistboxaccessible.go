@@ -46,9 +46,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeListBoxAccessible,
-		GoType:    reflect.TypeOf((*ListBoxAccessible)(nil)),
-		InitClass: initClassListBoxAccessible,
+		GType:         GTypeListBoxAccessible,
+		GoType:        reflect.TypeOf((*ListBoxAccessible)(nil)),
+		InitClass:     initClassListBoxAccessible,
+		FinalizeClass: finalizeClassListBoxAccessible,
 	})
 }
 
@@ -56,6 +57,13 @@ func initClassListBoxAccessible(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitListBoxAccessible(*ListBoxAccessibleClass) }); ok {
 		klass := (*ListBoxAccessibleClass)(gextras.NewStructNative(gclass))
 		goval.InitListBoxAccessible(klass)
+	}
+}
+
+func finalizeClassListBoxAccessible(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeListBoxAccessible(*ListBoxAccessibleClass) }); ok {
+		klass := (*ListBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeListBoxAccessible(klass)
 	}
 }
 
@@ -95,7 +103,7 @@ type listBoxAccessibleClass struct {
 
 func (l *ListBoxAccessibleClass) ParentClass() *ContainerAccessibleClass {
 	valptr := &l.native.parent_class
-	var v *ContainerAccessibleClass // out
-	v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerAccessibleClass // out
+	_v = (*ContainerAccessibleClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

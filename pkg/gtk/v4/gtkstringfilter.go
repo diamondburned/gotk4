@@ -89,9 +89,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeStringFilter,
-		GoType:    reflect.TypeOf((*StringFilter)(nil)),
-		InitClass: initClassStringFilter,
+		GType:         GTypeStringFilter,
+		GoType:        reflect.TypeOf((*StringFilter)(nil)),
+		InitClass:     initClassStringFilter,
+		FinalizeClass: finalizeClassStringFilter,
 	})
 }
 
@@ -99,6 +100,13 @@ func initClassStringFilter(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitStringFilter(*StringFilterClass) }); ok {
 		klass := (*StringFilterClass)(gextras.NewStructNative(gclass))
 		goval.InitStringFilter(klass)
+	}
+}
+
+func finalizeClassStringFilter(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeStringFilter(*StringFilterClass) }); ok {
+		klass := (*StringFilterClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeStringFilter(klass)
 	}
 }
 
@@ -348,7 +356,7 @@ type stringFilterClass struct {
 
 func (s *StringFilterClass) ParentClass() *FilterClass {
 	valptr := &s.native.parent_class
-	var v *FilterClass // out
-	v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *FilterClass // out
+	_v = (*FilterClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

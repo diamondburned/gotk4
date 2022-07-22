@@ -80,9 +80,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeBox,
-		GoType:    reflect.TypeOf((*Box)(nil)),
-		InitClass: initClassBox,
+		GType:         GTypeBox,
+		GoType:        reflect.TypeOf((*Box)(nil)),
+		InitClass:     initClassBox,
+		FinalizeClass: finalizeClassBox,
 	})
 }
 
@@ -90,6 +91,13 @@ func initClassBox(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitBox(*BoxClass) }); ok {
 		klass := (*BoxClass)(gextras.NewStructNative(gclass))
 		goval.InitBox(klass)
+	}
+}
+
+func finalizeClassBox(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeBox(*BoxClass) }); ok {
+		klass := (*BoxClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeBox(klass)
 	}
 }
 
@@ -407,7 +415,7 @@ type boxClass struct {
 // ParentClass: parent class.
 func (b *BoxClass) ParentClass() *WidgetClass {
 	valptr := &b.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

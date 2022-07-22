@@ -70,9 +70,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRegistry,
-		GoType:    reflect.TypeOf((*Registry)(nil)),
-		InitClass: initClassRegistry,
+		GType:         GTypeRegistry,
+		GoType:        reflect.TypeOf((*Registry)(nil)),
+		InitClass:     initClassRegistry,
+		FinalizeClass: finalizeClassRegistry,
 	})
 }
 
@@ -80,6 +81,13 @@ func initClassRegistry(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRegistry(*RegistryClass) }); ok {
 		klass := (*RegistryClass)(gextras.NewStructNative(gclass))
 		goval.InitRegistry(klass)
+	}
+}
+
+func finalizeClassRegistry(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRegistry(*RegistryClass) }); ok {
+		klass := (*RegistryClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRegistry(klass)
 	}
 }
 

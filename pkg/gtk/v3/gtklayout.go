@@ -62,9 +62,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeLayout,
-		GoType:    reflect.TypeOf((*Layout)(nil)),
-		InitClass: initClassLayout,
+		GType:         GTypeLayout,
+		GoType:        reflect.TypeOf((*Layout)(nil)),
+		InitClass:     initClassLayout,
+		FinalizeClass: finalizeClassLayout,
 	})
 }
 
@@ -72,6 +73,13 @@ func initClassLayout(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitLayout(*LayoutClass) }); ok {
 		klass := (*LayoutClass)(gextras.NewStructNative(gclass))
 		goval.InitLayout(klass)
+	}
+}
+
+func finalizeClassLayout(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeLayout(*LayoutClass) }); ok {
+		klass := (*LayoutClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeLayout(klass)
 	}
 }
 
@@ -396,7 +404,7 @@ type layoutClass struct {
 
 func (l *LayoutClass) ParentClass() *ContainerClass {
 	valptr := &l.native.parent_class
-	var v *ContainerClass // out
-	v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *ContainerClass // out
+	_v = (*ContainerClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

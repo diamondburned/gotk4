@@ -105,9 +105,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRevealer,
-		GoType:    reflect.TypeOf((*Revealer)(nil)),
-		InitClass: initClassRevealer,
+		GType:         GTypeRevealer,
+		GoType:        reflect.TypeOf((*Revealer)(nil)),
+		InitClass:     initClassRevealer,
+		FinalizeClass: finalizeClassRevealer,
 	})
 }
 
@@ -115,6 +116,13 @@ func initClassRevealer(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRevealer(*RevealerClass) }); ok {
 		klass := (*RevealerClass)(gextras.NewStructNative(gclass))
 		goval.InitRevealer(klass)
+	}
+}
+
+func finalizeClassRevealer(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRevealer(*RevealerClass) }); ok {
+		klass := (*RevealerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRevealer(klass)
 	}
 }
 
@@ -334,7 +342,7 @@ type revealerClass struct {
 // ParentClass: parent class.
 func (r *RevealerClass) ParentClass() *BinClass {
 	valptr := &r.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

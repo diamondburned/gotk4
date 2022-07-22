@@ -69,9 +69,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFileChooserWidget,
-		GoType:    reflect.TypeOf((*FileChooserWidget)(nil)),
-		InitClass: initClassFileChooserWidget,
+		GType:         GTypeFileChooserWidget,
+		GoType:        reflect.TypeOf((*FileChooserWidget)(nil)),
+		InitClass:     initClassFileChooserWidget,
+		FinalizeClass: finalizeClassFileChooserWidget,
 	})
 }
 
@@ -79,6 +80,13 @@ func initClassFileChooserWidget(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFileChooserWidget(*FileChooserWidgetClass) }); ok {
 		klass := (*FileChooserWidgetClass)(gextras.NewStructNative(gclass))
 		goval.InitFileChooserWidget(klass)
+	}
+}
+
+func finalizeClassFileChooserWidget(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFileChooserWidget(*FileChooserWidgetClass) }); ok {
+		klass := (*FileChooserWidgetClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFileChooserWidget(klass)
 	}
 }
 
@@ -495,7 +503,7 @@ type fileChooserWidgetClass struct {
 // ParentClass: parent class.
 func (f *FileChooserWidgetClass) ParentClass() *BoxClass {
 	valptr := &f.native.parent_class
-	var v *BoxClass // out
-	v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BoxClass // out
+	_v = (*BoxClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

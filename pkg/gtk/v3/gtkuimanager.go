@@ -434,9 +434,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeUIManager,
-		GoType:    reflect.TypeOf((*UIManager)(nil)),
-		InitClass: initClassUIManager,
+		GType:         GTypeUIManager,
+		GoType:        reflect.TypeOf((*UIManager)(nil)),
+		InitClass:     initClassUIManager,
+		FinalizeClass: finalizeClassUIManager,
 	})
 }
 
@@ -482,6 +483,13 @@ func initClassUIManager(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitUIManager(*UIManagerClass) }); ok {
 		klass := (*UIManagerClass)(gextras.NewStructNative(gclass))
 		goval.InitUIManager(klass)
+	}
+}
+
+func finalizeClassUIManager(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeUIManager(*UIManagerClass) }); ok {
+		klass := (*UIManagerClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeUIManager(klass)
 	}
 }
 

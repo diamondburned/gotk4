@@ -173,9 +173,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeEntry,
-		GoType:    reflect.TypeOf((*Entry)(nil)),
-		InitClass: initClassEntry,
+		GType:         GTypeEntry,
+		GoType:        reflect.TypeOf((*Entry)(nil)),
+		InitClass:     initClassEntry,
+		FinalizeClass: finalizeClassEntry,
 	})
 }
 
@@ -189,6 +190,13 @@ func initClassEntry(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitEntry(*EntryClass) }); ok {
 		klass := (*EntryClass)(gextras.NewStructNative(gclass))
 		goval.InitEntry(klass)
+	}
+}
+
+func finalizeClassEntry(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeEntry(*EntryClass) }); ok {
+		klass := (*EntryClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeEntry(klass)
 	}
 }
 
@@ -1929,7 +1937,7 @@ type entryClass struct {
 // ParentClass: parent class.
 func (e *EntryClass) ParentClass() *WidgetClass {
 	valptr := &e.native.parent_class
-	var v *WidgetClass // out
-	v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *WidgetClass // out
+	_v = (*WidgetClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

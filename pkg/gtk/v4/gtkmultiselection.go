@@ -47,9 +47,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeMultiSelection,
-		GoType:    reflect.TypeOf((*MultiSelection)(nil)),
-		InitClass: initClassMultiSelection,
+		GType:         GTypeMultiSelection,
+		GoType:        reflect.TypeOf((*MultiSelection)(nil)),
+		InitClass:     initClassMultiSelection,
+		FinalizeClass: finalizeClassMultiSelection,
 	})
 }
 
@@ -57,6 +58,13 @@ func initClassMultiSelection(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitMultiSelection(*MultiSelectionClass) }); ok {
 		klass := (*MultiSelectionClass)(gextras.NewStructNative(gclass))
 		goval.InitMultiSelection(klass)
+	}
+}
+
+func finalizeClassMultiSelection(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeMultiSelection(*MultiSelectionClass) }); ok {
+		klass := (*MultiSelectionClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeMultiSelection(klass)
 	}
 }
 

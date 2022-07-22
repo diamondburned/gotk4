@@ -50,9 +50,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeFlattenListModel,
-		GoType:    reflect.TypeOf((*FlattenListModel)(nil)),
-		InitClass: initClassFlattenListModel,
+		GType:         GTypeFlattenListModel,
+		GoType:        reflect.TypeOf((*FlattenListModel)(nil)),
+		InitClass:     initClassFlattenListModel,
+		FinalizeClass: finalizeClassFlattenListModel,
 	})
 }
 
@@ -60,6 +61,13 @@ func initClassFlattenListModel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitFlattenListModel(*FlattenListModelClass) }); ok {
 		klass := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
 		goval.InitFlattenListModel(klass)
+	}
+}
+
+func finalizeClassFlattenListModel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeFlattenListModel(*FlattenListModelClass) }); ok {
+		klass := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeFlattenListModel(klass)
 	}
 }
 

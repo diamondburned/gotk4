@@ -113,9 +113,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypePixbufLoader,
-		GoType:    reflect.TypeOf((*PixbufLoader)(nil)),
-		InitClass: initClassPixbufLoader,
+		GType:         GTypePixbufLoader,
+		GoType:        reflect.TypeOf((*PixbufLoader)(nil)),
+		InitClass:     initClassPixbufLoader,
+		FinalizeClass: finalizeClassPixbufLoader,
 	})
 }
 
@@ -141,6 +142,13 @@ func initClassPixbufLoader(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitPixbufLoader(*PixbufLoaderClass) }); ok {
 		klass := (*PixbufLoaderClass)(gextras.NewStructNative(gclass))
 		goval.InitPixbufLoader(klass)
+	}
+}
+
+func finalizeClassPixbufLoader(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizePixbufLoader(*PixbufLoaderClass) }); ok {
+		klass := (*PixbufLoaderClass)(gextras.NewStructNative(gclass))
+		goval.FinalizePixbufLoader(klass)
 	}
 }
 

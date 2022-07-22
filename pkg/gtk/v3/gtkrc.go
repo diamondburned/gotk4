@@ -1007,9 +1007,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeRCStyle,
-		GoType:    reflect.TypeOf((*RCStyle)(nil)),
-		InitClass: initClassRCStyle,
+		GType:         GTypeRCStyle,
+		GoType:        reflect.TypeOf((*RCStyle)(nil)),
+		InitClass:     initClassRCStyle,
+		FinalizeClass: finalizeClassRCStyle,
 	})
 }
 
@@ -1029,6 +1030,13 @@ func initClassRCStyle(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitRCStyle(*RCStyleClass) }); ok {
 		klass := (*RCStyleClass)(gextras.NewStructNative(gclass))
 		goval.InitRCStyle(klass)
+	}
+}
+
+func finalizeClassRCStyle(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeRCStyle(*RCStyleClass) }); ok {
+		klass := (*RCStyleClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeRCStyle(klass)
 	}
 }
 
@@ -1135,25 +1143,25 @@ type rcProperty struct {
 // TypeName: quark-ified type identifier.
 func (r *RCProperty) TypeName() glib.Quark {
 	valptr := &r.native.type_name
-	var v glib.Quark // out
-	v = uint32(*valptr)
-	return v
+	var _v glib.Quark // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”.
 func (r *RCProperty) PropertyName() glib.Quark {
 	valptr := &r.native.property_name
-	var v glib.Quark // out
-	v = uint32(*valptr)
-	return v
+	var _v glib.Quark // out
+	_v = uint32(*valptr)
+	return _v
 }
 
 // Origin: field similar to one found in SettingsValue.
 func (r *RCProperty) Origin() string {
 	valptr := &r.native.origin
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 // RCStyleClass: instance of this type is always passed by reference.

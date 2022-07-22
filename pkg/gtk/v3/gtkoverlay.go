@@ -84,9 +84,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeOverlay,
-		GoType:    reflect.TypeOf((*Overlay)(nil)),
-		InitClass: initClassOverlay,
+		GType:         GTypeOverlay,
+		GoType:        reflect.TypeOf((*Overlay)(nil)),
+		InitClass:     initClassOverlay,
+		FinalizeClass: finalizeClassOverlay,
 	})
 }
 
@@ -102,6 +103,13 @@ func initClassOverlay(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitOverlay(*OverlayClass) }); ok {
 		klass := (*OverlayClass)(gextras.NewStructNative(gclass))
 		goval.InitOverlay(klass)
+	}
+}
+
+func finalizeClassOverlay(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeOverlay(*OverlayClass) }); ok {
+		klass := (*OverlayClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeOverlay(klass)
 	}
 }
 
@@ -366,7 +374,7 @@ type overlayClass struct {
 // ParentClass: parent class.
 func (o *OverlayClass) ParentClass() *BinClass {
 	valptr := &o.native.parent_class
-	var v *BinClass // out
-	v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *BinClass // out
+	_v = (*BinClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }

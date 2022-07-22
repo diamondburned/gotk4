@@ -129,9 +129,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeDBusObjectManagerClient,
-		GoType:    reflect.TypeOf((*DBusObjectManagerClient)(nil)),
-		InitClass: initClassDBusObjectManagerClient,
+		GType:         GTypeDBusObjectManagerClient,
+		GoType:        reflect.TypeOf((*DBusObjectManagerClient)(nil)),
+		InitClass:     initClassDBusObjectManagerClient,
+		FinalizeClass: finalizeClassDBusObjectManagerClient,
 	})
 }
 
@@ -149,6 +150,15 @@ func initClassDBusObjectManagerClient(gclass unsafe.Pointer, goval any) {
 	}); ok {
 		klass := (*DBusObjectManagerClientClass)(gextras.NewStructNative(gclass))
 		goval.InitDBusObjectManagerClient(klass)
+	}
+}
+
+func finalizeClassDBusObjectManagerClient(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface {
+		FinalizeDBusObjectManagerClient(*DBusObjectManagerClientClass)
+	}); ok {
+		klass := (*DBusObjectManagerClientClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeDBusObjectManagerClient(klass)
 	}
 }
 

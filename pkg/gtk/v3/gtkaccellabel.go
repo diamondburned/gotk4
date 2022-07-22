@@ -78,9 +78,10 @@ var (
 
 func init() {
 	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:     GTypeAccelLabel,
-		GoType:    reflect.TypeOf((*AccelLabel)(nil)),
-		InitClass: initClassAccelLabel,
+		GType:         GTypeAccelLabel,
+		GoType:        reflect.TypeOf((*AccelLabel)(nil)),
+		InitClass:     initClassAccelLabel,
+		FinalizeClass: finalizeClassAccelLabel,
 	})
 }
 
@@ -88,6 +89,13 @@ func initClassAccelLabel(gclass unsafe.Pointer, goval any) {
 	if goval, ok := goval.(interface{ InitAccelLabel(*AccelLabelClass) }); ok {
 		klass := (*AccelLabelClass)(gextras.NewStructNative(gclass))
 		goval.InitAccelLabel(klass)
+	}
+}
+
+func finalizeClassAccelLabel(gclass unsafe.Pointer, goval any) {
+	if goval, ok := goval.(interface{ FinalizeAccelLabel(*AccelLabelClass) }); ok {
+		klass := (*AccelLabelClass)(gextras.NewStructNative(gclass))
+		goval.FinalizeAccelLabel(klass)
 	}
 }
 
@@ -341,49 +349,49 @@ type accelLabelClass struct {
 
 func (a *AccelLabelClass) ParentClass() *LabelClass {
 	valptr := &a.native.parent_class
-	var v *LabelClass // out
-	v = (*LabelClass)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
-	return v
+	var _v *LabelClass // out
+	_v = (*LabelClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
 }
 
 func (a *AccelLabelClass) SignalQuote1() string {
 	valptr := &a.native.signal_quote1
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (a *AccelLabelClass) SignalQuote2() string {
 	valptr := &a.native.signal_quote2
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (a *AccelLabelClass) ModNameShift() string {
 	valptr := &a.native.mod_name_shift
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (a *AccelLabelClass) ModNameControl() string {
 	valptr := &a.native.mod_name_control
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (a *AccelLabelClass) ModNameAlt() string {
 	valptr := &a.native.mod_name_alt
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }
 
 func (a *AccelLabelClass) ModSeparator() string {
 	valptr := &a.native.mod_separator
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return v
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
 }

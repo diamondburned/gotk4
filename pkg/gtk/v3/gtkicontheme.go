@@ -5,6 +5,7 @@ package gtk
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -176,12 +177,7 @@ var (
 	_ coreglib.Objector = (*IconInfo)(nil)
 )
 
-func classInitIconInfor(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassIconInfo(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapIconInfo(obj *coreglib.Object) *IconInfo {
@@ -1183,14 +1179,19 @@ var (
 	_ coreglib.Objector = (*IconTheme)(nil)
 )
 
-func classInitIconThemer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeIconTheme,
+		GoType:       reflect.TypeOf((*IconTheme)(nil)),
+		InitClass:    initClassIconTheme,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkIconTheme{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkIconThemeClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassIconTheme(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkIconThemeClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkIconThemeClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_IconThemeClass_changed)
@@ -1199,7 +1200,7 @@ func classInitIconThemer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_IconThemeClass_changed
 func _gotk4_gtk3_IconThemeClass_changed(arg0 *C.GtkIconTheme) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()

@@ -123,7 +123,7 @@ func ifaceInitPrintOperationPreviewer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_end_preview
 func _gotk4_gtk3_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperationPreview) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	iface.EndPreview()
@@ -131,7 +131,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_end_preview(arg0 *C.GtkPrintOperatio
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_got_page_size
 func _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext, arg2 *C.GtkPageSetup) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	var _context *PrintContext // out
@@ -145,7 +145,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(arg0 *C.GtkPrintOperat
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_is_selected
 func _gotk4_gtk3_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperationPreview, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	var _pageNr int // out
@@ -163,7 +163,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_is_selected(arg0 *C.GtkPrintOperatio
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_ready
 func _gotk4_gtk3_PrintOperationPreviewIface_ready(arg0 *C.GtkPrintOperationPreview, arg1 *C.GtkPrintContext) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	var _context *PrintContext // out
@@ -175,7 +175,7 @@ func _gotk4_gtk3_PrintOperationPreviewIface_ready(arg0 *C.GtkPrintOperationPrevi
 
 //export _gotk4_gtk3_PrintOperationPreviewIface_render_page
 func _gotk4_gtk3_PrintOperationPreviewIface_render_page(arg0 *C.GtkPrintOperationPreview, arg1 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PrintOperationPreviewOverrider)
 
 	var _pageNr int // out

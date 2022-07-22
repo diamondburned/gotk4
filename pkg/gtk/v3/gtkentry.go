@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -219,14 +219,19 @@ var (
 	_ coreglib.Objector = (*Entry)(nil)
 )
 
-func classInitEntrier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeEntry,
+		GoType:       reflect.TypeOf((*Entry)(nil)),
+		InitClass:    initClassEntry,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkEntry{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkEntryClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassEntry(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_EntryClass_activate)
@@ -291,7 +296,7 @@ func classInitEntrier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_EntryClass_activate
 func _gotk4_gtk3_EntryClass_activate(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -299,7 +304,7 @@ func _gotk4_gtk3_EntryClass_activate(arg0 *C.GtkEntry) {
 
 //export _gotk4_gtk3_EntryClass_backspace
 func _gotk4_gtk3_EntryClass_backspace(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Backspace() })
 
 	iface.Backspace()
@@ -307,7 +312,7 @@ func _gotk4_gtk3_EntryClass_backspace(arg0 *C.GtkEntry) {
 
 //export _gotk4_gtk3_EntryClass_copy_clipboard
 func _gotk4_gtk3_EntryClass_copy_clipboard(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CopyClipboard() })
 
 	iface.CopyClipboard()
@@ -315,7 +320,7 @@ func _gotk4_gtk3_EntryClass_copy_clipboard(arg0 *C.GtkEntry) {
 
 //export _gotk4_gtk3_EntryClass_cut_clipboard
 func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CutClipboard() })
 
 	iface.CutClipboard()
@@ -323,7 +328,7 @@ func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.GtkEntry) {
 
 //export _gotk4_gtk3_EntryClass_delete_from_cursor
 func _gotk4_gtk3_EntryClass_delete_from_cursor(arg0 *C.GtkEntry, arg1 C.GtkDeleteType, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DeleteFromCursor(typ DeleteType, count int)
 	})
@@ -339,7 +344,7 @@ func _gotk4_gtk3_EntryClass_delete_from_cursor(arg0 *C.GtkEntry, arg1 C.GtkDelet
 
 //export _gotk4_gtk3_EntryClass_get_frame_size
 func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FrameSize(x, y, width, height *int)
 	})
@@ -359,7 +364,7 @@ func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 
 
 //export _gotk4_gtk3_EntryClass_get_text_area_size
 func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextAreaSize(x, y, width, height *int)
 	})
@@ -379,7 +384,7 @@ func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.GtkEntry, arg1 *C.gint, a
 
 //export _gotk4_gtk3_EntryClass_insert_at_cursor
 func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.GtkEntry, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertAtCursor(str string) })
 
 	var _str string // out
@@ -391,7 +396,7 @@ func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.GtkEntry, arg1 *C.gchar) {
 
 //export _gotk4_gtk3_EntryClass_insert_emoji
 func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertEmoji() })
 
 	iface.InsertEmoji()
@@ -399,7 +404,7 @@ func _gotk4_gtk3_EntryClass_insert_emoji(arg0 *C.GtkEntry) {
 
 //export _gotk4_gtk3_EntryClass_move_cursor
 func _gotk4_gtk3_EntryClass_move_cursor(arg0 *C.GtkEntry, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MoveCursor(step MovementStep, count int, extendSelection bool)
 	})
@@ -419,7 +424,7 @@ func _gotk4_gtk3_EntryClass_move_cursor(arg0 *C.GtkEntry, arg1 C.GtkMovementStep
 
 //export _gotk4_gtk3_EntryClass_paste_clipboard
 func _gotk4_gtk3_EntryClass_paste_clipboard(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PasteClipboard() })
 
 	iface.PasteClipboard()
@@ -427,7 +432,7 @@ func _gotk4_gtk3_EntryClass_paste_clipboard(arg0 *C.GtkEntry) {
 
 //export _gotk4_gtk3_EntryClass_populate_popup
 func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.GtkEntry, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PopulatePopup(popup Widgetter) })
 
 	var _popup Widgetter // out
@@ -455,7 +460,7 @@ func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.GtkEntry, arg1 *C.GtkWidget) 
 
 //export _gotk4_gtk3_EntryClass_toggle_overwrite
 func _gotk4_gtk3_EntryClass_toggle_overwrite(arg0 *C.GtkEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleOverwrite() })
 
 	iface.ToggleOverwrite()

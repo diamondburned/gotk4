@@ -4,11 +4,11 @@ package pango
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -428,14 +428,19 @@ type Fonter interface {
 
 var _ Fonter = (*Font)(nil)
 
-func classInitFonter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFont,
+		GoType:       reflect.TypeOf((*Font)(nil)),
+		InitClass:    initClassFont,
+		ClassSize:    uint16(unsafe.Sizeof(C.PangoFont{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFont(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.PangoFontClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Describe() *FontDescription }); ok {
 		pclass.describe = (*[0]byte)(C._gotk4_pango1_FontClass_describe)
@@ -470,7 +475,7 @@ func classInitFonter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_FontClass_describe
 func _gotk4_pango1_FontClass_describe(arg0 *C.PangoFont) (cret *C.PangoFontDescription) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Describe() *FontDescription })
 
 	fontDescription := iface.Describe()
@@ -483,7 +488,7 @@ func _gotk4_pango1_FontClass_describe(arg0 *C.PangoFont) (cret *C.PangoFontDescr
 
 //export _gotk4_pango1_FontClass_describe_absolute
 func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.PangoFont) (cret *C.PangoFontDescription) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DescribeAbsolute() *FontDescription })
 
 	fontDescription := iface.DescribeAbsolute()
@@ -496,7 +501,7 @@ func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.PangoFont) (cret *C.Pango
 
 //export _gotk4_pango1_FontClass_get_coverage
 func _gotk4_pango1_FontClass_get_coverage(arg0 *C.PangoFont, arg1 *C.PangoLanguage) (cret *C.PangoCoverage) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Coverage(language *Language) *Coverage
 	})
@@ -515,7 +520,7 @@ func _gotk4_pango1_FontClass_get_coverage(arg0 *C.PangoFont, arg1 *C.PangoLangua
 
 //export _gotk4_pango1_FontClass_get_font_map
 func _gotk4_pango1_FontClass_get_font_map(arg0 *C.PangoFont) (cret *C.PangoFontMap) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FontMap() FontMapper })
 
 	fontMap := iface.FontMap()
@@ -529,7 +534,7 @@ func _gotk4_pango1_FontClass_get_font_map(arg0 *C.PangoFont) (cret *C.PangoFontM
 
 //export _gotk4_pango1_FontClass_get_glyph_extents
 func _gotk4_pango1_FontClass_get_glyph_extents(arg0 *C.PangoFont, arg1 C.PangoGlyph, arg2 *C.PangoRectangle, arg3 *C.PangoRectangle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle)
 	})
@@ -554,7 +559,7 @@ func _gotk4_pango1_FontClass_get_glyph_extents(arg0 *C.PangoFont, arg1 C.PangoGl
 
 //export _gotk4_pango1_FontClass_get_metrics
 func _gotk4_pango1_FontClass_get_metrics(arg0 *C.PangoFont, arg1 *C.PangoLanguage) (cret *C.PangoFontMetrics) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Metrics(language *Language) *FontMetrics
 	})
@@ -970,14 +975,19 @@ type FontFacer interface {
 
 var _ FontFacer = (*FontFace)(nil)
 
-func classInitFontFacer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFontFace,
+		GoType:       reflect.TypeOf((*FontFace)(nil)),
+		InitClass:    initClassFontFace,
+		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontFace{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontFaceClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFontFace(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontFaceClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.PangoFontFaceClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Describe() *FontDescription }); ok {
 		pclass.describe = (*[0]byte)(C._gotk4_pango1_FontFaceClass_describe)
@@ -1002,7 +1012,7 @@ func classInitFontFacer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_FontFaceClass_describe
 func _gotk4_pango1_FontFaceClass_describe(arg0 *C.PangoFontFace) (cret *C.PangoFontDescription) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Describe() *FontDescription })
 
 	fontDescription := iface.Describe()
@@ -1015,7 +1025,7 @@ func _gotk4_pango1_FontFaceClass_describe(arg0 *C.PangoFontFace) (cret *C.PangoF
 
 //export _gotk4_pango1_FontFaceClass_get_face_name
 func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.PangoFontFace) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FaceName() string })
 
 	utf8 := iface.FaceName()
@@ -1028,7 +1038,7 @@ func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.PangoFontFace) (cret *C.c
 
 //export _gotk4_pango1_FontFaceClass_get_family
 func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.PangoFontFace) (cret *C.PangoFontFamily) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Family() FontFamilier })
 
 	fontFamily := iface.Family()
@@ -1040,7 +1050,7 @@ func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.PangoFontFace) (cret *C.Pang
 
 //export _gotk4_pango1_FontFaceClass_is_synthesized
 func _gotk4_pango1_FontFaceClass_is_synthesized(arg0 *C.PangoFontFace) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsSynthesized() bool })
 
 	ok := iface.IsSynthesized()
@@ -1054,7 +1064,7 @@ func _gotk4_pango1_FontFaceClass_is_synthesized(arg0 *C.PangoFontFace) (cret C.g
 
 //export _gotk4_pango1_FontFaceClass_list_sizes
 func _gotk4_pango1_FontFaceClass_list_sizes(arg0 *C.PangoFontFace, arg1 **C.int, arg2 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ListSizes() []int })
 
 	sizes := iface.ListSizes()
@@ -1339,14 +1349,19 @@ type FontFamilier interface {
 
 var _ FontFamilier = (*FontFamily)(nil)
 
-func classInitFontFamilier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFontFamily,
+		GoType:       reflect.TypeOf((*FontFamily)(nil)),
+		InitClass:    initClassFontFamily,
+		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontFamily{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontFamilyClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFontFamily(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontFamilyClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.PangoFontFamilyClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Face(name string) FontFacer }); ok {
 		pclass.get_face = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_get_face)
@@ -1371,7 +1386,7 @@ func classInitFontFamilier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_FontFamilyClass_get_face
 func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.PangoFontFamily, arg1 *C.char) (cret *C.PangoFontFace) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Face(name string) FontFacer })
 
 	var _name string // out
@@ -1391,7 +1406,7 @@ func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.PangoFontFamily, arg1 *C.cha
 
 //export _gotk4_pango1_FontFamilyClass_get_name
 func _gotk4_pango1_FontFamilyClass_get_name(arg0 *C.PangoFontFamily) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Name() string })
 
 	utf8 := iface.Name()
@@ -1404,7 +1419,7 @@ func _gotk4_pango1_FontFamilyClass_get_name(arg0 *C.PangoFontFamily) (cret *C.ch
 
 //export _gotk4_pango1_FontFamilyClass_is_monospace
 func _gotk4_pango1_FontFamilyClass_is_monospace(arg0 *C.PangoFontFamily) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsMonospace() bool })
 
 	ok := iface.IsMonospace()
@@ -1418,7 +1433,7 @@ func _gotk4_pango1_FontFamilyClass_is_monospace(arg0 *C.PangoFontFamily) (cret C
 
 //export _gotk4_pango1_FontFamilyClass_is_variable
 func _gotk4_pango1_FontFamilyClass_is_variable(arg0 *C.PangoFontFamily) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsVariable() bool })
 
 	ok := iface.IsVariable()
@@ -1432,7 +1447,7 @@ func _gotk4_pango1_FontFamilyClass_is_variable(arg0 *C.PangoFontFamily) (cret C.
 
 //export _gotk4_pango1_FontFamilyClass_list_faces
 func _gotk4_pango1_FontFamilyClass_list_faces(arg0 *C.PangoFontFamily, arg1 ***C.PangoFontFace, arg2 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ListFaces() []FontFacer })
 
 	faces := iface.ListFaces()

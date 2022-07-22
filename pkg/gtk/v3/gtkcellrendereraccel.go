@@ -4,9 +4,9 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -93,14 +93,19 @@ var (
 	_ CellRendererer = (*CellRendererAccel)(nil)
 )
 
-func classInitCellRendererAcceller(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCellRendererAccel,
+		GoType:       reflect.TypeOf((*CellRendererAccel)(nil)),
+		InitClass:    initClassCellRendererAccel,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCellRendererAccel{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCellRendererAccelClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCellRendererAccel(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellRendererAccelClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCellRendererAccelClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ AccelCleared(pathString string) }); ok {
 		pclass.accel_cleared = (*[0]byte)(C._gotk4_gtk3_CellRendererAccelClass_accel_cleared)
@@ -115,7 +120,7 @@ func classInitCellRendererAcceller(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellRendererAccelClass_accel_cleared
 func _gotk4_gtk3_CellRendererAccelClass_accel_cleared(arg0 *C.GtkCellRendererAccel, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AccelCleared(pathString string) })
 
 	var _pathString string // out
@@ -127,7 +132,7 @@ func _gotk4_gtk3_CellRendererAccelClass_accel_cleared(arg0 *C.GtkCellRendererAcc
 
 //export _gotk4_gtk3_CellRendererAccelClass_accel_edited
 func _gotk4_gtk3_CellRendererAccelClass_accel_edited(arg0 *C.GtkCellRendererAccel, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 	})

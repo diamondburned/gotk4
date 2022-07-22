@@ -4,11 +4,11 @@ package atk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -177,14 +177,19 @@ var (
 	_ coreglib.Objector = (*Hyperlink)(nil)
 )
 
-func classInitHyperlinker(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeHyperlink,
+		GoType:       reflect.TypeOf((*Hyperlink)(nil)),
+		InitClass:    initClassHyperlink,
+		ClassSize:    uint16(unsafe.Sizeof(C.AtkHyperlink{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.AtkHyperlinkClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassHyperlink(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ EndIndex() int }); ok {
 		pclass.get_end_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_end_index)
@@ -225,7 +230,7 @@ func classInitHyperlinker(gclassPtr, data C.gpointer) {
 
 //export _gotk4_atk1_HyperlinkClass_get_end_index
 func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ EndIndex() int })
 
 	gint := iface.EndIndex()
@@ -237,7 +242,7 @@ func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint
 
 //export _gotk4_atk1_HyperlinkClass_get_n_anchors
 func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NAnchors() int })
 
 	gint := iface.NAnchors()
@@ -249,7 +254,7 @@ func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint
 
 //export _gotk4_atk1_HyperlinkClass_get_object
 func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ GetObject(i int) *ObjectClass })
 
 	var _i int // out
@@ -265,7 +270,7 @@ func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (c
 
 //export _gotk4_atk1_HyperlinkClass_get_start_index
 func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StartIndex() int })
 
 	gint := iface.StartIndex()
@@ -277,7 +282,7 @@ func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gi
 
 //export _gotk4_atk1_HyperlinkClass_get_uri
 func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ URI(i int) string })
 
 	var _i int // out
@@ -293,7 +298,7 @@ func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret
 
 //export _gotk4_atk1_HyperlinkClass_is_selected_link
 func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsSelectedLink() bool })
 
 	ok := iface.IsSelectedLink()
@@ -307,7 +312,7 @@ func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.g
 
 //export _gotk4_atk1_HyperlinkClass_is_valid
 func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsValid() bool })
 
 	ok := iface.IsValid()
@@ -321,7 +326,7 @@ func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean)
 
 //export _gotk4_atk1_HyperlinkClass_link_activated
 func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LinkActivated() })
 
 	iface.LinkActivated()
@@ -329,7 +334,7 @@ func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
 
 //export _gotk4_atk1_HyperlinkClass_link_state
 func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LinkState() uint })
 
 	guint := iface.LinkState()

@@ -114,7 +114,7 @@ func ifaceInitMemoryMonitorrer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_MemoryMonitorInterface_low_memory_warning
 func _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(arg0 *C.GMemoryMonitor, arg1 C.GMemoryMonitorWarningLevel) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(MemoryMonitorOverrider)
 
 	var _level MemoryMonitorWarningLevel // out

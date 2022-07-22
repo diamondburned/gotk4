@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -82,14 +82,19 @@ var (
 	_ Binner = (*Overlay)(nil)
 )
 
-func classInitOverlayer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeOverlay,
+		GoType:       reflect.TypeOf((*Overlay)(nil)),
+		InitClass:    initClassOverlay,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkOverlay{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkOverlayClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassOverlay(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkOverlayClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkOverlayClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		ChildPosition(widget Widgetter, allocation *Allocation) bool
@@ -100,7 +105,7 @@ func classInitOverlayer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_OverlayClass_get_child_position
 func _gotk4_gtk3_OverlayClass_get_child_position(arg0 *C.GtkOverlay, arg1 *C.GtkWidget, arg2 *C.GtkAllocation) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChildPosition(widget Widgetter, allocation *Allocation) bool
 	})

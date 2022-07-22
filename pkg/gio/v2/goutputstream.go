@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -159,14 +160,19 @@ type OutputStreamer interface {
 
 var _ OutputStreamer = (*OutputStream)(nil)
 
-func classInitOutputStreamer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeOutputStream,
+		GoType:       reflect.TypeOf((*OutputStream)(nil)),
+		InitClass:    initClassOutputStream,
+		ClassSize:    uint16(unsafe.Sizeof(C.GOutputStream{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GOutputStreamClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassOutputStream(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GOutputStreamClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GOutputStreamClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
@@ -219,7 +225,7 @@ func classInitOutputStreamer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_OutputStreamClass_close_finish
 func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	})
@@ -255,7 +261,7 @@ func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.G
 
 //export _gotk4_gio2_OutputStreamClass_close_fn
 func _gotk4_gio2_OutputStreamClass_close_fn(arg0 *C.GOutputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFn(ctx context.Context) error
 	})
@@ -277,7 +283,7 @@ func _gotk4_gio2_OutputStreamClass_close_fn(arg0 *C.GOutputStream, arg1 *C.GCanc
 
 //export _gotk4_gio2_OutputStreamClass_flush
 func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.GOutputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Flush(ctx context.Context) error
 	})
@@ -299,7 +305,7 @@ func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.GOutputStream, arg1 *C.GCancell
 
 //export _gotk4_gio2_OutputStreamClass_flush_finish
 func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FlushFinish(result AsyncResulter) error
 	})
@@ -335,7 +341,7 @@ func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.G
 
 //export _gotk4_gio2_OutputStreamClass_splice
 func _gotk4_gio2_OutputStreamClass_splice(arg0 *C.GOutputStream, arg1 *C.GInputStream, arg2 C.GOutputStreamSpliceFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
 	})
@@ -378,7 +384,7 @@ func _gotk4_gio2_OutputStreamClass_splice(arg0 *C.GOutputStream, arg1 *C.GInputS
 
 //export _gotk4_gio2_OutputStreamClass_splice_finish
 func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SpliceFinish(result AsyncResulter) (int, error)
 	})
@@ -415,7 +421,7 @@ func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.
 
 //export _gotk4_gio2_OutputStreamClass_write_finish
 func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		WriteFinish(result AsyncResulter) (int, error)
 	})
@@ -452,7 +458,7 @@ func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.G
 
 //export _gotk4_gio2_OutputStreamClass_writev_finish
 func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, arg2 *C.gsize, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		WritevFinish(result AsyncResulter) (uint, error)
 	})

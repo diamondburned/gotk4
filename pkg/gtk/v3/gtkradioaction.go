@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -49,14 +49,19 @@ var (
 	_ coreglib.Objector = (*RadioAction)(nil)
 )
 
-func classInitRadioActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeRadioAction,
+		GoType:       reflect.TypeOf((*RadioAction)(nil)),
+		InitClass:    initClassRadioAction,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkRadioAction{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkRadioActionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassRadioAction(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkRadioActionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkRadioActionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed(current *RadioAction) }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_RadioActionClass_changed)
@@ -65,7 +70,7 @@ func classInitRadioActioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_RadioActionClass_changed
 func _gotk4_gtk3_RadioActionClass_changed(arg0 *C.GtkRadioAction, arg1 *C.GtkRadioAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed(current *RadioAction) })
 
 	var _current *RadioAction // out

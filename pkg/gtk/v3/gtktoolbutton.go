@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -70,14 +70,19 @@ var (
 	_ Binner            = (*ToolButton)(nil)
 )
 
-func classInitToolButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeToolButton,
+		GoType:       reflect.TypeOf((*ToolButton)(nil)),
+		InitClass:    initClassToolButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkToolButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkToolButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassToolButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToolButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkToolButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Clicked() }); ok {
 		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_ToolButtonClass_clicked)
@@ -86,7 +91,7 @@ func classInitToolButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToolButtonClass_clicked
 func _gotk4_gtk3_ToolButtonClass_clicked(arg0 *C.GtkToolButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Clicked() })
 
 	iface.Clicked()

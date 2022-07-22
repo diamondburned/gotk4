@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -178,14 +178,19 @@ var (
 	_ coreglib.Objector = (*Application)(nil)
 )
 
-func classInitApplicationer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeApplication,
+		GoType:       reflect.TypeOf((*Application)(nil)),
+		InitClass:    initClassApplication,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkApplication{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkApplicationClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassApplication(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ WindowAdded(window *Window) }); ok {
 		pclass.window_added = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_added)
@@ -198,7 +203,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ApplicationClass_window_added
 func _gotk4_gtk4_ApplicationClass_window_added(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WindowAdded(window *Window) })
 
 	var _window *Window // out
@@ -210,7 +215,7 @@ func _gotk4_gtk4_ApplicationClass_window_added(arg0 *C.GtkApplication, arg1 *C.G
 
 //export _gotk4_gtk4_ApplicationClass_window_removed
 func _gotk4_gtk4_ApplicationClass_window_removed(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WindowRemoved(window *Window) })
 
 	var _window *Window // out

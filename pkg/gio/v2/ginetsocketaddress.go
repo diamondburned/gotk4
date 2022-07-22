@@ -40,12 +40,7 @@ var (
 	_ SocketAddresser = (*InetSocketAddress)(nil)
 )
 
-func classInitInetSocketAddresser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassInetSocketAddress(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapInetSocketAddress(obj *coreglib.Object) *InetSocketAddress {

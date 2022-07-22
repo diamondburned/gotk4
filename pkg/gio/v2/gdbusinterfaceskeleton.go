@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -91,14 +91,19 @@ type DBusInterfaceSkeletonner interface {
 
 var _ DBusInterfaceSkeletonner = (*DBusInterfaceSkeleton)(nil)
 
-func classInitDBusInterfaceSkeletonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeDBusInterfaceSkeleton,
+		GoType:       reflect.TypeOf((*DBusInterfaceSkeleton)(nil)),
+		InitClass:    initClassDBusInterfaceSkeleton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GDBusInterfaceSkeleton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GDBusInterfaceSkeletonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassDBusInterfaceSkeleton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GDBusInterfaceSkeletonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GDBusInterfaceSkeletonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Flush() }); ok {
 		pclass.flush = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_flush)
@@ -121,7 +126,7 @@ func classInitDBusInterfaceSkeletonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_flush
 func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Flush() })
 
 	iface.Flush()
@@ -129,7 +134,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method
 func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInterfaceSkeleton, arg1 *C.GDBusMethodInvocation) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		GAuthorizeMethod(invocation *DBusMethodInvocation) bool
 	})
@@ -149,7 +154,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInte
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_info
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GDBusInterfaceInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Info() *DBusInterfaceInfo })
 
 	dBusInterfaceInfo := iface.Info()
@@ -161,7 +166,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.GDBusInterfaceSkele
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Properties() *glib.Variant })
 
 	variant := iface.Properties()

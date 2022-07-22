@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -168,14 +169,19 @@ var (
 	_ coreglib.Objector = (*VFS)(nil)
 )
 
-func classInitVFSer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeVFS,
+		GoType:       reflect.TypeOf((*VFS)(nil)),
+		InitClass:    initClassVFS,
+		ClassSize:    uint16(unsafe.Sizeof(C.GVfs{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GVfsClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassVFS(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GVfsClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GVfsClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		AddWritableNamespaces(list *FileAttributeInfoList)
@@ -220,7 +226,7 @@ func classInitVFSer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_VfsClass_add_writable_namespaces
 func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAttributeInfoList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AddWritableNamespaces(list *FileAttributeInfoList)
 	})
@@ -241,7 +247,7 @@ func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAtt
 
 //export _gotk4_gio2_VfsClass_get_file_for_path
 func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FileForPath(path string) *File })
 
 	var _path string // out
@@ -258,7 +264,7 @@ func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C
 
 //export _gotk4_gio2_VfsClass_get_file_for_uri
 func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FileForURI(uri string) *File })
 
 	var _uri string // out
@@ -275,7 +281,7 @@ func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.
 
 //export _gotk4_gio2_VfsClass_get_supported_uri_schemes
 func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.GVfs) (cret **C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SupportedURISchemes() []string })
 
 	utf8s := iface.SupportedURISchemes()
@@ -299,7 +305,7 @@ func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.GVfs) (cret **C.gcha
 
 //export _gotk4_gio2_VfsClass_is_active
 func _gotk4_gio2_VfsClass_is_active(arg0 *C.GVfs) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ IsActive() bool })
 
 	ok := iface.IsActive()
@@ -313,7 +319,7 @@ func _gotk4_gio2_VfsClass_is_active(arg0 *C.GVfs) (cret C.gboolean) {
 
 //export _gotk4_gio2_VfsClass_local_file_moved
 func _gotk4_gio2_VfsClass_local_file_moved(arg0 *C.GVfs, arg1 *C.char, arg2 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LocalFileMoved(source, dest string) })
 
 	var _source string // out
@@ -327,7 +333,7 @@ func _gotk4_gio2_VfsClass_local_file_moved(arg0 *C.GVfs, arg1 *C.char, arg2 *C.c
 
 //export _gotk4_gio2_VfsClass_local_file_removed
 func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.GVfs, arg1 *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LocalFileRemoved(filename string) })
 
 	var _filename string // out
@@ -339,7 +345,7 @@ func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.GVfs, arg1 *C.char) {
 
 //export _gotk4_gio2_VfsClass_local_file_set_attributes
 func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, arg2 *C.GFileInfo, arg3 C.GFileQueryInfoFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
 	})
@@ -367,7 +373,7 @@ func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, 
 
 //export _gotk4_gio2_VfsClass_parse_name
 func _gotk4_gio2_VfsClass_parse_name(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ParseName(parseName string) *File })
 
 	var _parseName string // out

@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -143,14 +144,19 @@ var (
 	_ coreglib.Objector = (*FileIOStream)(nil)
 )
 
-func classInitFileIOStreamer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFileIOStream,
+		GoType:       reflect.TypeOf((*FileIOStream)(nil)),
+		InitClass:    initClassFileIOStream,
+		ClassSize:    uint16(unsafe.Sizeof(C.GFileIOStream{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GFileIOStreamClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFileIOStream(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileIOStreamClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GFileIOStreamClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ CanSeek() bool }); ok {
 		pclass.can_seek = (*[0]byte)(C._gotk4_gio2_FileIOStreamClass_can_seek)
@@ -195,7 +201,7 @@ func classInitFileIOStreamer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_FileIOStreamClass_can_seek
 func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.GFileIOStream) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CanSeek() bool })
 
 	ok := iface.CanSeek()
@@ -209,7 +215,7 @@ func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.GFileIOStream) (cret C.gbool
 
 //export _gotk4_gio2_FileIOStreamClass_can_truncate
 func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.GFileIOStream) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CanTruncate() bool })
 
 	ok := iface.CanTruncate()
@@ -223,7 +229,7 @@ func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.GFileIOStream) (cret C.g
 
 //export _gotk4_gio2_FileIOStreamClass_get_etag
 func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.GFileIOStream) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ETag() string })
 
 	utf8 := iface.ETag()
@@ -237,7 +243,7 @@ func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.GFileIOStream) (cret *C.char
 
 //export _gotk4_gio2_FileIOStreamClass_query_info
 func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.GFileIOStream, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	})
@@ -263,7 +269,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.GFileIOStream, arg1 *C.cha
 
 //export _gotk4_gio2_FileIOStreamClass_query_info_finish
 func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.GFileIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 	})
@@ -301,7 +307,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.GFileIOStream, arg1
 
 //export _gotk4_gio2_FileIOStreamClass_seek
 func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.GFileIOStream, arg1 C.goffset, arg2 C.GSeekType, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Seek(ctx context.Context, offset int64, typ glib.SeekType) error
 	})
@@ -327,7 +333,7 @@ func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.GFileIOStream, arg1 C.goffset, a
 
 //export _gotk4_gio2_FileIOStreamClass_tell
 func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.GFileIOStream) (cret C.goffset) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Tell() int64 })
 
 	gint64 := iface.Tell()
@@ -339,7 +345,7 @@ func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.GFileIOStream) (cret C.goffset) 
 
 //export _gotk4_gio2_FileIOStreamClass_truncate_fn
 func _gotk4_gio2_FileIOStreamClass_truncate_fn(arg0 *C.GFileIOStream, arg1 C.goffset, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TruncateFn(ctx context.Context, size int64) error
 	})

@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -216,14 +216,19 @@ var (
 	_ coreglib.Objector = (*ThemingEngine)(nil)
 )
 
-func classInitThemingEnginer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeThemingEngine,
+		GoType:       reflect.TypeOf((*ThemingEngine)(nil)),
+		InitClass:    initClassThemingEngine,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkThemingEngine{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkThemingEngineClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassThemingEngine(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkThemingEngineClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkThemingEngineClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		RenderActivity(cr *cairo.Context, x, y, width, height float64)
@@ -324,7 +329,7 @@ func classInitThemingEnginer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ThemingEngineClass_render_activity
 func _gotk4_gtk3_ThemingEngineClass_render_activity(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderActivity(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -350,7 +355,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_activity(arg0 *C.GtkThemingEngine, ar
 
 //export _gotk4_gtk3_ThemingEngineClass_render_arrow
 func _gotk4_gtk3_ThemingEngineClass_render_arrow(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderArrow(cr *cairo.Context, angle, x, y, size float64)
 	})
@@ -376,7 +381,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_arrow(arg0 *C.GtkThemingEngine, arg1 
 
 //export _gotk4_gtk3_ThemingEngineClass_render_background
 func _gotk4_gtk3_ThemingEngineClass_render_background(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderBackground(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -402,7 +407,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_background(arg0 *C.GtkThemingEngine, 
 
 //export _gotk4_gtk3_ThemingEngineClass_render_check
 func _gotk4_gtk3_ThemingEngineClass_render_check(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderCheck(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -428,7 +433,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_check(arg0 *C.GtkThemingEngine, arg1 
 
 //export _gotk4_gtk3_ThemingEngineClass_render_expander
 func _gotk4_gtk3_ThemingEngineClass_render_expander(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderExpander(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -454,7 +459,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_expander(arg0 *C.GtkThemingEngine, ar
 
 //export _gotk4_gtk3_ThemingEngineClass_render_extension
 func _gotk4_gtk3_ThemingEngineClass_render_extension(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble, arg6 C.GtkPositionType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
 	})
@@ -482,7 +487,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_extension(arg0 *C.GtkThemingEngine, a
 
 //export _gotk4_gtk3_ThemingEngineClass_render_focus
 func _gotk4_gtk3_ThemingEngineClass_render_focus(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderFocus(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -508,7 +513,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_focus(arg0 *C.GtkThemingEngine, arg1 
 
 //export _gotk4_gtk3_ThemingEngineClass_render_frame
 func _gotk4_gtk3_ThemingEngineClass_render_frame(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderFrame(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -534,7 +539,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_frame(arg0 *C.GtkThemingEngine, arg1 
 
 //export _gotk4_gtk3_ThemingEngineClass_render_frame_gap
 func _gotk4_gtk3_ThemingEngineClass_render_frame_gap(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble, arg6 C.GtkPositionType, arg7 C.gdouble, arg8 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
 	})
@@ -566,7 +571,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_frame_gap(arg0 *C.GtkThemingEngine, a
 
 //export _gotk4_gtk3_ThemingEngineClass_render_handle
 func _gotk4_gtk3_ThemingEngineClass_render_handle(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderHandle(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -592,7 +597,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_handle(arg0 *C.GtkThemingEngine, arg1
 
 //export _gotk4_gtk3_ThemingEngineClass_render_icon
 func _gotk4_gtk3_ThemingEngineClass_render_icon(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 *C.GdkPixbuf, arg3 C.gdouble, arg4 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
 	})
@@ -626,7 +631,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_icon(arg0 *C.GtkThemingEngine, arg1 *
 
 //export _gotk4_gtk3_ThemingEngineClass_render_icon_surface
 func _gotk4_gtk3_ThemingEngineClass_render_icon_surface(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 *C.cairo_surface_t, arg3 C.gdouble, arg4 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64)
 	})
@@ -654,7 +659,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_icon_surface(arg0 *C.GtkThemingEngine
 
 //export _gotk4_gtk3_ThemingEngineClass_render_layout
 func _gotk4_gtk3_ThemingEngineClass_render_layout(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 *C.PangoLayout) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout)
 	})
@@ -683,7 +688,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_layout(arg0 *C.GtkThemingEngine, arg1
 
 //export _gotk4_gtk3_ThemingEngineClass_render_line
 func _gotk4_gtk3_ThemingEngineClass_render_line(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64)
 	})
@@ -709,7 +714,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_line(arg0 *C.GtkThemingEngine, arg1 *
 
 //export _gotk4_gtk3_ThemingEngineClass_render_option
 func _gotk4_gtk3_ThemingEngineClass_render_option(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderOption(cr *cairo.Context, x, y, width, height float64)
 	})
@@ -735,7 +740,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_option(arg0 *C.GtkThemingEngine, arg1
 
 //export _gotk4_gtk3_ThemingEngineClass_render_slider
 func _gotk4_gtk3_ThemingEngineClass_render_slider(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble, arg6 C.GtkOrientation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
 	})

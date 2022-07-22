@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -128,14 +129,19 @@ type IOStreamer interface {
 
 var _ IOStreamer = (*IOStream)(nil)
 
-func classInitIOStreamer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeIOStream,
+		GoType:       reflect.TypeOf((*IOStream)(nil)),
+		InitClass:    initClassIOStream,
+		ClassSize:    uint16(unsafe.Sizeof(C.GIOStream{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GIOStreamClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassIOStream(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GIOStreamClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GIOStreamClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
@@ -160,7 +166,7 @@ func classInitIOStreamer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_IOStreamClass_close_finish
 func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	})
@@ -196,7 +202,7 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncRes
 
 //export _gotk4_gio2_IOStreamClass_close_fn
 func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFn(ctx context.Context) error
 	})
@@ -218,7 +224,7 @@ func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable,
 
 //export _gotk4_gio2_IOStreamClass_get_input_stream
 func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.GIOStream) (cret *C.GInputStream) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InputStream() InputStreamer })
 
 	inputStream := iface.InputStream()
@@ -230,7 +236,7 @@ func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.GIOStream) (cret *C.GInp
 
 //export _gotk4_gio2_IOStreamClass_get_output_stream
 func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.GIOStream) (cret *C.GOutputStream) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ OutputStream() OutputStreamer })
 
 	outputStream := iface.OutputStream()

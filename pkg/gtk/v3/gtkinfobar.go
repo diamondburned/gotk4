@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -125,14 +125,19 @@ var (
 	_ coreglib.Objector = (*InfoBar)(nil)
 )
 
-func classInitInfoBarrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeInfoBar,
+		GoType:       reflect.TypeOf((*InfoBar)(nil)),
+		InitClass:    initClassInfoBar,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkInfoBar{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkInfoBarClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassInfoBar(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkInfoBarClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkInfoBarClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Close() }); ok {
 		pclass.close = (*[0]byte)(C._gotk4_gtk3_InfoBarClass_close)
@@ -145,7 +150,7 @@ func classInitInfoBarrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_InfoBarClass_close
 func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
 	iface.Close()
@@ -153,7 +158,7 @@ func _gotk4_gtk3_InfoBarClass_close(arg0 *C.GtkInfoBar) {
 
 //export _gotk4_gtk3_InfoBarClass_response
 func _gotk4_gtk3_InfoBarClass_response(arg0 *C.GtkInfoBar, arg1 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Response(responseId int) })
 
 	var _responseId int // out

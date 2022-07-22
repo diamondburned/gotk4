@@ -141,7 +141,7 @@ func ifaceInitStreamableContenter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_StreamableContentIface_get_mime_type
 func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.AtkStreamableContent, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
 	var _i int // out
@@ -158,7 +158,7 @@ func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.AtkStreamableConte
 
 //export _gotk4_atk1_StreamableContentIface_get_n_mime_types
 func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.AtkStreamableContent) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
 	gint := iface.NMIMETypes()
@@ -170,7 +170,7 @@ func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.AtkStreamableCo
 
 //export _gotk4_atk1_StreamableContentIface_get_stream
 func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.GIOChannel) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
 	var _mimeType string // out
@@ -186,7 +186,7 @@ func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.AtkStreamableContent,
 
 //export _gotk4_atk1_StreamableContentIface_get_uri
 func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
 	var _mimeType string // out

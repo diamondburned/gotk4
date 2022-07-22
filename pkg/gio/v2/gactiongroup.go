@@ -448,7 +448,7 @@ func ifaceInitActionGrouper(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_ActionGroupInterface_action_added
 func _gotk4_gio2_ActionGroupInterface_action_added(arg0 *C.GActionGroup, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -460,7 +460,7 @@ func _gotk4_gio2_ActionGroupInterface_action_added(arg0 *C.GActionGroup, arg1 *C
 
 //export _gotk4_gio2_ActionGroupInterface_action_enabled_changed
 func _gotk4_gio2_ActionGroupInterface_action_enabled_changed(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -476,7 +476,7 @@ func _gotk4_gio2_ActionGroupInterface_action_enabled_changed(arg0 *C.GActionGrou
 
 //export _gotk4_gio2_ActionGroupInterface_action_removed
 func _gotk4_gio2_ActionGroupInterface_action_removed(arg0 *C.GActionGroup, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -488,7 +488,7 @@ func _gotk4_gio2_ActionGroupInterface_action_removed(arg0 *C.GActionGroup, arg1 
 
 //export _gotk4_gio2_ActionGroupInterface_action_state_changed
 func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string   // out
@@ -509,7 +509,7 @@ func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.GActionGroup,
 
 //export _gotk4_gio2_ActionGroupInterface_activate_action
 func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string       // out
@@ -532,7 +532,7 @@ func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.GActionGroup, arg1
 
 //export _gotk4_gio2_ActionGroupInterface_change_action_state
 func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string   // out
@@ -553,7 +553,7 @@ func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.GActionGroup, 
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_enabled
 func _gotk4_gio2_ActionGroupInterface_get_action_enabled(arg0 *C.GActionGroup, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -571,7 +571,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_enabled(arg0 *C.GActionGroup, a
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_parameter_type
 func _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariantType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -589,7 +589,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(arg0 *C.GActionG
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_state
 func _gotk4_gio2_ActionGroupInterface_get_action_state(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -607,7 +607,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_state(arg0 *C.GActionGroup, arg
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_state_hint
 func _gotk4_gio2_ActionGroupInterface_get_action_state_hint(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -625,7 +625,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_state_hint(arg0 *C.GActionGroup
 
 //export _gotk4_gio2_ActionGroupInterface_get_action_state_type
 func _gotk4_gio2_ActionGroupInterface_get_action_state_type(arg0 *C.GActionGroup, arg1 *C.gchar) (cret *C.GVariantType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -643,7 +643,7 @@ func _gotk4_gio2_ActionGroupInterface_get_action_state_type(arg0 *C.GActionGroup
 
 //export _gotk4_gio2_ActionGroupInterface_has_action
 func _gotk4_gio2_ActionGroupInterface_has_action(arg0 *C.GActionGroup, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out
@@ -661,7 +661,7 @@ func _gotk4_gio2_ActionGroupInterface_has_action(arg0 *C.GActionGroup, arg1 *C.g
 
 //export _gotk4_gio2_ActionGroupInterface_list_actions
 func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.GActionGroup) (cret **C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	utf8s := iface.ListActions()
@@ -683,7 +683,7 @@ func _gotk4_gio2_ActionGroupInterface_list_actions(arg0 *C.GActionGroup) (cret *
 
 //export _gotk4_gio2_ActionGroupInterface_query_action
 func _gotk4_gio2_ActionGroupInterface_query_action(arg0 *C.GActionGroup, arg1 *C.gchar, arg2 *C.gboolean, arg3 **C.GVariantType, arg4 **C.GVariantType, arg5 **C.GVariant, arg6 **C.GVariant) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ActionGroupOverrider)
 
 	var _actionName string // out

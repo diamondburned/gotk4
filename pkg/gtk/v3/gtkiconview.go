@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -180,14 +181,19 @@ var (
 	_ coreglib.Objector = (*IconView)(nil)
 )
 
-func classInitIconViewer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeIconView,
+		GoType:       reflect.TypeOf((*IconView)(nil)),
+		InitClass:    initClassIconView,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkIconView{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkIconViewClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassIconView(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkIconViewClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkIconViewClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActivateCursorItem() bool }); ok {
 		pclass.activate_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_activate_cursor_item)
@@ -226,7 +232,7 @@ func classInitIconViewer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_IconViewClass_activate_cursor_item
 func _gotk4_gtk3_IconViewClass_activate_cursor_item(arg0 *C.GtkIconView) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateCursorItem() bool })
 
 	ok := iface.ActivateCursorItem()
@@ -240,7 +246,7 @@ func _gotk4_gtk3_IconViewClass_activate_cursor_item(arg0 *C.GtkIconView) (cret C
 
 //export _gotk4_gtk3_IconViewClass_item_activated
 func _gotk4_gtk3_IconViewClass_item_activated(arg0 *C.GtkIconView, arg1 *C.GtkTreePath) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ItemActivated(path *TreePath) })
 
 	var _path *TreePath // out
@@ -252,7 +258,7 @@ func _gotk4_gtk3_IconViewClass_item_activated(arg0 *C.GtkIconView, arg1 *C.GtkTr
 
 //export _gotk4_gtk3_IconViewClass_move_cursor
 func _gotk4_gtk3_IconViewClass_move_cursor(arg0 *C.GtkIconView, arg1 C.GtkMovementStep, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MoveCursor(step MovementStep, count int) bool
 	})
@@ -274,7 +280,7 @@ func _gotk4_gtk3_IconViewClass_move_cursor(arg0 *C.GtkIconView, arg1 C.GtkMoveme
 
 //export _gotk4_gtk3_IconViewClass_select_all
 func _gotk4_gtk3_IconViewClass_select_all(arg0 *C.GtkIconView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectAll() })
 
 	iface.SelectAll()
@@ -282,7 +288,7 @@ func _gotk4_gtk3_IconViewClass_select_all(arg0 *C.GtkIconView) {
 
 //export _gotk4_gtk3_IconViewClass_select_cursor_item
 func _gotk4_gtk3_IconViewClass_select_cursor_item(arg0 *C.GtkIconView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectCursorItem() })
 
 	iface.SelectCursorItem()
@@ -290,7 +296,7 @@ func _gotk4_gtk3_IconViewClass_select_cursor_item(arg0 *C.GtkIconView) {
 
 //export _gotk4_gtk3_IconViewClass_selection_changed
 func _gotk4_gtk3_IconViewClass_selection_changed(arg0 *C.GtkIconView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectionChanged() })
 
 	iface.SelectionChanged()
@@ -298,7 +304,7 @@ func _gotk4_gtk3_IconViewClass_selection_changed(arg0 *C.GtkIconView) {
 
 //export _gotk4_gtk3_IconViewClass_toggle_cursor_item
 func _gotk4_gtk3_IconViewClass_toggle_cursor_item(arg0 *C.GtkIconView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleCursorItem() })
 
 	iface.ToggleCursorItem()
@@ -306,7 +312,7 @@ func _gotk4_gtk3_IconViewClass_toggle_cursor_item(arg0 *C.GtkIconView) {
 
 //export _gotk4_gtk3_IconViewClass_unselect_all
 func _gotk4_gtk3_IconViewClass_unselect_all(arg0 *C.GtkIconView) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UnselectAll() })
 
 	iface.UnselectAll()

@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -177,14 +178,19 @@ var (
 	_ Binner = (*Assistant)(nil)
 )
 
-func classInitAssistanter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAssistant,
+		GoType:       reflect.TypeOf((*Assistant)(nil)),
+		InitClass:    initClassAssistant,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkAssistant{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkAssistantClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAssistant(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAssistantClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkAssistantClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Apply() }); ok {
 		pclass.apply = (*[0]byte)(C._gotk4_gtk3_AssistantClass_apply)
@@ -205,7 +211,7 @@ func classInitAssistanter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AssistantClass_apply
 func _gotk4_gtk3_AssistantClass_apply(arg0 *C.GtkAssistant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Apply() })
 
 	iface.Apply()
@@ -213,7 +219,7 @@ func _gotk4_gtk3_AssistantClass_apply(arg0 *C.GtkAssistant) {
 
 //export _gotk4_gtk3_AssistantClass_cancel
 func _gotk4_gtk3_AssistantClass_cancel(arg0 *C.GtkAssistant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Cancel() })
 
 	iface.Cancel()
@@ -221,7 +227,7 @@ func _gotk4_gtk3_AssistantClass_cancel(arg0 *C.GtkAssistant) {
 
 //export _gotk4_gtk3_AssistantClass_close
 func _gotk4_gtk3_AssistantClass_close(arg0 *C.GtkAssistant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Close() })
 
 	iface.Close()
@@ -229,7 +235,7 @@ func _gotk4_gtk3_AssistantClass_close(arg0 *C.GtkAssistant) {
 
 //export _gotk4_gtk3_AssistantClass_prepare
 func _gotk4_gtk3_AssistantClass_prepare(arg0 *C.GtkAssistant, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Prepare(page Widgetter) })
 
 	var _page Widgetter // out

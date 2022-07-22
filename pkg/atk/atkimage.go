@@ -148,7 +148,7 @@ func ifaceInitImager(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_ImageIface_get_image_description
 func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
 	utf8 := iface.ImageDescription()
@@ -161,7 +161,7 @@ func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gch
 
 //export _gotk4_atk1_ImageIface_get_image_locale
 func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
 	utf8 := iface.ImageLocale()
@@ -176,7 +176,7 @@ func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
 
 //export _gotk4_atk1_ImageIface_get_image_position
 func _gotk4_atk1_ImageIface_get_image_position(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
 	var _coordType CoordType // out
@@ -191,7 +191,7 @@ func _gotk4_atk1_ImageIface_get_image_position(arg0 *C.AtkImage, arg1 *C.gint, a
 
 //export _gotk4_atk1_ImageIface_get_image_size
 func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
 	width, height := iface.ImageSize()
@@ -202,7 +202,7 @@ func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.AtkImage, arg1 *C.gint, arg2 
 
 //export _gotk4_atk1_ImageIface_set_image_description
 func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.AtkImage, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ImageOverrider)
 
 	var _description string // out

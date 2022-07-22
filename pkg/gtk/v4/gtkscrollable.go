@@ -117,7 +117,7 @@ func ifaceInitScrollabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ScrollableInterface_get_border
 func _gotk4_gtk4_ScrollableInterface_get_border(arg0 *C.GtkScrollable, arg1 *C.GtkBorder) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ScrollableOverrider)
 
 	border, ok := iface.Border()

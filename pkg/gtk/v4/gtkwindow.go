@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -116,14 +116,19 @@ var (
 	_ coreglib.Objector = (*Window)(nil)
 )
 
-func classInitWindower(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeWindow,
+		GoType:       reflect.TypeOf((*Window)(nil)),
+		InitClass:    initClassWindow,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkWindow{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkWindowClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassWindow(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkWindowClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkWindowClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActivateDefault() }); ok {
 		pclass.activate_default = (*[0]byte)(C._gotk4_gtk4_WindowClass_activate_default)
@@ -148,7 +153,7 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_WindowClass_activate_default
 func _gotk4_gtk4_WindowClass_activate_default(arg0 *C.GtkWindow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateDefault() })
 
 	iface.ActivateDefault()
@@ -156,7 +161,7 @@ func _gotk4_gtk4_WindowClass_activate_default(arg0 *C.GtkWindow) {
 
 //export _gotk4_gtk4_WindowClass_activate_focus
 func _gotk4_gtk4_WindowClass_activate_focus(arg0 *C.GtkWindow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateFocus() })
 
 	iface.ActivateFocus()
@@ -164,7 +169,7 @@ func _gotk4_gtk4_WindowClass_activate_focus(arg0 *C.GtkWindow) {
 
 //export _gotk4_gtk4_WindowClass_close_request
 func _gotk4_gtk4_WindowClass_close_request(arg0 *C.GtkWindow) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CloseRequest() bool })
 
 	ok := iface.CloseRequest()
@@ -178,7 +183,7 @@ func _gotk4_gtk4_WindowClass_close_request(arg0 *C.GtkWindow) (cret C.gboolean) 
 
 //export _gotk4_gtk4_WindowClass_enable_debugging
 func _gotk4_gtk4_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ EnableDebugging(toggle bool) bool })
 
 	var _toggle bool // out
@@ -198,7 +203,7 @@ func _gotk4_gtk4_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean
 
 //export _gotk4_gtk4_WindowClass_keys_changed
 func _gotk4_gtk4_WindowClass_keys_changed(arg0 *C.GtkWindow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ KeysChanged() })
 
 	iface.KeysChanged()

@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -62,14 +62,19 @@ var (
 	_ Binner = (*Plug)(nil)
 )
 
-func classInitPlugger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypePlug,
+		GoType:       reflect.TypeOf((*Plug)(nil)),
+		InitClass:    initClassPlug,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkPlug{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkPlugClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassPlug(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPlugClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkPlugClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Embedded() }); ok {
 		pclass.embedded = (*[0]byte)(C._gotk4_gtk3_PlugClass_embedded)
@@ -78,7 +83,7 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_PlugClass_embedded
 func _gotk4_gtk3_PlugClass_embedded(arg0 *C.GtkPlug) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embedded() })
 
 	iface.Embedded()

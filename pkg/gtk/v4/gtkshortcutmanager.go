@@ -77,7 +77,7 @@ func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ShortcutManagerInterface_add_controller
 func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 
 	var _controller *ShortcutController // out
@@ -89,7 +89,7 @@ func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutMana
 
 //export _gotk4_gtk4_ShortcutManagerInterface_remove_controller
 func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(ShortcutManagerOverrider)
 
 	var _controller *ShortcutController // out

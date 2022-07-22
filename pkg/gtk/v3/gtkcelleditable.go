@@ -108,7 +108,7 @@ func ifaceInitCellEditabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellEditableIface_editing_done
 func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
 	iface.EditingDone()
@@ -116,7 +116,7 @@ func _gotk4_gtk3_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
 
 //export _gotk4_gtk3_CellEditableIface_remove_widget
 func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
 	iface.RemoveWidget()
@@ -124,7 +124,7 @@ func _gotk4_gtk3_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
 
 //export _gotk4_gtk3_CellEditableIface_start_editing
 func _gotk4_gtk3_CellEditableIface_start_editing(arg0 *C.GtkCellEditable, arg1 *C.GdkEvent) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellEditableOverrider)
 
 	var _event *gdk.Event // out

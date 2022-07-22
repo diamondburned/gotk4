@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -264,14 +265,19 @@ var (
 	_ Containerer = (*ListBox)(nil)
 )
 
-func classInitListBoxer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeListBox,
+		GoType:       reflect.TypeOf((*ListBox)(nil)),
+		InitClass:    initClassListBox,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkListBox{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkListBoxClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassListBox(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkListBoxClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkListBoxClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActivateCursorRow() }); ok {
 		pclass.activate_cursor_row = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_activate_cursor_row)
@@ -310,7 +316,7 @@ func classInitListBoxer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ListBoxClass_activate_cursor_row
 func _gotk4_gtk3_ListBoxClass_activate_cursor_row(arg0 *C.GtkListBox) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActivateCursorRow() })
 
 	iface.ActivateCursorRow()
@@ -318,7 +324,7 @@ func _gotk4_gtk3_ListBoxClass_activate_cursor_row(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_move_cursor
 func _gotk4_gtk3_ListBoxClass_move_cursor(arg0 *C.GtkListBox, arg1 C.GtkMovementStep, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MoveCursor(step MovementStep, count int)
 	})
@@ -334,7 +340,7 @@ func _gotk4_gtk3_ListBoxClass_move_cursor(arg0 *C.GtkListBox, arg1 C.GtkMovement
 
 //export _gotk4_gtk3_ListBoxClass_row_activated
 func _gotk4_gtk3_ListBoxClass_row_activated(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RowActivated(row *ListBoxRow) })
 
 	var _row *ListBoxRow // out
@@ -346,7 +352,7 @@ func _gotk4_gtk3_ListBoxClass_row_activated(arg0 *C.GtkListBox, arg1 *C.GtkListB
 
 //export _gotk4_gtk3_ListBoxClass_row_selected
 func _gotk4_gtk3_ListBoxClass_row_selected(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RowSelected(row *ListBoxRow) })
 
 	var _row *ListBoxRow // out
@@ -358,7 +364,7 @@ func _gotk4_gtk3_ListBoxClass_row_selected(arg0 *C.GtkListBox, arg1 *C.GtkListBo
 
 //export _gotk4_gtk3_ListBoxClass_select_all
 func _gotk4_gtk3_ListBoxClass_select_all(arg0 *C.GtkListBox) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectAll() })
 
 	iface.SelectAll()
@@ -366,7 +372,7 @@ func _gotk4_gtk3_ListBoxClass_select_all(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_selected_rows_changed
 func _gotk4_gtk3_ListBoxClass_selected_rows_changed(arg0 *C.GtkListBox) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SelectedRowsChanged() })
 
 	iface.SelectedRowsChanged()
@@ -374,7 +380,7 @@ func _gotk4_gtk3_ListBoxClass_selected_rows_changed(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_toggle_cursor_row
 func _gotk4_gtk3_ListBoxClass_toggle_cursor_row(arg0 *C.GtkListBox) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ToggleCursorRow() })
 
 	iface.ToggleCursorRow()
@@ -382,7 +388,7 @@ func _gotk4_gtk3_ListBoxClass_toggle_cursor_row(arg0 *C.GtkListBox) {
 
 //export _gotk4_gtk3_ListBoxClass_unselect_all
 func _gotk4_gtk3_ListBoxClass_unselect_all(arg0 *C.GtkListBox) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ UnselectAll() })
 
 	iface.UnselectAll()
@@ -1267,14 +1273,19 @@ var (
 	_ coreglib.Objector = (*ListBoxRow)(nil)
 )
 
-func classInitListBoxRower(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeListBoxRow,
+		GoType:       reflect.TypeOf((*ListBoxRow)(nil)),
+		InitClass:    initClassListBoxRow,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkListBoxRow{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkListBoxRowClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassListBoxRow(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ListBoxRowClass_activate)
@@ -1283,7 +1294,7 @@ func classInitListBoxRower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ListBoxRowClass_activate
 func _gotk4_gtk3_ListBoxRowClass_activate(arg0 *C.GtkListBoxRow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()

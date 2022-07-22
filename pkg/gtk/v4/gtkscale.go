@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -164,14 +165,19 @@ var (
 	_ coreglib.Objector = (*Scale)(nil)
 )
 
-func classInitScaler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeScale,
+		GoType:       reflect.TypeOf((*Scale)(nil)),
+		InitClass:    initClassScale,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkScale{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkScaleClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassScale(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ LayoutOffsets() (x, y int) }); ok {
 		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk4_ScaleClass_get_layout_offsets)
@@ -180,7 +186,7 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ScaleClass_get_layout_offsets
 func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.int, arg2 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LayoutOffsets() (x, y int) })
 
 	x, y := iface.LayoutOffsets()

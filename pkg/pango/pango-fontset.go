@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -150,14 +151,19 @@ type Fontsetter interface {
 
 var _ Fontsetter = (*Fontset)(nil)
 
-func classInitFontsetter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFontset,
+		GoType:       reflect.TypeOf((*Fontset)(nil)),
+		InitClass:    initClassFontset,
+		ClassSize:    uint16(unsafe.Sizeof(C.PangoFontset{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.PangoFontsetClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFontset(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontsetClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.PangoFontsetClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Font(wc uint) Fonter }); ok {
 		pclass.get_font = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_font)
@@ -174,7 +180,7 @@ func classInitFontsetter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_pango1_FontsetClass_get_font
 func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cret *C.PangoFont) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Font(wc uint) Fonter })
 
 	var _wc uint // out
@@ -191,7 +197,7 @@ func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cr
 
 //export _gotk4_pango1_FontsetClass_get_language
 func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.PangoLanguage) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Language() *Language })
 
 	language := iface.Language()
@@ -204,7 +210,7 @@ func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.Pang
 
 //export _gotk4_pango1_FontsetClass_get_metrics
 func _gotk4_pango1_FontsetClass_get_metrics(arg0 *C.PangoFontset) (cret *C.PangoFontMetrics) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Metrics() *FontMetrics })
 
 	fontMetrics := iface.Metrics()
@@ -351,12 +357,7 @@ var (
 	_ Fontsetter = (*FontsetSimple)(nil)
 )
 
-func classInitFontsetSimpler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassFontsetSimple(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapFontsetSimple(obj *coreglib.Object) *FontsetSimple {

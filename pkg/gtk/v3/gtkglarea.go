@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -115,14 +115,19 @@ var (
 	_ Widgetter = (*GLArea)(nil)
 )
 
-func classInitGLAreaer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeGLArea,
+		GoType:       reflect.TypeOf((*GLArea)(nil)),
+		InitClass:    initClassGLArea,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkGLArea{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkGLAreaClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassGLArea(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Render(context gdk.GLContexter) bool
@@ -137,7 +142,7 @@ func classInitGLAreaer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_GLAreaClass_render
 func _gotk4_gtk3_GLAreaClass_render(arg0 *C.GtkGLArea, arg1 *C.GdkGLContext) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Render(context gdk.GLContexter) bool
 	})
@@ -173,7 +178,7 @@ func _gotk4_gtk3_GLAreaClass_render(arg0 *C.GtkGLArea, arg1 *C.GdkGLContext) (cr
 
 //export _gotk4_gtk3_GLAreaClass_resize
 func _gotk4_gtk3_GLAreaClass_resize(arg0 *C.GtkGLArea, arg1 C.int, arg2 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Resize(width, height int) })
 
 	var _width int  // out

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -99,14 +100,19 @@ var (
 	_ coreglib.Objector = (*TextTagTable)(nil)
 )
 
-func classInitTextTagTabler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTextTagTable,
+		GoType:       reflect.TypeOf((*TextTagTable)(nil)),
+		InitClass:    initClassTextTagTable,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkTextTagTable{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkTextTagTableClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTextTagTable(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ TagAdded(tag *TextTag) }); ok {
 		pclass.tag_added = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_added)
@@ -125,7 +131,7 @@ func classInitTextTagTabler(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TextTagTableClass_tag_added
 func _gotk4_gtk3_TextTagTableClass_tag_added(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ TagAdded(tag *TextTag) })
 
 	var _tag *TextTag // out
@@ -137,7 +143,7 @@ func _gotk4_gtk3_TextTagTableClass_tag_added(arg0 *C.GtkTextTagTable, arg1 *C.Gt
 
 //export _gotk4_gtk3_TextTagTableClass_tag_changed
 func _gotk4_gtk3_TextTagTableClass_tag_changed(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag, arg2 C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TagChanged(tag *TextTag, sizeChanged bool)
 	})
@@ -155,7 +161,7 @@ func _gotk4_gtk3_TextTagTableClass_tag_changed(arg0 *C.GtkTextTagTable, arg1 *C.
 
 //export _gotk4_gtk3_TextTagTableClass_tag_removed
 func _gotk4_gtk3_TextTagTableClass_tag_removed(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ TagRemoved(tag *TextTag) })
 
 	var _tag *TextTag // out

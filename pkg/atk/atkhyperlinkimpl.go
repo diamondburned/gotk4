@@ -91,7 +91,7 @@ func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
 func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cret *C.AtkHyperlink) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(HyperlinkImplOverrider)
 
 	hyperlink := iface.Hyperlink()

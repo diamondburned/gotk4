@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -732,14 +733,19 @@ type Widgetter interface {
 
 var _ Widgetter = (*Widget)(nil)
 
-func classInitWidgetter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeWidget,
+		GoType:       reflect.TypeOf((*Widget)(nil)),
+		InitClass:    initClassWidget,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkWidget{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkWidgetClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassWidget(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Contains(x, y float64) bool }); ok {
 		pclass.contains = (*[0]byte)(C._gotk4_gtk4_WidgetClass_contains)
@@ -850,7 +856,7 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_WidgetClass_contains
 func _gotk4_gtk4_WidgetClass_contains(arg0 *C.GtkWidget, arg1 C.double, arg2 C.double) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Contains(x, y float64) bool })
 
 	var _x float64 // out
@@ -870,7 +876,7 @@ func _gotk4_gtk4_WidgetClass_contains(arg0 *C.GtkWidget, arg1 C.double, arg2 C.d
 
 //export _gotk4_gtk4_WidgetClass_direction_changed
 func _gotk4_gtk4_WidgetClass_direction_changed(arg0 *C.GtkWidget, arg1 C.GtkTextDirection) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DirectionChanged(previousDirection TextDirection)
 	})
@@ -884,7 +890,7 @@ func _gotk4_gtk4_WidgetClass_direction_changed(arg0 *C.GtkWidget, arg1 C.GtkText
 
 //export _gotk4_gtk4_WidgetClass_focus
 func _gotk4_gtk4_WidgetClass_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Focus(direction DirectionType) bool
 	})
@@ -904,7 +910,7 @@ func _gotk4_gtk4_WidgetClass_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (
 
 //export _gotk4_gtk4_WidgetClass_get_request_mode
 func _gotk4_gtk4_WidgetClass_get_request_mode(arg0 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RequestMode() SizeRequestMode })
 
 	sizeRequestMode := iface.RequestMode()
@@ -916,7 +922,7 @@ func _gotk4_gtk4_WidgetClass_get_request_mode(arg0 *C.GtkWidget) (cret C.GtkSize
 
 //export _gotk4_gtk4_WidgetClass_grab_focus
 func _gotk4_gtk4_WidgetClass_grab_focus(arg0 *C.GtkWidget) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ GrabFocus() bool })
 
 	ok := iface.GrabFocus()
@@ -930,7 +936,7 @@ func _gotk4_gtk4_WidgetClass_grab_focus(arg0 *C.GtkWidget) (cret C.gboolean) {
 
 //export _gotk4_gtk4_WidgetClass_hide
 func _gotk4_gtk4_WidgetClass_hide(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Hide() })
 
 	iface.Hide()
@@ -938,7 +944,7 @@ func _gotk4_gtk4_WidgetClass_hide(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_keynav_failed
 func _gotk4_gtk4_WidgetClass_keynav_failed(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		KeynavFailed(direction DirectionType) bool
 	})
@@ -958,7 +964,7 @@ func _gotk4_gtk4_WidgetClass_keynav_failed(arg0 *C.GtkWidget, arg1 C.GtkDirectio
 
 //export _gotk4_gtk4_WidgetClass_map
 func _gotk4_gtk4_WidgetClass_map(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Map() })
 
 	iface.Map()
@@ -966,7 +972,7 @@ func _gotk4_gtk4_WidgetClass_map(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_measure
 func _gotk4_gtk4_WidgetClass_measure(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 C.int, arg3 *C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	})
@@ -987,7 +993,7 @@ func _gotk4_gtk4_WidgetClass_measure(arg0 *C.GtkWidget, arg1 C.GtkOrientation, a
 
 //export _gotk4_gtk4_WidgetClass_mnemonic_activate
 func _gotk4_gtk4_WidgetClass_mnemonic_activate(arg0 *C.GtkWidget, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MnemonicActivate(groupCycling bool) bool })
 
 	var _groupCycling bool // out
@@ -1007,7 +1013,7 @@ func _gotk4_gtk4_WidgetClass_mnemonic_activate(arg0 *C.GtkWidget, arg1 C.gboolea
 
 //export _gotk4_gtk4_WidgetClass_move_focus
 func _gotk4_gtk4_WidgetClass_move_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MoveFocus(direction DirectionType) })
 
 	var _direction DirectionType // out
@@ -1019,7 +1025,7 @@ func _gotk4_gtk4_WidgetClass_move_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionTy
 
 //export _gotk4_gtk4_WidgetClass_query_tooltip
 func _gotk4_gtk4_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	})
@@ -1047,7 +1053,7 @@ func _gotk4_gtk4_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.int, arg2 C
 
 //export _gotk4_gtk4_WidgetClass_realize
 func _gotk4_gtk4_WidgetClass_realize(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Realize() })
 
 	iface.Realize()
@@ -1055,7 +1061,7 @@ func _gotk4_gtk4_WidgetClass_realize(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_root
 func _gotk4_gtk4_WidgetClass_root(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Root() })
 
 	iface.Root()
@@ -1063,7 +1069,7 @@ func _gotk4_gtk4_WidgetClass_root(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_set_focus_child
 func _gotk4_gtk4_WidgetClass_set_focus_child(arg0 *C.GtkWidget, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetFocusChild(child Widgetter) })
 
 	var _child Widgetter // out
@@ -1090,7 +1096,7 @@ func _gotk4_gtk4_WidgetClass_set_focus_child(arg0 *C.GtkWidget, arg1 *C.GtkWidge
 
 //export _gotk4_gtk4_WidgetClass_show
 func _gotk4_gtk4_WidgetClass_show(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Show() })
 
 	iface.Show()
@@ -1098,7 +1104,7 @@ func _gotk4_gtk4_WidgetClass_show(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_size_allocate
 func _gotk4_gtk4_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SizeAllocate(width, height, baseline int)
 	})
@@ -1116,7 +1122,7 @@ func _gotk4_gtk4_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 C.int, arg2 C
 
 //export _gotk4_gtk4_WidgetClass_snapshot
 func _gotk4_gtk4_WidgetClass_snapshot(arg0 *C.GtkWidget, arg1 *C.GtkSnapshot) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Snapshot(snapshot *Snapshot) })
 
 	var _snapshot *Snapshot // out
@@ -1128,7 +1134,7 @@ func _gotk4_gtk4_WidgetClass_snapshot(arg0 *C.GtkWidget, arg1 *C.GtkSnapshot) {
 
 //export _gotk4_gtk4_WidgetClass_state_flags_changed
 func _gotk4_gtk4_WidgetClass_state_flags_changed(arg0 *C.GtkWidget, arg1 C.GtkStateFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		StateFlagsChanged(previousStateFlags StateFlags)
 	})
@@ -1142,7 +1148,7 @@ func _gotk4_gtk4_WidgetClass_state_flags_changed(arg0 *C.GtkWidget, arg1 C.GtkSt
 
 //export _gotk4_gtk4_WidgetClass_system_setting_changed
 func _gotk4_gtk4_WidgetClass_system_setting_changed(arg0 *C.GtkWidget, arg1 C.GtkSystemSetting) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SystemSettingChanged(settings SystemSetting) })
 
 	var _settings SystemSetting // out
@@ -1154,7 +1160,7 @@ func _gotk4_gtk4_WidgetClass_system_setting_changed(arg0 *C.GtkWidget, arg1 C.Gt
 
 //export _gotk4_gtk4_WidgetClass_unmap
 func _gotk4_gtk4_WidgetClass_unmap(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unmap() })
 
 	iface.Unmap()
@@ -1162,7 +1168,7 @@ func _gotk4_gtk4_WidgetClass_unmap(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_unrealize
 func _gotk4_gtk4_WidgetClass_unrealize(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unrealize() })
 
 	iface.Unrealize()
@@ -1170,7 +1176,7 @@ func _gotk4_gtk4_WidgetClass_unrealize(arg0 *C.GtkWidget) {
 
 //export _gotk4_gtk4_WidgetClass_unroot
 func _gotk4_gtk4_WidgetClass_unroot(arg0 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unroot() })
 
 	iface.Unroot()

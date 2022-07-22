@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -101,14 +101,19 @@ var (
 	_ coreglib.Objector = (*CheckButton)(nil)
 )
 
-func classInitCheckButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCheckButton,
+		GoType:       reflect.TypeOf((*CheckButton)(nil)),
+		InitClass:    initClassCheckButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCheckButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCheckButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCheckButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_activate)
@@ -121,7 +126,7 @@ func classInitCheckButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_CheckButtonClass_activate
 func _gotk4_gtk4_CheckButtonClass_activate(arg0 *C.GtkCheckButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -129,7 +134,7 @@ func _gotk4_gtk4_CheckButtonClass_activate(arg0 *C.GtkCheckButton) {
 
 //export _gotk4_gtk4_CheckButtonClass_toggled
 func _gotk4_gtk4_CheckButtonClass_toggled(arg0 *C.GtkCheckButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
 	iface.Toggled()

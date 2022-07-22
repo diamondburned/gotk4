@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -80,14 +80,19 @@ var (
 	_ coreglib.Objector = (*SearchEntry)(nil)
 )
 
-func classInitSearchEntrier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSearchEntry,
+		GoType:       reflect.TypeOf((*SearchEntry)(nil)),
+		InitClass:    initClassSearchEntry,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkSearchEntry{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkSearchEntryClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSearchEntry(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ NextMatch() }); ok {
 		pclass.next_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_next_match)
@@ -108,7 +113,7 @@ func classInitSearchEntrier(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_SearchEntryClass_next_match
 func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NextMatch() })
 
 	iface.NextMatch()
@@ -116,7 +121,7 @@ func _gotk4_gtk3_SearchEntryClass_next_match(arg0 *C.GtkSearchEntry) {
 
 //export _gotk4_gtk3_SearchEntryClass_previous_match
 func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreviousMatch() })
 
 	iface.PreviousMatch()
@@ -124,7 +129,7 @@ func _gotk4_gtk3_SearchEntryClass_previous_match(arg0 *C.GtkSearchEntry) {
 
 //export _gotk4_gtk3_SearchEntryClass_search_changed
 func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SearchChanged() })
 
 	iface.SearchChanged()
@@ -132,7 +137,7 @@ func _gotk4_gtk3_SearchEntryClass_search_changed(arg0 *C.GtkSearchEntry) {
 
 //export _gotk4_gtk3_SearchEntryClass_stop_search
 func _gotk4_gtk3_SearchEntryClass_stop_search(arg0 *C.GtkSearchEntry) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ StopSearch() })
 
 	iface.StopSearch()

@@ -4,10 +4,10 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -242,14 +242,19 @@ var (
 	_ coreglib.Objector = (*Application)(nil)
 )
 
-func classInitApplicationer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeApplication,
+		GoType:       reflect.TypeOf((*Application)(nil)),
+		InitClass:    initClassApplication,
+		ClassSize:    uint16(unsafe.Sizeof(C.GApplication{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GApplicationClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassApplication(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GApplicationClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GApplicationClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gio2_ApplicationClass_activate)
@@ -326,7 +331,7 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_ApplicationClass_activate
 func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -334,7 +339,7 @@ func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_add_platform_data
 func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *C.GVariantBuilder) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AddPlatformData(builder *glib.VariantBuilder)
 	})
@@ -355,7 +360,7 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *
 
 //export _gotk4_gio2_ApplicationClass_after_emit
 func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AfterEmit(platformData *glib.Variant)
 	})
@@ -376,7 +381,7 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVari
 
 //export _gotk4_gio2_ApplicationClass_before_emit
 func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		BeforeEmit(platformData *glib.Variant)
 	})
@@ -397,7 +402,7 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 
 //export _gotk4_gio2_ApplicationClass_command_line
 func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CommandLine(commandLine *ApplicationCommandLine) int
 	})
@@ -415,7 +420,7 @@ func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GAp
 
 //export _gotk4_gio2_ApplicationClass_dbus_register
 func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusRegister(connection *DBusConnection, objectPath string) error
 	})
@@ -437,7 +442,7 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GD
 
 //export _gotk4_gio2_ApplicationClass_dbus_unregister
 func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusUnregister(connection *DBusConnection, objectPath string)
 	})
@@ -453,7 +458,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 
 //export _gotk4_gio2_ApplicationClass_handle_local_options
 func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		HandleLocalOptions(options *glib.VariantDict) int
 	})
@@ -478,7 +483,7 @@ func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg
 
 //export _gotk4_gio2_ApplicationClass_name_lost
 func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NameLost() bool })
 
 	ok := iface.NameLost()
@@ -492,7 +497,7 @@ func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboole
 
 //export _gotk4_gio2_ApplicationClass_open
 func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Open(files []Filer, hint string)
 	})
@@ -530,7 +535,7 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 
 //export _gotk4_gio2_ApplicationClass_quit_mainloop
 func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ QuitMainloop() })
 
 	iface.QuitMainloop()
@@ -538,7 +543,7 @@ func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_run_mainloop
 func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ RunMainloop() })
 
 	iface.RunMainloop()
@@ -546,7 +551,7 @@ func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_shutdown
 func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Shutdown() })
 
 	iface.Shutdown()
@@ -554,7 +559,7 @@ func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
 
 //export _gotk4_gio2_ApplicationClass_startup
 func _gotk4_gio2_ApplicationClass_startup(arg0 *C.GApplication) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Startup() })
 
 	iface.Startup()

@@ -4,10 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -174,14 +174,19 @@ var (
 	_ coreglib.Objector = (*Sorter)(nil)
 )
 
-func classInitSorterer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSorter,
+		GoType:       reflect.TypeOf((*Sorter)(nil)),
+		InitClass:    initClassSorter,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkSorter{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkSorterClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSorter(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSorterClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkSorterClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Compare(item1, item2 *coreglib.Object) Ordering
@@ -196,7 +201,7 @@ func classInitSorterer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_SorterClass_compare
 func _gotk4_gtk4_SorterClass_compare(arg0 *C.GtkSorter, arg1 C.gpointer, arg2 C.gpointer) (cret C.GtkOrdering) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Compare(item1, item2 *coreglib.Object) Ordering
 	})
@@ -216,7 +221,7 @@ func _gotk4_gtk4_SorterClass_compare(arg0 *C.GtkSorter, arg1 C.gpointer, arg2 C.
 
 //export _gotk4_gtk4_SorterClass_get_order
 func _gotk4_gtk4_SorterClass_get_order(arg0 *C.GtkSorter) (cret C.GtkSorterOrder) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Order() SorterOrder })
 
 	sorterOrder := iface.Order()

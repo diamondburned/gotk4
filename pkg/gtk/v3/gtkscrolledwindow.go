@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -219,14 +219,19 @@ var (
 	_ Binner = (*ScrolledWindow)(nil)
 )
 
-func classInitScrolledWindower(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeScrolledWindow,
+		GoType:       reflect.TypeOf((*ScrolledWindow)(nil)),
+		InitClass:    initClassScrolledWindow,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkScrolledWindow{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkScrolledWindowClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassScrolledWindow(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkScrolledWindowClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkScrolledWindowClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ MoveFocusOut(direction DirectionType) }); ok {
 		pclass.move_focus_out = (*[0]byte)(C._gotk4_gtk3_ScrolledWindowClass_move_focus_out)
@@ -241,7 +246,7 @@ func classInitScrolledWindower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ScrolledWindowClass_move_focus_out
 func _gotk4_gtk3_ScrolledWindowClass_move_focus_out(arg0 *C.GtkScrolledWindow, arg1 C.GtkDirectionType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MoveFocusOut(direction DirectionType) })
 
 	var _direction DirectionType // out
@@ -253,7 +258,7 @@ func _gotk4_gtk3_ScrolledWindowClass_move_focus_out(arg0 *C.GtkScrolledWindow, a
 
 //export _gotk4_gtk3_ScrolledWindowClass_scroll_child
 func _gotk4_gtk3_ScrolledWindowClass_scroll_child(arg0 *C.GtkScrolledWindow, arg1 C.GtkScrollType, arg2 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ScrollChild(scroll ScrollType, horizontal bool) bool
 	})

@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -432,14 +432,19 @@ var (
 	_ coreglib.Objector = (*UIManager)(nil)
 )
 
-func classInitUIManagerer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeUIManager,
+		GoType:       reflect.TypeOf((*UIManager)(nil)),
+		InitClass:    initClassUIManager,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkUIManager{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkUIManagerClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassUIManager(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ActionsChanged() }); ok {
 		pclass.actions_changed = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_actions_changed)
@@ -480,7 +485,7 @@ func classInitUIManagerer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_UIManagerClass_actions_changed
 func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.GtkUIManager) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActionsChanged() })
 
 	iface.ActionsChanged()
@@ -488,7 +493,7 @@ func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.GtkUIManager) {
 
 //export _gotk4_gtk3_UIManagerClass_add_widget
 func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.GtkUIManager, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AddWidget(widget Widgetter) })
 
 	var _widget Widgetter // out
@@ -516,7 +521,7 @@ func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.GtkUIManager, arg1 *C.GtkWidg
 
 //export _gotk4_gtk3_UIManagerClass_connect_proxy
 func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ConnectProxy(action *Action, proxy Widgetter)
 	})
@@ -548,7 +553,7 @@ func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkA
 
 //export _gotk4_gtk3_UIManagerClass_disconnect_proxy
 func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DisconnectProxy(action *Action, proxy Widgetter)
 	})
@@ -580,7 +585,7 @@ func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.GtkUIManager, arg1 *C.G
 
 //export _gotk4_gtk3_UIManagerClass_get_action
 func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Action(path string) *Action })
 
 	var _path string // out
@@ -596,7 +601,7 @@ func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) 
 
 //export _gotk4_gtk3_UIManagerClass_get_widget
 func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Widget(path string) Widgetter })
 
 	var _path string // out
@@ -612,7 +617,7 @@ func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) 
 
 //export _gotk4_gtk3_UIManagerClass_post_activate
 func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PostActivate(action *Action) })
 
 	var _action *Action // out
@@ -624,7 +629,7 @@ func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.GtkUIManager, arg1 *C.GtkA
 
 //export _gotk4_gtk3_UIManagerClass_pre_activate
 func _gotk4_gtk3_UIManagerClass_pre_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PreActivate(action *Action) })
 
 	var _action *Action // out

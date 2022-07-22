@@ -681,7 +681,7 @@ func ifaceInitTreeModeller(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TreeModelIface_get_column_type
 func _gotk4_gtk3_TreeModelIface_get_column_type(arg0 *C.GtkTreeModel, arg1 C.gint) (cret C.GType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _index_ int // out
@@ -697,7 +697,7 @@ func _gotk4_gtk3_TreeModelIface_get_column_type(arg0 *C.GtkTreeModel, arg1 C.gin
 
 //export _gotk4_gtk3_TreeModelIface_get_flags
 func _gotk4_gtk3_TreeModelIface_get_flags(arg0 *C.GtkTreeModel) (cret C.GtkTreeModelFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	treeModelFlags := iface.Flags()
@@ -709,7 +709,7 @@ func _gotk4_gtk3_TreeModelIface_get_flags(arg0 *C.GtkTreeModel) (cret C.GtkTreeM
 
 //export _gotk4_gtk3_TreeModelIface_get_iter
 func _gotk4_gtk3_TreeModelIface_get_iter(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreePath) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _path *TreePath // out
@@ -728,7 +728,7 @@ func _gotk4_gtk3_TreeModelIface_get_iter(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIt
 
 //export _gotk4_gtk3_TreeModelIface_get_n_columns
 func _gotk4_gtk3_TreeModelIface_get_n_columns(arg0 *C.GtkTreeModel) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	gint := iface.NColumns()
@@ -740,7 +740,7 @@ func _gotk4_gtk3_TreeModelIface_get_n_columns(arg0 *C.GtkTreeModel) (cret C.gint
 
 //export _gotk4_gtk3_TreeModelIface_get_path
 func _gotk4_gtk3_TreeModelIface_get_path(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret *C.GtkTreePath) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -757,7 +757,7 @@ func _gotk4_gtk3_TreeModelIface_get_path(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIt
 
 //export _gotk4_gtk3_TreeModelIface_get_value
 func _gotk4_gtk3_TreeModelIface_get_value(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gint, arg3 *C.GValue) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -773,7 +773,7 @@ func _gotk4_gtk3_TreeModelIface_get_value(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 
 //export _gotk4_gtk3_TreeModelIface_iter_children
 func _gotk4_gtk3_TreeModelIface_iter_children(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _parent *TreeIter // out
@@ -794,7 +794,7 @@ func _gotk4_gtk3_TreeModelIface_iter_children(arg0 *C.GtkTreeModel, arg1 *C.GtkT
 
 //export _gotk4_gtk3_TreeModelIface_iter_has_child
 func _gotk4_gtk3_TreeModelIface_iter_has_child(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -812,7 +812,7 @@ func _gotk4_gtk3_TreeModelIface_iter_has_child(arg0 *C.GtkTreeModel, arg1 *C.Gtk
 
 //export _gotk4_gtk3_TreeModelIface_iter_n_children
 func _gotk4_gtk3_TreeModelIface_iter_n_children(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -830,7 +830,7 @@ func _gotk4_gtk3_TreeModelIface_iter_n_children(arg0 *C.GtkTreeModel, arg1 *C.Gt
 
 //export _gotk4_gtk3_TreeModelIface_iter_next
 func _gotk4_gtk3_TreeModelIface_iter_next(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -848,7 +848,7 @@ func _gotk4_gtk3_TreeModelIface_iter_next(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeI
 
 //export _gotk4_gtk3_TreeModelIface_iter_nth_child
 func _gotk4_gtk3_TreeModelIface_iter_nth_child(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _parent *TreeIter // out
@@ -871,7 +871,7 @@ func _gotk4_gtk3_TreeModelIface_iter_nth_child(arg0 *C.GtkTreeModel, arg1 *C.Gtk
 
 //export _gotk4_gtk3_TreeModelIface_iter_parent
 func _gotk4_gtk3_TreeModelIface_iter_parent(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _child *TreeIter // out
@@ -890,7 +890,7 @@ func _gotk4_gtk3_TreeModelIface_iter_parent(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 
 //export _gotk4_gtk3_TreeModelIface_iter_previous
 func _gotk4_gtk3_TreeModelIface_iter_previous(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -908,7 +908,7 @@ func _gotk4_gtk3_TreeModelIface_iter_previous(arg0 *C.GtkTreeModel, arg1 *C.GtkT
 
 //export _gotk4_gtk3_TreeModelIface_ref_node
 func _gotk4_gtk3_TreeModelIface_ref_node(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out
@@ -920,7 +920,7 @@ func _gotk4_gtk3_TreeModelIface_ref_node(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIt
 
 //export _gotk4_gtk3_TreeModelIface_row_changed
 func _gotk4_gtk3_TreeModelIface_row_changed(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _path *TreePath // out
@@ -934,7 +934,7 @@ func _gotk4_gtk3_TreeModelIface_row_changed(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 
 //export _gotk4_gtk3_TreeModelIface_row_deleted
 func _gotk4_gtk3_TreeModelIface_row_deleted(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _path *TreePath // out
@@ -946,7 +946,7 @@ func _gotk4_gtk3_TreeModelIface_row_deleted(arg0 *C.GtkTreeModel, arg1 *C.GtkTre
 
 //export _gotk4_gtk3_TreeModelIface_row_has_child_toggled
 func _gotk4_gtk3_TreeModelIface_row_has_child_toggled(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _path *TreePath // out
@@ -960,7 +960,7 @@ func _gotk4_gtk3_TreeModelIface_row_has_child_toggled(arg0 *C.GtkTreeModel, arg1
 
 //export _gotk4_gtk3_TreeModelIface_row_inserted
 func _gotk4_gtk3_TreeModelIface_row_inserted(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _path *TreePath // out
@@ -974,7 +974,7 @@ func _gotk4_gtk3_TreeModelIface_row_inserted(arg0 *C.GtkTreeModel, arg1 *C.GtkTr
 
 //export _gotk4_gtk3_TreeModelIface_unref_node
 func _gotk4_gtk3_TreeModelIface_unref_node(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
 	var _iter *TreeIter // out

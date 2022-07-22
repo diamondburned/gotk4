@@ -198,7 +198,7 @@ func ifaceInitTreeDragDester(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TreeDragDestIface_drag_data_received
 func _gotk4_gtk3_TreeDragDestIface_drag_data_received(arg0 *C.GtkTreeDragDest, arg1 *C.GtkTreePath, arg2 *C.GtkSelectionData) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragDestOverrider)
 
 	var _dest *TreePath               // out
@@ -218,7 +218,7 @@ func _gotk4_gtk3_TreeDragDestIface_drag_data_received(arg0 *C.GtkTreeDragDest, a
 
 //export _gotk4_gtk3_TreeDragDestIface_row_drop_possible
 func _gotk4_gtk3_TreeDragDestIface_row_drop_possible(arg0 *C.GtkTreeDragDest, arg1 *C.GtkTreePath, arg2 *C.GtkSelectionData) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragDestOverrider)
 
 	var _destPath *TreePath           // out
@@ -408,7 +408,7 @@ func ifaceInitTreeDragSourcer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TreeDragSourceIface_drag_data_delete
 func _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
 	var _path *TreePath // out
@@ -426,7 +426,7 @@ func _gotk4_gtk3_TreeDragSourceIface_drag_data_delete(arg0 *C.GtkTreeDragSource,
 
 //export _gotk4_gtk3_TreeDragSourceIface_drag_data_get
 func _gotk4_gtk3_TreeDragSourceIface_drag_data_get(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath, arg2 *C.GtkSelectionData) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
 	var _path *TreePath               // out
@@ -446,7 +446,7 @@ func _gotk4_gtk3_TreeDragSourceIface_drag_data_get(arg0 *C.GtkTreeDragSource, ar
 
 //export _gotk4_gtk3_TreeDragSourceIface_row_draggable
 func _gotk4_gtk3_TreeDragSourceIface_row_draggable(arg0 *C.GtkTreeDragSource, arg1 *C.GtkTreePath) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
 	var _path *TreePath // out

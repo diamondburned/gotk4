@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -189,14 +190,19 @@ var (
 	_ Widgetter = (*Calendar)(nil)
 )
 
-func classInitCalendarrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCalendar,
+		GoType:       reflect.TypeOf((*Calendar)(nil)),
+		InitClass:    initClassCalendar,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCalendar{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCalendarClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCalendar(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCalendarClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCalendarClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ DaySelected() }); ok {
 		pclass.day_selected = (*[0]byte)(C._gotk4_gtk3_CalendarClass_day_selected)
@@ -229,7 +235,7 @@ func classInitCalendarrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CalendarClass_day_selected
 func _gotk4_gtk3_CalendarClass_day_selected(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DaySelected() })
 
 	iface.DaySelected()
@@ -237,7 +243,7 @@ func _gotk4_gtk3_CalendarClass_day_selected(arg0 *C.GtkCalendar) {
 
 //export _gotk4_gtk3_CalendarClass_day_selected_double_click
 func _gotk4_gtk3_CalendarClass_day_selected_double_click(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DaySelectedDoubleClick() })
 
 	iface.DaySelectedDoubleClick()
@@ -245,7 +251,7 @@ func _gotk4_gtk3_CalendarClass_day_selected_double_click(arg0 *C.GtkCalendar) {
 
 //export _gotk4_gtk3_CalendarClass_month_changed
 func _gotk4_gtk3_CalendarClass_month_changed(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MonthChanged() })
 
 	iface.MonthChanged()
@@ -253,7 +259,7 @@ func _gotk4_gtk3_CalendarClass_month_changed(arg0 *C.GtkCalendar) {
 
 //export _gotk4_gtk3_CalendarClass_next_month
 func _gotk4_gtk3_CalendarClass_next_month(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NextMonth() })
 
 	iface.NextMonth()
@@ -261,7 +267,7 @@ func _gotk4_gtk3_CalendarClass_next_month(arg0 *C.GtkCalendar) {
 
 //export _gotk4_gtk3_CalendarClass_next_year
 func _gotk4_gtk3_CalendarClass_next_year(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ NextYear() })
 
 	iface.NextYear()
@@ -269,7 +275,7 @@ func _gotk4_gtk3_CalendarClass_next_year(arg0 *C.GtkCalendar) {
 
 //export _gotk4_gtk3_CalendarClass_prev_month
 func _gotk4_gtk3_CalendarClass_prev_month(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrevMonth() })
 
 	iface.PrevMonth()
@@ -277,7 +283,7 @@ func _gotk4_gtk3_CalendarClass_prev_month(arg0 *C.GtkCalendar) {
 
 //export _gotk4_gtk3_CalendarClass_prev_year
 func _gotk4_gtk3_CalendarClass_prev_year(arg0 *C.GtkCalendar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrevYear() })
 
 	iface.PrevYear()

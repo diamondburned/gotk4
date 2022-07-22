@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -135,14 +136,19 @@ type Permissioner interface {
 
 var _ Permissioner = (*Permission)(nil)
 
-func classInitPermissioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypePermission,
+		GoType:       reflect.TypeOf((*Permission)(nil)),
+		InitClass:    initClassPermission,
+		ClassSize:    uint16(unsafe.Sizeof(C.GPermission{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GPermissionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassPermission(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GPermissionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GPermissionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Acquire(ctx context.Context) error
@@ -171,7 +177,7 @@ func classInitPermissioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_PermissionClass_acquire
 func _gotk4_gio2_PermissionClass_acquire(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Acquire(ctx context.Context) error
 	})
@@ -193,7 +199,7 @@ func _gotk4_gio2_PermissionClass_acquire(arg0 *C.GPermission, arg1 *C.GCancellab
 
 //export _gotk4_gio2_PermissionClass_acquire_finish
 func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AcquireFinish(result AsyncResulter) error
 	})
@@ -229,7 +235,7 @@ func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.GPermission, arg1 *C.GAs
 
 //export _gotk4_gio2_PermissionClass_release
 func _gotk4_gio2_PermissionClass_release(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Release(ctx context.Context) error
 	})
@@ -251,7 +257,7 @@ func _gotk4_gio2_PermissionClass_release(arg0 *C.GPermission, arg1 *C.GCancellab
 
 //export _gotk4_gio2_PermissionClass_release_finish
 func _gotk4_gio2_PermissionClass_release_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ReleaseFinish(result AsyncResulter) error
 	})

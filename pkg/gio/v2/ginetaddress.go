@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,14 +55,19 @@ var (
 	_ coreglib.Objector = (*InetAddress)(nil)
 )
 
-func classInitInetAddresser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeInetAddress,
+		GoType:       reflect.TypeOf((*InetAddress)(nil)),
+		InitClass:    initClassInetAddress,
+		ClassSize:    uint16(unsafe.Sizeof(C.GInetAddress{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GInetAddressClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassInetAddress(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GInetAddressClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GInetAddressClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ String() string }); ok {
 		pclass.to_string = (*[0]byte)(C._gotk4_gio2_InetAddressClass_to_string)
@@ -71,7 +76,7 @@ func classInitInetAddresser(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_InetAddressClass_to_string
 func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.GInetAddress) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ String() string })
 
 	utf8 := iface.String()

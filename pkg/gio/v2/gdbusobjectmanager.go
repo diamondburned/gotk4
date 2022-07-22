@@ -159,7 +159,7 @@ func ifaceInitDBusObjectManagerer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_interface
 func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager, arg1 *C.gchar, arg2 *C.gchar) (cret *C.GDBusInterface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _objectPath string    // out
@@ -178,7 +178,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.GDBusObjectManager
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object
 func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, arg1 *C.gchar) (cret *C.GDBusObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _objectPath string // out
@@ -195,7 +195,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.GDBusObjectManager, a
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object_path
 func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.GDBusObjectManager) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	utf8 := iface.ObjectPath()
@@ -208,7 +208,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.GDBusObjectManag
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_objects
 func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	list := iface.Objects()
@@ -226,7 +226,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_objects(arg0 *C.GDBusObjectManager) 
 
 //export _gotk4_gio2_DBusObjectManagerIface_interface_added
 func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector       // out
@@ -272,7 +272,7 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_added(arg0 *C.GDBusObjectManag
 
 //export _gotk4_gio2_DBusObjectManagerIface_interface_removed
 func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject, arg2 *C.GDBusInterface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector       // out
@@ -318,7 +318,7 @@ func _gotk4_gio2_DBusObjectManagerIface_interface_removed(arg0 *C.GDBusObjectMan
 
 //export _gotk4_gio2_DBusObjectManagerIface_object_added
 func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector // out
@@ -346,7 +346,7 @@ func _gotk4_gio2_DBusObjectManagerIface_object_added(arg0 *C.GDBusObjectManager,
 
 //export _gotk4_gio2_DBusObjectManagerIface_object_removed
 func _gotk4_gio2_DBusObjectManagerIface_object_removed(arg0 *C.GDBusObjectManager, arg1 *C.GDBusObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	var _object DBusObjector // out

@@ -46,12 +46,7 @@ var (
 	_ LayoutManagerer = (*OverlayLayout)(nil)
 )
 
-func classInitOverlayLayouter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassOverlayLayout(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapOverlayLayout(obj *coreglib.Object) *OverlayLayout {
@@ -99,12 +94,7 @@ var (
 	_ LayoutChilder = (*OverlayLayoutChild)(nil)
 )
 
-func classInitOverlayLayoutChilder(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassOverlayLayoutChild(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapOverlayLayoutChild(obj *coreglib.Object) *OverlayLayoutChild {

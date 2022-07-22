@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -100,14 +100,19 @@ var (
 	_ coreglib.Objector = (*MountOperation)(nil)
 )
 
-func classInitMountOperationer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMountOperation,
+		GoType:       reflect.TypeOf((*MountOperation)(nil)),
+		InitClass:    initClassMountOperation,
+		ClassSize:    uint16(unsafe.Sizeof(C.GMountOperation{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GMountOperationClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMountOperation(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMountOperationClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GMountOperationClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Aborted() }); ok {
 		pclass.aborted = (*[0]byte)(C._gotk4_gio2_MountOperationClass_aborted)
@@ -140,7 +145,7 @@ func classInitMountOperationer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_MountOperationClass_aborted
 func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Aborted() })
 
 	iface.Aborted()
@@ -148,7 +153,7 @@ func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
 
 //export _gotk4_gio2_MountOperationClass_ask_password
 func _gotk4_gio2_MountOperationClass_ask_password(arg0 *C.GMountOperation, arg1 *C.char, arg2 *C.char, arg3 *C.char, arg4 C.GAskPasswordFlags) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
 	})
@@ -168,7 +173,7 @@ func _gotk4_gio2_MountOperationClass_ask_password(arg0 *C.GMountOperation, arg1 
 
 //export _gotk4_gio2_MountOperationClass_ask_question
 func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 *C.char, arg2 **C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AskQuestion(message string, choices []string)
 	})
@@ -196,7 +201,7 @@ func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 
 
 //export _gotk4_gio2_MountOperationClass_reply
 func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMountOperationResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Reply(result MountOperationResult)
 	})
@@ -210,7 +215,7 @@ func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMoun
 
 //export _gotk4_gio2_MountOperationClass_show_unmount_progress
 func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 	})

@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -56,14 +56,19 @@ var (
 	_ Widgetter = (*HSV)(nil)
 )
 
-func classInitHSVer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeHSV,
+		GoType:       reflect.TypeOf((*HSV)(nil)),
+		InitClass:    initClassHSV,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkHSV{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkHSVClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassHSV(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkHSVClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkHSVClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_HSVClass_changed)
@@ -76,7 +81,7 @@ func classInitHSVer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_HSVClass_changed
 func _gotk4_gtk3_HSVClass_changed(arg0 *C.GtkHSV) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
@@ -84,7 +89,7 @@ func _gotk4_gtk3_HSVClass_changed(arg0 *C.GtkHSV) {
 
 //export _gotk4_gtk3_HSVClass_move
 func _gotk4_gtk3_HSVClass_move(arg0 *C.GtkHSV, arg1 C.GtkDirectionType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Move(typ DirectionType) })
 
 	var _typ DirectionType // out

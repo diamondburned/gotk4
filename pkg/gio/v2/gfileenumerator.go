@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -126,14 +127,19 @@ var (
 	_ coreglib.Objector = (*FileEnumerator)(nil)
 )
 
-func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeFileEnumerator,
+		GoType:       reflect.TypeOf((*FileEnumerator)(nil)),
+		InitClass:    initClassFileEnumerator,
+		ClassSize:    uint16(unsafe.Sizeof(C.GFileEnumerator{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GFileEnumeratorClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassFileEnumerator(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
@@ -162,7 +168,7 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_FileEnumeratorClass_close_finish
 func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	})
@@ -198,7 +204,7 @@ func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 
 
 //export _gotk4_gio2_FileEnumeratorClass_close_fn
 func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CloseFn(ctx context.Context) error
 	})
@@ -220,7 +226,7 @@ func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.GFileEnumerator, arg1 *C.G
 
 //export _gotk4_gio2_FileEnumeratorClass_next_file
 func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFile(ctx context.Context) (*FileInfo, error)
 	})
@@ -246,7 +252,7 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.
 
 //export _gotk4_gio2_FileEnumeratorClass_next_files_finish
 func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 	})

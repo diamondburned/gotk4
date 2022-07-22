@@ -104,7 +104,7 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	cbgen := callback.NewGenerator(ts.igen.gen)
 	cbgen.Parent = ts.igen.Root.Type
 	cbgen.Preamble = func(cbgen *callback.Generator, p *pen.BlockSection) (string, bool) {
-		p.Linef("goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))")
+		p.Linef("goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))")
 		if ts.igen.IsClass() {
 			p.Linef("iface := goval.(interface{ %s%s })", method.Go.Name, method.Go.Tail)
 		} else {

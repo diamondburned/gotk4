@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -105,14 +106,19 @@ type SocketAddressEnumeratorrer interface {
 
 var _ SocketAddressEnumeratorrer = (*SocketAddressEnumerator)(nil)
 
-func classInitSocketAddressEnumeratorrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSocketAddressEnumerator,
+		GoType:       reflect.TypeOf((*SocketAddressEnumerator)(nil)),
+		InitClass:    initClassSocketAddressEnumerator,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSocketAddressEnumerator{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSocketAddressEnumeratorClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSocketAddressEnumerator(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketAddressEnumeratorClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSocketAddressEnumeratorClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Next(ctx context.Context) (SocketAddresser, error)
@@ -129,7 +135,7 @@ func classInitSocketAddressEnumeratorrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next
 func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GSocketAddress) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next(ctx context.Context) (SocketAddresser, error)
 	})
@@ -153,7 +159,7 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next_finish
 func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddressEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GSocketAddress) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFinish(result AsyncResulter) (SocketAddresser, error)
 	})

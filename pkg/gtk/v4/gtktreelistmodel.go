@@ -82,12 +82,7 @@ var (
 	_ coreglib.Objector = (*TreeListModel)(nil)
 )
 
-func classInitTreeListModeller(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassTreeListModel(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapTreeListModel(obj *coreglib.Object) *TreeListModel {
@@ -369,12 +364,7 @@ var (
 	_ coreglib.Objector = (*TreeListRow)(nil)
 )
 
-func classInitTreeListRower(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassTreeListRow(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapTreeListRow(obj *coreglib.Object) *TreeListRow {

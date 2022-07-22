@@ -129,7 +129,7 @@ func ifaceInitIconner(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_IconIface_equal
 func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
 	var _icon2 Iconner // out
@@ -162,7 +162,7 @@ func _gotk4_gio2_IconIface_equal(arg0 *C.GIcon, arg1 *C.GIcon) (cret C.gboolean)
 
 //export _gotk4_gio2_IconIface_hash
 func _gotk4_gio2_IconIface_hash(arg0 *C.GIcon) (cret C.guint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
 	guint := iface.Hash()
@@ -174,7 +174,7 @@ func _gotk4_gio2_IconIface_hash(arg0 *C.GIcon) (cret C.guint) {
 
 //export _gotk4_gio2_IconIface_serialize
 func _gotk4_gio2_IconIface_serialize(arg0 *C.GIcon) (cret *C.GVariant) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
 	variant := iface.Serialize()

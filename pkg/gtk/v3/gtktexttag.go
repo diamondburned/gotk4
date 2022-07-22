@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -72,14 +72,19 @@ var (
 	_ coreglib.Objector = (*TextTag)(nil)
 )
 
-func classInitTextTagger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTextTag,
+		GoType:       reflect.TypeOf((*TextTag)(nil)),
+		InitClass:    initClassTextTag,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkTextTag{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkTextTagClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTextTag(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
@@ -90,7 +95,7 @@ func classInitTextTagger(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TextTagClass_event
 func _gotk4_gtk3_TextTagClass_event(arg0 *C.GtkTextTag, arg1 *C.GObject, arg2 *C.GdkEvent, arg3 *C.GtkTextIter) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
 	})

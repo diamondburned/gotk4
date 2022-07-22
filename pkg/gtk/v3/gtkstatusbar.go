@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -91,14 +91,19 @@ var (
 	_ coreglib.Objector = (*Statusbar)(nil)
 )
 
-func classInitStatusbarrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeStatusbar,
+		GoType:       reflect.TypeOf((*Statusbar)(nil)),
+		InitClass:    initClassStatusbar,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkStatusbar{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkStatusbarClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassStatusbar(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStatusbarClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkStatusbarClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		TextPopped(contextId uint, text string)
@@ -115,7 +120,7 @@ func classInitStatusbarrer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_StatusbarClass_text_popped
 func _gotk4_gtk3_StatusbarClass_text_popped(arg0 *C.GtkStatusbar, arg1 C.guint, arg2 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextPopped(contextId uint, text string)
 	})
@@ -131,7 +136,7 @@ func _gotk4_gtk3_StatusbarClass_text_popped(arg0 *C.GtkStatusbar, arg1 C.guint, 
 
 //export _gotk4_gtk3_StatusbarClass_text_pushed
 func _gotk4_gtk3_StatusbarClass_text_pushed(arg0 *C.GtkStatusbar, arg1 C.guint, arg2 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextPushed(contextId uint, text string)
 	})

@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -84,14 +84,19 @@ var (
 	_ Containerer       = (*AppChooserWidget)(nil)
 )
 
-func classInitAppChooserWidgetter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAppChooserWidget,
+		GoType:       reflect.TypeOf((*AppChooserWidget)(nil)),
+		InitClass:    initClassAppChooserWidget,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkAppChooserWidget{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkAppChooserWidgetClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAppChooserWidget(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAppChooserWidgetClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkAppChooserWidgetClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ApplicationActivated(appInfo gio.AppInfor) }); ok {
 		pclass.application_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_application_activated)
@@ -110,7 +115,7 @@ func classInitAppChooserWidgetter(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_AppChooserWidgetClass_application_activated
 func _gotk4_gtk3_AppChooserWidgetClass_application_activated(arg0 *C.GtkAppChooserWidget, arg1 *C.GAppInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ApplicationActivated(appInfo gio.AppInfor) })
 
 	var _appInfo gio.AppInfor // out
@@ -138,7 +143,7 @@ func _gotk4_gtk3_AppChooserWidgetClass_application_activated(arg0 *C.GtkAppChoos
 
 //export _gotk4_gtk3_AppChooserWidgetClass_application_selected
 func _gotk4_gtk3_AppChooserWidgetClass_application_selected(arg0 *C.GtkAppChooserWidget, arg1 *C.GAppInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ApplicationSelected(appInfo gio.AppInfor) })
 
 	var _appInfo gio.AppInfor // out
@@ -166,7 +171,7 @@ func _gotk4_gtk3_AppChooserWidgetClass_application_selected(arg0 *C.GtkAppChoose
 
 //export _gotk4_gtk3_AppChooserWidgetClass_populate_popup
 func _gotk4_gtk3_AppChooserWidgetClass_populate_popup(arg0 *C.GtkAppChooserWidget, arg1 *C.GtkMenu, arg2 *C.GAppInfo) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PopulatePopup(menu *Menu, appInfo gio.AppInfor)
 	})

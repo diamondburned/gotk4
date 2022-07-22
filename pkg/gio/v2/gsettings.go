@@ -4,6 +4,7 @@ package gio
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -530,14 +531,19 @@ var (
 	_ coreglib.Objector = (*Settings)(nil)
 )
 
-func classInitSettingser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeSettings,
+		GoType:       reflect.TypeOf((*Settings)(nil)),
+		InitClass:    initClassSettings,
+		ClassSize:    uint16(unsafe.Sizeof(C.GSettings{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GSettingsClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassSettings(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSettingsClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GSettingsClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		ChangeEvent(keys *glib.Quark, nKeys int) bool
@@ -560,7 +566,7 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_SettingsClass_change_event
 func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChangeEvent(keys *glib.Quark, nKeys int) bool
 	})
@@ -582,7 +588,7 @@ func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, a
 
 //export _gotk4_gio2_SettingsClass_changed
 func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed(key string) })
 
 	var _key string // out
@@ -594,7 +600,7 @@ func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
 
 //export _gotk4_gio2_SettingsClass_writable_change_event
 func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.GQuark) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WritableChangeEvent(key glib.Quark) bool })
 
 	var _key glib.Quark // out
@@ -612,7 +618,7 @@ func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.G
 
 //export _gotk4_gio2_SettingsClass_writable_changed
 func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.GSettings, arg1 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WritableChanged(key string) })
 
 	var _key string // out

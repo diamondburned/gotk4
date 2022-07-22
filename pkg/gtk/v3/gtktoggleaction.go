@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -49,14 +49,19 @@ var (
 	_ coreglib.Objector = (*ToggleAction)(nil)
 )
 
-func classInitToggleActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeToggleAction,
+		GoType:       reflect.TypeOf((*ToggleAction)(nil)),
+		InitClass:    initClassToggleAction,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkToggleAction{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkToggleActionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassToggleAction(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToggleActionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkToggleActionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleActionClass_toggled)
@@ -65,7 +70,7 @@ func classInitToggleActioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToggleActionClass_toggled
 func _gotk4_gtk3_ToggleActionClass_toggled(arg0 *C.GtkToggleAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
 	iface.Toggled()

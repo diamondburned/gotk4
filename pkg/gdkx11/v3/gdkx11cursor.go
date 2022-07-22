@@ -38,12 +38,7 @@ var (
 	_ gdk.Cursorrer = (*X11Cursor)(nil)
 )
 
-func classInitX11Cursorrer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassX11Cursor(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapX11Cursor(obj *coreglib.Object) *X11Cursor {

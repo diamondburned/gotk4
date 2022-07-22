@@ -617,7 +617,7 @@ func ifaceInitTabler(gifacePtr, data C.gpointer) {
 
 //export _gotk4_atk1_TableIface_add_column_selection
 func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int // out
@@ -635,7 +635,7 @@ func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) 
 
 //export _gotk4_atk1_TableIface_add_row_selection
 func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int // out
@@ -653,7 +653,7 @@ func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cr
 
 //export _gotk4_atk1_TableIface_column_deleted
 func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int     // out
@@ -667,7 +667,7 @@ func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C
 
 //export _gotk4_atk1_TableIface_column_inserted
 func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int      // out
@@ -681,7 +681,7 @@ func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 
 
 //export _gotk4_atk1_TableIface_column_reordered
 func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	iface.ColumnReordered()
@@ -689,7 +689,7 @@ func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
 
 //export _gotk4_atk1_TableIface_get_caption
 func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	object := iface.Caption()
@@ -703,7 +703,7 @@ func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
 
 //export _gotk4_atk1_TableIface_get_column_at_index
 func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _index_ int // out
@@ -719,7 +719,7 @@ func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (
 
 //export _gotk4_atk1_TableIface_get_column_description
 func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int // out
@@ -736,7 +736,7 @@ func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint
 
 //export _gotk4_atk1_TableIface_get_column_extent_at
 func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int    // out
@@ -754,7 +754,7 @@ func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, 
 
 //export _gotk4_atk1_TableIface_get_column_header
 func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int // out
@@ -772,7 +772,7 @@ func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cr
 
 //export _gotk4_atk1_TableIface_get_index_at
 func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int    // out
@@ -790,7 +790,7 @@ func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.g
 
 //export _gotk4_atk1_TableIface_get_n_columns
 func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	gint := iface.NColumns()
@@ -802,7 +802,7 @@ func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
 
 //export _gotk4_atk1_TableIface_get_n_rows
 func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	gint := iface.NRows()
@@ -814,7 +814,7 @@ func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
 
 //export _gotk4_atk1_TableIface_get_row_at_index
 func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _index_ int // out
@@ -830,7 +830,7 @@ func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cre
 
 //export _gotk4_atk1_TableIface_get_row_description
 func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int // out
@@ -849,7 +849,7 @@ func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (
 
 //export _gotk4_atk1_TableIface_get_row_extent_at
 func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int    // out
@@ -867,7 +867,7 @@ func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg
 
 //export _gotk4_atk1_TableIface_get_row_header
 func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int // out
@@ -885,7 +885,7 @@ func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret 
 
 //export _gotk4_atk1_TableIface_get_selected_columns
 func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _selected **int // out
@@ -901,7 +901,7 @@ func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint
 
 //export _gotk4_atk1_TableIface_get_selected_rows
 func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _selected **int // out
@@ -917,7 +917,7 @@ func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (
 
 //export _gotk4_atk1_TableIface_get_summary
 func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	object := iface.Summary()
@@ -930,7 +930,7 @@ func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
 
 //export _gotk4_atk1_TableIface_is_column_selected
 func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int // out
@@ -948,7 +948,7 @@ func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (c
 
 //export _gotk4_atk1_TableIface_is_row_selected
 func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int // out
@@ -966,7 +966,7 @@ func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret
 
 //export _gotk4_atk1_TableIface_is_selected
 func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int    // out
@@ -986,7 +986,7 @@ func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gi
 
 //export _gotk4_atk1_TableIface_model_changed
 func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	iface.ModelChanged()
@@ -994,7 +994,7 @@ func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
 
 //export _gotk4_atk1_TableIface_ref_at
 func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int    // out
@@ -1013,7 +1013,7 @@ func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (
 
 //export _gotk4_atk1_TableIface_remove_column_selection
 func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int // out
@@ -1031,7 +1031,7 @@ func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gin
 
 //export _gotk4_atk1_TableIface_remove_row_selection
 func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int // out
@@ -1049,7 +1049,7 @@ func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) 
 
 //export _gotk4_atk1_TableIface_row_deleted
 func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int        // out
@@ -1063,7 +1063,7 @@ func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gi
 
 //export _gotk4_atk1_TableIface_row_inserted
 func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int         // out
@@ -1077,7 +1077,7 @@ func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.g
 
 //export _gotk4_atk1_TableIface_row_reordered
 func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	iface.RowReordered()
@@ -1085,7 +1085,7 @@ func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
 
 //export _gotk4_atk1_TableIface_set_caption
 func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _caption *ObjectClass // out
@@ -1097,7 +1097,7 @@ func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
 
 //export _gotk4_atk1_TableIface_set_column_description
 func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int         // out
@@ -1111,7 +1111,7 @@ func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint
 
 //export _gotk4_atk1_TableIface_set_column_header
 func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _column int          // out
@@ -1125,7 +1125,7 @@ func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg
 
 //export _gotk4_atk1_TableIface_set_row_description
 func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int            // out
@@ -1139,7 +1139,7 @@ func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, a
 
 //export _gotk4_atk1_TableIface_set_row_header
 func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _row int             // out
@@ -1153,7 +1153,7 @@ func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *
 
 //export _gotk4_atk1_TableIface_set_summary
 func _gotk4_atk1_TableIface_set_summary(arg0 *C.AtkTable, arg1 *C.AtkObject) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
 	var _accessible *ObjectClass // out

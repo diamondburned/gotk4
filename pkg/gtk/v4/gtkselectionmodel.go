@@ -282,7 +282,7 @@ func ifaceInitSelectionModeller(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk4_SelectionModelInterface_get_selection_in_range
 func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret *C.GtkBitset) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _position uint // out
@@ -300,7 +300,7 @@ func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelec
 
 //export _gotk4_gtk4_SelectionModelInterface_is_selected
 func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _position uint // out
@@ -318,7 +318,7 @@ func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, 
 
 //export _gotk4_gtk4_SelectionModelInterface_select_all
 func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	ok := iface.SelectAll()
@@ -332,7 +332,7 @@ func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.GtkSelectionModel) (
 
 //export _gotk4_gtk4_SelectionModelInterface_select_item
 func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _position uint     // out
@@ -354,7 +354,7 @@ func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, 
 
 //export _gotk4_gtk4_SelectionModelInterface_select_range
 func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint, arg3 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _position uint     // out
@@ -378,7 +378,7 @@ func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel,
 
 //export _gotk4_gtk4_SelectionModelInterface_set_selection
 func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.GtkSelectionModel, arg1 *C.GtkBitset, arg2 *C.GtkBitset) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _selected *Bitset // out
@@ -412,7 +412,7 @@ func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.GtkSelectionModel
 
 //export _gotk4_gtk4_SelectionModelInterface_unselect_all
 func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	ok := iface.UnselectAll()
@@ -426,7 +426,7 @@ func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.GtkSelectionModel)
 
 //export _gotk4_gtk4_SelectionModelInterface_unselect_item
 func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _position uint // out
@@ -444,7 +444,7 @@ func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel
 
 //export _gotk4_gtk4_SelectionModelInterface_unselect_range
 func _gotk4_gtk4_SelectionModelInterface_unselect_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
 	var _position uint // out

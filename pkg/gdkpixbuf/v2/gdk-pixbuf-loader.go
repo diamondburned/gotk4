@@ -3,10 +3,10 @@
 package gdkpixbuf
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -111,14 +111,19 @@ var (
 	_ coreglib.Objector = (*PixbufLoader)(nil)
 )
 
-func classInitPixbufLoaderer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypePixbufLoader,
+		GoType:       reflect.TypeOf((*PixbufLoader)(nil)),
+		InitClass:    initClassPixbufLoader,
+		ClassSize:    uint16(unsafe.Sizeof(C.GdkPixbufLoader{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GdkPixbufLoaderClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassPixbufLoader(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ AreaPrepared() }); ok {
 		pclass.area_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared)
@@ -139,7 +144,7 @@ func classInitPixbufLoaderer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AreaPrepared() })
 
 	iface.AreaPrepared()
@@ -147,7 +152,7 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) 
 
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ AreaUpdated(x, y, width, height int) })
 
 	var _x int      // out
@@ -165,7 +170,7 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, a
 
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_closed
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Closed() })
 
 	iface.Closed()
@@ -173,7 +178,7 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
 
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SizePrepared(width, height int) })
 
 	var _width int  // out

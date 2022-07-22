@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -60,14 +60,19 @@ var (
 	_ Binner            = (*ColorButton)(nil)
 )
 
-func classInitColorButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeColorButton,
+		GoType:       reflect.TypeOf((*ColorButton)(nil)),
+		InitClass:    initClassColorButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkColorButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkColorButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassColorButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkColorButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkColorButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ ColorSet() }); ok {
 		pclass.color_set = (*[0]byte)(C._gotk4_gtk3_ColorButtonClass_color_set)
@@ -76,7 +81,7 @@ func classInitColorButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ColorButtonClass_color_set
 func _gotk4_gtk3_ColorButtonClass_color_set(arg0 *C.GtkColorButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ColorSet() })
 
 	iface.ColorSet()

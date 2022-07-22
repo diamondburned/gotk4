@@ -40,12 +40,7 @@ var (
 	_ coreglib.Objector = (*PopoverAccessible)(nil)
 )
 
-func classInitPopoverAccessibler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
+func initClassPopoverAccessible(gclass unsafe.Pointer, goval any) {
 }
 
 func wrapPopoverAccessible(obj *coreglib.Object) *PopoverAccessible {

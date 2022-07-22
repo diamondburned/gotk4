@@ -4,10 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -212,14 +212,19 @@ var (
 	_ coreglib.Objector = (*TextBuffer)(nil)
 )
 
-func classInitTextBufferer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTextBuffer,
+		GoType:       reflect.TypeOf((*TextBuffer)(nil)),
+		InitClass:    initClassTextBuffer,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkTextBuffer{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkTextBufferClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTextBuffer(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		ApplyTag(tag *TextTag, start, end *TextIter)
@@ -288,7 +293,7 @@ func classInitTextBufferer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TextBufferClass_apply_tag
 func _gotk4_gtk3_TextBufferClass_apply_tag(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ApplyTag(tag *TextTag, start, end *TextIter)
 	})
@@ -306,7 +311,7 @@ func _gotk4_gtk3_TextBufferClass_apply_tag(arg0 *C.GtkTextBuffer, arg1 *C.GtkTex
 
 //export _gotk4_gtk3_TextBufferClass_begin_user_action
 func _gotk4_gtk3_TextBufferClass_begin_user_action(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ BeginUserAction() })
 
 	iface.BeginUserAction()
@@ -314,7 +319,7 @@ func _gotk4_gtk3_TextBufferClass_begin_user_action(arg0 *C.GtkTextBuffer) {
 
 //export _gotk4_gtk3_TextBufferClass_changed
 func _gotk4_gtk3_TextBufferClass_changed(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
@@ -322,7 +327,7 @@ func _gotk4_gtk3_TextBufferClass_changed(arg0 *C.GtkTextBuffer) {
 
 //export _gotk4_gtk3_TextBufferClass_delete_range
 func _gotk4_gtk3_TextBufferClass_delete_range(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GtkTextIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DeleteRange(start, end *TextIter) })
 
 	var _start *TextIter // out
@@ -336,7 +341,7 @@ func _gotk4_gtk3_TextBufferClass_delete_range(arg0 *C.GtkTextBuffer, arg1 *C.Gtk
 
 //export _gotk4_gtk3_TextBufferClass_end_user_action
 func _gotk4_gtk3_TextBufferClass_end_user_action(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ EndUserAction() })
 
 	iface.EndUserAction()
@@ -344,7 +349,7 @@ func _gotk4_gtk3_TextBufferClass_end_user_action(arg0 *C.GtkTextBuffer) {
 
 //export _gotk4_gtk3_TextBufferClass_insert_child_anchor
 func _gotk4_gtk3_TextBufferClass_insert_child_anchor(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GtkTextChildAnchor) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor)
 	})
@@ -360,7 +365,7 @@ func _gotk4_gtk3_TextBufferClass_insert_child_anchor(arg0 *C.GtkTextBuffer, arg1
 
 //export _gotk4_gtk3_TextBufferClass_insert_pixbuf
 func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GdkPixbuf) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 	})
@@ -386,7 +391,7 @@ func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.GtkTextBuffer, arg1 *C.Gt
 
 //export _gotk4_gtk3_TextBufferClass_insert_text
 func _gotk4_gtk3_TextBufferClass_insert_text(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertText(pos *TextIter, newText string, newTextLength int)
 	})
@@ -404,7 +409,7 @@ func _gotk4_gtk3_TextBufferClass_insert_text(arg0 *C.GtkTextBuffer, arg1 *C.GtkT
 
 //export _gotk4_gtk3_TextBufferClass_mark_deleted
 func _gotk4_gtk3_TextBufferClass_mark_deleted(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextMark) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MarkDeleted(mark *TextMark) })
 
 	var _mark *TextMark // out
@@ -416,7 +421,7 @@ func _gotk4_gtk3_TextBufferClass_mark_deleted(arg0 *C.GtkTextBuffer, arg1 *C.Gtk
 
 //export _gotk4_gtk3_TextBufferClass_mark_set
 func _gotk4_gtk3_TextBufferClass_mark_set(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GtkTextMark) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		MarkSet(location *TextIter, mark *TextMark)
 	})
@@ -432,7 +437,7 @@ func _gotk4_gtk3_TextBufferClass_mark_set(arg0 *C.GtkTextBuffer, arg1 *C.GtkText
 
 //export _gotk4_gtk3_TextBufferClass_modified_changed
 func _gotk4_gtk3_TextBufferClass_modified_changed(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ModifiedChanged() })
 
 	iface.ModifiedChanged()
@@ -440,7 +445,7 @@ func _gotk4_gtk3_TextBufferClass_modified_changed(arg0 *C.GtkTextBuffer) {
 
 //export _gotk4_gtk3_TextBufferClass_paste_done
 func _gotk4_gtk3_TextBufferClass_paste_done(arg0 *C.GtkTextBuffer, arg1 *C.GtkClipboard) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PasteDone(clipboard *Clipboard) })
 
 	var _clipboard *Clipboard // out
@@ -452,7 +457,7 @@ func _gotk4_gtk3_TextBufferClass_paste_done(arg0 *C.GtkTextBuffer, arg1 *C.GtkCl
 
 //export _gotk4_gtk3_TextBufferClass_remove_tag
 func _gotk4_gtk3_TextBufferClass_remove_tag(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RemoveTag(tag *TextTag, start, end *TextIter)
 	})

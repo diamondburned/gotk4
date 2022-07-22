@@ -150,7 +150,7 @@ func ifaceInitPollableInputStreamer(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_PollableInputStreamInterface_can_poll
 func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStream) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	ok := iface.CanPoll()
@@ -164,7 +164,7 @@ func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.GPollableInputStr
 
 //export _gotk4_gio2_PollableInputStreamInterface_create_source
 func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInputStream, arg1 *C.GCancellable) (cret *C.GSource) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	var _cancellable context.Context // out
@@ -182,7 +182,7 @@ func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.GPollableInp
 
 //export _gotk4_gio2_PollableInputStreamInterface_is_readable
 func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.GPollableInputStream) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	ok := iface.IsReadable()
@@ -196,7 +196,7 @@ func _gotk4_gio2_PollableInputStreamInterface_is_readable(arg0 *C.GPollableInput
 
 //export _gotk4_gio2_PollableInputStreamInterface_read_nonblocking
 func _gotk4_gio2_PollableInputStreamInterface_read_nonblocking(arg0 *C.GPollableInputStream, arg1 *C.void, arg2 C.gsize, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
 	var _buffer []byte // out

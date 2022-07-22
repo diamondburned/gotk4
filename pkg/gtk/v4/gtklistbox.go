@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1236,14 +1237,19 @@ var (
 	_ coreglib.Objector = (*ListBoxRow)(nil)
 )
 
-func classInitListBoxRower(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeListBoxRow,
+		GoType:       reflect.TypeOf((*ListBoxRow)(nil)),
+		InitClass:    initClassListBoxRow,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkListBoxRow{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkListBoxRowClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassListBoxRow(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ListBoxRowClass_activate)
@@ -1252,7 +1258,7 @@ func classInitListBoxRower(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ListBoxRowClass_activate
 func _gotk4_gtk4_ListBoxRowClass_activate(arg0 *C.GtkListBoxRow) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()

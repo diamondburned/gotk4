@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -54,14 +54,19 @@ var (
 	_ Binner            = (*ToggleToolButton)(nil)
 )
 
-func classInitToggleToolButtonner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeToggleToolButton,
+		GoType:       reflect.TypeOf((*ToggleToolButton)(nil)),
+		InitClass:    initClassToggleToolButton,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkToggleToolButton{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkToggleToolButtonClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassToggleToolButton(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToggleToolButtonClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkToggleToolButtonClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleToolButtonClass_toggled)
@@ -70,7 +75,7 @@ func classInitToggleToolButtonner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ToggleToolButtonClass_toggled
 func _gotk4_gtk3_ToggleToolButtonClass_toggled(arg0 *C.GtkToggleToolButton) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled() })
 
 	iface.Toggled()

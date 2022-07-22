@@ -3,11 +3,11 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -106,14 +106,19 @@ var (
 	_ Binner = (*Popover)(nil)
 )
 
-func classInitPopoverer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypePopover,
+		GoType:       reflect.TypeOf((*Popover)(nil)),
+		InitClass:    initClassPopover,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkPopover{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkPopoverClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassPopover(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPopoverClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkPopoverClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Closed() }); ok {
 		pclass.closed = (*[0]byte)(C._gotk4_gtk3_PopoverClass_closed)
@@ -122,7 +127,7 @@ func classInitPopoverer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_PopoverClass_closed
 func _gotk4_gtk3_PopoverClass_closed(arg0 *C.GtkPopover) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Closed() })
 
 	iface.Closed()

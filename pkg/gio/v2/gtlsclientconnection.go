@@ -112,7 +112,7 @@ func ifaceInitTLSClientConnectioner(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsClientConnectionInterface_copy_session_state
 func _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(arg0 *C.GTlsClientConnection, arg1 *C.GTlsClientConnection) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(TLSClientConnectionOverrider)
 
 	var _source TLSClientConnectioner // out

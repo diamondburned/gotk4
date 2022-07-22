@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -118,14 +119,19 @@ var (
 	_ coreglib.Objector = (*ComboBox)(nil)
 )
 
-func classInitComboBoxer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeComboBox,
+		GoType:       reflect.TypeOf((*ComboBox)(nil)),
+		InitClass:    initClassComboBox,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkComboBox{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkComboBoxClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassComboBox(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_changed)
@@ -138,7 +144,7 @@ func classInitComboBoxer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_ComboBoxClass_changed
 func _gotk4_gtk4_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()
@@ -146,7 +152,7 @@ func _gotk4_gtk4_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
 
 //export _gotk4_gtk4_ComboBoxClass_format_entry_text
 func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.GtkComboBox, arg1 *C.char) (cret *C.char) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FormatEntryText(path string) string })
 
 	var _path string // out

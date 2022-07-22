@@ -146,7 +146,7 @@ func ifaceInitCellAccessibleParenter(gifacePtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CellAccessibleParentIface_activate
 func _gotk4_gtk3_CellAccessibleParentIface_activate(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -158,7 +158,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_activate(arg0 *C.GtkCellAccessiblePar
 
 //export _gotk4_gtk3_CellAccessibleParentIface_edit
 func _gotk4_gtk3_CellAccessibleParentIface_edit(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -170,7 +170,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_edit(arg0 *C.GtkCellAccessibleParent,
 
 //export _gotk4_gtk3_CellAccessibleParentIface_expand_collapse
 func _gotk4_gtk3_CellAccessibleParentIface_expand_collapse(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -182,7 +182,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_expand_collapse(arg0 *C.GtkCellAccess
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_cell_area
 func _gotk4_gtk3_CellAccessibleParentIface_get_cell_area(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.GdkRectangle) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -196,7 +196,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_cell_area(arg0 *C.GtkCellAccessib
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_cell_extents
 func _gotk4_gtk3_CellAccessibleParentIface_get_cell_extents(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint, arg6 C.AtkCoordType) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible    // out
@@ -215,7 +215,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_cell_extents(arg0 *C.GtkCellAcces
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_cell_position
 func _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.gint, arg3 *C.gint) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -230,7 +230,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(arg0 *C.GtkCellAcce
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_child_index
 func _gotk4_gtk3_CellAccessibleParentIface_get_child_index(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) (cret C.int) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -246,7 +246,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_child_index(arg0 *C.GtkCellAccess
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_renderer_state
 func _gotk4_gtk3_CellAccessibleParentIface_get_renderer_state(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) (cret C.GtkCellRendererState) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -262,7 +262,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_renderer_state(arg0 *C.GtkCellAcc
 
 //export _gotk4_gtk3_CellAccessibleParentIface_grab_focus
 func _gotk4_gtk3_CellAccessibleParentIface_grab_focus(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible // out
@@ -280,7 +280,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_grab_focus(arg0 *C.GtkCellAccessibleP
 
 //export _gotk4_gtk3_CellAccessibleParentIface_update_relationset
 func _gotk4_gtk3_CellAccessibleParentIface_update_relationset(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.AtkRelationSet) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
 	var _cell *CellAccessible         // out

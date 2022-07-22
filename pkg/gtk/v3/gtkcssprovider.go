@@ -4,10 +4,10 @@ package gtk
 
 import (
 	"fmt"
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -122,14 +122,19 @@ var (
 	_ coreglib.Objector = (*CSSProvider)(nil)
 )
 
-func classInitCSSProviderer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeCSSProvider,
+		GoType:       reflect.TypeOf((*CSSProvider)(nil)),
+		InitClass:    initClassCSSProvider,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkCssProvider{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkCssProviderClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassCSSProvider(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCssProviderClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkCssProviderClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		ParsingError(section *CSSSection, err error)
@@ -140,7 +145,7 @@ func classInitCSSProviderer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_CssProviderClass_parsing_error
 func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.GtkCssProvider, arg1 *C.GtkCssSection, arg2 *C.GError) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ParsingError(section *CSSSection, err error)
 	})

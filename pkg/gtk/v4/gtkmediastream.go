@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
@@ -133,14 +133,19 @@ type MediaStreamer interface {
 
 var _ MediaStreamer = (*MediaStream)(nil)
 
-func classInitMediaStreamer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeMediaStream,
+		GoType:       reflect.TypeOf((*MediaStream)(nil)),
+		InitClass:    initClassMediaStream,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkMediaStream{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkMediaStreamClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassMediaStream(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Pause() }); ok {
 		pclass.pause = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_pause)
@@ -171,7 +176,7 @@ func classInitMediaStreamer(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk4_MediaStreamClass_pause
 func _gotk4_gtk4_MediaStreamClass_pause(arg0 *C.GtkMediaStream) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Pause() })
 
 	iface.Pause()
@@ -179,7 +184,7 @@ func _gotk4_gtk4_MediaStreamClass_pause(arg0 *C.GtkMediaStream) {
 
 //export _gotk4_gtk4_MediaStreamClass_play
 func _gotk4_gtk4_MediaStreamClass_play(arg0 *C.GtkMediaStream) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Play() bool })
 
 	ok := iface.Play()
@@ -193,7 +198,7 @@ func _gotk4_gtk4_MediaStreamClass_play(arg0 *C.GtkMediaStream) (cret C.gboolean)
 
 //export _gotk4_gtk4_MediaStreamClass_realize
 func _gotk4_gtk4_MediaStreamClass_realize(arg0 *C.GtkMediaStream, arg1 *C.GdkSurface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Realize(surface gdk.Surfacer) })
 
 	var _surface gdk.Surfacer // out
@@ -221,7 +226,7 @@ func _gotk4_gtk4_MediaStreamClass_realize(arg0 *C.GtkMediaStream, arg1 *C.GdkSur
 
 //export _gotk4_gtk4_MediaStreamClass_seek
 func _gotk4_gtk4_MediaStreamClass_seek(arg0 *C.GtkMediaStream, arg1 C.gint64) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Seek(timestamp int64) })
 
 	var _timestamp int64 // out
@@ -233,7 +238,7 @@ func _gotk4_gtk4_MediaStreamClass_seek(arg0 *C.GtkMediaStream, arg1 C.gint64) {
 
 //export _gotk4_gtk4_MediaStreamClass_unrealize
 func _gotk4_gtk4_MediaStreamClass_unrealize(arg0 *C.GtkMediaStream, arg1 *C.GdkSurface) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Unrealize(surface gdk.Surfacer) })
 
 	var _surface gdk.Surfacer // out
@@ -261,7 +266,7 @@ func _gotk4_gtk4_MediaStreamClass_unrealize(arg0 *C.GtkMediaStream, arg1 *C.GdkS
 
 //export _gotk4_gtk4_MediaStreamClass_update_audio
 func _gotk4_gtk4_MediaStreamClass_update_audio(arg0 *C.GtkMediaStream, arg1 C.gboolean, arg2 C.double) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		UpdateAudio(muted bool, volume float64)
 	})

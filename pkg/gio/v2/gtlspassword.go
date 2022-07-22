@@ -3,10 +3,10 @@
 package gio
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -59,14 +59,19 @@ var (
 	_ coreglib.Objector = (*TLSPassword)(nil)
 )
 
-func classInitTLSPassworder(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTLSPassword,
+		GoType:       reflect.TypeOf((*TLSPassword)(nil)),
+		InitClass:    initClassTLSPassword,
+		ClassSize:    uint16(unsafe.Sizeof(C.GTlsPassword{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GTlsPasswordClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTLSPassword(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsPasswordClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GTlsPasswordClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ DefaultWarning() string }); ok {
 		pclass.get_default_warning = (*[0]byte)(C._gotk4_gio2_TlsPasswordClass_get_default_warning)
@@ -79,7 +84,7 @@ func classInitTLSPassworder(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsPasswordClass_get_default_warning
 func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.GTlsPassword) (cret *C.gchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DefaultWarning() string })
 
 	utf8 := iface.DefaultWarning()
@@ -92,7 +97,7 @@ func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.GTlsPassword) (cre
 
 //export _gotk4_gio2_TlsPasswordClass_get_value
 func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.GTlsPassword, arg1 *C.gsize) (cret *C.guchar) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Value(length *uint) *byte })
 
 	var _length *uint // out

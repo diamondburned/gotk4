@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -143,14 +143,19 @@ var (
 	_ coreglib.Objector = (*Action)(nil)
 )
 
-func classInitActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeAction,
+		GoType:       reflect.TypeOf((*Action)(nil)),
+		InitClass:    initClassAction,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkAction{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkActionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassAction(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkActionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkActionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Activate() }); ok {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ActionClass_activate)
@@ -179,7 +184,7 @@ func classInitActioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_ActionClass_activate
 func _gotk4_gtk3_ActionClass_activate(arg0 *C.GtkAction) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Activate() })
 
 	iface.Activate()
@@ -187,7 +192,7 @@ func _gotk4_gtk3_ActionClass_activate(arg0 *C.GtkAction) {
 
 //export _gotk4_gtk3_ActionClass_connect_proxy
 func _gotk4_gtk3_ActionClass_connect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectProxy(proxy Widgetter) })
 
 	var _proxy Widgetter // out
@@ -215,7 +220,7 @@ func _gotk4_gtk3_ActionClass_connect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget)
 
 //export _gotk4_gtk3_ActionClass_create_menu
 func _gotk4_gtk3_ActionClass_create_menu(arg0 *C.GtkAction) (cret *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateMenu() Widgetter })
 
 	widget := iface.CreateMenu()
@@ -227,7 +232,7 @@ func _gotk4_gtk3_ActionClass_create_menu(arg0 *C.GtkAction) (cret *C.GtkWidget) 
 
 //export _gotk4_gtk3_ActionClass_create_menu_item
 func _gotk4_gtk3_ActionClass_create_menu_item(arg0 *C.GtkAction) (cret *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateMenuItem() Widgetter })
 
 	widget := iface.CreateMenuItem()
@@ -239,7 +244,7 @@ func _gotk4_gtk3_ActionClass_create_menu_item(arg0 *C.GtkAction) (cret *C.GtkWid
 
 //export _gotk4_gtk3_ActionClass_create_tool_item
 func _gotk4_gtk3_ActionClass_create_tool_item(arg0 *C.GtkAction) (cret *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateToolItem() Widgetter })
 
 	widget := iface.CreateToolItem()
@@ -251,7 +256,7 @@ func _gotk4_gtk3_ActionClass_create_tool_item(arg0 *C.GtkAction) (cret *C.GtkWid
 
 //export _gotk4_gtk3_ActionClass_disconnect_proxy
 func _gotk4_gtk3_ActionClass_disconnect_proxy(arg0 *C.GtkAction, arg1 *C.GtkWidget) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DisconnectProxy(proxy Widgetter) })
 
 	var _proxy Widgetter // out

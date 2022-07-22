@@ -4,6 +4,7 @@ package gio
 
 import (
 	"context"
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -162,14 +163,19 @@ var (
 	_ coreglib.Objector = (*TLSInteraction)(nil)
 )
 
-func classInitTLSInteractioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTLSInteraction,
+		GoType:       reflect.TypeOf((*TLSInteraction)(nil)),
+		InitClass:    initClassTLSInteraction,
+		ClassSize:    uint16(unsafe.Sizeof(C.GTlsInteraction{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GTlsInteractionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTLSInteraction(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsInteractionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GTlsInteractionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface {
 		AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
@@ -198,7 +204,7 @@ func classInitTLSInteractioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gio2_TlsInteractionClass_ask_password
 func _gotk4_gio2_TlsInteractionClass_ask_password(arg0 *C.GTlsInteraction, arg1 *C.GTlsPassword, arg2 *C.GCancellable, _cerr **C.GError) (cret C.GTlsInteractionResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
 	})
@@ -223,7 +229,7 @@ func _gotk4_gio2_TlsInteractionClass_ask_password(arg0 *C.GTlsInteraction, arg1 
 
 //export _gotk4_gio2_TlsInteractionClass_ask_password_finish
 func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error)
 	})
@@ -260,7 +266,7 @@ func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction
 
 //export _gotk4_gio2_TlsInteractionClass_request_certificate
 func _gotk4_gio2_TlsInteractionClass_request_certificate(arg0 *C.GTlsInteraction, arg1 *C.GTlsConnection, arg2 C.GTlsCertificateRequestFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.GTlsInteractionResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error)
 	})
@@ -303,7 +309,7 @@ func _gotk4_gio2_TlsInteractionClass_request_certificate(arg0 *C.GTlsInteraction
 
 //export _gotk4_gio2_TlsInteractionClass_request_certificate_finish
 func _gotk4_gio2_TlsInteractionClass_request_certificate_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error)
 	})

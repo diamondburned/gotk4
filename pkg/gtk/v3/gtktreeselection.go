@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -166,14 +167,19 @@ var (
 	_ coreglib.Objector = (*TreeSelection)(nil)
 )
 
-func classInitTreeSelectioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
+func init() {
+	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
+		GType:        GTypeTreeSelection,
+		GoType:       reflect.TypeOf((*TreeSelection)(nil)),
+		InitClass:    initClassTreeSelection,
+		ClassSize:    uint16(unsafe.Sizeof(C.GtkTreeSelection{})),
+		InstanceSize: uint16(unsafe.Sizeof(C.GtkTreeSelectionClass{})),
+	})
+}
 
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
+func initClassTreeSelection(gclass unsafe.Pointer, goval any) {
 
-	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTreeSelectionClass)(unsafe.Pointer(gclassPtr))
+	pclass := (*C.GtkTreeSelectionClass)(unsafe.Pointer(gclass))
 
 	if _, ok := goval.(interface{ Changed() }); ok {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_TreeSelectionClass_changed)
@@ -182,7 +188,7 @@ func classInitTreeSelectioner(gclassPtr, data C.gpointer) {
 
 //export _gotk4_gtk3_TreeSelectionClass_changed
 func _gotk4_gtk3_TreeSelectionClass_changed(arg0 *C.GtkTreeSelection) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Changed() })
 
 	iface.Changed()

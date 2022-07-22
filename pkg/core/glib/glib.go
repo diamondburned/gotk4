@@ -893,6 +893,16 @@ type InitiallyUnowned struct {
 	*Object
 }
 
+type initiallyUnownedor interface {
+	baseInitiallyUnowned() *InitiallyUnowned
+}
+
+// baseInitiallyUnowned is similar to baseObject: it returns itself. This is
+// used for subclassing; see go.go.
+func (v *InitiallyUnowned) baseInitiallyUnowned() *InitiallyUnowned {
+	return v
+}
+
 type invalidValueType struct{}
 
 var (

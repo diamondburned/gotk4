@@ -13,6 +13,7 @@ import (
 	"log"
 	"reflect"
 	"runtime"
+	"strings"
 	"sync"
 	"unsafe"
 
@@ -32,13 +33,26 @@ func rtypeElem[T any]() reflect.Type {
 	return rtype
 }
 
+type registerOpts struct {
+	paramSpecs []*ParamSpec
+}
+
+// RegisterOptsFunc is a function type that modifies the behavior of a
+// RegisterSubclass call.
+type RegisterOptsFunc func(*registerOpts)
+
+// WithParamSpecs adds additional ParamSpecs into a type for its properties.
+func WithParamSpecs(paramSpecs []*ParamSpec) RegisterOptsFunc {
+	return func(opts *registerOpts) { opts.paramSpecs = append(opts.paramSpecs, paramSpecs...) }
+}
+
 // RegisterSubclass is RegisterSubclassWithConstructor, but a zero-value
 // instance of T is automatically created.
-func RegisterSubclass[T any]() *RegisteredSubclass[T] {
+func RegisterSubclass[T any](opts ...RegisterOptsFunc) *RegisteredSubclass[T] {
 	rtype := rtypeElem[T]()
 	return RegisterSubclassWithConstructor(func() T {
 		return reflect.New(rtype).Interface().(T)
-	})
+	}, opts...)
 }
 
 // RegisterSubclassWithConstructor registers a new type T that is a subclass of
@@ -46,7 +60,7 @@ func RegisterSubclass[T any]() *RegisteredSubclass[T] {
 //
 // ctor has to be idempotent (i.e. can be called multiple times w/o side
 // effects).
-func RegisterSubclassWithConstructor[T any](ctor func() T) *RegisteredSubclass[T] {
+func RegisterSubclassWithConstructor[T any](ctor func() T, opts ...RegisterOptsFunc) *RegisteredSubclass[T] {
 	rtype := rtypeElem[T]()
 
 	knownTypesMut.RLock()
@@ -63,7 +77,7 @@ func RegisterSubclassWithConstructor[T any](ctor func() T) *RegisteredSubclass[T
 		return castRegisteredSubclass[T](subclass)
 	}
 
-	subclass = registerSubclass(rtype, func() any { return ctor() })
+	subclass = registerSubclass(rtype, func() any { return ctor() }, opts)
 	knownTypes[rtype] = subclass
 	knownTypesMut.Unlock()
 
@@ -122,6 +136,14 @@ type registeredSubclass struct {
 	gType       Type
 	parentType  ClassTypeInfo
 	constructor func() any
+	properties  []subclassProperty
+	paramSpecs  []*C.GParamSpec
+}
+
+type subclassProperty struct {
+	name     string
+	minit    reflect.Method
+	fieldIdx []int
 }
 
 var (
@@ -164,11 +186,55 @@ func subclassFromData(data C.gpointer) *registeredSubclass {
 	return subclass
 }
 
-func registerSubclass(rtype reflect.Type, ctor func() any) *registeredSubclass {
+func registerSubclass(rtype reflect.Type, ctor func() any, optsFuncs []RegisterOptsFunc) *registeredSubclass {
 	subclass := &registeredSubclass{
 		goType:      rtype,
 		parentType:  extractParentType(rtype),
 		constructor: ctor,
+	}
+
+	var opts registerOpts
+	for _, fn := range optsFuncs {
+		fn(&opts)
+	}
+
+	if len(opts.paramSpecs) > 0 {
+		subclass.paramSpecs = make([]*C.GParamSpec, len(opts.paramSpecs)+1)
+		for i, spec := range opts.paramSpecs {
+			// [0] is reserved by GLib.
+			subclass.paramSpecs[i+1] = spec.intern
+			// Permanently take a reference, since we're globalling this forever
+			// anyway.
+			C.g_param_spec_ref(spec.intern)
+		}
+	}
+
+	// Scan for Property fields.
+	for i := 0; i < rtype.NumField(); i++ {
+		field := rtype.Field(i)
+		if !strings.HasSuffix(field.PkgPath, "/core/glib") {
+			continue
+		}
+		// Hack!
+		if !strings.HasPrefix(field.Type.Name(), "Property[") {
+			continue
+		}
+
+		name := field.Tag.Get("glib")
+		if name == "" {
+			log.Panicf("field %s of type %s has no glib tag", field.Name, rtype)
+		}
+
+		minit, ok := field.Type.MethodByName("init")
+		if !ok {
+			log.Panicf("BUG: (*Property[T]).init missing")
+		}
+
+		subclass.properties = append(subclass.properties, subclassProperty{
+			name:     name,
+			minit:    minit,
+			fieldIdx: field.Index,
+		})
 	}
 
 	typeName := subclass.goType.String()
@@ -342,6 +408,15 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 	// C.g_type_class_add_private(gclass, unsafe.Sizeof(privateGoInstance{}))
 	C.g_type_add_instance_private(C.GType(subclass.gType), C.size_t(unsafe.Sizeof(privateGoInstance{})))
 
+	// Install properties, if any.
+	if len(subclass.paramSpecs) > 0 {
+		C.g_object_class_install_properties(
+			(*C.GObjectClass)(gclass),
+			C.guint(len(subclass.paramSpecs)),
+			&subclass.paramSpecs[0],
+		)
+	}
+
 	// Have our generated code crawl through our Go type and set whatever method
 	// it can into the given gclass field.
 	nilValue := reflect.NewAt(subclass.goType, nil).Elem()
@@ -385,8 +460,22 @@ func _gotk4_gobject_init_instance(obj *C.GTypeInstance, gclass C.gpointer) {
 	private := privateV.(*privateGoInstance)
 	subclass := private.subclass()
 
+	// Allocate and construct a new instance.
 	instance := subclass.constructor()
 	instanceID := gbox.Assign(instance)
+
+	// Initialize its properties.
+	if len(subclass.properties) > 0 {
+		rval := reflect.ValueOf(instance)
+		for _, propProto := range subclass.properties {
+			propProto.minit.Func.Call([]reflect.Value{
+				reflect.ValueOf(rval.FieldByIndex(propProto.fieldIdx).Addr()),
+				reflect.ValueOf(rval.Convert(rtypeObjector)),
+				reflect.ValueOf(unsafe.Pointer(gclass)),
+				reflect.ValueOf(reflect.ValueOf(propProto.name)),
+			})
+		}
+	}
 
 	private.instanceID = C.gpointer(instanceID)
 
@@ -396,4 +485,50 @@ func _gotk4_gobject_init_instance(obj *C.GTypeInstance, gclass C.gpointer) {
 
 	// Bind our new Go class' parent field.
 	subclass.setParent(private.instance, unsafe.Pointer(obj))
+}
+
+// Property describes a Go GObject property. It is used as an alternative to
+// manually written property getter/setters.
+type Property[T any] struct {
+	parent Objector
+	name   string
+	rtype  reflect.Type
+}
+
+var rtypeObjector = reflect.TypeOf(Objector(nil))
+
+func (p *Property[T]) init(obj Objector, gclass unsafe.Pointer, name string) {
+	p.parent = obj
+	p.name = name
+
+	var z T
+	p.rtype = reflect.TypeOf(z)
+
+	// Verify that this property exist. Ideally, we want to type check as well.
+	cname := (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(cname))
+
+	spec := C.g_object_class_find_property((*C.GObjectClass)(gclass), cname)
+	if spec == nil {
+		log.Panicf("unknown property %q for type %T", name, obj)
+	}
+}
+
+// Set sets the new property.
+func (p *Property[T]) Set(v T) {
+	base := BaseObject(p.parent)
+	base.SetObjectProperty(p.name, v)
+}
+
+// Get gets the value of the property.
+func (p *Property[T]) Get() T {
+	base := BaseObject(p.parent)
+	pval := base.ObjectProperty(p.name)
+	return reflect.ValueOf(pval).Convert(p.rtype).Interface().(T)
+}
+
+// Notify calls f everytime the property changes.
+func (p *Property[T]) Notify(f func(T)) SignalHandle {
+	base := BaseObject(p.parent)
+	return base.NotifyProperty(p.name, func() { f(p.Get()) })
 }

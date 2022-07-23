@@ -473,7 +473,7 @@ func ConnectGeneratedClosure(
 	closures.Register(unsafe.Pointer(gclosure), fs)
 
 	// Just in case.
-	C.g_object_watch_closure(v.native(), gclosure)
+	// C.g_object_watch_closure(v.native(), gclosure)
 
 	// TODO: intern this.
 	csignal := (*C.gchar)(C.CString(signal))
@@ -522,7 +522,7 @@ func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
 func _gotk4_removeClosure(obj *C.GObject, gclosure *C.GClosure) {
 	box := intern.TryGet(unsafe.Pointer(obj))
 	if box == nil {
-		return
+		log.Panicln("gotk4: trying to remove closure from unknown object", obj)
 	}
 
 	closures := closure.RegistryType.Get(box)

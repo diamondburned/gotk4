@@ -1378,7 +1378,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 			},
 		)
 	}
@@ -1442,7 +1442,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_markupParseContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_markup_parse_context_free((*C.GMarkupParseContext)(intern.C))
+			C.g_markup_parse_context_unref((*C.GMarkupParseContext)(intern.C))
 		},
 	)
 
@@ -1511,7 +1511,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 			},
 		)
 	}
@@ -2039,7 +2039,7 @@ func NewAttrList() *AttrList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 		},
 	)
 
@@ -2100,7 +2100,7 @@ func (list *AttrList) Copy() *AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 			},
 		)
 	}
@@ -2176,7 +2176,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 			},
 		)
 	}

@@ -315,7 +315,7 @@ func (layout *Layout) Attributes() *AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 			},
 		)
 	}
@@ -719,7 +719,7 @@ func (layout *Layout) Line(line int) *LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 			},
 		)
 	}
@@ -786,7 +786,7 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 			},
 		)
 	}
@@ -847,7 +847,7 @@ func (layout *Layout) Lines() []*LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 			},
 		)
 		_sList = append(_sList, dst)
@@ -888,7 +888,7 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 			},
 		)
 		_sList = append(_sList, dst)
@@ -2270,7 +2270,7 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 		},
 	)
 
@@ -2332,7 +2332,7 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 		},
 	)
 

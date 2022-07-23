@@ -61,7 +61,7 @@ func NewToplevelLayout() *ToplevelLayout {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(intern.C))
 		},
 	)
 
@@ -89,7 +89,7 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(intern.C))
 		},
 	)
 

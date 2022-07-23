@@ -108,11 +108,10 @@ func methodCanCallDirectly(method *gir.Method) bool {
 
 // RecordHasFree returns the free/unref method if it has one.
 func RecordHasFree(record *gir.Record) *gir.Method {
-	if m := FindMethodName(record.Methods, "free"); m != nil {
-		return m
-	}
-	if m := FindMethodName(record.Methods, "destroy"); m != nil {
-		return m
+	for _, name := range []string{"unref", "free", "destroy"} {
+		if m := FindMethodName(record.Methods, name); m != nil {
+			return m
+		}
 	}
 	return nil
 }

@@ -295,7 +295,7 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
 		},
 	)
 

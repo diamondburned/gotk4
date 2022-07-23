@@ -267,7 +267,7 @@ func (self *Calendar) Date() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
 		},
 	)
 

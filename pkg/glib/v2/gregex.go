@@ -968,7 +968,7 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_regex)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_regex_unref((*C.GRegex)(intern.C))
 		},
 	)
 
@@ -1200,7 +1200,7 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_regex)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_regex_unref((*C.GRegex)(intern.C))
 			},
 		)
 	}
@@ -1479,7 +1479,7 @@ func (regex *Regex) Match(str string, matchOptions RegexMatchFlags) (*MatchInfo,
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_match_info_free((*C.GMatchInfo)(intern.C))
+				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
 			},
 		)
 	}
@@ -1540,7 +1540,7 @@ func (regex *Regex) MatchAll(str string, matchOptions RegexMatchFlags) (*MatchIn
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_match_info_free((*C.GMatchInfo)(intern.C))
+				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
 			},
 		)
 	}

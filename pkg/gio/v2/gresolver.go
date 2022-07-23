@@ -1244,7 +1244,7 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 		_list = append(_list, dst)
@@ -1340,7 +1340,7 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 		_list = append(_list, dst)

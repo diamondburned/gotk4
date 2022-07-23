@@ -87,7 +87,7 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormatsBuilder)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(intern.C))
 		},
 	)
 
@@ -178,7 +178,7 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
 		},
 	)
 

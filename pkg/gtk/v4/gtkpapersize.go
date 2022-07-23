@@ -654,7 +654,7 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 

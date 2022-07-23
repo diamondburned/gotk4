@@ -166,7 +166,7 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
 			},
 		)
 	}

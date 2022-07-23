@@ -140,7 +140,7 @@ func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -211,7 +211,7 @@ func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.g
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1156,7 +1156,7 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1466,7 +1466,7 @@ func (settings *Settings) Range(key string) *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1673,7 +1673,7 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1713,7 +1713,7 @@ func (settings *Settings) Value(key string) *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 

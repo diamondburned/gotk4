@@ -194,7 +194,7 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 
@@ -364,7 +364,7 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_gradient)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_gradient_unref((*C.GtkGradient)(intern.C))
 		},
 	)
 
@@ -402,7 +402,7 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_gradient)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_gradient_unref((*C.GtkGradient)(intern.C))
 		},
 	)
 
@@ -581,7 +581,7 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 
@@ -604,7 +604,7 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 
@@ -633,7 +633,7 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 
@@ -657,7 +657,7 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 
@@ -683,7 +683,7 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 
@@ -710,7 +710,7 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
 		},
 	)
 

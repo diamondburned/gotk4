@@ -473,7 +473,7 @@ func (label *Label) Attributes() *pango.AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 			},
 		)
 	}

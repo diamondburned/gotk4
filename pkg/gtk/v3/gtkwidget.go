@@ -7304,7 +7304,7 @@ func (widget *Widget) GetPath() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 

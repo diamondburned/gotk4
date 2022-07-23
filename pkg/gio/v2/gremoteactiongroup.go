@@ -128,7 +128,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemote
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_parameter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -137,7 +137,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.GRemote
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -159,7 +159,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.GRe
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
@@ -167,7 +167,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.GRe
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 

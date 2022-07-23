@@ -362,7 +362,7 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_destroy((*C.GSource)(intern.C))
+			C.g_source_unref((*C.GSource)(intern.C))
 		},
 	)
 

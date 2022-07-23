@@ -355,7 +355,7 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 			},
 		)
 		_list = append(_list, dst)
@@ -433,7 +433,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 			},
 		)
 	}
@@ -771,7 +771,7 @@ func (info *RecentInfo) Added() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
 		},
 	)
 
@@ -850,7 +850,7 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.Dat
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_stamp)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
 		},
 	)
 	if _cret != 0 {
@@ -1051,7 +1051,7 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
 		},
 	)
 
@@ -1186,7 +1186,7 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_date_time_unref((*C.GDateTime)(intern.C))
 		},
 	)
 

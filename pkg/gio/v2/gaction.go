@@ -244,7 +244,7 @@ func _gotk4_gio2_ActionInterface_activate(arg0 *C.GAction, arg1 *C.GVariant) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_parameter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -264,7 +264,7 @@ func _gotk4_gio2_ActionInterface_change_state(arg0 *C.GAction, arg1 *C.GVariant)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -526,7 +526,7 @@ func (action *Action) State() *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -572,7 +572,7 @@ func (action *Action) StateHint() *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -704,7 +704,7 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetValue)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 	if _cerr != nil {

@@ -487,7 +487,7 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -513,7 +513,7 @@ func NewVariantBoolean(value bool) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -537,7 +537,7 @@ func NewVariantByte(value byte) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -563,7 +563,7 @@ func NewVariantBytestring(str []byte) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -597,7 +597,7 @@ func NewVariantBytestringArray(strv []string) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -624,7 +624,7 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -648,7 +648,7 @@ func NewVariantDouble(value float64) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -681,7 +681,7 @@ func NewVariantFixedArray(elementType *VariantType, elements unsafe.Pointer, nEl
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -713,7 +713,7 @@ func NewVariantFromBytes(typ *VariantType, bytes *Bytes, trusted bool) *Variant 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -737,7 +737,7 @@ func NewVariantHandle(value int32) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -761,7 +761,7 @@ func NewVariantInt16(value int16) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -785,7 +785,7 @@ func NewVariantInt32(value int32) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -809,7 +809,7 @@ func NewVariantInt64(value int64) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -840,7 +840,7 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -865,7 +865,7 @@ func NewVariantObjectPath(objectPath string) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -899,7 +899,7 @@ func NewVariantObjv(strv []string) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -924,7 +924,7 @@ func NewVariantSignature(signature string) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -949,7 +949,7 @@ func NewVariantString(str string) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -983,7 +983,7 @@ func NewVariantStrv(strv []string) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1016,7 +1016,7 @@ func NewVariantTuple(children []*Variant) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1040,7 +1040,7 @@ func NewVariantUint16(value uint16) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1064,7 +1064,7 @@ func NewVariantUint32(value uint32) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1088,7 +1088,7 @@ func NewVariantUint64(value uint64) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1112,7 +1112,7 @@ func NewVariantVariant(value *Variant) *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1150,7 +1150,7 @@ func (value *Variant) Byteswap() *Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1677,7 +1677,7 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1751,7 +1751,7 @@ func (value *Variant) DataAsBytes() *Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 
@@ -1910,7 +1910,7 @@ func (value *Variant) Maybe() *Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1962,7 +1962,7 @@ func (value *Variant) NormalForm() *Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -2262,7 +2262,7 @@ func (value *Variant) Variant() *Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -2478,7 +2478,7 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -2594,7 +2594,7 @@ func (value *Variant) RefSink() *Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -2798,7 +2798,7 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variantBuilder)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_builder_unref((*C.GVariantBuilder)(intern.C))
 		},
 	)
 
@@ -2882,7 +2882,7 @@ func (builder *VariantBuilder) End() *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -3032,7 +3032,7 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variantDict)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
 		},
 	)
 
@@ -3120,7 +3120,7 @@ func (dict *VariantDict) End() *Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -3196,7 +3196,7 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 

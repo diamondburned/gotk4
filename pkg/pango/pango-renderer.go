@@ -976,7 +976,7 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
 			},
 		)
 	}

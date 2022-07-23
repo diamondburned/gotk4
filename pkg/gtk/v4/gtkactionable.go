@@ -200,7 +200,7 @@ func _gotk4_gtk4_ActionableInterface_set_action_target_value(arg0 *C.GtkActionab
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_targetValue)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -279,7 +279,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}

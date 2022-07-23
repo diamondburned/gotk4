@@ -232,7 +232,7 @@ func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAtt
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_list)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
 		},
 	)
 

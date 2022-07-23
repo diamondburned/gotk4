@@ -113,7 +113,7 @@ func _gotk4_gtk4_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCss
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_section)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
 		},
 	)
 	_err = gerror.Take(unsafe.Pointer(arg2))

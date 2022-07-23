@@ -326,7 +326,7 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
 		},
 	)
 

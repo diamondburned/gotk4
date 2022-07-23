@@ -344,7 +344,7 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 			},
 		)
 		_list = append(_list, dst)
@@ -422,7 +422,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 			},
 		)
 	}

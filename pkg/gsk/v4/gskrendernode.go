@@ -1343,7 +1343,7 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 
@@ -2413,7 +2413,7 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 
@@ -3302,7 +3302,7 @@ func (node *TransformNode) Transform() *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gsk_transform_unref((*C.GskTransform)(intern.C))
 		},
 	)
 

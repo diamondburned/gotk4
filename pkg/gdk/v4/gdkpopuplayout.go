@@ -189,7 +189,7 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
 		},
 	)
 
@@ -217,7 +217,7 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
 		},
 	)
 

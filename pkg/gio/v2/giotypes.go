@@ -395,7 +395,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(intern.C))
 		},
 	)
 
@@ -572,7 +572,7 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(intern.C))
 			},
 		)
 	}
@@ -909,7 +909,7 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_resource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_resource_unref((*C.GResource)(intern.C))
 		},
 	)
 	if _cerr != nil {
@@ -1073,7 +1073,7 @@ func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlag
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 	if _cerr != nil {

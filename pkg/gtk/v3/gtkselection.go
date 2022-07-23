@@ -313,7 +313,7 @@ func NewTargetList(targets []TargetEntry) *TargetList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
 		},
 	)
 

@@ -1151,7 +1151,7 @@ func (info *FileInfo) DeletionDate() *glib.DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_date_time_unref((*C.GDateTime)(intern.C))
 			},
 		)
 	}
@@ -1377,7 +1377,7 @@ func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_date_time_unref((*C.GDateTime)(intern.C))
 			},
 		)
 	}

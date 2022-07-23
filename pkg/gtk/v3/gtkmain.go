@@ -593,7 +593,7 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_optionGroup)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_option_group_free((*C.GOptionGroup)(intern.C))
+			C.g_option_group_unref((*C.GOptionGroup)(intern.C))
 		},
 	)
 

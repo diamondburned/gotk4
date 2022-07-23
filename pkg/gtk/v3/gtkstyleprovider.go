@@ -141,7 +141,7 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.GtkStyleProvider, a
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_path)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
@@ -166,7 +166,7 @@ func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.GtkStyleProvider, arg1 *C.
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_path)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 

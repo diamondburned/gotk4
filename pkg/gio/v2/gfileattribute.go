@@ -92,7 +92,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
 		},
 	)
 
@@ -169,7 +169,7 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
 		},
 	)
 

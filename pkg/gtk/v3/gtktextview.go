@@ -1545,7 +1545,7 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
 		},
 	)
 

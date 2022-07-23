@@ -629,7 +629,7 @@ func (shader *GLShader) Source() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 
@@ -764,7 +764,7 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_shaderArgsBuilder)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(intern.C))
 		},
 	)
 
@@ -971,7 +971,7 @@ func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 

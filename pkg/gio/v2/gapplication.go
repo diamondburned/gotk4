@@ -346,7 +346,7 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_builder)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_builder_unref((*C.GVariantBuilder)(intern.C))
 		},
 	)
 
@@ -367,7 +367,7 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVari
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -388,7 +388,7 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -465,7 +465,7 @@ func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_options)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
 		},
 	)
 
@@ -649,7 +649,7 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_options)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
 		},
 	)
 

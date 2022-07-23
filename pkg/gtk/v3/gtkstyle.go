@@ -3208,7 +3208,7 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
 		},
 	)
 

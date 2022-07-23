@@ -500,7 +500,7 @@ func _gotk4_gio2_ActionGroupInterface_action_state_changed(arg0 *C.GActionGroup,
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_state)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -522,7 +522,7 @@ func _gotk4_gio2_ActionGroupInterface_activate_action(arg0 *C.GActionGroup, arg1
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_parameter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -544,7 +544,7 @@ func _gotk4_gio2_ActionGroupInterface_change_action_state(arg0 *C.GActionGroup, 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -839,7 +839,7 @@ func _gotk4_gio2_ActionGroup_ConnectActionStateChanged(arg0 C.gpointer, arg1 *C.
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -1152,7 +1152,7 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1206,7 +1206,7 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1422,7 +1422,7 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_stateHint)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}
@@ -1431,7 +1431,7 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_state)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_variant_unref((*C.GVariant)(intern.C))
 			},
 		)
 	}

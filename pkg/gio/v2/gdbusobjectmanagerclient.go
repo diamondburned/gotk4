@@ -164,7 +164,7 @@ func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.GDB
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 
@@ -215,7 +215,7 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_changedProperties)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 	{
@@ -278,7 +278,7 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpoi
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
 

@@ -66,7 +66,7 @@ func NewIconSet() *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
 		},
 	)
 
@@ -89,7 +89,7 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
 		},
 	)
 
@@ -161,7 +161,7 @@ func (iconSet *IconSet) Copy() *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
 		},
 	)
 
@@ -1460,7 +1460,7 @@ func NewWidgetPath() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
@@ -1590,7 +1590,7 @@ func (path *WidgetPath) Copy() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
@@ -1937,7 +1937,7 @@ func (path *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 

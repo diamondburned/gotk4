@@ -142,7 +142,7 @@ func NewBytes(data []byte) *Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 
@@ -343,7 +343,7 @@ func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_bytes_unref((*C.GBytes)(intern.C))
 		},
 	)
 

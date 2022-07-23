@@ -1824,7 +1824,7 @@ func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_values)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
 		},
 	)
 	if _cret != 0 {

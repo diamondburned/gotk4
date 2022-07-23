@@ -95,7 +95,7 @@ func NewTimeZone(identifier string) *TimeZone {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
 		},
 	)
 
@@ -122,7 +122,7 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_timeZone)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.g_time_zone_unref((*C.GTimeZone)(intern.C))
 			},
 		)
 	}
@@ -142,7 +142,7 @@ func NewTimeZoneLocal() *TimeZone {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
 		},
 	)
 
@@ -165,7 +165,7 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
 		},
 	)
 
@@ -184,7 +184,7 @@ func NewTimeZoneUTC() *TimeZone {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
 		},
 	)
 

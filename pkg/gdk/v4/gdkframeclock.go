@@ -423,7 +423,7 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
 			},
 		)
 	}
@@ -615,7 +615,7 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
 			},
 		)
 	}

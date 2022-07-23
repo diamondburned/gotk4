@@ -229,7 +229,7 @@ func (section *CSSSection) Parent() *CSSSection {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
 			},
 		)
 	}

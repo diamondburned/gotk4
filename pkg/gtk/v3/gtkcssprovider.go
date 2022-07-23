@@ -153,7 +153,7 @@ func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.GtkCssProvider, arg1 *C.
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_section)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
 		},
 	)
 	_err = gerror.Take(unsafe.Pointer(arg2))
@@ -195,7 +195,7 @@ func _gotk4_gtk3_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCss
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_section)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
 		},
 	)
 	_err = gerror.Take(unsafe.Pointer(arg2))

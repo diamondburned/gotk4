@@ -137,7 +137,7 @@ func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, ar
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_a)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 		},
 	)
 	_b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg2)))
@@ -145,7 +145,7 @@ func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, ar
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_b)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 		},
 	)
 
@@ -372,7 +372,7 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 		},
 	)
 
@@ -455,7 +455,7 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
 			},
 		)
 		_list = append(_list, dst)

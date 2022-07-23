@@ -1352,7 +1352,7 @@ func (context *StyleContext) Path() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_free((*C.GtkWidgetPath)(intern.C))
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
 		},
 	)
 
@@ -1498,7 +1498,7 @@ func (context *StyleContext) Section(property string) *CSSSection {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
 			},
 		)
 	}
@@ -1782,7 +1782,7 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_iconSet)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
+				C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
 			},
 		)
 	}

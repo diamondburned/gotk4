@@ -269,7 +269,7 @@ func NewKeyFile() *KeyFile {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_keyFile)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_key_file_unref((*C.GKeyFile)(intern.C))
 		},
 	)
 

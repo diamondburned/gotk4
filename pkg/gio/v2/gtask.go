@@ -382,7 +382,7 @@ func (task *Task) Context() *glib.MainContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
+			C.g_main_context_unref((*C.GMainContext)(intern.C))
 		},
 	)
 

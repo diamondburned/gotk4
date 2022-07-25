@@ -1993,6 +1993,23 @@ type pageRange struct {
 	native *C.GtkPageRange
 }
 
+// NewPageRange creates a new PageRange instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewPageRange(start, end int) PageRange {
+	var f0 C.int // out
+	f0 = C.int(start)
+	var f1 C.int // out
+	f1 = C.int(end)
+
+	v := C.GtkPageRange{
+		start: f0,
+		end:   f1,
+	}
+
+	return *(*PageRange)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Start: start of page range.
 func (p *PageRange) Start() int {
 	valptr := &p.native.start

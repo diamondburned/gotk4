@@ -3355,6 +3355,32 @@ type parseLocation struct {
 	native *C.GskParseLocation
 }
 
+// NewParseLocation creates a new ParseLocation instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewParseLocation(bytes, chars, lines, lineBytes, lineChars uint) ParseLocation {
+	var f0 C.gsize // out
+	f0 = C.gsize(bytes)
+	var f1 C.gsize // out
+	f1 = C.gsize(chars)
+	var f2 C.gsize // out
+	f2 = C.gsize(lines)
+	var f3 C.gsize // out
+	f3 = C.gsize(lineBytes)
+	var f4 C.gsize // out
+	f4 = C.gsize(lineChars)
+
+	v := C.GskParseLocation{
+		bytes:      f0,
+		chars:      f1,
+		lines:      f2,
+		line_bytes: f3,
+		line_chars: f4,
+	}
+
+	return *(*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Bytes: offset of the location in the parse buffer, as bytes.
 func (p *ParseLocation) Bytes() uint {
 	valptr := &p.native.bytes

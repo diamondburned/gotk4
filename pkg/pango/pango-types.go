@@ -138,6 +138,29 @@ type rectangle struct {
 	native *C.PangoRectangle
 }
 
+// NewRectangle creates a new Rectangle instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewRectangle(x, y, width, height int) Rectangle {
+	var f0 C.int // out
+	f0 = C.int(x)
+	var f1 C.int // out
+	f1 = C.int(y)
+	var f2 C.int // out
+	f2 = C.int(width)
+	var f3 C.int // out
+	f3 = C.int(height)
+
+	v := C.PangoRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) X() int {
 	valptr := &r.native.x

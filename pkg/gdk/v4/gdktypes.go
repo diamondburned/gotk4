@@ -1016,6 +1016,26 @@ type keymapKey struct {
 	native *C.GdkKeymapKey
 }
 
+// NewKeymapKey creates a new KeymapKey instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewKeymapKey(keycode uint, group, level int) KeymapKey {
+	var f0 C.guint // out
+	f0 = C.guint(keycode)
+	var f1 C.int // out
+	f1 = C.int(group)
+	var f2 C.int // out
+	f2 = C.int(level)
+
+	v := C.GdkKeymapKey{
+		keycode: f0,
+		group:   f1,
+		level:   f2,
+	}
+
+	return *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Keycode: hardware keycode. This is an identifying number for a physical key.
 func (k *KeymapKey) Keycode() uint {
 	valptr := &k.native.keycode
@@ -1103,6 +1123,29 @@ type rectangle struct {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
+}
+
+// NewRectangle creates a new Rectangle instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewRectangle(x, y, width, height int) Rectangle {
+	var f0 C.int // out
+	f0 = C.int(x)
+	var f1 C.int // out
+	f1 = C.int(y)
+	var f2 C.int // out
+	f2 = C.int(width)
+	var f3 C.int // out
+	f3 = C.int(height)
+
+	v := C.GdkRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
 // X: x coordinate of the top left corner.

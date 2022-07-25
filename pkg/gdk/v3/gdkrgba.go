@@ -44,6 +44,29 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 	return &RGBA{&rgbA{(*C.GdkRGBA)(b)}}, nil
 }
 
+// NewRGBA creates a new RGBA instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewRGBA(red, green, blue, alpha float64) RGBA {
+	var f0 C.gdouble // out
+	f0 = C.gdouble(red)
+	var f1 C.gdouble // out
+	f1 = C.gdouble(green)
+	var f2 C.gdouble // out
+	f2 = C.gdouble(blue)
+	var f3 C.gdouble // out
+	f3 = C.gdouble(alpha)
+
+	v := C.GdkRGBA{
+		red:   f0,
+		green: f1,
+		blue:  f2,
+		alpha: f3,
+	}
+
+	return *(*RGBA)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Red() float64 {
 	valptr := &r.native.red

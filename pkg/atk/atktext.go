@@ -2537,6 +2537,29 @@ type textRectangle struct {
 	native *C.AtkTextRectangle
 }
 
+// NewTextRectangle creates a new TextRectangle instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewTextRectangle(x, y, width, height int) TextRectangle {
+	var f0 C.gint // out
+	f0 = C.gint(x)
+	var f1 C.gint // out
+	f1 = C.gint(y)
+	var f2 C.gint // out
+	f2 = C.gint(width)
+	var f3 C.gint // out
+	f3 = C.gint(height)
+
+	v := C.AtkTextRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) X() int {
 	valptr := &t.native.x

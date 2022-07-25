@@ -2,6 +2,12 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+)
+
 // #include <stdlib.h>
 // #include <gtk/gtk.h>
 import "C"
@@ -26,6 +32,32 @@ type CSSLocation struct {
 // cssLocation is the struct that's finalized.
 type cssLocation struct {
 	native *C.GtkCssLocation
+}
+
+// NewCSSLocation creates a new CSSLocation instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewCSSLocation(bytes, chars, lines, lineBytes, lineChars uint) CSSLocation {
+	var f0 C.gsize // out
+	f0 = C.gsize(bytes)
+	var f1 C.gsize // out
+	f1 = C.gsize(chars)
+	var f2 C.gsize // out
+	f2 = C.gsize(lines)
+	var f3 C.gsize // out
+	f3 = C.gsize(lineBytes)
+	var f4 C.gsize // out
+	f4 = C.gsize(lineChars)
+
+	v := C.GtkCssLocation{
+		bytes:      f0,
+		chars:      f1,
+		lines:      f2,
+		line_bytes: f3,
+		line_chars: f4,
+	}
+
+	return *(*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(&v)))
 }
 
 // Bytes: number of bytes parsed since the beginning.

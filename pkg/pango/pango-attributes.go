@@ -2666,6 +2666,26 @@ func marshalColor(p uintptr) (interface{}, error) {
 	return &Color{&color{(*C.PangoColor)(b)}}, nil
 }
 
+// NewColor creates a new Color instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewColor(red, green, blue uint16) Color {
+	var f0 C.guint16 // out
+	f0 = C.guint16(red)
+	var f1 C.guint16 // out
+	f1 = C.guint16(green)
+	var f2 C.guint16 // out
+	f2 = C.guint16(blue)
+
+	v := C.PangoColor{
+		red:   f0,
+		green: f1,
+		blue:  f2,
+	}
+
+	return *(*Color)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // Red: value of red component.
 func (c *Color) Red() uint16 {
 	valptr := &c.native.red

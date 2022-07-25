@@ -76,6 +76,13 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
+	{{ else }}
+	{{ with .ManualConstructor }}
+	// New{{ $.GoName }} creates a new {{ $.GoName }} instance from the given
+	// fields. Beware that this function allocates on the Go heap; be careful
+	// when using it!
+	func New{{ $.GoName }}({{ .Fields }}) {{ $.GoName }} {{ .Body }}
+	{{ end }}
 	{{ end }}
 
 	{{ $recv := (FirstLetter $.GoName) }}
@@ -194,6 +201,10 @@ type RecordGenerator struct {
 	Methods []callable.Generator
 	Getters []recordGetter
 	Setters []recordSetter
+
+	// ManualConstructor is the body function of the manually-generated
+	// constructor. Skip if empty.
+	ManualConstructor *RecordConstructor
 
 	// TODO: make a []callableGenerator for constructors
 	Callable callable.Generator
@@ -322,18 +333,34 @@ func (rg *RecordGenerator) getters() {
 	values := make([]typeconv.ConversionValue, 0, len(rg.Fields))
 	fields := make([]string, 0, len(rg.Fields))
 
+	// Do a constructor when the record has none.
+	willDoConstructor := len(rg.Fields) > 0 && len(rg.Record.Constructors) == 0
+
 	for _, field := range rg.Fields {
 		if ignoreField(field) || mustIgnoreAny(rg.gen, field.AnyType) {
 			rg.Logln(logger.Debug, "skipping field", field.Name, "after ignoreField")
+			willDoConstructor = false
 			continue
 		}
 		if types.FilterField(rg.gen, rg.Name, &field) {
 			rg.Logln(logger.Skip, "record", rg.Name, "field", field.Name)
+			willDoConstructor = false
 			continue
 		}
 		// We can't generate bitfield accesses if we're in runtime mode.
 		if field.Bits > 0 && rg.gen.LinkMode() == types.RuntimeLinkMode {
 			continue
+		}
+
+		// Check type for constructor.
+		if willDoConstructor {
+			if field.Type == nil ||
+				types.GIRPrimitiveGo(field.Type.Name) == "" ||
+				types.AnyTypeIsPtr(field.AnyType) {
+
+				// Field is more than a primitive. Skip the constructor.
+				willDoConstructor = false
+			}
 		}
 
 		// Use *valptr instead of valptr, since the generator would generate a
@@ -364,6 +391,7 @@ func (rg *RecordGenerator) getters() {
 		converted := converter.Convert(i)
 		if converted == nil {
 			rg.Logln(logger.Skip, "record", rg.Name, "field", values[i].Name)
+			willDoConstructor = false
 			continue
 		}
 
@@ -420,6 +448,67 @@ func (rg *RecordGenerator) getters() {
 		default:
 			panic("unreachable")
 		}
+	}
+
+	if willDoConstructor {
+		rg.genManualConstructor()
+	}
+}
+
+func (rg *RecordGenerator) genManualConstructor() {
+	params := pen.NewJoints(", ", len(rg.Fields))
+	convts := make([]typeconv.ConversionValue, 0, len(rg.Fields))
+
+	for i, field := range rg.Fields {
+		name := strcases.SnakeToGo(false, field.Name)
+		// Try and coalesce the type, if we can.
+		param := name
+		// We can do this only if the field is not the last one and that the
+		// type matches. When either of those fails, we have to add the type.
+		if i == len(rg.Fields)-1 || field.Type.Name != rg.Fields[i+1].Type.Name {
+			param += " " + types.GIRPrimitiveGo(field.Type.Name)
+		}
+
+		params.Add(param)
+		// always Go to C.
+		convts = append(convts, typeconv.NewFieldSetValue(name, fmt.Sprintf("f%d", i), field))
+	}
+
+	conv := typeconv.NewConverter(rg.gen, &rg.typ, convts)
+	conv.UseLogger(rg)
+
+	results := conv.ConvertAll()
+	if results == nil {
+		rg.ManualConstructor = nil
+		return
+	}
+
+	p := pen.NewBlockSections(512, 512)
+	p.Linef(1, "v := C.%s{", rg.CType)
+
+	for i, result := range results {
+		if result.Direction != typeconv.ConvertGoToC {
+			continue
+		}
+
+		p.Line(0, result.Out.Declare)
+		p.Line(0, result.Conversion)
+		p.Linef(1, "%s: %s,", rg.Fields[i].Name, result.OutName)
+	}
+
+	p.Linef(1, "}")
+	p.Linef(1, "")
+
+	rg.hdr.Import("unsafe")
+	rg.hdr.ImportCore("gextras")
+
+	// No finalizers needed, since the struct is completely allocated on the Go
+	// heap.
+	p.Linef(1, "return *(*%s)(gextras.NewStructNative(unsafe.Pointer(&v)))", rg.GoName)
+
+	rg.ManualConstructor = &RecordConstructor{
+		Fields: params.Join(),
+		Body:   p.String(),
 	}
 }
 

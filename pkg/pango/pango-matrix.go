@@ -50,6 +50,35 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	return &Matrix{&matrix{(*C.PangoMatrix)(b)}}, nil
 }
 
+// NewMatrix creates a new Matrix instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewMatrix(xx, xy, yx, yy, x0, y0 float64) Matrix {
+	var f0 C.double // out
+	f0 = C.double(xx)
+	var f1 C.double // out
+	f1 = C.double(xy)
+	var f2 C.double // out
+	f2 = C.double(yx)
+	var f3 C.double // out
+	f3 = C.double(yy)
+	var f4 C.double // out
+	f4 = C.double(x0)
+	var f5 C.double // out
+	f5 = C.double(y0)
+
+	v := C.PangoMatrix{
+		xx: f0,
+		xy: f1,
+		yx: f2,
+		yy: f3,
+		x0: f4,
+		y0: f5,
+	}
+
+	return *(*Matrix)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
 // XX: 1st component of the transformation matrix.
 func (m *Matrix) XX() float64 {
 	valptr := &m.native.xx

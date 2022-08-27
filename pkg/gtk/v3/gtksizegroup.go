@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// SizeGroupOverrider contains methods that are overridable.
-type SizeGroupOverrider interface {
+// SizeGroupOverrides contains methods that are overridable.
+type SizeGroupOverrides struct {
+}
+
+func defaultSizeGroupOverrides(v *SizeGroup) SizeGroupOverrides {
+	return SizeGroupOverrides{}
 }
 
 // SizeGroup provides a mechanism for grouping a number of widgets together so
@@ -108,25 +112,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSizeGroup,
-		GoType:        reflect.TypeOf((*SizeGroup)(nil)),
-		InitClass:     initClassSizeGroup,
-		FinalizeClass: finalizeClassSizeGroup,
-	})
+	coreglib.RegisterClassInfo[*SizeGroup, *SizeGroupClass, SizeGroupOverrides](
+		GTypeSizeGroup,
+		initSizeGroupClass,
+		wrapSizeGroup,
+		defaultSizeGroupOverrides,
+	)
 }
 
-func initClassSizeGroup(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSizeGroup(*SizeGroupClass) }); ok {
-		klass := (*SizeGroupClass)(gextras.NewStructNative(gclass))
-		goval.InitSizeGroup(klass)
-	}
-}
-
-func finalizeClassSizeGroup(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSizeGroup(*SizeGroupClass) }); ok {
-		klass := (*SizeGroupClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSizeGroup(klass)
+func initSizeGroupClass(gclass unsafe.Pointer, overrides SizeGroupOverrides, classInitFunc func(*SizeGroupClass)) {
+	if classInitFunc != nil {
+		class := (*SizeGroupClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -194,37 +191,6 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	runtime.KeepAlive(widget)
 }
 
-// IgnoreHidden returns if invisible widgets are ignored when calculating the
-// size.
-//
-// Deprecated: Measuring the size of hidden widgets has not worked reliably for
-// a long time. In most cases, they will report a size of 0 nowadays, and thus,
-// their size will not affect the other size group members. In effect, size
-// groups will always operate as if this property was TRUE. Use a Stack instead
-// to hide widgets while still having their size taken into account.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if invisible widgets are ignored.
-//
-func (sizeGroup *SizeGroup) IgnoreHidden() bool {
-	var _arg0 *C.GtkSizeGroup // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-
-	_cret = C.gtk_size_group_get_ignore_hidden(_arg0)
-	runtime.KeepAlive(sizeGroup)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Mode gets the current mode of the size group. See gtk_size_group_set_mode().
 //
 // The function returns the following values:
@@ -247,50 +213,6 @@ func (sizeGroup *SizeGroup) Mode() SizeGroupMode {
 	return _sizeGroupMode
 }
 
-// Widgets returns the list of widgets associated with size_group.
-//
-// The function returns the following values:
-//
-//    - sList of widgets. The list is owned by GTK+ and should not be modified.
-//
-func (sizeGroup *SizeGroup) Widgets() []Widgetter {
-	var _arg0 *C.GtkSizeGroup // out
-	var _cret *C.GSList       // in
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-
-	_cret = C.gtk_size_group_get_widgets(_arg0)
-	runtime.KeepAlive(sizeGroup)
-
-	var _sList []Widgetter // out
-
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_sList = append(_sList, dst)
-	})
-
-	return _sList
-}
-
 // RemoveWidget removes a widget from a SizeGroup.
 //
 // The function takes the following parameters:
@@ -307,34 +229,6 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	C.gtk_size_group_remove_widget(_arg0, _arg1)
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)
-}
-
-// SetIgnoreHidden sets whether unmapped widgets should be ignored when
-// calculating the size.
-//
-// Deprecated: Measuring the size of hidden widgets has not worked reliably for
-// a long time. In most cases, they will report a size of 0 nowadays, and thus,
-// their size will not affect the other size group members. In effect, size
-// groups will always operate as if this property was TRUE. Use a Stack instead
-// to hide widgets while still having their size taken into account.
-//
-// The function takes the following parameters:
-//
-//    - ignoreHidden: whether unmapped widgets should be ignored when calculating
-//      the size.
-//
-func (sizeGroup *SizeGroup) SetIgnoreHidden(ignoreHidden bool) {
-	var _arg0 *C.GtkSizeGroup // out
-	var _arg1 C.gboolean      // out
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-	if ignoreHidden {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_size_group_set_ignore_hidden(_arg0, _arg1)
-	runtime.KeepAlive(sizeGroup)
-	runtime.KeepAlive(ignoreHidden)
 }
 
 // SetMode sets the SizeGroupMode of the size group. The mode of the size group

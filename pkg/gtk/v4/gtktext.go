@@ -15,17 +15,17 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_Text_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectBackspace(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectCopyClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectCutClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectInsertEmoji(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectPasteClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectToggleOverwrite(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectPreeditChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectPasteClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectInsertEmoji(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectCutClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectBackspace(gpointer, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectActivate(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -155,44 +155,12 @@ func marshalText(p uintptr) (interface{}, error) {
 	return wrapText(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Text_ConnectActivate
-func _gotk4_gtk4_Text_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted when the user hits the Enter key.
 //
 // The default bindings for this signal are all forms of the <kbd>Enter</kbd>
 // key.
 func (self *Text) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectActivate), f)
-}
-
-//export _gotk4_gtk4_Text_ConnectBackspace
-func _gotk4_gtk4_Text_ConnectBackspace(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectBackspace is emitted when the user asks for it.
@@ -205,22 +173,6 @@ func (self *Text) ConnectBackspace(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "backspace", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectBackspace), f)
 }
 
-//export _gotk4_gtk4_Text_ConnectCopyClipboard
-func _gotk4_gtk4_Text_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectCopyClipboard is emitted to copy the selection to the clipboard.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -231,22 +183,6 @@ func (self *Text) ConnectCopyClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectCopyClipboard), f)
 }
 
-//export _gotk4_gtk4_Text_ConnectCutClipboard
-func _gotk4_gtk4_Text_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectCutClipboard is emitted to cut the selection to the clipboard.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -255,28 +191,6 @@ func _gotk4_gtk4_Text_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) {
 // <kbd>Shift</kbd>-<kbd>Delete</kbd>.
 func (self *Text) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "cut-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectCutClipboard), f)
-}
-
-//export _gotk4_gtk4_Text_ConnectDeleteFromCursor
-func _gotk4_gtk4_Text_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
-	var f func(typ DeleteType, count int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(typ DeleteType, count int))
-	}
-
-	var _typ DeleteType // out
-	var _count int      // out
-
-	_typ = DeleteType(arg1)
-	_count = int(arg2)
-
-	f(_typ, _count)
 }
 
 // ConnectDeleteFromCursor is emitted when the user initiates a text deletion.
@@ -292,26 +206,6 @@ func (self *Text) ConnectDeleteFromCursor(f func(typ DeleteType, count int)) cor
 	return coreglib.ConnectGeneratedClosure(self, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectDeleteFromCursor), f)
 }
 
-//export _gotk4_gtk4_Text_ConnectInsertAtCursor
-func _gotk4_gtk4_Text_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(str string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(str string))
-	}
-
-	var _str string // out
-
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_str)
-}
-
 // ConnectInsertAtCursor is emitted when the user initiates the insertion of a
 // fixed string at the cursor.
 //
@@ -322,22 +216,6 @@ func (self *Text) ConnectInsertAtCursor(f func(str string)) coreglib.SignalHandl
 	return coreglib.ConnectGeneratedClosure(self, "insert-at-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectInsertAtCursor), f)
 }
 
-//export _gotk4_gtk4_Text_ConnectInsertEmoji
-func _gotk4_gtk4_Text_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectInsertEmoji is emitted to present the Emoji chooser for the self.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -346,32 +224,6 @@ func _gotk4_gtk4_Text_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
 // <kbd>Ctrl</kbd>-<kbd>;</kbd>.
 func (self *Text) ConnectInsertEmoji(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "insert-emoji", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectInsertEmoji), f)
-}
-
-//export _gotk4_gtk4_Text_ConnectMoveCursor
-func _gotk4_gtk4_Text_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int, extend bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step MovementStep, count int, extend bool))
-	}
-
-	var _step MovementStep // out
-	var _count int         // out
-	var _extend bool       // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extend = true
-	}
-
-	f(_step, _count, _extend)
 }
 
 // ConnectMoveCursor is emitted when the user initiates a cursor movement.
@@ -398,22 +250,6 @@ func (self *Text) ConnectMoveCursor(f func(step MovementStep, count int, extend 
 	return coreglib.ConnectGeneratedClosure(self, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectMoveCursor), f)
 }
 
-//export _gotk4_gtk4_Text_ConnectPasteClipboard
-func _gotk4_gtk4_Text_ConnectPasteClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectPasteClipboard is emitted to paste the contents of the clipboard.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -424,48 +260,12 @@ func (self *Text) ConnectPasteClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "paste-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectPasteClipboard), f)
 }
 
-//export _gotk4_gtk4_Text_ConnectPreeditChanged
-func _gotk4_gtk4_Text_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(preedit string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(preedit string))
-	}
-
-	var _preedit string // out
-
-	_preedit = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_preedit)
-}
-
 // ConnectPreeditChanged is emitted when the preedit text changes.
 //
 // If an input method is used, the typed text will not immediately be committed
 // to the buffer. So if you are interested in the text, connect to this signal.
 func (self *Text) ConnectPreeditChanged(f func(preedit string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk4_Text_ConnectPreeditChanged), f)
-}
-
-//export _gotk4_gtk4_Text_ConnectToggleOverwrite
-func _gotk4_gtk4_Text_ConnectToggleOverwrite(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectToggleOverwrite is emitted to toggle the overwrite mode of the

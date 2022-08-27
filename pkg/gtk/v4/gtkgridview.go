@@ -102,26 +102,6 @@ func marshalGridView(p uintptr) (interface{}, error) {
 	return wrapGridView(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_GridView_ConnectActivate
-func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
-	var f func(position uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(position uint))
-	}
-
-	var _position uint // out
-
-	_position = uint(arg1)
-
-	f(_position)
-}
-
 // ConnectActivate is emitted when a cell has been activated by the user,
 // usually via activating the GtkGridView|list.activate-item action.
 //

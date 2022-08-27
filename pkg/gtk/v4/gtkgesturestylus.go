@@ -14,10 +14,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk4_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk4_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -59,53 +59,9 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return wrapGestureStylus(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_GestureStylus_ConnectDown
-func _gotk4_gtk4_GestureStylus_ConnectDown(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
-}
-
 // ConnectDown is emitted when the stylus touches the device.
 func (gesture *GestureStylus) ConnectDown(f func(x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "down", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectDown), f)
-}
-
-//export _gotk4_gtk4_GestureStylus_ConnectMotion
-func _gotk4_gtk4_GestureStylus_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
 }
 
 // ConnectMotion is emitted when the stylus moves while touching the device.
@@ -113,53 +69,9 @@ func (gesture *GestureStylus) ConnectMotion(f func(x, y float64)) coreglib.Signa
 	return coreglib.ConnectGeneratedClosure(gesture, "motion", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectMotion), f)
 }
 
-//export _gotk4_gtk4_GestureStylus_ConnectProximity
-func _gotk4_gtk4_GestureStylus_ConnectProximity(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
-}
-
 // ConnectProximity is emitted when the stylus is in proximity of the device.
 func (gesture *GestureStylus) ConnectProximity(f func(x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "proximity", false, unsafe.Pointer(C._gotk4_gtk4_GestureStylus_ConnectProximity), f)
-}
-
-//export _gotk4_gtk4_GestureStylus_ConnectUp
-func _gotk4_gtk4_GestureStylus_ConnectUp(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
 }
 
 // ConnectUp is emitted when the stylus no longer touches the device.

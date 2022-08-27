@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// HScrollbarOverrider contains methods that are overridable.
-type HScrollbarOverrider interface {
+// HScrollbarOverrides contains methods that are overridable.
+type HScrollbarOverrides struct {
+}
+
+func defaultHScrollbarOverrides(v *HScrollbar) HScrollbarOverrides {
+	return HScrollbarOverrides{}
 }
 
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
@@ -51,25 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHScrollbar,
-		GoType:        reflect.TypeOf((*HScrollbar)(nil)),
-		InitClass:     initClassHScrollbar,
-		FinalizeClass: finalizeClassHScrollbar,
-	})
+	coreglib.RegisterClassInfo[*HScrollbar, *HScrollbarClass, HScrollbarOverrides](
+		GTypeHScrollbar,
+		initHScrollbarClass,
+		wrapHScrollbar,
+		defaultHScrollbarOverrides,
+	)
 }
 
-func initClassHScrollbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitHScrollbar(*HScrollbarClass) }); ok {
-		klass := (*HScrollbarClass)(gextras.NewStructNative(gclass))
-		goval.InitHScrollbar(klass)
-	}
-}
-
-func finalizeClassHScrollbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHScrollbar(*HScrollbarClass) }); ok {
-		klass := (*HScrollbarClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHScrollbar(klass)
+func initHScrollbarClass(gclass unsafe.Pointer, overrides HScrollbarOverrides, classInitFunc func(*HScrollbarClass)) {
+	if classInitFunc != nil {
+		class := (*HScrollbarClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

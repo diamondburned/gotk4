@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// DrawingAreaOverrider contains methods that are overridable.
-type DrawingAreaOverrider interface {
+// DrawingAreaOverrides contains methods that are overridable.
+type DrawingAreaOverrides struct {
+}
+
+func defaultDrawingAreaOverrides(v *DrawingArea) DrawingAreaOverrides {
+	return DrawingAreaOverrides{}
 }
 
 // DrawingArea widget is used for creating custom user interface elements. It’s
@@ -119,25 +123,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDrawingArea,
-		GoType:        reflect.TypeOf((*DrawingArea)(nil)),
-		InitClass:     initClassDrawingArea,
-		FinalizeClass: finalizeClassDrawingArea,
-	})
+	coreglib.RegisterClassInfo[*DrawingArea, *DrawingAreaClass, DrawingAreaOverrides](
+		GTypeDrawingArea,
+		initDrawingAreaClass,
+		wrapDrawingArea,
+		defaultDrawingAreaOverrides,
+	)
 }
 
-func initClassDrawingArea(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitDrawingArea(*DrawingAreaClass) }); ok {
-		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
-		goval.InitDrawingArea(klass)
-	}
-}
-
-func finalizeClassDrawingArea(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDrawingArea(*DrawingAreaClass) }); ok {
-		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDrawingArea(klass)
+func initDrawingAreaClass(gclass unsafe.Pointer, overrides DrawingAreaOverrides, classInitFunc func(*DrawingAreaClass)) {
+	if classInitFunc != nil {
+		class := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

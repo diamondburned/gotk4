@@ -72,22 +72,6 @@ func BaseATContext(obj ATContexter) *ATContext {
 	return obj.baseATContext()
 }
 
-//export _gotk4_gtk4_ATContext_ConnectStateChange
-func _gotk4_gtk4_ATContext_ConnectStateChange(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectStateChange is emitted when the attributes of the accessible for the
 // GtkATContext instance change.
 func (self *ATContext) ConnectStateChange(f func()) coreglib.SignalHandle {

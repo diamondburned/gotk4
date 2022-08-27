@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// FlowBoxAccessibleOverrider contains methods that are overridable.
-type FlowBoxAccessibleOverrider interface {
+// FlowBoxAccessibleOverrides contains methods that are overridable.
+type FlowBoxAccessibleOverrides struct {
+}
+
+func defaultFlowBoxAccessibleOverrides(v *FlowBoxAccessible) FlowBoxAccessibleOverrides {
+	return FlowBoxAccessibleOverrides{}
 }
 
 type FlowBoxAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFlowBoxAccessible,
-		GoType:        reflect.TypeOf((*FlowBoxAccessible)(nil)),
-		InitClass:     initClassFlowBoxAccessible,
-		FinalizeClass: finalizeClassFlowBoxAccessible,
-	})
+	coreglib.RegisterClassInfo[*FlowBoxAccessible, *FlowBoxAccessibleClass, FlowBoxAccessibleOverrides](
+		GTypeFlowBoxAccessible,
+		initFlowBoxAccessibleClass,
+		wrapFlowBoxAccessible,
+		defaultFlowBoxAccessibleOverrides,
+	)
 }
 
-func initClassFlowBoxAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFlowBoxAccessible(*FlowBoxAccessibleClass) }); ok {
-		klass := (*FlowBoxAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitFlowBoxAccessible(klass)
-	}
-}
-
-func finalizeClassFlowBoxAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFlowBoxAccessible(*FlowBoxAccessibleClass) }); ok {
-		klass := (*FlowBoxAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFlowBoxAccessible(klass)
+func initFlowBoxAccessibleClass(gclass unsafe.Pointer, overrides FlowBoxAccessibleOverrides, classInitFunc func(*FlowBoxAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*FlowBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

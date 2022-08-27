@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -31,8 +30,12 @@ func init() {
 	})
 }
 
-// ViewportOverrider contains methods that are overridable.
-type ViewportOverrider interface {
+// ViewportOverrides contains methods that are overridable.
+type ViewportOverrides struct {
+}
+
+func defaultViewportOverrides(v *Viewport) ViewportOverrides {
+	return ViewportOverrides{}
 }
 
 // Viewport widget acts as an adaptor class, implementing scrollability for
@@ -67,25 +70,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeViewport,
-		GoType:        reflect.TypeOf((*Viewport)(nil)),
-		InitClass:     initClassViewport,
-		FinalizeClass: finalizeClassViewport,
-	})
+	coreglib.RegisterClassInfo[*Viewport, *ViewportClass, ViewportOverrides](
+		GTypeViewport,
+		initViewportClass,
+		wrapViewport,
+		defaultViewportOverrides,
+	)
 }
 
-func initClassViewport(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitViewport(*ViewportClass) }); ok {
-		klass := (*ViewportClass)(gextras.NewStructNative(gclass))
-		goval.InitViewport(klass)
-	}
-}
-
-func finalizeClassViewport(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeViewport(*ViewportClass) }); ok {
-		klass := (*ViewportClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeViewport(klass)
+func initViewportClass(gclass unsafe.Pointer, overrides ViewportOverrides, classInitFunc func(*ViewportClass)) {
+	if classInitFunc != nil {
+		class := (*ViewportClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -151,44 +147,6 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _viewport
-}
-
-// BinWindow gets the bin window of the Viewport.
-//
-// The function returns the following values:
-//
-//    - window: Window.
-//
-func (viewport *Viewport) BinWindow() gdk.Windower {
-	var _arg0 *C.GtkViewport // out
-	var _cret *C.GdkWindow   // in
-
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
-
-	_cret = C.gtk_viewport_get_bin_window(_arg0)
-	runtime.KeepAlive(viewport)
-
-	var _window gdk.Windower // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Windower)
-			return ok
-		})
-		rv, ok := casted.(gdk.Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_window = rv
-	}
-
-	return _window
 }
 
 // HAdjustment returns the horizontal adjustment of the viewport.
@@ -260,44 +218,6 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
-}
-
-// ViewWindow gets the view window of the Viewport.
-//
-// The function returns the following values:
-//
-//    - window: Window.
-//
-func (viewport *Viewport) ViewWindow() gdk.Windower {
-	var _arg0 *C.GtkViewport // out
-	var _cret *C.GdkWindow   // in
-
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
-
-	_cret = C.gtk_viewport_get_view_window(_arg0)
-	runtime.KeepAlive(viewport)
-
-	var _window gdk.Windower // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Windower)
-			return ok
-		})
-		rv, ok := casted.(gdk.Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_window = rv
-	}
-
-	return _window
 }
 
 // SetHAdjustment sets the horizontal adjustment of the viewport.

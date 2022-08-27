@@ -26,8 +26,12 @@ func init() {
 	})
 }
 
-// CustomLayoutOverrider contains methods that are overridable.
-type CustomLayoutOverrider interface {
+// CustomLayoutOverrides contains methods that are overridable.
+type CustomLayoutOverrides struct {
+}
+
+func defaultCustomLayoutOverrides(v *CustomLayout) CustomLayoutOverrides {
+	return CustomLayoutOverrides{}
 }
 
 // CustomLayout: GtkCustomLayout uses closures for size negotiation.
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCustomLayout,
-		GoType:        reflect.TypeOf((*CustomLayout)(nil)),
-		InitClass:     initClassCustomLayout,
-		FinalizeClass: finalizeClassCustomLayout,
-	})
+	coreglib.RegisterClassInfo[*CustomLayout, *CustomLayoutClass, CustomLayoutOverrides](
+		GTypeCustomLayout,
+		initCustomLayoutClass,
+		wrapCustomLayout,
+		defaultCustomLayoutOverrides,
+	)
 }
 
-func initClassCustomLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitCustomLayout(*CustomLayoutClass) }); ok {
-		klass := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitCustomLayout(klass)
-	}
-}
-
-func finalizeClassCustomLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCustomLayout(*CustomLayoutClass) }); ok {
-		klass := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCustomLayout(klass)
+func initCustomLayoutClass(gclass unsafe.Pointer, overrides CustomLayoutOverrides, classInitFunc func(*CustomLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

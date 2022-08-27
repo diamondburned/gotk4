@@ -38,18 +38,6 @@ func Beep() {
 	C.gdk_beep()
 }
 
-// DisableMultidevice disables multidevice support in GDK. This call must happen
-// prior to gdk_display_open(), gtk_init(), gtk_init_with_args() or
-// gtk_init_check() in order to take effect.
-//
-// Most common GTK+ applications won’t ever need to call this. Only applications
-// that do mixed GDK/Xlib calls could want to disable multidevice support if
-// such Xlib code deals with input devices in any way and doesn’t observe the
-// presence of XInput 2.
-func DisableMultidevice() {
-	C.gdk_disable_multidevice()
-}
-
 // ErrorTrapPop removes an error trap pushed with gdk_error_trap_push(). May
 // block until an error has been definitively received or not received from the
 // X server. gdk_error_trap_pop_ignored() is preferred if you don’t need to know
@@ -73,14 +61,6 @@ func ErrorTrapPop() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// ErrorTrapPopIgnored removes an error trap pushed with gdk_error_trap_push(),
-// but without bothering to wait and see whether an error occurred. If an error
-// arrives later asynchronously that was triggered while the trap was pushed,
-// that error will be ignored.
-func ErrorTrapPopIgnored() {
-	C.gdk_error_trap_pop_ignored()
 }
 
 // ErrorTrapPush: this function allows X errors to be trapped instead of the
@@ -136,28 +116,6 @@ func GetDisplay() string {
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-// GetDisplayArgName gets the display name specified in the command line
-// arguments passed to gdk_init() or gdk_parse_args(), if any.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): display name, if specified explicitly, otherwise NULL
-//      this string is owned by GTK+ and must not be modified or freed.
-//
-func GetDisplayArgName() string {
-	var _cret *C.gchar // in
-
-	_cret = C.gdk_get_display_arg_name()
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
 
 	return _utf8
 }
@@ -249,39 +207,6 @@ func KeyboardUngrab(time_ uint32) {
 
 	C.gdk_keyboard_ungrab(_arg1)
 	runtime.KeepAlive(time_)
-}
-
-// NotifyStartupComplete indicates to the GUI environment that the application
-// has finished loading. If the applications opens windows, this function is
-// normally called after opening the application’s initial set of windows.
-//
-// GTK+ will call this function automatically after opening the first Window
-// unless gtk_window_set_auto_startup_notification() is called to disable that
-// feature.
-func NotifyStartupComplete() {
-	C.gdk_notify_startup_complete()
-}
-
-// NotifyStartupCompleteWithID indicates to the GUI environment that the
-// application has finished loading, using a given identifier.
-//
-// GTK+ will call this function automatically for Window with custom
-// startup-notification identifier unless
-// gtk_window_set_auto_startup_notification() is called to disable that feature.
-//
-// The function takes the following parameters:
-//
-//    - startupId: startup-notification identifier, for which notification
-//      process should be completed.
-//
-func NotifyStartupCompleteWithID(startupId string) {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gdk_notify_startup_complete_with_id(_arg1)
-	runtime.KeepAlive(startupId)
 }
 
 // PointerGrab grabs the pointer (usually a mouse) so that all events are passed
@@ -422,44 +347,6 @@ func PointerUngrab(time_ uint32) {
 // Deprecated: This symbol was never meant to be used outside of GTK+.
 func PreParseLibgtkOnly() {
 	C.gdk_pre_parse_libgtk_only()
-}
-
-// SetAllowedBackends sets a list of backends that GDK should try to use.
-//
-// This can be be useful if your application does not work with certain GDK
-// backends.
-//
-// By default, GDK tries all included backends.
-//
-// For example,
-//
-//    gdk_set_allowed_backends ("wayland,quartz,*");
-//
-// instructs GDK to try the Wayland backend first, followed by the Quartz
-// backend, and then all others.
-//
-// If the GDK_BACKEND environment variable is set, it determines what backends
-// are tried in what order, while still respecting the set of allowed backends
-// that are specified by this function.
-//
-// The possible backend names are x11, win32, quartz, broadway, wayland. You can
-// also include a * in the list to try all remaining backends.
-//
-// This call must happen prior to gdk_display_open(), gtk_init(),
-// gtk_init_with_args() or gtk_init_check() in order to take effect.
-//
-// The function takes the following parameters:
-//
-//    - backends: comma-separated list of backends.
-//
-func SetAllowedBackends(backends string) {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(backends)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gdk_set_allowed_backends(_arg1)
-	runtime.KeepAlive(backends)
 }
 
 // SetDoubleClickTime: set the double click time for the default display. See

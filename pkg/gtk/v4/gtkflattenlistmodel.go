@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// FlattenListModelOverrider contains methods that are overridable.
-type FlattenListModelOverrider interface {
+// FlattenListModelOverrides contains methods that are overridable.
+type FlattenListModelOverrides struct {
+}
+
+func defaultFlattenListModelOverrides(v *FlattenListModel) FlattenListModelOverrides {
+	return FlattenListModelOverrides{}
 }
 
 // FlattenListModel: GtkFlattenListModel is a list model that concatenates other
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFlattenListModel,
-		GoType:        reflect.TypeOf((*FlattenListModel)(nil)),
-		InitClass:     initClassFlattenListModel,
-		FinalizeClass: finalizeClassFlattenListModel,
-	})
+	coreglib.RegisterClassInfo[*FlattenListModel, *FlattenListModelClass, FlattenListModelOverrides](
+		GTypeFlattenListModel,
+		initFlattenListModelClass,
+		wrapFlattenListModel,
+		defaultFlattenListModelOverrides,
+	)
 }
 
-func initClassFlattenListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFlattenListModel(*FlattenListModelClass) }); ok {
-		klass := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
-		goval.InitFlattenListModel(klass)
-	}
-}
-
-func finalizeClassFlattenListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFlattenListModel(*FlattenListModelClass) }); ok {
-		klass := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFlattenListModel(klass)
+func initFlattenListModelClass(gclass unsafe.Pointer, overrides FlattenListModelOverrides, classInitFunc func(*FlattenListModelClass)) {
+	if classInitFunc != nil {
+		class := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

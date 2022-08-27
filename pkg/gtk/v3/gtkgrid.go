@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// GridOverrider contains methods that are overridable.
-type GridOverrider interface {
+// GridOverrides contains methods that are overridable.
+type GridOverrides struct {
+}
+
+func defaultGridOverrides(v *Grid) GridOverrides {
+	return GridOverrides{}
 }
 
 // Grid is a container which arranges its child widgets in rows and columns,
@@ -65,25 +69,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGrid,
-		GoType:        reflect.TypeOf((*Grid)(nil)),
-		InitClass:     initClassGrid,
-		FinalizeClass: finalizeClassGrid,
-	})
+	coreglib.RegisterClassInfo[*Grid, *GridClass, GridOverrides](
+		GTypeGrid,
+		initGridClass,
+		wrapGrid,
+		defaultGridOverrides,
+	)
 }
 
-func initClassGrid(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitGrid(*GridClass) }); ok {
-		klass := (*GridClass)(gextras.NewStructNative(gclass))
-		goval.InitGrid(klass)
-	}
-}
-
-func finalizeClassGrid(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGrid(*GridClass) }); ok {
-		klass := (*GridClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGrid(klass)
+func initGridClass(gclass unsafe.Pointer, overrides GridOverrides, classInitFunc func(*GridClass)) {
+	if classInitFunc != nil {
+		class := (*GridClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -213,77 +210,6 @@ func (grid *Grid) AttachNextTo(child, sibling Widgetter, side PositionType, widt
 	runtime.KeepAlive(height)
 }
 
-// BaselineRow returns which row defines the global baseline of grid.
-//
-// The function returns the following values:
-//
-//    - gint: row index defining the global baseline.
-//
-func (grid *Grid) BaselineRow() int {
-	var _arg0 *C.GtkGrid // out
-	var _cret C.gint     // in
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-
-	_cret = C.gtk_grid_get_baseline_row(_arg0)
-	runtime.KeepAlive(grid)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// ChildAt gets the child of grid whose area covers the grid cell whose upper
-// left corner is at left, top.
-//
-// The function takes the following parameters:
-//
-//    - left edge of the cell.
-//    - top edge of the cell.
-//
-// The function returns the following values:
-//
-//    - widget (optional): child at the given position, or NULL.
-//
-func (grid *Grid) ChildAt(left, top int) Widgetter {
-	var _arg0 *C.GtkGrid   // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(left)
-	_arg2 = C.gint(top)
-
-	_cret = C.gtk_grid_get_child_at(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(left)
-	runtime.KeepAlive(top)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
-}
-
 // ColumnHomogeneous returns whether all columns of grid have the same width.
 //
 // The function returns the following values:
@@ -328,37 +254,6 @@ func (grid *Grid) ColumnSpacing() uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// RowBaselinePosition returns the baseline position of row as set by
-// gtk_grid_set_row_baseline_position() or the default value
-// GTK_BASELINE_POSITION_CENTER.
-//
-// The function takes the following parameters:
-//
-//    - row index.
-//
-// The function returns the following values:
-//
-//    - baselinePosition: baseline position of row.
-//
-func (grid *Grid) RowBaselinePosition(row int) BaselinePosition {
-	var _arg0 *C.GtkGrid            // out
-	var _arg1 C.gint                // out
-	var _cret C.GtkBaselinePosition // in
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(row)
-
-	_cret = C.gtk_grid_get_row_baseline_position(_arg0, _arg1)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(row)
-
-	var _baselinePosition BaselinePosition // out
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
 }
 
 // RowHomogeneous returns whether all rows of grid have the same height.
@@ -407,139 +302,6 @@ func (grid *Grid) RowSpacing() uint {
 	return _guint
 }
 
-// InsertColumn inserts a column at the specified position.
-//
-// Children which are attached at or to the right of this position are moved one
-// column to the right. Children which span across this position are grown to
-// span the new column.
-//
-// The function takes the following parameters:
-//
-//    - position to insert the column at.
-//
-func (grid *Grid) InsertColumn(position int) {
-	var _arg0 *C.GtkGrid // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(position)
-
-	C.gtk_grid_insert_column(_arg0, _arg1)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(position)
-}
-
-// InsertNextTo inserts a row or column at the specified position.
-//
-// The new row or column is placed next to sibling, on the side determined by
-// side. If side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted. If side is
-// GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
-//
-// The function takes the following parameters:
-//
-//    - sibling: child of grid that the new row or column will be placed next to.
-//    - side of sibling that child is positioned next to.
-//
-func (grid *Grid) InsertNextTo(sibling Widgetter, side PositionType) {
-	var _arg0 *C.GtkGrid        // out
-	var _arg1 *C.GtkWidget      // out
-	var _arg2 C.GtkPositionType // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
-	_arg2 = C.GtkPositionType(side)
-
-	C.gtk_grid_insert_next_to(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(sibling)
-	runtime.KeepAlive(side)
-}
-
-// InsertRow inserts a row at the specified position.
-//
-// Children which are attached at or below this position are moved one row down.
-// Children which span across this position are grown to span the new row.
-//
-// The function takes the following parameters:
-//
-//    - position to insert the row at.
-//
-func (grid *Grid) InsertRow(position int) {
-	var _arg0 *C.GtkGrid // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(position)
-
-	C.gtk_grid_insert_row(_arg0, _arg1)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(position)
-}
-
-// RemoveColumn removes a column from the grid.
-//
-// Children that are placed in this column are removed, spanning children that
-// overlap this column have their width reduced by one, and children after the
-// column are moved to the left.
-//
-// The function takes the following parameters:
-//
-//    - position of the column to remove.
-//
-func (grid *Grid) RemoveColumn(position int) {
-	var _arg0 *C.GtkGrid // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(position)
-
-	C.gtk_grid_remove_column(_arg0, _arg1)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(position)
-}
-
-// RemoveRow removes a row from the grid.
-//
-// Children that are placed in this row are removed, spanning children that
-// overlap this row have their height reduced by one, and children below the row
-// are moved up.
-//
-// The function takes the following parameters:
-//
-//    - position of the row to remove.
-//
-func (grid *Grid) RemoveRow(position int) {
-	var _arg0 *C.GtkGrid // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(position)
-
-	C.gtk_grid_remove_row(_arg0, _arg1)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(position)
-}
-
-// SetBaselineRow sets which row defines the global baseline for the entire
-// grid. Each row in the grid can have its own local baseline, but only one of
-// those is global, meaning it will be the baseline in the parent of the grid.
-//
-// The function takes the following parameters:
-//
-//    - row index.
-//
-func (grid *Grid) SetBaselineRow(row int) {
-	var _arg0 *C.GtkGrid // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(row)
-
-	C.gtk_grid_set_baseline_row(_arg0, _arg1)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(row)
-}
-
 // SetColumnHomogeneous sets whether all columns of grid will have the same
 // width.
 //
@@ -577,29 +339,6 @@ func (grid *Grid) SetColumnSpacing(spacing uint) {
 	C.gtk_grid_set_column_spacing(_arg0, _arg1)
 	runtime.KeepAlive(grid)
 	runtime.KeepAlive(spacing)
-}
-
-// SetRowBaselinePosition sets how the baseline should be positioned on row of
-// the grid, in case that row is assigned more space than is requested.
-//
-// The function takes the following parameters:
-//
-//    - row index.
-//    - pos: BaselinePosition.
-//
-func (grid *Grid) SetRowBaselinePosition(row int, pos BaselinePosition) {
-	var _arg0 *C.GtkGrid            // out
-	var _arg1 C.gint                // out
-	var _arg2 C.GtkBaselinePosition // out
-
-	_arg0 = (*C.GtkGrid)(unsafe.Pointer(coreglib.InternObject(grid).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = C.GtkBaselinePosition(pos)
-
-	C.gtk_grid_set_row_baseline_position(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(grid)
-	runtime.KeepAlive(row)
-	runtime.KeepAlive(pos)
 }
 
 // SetRowHomogeneous sets whether all rows of grid will have the same height.

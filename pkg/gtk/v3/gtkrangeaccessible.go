@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// RangeAccessibleOverrider contains methods that are overridable.
-type RangeAccessibleOverrider interface {
+// RangeAccessibleOverrides contains methods that are overridable.
+type RangeAccessibleOverrides struct {
+}
+
+func defaultRangeAccessibleOverrides(v *RangeAccessible) RangeAccessibleOverrides {
+	return RangeAccessibleOverrides{}
 }
 
 type RangeAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRangeAccessible,
-		GoType:        reflect.TypeOf((*RangeAccessible)(nil)),
-		InitClass:     initClassRangeAccessible,
-		FinalizeClass: finalizeClassRangeAccessible,
-	})
+	coreglib.RegisterClassInfo[*RangeAccessible, *RangeAccessibleClass, RangeAccessibleOverrides](
+		GTypeRangeAccessible,
+		initRangeAccessibleClass,
+		wrapRangeAccessible,
+		defaultRangeAccessibleOverrides,
+	)
 }
 
-func initClassRangeAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitRangeAccessible(*RangeAccessibleClass) }); ok {
-		klass := (*RangeAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitRangeAccessible(klass)
-	}
-}
-
-func finalizeClassRangeAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRangeAccessible(*RangeAccessibleClass) }); ok {
-		klass := (*RangeAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRangeAccessible(klass)
+func initRangeAccessibleClass(gclass unsafe.Pointer, overrides RangeAccessibleOverrides, classInitFunc func(*RangeAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*RangeAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

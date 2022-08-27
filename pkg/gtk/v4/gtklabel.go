@@ -15,10 +15,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_Label_ConnectActivateLink(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_Label_ConnectActivateCurrentLink(gpointer, guintptr);
-// extern void _gotk4_gtk4_Label_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_Label_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk4_Label_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_Label_ConnectActivateCurrentLink(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_Label_ConnectActivateLink(gpointer, gchar*, guintptr);
 import "C"
 
 // GType values.
@@ -238,22 +238,6 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return wrapLabel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Label_ConnectActivateCurrentLink
-func _gotk4_gtk4_Label_ConnectActivateCurrentLink(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivateCurrentLink gets emitted when the user activates a link in the
 // label.
 //
@@ -267,54 +251,12 @@ func (self *Label) ConnectActivateCurrentLink(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate-current-link", false, unsafe.Pointer(C._gotk4_gtk4_Label_ConnectActivateCurrentLink), f)
 }
 
-//export _gotk4_gtk4_Label_ConnectActivateLink
-func _gotk4_gtk4_Label_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(uri string) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(uri string) (ok bool))
-	}
-
-	var _uri string // out
-
-	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := f(_uri)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectActivateLink gets emitted to activate a URI.
 //
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri().
 func (self *Label) ConnectActivateLink(f func(uri string) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate-link", false, unsafe.Pointer(C._gotk4_gtk4_Label_ConnectActivateLink), f)
-}
-
-//export _gotk4_gtk4_Label_ConnectCopyClipboard
-func _gotk4_gtk4_Label_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectCopyClipboard gets emitted to copy the slection to the clipboard.
@@ -324,32 +266,6 @@ func _gotk4_gtk4_Label_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
 // The default binding for this signal is Ctrl-c.
 func (self *Label) ConnectCopyClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_Label_ConnectCopyClipboard), f)
-}
-
-//export _gotk4_gtk4_Label_ConnectMoveCursor
-func _gotk4_gtk4_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int, extendSelection bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
-	}
-
-	var _step MovementStep    // out
-	var _count int            // out
-	var _extendSelection bool // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extendSelection = true
-	}
-
-	f(_step, _count, _extendSelection)
 }
 
 // ConnectMoveCursor gets emitted when the user initiates a cursor movement.

@@ -3,148 +3,16 @@
 package gtk
 
 import (
-	"reflect"
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// GType values.
-var (
-	GTypeFontChooserDialog = coreglib.Type(C.gtk_font_chooser_dialog_get_type())
-)
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		coreglib.TypeMarshaler{T: GTypeFontChooserDialog, F: marshalFontChooserDialog},
-	})
-}
-
-// FontChooserDialogOverrider contains methods that are overridable.
-type FontChooserDialogOverrider interface {
-}
-
-// FontChooserDialog widget is a dialog for selecting a font. It implements the
-// FontChooser interface.
-//
-//
-// GtkFontChooserDialog as GtkBuildable
-//
-// The GtkFontChooserDialog implementation of the Buildable interface exposes
-// the buttons with the names “select_button” and “cancel_button”.
-type FontChooserDialog struct {
-	_ [0]func() // equal guard
-	Dialog
-
-	*coreglib.Object
-	FontChooser
-}
-
-var (
-	_ coreglib.Objector = (*FontChooserDialog)(nil)
-	_ Binner            = (*FontChooserDialog)(nil)
-)
-
-func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFontChooserDialog,
-		GoType:        reflect.TypeOf((*FontChooserDialog)(nil)),
-		InitClass:     initClassFontChooserDialog,
-		FinalizeClass: finalizeClassFontChooserDialog,
-	})
-}
-
-func initClassFontChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFontChooserDialog(*FontChooserDialogClass) }); ok {
-		klass := (*FontChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitFontChooserDialog(klass)
-	}
-}
-
-func finalizeClassFontChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFontChooserDialog(*FontChooserDialogClass) }); ok {
-		klass := (*FontChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFontChooserDialog(klass)
-	}
-}
-
-func wrapFontChooserDialog(obj *coreglib.Object) *FontChooserDialog {
-	return &FontChooserDialog{
-		Dialog: Dialog{
-			Window: Window{
-				Bin: Bin{
-					Container: Container{
-						Widget: Widget{
-							InitiallyUnowned: coreglib.InitiallyUnowned{
-								Object: obj,
-							},
-							Object: obj,
-							ImplementorIface: atk.ImplementorIface{
-								Object: obj,
-							},
-							Buildable: Buildable{
-								Object: obj,
-							},
-						},
-					},
-				},
-			},
-		},
-		Object: obj,
-		FontChooser: FontChooser{
-			Object: obj,
-		},
-	}
-}
-
-func marshalFontChooserDialog(p uintptr) (interface{}, error) {
-	return wrapFontChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewFontChooserDialog creates a new FontChooserDialog.
-//
-// The function takes the following parameters:
-//
-//    - title (optional): title of the dialog, or NULL.
-//    - parent (optional): transient parent of the dialog, or NULL.
-//
-// The function returns the following values:
-//
-//    - fontChooserDialog: new FontChooserDialog.
-//
-func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
-
-	if title != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	if parent != nil {
-		_arg2 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-
-	_cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
-	runtime.KeepAlive(title)
-	runtime.KeepAlive(parent)
-
-	var _fontChooserDialog *FontChooserDialog // out
-
-	_fontChooserDialog = wrapFontChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _fontChooserDialog
-}
 
 // FontChooserDialogClass: instance of this type is always passed by reference.
 type FontChooserDialogClass struct {

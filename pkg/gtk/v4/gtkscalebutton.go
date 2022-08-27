@@ -14,10 +14,13 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ScaleButtonClass_value_changed(GtkScaleButton*, double);
-// extern void _gotk4_gtk4_ScaleButton_ConnectPopdown(gpointer, guintptr);
-// extern void _gotk4_gtk4_ScaleButton_ConnectPopup(gpointer, guintptr);
 // extern void _gotk4_gtk4_ScaleButton_ConnectValueChanged(gpointer, gdouble, guintptr);
+// extern void _gotk4_gtk4_ScaleButton_ConnectPopup(gpointer, guintptr);
+// extern void _gotk4_gtk4_ScaleButton_ConnectPopdown(gpointer, guintptr);
+// extern void _gotk4_gtk4_ScaleButtonClass_value_changed(GtkScaleButton*, double);
+// void _gotk4_gtk4_ScaleButton_virtual_value_changed(void* fnptr, GtkScaleButton* arg0, double arg1) {
+//   ((void (*)(GtkScaleButton*, double))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -31,11 +34,17 @@ func init() {
 	})
 }
 
-// ScaleButtonOverrider contains methods that are overridable.
-type ScaleButtonOverrider interface {
+// ScaleButtonOverrides contains methods that are overridable.
+type ScaleButtonOverrides struct {
 	// The function takes the following parameters:
 	//
-	ValueChanged(value float64)
+	ValueChanged func(value float64)
+}
+
+func defaultScaleButtonOverrides(v *ScaleButton) ScaleButtonOverrides {
+	return ScaleButtonOverrides{
+		ValueChanged: v.valueChanged,
+	}
 }
 
 // ScaleButton: GtkScaleButton provides a button which pops up a scale widget.
@@ -63,44 +72,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeScaleButton,
-		GoType:        reflect.TypeOf((*ScaleButton)(nil)),
-		InitClass:     initClassScaleButton,
-		FinalizeClass: finalizeClassScaleButton,
-	})
+	coreglib.RegisterClassInfo[*ScaleButton, *ScaleButtonClass, ScaleButtonOverrides](
+		GTypeScaleButton,
+		initScaleButtonClass,
+		wrapScaleButton,
+		defaultScaleButtonOverrides,
+	)
 }
 
-func initClassScaleButton(gclass unsafe.Pointer, goval any) {
+func initScaleButtonClass(gclass unsafe.Pointer, overrides ScaleButtonOverrides, classInitFunc func(*ScaleButtonClass)) {
+	pclass := (*C.GtkScaleButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeScaleButton))))
 
-	pclass := (*C.GtkScaleButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ValueChanged(value float64) }); ok {
+	if overrides.ValueChanged != nil {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_ScaleButtonClass_value_changed)
 	}
-	if goval, ok := goval.(interface{ InitScaleButton(*ScaleButtonClass) }); ok {
-		klass := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitScaleButton(klass)
+
+	if classInitFunc != nil {
+		class := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassScaleButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeScaleButton(*ScaleButtonClass) }); ok {
-		klass := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeScaleButton(klass)
-	}
-}
-
-//export _gotk4_gtk4_ScaleButtonClass_value_changed
-func _gotk4_gtk4_ScaleButtonClass_value_changed(arg0 *C.GtkScaleButton, arg1 C.double) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ValueChanged(value float64) })
-
-	var _value float64 // out
-
-	_value = float64(arg1)
-
-	iface.ValueChanged(_value)
 }
 
 func wrapScaleButton(obj *coreglib.Object) *ScaleButton {
@@ -131,22 +121,6 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return wrapScaleButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_ScaleButton_ConnectPopdown
-func _gotk4_gtk4_ScaleButton_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectPopdown is emitted to dismiss the popup.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -154,22 +128,6 @@ func _gotk4_gtk4_ScaleButton_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) {
 // The default binding for this signal is <kbd>Escape</kbd>.
 func (button *ScaleButton) ConnectPopdown(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "popdown", false, unsafe.Pointer(C._gotk4_gtk4_ScaleButton_ConnectPopdown), f)
-}
-
-//export _gotk4_gtk4_ScaleButton_ConnectPopup
-func _gotk4_gtk4_ScaleButton_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectPopup is emitted to popup the scale widget.
@@ -180,26 +138,6 @@ func _gotk4_gtk4_ScaleButton_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
 // and <kbd>Return</kbd>.
 func (button *ScaleButton) ConnectPopup(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "popup", false, unsafe.Pointer(C._gotk4_gtk4_ScaleButton_ConnectPopup), f)
-}
-
-//export _gotk4_gtk4_ScaleButton_ConnectValueChanged
-func _gotk4_gtk4_ScaleButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
-	var f func(value float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(value float64))
-	}
-
-	var _value float64 // out
-
-	_value = float64(arg1)
-
-	f(_value)
 }
 
 // ConnectValueChanged is emitted when the value field has changed.
@@ -461,6 +399,23 @@ func (button *ScaleButton) SetValue(value float64) {
 	_arg1 = C.double(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(value)
+}
+
+// The function takes the following parameters:
+//
+func (button *ScaleButton) valueChanged(value float64) {
+	gclass := (*C.GtkScaleButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.value_changed
+
+	var _arg0 *C.GtkScaleButton // out
+	var _arg1 C.double          // out
+
+	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = C.double(value)
+
+	C._gotk4_gtk4_ScaleButton_virtual_value_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(value)
 }

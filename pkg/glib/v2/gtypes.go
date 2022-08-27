@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
@@ -42,41 +41,14 @@ const LN2 = 0.693147
 // 10 exponent.
 const LOG_2_BASE_10 = 0.301030
 
-// MAXINT16: maximum value which can be held in a #gint16.
-const MAXINT16 = 32767
-
-// MAXINT32: maximum value which can be held in a #gint32.
-const MAXINT32 = 2147483647
-
 // MAXINT64: maximum value which can be held in a #gint64.
 const MAXINT64 = 9223372036854775807
-
-// MAXINT8: maximum value which can be held in a #gint8.
-const MAXINT8 = 127
-
-// MAXUINT16: maximum value which can be held in a #guint16.
-const MAXUINT16 = 65535
-
-// MAXUINT32: maximum value which can be held in a #guint32.
-const MAXUINT32 = 4294967295
 
 // MAXUINT64: maximum value which can be held in a #guint64.
 const MAXUINT64 = 18446744073709551615
 
-// MAXUINT8: maximum value which can be held in a #guint8.
-const MAXUINT8 = 255
-
-// MININT16: minimum value which can be held in a #gint16.
-const MININT16 = -32768
-
-// MININT32: minimum value which can be held in a #gint32.
-const MININT32 = -2147483648
-
 // MININT64: minimum value which can be held in a #gint64.
 const MININT64 = -9223372036854775808
-
-// MININT8: minimum value which can be held in a #gint8.
-const MININT8 = -128
 
 // PDP_ENDIAN specifies one of the possible types of byte order (currently
 // unused). See BYTE_ORDER.
@@ -100,76 +72,14 @@ const SQRT2 = 1.414214
 // first value comes after the second.
 type CompareDataFunc func(a, b unsafe.Pointer) (gint int)
 
-//export _gotk4_glib2_CompareDataFunc
-func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, arg3 C.gpointer) (cret C.gint) {
-	var fn CompareDataFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(CompareDataFunc)
-	}
-
-	var _a unsafe.Pointer // out
-	var _b unsafe.Pointer // out
-
-	_a = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_b = (unsafe.Pointer)(unsafe.Pointer(arg2))
-
-	gint := fn(_a, _b)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
 // Func specifies the type of functions passed to g_list_foreach() and
 // g_slist_foreach().
 type Func func(data unsafe.Pointer)
-
-//export _gotk4_glib2_Func
-func _gotk4_glib2_Func(arg1 C.gpointer, arg2 C.gpointer) {
-	var fn Func
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(Func)
-	}
-
-	var _data unsafe.Pointer // out
-
-	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
-
-	fn(_data)
-}
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
 // is called with each key/value pair, together with the user_data parameter
 // which is passed to g_hash_table_foreach().
 type HFunc func(key, value unsafe.Pointer)
-
-//export _gotk4_glib2_HFunc
-func _gotk4_glib2_HFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) {
-	var fn HFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(HFunc)
-	}
-
-	var _key unsafe.Pointer   // out
-	var _value unsafe.Pointer // out
-
-	_key = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_value = (unsafe.Pointer)(unsafe.Pointer(arg2))
-
-	fn(_key, _value)
-}
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
 // the struct timeval returned by the gettimeofday() UNIX system call.

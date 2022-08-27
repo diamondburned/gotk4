@@ -54,26 +54,6 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return wrapCellRendererToggle(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_CellRendererToggle_ConnectToggled
-func _gotk4_gtk4_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(path string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(path string))
-	}
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_path)
-}
-
 // ConnectToggled signal is emitted when the cell is toggled.
 //
 // It is the responsibility of the application to update the model with the

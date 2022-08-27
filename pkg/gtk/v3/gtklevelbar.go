@@ -17,8 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_LevelBarClass_offset_changed(GtkLevelBar*, gchar*);
 // extern void _gotk4_gtk3_LevelBar_ConnectOffsetChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_LevelBarClass_offset_changed(GtkLevelBar*, gchar*);
+// void _gotk4_gtk3_LevelBar_virtual_offset_changed(void* fnptr, GtkLevelBar* arg0, gchar* arg1) {
+//   ((void (*)(GtkLevelBar*, gchar*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -32,23 +35,17 @@ func init() {
 	})
 }
 
-// LEVEL_BAR_OFFSET_FULL: name used for the stock full offset included by
-// LevelBar.
-const LEVEL_BAR_OFFSET_FULL = "full"
-
-// LEVEL_BAR_OFFSET_HIGH: name used for the stock high offset included by
-// LevelBar.
-const LEVEL_BAR_OFFSET_HIGH = "high"
-
-// LEVEL_BAR_OFFSET_LOW: name used for the stock low offset included by
-// LevelBar.
-const LEVEL_BAR_OFFSET_LOW = "low"
-
-// LevelBarOverrider contains methods that are overridable.
-type LevelBarOverrider interface {
+// LevelBarOverrides contains methods that are overridable.
+type LevelBarOverrides struct {
 	// The function takes the following parameters:
 	//
-	OffsetChanged(name string)
+	OffsetChanged func(name string)
+}
+
+func defaultLevelBarOverrides(v *LevelBar) LevelBarOverrides {
+	return LevelBarOverrides{
+		OffsetChanged: v.offsetChanged,
+	}
 }
 
 // LevelBar is a bar widget that can be used as a level indicator. Typical use
@@ -98,44 +95,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLevelBar,
-		GoType:        reflect.TypeOf((*LevelBar)(nil)),
-		InitClass:     initClassLevelBar,
-		FinalizeClass: finalizeClassLevelBar,
-	})
+	coreglib.RegisterClassInfo[*LevelBar, *LevelBarClass, LevelBarOverrides](
+		GTypeLevelBar,
+		initLevelBarClass,
+		wrapLevelBar,
+		defaultLevelBarOverrides,
+	)
 }
 
-func initClassLevelBar(gclass unsafe.Pointer, goval any) {
+func initLevelBarClass(gclass unsafe.Pointer, overrides LevelBarOverrides, classInitFunc func(*LevelBarClass)) {
+	pclass := (*C.GtkLevelBarClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeLevelBar))))
 
-	pclass := (*C.GtkLevelBarClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ OffsetChanged(name string) }); ok {
+	if overrides.OffsetChanged != nil {
 		pclass.offset_changed = (*[0]byte)(C._gotk4_gtk3_LevelBarClass_offset_changed)
 	}
-	if goval, ok := goval.(interface{ InitLevelBar(*LevelBarClass) }); ok {
-		klass := (*LevelBarClass)(gextras.NewStructNative(gclass))
-		goval.InitLevelBar(klass)
+
+	if classInitFunc != nil {
+		class := (*LevelBarClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassLevelBar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeLevelBar(*LevelBarClass) }); ok {
-		klass := (*LevelBarClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLevelBar(klass)
-	}
-}
-
-//export _gotk4_gtk3_LevelBarClass_offset_changed
-func _gotk4_gtk3_LevelBarClass_offset_changed(arg0 *C.GtkLevelBar, arg1 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ OffsetChanged(name string) })
-
-	var _name string // out
-
-	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.OffsetChanged(_name)
 }
 
 func wrapLevelBar(obj *coreglib.Object) *LevelBar {
@@ -163,26 +141,6 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return wrapLevelBar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_LevelBar_ConnectOffsetChanged
-func _gotk4_gtk3_LevelBar_ConnectOffsetChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(name string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(name string))
-	}
-
-	var _name string // out
-
-	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_name)
-}
-
 // ConnectOffsetChanged is emitted when an offset specified on the bar changes
 // value as an effect to gtk_level_bar_add_offset_value() being called.
 //
@@ -193,353 +151,22 @@ func (self *LevelBar) ConnectOffsetChanged(f func(name string)) coreglib.SignalH
 	return coreglib.ConnectGeneratedClosure(self, "offset-changed", false, unsafe.Pointer(C._gotk4_gtk3_LevelBar_ConnectOffsetChanged), f)
 }
 
-// NewLevelBar creates a new LevelBar.
-//
-// The function returns the following values:
-//
-//    - levelBar: LevelBar.
-//
-func NewLevelBar() *LevelBar {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_level_bar_new()
-
-	var _levelBar *LevelBar // out
-
-	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _levelBar
-}
-
-// NewLevelBarForInterval: utility constructor that creates a new LevelBar for
-// the specified interval.
-//
 // The function takes the following parameters:
 //
-//    - minValue: positive value.
-//    - maxValue: positive value.
-//
-// The function returns the following values:
-//
-//    - levelBar: LevelBar.
-//
-func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
-	var _arg1 C.gdouble    // out
-	var _arg2 C.gdouble    // out
-	var _cret *C.GtkWidget // in
+func (self *LevelBar) offsetChanged(name string) {
+	gclass := (*C.GtkLevelBarClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.offset_changed
 
-	_arg1 = C.gdouble(minValue)
-	_arg2 = C.gdouble(maxValue)
-
-	_cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
-	runtime.KeepAlive(minValue)
-	runtime.KeepAlive(maxValue)
-
-	var _levelBar *LevelBar // out
-
-	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _levelBar
-}
-
-// AddOffsetValue adds a new offset marker on self at the position specified by
-// value. When the bar value is in the interval topped by value (or between
-// value and LevelBar:max-value in case the offset is the last one on the bar) a
-// style class named level-name will be applied when rendering the level bar
-// fill. If another offset marker named name exists, its value will be replaced
-// by value.
-//
-// The function takes the following parameters:
-//
-//    - name of the new offset.
-//    - value for the new offset.
-//
-func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	var _arg0 *C.GtkLevelBar // out
 	var _arg1 *C.gchar       // out
-	var _arg2 C.gdouble      // out
 
 	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(value)
 
-	C.gtk_level_bar_add_offset_value(_arg0, _arg1, _arg2)
+	C._gotk4_gtk3_LevelBar_virtual_offset_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
-	runtime.KeepAlive(value)
-}
-
-// Inverted: return the value of the LevelBar:inverted property.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the level bar is inverted.
-//
-func (self *LevelBar) Inverted() bool {
-	var _arg0 *C.GtkLevelBar // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_level_bar_get_inverted(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// MaxValue returns the value of the LevelBar:max-value property.
-//
-// The function returns the following values:
-//
-//    - gdouble: positive value.
-//
-func (self *LevelBar) MaxValue() float64 {
-	var _arg0 *C.GtkLevelBar // out
-	var _cret C.gdouble      // in
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_level_bar_get_max_value(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// MinValue returns the value of the LevelBar:min-value property.
-//
-// The function returns the following values:
-//
-//    - gdouble: positive value.
-//
-func (self *LevelBar) MinValue() float64 {
-	var _arg0 *C.GtkLevelBar // out
-	var _cret C.gdouble      // in
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_level_bar_get_min_value(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// Mode returns the value of the LevelBar:mode property.
-//
-// The function returns the following values:
-//
-//    - levelBarMode: LevelBarMode.
-//
-func (self *LevelBar) Mode() LevelBarMode {
-	var _arg0 *C.GtkLevelBar    // out
-	var _cret C.GtkLevelBarMode // in
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_level_bar_get_mode(_arg0)
-	runtime.KeepAlive(self)
-
-	var _levelBarMode LevelBarMode // out
-
-	_levelBarMode = LevelBarMode(_cret)
-
-	return _levelBarMode
-}
-
-// OffsetValue fetches the value specified for the offset marker name in self,
-// returning TRUE in case an offset named name was found.
-//
-// The function takes the following parameters:
-//
-//    - name (optional) of an offset in the bar.
-//
-// The function returns the following values:
-//
-//    - value: location where to store the value.
-//    - ok: TRUE if the specified offset is found.
-//
-func (self *LevelBar) OffsetValue(name string) (float64, bool) {
-	var _arg0 *C.GtkLevelBar // out
-	var _arg1 *C.gchar       // out
-	var _arg2 C.gdouble      // in
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(name)
-
-	var _value float64 // out
-	var _ok bool       // out
-
-	_value = float64(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _value, _ok
-}
-
-// Value returns the value of the LevelBar:value property.
-//
-// The function returns the following values:
-//
-//    - gdouble: value in the interval between LevelBar:min-value and
-//      LevelBar:max-value.
-//
-func (self *LevelBar) Value() float64 {
-	var _arg0 *C.GtkLevelBar // out
-	var _cret C.gdouble      // in
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_level_bar_get_value(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// RemoveOffsetValue removes an offset marker previously added with
-// gtk_level_bar_add_offset_value().
-//
-// The function takes the following parameters:
-//
-//    - name (optional) of an offset in the bar.
-//
-func (self *LevelBar) RemoveOffsetValue(name string) {
-	var _arg0 *C.GtkLevelBar // out
-	var _arg1 *C.gchar       // out
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C.gtk_level_bar_remove_offset_value(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(name)
-}
-
-// SetInverted sets the value of the LevelBar:inverted property.
-//
-// The function takes the following parameters:
-//
-//    - inverted: TRUE to invert the level bar.
-//
-func (self *LevelBar) SetInverted(inverted bool) {
-	var _arg0 *C.GtkLevelBar // out
-	var _arg1 C.gboolean     // out
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	if inverted {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_level_bar_set_inverted(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(inverted)
-}
-
-// SetMaxValue sets the value of the LevelBar:max-value property.
-//
-// You probably want to update preexisting level offsets after calling this
-// function.
-//
-// The function takes the following parameters:
-//
-//    - value: positive value.
-//
-func (self *LevelBar) SetMaxValue(value float64) {
-	var _arg0 *C.GtkLevelBar // out
-	var _arg1 C.gdouble      // out
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.gdouble(value)
-
-	C.gtk_level_bar_set_max_value(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(value)
-}
-
-// SetMinValue sets the value of the LevelBar:min-value property.
-//
-// You probably want to update preexisting level offsets after calling this
-// function.
-//
-// The function takes the following parameters:
-//
-//    - value: positive value.
-//
-func (self *LevelBar) SetMinValue(value float64) {
-	var _arg0 *C.GtkLevelBar // out
-	var _arg1 C.gdouble      // out
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.gdouble(value)
-
-	C.gtk_level_bar_set_min_value(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(value)
-}
-
-// SetMode sets the value of the LevelBar:mode property.
-//
-// The function takes the following parameters:
-//
-//    - mode: LevelBarMode.
-//
-func (self *LevelBar) SetMode(mode LevelBarMode) {
-	var _arg0 *C.GtkLevelBar    // out
-	var _arg1 C.GtkLevelBarMode // out
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.GtkLevelBarMode(mode)
-
-	C.gtk_level_bar_set_mode(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(mode)
-}
-
-// SetValue sets the value of the LevelBar:value property.
-//
-// The function takes the following parameters:
-//
-//    - value in the interval between LevelBar:min-value and LevelBar:max-value.
-//
-func (self *LevelBar) SetValue(value float64) {
-	var _arg0 *C.GtkLevelBar // out
-	var _arg1 C.gdouble      // out
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.gdouble(value)
-
-	C.gtk_level_bar_set_value(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(value)
 }
 
 // LevelBarClass: instance of this type is always passed by reference.

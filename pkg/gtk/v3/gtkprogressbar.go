@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #include <stdlib.h>
@@ -31,8 +30,12 @@ func init() {
 	})
 }
 
-// ProgressBarOverrider contains methods that are overridable.
-type ProgressBarOverrider interface {
+// ProgressBarOverrides contains methods that are overridable.
+type ProgressBarOverrides struct {
+}
+
+func defaultProgressBarOverrides(v *ProgressBar) ProgressBarOverrides {
+	return ProgressBarOverrides{}
 }
 
 // ProgressBar is typically used to display the progress of a long running
@@ -86,25 +89,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeProgressBar,
-		GoType:        reflect.TypeOf((*ProgressBar)(nil)),
-		InitClass:     initClassProgressBar,
-		FinalizeClass: finalizeClassProgressBar,
-	})
+	coreglib.RegisterClassInfo[*ProgressBar, *ProgressBarClass, ProgressBarOverrides](
+		GTypeProgressBar,
+		initProgressBarClass,
+		wrapProgressBar,
+		defaultProgressBarOverrides,
+	)
 }
 
-func initClassProgressBar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitProgressBar(*ProgressBarClass) }); ok {
-		klass := (*ProgressBarClass)(gextras.NewStructNative(gclass))
-		goval.InitProgressBar(klass)
-	}
-}
-
-func finalizeClassProgressBar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeProgressBar(*ProgressBarClass) }); ok {
-		klass := (*ProgressBarClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeProgressBar(klass)
+func initProgressBarClass(gclass unsafe.Pointer, overrides ProgressBarOverrides, classInitFunc func(*ProgressBarClass)) {
+	if classInitFunc != nil {
+		class := (*ProgressBarClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -149,29 +145,6 @@ func NewProgressBar() *ProgressBar {
 	_progressBar = wrapProgressBar(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _progressBar
-}
-
-// Ellipsize returns the ellipsizing position of the progress bar. See
-// gtk_progress_bar_set_ellipsize().
-//
-// The function returns the following values:
-//
-//    - ellipsizeMode: EllipsizeMode.
-//
-func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkProgressBar    // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-
-	_cret = C.gtk_progress_bar_get_ellipsize(_arg0)
-	runtime.KeepAlive(pbar)
-
-	var _ellipsizeMode pango.EllipsizeMode // out
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -243,31 +216,6 @@ func (pbar *ProgressBar) PulseStep() float64 {
 	return _gdouble
 }
 
-// ShowText gets the value of the ProgressBar:show-text property. See
-// gtk_progress_bar_set_show_text().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if text is shown in the progress bar.
-//
-func (pbar *ProgressBar) ShowText() bool {
-	var _arg0 *C.GtkProgressBar // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-
-	_cret = C.gtk_progress_bar_get_show_text(_arg0)
-	runtime.KeepAlive(pbar)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Text retrieves the text that is displayed with the progress bar, if any,
 // otherwise NULL. The return value is a reference to the text, not a copy of
 // it, so will become invalid if you change the text in the progress bar.
@@ -307,25 +255,6 @@ func (pbar *ProgressBar) Pulse() {
 
 	C.gtk_progress_bar_pulse(_arg0)
 	runtime.KeepAlive(pbar)
-}
-
-// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
-// text if there is not enough space to render the entire string.
-//
-// The function takes the following parameters:
-//
-//    - mode: EllipsizeMode.
-//
-func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.GtkProgressBar    // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	_arg1 = C.PangoEllipsizeMode(mode)
-
-	C.gtk_progress_bar_set_ellipsize(_arg0, _arg1)
-	runtime.KeepAlive(pbar)
-	runtime.KeepAlive(mode)
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of the
@@ -385,32 +314,6 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	C.gtk_progress_bar_set_pulse_step(_arg0, _arg1)
 	runtime.KeepAlive(pbar)
 	runtime.KeepAlive(fraction)
-}
-
-// SetShowText sets whether the progress bar will show text next to the bar. The
-// shown text is either the value of the ProgressBar:text property or, if that
-// is NULL, the ProgressBar:fraction value, as a percentage.
-//
-// To make a progress bar that is styled and sized suitably for containing text
-// (even if the actual text is blank), set ProgressBar:show-text to TRUE and
-// ProgressBar:text to the empty string (not NULL).
-//
-// The function takes the following parameters:
-//
-//    - showText: whether to show text.
-//
-func (pbar *ProgressBar) SetShowText(showText bool) {
-	var _arg0 *C.GtkProgressBar // out
-	var _arg1 C.gboolean        // out
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(coreglib.InternObject(pbar).Native()))
-	if showText {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_progress_bar_set_show_text(_arg0, _arg1)
-	runtime.KeepAlive(pbar)
-	runtime.KeepAlive(showText)
 }
 
 // SetText causes the given text to appear next to the progress bar.

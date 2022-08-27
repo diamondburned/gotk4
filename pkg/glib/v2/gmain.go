@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <glib.h>
-// extern gboolean _gotk4_glib2_SourceFunc(gpointer);
 // extern void callbackDelete(gpointer);
+// extern gboolean _gotk4_glib2_SourceFunc(gpointer);
 import "C"
 
 // GType values.
@@ -62,14 +62,6 @@ const PRIORITY_HIGH_IDLE = 100
 // It is not used within GLib or GTK+.
 const PRIORITY_LOW = 300
 
-// SOURCE_CONTINUE: use this macro as the return value of a Func to leave the
-// #GSource in the main loop.
-const SOURCE_CONTINUE = true
-
-// SOURCE_REMOVE: use this macro as the return value of a Func to remove the
-// #GSource from the main loop.
-const SOURCE_REMOVE = false
-
 // SourceFunc specifies the type of function passed to g_timeout_add(),
 // g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
 //
@@ -77,26 +69,6 @@ const SOURCE_REMOVE = false
 // different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
 // incompatible function types.
 type SourceFunc func() (ok bool)
-
-//export _gotk4_glib2_SourceFunc
-func _gotk4_glib2_SourceFunc(arg1 C.gpointer) (cret C.gboolean) {
-	var fn SourceFunc
-	{
-		v := gbox.Get(uintptr(arg1))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SourceFunc)
-	}
-
-	ok := fn()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
 //
@@ -115,57 +87,6 @@ func GetCurrentTime(result *TimeVal) {
 
 	C.g_get_current_time(_arg1)
 	runtime.KeepAlive(result)
-}
-
-// GetMonotonicTime queries the system monotonic time.
-//
-// The monotonic clock will always increase and doesn't suffer discontinuities
-// when the user (or NTP) changes the system time. It may or may not continue to
-// tick during times where the machine is suspended.
-//
-// We try to use the clock that corresponds as closely as possible to the
-// passage of time as measured by system calls such as poll() but it may not
-// always be possible to do this.
-//
-// The function returns the following values:
-//
-//    - gint64: monotonic time, in microseconds.
-//
-func GetMonotonicTime() int64 {
-	var _cret C.gint64 // in
-
-	_cret = C.g_get_monotonic_time()
-
-	var _gint64 int64 // out
-
-	_gint64 = int64(_cret)
-
-	return _gint64
-}
-
-// GetRealTime queries the system wall-clock time.
-//
-// This call is functionally equivalent to g_get_current_time() except that the
-// return value is often more convenient than dealing with a Val.
-//
-// You should only use this call if you are actually interested in the real
-// wall-clock time. g_get_monotonic_time() is probably more useful for measuring
-// intervals.
-//
-// The function returns the following values:
-//
-//    - gint64: number of microseconds since January 1, 1970 UTC.
-//
-func GetRealTime() int64 {
-	var _cret C.gint64 // in
-
-	_cret = C.g_get_real_time()
-
-	var _gint64 int64 // out
-
-	_gint64 = int64(_cret)
-
-	return _gint64
 }
 
 // IdleRemoveByData removes the idle function with the given data.
@@ -221,33 +142,6 @@ func NewIdleSource() *Source {
 			C.g_source_unref((*C.GSource)(intern.C))
 		},
 	)
-
-	return _source
-}
-
-// MainCurrentSource returns the currently firing source for this thread.
-//
-// The function returns the following values:
-//
-//    - source (optional): currently firing source or NULL.
-//
-func MainCurrentSource() *Source {
-	var _cret *C.GSource // in
-
-	_cret = C.g_main_current_source()
-
-	var _source *Source // out
-
-	if _cret != nil {
-		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_source_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_source)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_source_unref((*C.GSource)(intern.C))
-			},
-		)
-	}
 
 	return _source
 }
@@ -349,47 +243,6 @@ func NewTimeoutSource(interval uint) *Source {
 	_arg1 = C.guint(interval)
 
 	_cret = C.g_timeout_source_new(_arg1)
-	runtime.KeepAlive(interval)
-
-	var _source *Source // out
-
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
-
-	return _source
-}
-
-// TimeoutSourceNewSeconds creates a new timeout source.
-//
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
-//
-// The scheduling granularity/accuracy of this timeout source will be in
-// seconds.
-//
-// The interval given is in terms of monotonic time, not wall clock time. See
-// g_get_monotonic_time().
-//
-// The function takes the following parameters:
-//
-//    - interval: timeout interval in seconds.
-//
-// The function returns the following values:
-//
-//    - source: newly-created timeout source.
-//
-func TimeoutSourceNewSeconds(interval uint) *Source {
-	var _arg1 C.guint    // out
-	var _cret *C.GSource // in
-
-	_arg1 = C.guint(interval)
-
-	_cret = C.g_timeout_source_new_seconds(_arg1)
 	runtime.KeepAlive(interval)
 
 	var _source *Source // out
@@ -895,73 +748,6 @@ func MainContextDefault() *MainContext {
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_mainContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
-		},
-	)
-
-	return _mainContext
-}
-
-// MainContextGetThreadDefault gets the thread-default Context for this thread.
-// Asynchronous operations that want to be able to be run in contexts other than
-// the default one should call this method or
-// g_main_context_ref_thread_default() to get a Context to add their #GSources
-// to. (Note that even in single-threaded programs applications may sometimes
-// want to temporarily push a non-default context, so it is not safe to assume
-// that this will always return NULL if you are running in the default thread.)
-//
-// If you need to hold a reference on the context, use
-// g_main_context_ref_thread_default() instead.
-//
-// The function returns the following values:
-//
-//    - mainContext (optional): thread-default Context, or NULL if the
-//      thread-default context is the global default context.
-//
-func MainContextGetThreadDefault() *MainContext {
-	var _cret *C.GMainContext // in
-
-	_cret = C.g_main_context_get_thread_default()
-
-	var _mainContext *MainContext // out
-
-	if _cret != nil {
-		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_main_context_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_mainContext)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_main_context_unref((*C.GMainContext)(intern.C))
-			},
-		)
-	}
-
-	return _mainContext
-}
-
-// MainContextRefThreadDefault gets the thread-default Context for this thread,
-// as with g_main_context_get_thread_default(), but also adds a reference to it
-// with g_main_context_ref(). In addition, unlike
-// g_main_context_get_thread_default(), if the thread-default context is the
-// global default context, this will return that Context (with a ref added to
-// it) rather than returning NULL.
-//
-// The function returns the following values:
-//
-//    - mainContext: thread-default Context. Unref with g_main_context_unref()
-//      when you are done with it.
-//
-func MainContextRefThreadDefault() *MainContext {
-	var _cret *C.GMainContext // in
-
-	_cret = C.g_main_context_ref_thread_default()
-
-	var _mainContext *MainContext // out
-
-	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1782,39 +1568,6 @@ func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 	}
 
 	return _ok
-}
-
-// SourceSetNameByID sets the name of a source using its ID.
-//
-// This is a convenience utility to set source names from the return value of
-// g_idle_add(), g_timeout_add(), etc.
-//
-// It is a programmer error to attempt to set the name of a non-existent source.
-//
-// More specifically: source IDs can be reissued after a source has been
-// destroyed and therefore it is never valid to use this function with a source
-// ID which may have already been removed. An example is when scheduling an idle
-// to run in another thread with g_idle_add(): the idle may already have run and
-// been removed by the time this function is called on its (now invalid) source
-// ID. This source ID may have been reissued, leading to the operation being
-// performed against the wrong source.
-//
-// The function takes the following parameters:
-//
-//    - tag: #GSource ID.
-//    - name: debug name for the source.
-//
-func SourceSetNameByID(tag uint, name string) {
-	var _arg1 C.guint // out
-	var _arg2 *C.char // out
-
-	_arg1 = C.guint(tag)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.g_source_set_name_by_id(_arg1, _arg2)
-	runtime.KeepAlive(tag)
-	runtime.KeepAlive(name)
 }
 
 // SourceCallbackFuncs: GSourceCallbackFuncs struct contains functions for

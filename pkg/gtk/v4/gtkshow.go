@@ -16,8 +16,8 @@ import (
 
 // #include <stdlib.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gtk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // ShowURI: this function launches the default application for showing a given

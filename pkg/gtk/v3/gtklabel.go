@@ -18,15 +18,27 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_LabelClass_activate_link(GtkLabel*, gchar*);
-// extern gboolean _gotk4_gtk3_Label_ConnectActivateLink(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk3_LabelClass_copy_clipboard(GtkLabel*);
-// extern void _gotk4_gtk3_LabelClass_move_cursor(GtkLabel*, GtkMovementStep, gint, gboolean);
-// extern void _gotk4_gtk3_LabelClass_populate_popup(GtkLabel*, GtkMenu*);
-// extern void _gotk4_gtk3_Label_ConnectActivateCurrentLink(gpointer, guintptr);
-// extern void _gotk4_gtk3_Label_ConnectCopyClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk3_Label_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
 // extern void _gotk4_gtk3_Label_ConnectPopulatePopup(gpointer, GtkMenu*, guintptr);
+// extern void _gotk4_gtk3_Label_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk3_Label_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk3_Label_ConnectActivateCurrentLink(gpointer, guintptr);
+// extern void _gotk4_gtk3_LabelClass_populate_popup(GtkLabel*, GtkMenu*);
+// extern void _gotk4_gtk3_LabelClass_move_cursor(GtkLabel*, GtkMovementStep, gint, gboolean);
+// extern void _gotk4_gtk3_LabelClass_copy_clipboard(GtkLabel*);
+// extern gboolean _gotk4_gtk3_Label_ConnectActivateLink(gpointer, gchar*, guintptr);
+// extern gboolean _gotk4_gtk3_LabelClass_activate_link(GtkLabel*, gchar*);
+// gboolean _gotk4_gtk3_Label_virtual_activate_link(void* fnptr, GtkLabel* arg0, gchar* arg1) {
+//   return ((gboolean (*)(GtkLabel*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Label_virtual_copy_clipboard(void* fnptr, GtkLabel* arg0) {
+//   ((void (*)(GtkLabel*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Label_virtual_move_cursor(void* fnptr, GtkLabel* arg0, GtkMovementStep arg1, gint arg2, gboolean arg3) {
+//   ((void (*)(GtkLabel*, GtkMovementStep, gint, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_Label_virtual_populate_popup(void* fnptr, GtkLabel* arg0, GtkMenu* arg1) {
+//   ((void (*)(GtkLabel*, GtkMenu*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -40,24 +52,33 @@ func init() {
 	})
 }
 
-// LabelOverrider contains methods that are overridable.
-type LabelOverrider interface {
+// LabelOverrides contains methods that are overridable.
+type LabelOverrides struct {
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	ActivateLink(uri string) bool
-	CopyClipboard()
+	ActivateLink  func(uri string) bool
+	CopyClipboard func()
 	// The function takes the following parameters:
 	//
 	//    - step
 	//    - count
 	//    - extendSelection
 	//
-	MoveCursor(step MovementStep, count int, extendSelection bool)
+	MoveCursor func(step MovementStep, count int, extendSelection bool)
 	// The function takes the following parameters:
 	//
-	PopulatePopup(menu *Menu)
+	PopulatePopup func(menu *Menu)
+}
+
+func defaultLabelOverrides(v *Label) LabelOverrides {
+	return LabelOverrides{
+		ActivateLink:  v.activateLink,
+		CopyClipboard: v.copyClipboard,
+		MoveCursor:    v.moveCursor,
+		PopulatePopup: v.populatePopup,
+	}
 }
 
 // Label widget displays a small amount of text. As the name implies, most
@@ -85,104 +106,37 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLabel,
-		GoType:        reflect.TypeOf((*Label)(nil)),
-		InitClass:     initClassLabel,
-		FinalizeClass: finalizeClassLabel,
-	})
+	coreglib.RegisterClassInfo[*Label, *LabelClass, LabelOverrides](
+		GTypeLabel,
+		initLabelClass,
+		wrapLabel,
+		defaultLabelOverrides,
+	)
 }
 
-func initClassLabel(gclass unsafe.Pointer, goval any) {
+func initLabelClass(gclass unsafe.Pointer, overrides LabelOverrides, classInitFunc func(*LabelClass)) {
+	pclass := (*C.GtkLabelClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeLabel))))
 
-	pclass := (*C.GtkLabelClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ActivateLink(uri string) bool }); ok {
+	if overrides.ActivateLink != nil {
 		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LabelClass_activate_link)
 	}
 
-	if _, ok := goval.(interface{ CopyClipboard() }); ok {
+	if overrides.CopyClipboard != nil {
 		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk3_LabelClass_copy_clipboard)
 	}
 
-	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int, extendSelection bool)
-	}); ok {
+	if overrides.MoveCursor != nil {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk3_LabelClass_move_cursor)
 	}
 
-	if _, ok := goval.(interface{ PopulatePopup(menu *Menu) }); ok {
+	if overrides.PopulatePopup != nil {
 		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_LabelClass_populate_popup)
 	}
-	if goval, ok := goval.(interface{ InitLabel(*LabelClass) }); ok {
-		klass := (*LabelClass)(gextras.NewStructNative(gclass))
-		goval.InitLabel(klass)
+
+	if classInitFunc != nil {
+		class := (*LabelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassLabel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeLabel(*LabelClass) }); ok {
-		klass := (*LabelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLabel(klass)
-	}
-}
-
-//export _gotk4_gtk3_LabelClass_activate_link
-func _gotk4_gtk3_LabelClass_activate_link(arg0 *C.GtkLabel, arg1 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateLink(uri string) bool })
-
-	var _uri string // out
-
-	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := iface.ActivateLink(_uri)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk3_LabelClass_copy_clipboard
-func _gotk4_gtk3_LabelClass_copy_clipboard(arg0 *C.GtkLabel) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CopyClipboard() })
-
-	iface.CopyClipboard()
-}
-
-//export _gotk4_gtk3_LabelClass_move_cursor
-func _gotk4_gtk3_LabelClass_move_cursor(arg0 *C.GtkLabel, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int, extendSelection bool)
-	})
-
-	var _step MovementStep    // out
-	var _count int            // out
-	var _extendSelection bool // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extendSelection = true
-	}
-
-	iface.MoveCursor(_step, _count, _extendSelection)
-}
-
-//export _gotk4_gtk3_LabelClass_populate_popup
-func _gotk4_gtk3_LabelClass_populate_popup(arg0 *C.GtkLabel, arg1 *C.GtkMenu) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PopulatePopup(menu *Menu) })
-
-	var _menu *Menu // out
-
-	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.PopulatePopup(_menu)
 }
 
 func wrapLabel(obj *coreglib.Object) *Label {
@@ -208,22 +162,6 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return wrapLabel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Label_ConnectActivateCurrentLink
-func _gotk4_gtk3_Label_ConnectActivateCurrentLink(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivateCurrentLink: [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user activates a link in the label.
 //
@@ -235,53 +173,11 @@ func (label *Label) ConnectActivateCurrentLink(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(label, "activate-current-link", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectActivateCurrentLink), f)
 }
 
-//export _gotk4_gtk3_Label_ConnectActivateLink
-func _gotk4_gtk3_Label_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(uri string) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(uri string) (ok bool))
-	}
-
-	var _uri string // out
-
-	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := f(_uri)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectActivateLink: signal which gets emitted to activate a URI.
 // Applications may connect to it to override the default behaviour, which is to
 // call gtk_show_uri_on_window().
 func (label *Label) ConnectActivateLink(f func(uri string) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(label, "activate-link", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectActivateLink), f)
-}
-
-//export _gotk4_gtk3_Label_ConnectCopyClipboard
-func _gotk4_gtk3_Label_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectCopyClipboard signal is a [keybinding signal][GtkBindingSignal] which
@@ -290,32 +186,6 @@ func _gotk4_gtk3_Label_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
 // The default binding for this signal is Ctrl-c.
 func (label *Label) ConnectCopyClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(label, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectCopyClipboard), f)
-}
-
-//export _gotk4_gtk3_Label_ConnectMoveCursor
-func _gotk4_gtk3_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int, extendSelection bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
-	}
-
-	var _step MovementStep    // out
-	var _count int            // out
-	var _extendSelection bool // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extendSelection = true
-	}
-
-	f(_step, _count, _extendSelection)
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkBindingSignal] which
@@ -336,26 +206,6 @@ func _gotk4_gtk3_Label_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep
 // - Home/End keys move to the ends of the buffer.
 func (label *Label) ConnectMoveCursor(f func(step MovementStep, count int, extendSelection bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(label, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk3_Label_ConnectMoveCursor), f)
-}
-
-//export _gotk4_gtk3_Label_ConnectPopulatePopup
-func _gotk4_gtk3_Label_ConnectPopulatePopup(arg0 C.gpointer, arg1 *C.GtkMenu, arg2 C.guintptr) {
-	var f func(menu *Menu)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(menu *Menu))
-	}
-
-	var _menu *Menu // out
-
-	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_menu)
 }
 
 // ConnectPopulatePopup signal gets emitted before showing the context menu of
@@ -439,28 +289,6 @@ func NewLabelWithMnemonic(str string) *Label {
 	return _label
 }
 
-// Angle gets the angle of rotation for the label. See gtk_label_set_angle().
-//
-// The function returns the following values:
-//
-//    - gdouble: angle of rotation for the label.
-//
-func (label *Label) Angle() float64 {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gdouble   // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_angle(_arg0)
-	runtime.KeepAlive(label)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
 // Attributes gets the attribute list that was set on the label using
 // gtk_label_set_attributes(), if any. This function does not reflect attributes
 // that come from the labels markup (see gtk_label_set_markup()). If you want to
@@ -494,57 +322,6 @@ func (label *Label) Attributes() *pango.AttrList {
 	}
 
 	return _attrList
-}
-
-// CurrentURI returns the URI for the currently active link in the label. The
-// active link is the one under the mouse pointer or, in a selectable label, the
-// link in which the text cursor is currently positioned.
-//
-// This function is intended for use in a Label::activate-link handler or for
-// use in a Widget::query-tooltip handler.
-//
-// The function returns the following values:
-//
-//    - utf8: currently active URI. The string is owned by GTK+ and must not be
-//      freed or modified.
-//
-func (label *Label) CurrentURI() string {
-	var _arg0 *C.GtkLabel // out
-	var _cret *C.gchar    // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_current_uri(_arg0)
-	runtime.KeepAlive(label)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// Ellipsize returns the ellipsizing position of the label. See
-// gtk_label_set_ellipsize().
-//
-// The function returns the following values:
-//
-//    - ellipsizeMode: EllipsizeMode.
-//
-func (label *Label) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkLabel          // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_ellipsize(_arg0)
-	runtime.KeepAlive(label)
-
-	var _ellipsizeMode pango.EllipsizeMode // out
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
 }
 
 // Justify returns the justification of the label. See gtk_label_set_justify().
@@ -682,75 +459,6 @@ func (label *Label) LineWrap() bool {
 	return _ok
 }
 
-// LineWrapMode returns line wrap mode used by the label. See
-// gtk_label_set_line_wrap_mode().
-//
-// The function returns the following values:
-//
-//    - wrapMode: TRUE if the lines of the label are automatically wrapped.
-//
-func (label *Label) LineWrapMode() pango.WrapMode {
-	var _arg0 *C.GtkLabel     // out
-	var _cret C.PangoWrapMode // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_line_wrap_mode(_arg0)
-	runtime.KeepAlive(label)
-
-	var _wrapMode pango.WrapMode // out
-
-	_wrapMode = pango.WrapMode(_cret)
-
-	return _wrapMode
-}
-
-// Lines gets the number of lines to which an ellipsized, wrapping label should
-// be limited. See gtk_label_set_lines().
-//
-// The function returns the following values:
-//
-//    - gint: number of lines.
-//
-func (label *Label) Lines() int {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gint      // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_lines(_arg0)
-	runtime.KeepAlive(label)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// MaxWidthChars retrieves the desired maximum width of label, in characters.
-// See gtk_label_set_width_chars().
-//
-// The function returns the following values:
-//
-//    - gint: maximum width of the label in characters.
-//
-func (label *Label) MaxWidthChars() int {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gint      // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_max_width_chars(_arg0)
-	runtime.KeepAlive(label)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // MnemonicKeyval: if the label has been set so that it has an mnemonic key this
 // function returns the keyval used for the mnemonic accelerator. If there is no
 // mnemonic set up it returns K_KEY_VoidSymbol.
@@ -871,30 +579,6 @@ func (label *Label) SelectionBounds() (start, end int, ok bool) {
 	return _start, _end, _ok
 }
 
-// SingleLineMode returns whether the label is in single line mode.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE when the label is in single line mode.
-//
-func (label *Label) SingleLineMode() bool {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_single_line_mode(_arg0)
-	runtime.KeepAlive(label)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Text fetches the text from a label widget, as displayed on the screen. This
 // does not include any embedded underlines indicating mnemonics or Pango
 // markup. (See gtk_label_get_label()).
@@ -918,31 +602,6 @@ func (label *Label) Text() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// TrackVisitedLinks returns whether the label is currently keeping track of
-// clicked links.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if clicked links are remembered.
-//
-func (label *Label) TrackVisitedLinks() bool {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_track_visited_links(_arg0)
-	runtime.KeepAlive(label)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // UseMarkup returns whether the label’s text is interpreted as marked up with
@@ -997,73 +656,6 @@ func (label *Label) UseUnderline() bool {
 	return _ok
 }
 
-// WidthChars retrieves the desired width of label, in characters. See
-// gtk_label_set_width_chars().
-//
-// The function returns the following values:
-//
-//    - gint: width of the label in characters.
-//
-func (label *Label) WidthChars() int {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gint      // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_width_chars(_arg0)
-	runtime.KeepAlive(label)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// XAlign gets the Label:xalign property for label.
-//
-// The function returns the following values:
-//
-//    - gfloat: xalign property.
-//
-func (label *Label) XAlign() float32 {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gfloat    // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_xalign(_arg0)
-	runtime.KeepAlive(label)
-
-	var _gfloat float32 // out
-
-	_gfloat = float32(_cret)
-
-	return _gfloat
-}
-
-// YAlign gets the Label:yalign property for label.
-//
-// The function returns the following values:
-//
-//    - gfloat: yalign property.
-//
-func (label *Label) YAlign() float32 {
-	var _arg0 *C.GtkLabel // out
-	var _cret C.gfloat    // in
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	_cret = C.gtk_label_get_yalign(_arg0)
-	runtime.KeepAlive(label)
-
-	var _gfloat float32 // out
-
-	_gfloat = float32(_cret)
-
-	return _gfloat
-}
-
 // SelectRegion selects a range of characters in the label, if the label is
 // selectable. See gtk_label_set_selectable(). If the label is not selectable,
 // this function has no effect. If start_offset or end_offset are -1, then the
@@ -1087,27 +679,6 @@ func (label *Label) SelectRegion(startOffset, endOffset int) {
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(startOffset)
 	runtime.KeepAlive(endOffset)
-}
-
-// SetAngle sets the angle of rotation for the label. An angle of 90 reads from
-// from bottom to top, an angle of 270, from top to bottom. The angle setting
-// for the label is ignored if the label is selectable, wrapped, or ellipsized.
-//
-// The function takes the following parameters:
-//
-//    - angle that the baseline of the label makes with the horizontal, in
-//      degrees, measured counterclockwise.
-//
-func (label *Label) SetAngle(angle float64) {
-	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gdouble   // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gdouble(angle)
-
-	C.gtk_label_set_angle(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(angle)
 }
 
 // SetAttributes sets a AttrList; the attributes in the list are applied to the
@@ -1135,25 +706,6 @@ func (label *Label) SetAttributes(attrs *pango.AttrList) {
 	C.gtk_label_set_attributes(_arg0, _arg1)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(attrs)
-}
-
-// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to the
-// text if there is not enough space to render the entire string.
-//
-// The function takes the following parameters:
-//
-//    - mode: EllipsizeMode.
-//
-func (label *Label) SetEllipsize(mode pango.EllipsizeMode) {
-	var _arg0 *C.GtkLabel          // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.PangoEllipsizeMode(mode)
-
-	C.gtk_label_set_ellipsize(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(mode)
 }
 
 // SetJustify sets the alignment of the lines in the text of the label relative
@@ -1228,46 +780,6 @@ func (label *Label) SetLineWrap(wrap bool) {
 	runtime.KeepAlive(wrap)
 }
 
-// SetLineWrapMode: if line wrapping is on (see gtk_label_set_line_wrap()) this
-// controls how the line wrapping is done. The default is PANGO_WRAP_WORD which
-// means wrap on word boundaries.
-//
-// The function takes the following parameters:
-//
-//    - wrapMode: line wrapping mode.
-//
-func (label *Label) SetLineWrapMode(wrapMode pango.WrapMode) {
-	var _arg0 *C.GtkLabel     // out
-	var _arg1 C.PangoWrapMode // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.PangoWrapMode(wrapMode)
-
-	C.gtk_label_set_line_wrap_mode(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(wrapMode)
-}
-
-// SetLines sets the number of lines to which an ellipsized, wrapping label
-// should be limited. This has no effect if the label is not wrapping or
-// ellipsized. Set this to -1 if you don’t want to limit the number of lines.
-//
-// The function takes the following parameters:
-//
-//    - lines: desired number of lines, or -1.
-//
-func (label *Label) SetLines(lines int) {
-	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gint      // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(lines)
-
-	C.gtk_label_set_lines(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(lines)
-}
-
 // SetMarkup parses str which is marked up with the [Pango text markup
 // language][PangoMarkupFormat], setting the label’s text and attribute list
 // based on the parse results.
@@ -1333,25 +845,6 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 	C.gtk_label_set_markup_with_mnemonic(_arg0, _arg1)
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(str)
-}
-
-// SetMaxWidthChars sets the desired maximum width in characters of label to
-// n_chars.
-//
-// The function takes the following parameters:
-//
-//    - nChars: new desired maximum width, in characters.
-//
-func (label *Label) SetMaxWidthChars(nChars int) {
-	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gint      // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(nChars)
-
-	C.gtk_label_set_max_width_chars(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(nChars)
 }
 
 // SetMnemonicWidget: if the label has been set so that it has an mnemonic key
@@ -1428,26 +921,6 @@ func (label *Label) SetSelectable(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetSingleLineMode sets whether the label is in single line mode.
-//
-// The function takes the following parameters:
-//
-//    - singleLineMode: TRUE if the label should be in single line mode.
-//
-func (label *Label) SetSingleLineMode(singleLineMode bool) {
-	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gboolean  // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	if singleLineMode {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_label_set_single_line_mode(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(singleLineMode)
-}
-
 // SetText sets the text within the Label widget. It overwrites any text that
 // was there before.
 //
@@ -1499,27 +972,6 @@ func (label *Label) SetTextWithMnemonic(str string) {
 	runtime.KeepAlive(str)
 }
 
-// SetTrackVisitedLinks sets whether the label should keep track of clicked
-// links (and use a different color for them).
-//
-// The function takes the following parameters:
-//
-//    - trackLinks: TRUE to track visited links.
-//
-func (label *Label) SetTrackVisitedLinks(trackLinks bool) {
-	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gboolean  // out
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	if trackLinks {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_label_set_track_visited_links(_arg0, _arg1)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(trackLinks)
-}
-
 // SetUseMarkup sets whether the text of the label contains markup in [Pango’s
 // text markup language][PangoMarkupFormat]. See gtk_label_set_markup().
 //
@@ -1562,58 +1014,91 @@ func (label *Label) SetUseUnderline(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetWidthChars sets the desired width in characters of label to n_chars.
-//
 // The function takes the following parameters:
 //
-//    - nChars: new desired width, in characters.
+// The function returns the following values:
 //
-func (label *Label) SetWidthChars(nChars int) {
+func (label *Label) activateLink(uri string) bool {
+	gclass := (*C.GtkLabelClass)(coreglib.PeekParentClass(label))
+	fnarg := gclass.activate_link
+
 	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gint      // out
+	var _arg1 *C.gchar    // out
+	var _cret C.gboolean  // in
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(nChars)
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_label_set_width_chars(_arg0, _arg1)
+	_cret = C._gotk4_gtk3_Label_virtual_activate_link(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(label)
-	runtime.KeepAlive(nChars)
+	runtime.KeepAlive(uri)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
-// SetXAlign sets the Label:xalign property for label.
-//
-// The function takes the following parameters:
-//
-//    - xalign: new xalign value, between 0 and 1.
-//
-func (label *Label) SetXAlign(xalign float32) {
+func (label *Label) copyClipboard() {
+	gclass := (*C.GtkLabelClass)(coreglib.PeekParentClass(label))
+	fnarg := gclass.copy_clipboard
+
 	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gfloat    // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gfloat(xalign)
 
-	C.gtk_label_set_xalign(_arg0, _arg1)
+	C._gotk4_gtk3_Label_virtual_copy_clipboard(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(label)
-	runtime.KeepAlive(xalign)
 }
 
-// SetYAlign sets the Label:yalign property for label.
-//
 // The function takes the following parameters:
 //
-//    - yalign: new yalign value, between 0 and 1.
+//    - step
+//    - count
+//    - extendSelection
 //
-func (label *Label) SetYAlign(yalign float32) {
-	var _arg0 *C.GtkLabel // out
-	var _arg1 C.gfloat    // out
+func (label *Label) moveCursor(step MovementStep, count int, extendSelection bool) {
+	gclass := (*C.GtkLabelClass)(coreglib.PeekParentClass(label))
+	fnarg := gclass.move_cursor
+
+	var _arg0 *C.GtkLabel       // out
+	var _arg1 C.GtkMovementStep // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gboolean        // out
 
 	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gfloat(yalign)
+	_arg1 = C.GtkMovementStep(step)
+	_arg2 = C.gint(count)
+	if extendSelection {
+		_arg3 = C.TRUE
+	}
 
-	C.gtk_label_set_yalign(_arg0, _arg1)
+	C._gotk4_gtk3_Label_virtual_move_cursor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(label)
-	runtime.KeepAlive(yalign)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(extendSelection)
+}
+
+// The function takes the following parameters:
+//
+func (label *Label) populatePopup(menu *Menu) {
+	gclass := (*C.GtkLabelClass)(coreglib.PeekParentClass(label))
+	fnarg := gclass.populate_popup
+
+	var _arg0 *C.GtkLabel // out
+	var _arg1 *C.GtkMenu  // out
+
+	_arg0 = (*C.GtkLabel)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	_arg1 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+
+	C._gotk4_gtk3_Label_virtual_populate_popup(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(label)
+	runtime.KeepAlive(menu)
 }
 
 // LabelClass: instance of this type is always passed by reference.

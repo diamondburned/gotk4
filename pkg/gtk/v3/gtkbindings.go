@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -46,39 +45,6 @@ func BindingsActivate(object *coreglib.Object, keyval uint, modifiers gdk.Modifi
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// BindingsActivateEvent looks up key bindings for object to find one matching
-// event, and if one was found, activate it.
-//
-// The function takes the following parameters:
-//
-//    - object (generally must be a widget).
-//    - event: EventKey.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a matching key binding was found.
-//
-func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
-	var _arg1 *C.GObject     // out
-	var _arg2 *C.GdkEventKey // out
-	var _cret C.gboolean     // in
-
-	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
@@ -177,53 +143,6 @@ func (b *BindingEntry) SetKeyval(keyval uint) {
 	*valptr = C.guint(keyval)
 }
 
-// BindingEntryAddSignalFromString parses a signal description from signal_desc
-// and incorporates it into binding_set.
-//
-// Signal descriptions may either bind a key combination to one or more signals:
-//
-//    bind "key" {
-//      "signalname" (param, ...)
-//      ...
-//    }
-//
-// Or they may also unbind a key combination:
-//
-//    unbind "key"
-//
-// Key combinations must be in a format that can be parsed by
-// gtk_accelerator_parse().
-//
-// The function takes the following parameters:
-//
-//    - bindingSet: BindingSet.
-//    - signalDesc: signal description.
-//
-// The function returns the following values:
-//
-//    - tokenType: G_TOKEN_NONE if the signal was successfully parsed and added,
-//      the expected token otherwise.
-//
-func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
-	var _arg1 *C.GtkBindingSet // out
-	var _arg2 *C.gchar         // out
-	var _cret C.GTokenType     // in
-
-	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.gtk_binding_entry_add_signal_from_string(_arg1, _arg2)
-	runtime.KeepAlive(bindingSet)
-	runtime.KeepAlive(signalDesc)
-
-	var _tokenType glib.TokenType // out
-
-	_tokenType = glib.TokenType(_cret)
-
-	return _tokenType
-}
-
 // BindingEntryAddSignall: override or install a new key binding for keyval with
 // modifiers on binding_set.
 //
@@ -282,30 +201,6 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 	_arg3 = C.GdkModifierType(modifiers)
 
 	C.gtk_binding_entry_remove(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(bindingSet)
-	runtime.KeepAlive(keyval)
-	runtime.KeepAlive(modifiers)
-}
-
-// BindingEntrySkip: install a binding on binding_set which causes key lookups
-// to be aborted, to prevent bindings from lower priority sets to be activated.
-//
-// The function takes the following parameters:
-//
-//    - bindingSet to skip an entry of.
-//    - keyval: key value of binding to skip.
-//    - modifiers: key modifier of binding to skip.
-//
-func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
-	var _arg1 *C.GtkBindingSet  // out
-	var _arg2 C.guint           // out
-	var _arg3 C.GdkModifierType // out
-
-	_arg1 = (*C.GtkBindingSet)(gextras.StructNative(unsafe.Pointer(bindingSet)))
-	_arg2 = C.guint(keyval)
-	_arg3 = C.GdkModifierType(modifiers)
-
-	C.gtk_binding_entry_skip(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(bindingSet)
 	runtime.KeepAlive(keyval)
 	runtime.KeepAlive(modifiers)

@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
@@ -50,48 +49,6 @@ func wrapEventControllerLegacy(obj *coreglib.Object) *EventControllerLegacy {
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	return wrapEventControllerLegacy(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_EventControllerLegacy_ConnectEvent
-func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.GdkEvent, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(event gdk.Eventer) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(event gdk.Eventer) (ok bool))
-	}
-
-	var _event gdk.Eventer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Eventer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Eventer)
-			return ok
-		})
-		rv, ok := casted.(gdk.Eventer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
-		}
-		_event = rv
-	}
-
-	ok := f(_event)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectEvent is emitted for each GDK event delivered to controller.

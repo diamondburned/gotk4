@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// PictureOverrider contains methods that are overridable.
-type PictureOverrider interface {
+// PictureOverrides contains methods that are overridable.
+type PictureOverrides struct {
+}
+
+func defaultPictureOverrides(v *Picture) PictureOverrides {
+	return PictureOverrides{}
 }
 
 // Picture: GtkPicture widget displays a GdkPaintable.
@@ -91,25 +95,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePicture,
-		GoType:        reflect.TypeOf((*Picture)(nil)),
-		InitClass:     initClassPicture,
-		FinalizeClass: finalizeClassPicture,
-	})
+	coreglib.RegisterClassInfo[*Picture, *PictureClass, PictureOverrides](
+		GTypePicture,
+		initPictureClass,
+		wrapPicture,
+		defaultPictureOverrides,
+	)
 }
 
-func initClassPicture(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitPicture(*PictureClass) }); ok {
-		klass := (*PictureClass)(gextras.NewStructNative(gclass))
-		goval.InitPicture(klass)
-	}
-}
-
-func finalizeClassPicture(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePicture(*PictureClass) }); ok {
-		klass := (*PictureClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePicture(klass)
+func initPictureClass(gclass unsafe.Pointer, overrides PictureOverrides, classInitFunc func(*PictureClass)) {
+	if classInitFunc != nil {
+		class := (*PictureClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

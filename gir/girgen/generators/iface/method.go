@@ -6,6 +6,8 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callable"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
+	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -73,6 +75,8 @@ func (m *Methods) setMethods(g *Generator, methods []gir.Method) {
 			continue
 		}
 
+		g.cgen.Preamble = callable.CallablePreamble
+
 		if !g.cgen.Use(&g.Root, &methods[i].CallableAttrs) {
 			g.cgen.Logln(logger.Debug, "setMethods skipped", methods[i].CIdentifier)
 			continue
@@ -93,6 +97,28 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 			continue
 		}
 
+		g.cgen.Preamble = func(cgen *callable.Generator, sect *pen.BlockSection) (string, bool) {
+			if g.GLibTypeStruct == nil {
+				return "", false
+			}
+
+			sect.Linef("gclass := (*C.%s)(coreglib.PeekParentClass(%s))", g.GLibTypeStruct.CType, cgen.Recv())
+			sect.Linef("fnarg := gclass.%s", strcases.CGoField(cgen.CallableAttrs.Name))
+
+			// Add the fnarg argumnet.
+			g.cgen.ExtraArgs = [2][]string{
+				{"unsafe.Pointer(fnarg)"}, // front
+				{},                        // back
+			}
+
+			// Add the virtual method function type in the form of
+			// _gotk4_gtk_Widget_virtual_size_allocate().
+			ccall := file.ExportedName(g.gen.Namespace(), g.StructName, "virtual", cgen.CallableAttrs.Name)
+			cgen.Header().AddCallbackHeader(types.CgoFuncBridge(g.gen, ccall, cgen.CallableAttrs))
+
+			return "C." + ccall, true
+		}
+
 		if !g.cgen.Use(&g.Root, &virtuals[i].CallableAttrs) {
 			g.cgen.Logln(logger.Debug, "setVirtuals skipped", virtuals[i].CIdentifier)
 			continue
@@ -100,19 +126,13 @@ func (m *Methods) setVirtuals(g *Generator, virtuals []gir.VirtualMethod) {
 
 		// Don't apply the headers naively. We only import the types, since
 		// we're not yet converting these.
-		for _, result := range g.cgen.Results {
-			if result.NeedsNamespace {
-				result.Resolved.ImportPubl(g.gen, &g.header)
-			}
-		}
+		// for _, result := range g.cgen.Results {
+		// 	if result.NeedsNamespace {
+		// 		result.Resolved.ImportPubl(g.gen, &g.header)
+		// 	}
+		// }
 
 		*m = append(*m, newMethod(&g.cgen))
 		g.virtuals = append(g.virtuals, virtuals[i])
 	}
-}
-
-type InterfaceImplements struct {
-	Name    string
-	Type    string
-	Wrapper string
 }

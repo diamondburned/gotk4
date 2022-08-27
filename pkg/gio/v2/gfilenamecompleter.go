@@ -14,8 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_FilenameCompleterClass_got_completion_data(GFilenameCompleter*);
 // extern void _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(gpointer, guintptr);
+// extern void _gotk4_gio2_FilenameCompleterClass_got_completion_data(GFilenameCompleter*);
+// void _gotk4_gio2_FilenameCompleter_virtual_got_completion_data(void* fnptr, GFilenameCompleter* arg0) {
+//   ((void (*)(GFilenameCompleter*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -29,9 +32,15 @@ func init() {
 	})
 }
 
-// FilenameCompleterOverrider contains methods that are overridable.
-type FilenameCompleterOverrider interface {
-	GotCompletionData()
+// FilenameCompleterOverrides contains methods that are overridable.
+type FilenameCompleterOverrides struct {
+	GotCompletionData func()
+}
+
+func defaultFilenameCompleterOverrides(v *FilenameCompleter) FilenameCompleterOverrides {
+	return FilenameCompleterOverrides{
+		GotCompletionData: v.gotCompletionData,
+	}
 }
 
 // FilenameCompleter completes partial file and directory names given a partial
@@ -47,40 +56,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFilenameCompleter,
-		GoType:        reflect.TypeOf((*FilenameCompleter)(nil)),
-		InitClass:     initClassFilenameCompleter,
-		FinalizeClass: finalizeClassFilenameCompleter,
-	})
+	coreglib.RegisterClassInfo[*FilenameCompleter, *FilenameCompleterClass, FilenameCompleterOverrides](
+		GTypeFilenameCompleter,
+		initFilenameCompleterClass,
+		wrapFilenameCompleter,
+		defaultFilenameCompleterOverrides,
+	)
 }
 
-func initClassFilenameCompleter(gclass unsafe.Pointer, goval any) {
+func initFilenameCompleterClass(gclass unsafe.Pointer, overrides FilenameCompleterOverrides, classInitFunc func(*FilenameCompleterClass)) {
+	pclass := (*C.GFilenameCompleterClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFilenameCompleter))))
 
-	pclass := (*C.GFilenameCompleterClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ GotCompletionData() }); ok {
+	if overrides.GotCompletionData != nil {
 		pclass.got_completion_data = (*[0]byte)(C._gotk4_gio2_FilenameCompleterClass_got_completion_data)
 	}
-	if goval, ok := goval.(interface{ InitFilenameCompleter(*FilenameCompleterClass) }); ok {
-		klass := (*FilenameCompleterClass)(gextras.NewStructNative(gclass))
-		goval.InitFilenameCompleter(klass)
+
+	if classInitFunc != nil {
+		class := (*FilenameCompleterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassFilenameCompleter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFilenameCompleter(*FilenameCompleterClass) }); ok {
-		klass := (*FilenameCompleterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFilenameCompleter(klass)
-	}
-}
-
-//export _gotk4_gio2_FilenameCompleterClass_got_completion_data
-func _gotk4_gio2_FilenameCompleterClass_got_completion_data(arg0 *C.GFilenameCompleter) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GotCompletionData() })
-
-	iface.GotCompletionData()
 }
 
 func wrapFilenameCompleter(obj *coreglib.Object) *FilenameCompleter {
@@ -91,22 +85,6 @@ func wrapFilenameCompleter(obj *coreglib.Object) *FilenameCompleter {
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return wrapFilenameCompleter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData
-func _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectGotCompletionData is emitted when the file name completion information
@@ -231,6 +209,18 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	C.g_filename_completer_set_dirs_only(_arg0, _arg1)
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(dirsOnly)
+}
+
+func (filenameCompleter *FilenameCompleter) gotCompletionData() {
+	gclass := (*C.GFilenameCompleterClass)(coreglib.PeekParentClass(filenameCompleter))
+	fnarg := gclass.got_completion_data
+
+	var _arg0 *C.GFilenameCompleter // out
+
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(coreglib.InternObject(filenameCompleter).Native()))
+
+	C._gotk4_gio2_FilenameCompleter_virtual_got_completion_data(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(filenameCompleter)
 }
 
 // FilenameCompleterClass: instance of this type is always passed by reference.

@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// HScaleOverrider contains methods that are overridable.
-type HScaleOverrider interface {
+// HScaleOverrides contains methods that are overridable.
+type HScaleOverrides struct {
+}
+
+func defaultHScaleOverrides(v *HScale) HScaleOverrides {
+	return HScaleOverrides{}
 }
 
 // HScale widget is used to allow the user to select a value using a horizontal
@@ -51,25 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHScale,
-		GoType:        reflect.TypeOf((*HScale)(nil)),
-		InitClass:     initClassHScale,
-		FinalizeClass: finalizeClassHScale,
-	})
+	coreglib.RegisterClassInfo[*HScale, *HScaleClass, HScaleOverrides](
+		GTypeHScale,
+		initHScaleClass,
+		wrapHScale,
+		defaultHScaleOverrides,
+	)
 }
 
-func initClassHScale(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitHScale(*HScaleClass) }); ok {
-		klass := (*HScaleClass)(gextras.NewStructNative(gclass))
-		goval.InitHScale(klass)
-	}
-}
-
-func finalizeClassHScale(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHScale(*HScaleClass) }); ok {
-		klass := (*HScaleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHScale(klass)
+func initHScaleClass(gclass unsafe.Pointer, overrides HScaleOverrides, classInitFunc func(*HScaleClass)) {
+	if classInitFunc != nil {
+		class := (*HScaleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

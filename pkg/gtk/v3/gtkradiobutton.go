@@ -17,8 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_RadioButtonClass_group_changed(GtkRadioButton*);
 // extern void _gotk4_gtk3_RadioButton_ConnectGroupChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_RadioButtonClass_group_changed(GtkRadioButton*);
+// void _gotk4_gtk3_RadioButton_virtual_group_changed(void* fnptr, GtkRadioButton* arg0) {
+//   ((void (*)(GtkRadioButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -32,9 +35,15 @@ func init() {
 	})
 }
 
-// RadioButtonOverrider contains methods that are overridable.
-type RadioButtonOverrider interface {
-	GroupChanged()
+// RadioButtonOverrides contains methods that are overridable.
+type RadioButtonOverrides struct {
+	GroupChanged func()
+}
+
+func defaultRadioButtonOverrides(v *RadioButton) RadioButtonOverrides {
+	return RadioButtonOverrides{
+		GroupChanged: v.groupChanged,
+	}
 }
 
 // RadioButton: single radio button performs the same basic function as a
@@ -108,40 +117,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRadioButton,
-		GoType:        reflect.TypeOf((*RadioButton)(nil)),
-		InitClass:     initClassRadioButton,
-		FinalizeClass: finalizeClassRadioButton,
-	})
+	coreglib.RegisterClassInfo[*RadioButton, *RadioButtonClass, RadioButtonOverrides](
+		GTypeRadioButton,
+		initRadioButtonClass,
+		wrapRadioButton,
+		defaultRadioButtonOverrides,
+	)
 }
 
-func initClassRadioButton(gclass unsafe.Pointer, goval any) {
+func initRadioButtonClass(gclass unsafe.Pointer, overrides RadioButtonOverrides, classInitFunc func(*RadioButtonClass)) {
+	pclass := (*C.GtkRadioButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRadioButton))))
 
-	pclass := (*C.GtkRadioButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ GroupChanged() }); ok {
+	if overrides.GroupChanged != nil {
 		pclass.group_changed = (*[0]byte)(C._gotk4_gtk3_RadioButtonClass_group_changed)
 	}
-	if goval, ok := goval.(interface{ InitRadioButton(*RadioButtonClass) }); ok {
-		klass := (*RadioButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitRadioButton(klass)
+
+	if classInitFunc != nil {
+		class := (*RadioButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassRadioButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRadioButton(*RadioButtonClass) }); ok {
-		klass := (*RadioButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRadioButton(klass)
-	}
-}
-
-//export _gotk4_gtk3_RadioButtonClass_group_changed
-func _gotk4_gtk3_RadioButtonClass_group_changed(arg0 *C.GtkRadioButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GroupChanged() })
-
-	iface.GroupChanged()
 }
 
 func wrapRadioButton(obj *coreglib.Object) *RadioButton {
@@ -191,22 +185,6 @@ func wrapRadioButton(obj *coreglib.Object) *RadioButton {
 
 func marshalRadioButton(p uintptr) (interface{}, error) {
 	return wrapRadioButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_RadioButton_ConnectGroupChanged
-func _gotk4_gtk3_RadioButton_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectGroupChanged is emitted when the group of radio buttons that a radio
@@ -468,44 +446,6 @@ func (radioButton *RadioButton) Group() []*RadioButton {
 	return _sList
 }
 
-// JoinGroup joins a RadioButton object to the group of another RadioButton
-// object
-//
-// Use this in language bindings instead of the gtk_radio_button_get_group() and
-// gtk_radio_button_set_group() methods
-//
-// A common way to set up a group of radio buttons is the following:
-//
-//      GtkRadioButton *radio_button;
-//      GtkRadioButton *last_button;
-//
-//      while (some_condition)
-//        {
-//           radio_button = gtk_radio_button_new (NULL);
-//
-//           gtk_radio_button_join_group (radio_button, last_button);
-//           last_button = radio_button;
-//        }.
-//
-// The function takes the following parameters:
-//
-//    - groupSource (optional): radio button object whos group we are joining, or
-//      NULL to remove the radio button from its group.
-//
-func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
-	var _arg0 *C.GtkRadioButton // out
-	var _arg1 *C.GtkRadioButton // out
-
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
-	if groupSource != nil {
-		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
-	}
-
-	C.gtk_radio_button_join_group(_arg0, _arg1)
-	runtime.KeepAlive(radioButton)
-	runtime.KeepAlive(groupSource)
-}
-
 // SetGroup sets a RadioButton’s group. It should be noted that this does not
 // change the layout of your interface in any way, so if you are changing the
 // group, it is likely you will need to re-arrange the user interface to reflect
@@ -534,6 +474,18 @@ func (radioButton *RadioButton) SetGroup(group []*RadioButton) {
 	C.gtk_radio_button_set_group(_arg0, _arg1)
 	runtime.KeepAlive(radioButton)
 	runtime.KeepAlive(group)
+}
+
+func (radioButton *RadioButton) groupChanged() {
+	gclass := (*C.GtkRadioButtonClass)(coreglib.PeekParentClass(radioButton))
+	fnarg := gclass.group_changed
+
+	var _arg0 *C.GtkRadioButton // out
+
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
+
+	C._gotk4_gtk3_RadioButton_virtual_group_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(radioButton)
 }
 
 // RadioButtonClass: instance of this type is always passed by reference.

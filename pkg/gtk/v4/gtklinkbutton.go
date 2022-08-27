@@ -108,28 +108,6 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return wrapLinkButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_LinkButton_ConnectActivateLink
-func _gotk4_gtk4_LinkButton_ConnectActivateLink(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectActivateLink is emitted each time the GtkLinkButton is clicked.
 //
 // The default handler will call gtk.ShowURI() with the URI stored inside the

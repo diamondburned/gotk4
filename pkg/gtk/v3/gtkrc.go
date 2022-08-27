@@ -20,8 +20,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern guint _gotk4_gtk3_RcStyleClass_parse(GtkRcStyle*, GtkSettings*, GScanner*);
 // extern void _gotk4_gtk3_RcStyleClass_merge(GtkRcStyle*, GtkRcStyle*);
+// extern guint _gotk4_gtk3_RcStyleClass_parse(GtkRcStyle*, GtkSettings*, GScanner*);
+// guint _gotk4_gtk3_RCStyle_virtual_parse(void* fnptr, GtkRcStyle* arg0, GtkSettings* arg1, GScanner* arg2) {
+//   return ((guint (*)(GtkRcStyle*, GtkSettings*, GScanner*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_RCStyle_virtual_merge(void* fnptr, GtkRcStyle* arg0, GtkRcStyle* arg1) {
+//   ((void (*)(GtkRcStyle*, GtkRcStyle*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -735,46 +741,6 @@ func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint) {
 	return _color, _guint
 }
 
-// RCParseColorFull parses a color in the format expected in a RC file. If style
-// is not NULL, it will be consulted to resolve references to symbolic colors.
-//
-// Deprecated: Use CssProvider instead.
-//
-// The function takes the following parameters:
-//
-//    - scanner: #GScanner.
-//    - style (optional) or NULL.
-//
-// The function returns the following values:
-//
-//    - color: pointer to a Color in which to store the result.
-//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
-//      expected but not found.
-//
-func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint) {
-	var _arg1 *C.GScanner   // out
-	var _arg2 *C.GtkRcStyle // out
-	var _arg3 C.GdkColor    // in
-	var _cret C.guint       // in
-
-	_arg1 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
-	if style != nil {
-		_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
-	}
-
-	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, &_arg3)
-	runtime.KeepAlive(scanner)
-	runtime.KeepAlive(style)
-
-	var _color *gdk.Color // out
-	var _guint uint       // out
-
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
-	_guint = uint(_cret)
-
-	return _color, _guint
-}
-
 // RCParsePriority parses a PathPriorityType variable from the format expected
 // in a RC file.
 //
@@ -924,30 +890,6 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 	return _ok
 }
 
-// RCResetStyles: this function recomputes the styles for all widgets that use a
-// particular Settings object. (There is one Settings object per Screen, see
-// gtk_settings_get_for_screen()); It is useful when some global parameter has
-// changed that affects the appearance of all widgets, because when a widget
-// gets a new style, it will both redraw and recompute any cached information
-// about its appearance. As an example, it is used when the default font size
-// set by the operating system changes. Note that this function doesn’t affect
-// widgets that have a style set explicitly on them with gtk_widget_set_style().
-//
-// Deprecated: Use CssProvider instead.
-//
-// The function takes the following parameters:
-//
-//    - settings: Settings.
-//
-func RCResetStyles(settings *Settings) {
-	var _arg1 *C.GtkSettings // out
-
-	_arg1 = (*C.GtkSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-
-	C.gtk_rc_reset_styles(_arg1)
-	runtime.KeepAlive(settings)
-}
-
 // RCSetDefaultFiles sets the list of files that GTK+ will read at the end of
 // gtk_init().
 //
@@ -978,11 +920,11 @@ func RCSetDefaultFiles(filenames []string) {
 	runtime.KeepAlive(filenames)
 }
 
-// RCStyleOverrider contains methods that are overridable.
-type RCStyleOverrider interface {
+// RCStyleOverrides contains methods that are overridable.
+type RCStyleOverrides struct {
 	// The function takes the following parameters:
 	//
-	Merge(src *RCStyle)
+	Merge func(src *RCStyle)
 	// The function takes the following parameters:
 	//
 	//    - settings
@@ -990,7 +932,14 @@ type RCStyleOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Parse(settings *Settings, scanner *glib.Scanner) uint
+	Parse func(settings *Settings, scanner *glib.Scanner) uint
+}
+
+func defaultRCStyleOverrides(v *RCStyle) RCStyleOverrides {
+	return RCStyleOverrides{
+		Merge: v.merge,
+		Parse: v.parse,
+	}
 }
 
 // RCStyle is used to represent a set of information about the appearance of a
@@ -1006,70 +955,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRCStyle,
-		GoType:        reflect.TypeOf((*RCStyle)(nil)),
-		InitClass:     initClassRCStyle,
-		FinalizeClass: finalizeClassRCStyle,
-	})
+	coreglib.RegisterClassInfo[*RCStyle, *RCStyleClass, RCStyleOverrides](
+		GTypeRCStyle,
+		initRCStyleClass,
+		wrapRCStyle,
+		defaultRCStyleOverrides,
+	)
 }
 
-func initClassRCStyle(gclass unsafe.Pointer, goval any) {
+func initRCStyleClass(gclass unsafe.Pointer, overrides RCStyleOverrides, classInitFunc func(*RCStyleClass)) {
+	pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRCStyle))))
 
-	pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Merge(src *RCStyle) }); ok {
+	if overrides.Merge != nil {
 		pclass.merge = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_merge)
 	}
 
-	if _, ok := goval.(interface {
-		Parse(settings *Settings, scanner *glib.Scanner) uint
-	}); ok {
+	if overrides.Parse != nil {
 		pclass.parse = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_parse)
 	}
-	if goval, ok := goval.(interface{ InitRCStyle(*RCStyleClass) }); ok {
-		klass := (*RCStyleClass)(gextras.NewStructNative(gclass))
-		goval.InitRCStyle(klass)
+
+	if classInitFunc != nil {
+		class := (*RCStyleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassRCStyle(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRCStyle(*RCStyleClass) }); ok {
-		klass := (*RCStyleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRCStyle(klass)
-	}
-}
-
-//export _gotk4_gtk3_RcStyleClass_merge
-func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.GtkRcStyle, arg1 *C.GtkRcStyle) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Merge(src *RCStyle) })
-
-	var _src *RCStyle // out
-
-	_src = wrapRCStyle(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.Merge(_src)
-}
-
-//export _gotk4_gtk3_RcStyleClass_parse
-func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.GtkRcStyle, arg1 *C.GtkSettings, arg2 *C.GScanner) (cret C.guint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Parse(settings *Settings, scanner *glib.Scanner) uint
-	})
-
-	var _settings *Settings    // out
-	var _scanner *glib.Scanner // out
-
-	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(arg1)))
-	_scanner = (*glib.Scanner)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	guint := iface.Parse(_settings, _scanner)
-
-	cret = C.guint(guint)
-
-	return cret
 }
 
 func wrapRCStyle(obj *coreglib.Object) *RCStyle {
@@ -1126,6 +1034,55 @@ func (orig *RCStyle) Copy() *RCStyle {
 	_rcStyle = wrapRCStyle(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _rcStyle
+}
+
+// The function takes the following parameters:
+//
+func (dest *RCStyle) merge(src *RCStyle) {
+	gclass := (*C.GtkRcStyleClass)(coreglib.PeekParentClass(dest))
+	fnarg := gclass.merge
+
+	var _arg0 *C.GtkRcStyle // out
+	var _arg1 *C.GtkRcStyle // out
+
+	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(coreglib.InternObject(dest).Native()))
+	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+
+	C._gotk4_gtk3_RCStyle_virtual_merge(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(dest)
+	runtime.KeepAlive(src)
+}
+
+// The function takes the following parameters:
+//
+//    - settings
+//    - scanner
+//
+// The function returns the following values:
+//
+func (rcStyle *RCStyle) parse(settings *Settings, scanner *glib.Scanner) uint {
+	gclass := (*C.GtkRcStyleClass)(coreglib.PeekParentClass(rcStyle))
+	fnarg := gclass.parse
+
+	var _arg0 *C.GtkRcStyle  // out
+	var _arg1 *C.GtkSettings // out
+	var _arg2 *C.GScanner    // out
+	var _cret C.guint        // in
+
+	_arg0 = (*C.GtkRcStyle)(unsafe.Pointer(coreglib.InternObject(rcStyle).Native()))
+	_arg1 = (*C.GtkSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg2 = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
+
+	_cret = C._gotk4_gtk3_RCStyle_virtual_parse(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(rcStyle)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(scanner)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // RCProperty: deprecated

@@ -10,7 +10,9 @@ import (
 var callbackTmpl = gotmpl.NewGoTemplate(`
 	{{ GoDoc . 0 }}
 	type {{ .GoName }} func{{ .GoTail }}
+`)
 
+var callbackExportTmpl = gotmpl.NewGoTemplate(`
 	//export {{ .CGoName }}
 	func {{ .CGoName }}{{ .CGoTail }} {{ .Block }}
 `)
@@ -24,9 +26,19 @@ func GenerateCallback(gen FileGeneratorWriter, cb *gir.Callback) bool {
 		return false
 	}
 
-	writer := FileWriterFromType(gen, cb)
-	writer.Pen().WriteTmpl(callbackTmpl, &generator)
-	file.ApplyHeader(writer, &generator)
+	{
+		writer := FileWriterFromType(gen, cb)
+		writer.Pen().WriteTmpl(callbackTmpl, &generator)
+		for _, result := range generator.Results {
+			file.ApplyHeader(writer, &result)
+		}
+	}
+
+	{
+		writer := FileWriterExportedFromType(gen, cb)
+		writer.Pen().WriteTmpl(callbackExportTmpl, &generator)
+		file.ApplyHeader(writer, &generator)
+	}
 
 	return true
 }

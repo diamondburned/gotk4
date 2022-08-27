@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// MenuAccessibleOverrider contains methods that are overridable.
-type MenuAccessibleOverrider interface {
+// MenuAccessibleOverrides contains methods that are overridable.
+type MenuAccessibleOverrides struct {
+}
+
+func defaultMenuAccessibleOverrides(v *MenuAccessible) MenuAccessibleOverrides {
+	return MenuAccessibleOverrides{}
 }
 
 type MenuAccessible struct {
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMenuAccessible,
-		GoType:        reflect.TypeOf((*MenuAccessible)(nil)),
-		InitClass:     initClassMenuAccessible,
-		FinalizeClass: finalizeClassMenuAccessible,
-	})
+	coreglib.RegisterClassInfo[*MenuAccessible, *MenuAccessibleClass, MenuAccessibleOverrides](
+		GTypeMenuAccessible,
+		initMenuAccessibleClass,
+		wrapMenuAccessible,
+		defaultMenuAccessibleOverrides,
+	)
 }
 
-func initClassMenuAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMenuAccessible(*MenuAccessibleClass) }); ok {
-		klass := (*MenuAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitMenuAccessible(klass)
-	}
-}
-
-func finalizeClassMenuAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMenuAccessible(*MenuAccessibleClass) }); ok {
-		klass := (*MenuAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMenuAccessible(klass)
+func initMenuAccessibleClass(gclass unsafe.Pointer, overrides MenuAccessibleOverrides, classInitFunc func(*MenuAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*MenuAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

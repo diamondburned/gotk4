@@ -7,14 +7,13 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(gpointer, gchar*, guint, GdkModifierType, guint, guintptr);
+// extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
 import "C"
 
 // GType values.
@@ -89,55 +88,9 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return wrapCellRendererAccel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared
-func _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(pathString string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(pathString string))
-	}
-
-	var _pathString string // out
-
-	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_pathString)
-}
-
 // ConnectAccelCleared gets emitted when the user has removed the accelerator.
 func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "accel-cleared", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererAccel_ConnectAccelCleared), f)
-}
-
-//export _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited
-func _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guint, arg5 C.guintptr) {
-	var f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint))
-	}
-
-	var _pathString string          // out
-	var _accelKey uint              // out
-	var _accelMods gdk.ModifierType // out
-	var _hardwareKeycode uint       // out
-
-	_pathString = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_accelKey = uint(arg2)
-	_accelMods = gdk.ModifierType(arg3)
-	_hardwareKeycode = uint(arg4)
-
-	f(_pathString, _accelKey, _accelMods, _hardwareKeycode)
 }
 
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.

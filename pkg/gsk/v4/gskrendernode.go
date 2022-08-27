@@ -38,28 +38,6 @@ func init() {
 // node deserialization.
 type ParseErrorFunc func(start, end *ParseLocation, err error)
 
-//export _gotk4_gsk4_ParseErrorFunc
-func _gotk4_gsk4_ParseErrorFunc(arg1 *C.GskParseLocation, arg2 *C.GskParseLocation, arg3 *C.GError, arg4 C.gpointer) {
-	var fn ParseErrorFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ParseErrorFunc)
-	}
-
-	var _start *ParseLocation // out
-	var _end *ParseLocation   // out
-	var _err error            // out
-
-	_start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_err = gerror.Take(unsafe.Pointer(arg3))
-
-	fn(_start, _end, _err)
-}
-
 // NewBlendNode creates a GskRenderNode that will use blend_mode to blend the
 // top node onto the bottom node.
 //
@@ -799,34 +777,6 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	_conicGradientNode = wrapConicGradientNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _conicGradientNode
-}
-
-// Angle retrieves the angle for the gradient in radians, normalized in [0, 2 *
-// PI].
-//
-// The angle is starting at the top and going clockwise, as expressed in the css
-// specification:
-//
-//    angle = 90 - gsk_conic_gradient_node_get_rotation().
-//
-// The function returns the following values:
-//
-//    - gfloat: angle for the gradient.
-//
-func (node *ConicGradientNode) Angle() float32 {
-	var _arg0 *C.GskRenderNode // out
-	var _cret C.float          // in
-
-	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-
-	_cret = C.gsk_conic_gradient_node_get_angle(_arg0)
-	runtime.KeepAlive(node)
-
-	var _gfloat float32 // out
-
-	_gfloat = float32(_cret)
-
-	return _gfloat
 }
 
 // Center retrieves the center pointer for the gradient.

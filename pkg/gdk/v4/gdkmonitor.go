@@ -98,22 +98,6 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 	return wrapMonitor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdk4_Monitor_ConnectInvalidate
-func _gotk4_gdk4_Monitor_ConnectInvalidate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectInvalidate is emitted when the output represented by monitor gets
 // disconnected.
 func (monitor *Monitor) ConnectInvalidate(f func()) coreglib.SignalHandle {

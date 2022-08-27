@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// TextMarkOverrider contains methods that are overridable.
-type TextMarkOverrider interface {
+// TextMarkOverrides contains methods that are overridable.
+type TextMarkOverrides struct {
+}
+
+func defaultTextMarkOverrides(v *TextMark) TextMarkOverrides {
+	return TextMarkOverrides{}
 }
 
 // TextMark: you may wish to begin by reading the [text widget conceptual
@@ -70,25 +74,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextMark,
-		GoType:        reflect.TypeOf((*TextMark)(nil)),
-		InitClass:     initClassTextMark,
-		FinalizeClass: finalizeClassTextMark,
-	})
+	coreglib.RegisterClassInfo[*TextMark, *TextMarkClass, TextMarkOverrides](
+		GTypeTextMark,
+		initTextMarkClass,
+		wrapTextMark,
+		defaultTextMarkOverrides,
+	)
 }
 
-func initClassTextMark(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTextMark(*TextMarkClass) }); ok {
-		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
-		goval.InitTextMark(klass)
-	}
-}
-
-func finalizeClassTextMark(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextMark(*TextMarkClass) }); ok {
-		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextMark(klass)
+func initTextMarkClass(gclass unsafe.Pointer, overrides TextMarkOverrides, classInitFunc func(*TextMarkClass)) {
+	if classInitFunc != nil {
+		class := (*TextMarkClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -100,49 +97,6 @@ func wrapTextMark(obj *coreglib.Object) *TextMark {
 
 func marshalTextMark(p uintptr) (interface{}, error) {
 	return wrapTextMark(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewTextMark creates a text mark. Add it to a buffer using
-// gtk_text_buffer_add_mark(). If name is NULL, the mark is anonymous;
-// otherwise, the mark can be retrieved by name using
-// gtk_text_buffer_get_mark(). If a mark has left gravity, and text is inserted
-// at the mark’s current location, the mark will be moved to the left of the
-// newly-inserted text. If the mark has right gravity (left_gravity = FALSE),
-// the mark will end up on the right of newly-inserted text. The standard
-// left-to-right cursor is a mark with right gravity (when you type, the cursor
-// stays on the right side of the text you’re typing).
-//
-// The function takes the following parameters:
-//
-//    - name (optional): mark name or NULL.
-//    - leftGravity: whether the mark should have left gravity.
-//
-// The function returns the following values:
-//
-//    - textMark: new TextMark.
-//
-func NewTextMark(name string, leftGravity bool) *TextMark {
-	var _arg1 *C.gchar       // out
-	var _arg2 C.gboolean     // out
-	var _cret *C.GtkTextMark // in
-
-	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	if leftGravity {
-		_arg2 = C.TRUE
-	}
-
-	_cret = C.gtk_text_mark_new(_arg1, _arg2)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(leftGravity)
-
-	var _textMark *TextMark // out
-
-	_textMark = wrapTextMark(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _textMark
 }
 
 // Buffer gets the buffer this mark is located inside, or NULL if the mark is

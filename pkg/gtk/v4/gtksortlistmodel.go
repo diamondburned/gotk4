@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// SortListModelOverrider contains methods that are overridable.
-type SortListModelOverrider interface {
+// SortListModelOverrides contains methods that are overridable.
+type SortListModelOverrides struct {
+}
+
+func defaultSortListModelOverrides(v *SortListModel) SortListModelOverrides {
+	return SortListModelOverrides{}
 }
 
 // SortListModel: GtkSortListModel is a list model that sorts the elements of
@@ -54,25 +58,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSortListModel,
-		GoType:        reflect.TypeOf((*SortListModel)(nil)),
-		InitClass:     initClassSortListModel,
-		FinalizeClass: finalizeClassSortListModel,
-	})
+	coreglib.RegisterClassInfo[*SortListModel, *SortListModelClass, SortListModelOverrides](
+		GTypeSortListModel,
+		initSortListModelClass,
+		wrapSortListModel,
+		defaultSortListModelOverrides,
+	)
 }
 
-func initClassSortListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSortListModel(*SortListModelClass) }); ok {
-		klass := (*SortListModelClass)(gextras.NewStructNative(gclass))
-		goval.InitSortListModel(klass)
-	}
-}
-
-func finalizeClassSortListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSortListModel(*SortListModelClass) }); ok {
-		klass := (*SortListModelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSortListModel(klass)
+func initSortListModelClass(gclass unsafe.Pointer, overrides SortListModelOverrides, classInitFunc func(*SortListModelClass)) {
+	if classInitFunc != nil {
+		class := (*SortListModelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

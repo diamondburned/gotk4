@@ -16,16 +16,40 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
-// extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
-// extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(AtkHyperlink*);
-// extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(AtkHyperlink*);
-// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(AtkHyperlink*, gint);
-// extern gint _gotk4_atk1_HyperlinkClass_get_end_index(AtkHyperlink*);
-// extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(AtkHyperlink*);
-// extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
-// extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
-// extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
 // extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
+// extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
+// extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_end_index(AtkHyperlink*);
+// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(AtkHyperlink*, gint);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(AtkHyperlink*);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(AtkHyperlink*);
+// extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
+// AtkObject* _gotk4_atk1_Hyperlink_virtual_get_object(void* fnptr, AtkHyperlink* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkHyperlink*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Hyperlink_virtual_is_valid(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gboolean (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_Hyperlink_virtual_get_uri(void* fnptr, AtkHyperlink* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkHyperlink*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Hyperlink_virtual_get_end_index(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Hyperlink_virtual_get_n_anchors(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Hyperlink_virtual_get_start_index(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// guint _gotk4_atk1_Hyperlink_virtual_link_state(void* fnptr, AtkHyperlink* arg0) {
+//   return ((guint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Hyperlink_virtual_link_activated(void* fnptr, AtkHyperlink* arg0) {
+//   ((void (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -84,8 +108,8 @@ func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
 	return (h & other) == other
 }
 
-// HyperlinkOverrider contains methods that are overridable.
-type HyperlinkOverrider interface {
+// HyperlinkOverrides contains methods that are overridable.
+type HyperlinkOverrides struct {
 	// EndIndex gets the index with the hypertext document at which this link
 	// ends.
 	//
@@ -93,14 +117,14 @@ type HyperlinkOverrider interface {
 	//
 	//    - gint: index with the hypertext document at which this link ends.
 	//
-	EndIndex() int
+	EndIndex func() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	//
 	// The function returns the following values:
 	//
 	//    - gint: number of anchors associated with this hyperlink.
 	//
-	NAnchors() int
+	NAnchors func() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
 	// For instance, the returned Object will implement Text if link_ is a text
 	// hyperlink, Image if link_ is an image hyperlink etc.
@@ -115,7 +139,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - object associated with this hyperlinks i-th anchor.
 	//
-	GetObject(i int) *AtkObject
+	GetObject func(i int) *AtkObject
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	//
@@ -123,7 +147,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - gint: index with the hypertext document at which this link begins.
 	//
-	StartIndex() int
+	StartIndex func() int
 	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
@@ -136,7 +160,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - utf8: string specifying the URI.
 	//
-	URI(i int) string
+	URI func(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
 	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
@@ -146,7 +170,7 @@ type HyperlinkOverrider interface {
 	//
 	//    - ok: true if the AtkHyperlink is selected, False otherwise.
 	//
-	IsSelectedLink() bool
+	IsSelectedLink func() bool
 	// IsValid: since the document that a link is associated with may have
 	// changed this method returns TRUE if the link is still valid (with respect
 	// to the document it references) and FALSE otherwise.
@@ -155,11 +179,25 @@ type HyperlinkOverrider interface {
 	//
 	//    - ok: whether or not this link is still valid.
 	//
-	IsValid() bool
-	LinkActivated()
+	IsValid       func() bool
+	LinkActivated func()
 	// The function returns the following values:
 	//
-	LinkState() uint
+	LinkState func() uint
+}
+
+func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
+	return HyperlinkOverrides{
+		EndIndex:       v.endIndex,
+		NAnchors:       v.nAnchors,
+		GetObject:      v.getObject,
+		StartIndex:     v.startIndex,
+		URI:            v.urI,
+		IsSelectedLink: v.isSelectedLink,
+		IsValid:        v.isValid,
+		LinkActivated:  v.linkActivated,
+		LinkState:      v.linkState,
+	}
 }
 
 // Hyperlink: ATK object which encapsulates a link or set of links (for instance
@@ -179,180 +217,57 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHyperlink,
-		GoType:        reflect.TypeOf((*Hyperlink)(nil)),
-		InitClass:     initClassHyperlink,
-		FinalizeClass: finalizeClassHyperlink,
-	})
+	coreglib.RegisterClassInfo[*Hyperlink, *HyperlinkClass, HyperlinkOverrides](
+		GTypeHyperlink,
+		initHyperlinkClass,
+		wrapHyperlink,
+		defaultHyperlinkOverrides,
+	)
 }
 
-func initClassHyperlink(gclass unsafe.Pointer, goval any) {
+func initHyperlinkClass(gclass unsafe.Pointer, overrides HyperlinkOverrides, classInitFunc func(*HyperlinkClass)) {
+	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeHyperlink))))
 
-	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ EndIndex() int }); ok {
+	if overrides.EndIndex != nil {
 		pclass.get_end_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_end_index)
 	}
 
-	if _, ok := goval.(interface{ NAnchors() int }); ok {
+	if overrides.NAnchors != nil {
 		pclass.get_n_anchors = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
 	}
 
-	if _, ok := goval.(interface{ GetObject(i int) *AtkObject }); ok {
+	if overrides.GetObject != nil {
 		pclass.get_object = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_object)
 	}
 
-	if _, ok := goval.(interface{ StartIndex() int }); ok {
+	if overrides.StartIndex != nil {
 		pclass.get_start_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_start_index)
 	}
 
-	if _, ok := goval.(interface{ URI(i int) string }); ok {
+	if overrides.URI != nil {
 		pclass.get_uri = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_uri)
 	}
 
-	if _, ok := goval.(interface{ IsSelectedLink() bool }); ok {
+	if overrides.IsSelectedLink != nil {
 		pclass.is_selected_link = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_selected_link)
 	}
 
-	if _, ok := goval.(interface{ IsValid() bool }); ok {
+	if overrides.IsValid != nil {
 		pclass.is_valid = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_valid)
 	}
 
-	if _, ok := goval.(interface{ LinkActivated() }); ok {
+	if overrides.LinkActivated != nil {
 		pclass.link_activated = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_activated)
 	}
 
-	if _, ok := goval.(interface{ LinkState() uint }); ok {
+	if overrides.LinkState != nil {
 		pclass.link_state = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_state)
 	}
-	if goval, ok := goval.(interface{ InitHyperlink(*HyperlinkClass) }); ok {
-		klass := (*HyperlinkClass)(gextras.NewStructNative(gclass))
-		goval.InitHyperlink(klass)
+
+	if classInitFunc != nil {
+		class := (*HyperlinkClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassHyperlink(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHyperlink(*HyperlinkClass) }); ok {
-		klass := (*HyperlinkClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHyperlink(klass)
-	}
-}
-
-//export _gotk4_atk1_HyperlinkClass_get_end_index
-func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ EndIndex() int })
-
-	gint := iface.EndIndex()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_get_n_anchors
-func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ NAnchors() int })
-
-	gint := iface.NAnchors()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_get_object
-func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GetObject(i int) *AtkObject })
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	object := iface.GetObject(_i)
-
-	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_get_start_index
-func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ StartIndex() int })
-
-	gint := iface.StartIndex()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_get_uri
-func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ URI(i int) string })
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	utf8 := iface.URI(_i)
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_is_selected_link
-func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ IsSelectedLink() bool })
-
-	ok := iface.IsSelectedLink()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_is_valid
-func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ IsValid() bool })
-
-	ok := iface.IsValid()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_HyperlinkClass_link_activated
-func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LinkActivated() })
-
-	iface.LinkActivated()
-}
-
-//export _gotk4_atk1_HyperlinkClass_link_state
-func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LinkState() uint })
-
-	guint := iface.LinkState()
-
-	cret = C.guint(guint)
-
-	return cret
 }
 
 func wrapHyperlink(obj *coreglib.Object) *Hyperlink {
@@ -366,22 +281,6 @@ func wrapHyperlink(obj *coreglib.Object) *Hyperlink {
 
 func marshalHyperlink(p uintptr) (interface{}, error) {
 	return wrapHyperlink(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_atk1_Hyperlink_ConnectLinkActivated
-func _gotk4_atk1_Hyperlink_ConnectLinkActivated(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectLinkActivated: signal link-activated is emitted when a link is
@@ -548,33 +447,6 @@ func (link_ *Hyperlink) IsInline() bool {
 	return _ok
 }
 
-// IsSelectedLink determines whether this AtkHyperlink is selected
-//
-// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
-// ATK_STATE_FOCUSED for focused links.
-//
-// The function returns the following values:
-//
-//    - ok: true if the AtkHyperlink is selected, False otherwise.
-//
-func (link_ *Hyperlink) IsSelectedLink() bool {
-	var _arg0 *C.AtkHyperlink // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	_cret = C.atk_hyperlink_is_selected_link(_arg0)
-	runtime.KeepAlive(link_)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // IsValid: since the document that a link is associated with may have changed
 // this method returns TRUE if the link is still valid (with respect to the
 // document it references) and FALSE otherwise.
@@ -599,6 +471,215 @@ func (link_ *Hyperlink) IsValid() bool {
 	}
 
 	return _ok
+}
+
+// endIndex gets the index with the hypertext document at which this link ends.
+//
+// The function returns the following values:
+//
+//    - gint: index with the hypertext document at which this link ends.
+//
+func (link_ *Hyperlink) endIndex() int {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_end_index
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_end_index(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nAnchors gets the number of anchors associated with this hyperlink.
+//
+// The function returns the following values:
+//
+//    - gint: number of anchors associated with this hyperlink.
+//
+func (link_ *Hyperlink) nAnchors() int {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_n_anchors
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_n_anchors(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// getObject returns the item associated with this hyperlinks nth anchor. For
+// instance, the returned Object will implement Text if link_ is a text
+// hyperlink, Image if link_ is an image hyperlink etc.
+//
+// Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//    - i: (zero-index) integer specifying the desired anchor.
+//
+// The function returns the following values:
+//
+//    - object associated with this hyperlinks i-th anchor.
+//
+func (link_ *Hyperlink) getObject(i int) *AtkObject {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_object
+
+	var _arg0 *C.AtkHyperlink // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_object(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// startIndex gets the index with the hypertext document at which this link
+// begins.
+//
+// The function returns the following values:
+//
+//    - gint: index with the hypertext document at which this link begins.
+//
+func (link_ *Hyperlink) startIndex() int {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_start_index
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_start_index(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// urI: get a the URI associated with the anchor specified by i of link_.
+//
+// Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//    - i: (zero-index) integer specifying the desired anchor.
+//
+// The function returns the following values:
+//
+//    - utf8: string specifying the URI.
+//
+func (link_ *Hyperlink) urI(i int) string {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_uri
+
+	var _arg0 *C.AtkHyperlink // out
+	var _arg1 C.gint          // out
+	var _cret *C.gchar        // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_uri(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// isValid: since the document that a link is associated with may have changed
+// this method returns TRUE if the link is still valid (with respect to the
+// document it references) and FALSE otherwise.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not this link is still valid.
+//
+func (link_ *Hyperlink) isValid() bool {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.is_valid
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_is_valid(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (link_ *Hyperlink) linkActivated() {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.link_activated
+
+	var _arg0 *C.AtkHyperlink // out
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	C._gotk4_atk1_Hyperlink_virtual_link_activated(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+}
+
+// The function returns the following values:
+//
+func (link_ *Hyperlink) linkState() uint {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.link_state
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.guint         // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_link_state(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // HyperlinkClass: instance of this type is always passed by reference.

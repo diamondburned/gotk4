@@ -7,6 +7,7 @@ import (
 	_ "runtime/cgo"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -16,10 +17,10 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk3_DragContext_ConnectActionChanged(gpointer, GdkDragAction, guintptr);
-// extern void _gotk4_gdk3_DragContext_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
-// extern void _gotk4_gdk3_DragContext_ConnectDNDFinished(gpointer, guintptr);
 // extern void _gotk4_gdk3_DragContext_ConnectDropPerformed(gpointer, gint, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectDNDFinished(gpointer, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
+// extern void _gotk4_gdk3_DragContext_ConnectActionChanged(gpointer, GdkDragAction, guintptr);
 import "C"
 
 // GType values.
@@ -121,26 +122,6 @@ func marshalDragContext(p uintptr) (interface{}, error) {
 	return wrapDragContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdk3_DragContext_ConnectActionChanged
-func _gotk4_gdk3_DragContext_ConnectActionChanged(arg0 C.gpointer, arg1 C.GdkDragAction, arg2 C.guintptr) {
-	var f func(action DragAction)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action DragAction))
-	}
-
-	var _action DragAction // out
-
-	_action = DragAction(arg1)
-
-	f(_action)
-}
-
 // ConnectActionChanged: new action is being chosen for the drag and drop
 // operation.
 //
@@ -148,26 +129,6 @@ func _gotk4_gdk3_DragContext_ConnectActionChanged(arg0 C.gpointer, arg1 C.GdkDra
 // operation. See gdk_drag_context_manage_dnd() for more information.
 func (context *DragContext) ConnectActionChanged(f func(action DragAction)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "action-changed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectActionChanged), f)
-}
-
-//export _gotk4_gdk3_DragContext_ConnectCancel
-func _gotk4_gdk3_DragContext_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason, arg2 C.guintptr) {
-	var f func(reason DragCancelReason)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(reason DragCancelReason))
-	}
-
-	var _reason DragCancelReason // out
-
-	_reason = DragCancelReason(arg1)
-
-	f(_reason)
 }
 
 // ConnectCancel: drag and drop operation was cancelled.
@@ -178,8 +139,27 @@ func (context *DragContext) ConnectCancel(f func(reason DragCancelReason)) coreg
 	return coreglib.ConnectGeneratedClosure(context, "cancel", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectCancel), f)
 }
 
-//export _gotk4_gdk3_DragContext_ConnectDNDFinished
-func _gotk4_gdk3_DragContext_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
+// ConnectDNDFinished: drag and drop operation was finished, the drag
+// destination finished reading all data. The drag source can now free all
+// miscellaneous data.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (context *DragContext) ConnectDNDFinished(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDNDFinished), f)
+}
+
+// ConnectDropPerformed: drag and drop operation was performed on an accepting
+// client.
+//
+// This signal will only be emitted if the DragContext manages the drag and drop
+// operation. See gdk_drag_context_manage_dnd() for more information.
+func (context *DragContext) ConnectDropPerformed(f func(time int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
+}
+
+//export _gotk4_gdk3_Monitor_ConnectInvalidate
+func _gotk4_gdk3_Monitor_ConnectInvalidate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -194,41 +174,65 @@ func _gotk4_gdk3_DragContext_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr
 	f()
 }
 
-// ConnectDNDFinished: drag and drop operation was finished, the drag
-// destination finished reading all data. The drag source can now free all
-// miscellaneous data.
-//
-// This signal will only be emitted if the DragContext manages the drag and drop
-// operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectDNDFinished(f func()) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(context, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDNDFinished), f)
-}
-
-//export _gotk4_gdk3_DragContext_ConnectDropPerformed
-func _gotk4_gdk3_DragContext_ConnectDropPerformed(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(time int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(time int))
+//export _gotk4_gdk3_WindowClass_create_surface
+func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
+	if overrides.CreateSurface == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.CreateSurface, got none")
 	}
 
-	var _time int // out
+	var _width int  // out
+	var _height int // out
 
-	_time = int(arg1)
+	_width = int(arg1)
+	_height = int(arg2)
 
-	f(_time)
+	surface := overrides.CreateSurface(_width, _height)
+
+	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+
+	return cret
 }
 
-// ConnectDropPerformed: drag and drop operation was performed on an accepting
-// client.
-//
-// This signal will only be emitted if the DragContext manages the drag and drop
-// operation. See gdk_drag_context_manage_dnd() for more information.
-func (context *DragContext) ConnectDropPerformed(f func(time int)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
+//export _gotk4_gdk3_WindowClass_from_embedder
+func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
+	if overrides.FromEmbedder == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.FromEmbedder, got none")
+	}
+
+	var _embedderX float64   // out
+	var _embedderY float64   // out
+	var _offscreenX *float64 // out
+	var _offscreenY *float64 // out
+
+	_embedderX = float64(arg1)
+	_embedderY = float64(arg2)
+	_offscreenX = (*float64)(unsafe.Pointer(arg3))
+	_offscreenY = (*float64)(unsafe.Pointer(arg4))
+
+	overrides.FromEmbedder(_embedderX, _embedderY, _offscreenX, _offscreenY)
+}
+
+//export _gotk4_gdk3_WindowClass_to_embedder
+func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
+	if overrides.ToEmbedder == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.ToEmbedder, got none")
+	}
+
+	var _offscreenX float64 // out
+	var _offscreenY float64 // out
+	var _embedderX *float64 // out
+	var _embedderY *float64 // out
+
+	_offscreenX = float64(arg1)
+	_offscreenY = float64(arg2)
+	_embedderX = (*float64)(unsafe.Pointer(arg3))
+	_embedderY = (*float64)(unsafe.Pointer(arg4))
+
+	overrides.ToEmbedder(_offscreenX, _offscreenY, _embedderX, _embedderY)
 }

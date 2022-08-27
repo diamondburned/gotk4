@@ -9,7 +9,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -22,16 +21,31 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_WindowClass_enable_debugging(GtkWindow*, gboolean);
-// extern gboolean _gotk4_gtk3_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
-// extern void _gotk4_gtk3_WindowClass_activate_default(GtkWindow*);
-// extern void _gotk4_gtk3_WindowClass_activate_focus(GtkWindow*);
-// extern void _gotk4_gtk3_WindowClass_keys_changed(GtkWindow*);
-// extern void _gotk4_gtk3_WindowClass_set_focus(GtkWindow*, GtkWidget*);
-// extern void _gotk4_gtk3_Window_ConnectActivateDefault(gpointer, guintptr);
-// extern void _gotk4_gtk3_Window_ConnectActivateFocus(gpointer, guintptr);
-// extern void _gotk4_gtk3_Window_ConnectKeysChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_Window_ConnectSetFocus(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Window_ConnectKeysChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_Window_ConnectActivateFocus(gpointer, guintptr);
+// extern void _gotk4_gtk3_Window_ConnectActivateDefault(gpointer, guintptr);
+// extern void _gotk4_gtk3_WindowClass_set_focus(GtkWindow*, GtkWidget*);
+// extern void _gotk4_gtk3_WindowClass_keys_changed(GtkWindow*);
+// extern void _gotk4_gtk3_WindowClass_activate_focus(GtkWindow*);
+// extern void _gotk4_gtk3_WindowClass_activate_default(GtkWindow*);
+// extern gboolean _gotk4_gtk3_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_WindowClass_enable_debugging(GtkWindow*, gboolean);
+// gboolean _gotk4_gtk3_Window_virtual_enable_debugging(void* fnptr, GtkWindow* arg0, gboolean arg1) {
+//   return ((gboolean (*)(GtkWindow*, gboolean))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Window_virtual_activate_default(void* fnptr, GtkWindow* arg0) {
+//   ((void (*)(GtkWindow*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Window_virtual_activate_focus(void* fnptr, GtkWindow* arg0) {
+//   ((void (*)(GtkWindow*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Window_virtual_keys_changed(void* fnptr, GtkWindow* arg0) {
+//   ((void (*)(GtkWindow*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Window_virtual_set_focus(void* fnptr, GtkWindow* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkWindow*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -127,16 +141,16 @@ func (w WindowType) String() string {
 	}
 }
 
-// WindowOverrider contains methods that are overridable.
-type WindowOverrider interface {
-	ActivateDefault()
-	ActivateFocus()
+// WindowOverrides contains methods that are overridable.
+type WindowOverrides struct {
+	ActivateDefault func()
+	ActivateFocus   func()
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	EnableDebugging(toggle bool) bool
-	KeysChanged()
+	EnableDebugging func(toggle bool) bool
+	KeysChanged     func()
 	// SetFocus: if focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the window. If focus is NULL, unsets the
 	// focus widget for this window. To set the focus to a particular widget in
@@ -148,7 +162,17 @@ type WindowOverrider interface {
 	//    - focus (optional): widget to be the new focus widget, or NULL to unset
 	//      any focus widget for the toplevel window.
 	//
-	SetFocus(focus Widgetter)
+	SetFocus func(focus Widgetter)
+}
+
+func defaultWindowOverrides(v *Window) WindowOverrides {
+	return WindowOverrides{
+		ActivateDefault: v.activateDefault,
+		ActivateFocus:   v.activateFocus,
+		EnableDebugging: v.enableDebugging,
+		KeysChanged:     v.keysChanged,
+		SetFocus:        v.setFocus,
+	}
 }
 
 // Window is a toplevel window which can contain other widgets. Windows normally
@@ -213,119 +237,41 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWindow,
-		GoType:        reflect.TypeOf((*Window)(nil)),
-		InitClass:     initClassWindow,
-		FinalizeClass: finalizeClassWindow,
-	})
+	coreglib.RegisterClassInfo[*Window, *WindowClass, WindowOverrides](
+		GTypeWindow,
+		initWindowClass,
+		wrapWindow,
+		defaultWindowOverrides,
+	)
 }
 
-func initClassWindow(gclass unsafe.Pointer, goval any) {
+func initWindowClass(gclass unsafe.Pointer, overrides WindowOverrides, classInitFunc func(*WindowClass)) {
+	pclass := (*C.GtkWindowClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeWindow))))
 
-	pclass := (*C.GtkWindowClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ActivateDefault() }); ok {
+	if overrides.ActivateDefault != nil {
 		pclass.activate_default = (*[0]byte)(C._gotk4_gtk3_WindowClass_activate_default)
 	}
 
-	if _, ok := goval.(interface{ ActivateFocus() }); ok {
+	if overrides.ActivateFocus != nil {
 		pclass.activate_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_activate_focus)
 	}
 
-	if _, ok := goval.(interface{ EnableDebugging(toggle bool) bool }); ok {
+	if overrides.EnableDebugging != nil {
 		pclass.enable_debugging = (*[0]byte)(C._gotk4_gtk3_WindowClass_enable_debugging)
 	}
 
-	if _, ok := goval.(interface{ KeysChanged() }); ok {
+	if overrides.KeysChanged != nil {
 		pclass.keys_changed = (*[0]byte)(C._gotk4_gtk3_WindowClass_keys_changed)
 	}
 
-	if _, ok := goval.(interface{ SetFocus(focus Widgetter) }); ok {
+	if overrides.SetFocus != nil {
 		pclass.set_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_set_focus)
 	}
-	if goval, ok := goval.(interface{ InitWindow(*WindowClass) }); ok {
-		klass := (*WindowClass)(gextras.NewStructNative(gclass))
-		goval.InitWindow(klass)
+
+	if classInitFunc != nil {
+		class := (*WindowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassWindow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWindow(*WindowClass) }); ok {
-		klass := (*WindowClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWindow(klass)
-	}
-}
-
-//export _gotk4_gtk3_WindowClass_activate_default
-func _gotk4_gtk3_WindowClass_activate_default(arg0 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateDefault() })
-
-	iface.ActivateDefault()
-}
-
-//export _gotk4_gtk3_WindowClass_activate_focus
-func _gotk4_gtk3_WindowClass_activate_focus(arg0 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateFocus() })
-
-	iface.ActivateFocus()
-}
-
-//export _gotk4_gtk3_WindowClass_enable_debugging
-func _gotk4_gtk3_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ EnableDebugging(toggle bool) bool })
-
-	var _toggle bool // out
-
-	if arg1 != 0 {
-		_toggle = true
-	}
-
-	ok := iface.EnableDebugging(_toggle)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk3_WindowClass_keys_changed
-func _gotk4_gtk3_WindowClass_keys_changed(arg0 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ KeysChanged() })
-
-	iface.KeysChanged()
-}
-
-//export _gotk4_gtk3_WindowClass_set_focus
-func _gotk4_gtk3_WindowClass_set_focus(arg0 *C.GtkWindow, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SetFocus(focus Widgetter) })
-
-	var _focus Widgetter // out
-
-	if arg1 != nil {
-		{
-			objptr := unsafe.Pointer(arg1)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_focus = rv
-		}
-	}
-
-	iface.SetFocus(_focus)
 }
 
 func wrapWindow(obj *coreglib.Object) *Window {
@@ -353,76 +299,16 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Window_ConnectActivateDefault
-func _gotk4_gtk3_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivateDefault signal is a [keybinding signal][GtkBindingSignal]
 // which gets emitted when the user activates the default widget of window.
 func (window *Window) ConnectActivateDefault(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectActivateDefault), f)
 }
 
-//export _gotk4_gtk3_Window_ConnectActivateFocus
-func _gotk4_gtk3_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivateFocus signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user activates the currently focused widget of window.
 func (window *Window) ConnectActivateFocus(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectActivateFocus), f)
-}
-
-//export _gotk4_gtk3_Window_ConnectEnableDebugging
-func _gotk4_gtk3_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(toggle bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(toggle bool) (ok bool))
-	}
-
-	var _toggle bool // out
-
-	if arg1 != 0 {
-		_toggle = true
-	}
-
-	ok := f(_toggle)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectEnableDebugging signal is a [keybinding signal][GtkBindingSignal]
@@ -435,61 +321,10 @@ func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) core
 	return coreglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectEnableDebugging), f)
 }
 
-//export _gotk4_gtk3_Window_ConnectKeysChanged
-func _gotk4_gtk3_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectKeysChanged signal gets emitted when the set of accelerators or
 // mnemonics that are associated with window changes.
 func (window *Window) ConnectKeysChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "keys-changed", false, unsafe.Pointer(C._gotk4_gtk3_Window_ConnectKeysChanged), f)
-}
-
-//export _gotk4_gtk3_Window_ConnectSetFocus
-func _gotk4_gtk3_Window_ConnectSetFocus(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(widget Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(widget Widgetter))
-	}
-
-	var _widget Widgetter // out
-
-	if arg1 != nil {
-		{
-			objptr := unsafe.Pointer(arg1)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	f(_widget)
 }
 
 // ConnectSetFocus: this signal is emitted whenever the currently focused widget
@@ -582,40 +417,6 @@ func (window *Window) ActivateFocus() bool {
 
 	_cret = C.gtk_window_activate_focus(_arg0)
 	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ActivateKey activates mnemonics and accelerators for this Window. This is
-// normally called by the default ::key_press_event handler for toplevel
-// windows, however in some cases it may be useful to call this directly when
-// overriding the standard key handling for a toplevel window.
-//
-// The function takes the following parameters:
-//
-//    - event: EventKey.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a mnemonic or accelerator was found and activated.
-//
-func (window *Window) ActivateKey(event *gdk.EventKey) bool {
-	var _arg0 *C.GtkWindow   // out
-	var _arg1 *C.GdkEventKey // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_window_activate_key(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(event)
 
 	var _ok bool // out
 
@@ -743,19 +544,6 @@ func (window *Window) BeginResizeDrag(edge gdk.WindowEdge, button, rootX, rootY 
 	runtime.KeepAlive(timestamp)
 }
 
-// Close requests that the window is closed, similar to what happens when a
-// window manager close button is clicked.
-//
-// This function can be used with close buttons in custom titlebars.
-func (window *Window) Close() {
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C.gtk_window_close(_arg0)
-	runtime.KeepAlive(window)
-}
-
 // Deiconify asks to deiconify (i.e. unminimize) the specified window. Note that
 // you shouldn’t assume the window is definitely deiconified afterward, because
 // other entities (e.g. the user or [window manager][gtk-X11-arch])) could
@@ -769,137 +557,6 @@ func (window *Window) Deiconify() {
 
 	C.gtk_window_deiconify(_arg0)
 	runtime.KeepAlive(window)
-}
-
-// Fullscreen asks to place window in the fullscreen state. Note that you
-// shouldn’t assume the window is definitely full screen afterward, because
-// other entities (e.g. the user or [window manager][gtk-X11-arch]) could
-// unfullscreen it again, and not all window managers honor requests to
-// fullscreen windows. But normally the window will end up fullscreen. Just
-// don’t write code that crashes if not.
-//
-// You can track the fullscreen state via the “window-state-event” signal on
-// Widget.
-func (window *Window) Fullscreen() {
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C.gtk_window_fullscreen(_arg0)
-	runtime.KeepAlive(window)
-}
-
-// FullscreenOnMonitor asks to place window in the fullscreen state. Note that
-// you shouldn't assume the window is definitely full screen afterward.
-//
-// You can track the fullscreen state via the "window-state-event" signal on
-// Widget.
-//
-// The function takes the following parameters:
-//
-//    - screen to draw to.
-//    - monitor: which monitor to go fullscreen on.
-//
-func (window *Window) FullscreenOnMonitor(screen *gdk.Screen, monitor int) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GdkScreen // out
-	var _arg2 C.gint       // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	_arg2 = C.gint(monitor)
-
-	C.gtk_window_fullscreen_on_monitor(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(screen)
-	runtime.KeepAlive(monitor)
-}
-
-// AcceptFocus gets the value set by gtk_window_set_accept_focus().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if window should receive the input focus.
-//
-func (window *Window) AcceptFocus() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_accept_focus(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Application gets the Application associated with the window (if any).
-//
-// The function returns the following values:
-//
-//    - application (optional) or NULL.
-//
-func (window *Window) Application() *Application {
-	var _arg0 *C.GtkWindow      // out
-	var _cret *C.GtkApplication // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_application(_arg0)
-	runtime.KeepAlive(window)
-
-	var _application *Application // out
-
-	if _cret != nil {
-		_application = wrapApplication(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _application
-}
-
-// AttachedTo fetches the attach widget for this window. See
-// gtk_window_set_attached_to().
-//
-// The function returns the following values:
-//
-//    - widget (optional) where the window is attached, or NULL if the window is
-//      not attached to any widget.
-//
-func (window *Window) AttachedTo() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_attached_to(_arg0)
-	runtime.KeepAlive(window)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
 }
 
 // Decorated returns whether the window has been set to have decorations such as
@@ -953,69 +610,6 @@ func (window *Window) DefaultSize() (width, height int) {
 	_height = int(_arg2)
 
 	return _width, _height
-}
-
-// DefaultWidget returns the default widget for window. See
-// gtk_window_set_default() for more details.
-//
-// The function returns the following values:
-//
-//    - widget (optional): default widget, or NULL if there is none.
-//
-func (window *Window) DefaultWidget() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_default_widget(_arg0)
-	runtime.KeepAlive(window)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
-}
-
-// Deletable returns whether the window has been set to have a close button via
-// gtk_window_set_deletable().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the window has been set to have a close button.
-//
-func (window *Window) Deletable() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_deletable(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // DestroyWithParent returns whether the window will be destroyed with its
@@ -1083,54 +677,6 @@ func (window *Window) Focus() Widgetter {
 	return _widget
 }
 
-// FocusOnMap gets the value set by gtk_window_set_focus_on_map().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if window should receive the input focus when mapped.
-//
-func (window *Window) FocusOnMap() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_focus_on_map(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// FocusVisible gets the value of the Window:focus-visible property.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if “focus rectangles” are supposed to be visible in this window.
-//
-func (window *Window) FocusVisible() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_focus_visible(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Gravity gets the value set by gtk_window_set_gravity().
 //
 // The function returns the following values:
@@ -1151,84 +697,6 @@ func (window *Window) Gravity() gdk.Gravity {
 	_gravity = gdk.Gravity(_cret)
 
 	return _gravity
-}
-
-// Group returns the group for window or the default group, if window is NULL or
-// if window does not have an explicit window group.
-//
-// The function returns the following values:
-//
-//    - windowGroup for a window or the default group.
-//
-func (window *Window) Group() *WindowGroup {
-	var _arg0 *C.GtkWindow      // out
-	var _cret *C.GtkWindowGroup // in
-
-	if window != nil {
-		_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	}
-
-	_cret = C.gtk_window_get_group(_arg0)
-	runtime.KeepAlive(window)
-
-	var _windowGroup *WindowGroup // out
-
-	_windowGroup = wrapWindowGroup(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _windowGroup
-}
-
-// HasResizeGrip determines whether the window may have a resize grip.
-//
-// Deprecated: Resize grips have been removed.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the window has a resize grip.
-//
-func (window *Window) HasResizeGrip() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_has_resize_grip(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HideTitlebarWhenMaximized returns whether the window has requested to have
-// its titlebar hidden when maximized. See
-// gtk_window_set_hide_titlebar_when_maximized ().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the window has requested to have its titlebar hidden when
-//      maximized.
-//
-func (window *Window) HideTitlebarWhenMaximized() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_hide_titlebar_when_maximized(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Icon gets the value set by gtk_window_set_icon() (or if you've called
@@ -1305,31 +773,6 @@ func (window *Window) IconList() []*gdkpixbuf.Pixbuf {
 	return _list
 }
 
-// IconName returns the name of the themed icon for the window, see
-// gtk_window_set_icon_name().
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): icon name or NULL if the window has no themed icon.
-//
-func (window *Window) IconName() string {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_icon_name(_arg0)
-	runtime.KeepAlive(window)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
 // MnemonicModifier returns the mnemonic modifier for this window. See
 // gtk_window_set_mnemonic_modifier().
 //
@@ -1351,30 +794,6 @@ func (window *Window) MnemonicModifier() gdk.ModifierType {
 	_modifierType = gdk.ModifierType(_cret)
 
 	return _modifierType
-}
-
-// MnemonicsVisible gets the value of the Window:mnemonics-visible property.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if mnemonics are supposed to be visible in this window.
-//
-func (window *Window) MnemonicsVisible() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_mnemonics_visible(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Modal returns whether the window is modal. See gtk_window_set_modal().
@@ -1400,31 +819,6 @@ func (window *Window) Modal() bool {
 	}
 
 	return _ok
-}
-
-// Opacity fetches the requested opacity for this window. See
-// gtk_window_set_opacity().
-//
-// Deprecated: Use gtk_widget_get_opacity instead.
-//
-// The function returns the following values:
-//
-//    - gdouble: requested opacity for this window.
-//
-func (window *Window) Opacity() float64 {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gdouble    // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_opacity(_arg0)
-	runtime.KeepAlive(window)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
 }
 
 // Position: this function returns the position you need to pass to
@@ -1512,37 +906,6 @@ func (window *Window) Resizable() bool {
 	return _ok
 }
 
-// ResizeGripArea: if a window has a resize grip, this will retrieve the grip
-// position, width and height into the specified Rectangle.
-//
-// Deprecated: Resize grips have been removed.
-//
-// The function returns the following values:
-//
-//    - rect: pointer to a Rectangle which we should store the resize grip area.
-//    - ok: TRUE if the resize grip’s area was retrieved.
-//
-func (window *Window) ResizeGripArea() (*gdk.Rectangle, bool) {
-	var _arg0 *C.GtkWindow   // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_resize_grip_area(_arg0, &_arg1)
-	runtime.KeepAlive(window)
-
-	var _rect *gdk.Rectangle // out
-	var _ok bool             // out
-
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _rect, _ok
-}
-
 // Role returns the role of the window. See gtk_window_set_role() for further
 // explanation.
 //
@@ -1567,33 +930,6 @@ func (window *Window) Role() string {
 	}
 
 	return _utf8
-}
-
-// Screen returns the Screen associated with window.
-//
-// The function returns the following values:
-//
-//    - screen: Screen.
-//
-func (window *Window) Screen() *gdk.Screen {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GdkScreen // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_screen(_arg0)
-	runtime.KeepAlive(window)
-
-	var _screen *gdk.Screen // out
-
-	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_screen = &gdk.Screen{
-			Object: obj,
-		}
-	}
-
-	return _screen
 }
 
 // Size obtains the current size of window.
@@ -1662,54 +998,6 @@ func (window *Window) Size() (width, height int) {
 	return _width, _height
 }
 
-// SkipPagerHint gets the value set by gtk_window_set_skip_pager_hint().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if window shouldn’t be in pager.
-//
-func (window *Window) SkipPagerHint() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_skip_pager_hint(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SkipTaskbarHint gets the value set by gtk_window_set_skip_taskbar_hint().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if window shouldn’t be in taskbar.
-//
-func (window *Window) SkipTaskbarHint() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_skip_taskbar_hint(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Title retrieves the title of the window. See gtk_window_set_title().
 //
 // The function returns the following values:
@@ -1734,44 +1022,6 @@ func (window *Window) Title() string {
 	}
 
 	return _utf8
-}
-
-// Titlebar returns the custom titlebar that has been set with
-// gtk_window_set_titlebar().
-//
-// The function returns the following values:
-//
-//    - widget (optional): custom titlebar, or NULL.
-//
-func (window *Window) Titlebar() Widgetter {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_titlebar(_arg0)
-	runtime.KeepAlive(window)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
 }
 
 // TransientFor fetches the transient parent for this window. See
@@ -1822,52 +1072,6 @@ func (window *Window) TypeHint() gdk.WindowTypeHint {
 	return _windowTypeHint
 }
 
-// UrgencyHint gets the value set by gtk_window_set_urgency_hint().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if window is urgent.
-//
-func (window *Window) UrgencyHint() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_urgency_hint(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// WindowType gets the type of the window. See WindowType.
-//
-// The function returns the following values:
-//
-//    - windowType: type of the window.
-//
-func (window *Window) WindowType() WindowType {
-	var _arg0 *C.GtkWindow    // out
-	var _cret C.GtkWindowType // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_window_type(_arg0)
-	runtime.KeepAlive(window)
-
-	var _windowType WindowType // out
-
-	_windowType = WindowType(_cret)
-
-	return _windowType
-}
-
 // HasGroup returns whether window has an explicit window group.
 //
 // The function returns the following values:
@@ -1883,32 +1087,6 @@ func (window *Window) HasGroup() bool {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_cret = C.gtk_window_has_group(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasToplevelFocus returns whether the input focus is within this GtkWindow.
-// For real toplevel windows, this is identical to gtk_window_is_active(), but
-// for embedded windows, like Plug, the results will differ.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the input focus is within this GtkWindow.
-//
-func (window *Window) HasToplevelFocus() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_has_toplevel_focus(_arg0)
 	runtime.KeepAlive(window)
 
 	var _ok bool // out
@@ -1938,64 +1116,6 @@ func (window *Window) Iconify() {
 
 	C.gtk_window_iconify(_arg0)
 	runtime.KeepAlive(window)
-}
-
-// IsActive returns whether the window is part of the current active toplevel.
-// (That is, the toplevel window receiving keystrokes.) The return value is TRUE
-// if the window is active toplevel itself, but also if it is, say, a Plug
-// embedded in the active toplevel. You might use this function if you wanted to
-// draw a widget differently in an active window from a widget in an inactive
-// window. See gtk_window_has_toplevel_focus().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the window part of the current active window.
-//
-func (window *Window) IsActive() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_is_active(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsMaximized retrieves the current maximized state of window.
-//
-// Note that since maximization is ultimately handled by the window manager and
-// happens asynchronously to an application request, you shouldn’t assume the
-// return value of this function changing immediately (or at all), as an effect
-// of calling gtk_window_maximize() or gtk_window_unmaximize().
-//
-// The function returns the following values:
-//
-//    - ok: whether the window has a maximized state.
-//
-func (window *Window) IsMaximized() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_is_maximized(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Maximize asks to maximize window, so that it becomes full-screen. Note that
@@ -2221,77 +1341,6 @@ func (window *Window) Present() {
 	runtime.KeepAlive(window)
 }
 
-// PresentWithTime presents a window to the user. This may mean raising the
-// window in the stacking order, deiconifying it, moving it to the current
-// desktop, and/or giving it the keyboard focus, possibly dependent on the
-// user’s platform, window manager, and preferences.
-//
-// If window is hidden, this function calls gtk_widget_show() as well.
-//
-// This function should be used when the user tries to open a window that’s
-// already open. Say for example the preferences dialog is currently open, and
-// the user chooses Preferences from the menu a second time; use
-// gtk_window_present() to move the already-open dialog where the user can see
-// it.
-//
-// Presents a window to the user in response to a user interaction. The
-// timestamp should be gathered when the window was requested to be shown (when
-// clicking a link for example), rather than once the window is ready to be
-// shown.
-//
-// The function takes the following parameters:
-//
-//    - timestamp of the user interaction (typically a button or key press event)
-//      which triggered this call.
-//
-func (window *Window) PresentWithTime(timestamp uint32) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.guint32    // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.guint32(timestamp)
-
-	C.gtk_window_present_with_time(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(timestamp)
-}
-
-// PropagateKeyEvent: propagate a key press or release event to the focus widget
-// and up the focus container chain until a widget handles event. This is
-// normally called by the default ::key_press_event and ::key_release_event
-// handlers for toplevel windows, however in some cases it may be useful to call
-// this directly when overriding the standard key handling for a toplevel
-// window.
-//
-// The function takes the following parameters:
-//
-//    - event: EventKey.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a widget in the focus chain handled the event.
-//
-func (window *Window) PropagateKeyEvent(event *gdk.EventKey) bool {
-	var _arg0 *C.GtkWindow   // out
-	var _arg1 *C.GdkEventKey // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
-
-	_cret = C.gtk_window_propagate_key_event(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(event)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // RemoveAccelGroup reverses the effects of gtk_window_add_accel_group().
 //
 // The function takes the following parameters:
@@ -2392,145 +1441,6 @@ func (window *Window) Resize(width, height int) {
 	runtime.KeepAlive(height)
 }
 
-// ResizeGripIsVisible determines whether a resize grip is visible for the
-// specified window.
-//
-// Deprecated: Resize grips have been removed.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a resize grip exists and is visible.
-//
-func (window *Window) ResizeGripIsVisible() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_resize_grip_is_visible(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ResizeToGeometry: like gtk_window_resize(), but width and height are
-// interpreted in terms of the base size and increment set with
-// gtk_window_set_geometry_hints.
-//
-// Deprecated: This function does nothing. Use gtk_window_resize() and compute
-// the geometry yourself.
-//
-// The function takes the following parameters:
-//
-//    - width in resize increments to resize the window to.
-//    - height in resize increments to resize the window to.
-//
-func (window *Window) ResizeToGeometry(width, height int) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
-
-	C.gtk_window_resize_to_geometry(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// SetAcceptFocus windows may set a hint asking the desktop environment not to
-// receive the input focus. This function sets this hint.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to let this window receive input focus.
-//
-func (window *Window) SetAcceptFocus(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_accept_focus(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetApplication sets or unsets the Application associated with the window.
-//
-// The application will be kept alive for at least as long as it has any windows
-// associated with it (see g_application_hold() for a way to keep it alive
-// without windows).
-//
-// Normally, the connection between the application and the window will remain
-// until the window is destroyed, but you can explicitly remove it by setting
-// the application to NULL.
-//
-// This is equivalent to calling gtk_application_remove_window() and/or
-// gtk_application_add_window() on the old/new applications as relevant.
-//
-// The function takes the following parameters:
-//
-//    - application (optional) or NULL to unset.
-//
-func (window *Window) SetApplication(application *Application) {
-	var _arg0 *C.GtkWindow      // out
-	var _arg1 *C.GtkApplication // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if application != nil {
-		_arg1 = (*C.GtkApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	}
-
-	C.gtk_window_set_application(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(application)
-}
-
-// SetAttachedTo marks window as attached to attach_widget. This creates a
-// logical binding between the window and the widget it belongs to, which is
-// used by GTK+ to propagate information such as styling or accessibility to
-// window as if it was a children of attach_widget.
-//
-// Examples of places where specifying this relation is useful are for instance
-// a Menu created by a ComboBox, a completion popup window created by Entry or a
-// typeahead search entry created by TreeView.
-//
-// Note that this function should not be confused with
-// gtk_window_set_transient_for(), which specifies a window manager relation
-// between two toplevels instead.
-//
-// Passing NULL for attach_widget detaches the window.
-//
-// The function takes the following parameters:
-//
-//    - attachWidget (optional) or NULL.
-//
-func (window *Window) SetAttachedTo(attachWidget Widgetter) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if attachWidget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(attachWidget).Native()))
-	}
-
-	C.gtk_window_set_attached_to(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(attachWidget)
-}
-
 // SetDecorated: by default, windows are decorated with a title bar, resize
 // controls, etc. Some [window managers][gtk-X11-arch] allow GTK+ to disable
 // these decorations, creating a borderless window. If you set the decorated
@@ -2586,33 +1496,6 @@ func (window *Window) SetDefault(defaultWidget Widgetter) {
 	runtime.KeepAlive(defaultWidget)
 }
 
-// SetDefaultGeometry: like gtk_window_set_default_size(), but width and height
-// are interpreted in terms of the base size and increment set with
-// gtk_window_set_geometry_hints.
-//
-// Deprecated: This function does nothing. If you want to set a default size,
-// use gtk_window_set_default_size() instead.
-//
-// The function takes the following parameters:
-//
-//    - width in resize increments, or -1 to unset the default width.
-//    - height in resize increments, or -1 to unset the default height.
-//
-func (window *Window) SetDefaultGeometry(width, height int) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gint       // out
-	var _arg2 C.gint       // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
-
-	C.gtk_window_set_default_geometry(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
 // SetDefaultSize sets the default size of a window. If the window’s “natural”
 // size (its size request) is larger than the default, the default will be
 // ignored. More generally, if the default size does not obey the geometry hints
@@ -2666,35 +1549,6 @@ func (window *Window) SetDefaultSize(width, height int) {
 	runtime.KeepAlive(height)
 }
 
-// SetDeletable: by default, windows have a close button in the window frame.
-// Some [window managers][gtk-X11-arch] allow GTK+ to disable this button. If
-// you set the deletable property to FALSE using this function, GTK+ will do its
-// best to convince the window manager not to show a close button. Depending on
-// the system, this function may not have any effect when called on a window
-// that is already visible, so you should call it before calling
-// gtk_widget_show().
-//
-// On Windows, this function always works, since there’s no window manager
-// policy involved.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to decorate the window as deletable.
-//
-func (window *Window) SetDeletable(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_deletable(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
 // SetDestroyWithParent: if setting is TRUE, then destroying the transient
 // parent of window will also destroy window itself. This is useful for dialogs
 // that shouldn’t persist beyond the lifetime of the main window they're
@@ -2741,48 +1595,6 @@ func (window *Window) SetFocus(focus Widgetter) {
 	C.gtk_window_set_focus(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(focus)
-}
-
-// SetFocusOnMap windows may set a hint asking the desktop environment not to
-// receive the input focus when the window is mapped. This function sets this
-// hint.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to let this window receive input focus on map.
-//
-func (window *Window) SetFocusOnMap(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_focus_on_map(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetFocusVisible sets the Window:focus-visible property.
-//
-// The function takes the following parameters:
-//
-//    - setting: new value.
-//
-func (window *Window) SetFocusVisible(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_focus_visible(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
 }
 
 // SetGeometryHints: this function sets up hints about how a window can be
@@ -2843,87 +1655,6 @@ func (window *Window) SetGravity(gravity gdk.Gravity) {
 	runtime.KeepAlive(gravity)
 }
 
-// SetHasResizeGrip sets whether window has a corner resize grip.
-//
-// Note that the resize grip is only shown if the window is actually resizable
-// and not maximized. Use gtk_window_resize_grip_is_visible() to find out if the
-// resize grip is currently shown.
-//
-// Deprecated: Resize grips have been removed.
-//
-// The function takes the following parameters:
-//
-//    - value: TRUE to allow a resize grip.
-//
-func (window *Window) SetHasResizeGrip(value bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if value {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_has_resize_grip(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(value)
-}
-
-// SetHasUserRefCount tells GTK+ whether to drop its extra reference to the
-// window when gtk_widget_destroy() is called.
-//
-// This function is only exported for the benefit of language bindings which may
-// need to keep the window alive until their wrapper object is garbage
-// collected. There is no justification for ever calling this function in an
-// application.
-//
-// The function takes the following parameters:
-//
-//    - setting: new value.
-//
-func (window *Window) SetHasUserRefCount(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_has_user_ref_count(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetHideTitlebarWhenMaximized: if setting is TRUE, then window will request
-// that it’s titlebar should be hidden when maximized. This is useful for
-// windows that don’t convey any information other than the application name in
-// the titlebar, to put the available screen space to better use. If the
-// underlying window system does not support the request, the setting will not
-// have any effect.
-//
-// Note that custom titlebars set with gtk_window_set_titlebar() are not
-// affected by this. The application is in full control of their content and
-// visibility anyway.
-//
-// The function takes the following parameters:
-//
-//    - setting: whether to hide the titlebar when window is maximized.
-//
-func (window *Window) SetHideTitlebarWhenMaximized(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_hide_titlebar_when_maximized(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
 // SetIcon sets up the icon representing a Window. This icon is used when the
 // window is minimized (also known as iconified). Some window managers or
 // desktop environments may also place it in the window frame, or display it in
@@ -2959,37 +1690,6 @@ func (window *Window) SetIcon(icon *gdkpixbuf.Pixbuf) {
 	C.gtk_window_set_icon(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(icon)
-}
-
-// SetIconFromFile sets the icon for window. Warns on failure if err is NULL.
-//
-// This function is equivalent to calling gtk_window_set_icon() with a pixbuf
-// created by loading the image from filename.
-//
-// The function takes the following parameters:
-//
-//    - filename: location of icon file.
-//
-func (window *Window) SetIconFromFile(filename string) error {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gchar     // out
-	var _cerr *C.GError    // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_window_set_icon_from_file(_arg0, _arg1, &_cerr)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(filename)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
 }
 
 // SetIconList sets up the icon representing a Window. The icon is used when the
@@ -3040,102 +1740,6 @@ func (window *Window) SetIconList(list []*gdkpixbuf.Pixbuf) {
 	runtime.KeepAlive(list)
 }
 
-// SetIconName sets the icon for the window from a named themed icon. See the
-// docs for IconTheme for more details. On some platforms, the window icon is
-// not used at all.
-//
-// Note that this has nothing to do with the WM_ICON_NAME property which is
-// mentioned in the ICCCM.
-//
-// The function takes the following parameters:
-//
-//    - name (optional) of the themed icon.
-//
-func (window *Window) SetIconName(name string) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C.gtk_window_set_icon_name(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(name)
-}
-
-// SetKeepAbove asks to keep window above, so that it stays on top. Note that
-// you shouldn’t assume the window is definitely above afterward, because other
-// entities (e.g. the user or [window manager][gtk-X11-arch]) could not keep it
-// above, and not all window managers support keeping windows above. But
-// normally the window will end kept above. Just don’t write code that crashes
-// if not.
-//
-// It’s permitted to call this function before showing a window, in which case
-// the window will be kept above when it appears onscreen initially.
-//
-// You can track the above state via the “window-state-event” signal on Widget.
-//
-// Note that, according to the Extended Window Manager Hints Specification
-// (http://www.freedesktop.org/Standards/wm-spec), the above state is mainly
-// meant for user preferences and should not be used by applications e.g. for
-// drawing attention to their dialogs.
-//
-// The function takes the following parameters:
-//
-//    - setting: whether to keep window above other windows.
-//
-func (window *Window) SetKeepAbove(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_keep_above(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetKeepBelow asks to keep window below, so that it stays in bottom. Note that
-// you shouldn’t assume the window is definitely below afterward, because other
-// entities (e.g. the user or [window manager][gtk-X11-arch]) could not keep it
-// below, and not all window managers support putting windows below. But
-// normally the window will be kept below. Just don’t write code that crashes if
-// not.
-//
-// It’s permitted to call this function before showing a window, in which case
-// the window will be kept below when it appears onscreen initially.
-//
-// You can track the below state via the “window-state-event” signal on Widget.
-//
-// Note that, according to the Extended Window Manager Hints Specification
-// (http://www.freedesktop.org/Standards/wm-spec), the above state is mainly
-// meant for user preferences and should not be used by applications e.g. for
-// drawing attention to their dialogs.
-//
-// The function takes the following parameters:
-//
-//    - setting: whether to keep window below other windows.
-//
-func (window *Window) SetKeepBelow(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_keep_below(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
 // SetMnemonicModifier sets the mnemonic modifier for this window.
 //
 // The function takes the following parameters:
@@ -3152,26 +1756,6 @@ func (window *Window) SetMnemonicModifier(modifier gdk.ModifierType) {
 	C.gtk_window_set_mnemonic_modifier(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(modifier)
-}
-
-// SetMnemonicsVisible sets the Window:mnemonics-visible property.
-//
-// The function takes the following parameters:
-//
-//    - setting: new value.
-//
-func (window *Window) SetMnemonicsVisible(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_mnemonics_visible(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
 }
 
 // SetModal sets a window modal or non-modal. Modal windows prevent interaction
@@ -3196,33 +1780,6 @@ func (window *Window) SetModal(modal bool) {
 	C.gtk_window_set_modal(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(modal)
-}
-
-// SetOpacity: request the windowing system to make window partially
-// transparent, with opacity 0 being fully transparent and 1 fully opaque.
-// (Values of the opacity parameter are clamped to the [0,1] range.) On X11 this
-// has any effect only on X screens with a compositing manager running. See
-// gtk_widget_is_composited(). On Windows it should work always.
-//
-// Note that setting a window’s opacity after the window has been shown causes
-// it to flicker once on Windows.
-//
-// Deprecated: Use gtk_widget_set_opacity instead.
-//
-// The function takes the following parameters:
-//
-//    - opacity: desired opacity, between 0 and 1.
-//
-func (window *Window) SetOpacity(opacity float64) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gdouble    // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.gdouble(opacity)
-
-	C.gtk_window_set_opacity(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(opacity)
 }
 
 // SetPosition sets a position constraint for this window. If the old or new
@@ -3295,97 +1852,6 @@ func (window *Window) SetRole(role string) {
 	runtime.KeepAlive(role)
 }
 
-// SetScreen sets the Screen where the window is displayed; if the window is
-// already mapped, it will be unmapped, and then remapped on the new screen.
-//
-// The function takes the following parameters:
-//
-//    - screen: Screen.
-//
-func (window *Window) SetScreen(screen *gdk.Screen) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GdkScreen // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	C.gtk_window_set_screen(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(screen)
-}
-
-// SetSkipPagerHint windows may set a hint asking the desktop environment not to
-// display the window in the pager. This function sets this hint. (A "pager" is
-// any desktop navigation tool such as a workspace switcher that displays a
-// thumbnail representation of the windows on the screen.).
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to keep this window from appearing in the pager.
-//
-func (window *Window) SetSkipPagerHint(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_skip_pager_hint(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetSkipTaskbarHint windows may set a hint asking the desktop environment not
-// to display the window in the task bar. This function sets this hint.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to keep this window from appearing in the task bar.
-//
-func (window *Window) SetSkipTaskbarHint(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_skip_taskbar_hint(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetStartupID: startup notification identifiers are used by desktop
-// environment to track application startup, to provide user feedback and other
-// features. This function changes the corresponding property on the underlying
-// GdkWindow. Normally, startup identifier is managed automatically and you
-// should only use this function in special cases like transferring focus from
-// other processes. You should use this function before calling
-// gtk_window_present() or any equivalent function generating a window map
-// event.
-//
-// This function is only useful on X11, not with other GTK+ targets.
-//
-// The function takes the following parameters:
-//
-//    - startupId: string with startup-notification identifier.
-//
-func (window *Window) SetStartupID(startupId string) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_window_set_startup_id(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(startupId)
-}
-
 // SetTitle sets the title of the Window. The title of a window will be
 // displayed in its title bar; on the X Window System, the title bar is rendered
 // by the [window manager][gtk-X11-arch], so exactly how the title appears to
@@ -3409,34 +1875,6 @@ func (window *Window) SetTitle(title string) {
 	C.gtk_window_set_title(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(title)
-}
-
-// SetTitlebar sets a custom titlebar for window.
-//
-// A typical widget used here is HeaderBar, as it provides various features
-// expected of a titlebar while allowing the addition of child widgets to it.
-//
-// If you set a custom titlebar, GTK+ will do its best to convince the window
-// manager not to put its own titlebar on the window. Depending on the system,
-// this function may not work for a window that is already visible, so you set
-// the titlebar before calling gtk_widget_show().
-//
-// The function takes the following parameters:
-//
-//    - titlebar (optional): widget to use as titlebar.
-//
-func (window *Window) SetTitlebar(titlebar Widgetter) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if titlebar != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(titlebar).Native()))
-	}
-
-	C.gtk_window_set_titlebar(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(titlebar)
 }
 
 // SetTransientFor: dialog windows should be set transient for the main
@@ -3500,27 +1938,6 @@ func (window *Window) SetTypeHint(hint gdk.WindowTypeHint) {
 	runtime.KeepAlive(hint)
 }
 
-// SetUrgencyHint windows may set a hint asking the desktop environment to draw
-// the users attention to the window. This function sets this hint.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to mark this window as urgent.
-//
-func (window *Window) SetUrgencyHint(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_urgency_hint(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
 // SetWmclass: don’t use this function. It sets the X Window System “class” and
 // “name” hints for a window. According to the ICCCM, you should always set
 // these to the same value for all windows in an application, and GTK+ sets them
@@ -3572,24 +1989,6 @@ func (window *Window) Stick() {
 	runtime.KeepAlive(window)
 }
 
-// Unfullscreen asks to toggle off the fullscreen state for window. Note that
-// you shouldn’t assume the window is definitely not full screen afterward,
-// because other entities (e.g. the user or [window manager][gtk-X11-arch])
-// could fullscreen it again, and not all window managers honor requests to
-// unfullscreen windows. But normally the window will end up restored to its
-// normal state. Just don’t write code that crashes if not.
-//
-// You can track the fullscreen state via the “window-state-event” signal on
-// Widget.
-func (window *Window) Unfullscreen() {
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C.gtk_window_unfullscreen(_arg0)
-	runtime.KeepAlive(window)
-}
-
 // Unmaximize asks to unmaximize window. Note that you shouldn’t assume the
 // window is definitely unmaximized afterward, because other entities (e.g. the
 // user or [window manager][gtk-X11-arch]) could maximize it again, and not all
@@ -3620,6 +2019,100 @@ func (window *Window) Unstick() {
 
 	C.gtk_window_unstick(_arg0)
 	runtime.KeepAlive(window)
+}
+
+func (window *Window) activateDefault() {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.activate_default
+
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk3_Window_virtual_activate_default(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(window)
+}
+
+func (window *Window) activateFocus() {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.activate_focus
+
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk3_Window_virtual_activate_focus(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(window)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (window *Window) enableDebugging(toggle bool) bool {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.enable_debugging
+
+	var _arg0 *C.GtkWindow // out
+	var _arg1 C.gboolean   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if toggle {
+		_arg1 = C.TRUE
+	}
+
+	_cret = C._gotk4_gtk3_Window_virtual_enable_debugging(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(toggle)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (window *Window) keysChanged() {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.keys_changed
+
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk3_Window_virtual_keys_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(window)
+}
+
+// setFocus: if focus is not the current focus widget, and is focusable, sets it
+// as the focus widget for the window. If focus is NULL, unsets the focus widget
+// for this window. To set the focus to a particular widget in the toplevel, it
+// is usually more convenient to use gtk_widget_grab_focus() instead of this
+// function.
+//
+// The function takes the following parameters:
+//
+//    - focus (optional): widget to be the new focus widget, or NULL to unset any
+//      focus widget for the toplevel window.
+//
+func (window *Window) setFocus(focus Widgetter) {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.set_focus
+
+	var _arg0 *C.GtkWindow // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if focus != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
+	}
+
+	C._gotk4_gtk3_Window_virtual_set_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(focus)
 }
 
 // WindowGetDefaultIconList gets the value set by
@@ -3657,27 +2150,6 @@ func WindowGetDefaultIconList() []*gdkpixbuf.Pixbuf {
 	})
 
 	return _list
-}
-
-// WindowGetDefaultIconName returns the fallback icon name for windows that has
-// been set with gtk_window_set_default_icon_name(). The returned string is
-// owned by GTK+ and should not be modified. It is only valid until the next
-// call to gtk_window_set_default_icon_name().
-//
-// The function returns the following values:
-//
-//    - utf8: fallback icon name for windows.
-//
-func WindowGetDefaultIconName() string {
-	var _cret *C.gchar // in
-
-	_cret = C.gtk_window_get_default_icon_name()
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
 }
 
 // WindowListToplevels returns a list of all existing toplevel windows. The
@@ -3724,74 +2196,6 @@ func WindowListToplevels() []Widgetter {
 	return _list
 }
 
-// WindowSetAutoStartupNotification: by default, after showing the first Window,
-// GTK+ calls gdk_notify_startup_complete(). Call this function to disable the
-// automatic startup notification. You might do this if your first window is a
-// splash screen, and you want to delay notification until after your real main
-// window has been shown, for example.
-//
-// In that example, you would disable startup notification temporarily, show
-// your splash screen, then re-enable it so that showing the main window would
-// automatically result in notification.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to automatically do startup notification.
-//
-func WindowSetAutoStartupNotification(setting bool) {
-	var _arg1 C.gboolean // out
-
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_auto_startup_notification(_arg1)
-	runtime.KeepAlive(setting)
-}
-
-// WindowSetDefaultIcon sets an icon to be used as fallback for windows that
-// haven't had gtk_window_set_icon() called on them from a pixbuf.
-//
-// The function takes the following parameters:
-//
-//    - icon: icon.
-//
-func WindowSetDefaultIcon(icon *gdkpixbuf.Pixbuf) {
-	var _arg1 *C.GdkPixbuf // out
-
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	C.gtk_window_set_default_icon(_arg1)
-	runtime.KeepAlive(icon)
-}
-
-// WindowSetDefaultIconFromFile sets an icon to be used as fallback for windows
-// that haven't had gtk_window_set_icon_list() called on them from a file on
-// disk. Warns on failure if err is NULL.
-//
-// The function takes the following parameters:
-//
-//    - filename: location of icon file.
-//
-func WindowSetDefaultIconFromFile(filename string) error {
-	var _arg1 *C.gchar  // out
-	var _cerr *C.GError // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_window_set_default_icon_from_file(_arg1, &_cerr)
-	runtime.KeepAlive(filename)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
 // WindowSetDefaultIconList sets an icon list to be used as fallback for windows
 // that haven't had gtk_window_set_icon_list() called on them to set up a
 // window-specific icon list. This function allows you to set up the icon for
@@ -3815,43 +2219,6 @@ func WindowSetDefaultIconList(list []*gdkpixbuf.Pixbuf) {
 
 	C.gtk_window_set_default_icon_list(_arg1)
 	runtime.KeepAlive(list)
-}
-
-// WindowSetDefaultIconName sets an icon to be used as fallback for windows that
-// haven't had gtk_window_set_icon_list() called on them from a named themed
-// icon, see gtk_window_set_icon_name().
-//
-// The function takes the following parameters:
-//
-//    - name of the themed icon.
-//
-func WindowSetDefaultIconName(name string) {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_window_set_default_icon_name(_arg1)
-	runtime.KeepAlive(name)
-}
-
-// WindowSetInteractiveDebugging opens or closes the [interactive
-// debugger][interactive-debugging], which offers access to the widget hierarchy
-// of the application and to useful debugging tools.
-//
-// The function takes the following parameters:
-//
-//    - enable: TRUE to enable interactive debugging.
-//
-func WindowSetInteractiveDebugging(enable bool) {
-	var _arg1 C.gboolean // out
-
-	if enable {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_interactive_debugging(_arg1)
-	runtime.KeepAlive(enable)
 }
 
 // WindowClass: instance of this type is always passed by reference.

@@ -54,6 +54,9 @@ type Generator struct {
 	Closure  *int
 	Destroy  *int // TODO: why is this unused?
 
+	Conv    *typeconv.Converter
+	Results []typeconv.ValueConverted
+
 	pen    *pen.BlockSections
 	gen    types.FileGenerator
 	header file.Header
@@ -307,6 +310,7 @@ func (g *Generator) renderBlock() bool {
 
 	convert.Callback = true
 	convert.UseLogger(g)
+	g.Conv = convert
 
 	results := convert.ConvertAll()
 	if results == nil {

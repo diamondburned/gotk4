@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// StackAccessibleOverrider contains methods that are overridable.
-type StackAccessibleOverrider interface {
+// StackAccessibleOverrides contains methods that are overridable.
+type StackAccessibleOverrides struct {
+}
+
+func defaultStackAccessibleOverrides(v *StackAccessible) StackAccessibleOverrides {
+	return StackAccessibleOverrides{}
 }
 
 type StackAccessible struct {
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStackAccessible,
-		GoType:        reflect.TypeOf((*StackAccessible)(nil)),
-		InitClass:     initClassStackAccessible,
-		FinalizeClass: finalizeClassStackAccessible,
-	})
+	coreglib.RegisterClassInfo[*StackAccessible, *StackAccessibleClass, StackAccessibleOverrides](
+		GTypeStackAccessible,
+		initStackAccessibleClass,
+		wrapStackAccessible,
+		defaultStackAccessibleOverrides,
+	)
 }
 
-func initClassStackAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitStackAccessible(*StackAccessibleClass) }); ok {
-		klass := (*StackAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitStackAccessible(klass)
-	}
-}
-
-func finalizeClassStackAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeStackAccessible(*StackAccessibleClass) }); ok {
-		klass := (*StackAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStackAccessible(klass)
+func initStackAccessibleClass(gclass unsafe.Pointer, overrides StackAccessibleOverrides, classInitFunc func(*StackAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*StackAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

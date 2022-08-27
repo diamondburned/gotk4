@@ -149,22 +149,6 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return wrapExpander(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Expander_ConnectActivate
-func _gotk4_gtk4_Expander_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate activates the GtkExpander.
 func (expander *Expander) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(expander, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Expander_ConnectActivate), f)

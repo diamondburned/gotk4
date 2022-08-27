@@ -16,8 +16,14 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_MediaFileClass_close(GtkMediaFile*);
 // extern void _gotk4_gtk4_MediaFileClass_open(GtkMediaFile*);
+// extern void _gotk4_gtk4_MediaFileClass_close(GtkMediaFile*);
+// void _gotk4_gtk4_MediaFile_virtual_close(void* fnptr, GtkMediaFile* arg0) {
+//   ((void (*)(GtkMediaFile*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_MediaFile_virtual_open(void* fnptr, GtkMediaFile* arg0) {
+//   ((void (*)(GtkMediaFile*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -33,10 +39,17 @@ func init() {
 
 const MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
 
-// MediaFileOverrider contains methods that are overridable.
-type MediaFileOverrider interface {
-	Close()
-	Open()
+// MediaFileOverrides contains methods that are overridable.
+type MediaFileOverrides struct {
+	Close func()
+	Open  func()
+}
+
+func defaultMediaFileOverrides(v *MediaFile) MediaFileOverrides {
+	return MediaFileOverrides{
+		Close: v.close,
+		Open:  v.open,
+	}
 }
 
 // MediaFile: GtkMediaFile implements GtkMediaStream for files.
@@ -68,52 +81,29 @@ type MediaFiler interface {
 var _ MediaFiler = (*MediaFile)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMediaFile,
-		GoType:        reflect.TypeOf((*MediaFile)(nil)),
-		InitClass:     initClassMediaFile,
-		FinalizeClass: finalizeClassMediaFile,
-	})
+	coreglib.RegisterClassInfo[*MediaFile, *MediaFileClass, MediaFileOverrides](
+		GTypeMediaFile,
+		initMediaFileClass,
+		wrapMediaFile,
+		defaultMediaFileOverrides,
+	)
 }
 
-func initClassMediaFile(gclass unsafe.Pointer, goval any) {
+func initMediaFileClass(gclass unsafe.Pointer, overrides MediaFileOverrides, classInitFunc func(*MediaFileClass)) {
+	pclass := (*C.GtkMediaFileClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeMediaFile))))
 
-	pclass := (*C.GtkMediaFileClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Close() }); ok {
+	if overrides.Close != nil {
 		pclass.close = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_close)
 	}
 
-	if _, ok := goval.(interface{ Open() }); ok {
+	if overrides.Open != nil {
 		pclass.open = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_open)
 	}
-	if goval, ok := goval.(interface{ InitMediaFile(*MediaFileClass) }); ok {
-		klass := (*MediaFileClass)(gextras.NewStructNative(gclass))
-		goval.InitMediaFile(klass)
+
+	if classInitFunc != nil {
+		class := (*MediaFileClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassMediaFile(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMediaFile(*MediaFileClass) }); ok {
-		klass := (*MediaFileClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMediaFile(klass)
-	}
-}
-
-//export _gotk4_gtk4_MediaFileClass_close
-func _gotk4_gtk4_MediaFileClass_close(arg0 *C.GtkMediaFile) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Close() })
-
-	iface.Close()
-}
-
-//export _gotk4_gtk4_MediaFileClass_open
-func _gotk4_gtk4_MediaFileClass_open(arg0 *C.GtkMediaFile) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Open() })
-
-	iface.Open()
 }
 
 func wrapMediaFile(obj *coreglib.Object) *MediaFile {
@@ -448,6 +438,30 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	C.gtk_media_file_set_resource(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resourcePath)
+}
+
+func (self *MediaFile) close() {
+	gclass := (*C.GtkMediaFileClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.close
+
+	var _arg0 *C.GtkMediaFile // out
+
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk4_MediaFile_virtual_close(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
+}
+
+func (self *MediaFile) open() {
+	gclass := (*C.GtkMediaFileClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.open
+
+	var _arg0 *C.GtkMediaFile // out
+
+	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk4_MediaFile_virtual_open(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
 }
 
 // MediaFileClass: instance of this type is always passed by reference.

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// HPanedOverrider contains methods that are overridable.
-type HPanedOverrider interface {
+// HPanedOverrides contains methods that are overridable.
+type HPanedOverrides struct {
+}
+
+func defaultHPanedOverrides(v *HPaned) HPanedOverrides {
+	return HPanedOverrides{}
 }
 
 // HPaned widget is a container widget with two children arranged horizontally.
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHPaned,
-		GoType:        reflect.TypeOf((*HPaned)(nil)),
-		InitClass:     initClassHPaned,
-		FinalizeClass: finalizeClassHPaned,
-	})
+	coreglib.RegisterClassInfo[*HPaned, *HPanedClass, HPanedOverrides](
+		GTypeHPaned,
+		initHPanedClass,
+		wrapHPaned,
+		defaultHPanedOverrides,
+	)
 }
 
-func initClassHPaned(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitHPaned(*HPanedClass) }); ok {
-		klass := (*HPanedClass)(gextras.NewStructNative(gclass))
-		goval.InitHPaned(klass)
-	}
-}
-
-func finalizeClassHPaned(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHPaned(*HPanedClass) }); ok {
-		klass := (*HPanedClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHPaned(klass)
+func initHPanedClass(gclass unsafe.Pointer, overrides HPanedOverrides, classInitFunc func(*HPanedClass)) {
+	if classInitFunc != nil {
+		class := (*HPanedClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

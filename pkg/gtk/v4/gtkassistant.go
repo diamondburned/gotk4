@@ -15,13 +15,13 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
-// extern void _gotk4_gtk4_Assistant_ConnectApply(gpointer, guintptr);
-// extern void _gotk4_gtk4_Assistant_ConnectCancel(gpointer, guintptr);
-// extern void _gotk4_gtk4_Assistant_ConnectClose(gpointer, guintptr);
-// extern void _gotk4_gtk4_Assistant_ConnectEscape(gpointer, guintptr);
-// extern void _gotk4_gtk4_Assistant_ConnectPrepare(gpointer, GtkWidget*, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_Assistant_ConnectPrepare(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectEscape(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectCancel(gpointer, guintptr);
+// extern void _gotk4_gtk4_Assistant_ConnectApply(gpointer, guintptr);
+// extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
 import "C"
 
 // GType values.
@@ -106,28 +106,6 @@ func (a AssistantPageType) String() string {
 //
 // See gtk.Assistant.SetForwardPageFunc().
 type AssistantPageFunc func(currentPage int) (gint int)
-
-//export _gotk4_gtk4_AssistantPageFunc
-func _gotk4_gtk4_AssistantPageFunc(arg1 C.int, arg2 C.gpointer) (cret C.int) {
-	var fn AssistantPageFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(AssistantPageFunc)
-	}
-
-	var _currentPage int // out
-
-	_currentPage = int(arg1)
-
-	gint := fn(_currentPage)
-
-	cret = C.int(gint)
-
-	return cret
-}
 
 // Assistant: GtkAssistant is used to represent a complex as a series of steps.
 //
@@ -225,22 +203,6 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return wrapAssistant(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Assistant_ConnectApply
-func _gotk4_gtk4_Assistant_ConnectApply(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectApply is emitted when the apply button is clicked.
 //
 // The default behavior of the GtkAssistant is to switch to the page after the
@@ -255,41 +217,9 @@ func (assistant *Assistant) ConnectApply(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(assistant, "apply", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectApply), f)
 }
 
-//export _gotk4_gtk4_Assistant_ConnectCancel
-func _gotk4_gtk4_Assistant_ConnectCancel(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectCancel is emitted when then the cancel button is clicked.
 func (assistant *Assistant) ConnectCancel(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(assistant, "cancel", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectCancel), f)
-}
-
-//export _gotk4_gtk4_Assistant_ConnectClose
-func _gotk4_gtk4_Assistant_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectClose is emitted either when the close button of a summary page is
@@ -299,61 +229,9 @@ func (assistant *Assistant) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(assistant, "close", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectClose), f)
 }
 
-//export _gotk4_gtk4_Assistant_ConnectEscape
-func _gotk4_gtk4_Assistant_ConnectEscape(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectEscape: action signal for the Escape binding.
 func (assistant *Assistant) ConnectEscape(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(assistant, "escape", false, unsafe.Pointer(C._gotk4_gtk4_Assistant_ConnectEscape), f)
-}
-
-//export _gotk4_gtk4_Assistant_ConnectPrepare
-func _gotk4_gtk4_Assistant_ConnectPrepare(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(page Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page Widgetter))
-	}
-
-	var _page Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_page = rv
-	}
-
-	f(_page)
 }
 
 // ConnectPrepare is emitted when a new page is set as the assistant's current

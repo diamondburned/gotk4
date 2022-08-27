@@ -30,9 +30,10 @@ type VirtualMethod struct {
 
 	C struct {
 		// Name is the name of the wrapper function.
-		Name  string
-		Tail  string
-		Block string
+		Name   string
+		Tail   string
+		Block  string
+		Header *file.Header
 	}
 }
 
@@ -56,10 +57,6 @@ func newTypeStruct(g *Generator, result *gir.TypeFindResult) *TypeStruct {
 		igen:   g,
 	}
 
-	if !ts.init() {
-		return nil
-	}
-
 	return ts
 }
 
@@ -67,18 +64,19 @@ func (ts *TypeStruct) WrapperFuncName(field string) string {
 	return file.ExportedName(ts.ns, ts.Record.Name+"_"+field)
 }
 
-func (ts *TypeStruct) init() bool {
+func (ts *TypeStruct) Init() bool {
 	for i := range ts.igen.VirtualMethods {
 		virtual := &ts.igen.virtuals[i]
 		vmethod := &ts.igen.VirtualMethods[i]
 
 		method, ok := ts.virtualMethod(virtual, vmethod)
-		if ok {
-			ts.VirtualMethods = append(ts.VirtualMethods, method)
-			ts.igen.header.ApplyFrom(&method.Header)
-		} else {
+		if !ok {
 			ts.Logln(logger.Skip, "virtual method", virtual.Name)
+			continue
 		}
+
+		ts.VirtualMethods = append(ts.VirtualMethods, method)
+		ts.igen.header.ApplyFrom(&method.Header)
 	}
 
 	// If this is an interface, then we must implement all methods. If any of
@@ -113,13 +111,16 @@ func (ts *TypeStruct) virtualMethod(virtual *gir.VirtualMethod, vmethod *Method)
 	cbgen := callback.NewGenerator(ts.igen.gen)
 	cbgen.Parent = ts.igen.Root.Type
 	cbgen.Preamble = func(cbgen *callback.Generator, p *pen.BlockSection) (string, bool) {
-		p.Linef("goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))")
 		if ts.igen.IsClass() {
-			p.Linef("iface := goval.(interface{ %s%s })", method.Go.Name, method.Go.Tail)
+			p.Linef("instance0 := coreglib.Take(unsafe.Pointer(arg0))")
+			p.Linef("overrides := coreglib.OverridesFromObj[%sOverrides](instance0)", ts.igen.StructName)
+			p.Linef("if overrides.%s == nil {", method.Go.Name)
+			p.Linef(`  panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected %sOverrides.%s, got none")`, ts.igen.StructName, method.Go.Name)
+			p.Linef("}")
+			return "overrides." + method.Go.Name, true
 		} else {
-			p.Linef("iface := goval.(%s)", ts.igen.OverriderName())
+			return "", false
 		}
-		return "iface." + method.Go.Name, true
 	}
 
 	if !cbgen.Use(&virtual.CallableAttrs) {
@@ -129,7 +130,8 @@ func (ts *TypeStruct) virtualMethod(virtual *gir.VirtualMethod, vmethod *Method)
 	method.C.Block = cbgen.Block
 	method.C.Name = file.ExportedName(ts.ns, ts.Record.Name, field.Name)
 	method.C.Tail = cbgen.CGoTail
-	method.Header.ApplyFrom(cbgen.Header())
+	method.C.Header = cbgen.Header()
+
 	types.AddCallableHeader(types.OverrideNamespace(ts.igen.gen, ts.ns), &method.Header, method.C.Name, vmethod.CallableAttrs)
 	// types.AddCallableHeader(ts.igen.gen, &method.Header, method.C.Name, vmethod.CallableAttrs)
 

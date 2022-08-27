@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// ListStoreOverrider contains methods that are overridable.
-type ListStoreOverrider interface {
+// ListStoreOverrides contains methods that are overridable.
+type ListStoreOverrides struct {
+}
+
+func defaultListStoreOverrides(v *ListStore) ListStoreOverrides {
+	return ListStoreOverrides{}
 }
 
 // ListStore: list-like data structure that can be used with the GtkTreeView
@@ -84,25 +88,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeListStore,
-		GoType:        reflect.TypeOf((*ListStore)(nil)),
-		InitClass:     initClassListStore,
-		FinalizeClass: finalizeClassListStore,
-	})
+	coreglib.RegisterClassInfo[*ListStore, *ListStoreClass, ListStoreOverrides](
+		GTypeListStore,
+		initListStoreClass,
+		wrapListStore,
+		defaultListStoreOverrides,
+	)
 }
 
-func initClassListStore(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitListStore(*ListStoreClass) }); ok {
-		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
-		goval.InitListStore(klass)
-	}
-}
-
-func finalizeClassListStore(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeListStore(*ListStoreClass) }); ok {
-		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeListStore(klass)
+func initListStoreClass(gclass unsafe.Pointer, overrides ListStoreOverrides, classInitFunc func(*ListStoreClass)) {
+	if classInitFunc != nil {
+		class := (*ListStoreClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

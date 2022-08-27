@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ExpanderAccessibleOverrider contains methods that are overridable.
-type ExpanderAccessibleOverrider interface {
+// ExpanderAccessibleOverrides contains methods that are overridable.
+type ExpanderAccessibleOverrides struct {
+}
+
+func defaultExpanderAccessibleOverrides(v *ExpanderAccessible) ExpanderAccessibleOverrides {
+	return ExpanderAccessibleOverrides{}
 }
 
 type ExpanderAccessible struct {
@@ -45,29 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeExpanderAccessible,
-		GoType:        reflect.TypeOf((*ExpanderAccessible)(nil)),
-		InitClass:     initClassExpanderAccessible,
-		FinalizeClass: finalizeClassExpanderAccessible,
-	})
+	coreglib.RegisterClassInfo[*ExpanderAccessible, *ExpanderAccessibleClass, ExpanderAccessibleOverrides](
+		GTypeExpanderAccessible,
+		initExpanderAccessibleClass,
+		wrapExpanderAccessible,
+		defaultExpanderAccessibleOverrides,
+	)
 }
 
-func initClassExpanderAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitExpanderAccessible(*ExpanderAccessibleClass)
-	}); ok {
-		klass := (*ExpanderAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitExpanderAccessible(klass)
-	}
-}
-
-func finalizeClassExpanderAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeExpanderAccessible(*ExpanderAccessibleClass)
-	}); ok {
-		klass := (*ExpanderAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeExpanderAccessible(klass)
+func initExpanderAccessibleClass(gclass unsafe.Pointer, overrides ExpanderAccessibleOverrides, classInitFunc func(*ExpanderAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ExpanderAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

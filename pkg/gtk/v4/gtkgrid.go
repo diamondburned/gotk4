@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// GridOverrider contains methods that are overridable.
-type GridOverrider interface {
+// GridOverrides contains methods that are overridable.
+type GridOverrides struct {
+}
+
+func defaultGridOverrides(v *Grid) GridOverrides {
+	return GridOverrides{}
 }
 
 // Grid: GtkGrid is a container which arranges its child widgets in rows and
@@ -128,25 +132,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGrid,
-		GoType:        reflect.TypeOf((*Grid)(nil)),
-		InitClass:     initClassGrid,
-		FinalizeClass: finalizeClassGrid,
-	})
+	coreglib.RegisterClassInfo[*Grid, *GridClass, GridOverrides](
+		GTypeGrid,
+		initGridClass,
+		wrapGrid,
+		defaultGridOverrides,
+	)
 }
 
-func initClassGrid(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitGrid(*GridClass) }); ok {
-		klass := (*GridClass)(gextras.NewStructNative(gclass))
-		goval.InitGrid(klass)
-	}
-}
-
-func finalizeClassGrid(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGrid(*GridClass) }); ok {
-		klass := (*GridClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGrid(klass)
+func initGridClass(gclass unsafe.Pointer, overrides GridOverrides, classInitFunc func(*GridClass)) {
+	if classInitFunc != nil {
+		class := (*GridClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

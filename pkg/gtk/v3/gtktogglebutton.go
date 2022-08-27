@@ -17,8 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_ToggleButtonClass_toggled(GtkToggleButton*);
 // extern void _gotk4_gtk3_ToggleButton_ConnectToggled(gpointer, guintptr);
+// extern void _gotk4_gtk3_ToggleButtonClass_toggled(GtkToggleButton*);
+// void _gotk4_gtk3_ToggleButton_virtual_toggled(void* fnptr, GtkToggleButton* arg0) {
+//   ((void (*)(GtkToggleButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -32,11 +35,17 @@ func init() {
 	})
 }
 
-// ToggleButtonOverrider contains methods that are overridable.
-type ToggleButtonOverrider interface {
+// ToggleButtonOverrides contains methods that are overridable.
+type ToggleButtonOverrides struct {
 	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 	// is no good reason for an application ever to call this function.
-	Toggled()
+	Toggled func()
+}
+
+func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
+	return ToggleButtonOverrides{
+		Toggled: v.toggled,
+	}
 }
 
 // ToggleButton is a Button which will remain “pressed-in” when clicked.
@@ -109,40 +118,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeToggleButton,
-		GoType:        reflect.TypeOf((*ToggleButton)(nil)),
-		InitClass:     initClassToggleButton,
-		FinalizeClass: finalizeClassToggleButton,
-	})
+	coreglib.RegisterClassInfo[*ToggleButton, *ToggleButtonClass, ToggleButtonOverrides](
+		GTypeToggleButton,
+		initToggleButtonClass,
+		wrapToggleButton,
+		defaultToggleButtonOverrides,
+	)
 }
 
-func initClassToggleButton(gclass unsafe.Pointer, goval any) {
+func initToggleButtonClass(gclass unsafe.Pointer, overrides ToggleButtonOverrides, classInitFunc func(*ToggleButtonClass)) {
+	pclass := (*C.GtkToggleButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeToggleButton))))
 
-	pclass := (*C.GtkToggleButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Toggled() }); ok {
+	if overrides.Toggled != nil {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleButtonClass_toggled)
 	}
-	if goval, ok := goval.(interface{ InitToggleButton(*ToggleButtonClass) }); ok {
-		klass := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitToggleButton(klass)
+
+	if classInitFunc != nil {
+		class := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassToggleButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeToggleButton(*ToggleButtonClass) }); ok {
-		klass := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeToggleButton(klass)
-	}
-}
-
-//export _gotk4_gtk3_ToggleButtonClass_toggled
-func _gotk4_gtk3_ToggleButtonClass_toggled(arg0 *C.GtkToggleButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Toggled() })
-
-	iface.Toggled()
 }
 
 func wrapToggleButton(obj *coreglib.Object) *ToggleButton {
@@ -188,22 +182,6 @@ func wrapToggleButton(obj *coreglib.Object) *ToggleButton {
 
 func marshalToggleButton(p uintptr) (interface{}, error) {
 	return wrapToggleButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_ToggleButton_ConnectToggled
-func _gotk4_gtk3_ToggleButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectToggled: should be connected if you wish to perform an action whenever
@@ -450,6 +428,20 @@ func (toggleButton *ToggleButton) Toggled() {
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
 	C.gtk_toggle_button_toggled(_arg0)
+	runtime.KeepAlive(toggleButton)
+}
+
+// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There is
+// no good reason for an application ever to call this function.
+func (toggleButton *ToggleButton) toggled() {
+	gclass := (*C.GtkToggleButtonClass)(coreglib.PeekParentClass(toggleButton))
+	fnarg := gclass.toggled
+
+	var _arg0 *C.GtkToggleButton // out
+
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
+
+	C._gotk4_gtk3_ToggleButton_virtual_toggled(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(toggleButton)
 }
 

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// WidgetAccessibleOverrider contains methods that are overridable.
-type WidgetAccessibleOverrider interface {
+// WidgetAccessibleOverrides contains methods that are overridable.
+type WidgetAccessibleOverrides struct {
+}
+
+func defaultWidgetAccessibleOverrides(v *WidgetAccessible) WidgetAccessibleOverrides {
+	return WidgetAccessibleOverrides{}
 }
 
 type WidgetAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWidgetAccessible,
-		GoType:        reflect.TypeOf((*WidgetAccessible)(nil)),
-		InitClass:     initClassWidgetAccessible,
-		FinalizeClass: finalizeClassWidgetAccessible,
-	})
+	coreglib.RegisterClassInfo[*WidgetAccessible, *WidgetAccessibleClass, WidgetAccessibleOverrides](
+		GTypeWidgetAccessible,
+		initWidgetAccessibleClass,
+		wrapWidgetAccessible,
+		defaultWidgetAccessibleOverrides,
+	)
 }
 
-func initClassWidgetAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitWidgetAccessible(*WidgetAccessibleClass) }); ok {
-		klass := (*WidgetAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitWidgetAccessible(klass)
-	}
-}
-
-func finalizeClassWidgetAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWidgetAccessible(*WidgetAccessibleClass) }); ok {
-		klass := (*WidgetAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWidgetAccessible(klass)
+func initWidgetAccessibleClass(gclass unsafe.Pointer, overrides WidgetAccessibleOverrides, classInitFunc func(*WidgetAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*WidgetAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

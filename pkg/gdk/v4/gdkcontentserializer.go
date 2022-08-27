@@ -17,8 +17,8 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GType values.

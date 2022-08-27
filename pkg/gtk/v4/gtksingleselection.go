@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// SingleSelectionOverrider contains methods that are overridable.
-type SingleSelectionOverrider interface {
+// SingleSelectionOverrides contains methods that are overridable.
+type SingleSelectionOverrides struct {
+}
+
+func defaultSingleSelectionOverrides(v *SingleSelection) SingleSelectionOverrides {
+	return SingleSelectionOverrides{}
 }
 
 // SingleSelection: GtkSingleSelection is a GtkSelectionModel that allows
@@ -51,25 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSingleSelection,
-		GoType:        reflect.TypeOf((*SingleSelection)(nil)),
-		InitClass:     initClassSingleSelection,
-		FinalizeClass: finalizeClassSingleSelection,
-	})
+	coreglib.RegisterClassInfo[*SingleSelection, *SingleSelectionClass, SingleSelectionOverrides](
+		GTypeSingleSelection,
+		initSingleSelectionClass,
+		wrapSingleSelection,
+		defaultSingleSelectionOverrides,
+	)
 }
 
-func initClassSingleSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSingleSelection(*SingleSelectionClass) }); ok {
-		klass := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
-		goval.InitSingleSelection(klass)
-	}
-}
-
-func finalizeClassSingleSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSingleSelection(*SingleSelectionClass) }); ok {
-		klass := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSingleSelection(klass)
+func initSingleSelectionClass(gclass unsafe.Pointer, overrides SingleSelectionOverrides, classInitFunc func(*SingleSelectionClass)) {
+	if classInitFunc != nil {
+		class := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

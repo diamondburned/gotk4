@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// MiscOverrider contains methods that are overridable.
-type MiscOverrider interface {
+// MiscOverrides contains methods that are overridable.
+type MiscOverrides struct {
+}
+
+func defaultMiscOverrides(v *Misc) MiscOverrides {
+	return MiscOverrides{}
 }
 
 // Misc widget is an abstract widget which is not useful itself, but is used to
@@ -70,25 +74,18 @@ type Miscer interface {
 var _ Miscer = (*Misc)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMisc,
-		GoType:        reflect.TypeOf((*Misc)(nil)),
-		InitClass:     initClassMisc,
-		FinalizeClass: finalizeClassMisc,
-	})
+	coreglib.RegisterClassInfo[*Misc, *MiscClass, MiscOverrides](
+		GTypeMisc,
+		initMiscClass,
+		wrapMisc,
+		defaultMiscOverrides,
+	)
 }
 
-func initClassMisc(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMisc(*MiscClass) }); ok {
-		klass := (*MiscClass)(gextras.NewStructNative(gclass))
-		goval.InitMisc(klass)
-	}
-}
-
-func finalizeClassMisc(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMisc(*MiscClass) }); ok {
-		klass := (*MiscClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMisc(klass)
+func initMiscClass(gclass unsafe.Pointer, overrides MiscOverrides, classInitFunc func(*MiscClass)) {
+	if classInitFunc != nil {
+		class := (*MiscClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

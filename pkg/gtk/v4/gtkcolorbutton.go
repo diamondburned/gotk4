@@ -86,22 +86,6 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return wrapColorButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_ColorButton_ConnectColorSet
-func _gotk4_gtk4_ColorButton_ConnectColorSet(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectColorSet is emitted when the user selects a color.
 //
 // When handling this signal, use gtk.ColorChooser.GetRGBA() to find out which

@@ -4,7 +4,6 @@ package gio
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -27,8 +26,12 @@ func init() {
 	})
 }
 
-// EmblemedIconOverrider contains methods that are overridable.
-type EmblemedIconOverrider interface {
+// EmblemedIconOverrides contains methods that are overridable.
+type EmblemedIconOverrides struct {
+}
+
+func defaultEmblemedIconOverrides(v *EmblemedIcon) EmblemedIconOverrides {
+	return EmblemedIconOverrides{}
 }
 
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
@@ -49,25 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeEmblemedIcon,
-		GoType:        reflect.TypeOf((*EmblemedIcon)(nil)),
-		InitClass:     initClassEmblemedIcon,
-		FinalizeClass: finalizeClassEmblemedIcon,
-	})
+	coreglib.RegisterClassInfo[*EmblemedIcon, *EmblemedIconClass, EmblemedIconOverrides](
+		GTypeEmblemedIcon,
+		initEmblemedIconClass,
+		wrapEmblemedIcon,
+		defaultEmblemedIconOverrides,
+	)
 }
 
-func initClassEmblemedIcon(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitEmblemedIcon(*EmblemedIconClass) }); ok {
-		klass := (*EmblemedIconClass)(gextras.NewStructNative(gclass))
-		goval.InitEmblemedIcon(klass)
-	}
-}
-
-func finalizeClassEmblemedIcon(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeEmblemedIcon(*EmblemedIconClass) }); ok {
-		klass := (*EmblemedIconClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeEmblemedIcon(klass)
+func initEmblemedIconClass(gclass unsafe.Pointer, overrides EmblemedIconOverrides, classInitFunc func(*EmblemedIconClass)) {
+	if classInitFunc != nil {
+		class := (*EmblemedIconClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -82,116 +78,6 @@ func wrapEmblemedIcon(obj *coreglib.Object) *EmblemedIcon {
 
 func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return wrapEmblemedIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewEmblemedIcon creates a new emblemed icon for icon with the emblem emblem.
-//
-// The function takes the following parameters:
-//
-//    - icon: #GIcon.
-//    - emblem (optional) or NULL.
-//
-// The function returns the following values:
-//
-//    - emblemedIcon: new #GIcon.
-//
-func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
-	var _arg1 *C.GIcon   // out
-	var _arg2 *C.GEmblem // out
-	var _cret *C.GIcon   // in
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	if emblem != nil {
-		_arg2 = (*C.GEmblem)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
-	}
-
-	_cret = C.g_emblemed_icon_new(_arg1, _arg2)
-	runtime.KeepAlive(icon)
-	runtime.KeepAlive(emblem)
-
-	var _emblemedIcon *EmblemedIcon // out
-
-	_emblemedIcon = wrapEmblemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _emblemedIcon
-}
-
-// AddEmblem adds emblem to the #GList of #GEmblems.
-//
-// The function takes the following parameters:
-//
-//    - emblem: #GEmblem.
-//
-func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
-	var _arg0 *C.GEmblemedIcon // out
-	var _arg1 *C.GEmblem       // out
-
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-	_arg1 = (*C.GEmblem)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
-
-	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
-	runtime.KeepAlive(emblemed)
-	runtime.KeepAlive(emblem)
-}
-
-// ClearEmblems removes all the emblems from icon.
-func (emblemed *EmblemedIcon) ClearEmblems() {
-	var _arg0 *C.GEmblemedIcon // out
-
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-
-	C.g_emblemed_icon_clear_emblems(_arg0)
-	runtime.KeepAlive(emblemed)
-}
-
-// Emblems gets the list of emblems for the icon.
-//
-// The function returns the following values:
-//
-//    - list of #GEmblems that is owned by emblemed.
-//
-func (emblemed *EmblemedIcon) Emblems() []*Emblem {
-	var _arg0 *C.GEmblemedIcon // out
-	var _cret *C.GList         // in
-
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-
-	_cret = C.g_emblemed_icon_get_emblems(_arg0)
-	runtime.KeepAlive(emblemed)
-
-	var _list []*Emblem // out
-
-	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GEmblem)(v)
-		var dst *Emblem // out
-		dst = wrapEmblem(coreglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
-// GetIcon gets the main icon for emblemed.
-//
-// The function returns the following values:
-//
-//    - icon that is owned by emblemed.
-//
-func (emblemed *EmblemedIcon) GetIcon() *Icon {
-	var _arg0 *C.GEmblemedIcon // out
-	var _cret *C.GIcon         // in
-
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-
-	_cret = C.g_emblemed_icon_get_icon(_arg0)
-	runtime.KeepAlive(emblemed)
-
-	var _icon *Icon // out
-
-	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _icon
 }
 
 // EmblemedIconClass: instance of this type is always passed by reference.

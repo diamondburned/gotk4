@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// ContainerCellAccessibleOverrider contains methods that are overridable.
-type ContainerCellAccessibleOverrider interface {
+// ContainerCellAccessibleOverrides contains methods that are overridable.
+type ContainerCellAccessibleOverrides struct {
+}
+
+func defaultContainerCellAccessibleOverrides(v *ContainerCellAccessible) ContainerCellAccessibleOverrides {
+	return ContainerCellAccessibleOverrides{}
 }
 
 type ContainerCellAccessible struct {
@@ -44,29 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeContainerCellAccessible,
-		GoType:        reflect.TypeOf((*ContainerCellAccessible)(nil)),
-		InitClass:     initClassContainerCellAccessible,
-		FinalizeClass: finalizeClassContainerCellAccessible,
-	})
+	coreglib.RegisterClassInfo[*ContainerCellAccessible, *ContainerCellAccessibleClass, ContainerCellAccessibleOverrides](
+		GTypeContainerCellAccessible,
+		initContainerCellAccessibleClass,
+		wrapContainerCellAccessible,
+		defaultContainerCellAccessibleOverrides,
+	)
 }
 
-func initClassContainerCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitContainerCellAccessible(*ContainerCellAccessibleClass)
-	}); ok {
-		klass := (*ContainerCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitContainerCellAccessible(klass)
-	}
-}
-
-func finalizeClassContainerCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeContainerCellAccessible(*ContainerCellAccessibleClass)
-	}); ok {
-		klass := (*ContainerCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeContainerCellAccessible(klass)
+func initContainerCellAccessibleClass(gclass unsafe.Pointer, overrides ContainerCellAccessibleOverrides, classInitFunc func(*ContainerCellAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ContainerCellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

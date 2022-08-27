@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ScaleAccessibleOverrider contains methods that are overridable.
-type ScaleAccessibleOverrider interface {
+// ScaleAccessibleOverrides contains methods that are overridable.
+type ScaleAccessibleOverrides struct {
+}
+
+func defaultScaleAccessibleOverrides(v *ScaleAccessible) ScaleAccessibleOverrides {
+	return ScaleAccessibleOverrides{}
 }
 
 type ScaleAccessible struct {
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeScaleAccessible,
-		GoType:        reflect.TypeOf((*ScaleAccessible)(nil)),
-		InitClass:     initClassScaleAccessible,
-		FinalizeClass: finalizeClassScaleAccessible,
-	})
+	coreglib.RegisterClassInfo[*ScaleAccessible, *ScaleAccessibleClass, ScaleAccessibleOverrides](
+		GTypeScaleAccessible,
+		initScaleAccessibleClass,
+		wrapScaleAccessible,
+		defaultScaleAccessibleOverrides,
+	)
 }
 
-func initClassScaleAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitScaleAccessible(*ScaleAccessibleClass) }); ok {
-		klass := (*ScaleAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitScaleAccessible(klass)
-	}
-}
-
-func finalizeClassScaleAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeScaleAccessible(*ScaleAccessibleClass) }); ok {
-		klass := (*ScaleAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeScaleAccessible(klass)
+func initScaleAccessibleClass(gclass unsafe.Pointer, overrides ScaleAccessibleOverrides, classInitFunc func(*ScaleAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ScaleAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// LabelAccessibleOverrider contains methods that are overridable.
-type LabelAccessibleOverrider interface {
+// LabelAccessibleOverrides contains methods that are overridable.
+type LabelAccessibleOverrides struct {
+}
+
+func defaultLabelAccessibleOverrides(v *LabelAccessible) LabelAccessibleOverrides {
+	return LabelAccessibleOverrides{}
 }
 
 type LabelAccessible struct {
@@ -47,25 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLabelAccessible,
-		GoType:        reflect.TypeOf((*LabelAccessible)(nil)),
-		InitClass:     initClassLabelAccessible,
-		FinalizeClass: finalizeClassLabelAccessible,
-	})
+	coreglib.RegisterClassInfo[*LabelAccessible, *LabelAccessibleClass, LabelAccessibleOverrides](
+		GTypeLabelAccessible,
+		initLabelAccessibleClass,
+		wrapLabelAccessible,
+		defaultLabelAccessibleOverrides,
+	)
 }
 
-func initClassLabelAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitLabelAccessible(*LabelAccessibleClass) }); ok {
-		klass := (*LabelAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitLabelAccessible(klass)
-	}
-}
-
-func finalizeClassLabelAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeLabelAccessible(*LabelAccessibleClass) }); ok {
-		klass := (*LabelAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLabelAccessible(klass)
+func initLabelAccessibleClass(gclass unsafe.Pointer, overrides LabelAccessibleOverrides, classInitFunc func(*LabelAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*LabelAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ArrowAccessibleOverrider contains methods that are overridable.
-type ArrowAccessibleOverrider interface {
+// ArrowAccessibleOverrides contains methods that are overridable.
+type ArrowAccessibleOverrides struct {
+}
+
+func defaultArrowAccessibleOverrides(v *ArrowAccessible) ArrowAccessibleOverrides {
+	return ArrowAccessibleOverrides{}
 }
 
 type ArrowAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeArrowAccessible,
-		GoType:        reflect.TypeOf((*ArrowAccessible)(nil)),
-		InitClass:     initClassArrowAccessible,
-		FinalizeClass: finalizeClassArrowAccessible,
-	})
+	coreglib.RegisterClassInfo[*ArrowAccessible, *ArrowAccessibleClass, ArrowAccessibleOverrides](
+		GTypeArrowAccessible,
+		initArrowAccessibleClass,
+		wrapArrowAccessible,
+		defaultArrowAccessibleOverrides,
+	)
 }
 
-func initClassArrowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitArrowAccessible(*ArrowAccessibleClass) }); ok {
-		klass := (*ArrowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitArrowAccessible(klass)
-	}
-}
-
-func finalizeClassArrowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeArrowAccessible(*ArrowAccessibleClass) }); ok {
-		klass := (*ArrowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeArrowAccessible(klass)
+func initArrowAccessibleClass(gclass unsafe.Pointer, overrides ArrowAccessibleOverrides, classInitFunc func(*ArrowAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ArrowAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
+// extern gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
 import "C"
 
 // GType values.
@@ -38,31 +38,12 @@ func init() {
 // with.
 type MapListModelMapFunc func(item *coreglib.Object) (object *coreglib.Object)
 
-//export _gotk4_gtk4_MapListModelMapFunc
-func _gotk4_gtk4_MapListModelMapFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gpointer) {
-	var fn MapListModelMapFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(MapListModelMapFunc)
-	}
-
-	var _item *coreglib.Object // out
-
-	_item = coreglib.AssumeOwnership(unsafe.Pointer(arg1))
-
-	object := fn(_item)
-
-	cret = C.gpointer(unsafe.Pointer(object.Native()))
-	C.g_object_ref(C.gpointer(object.Native()))
-
-	return cret
+// MapListModelOverrides contains methods that are overridable.
+type MapListModelOverrides struct {
 }
 
-// MapListModelOverrider contains methods that are overridable.
-type MapListModelOverrider interface {
+func defaultMapListModelOverrides(v *MapListModel) MapListModelOverrides {
+	return MapListModelOverrides{}
 }
 
 // MapListModel: GtkMapListModel maps the items in a list model to different
@@ -106,25 +87,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMapListModel,
-		GoType:        reflect.TypeOf((*MapListModel)(nil)),
-		InitClass:     initClassMapListModel,
-		FinalizeClass: finalizeClassMapListModel,
-	})
+	coreglib.RegisterClassInfo[*MapListModel, *MapListModelClass, MapListModelOverrides](
+		GTypeMapListModel,
+		initMapListModelClass,
+		wrapMapListModel,
+		defaultMapListModelOverrides,
+	)
 }
 
-func initClassMapListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMapListModel(*MapListModelClass) }); ok {
-		klass := (*MapListModelClass)(gextras.NewStructNative(gclass))
-		goval.InitMapListModel(klass)
-	}
-}
-
-func finalizeClassMapListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMapListModel(*MapListModelClass) }); ok {
-		klass := (*MapListModelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMapListModel(klass)
+func initMapListModelClass(gclass unsafe.Pointer, overrides MapListModelOverrides, classInitFunc func(*MapListModelClass)) {
+	if classInitFunc != nil {
+		class := (*MapListModelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

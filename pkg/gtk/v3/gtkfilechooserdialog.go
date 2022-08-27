@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// FileChooserDialogOverrider contains methods that are overridable.
-type FileChooserDialogOverrider interface {
+// FileChooserDialogOverrides contains methods that are overridable.
+type FileChooserDialogOverrides struct {
+}
+
+func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOverrides {
+	return FileChooserDialogOverrides{}
 }
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
@@ -195,25 +199,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFileChooserDialog,
-		GoType:        reflect.TypeOf((*FileChooserDialog)(nil)),
-		InitClass:     initClassFileChooserDialog,
-		FinalizeClass: finalizeClassFileChooserDialog,
-	})
+	coreglib.RegisterClassInfo[*FileChooserDialog, *FileChooserDialogClass, FileChooserDialogOverrides](
+		GTypeFileChooserDialog,
+		initFileChooserDialogClass,
+		wrapFileChooserDialog,
+		defaultFileChooserDialogOverrides,
+	)
 }
 
-func initClassFileChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFileChooserDialog(*FileChooserDialogClass) }); ok {
-		klass := (*FileChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitFileChooserDialog(klass)
-	}
-}
-
-func finalizeClassFileChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFileChooserDialog(*FileChooserDialogClass) }); ok {
-		klass := (*FileChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFileChooserDialog(klass)
+func initFileChooserDialogClass(gclass unsafe.Pointer, overrides FileChooserDialogOverrides, classInitFunc func(*FileChooserDialogClass)) {
+	if classInitFunc != nil {
+		class := (*FileChooserDialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

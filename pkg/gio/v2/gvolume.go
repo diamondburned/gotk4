@@ -16,27 +16,57 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GDrive* _gotk4_gio2_VolumeIface_get_drive(GVolume*);
-// extern GFile* _gotk4_gio2_VolumeIface_get_activation_root(GVolume*);
-// extern GIcon* _gotk4_gio2_VolumeIface_get_icon(GVolume*);
-// extern GIcon* _gotk4_gio2_VolumeIface_get_symbolic_icon(GVolume*);
-// extern GMount* _gotk4_gio2_VolumeIface_get_mount(GVolume*);
-// extern char* _gotk4_gio2_VolumeIface_get_identifier(GVolume*, char*);
-// extern char* _gotk4_gio2_VolumeIface_get_name(GVolume*);
-// extern char* _gotk4_gio2_VolumeIface_get_uuid(GVolume*);
-// extern char** _gotk4_gio2_VolumeIface_enumerate_identifiers(GVolume*);
-// extern gboolean _gotk4_gio2_VolumeIface_can_eject(GVolume*);
-// extern gboolean _gotk4_gio2_VolumeIface_can_mount(GVolume*);
-// extern gboolean _gotk4_gio2_VolumeIface_eject_finish(GVolume*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_VolumeIface_eject_with_operation_finish(GVolume*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_VolumeIface_mount_finish(GVolume*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_VolumeIface_should_automount(GVolume*);
-// extern gchar* _gotk4_gio2_VolumeIface_get_sort_key(GVolume*);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
-// extern void _gotk4_gio2_VolumeIface_changed(GVolume*);
-// extern void _gotk4_gio2_VolumeIface_removed(GVolume*);
-// extern void _gotk4_gio2_Volume_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_Volume_ConnectRemoved(gpointer, guintptr);
+// extern void _gotk4_gio2_Volume_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// GDrive* _gotk4_gio2_Volume_virtual_get_drive(void* fnptr, GVolume* arg0) {
+//   return ((GDrive* (*)(GVolume*))(fnptr))(arg0);
+// };
+// GIcon* _gotk4_gio2_Volume_virtual_get_icon(void* fnptr, GVolume* arg0) {
+//   return ((GIcon* (*)(GVolume*))(fnptr))(arg0);
+// };
+// GMount* _gotk4_gio2_Volume_virtual_get_mount(void* fnptr, GVolume* arg0) {
+//   return ((GMount* (*)(GVolume*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_Volume_virtual_get_identifier(void* fnptr, GVolume* arg0, char* arg1) {
+//   return ((char* (*)(GVolume*, char*))(fnptr))(arg0, arg1);
+// };
+// char* _gotk4_gio2_Volume_virtual_get_name(void* fnptr, GVolume* arg0) {
+//   return ((char* (*)(GVolume*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_Volume_virtual_get_uuid(void* fnptr, GVolume* arg0) {
+//   return ((char* (*)(GVolume*))(fnptr))(arg0);
+// };
+// char** _gotk4_gio2_Volume_virtual_enumerate_identifiers(void* fnptr, GVolume* arg0) {
+//   return ((char** (*)(GVolume*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Volume_virtual_can_eject(void* fnptr, GVolume* arg0) {
+//   return ((gboolean (*)(GVolume*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Volume_virtual_can_mount(void* fnptr, GVolume* arg0) {
+//   return ((gboolean (*)(GVolume*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Volume_virtual_eject_finish(void* fnptr, GVolume* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GVolume*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Volume_virtual_mount_finish(void* fnptr, GVolume* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GVolume*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Volume_virtual_should_automount(void* fnptr, GVolume* arg0) {
+//   return ((gboolean (*)(GVolume*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Volume_virtual_changed(void* fnptr, GVolume* arg0) {
+//   ((void (*)(GVolume*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Volume_virtual_eject(void* fnptr, GVolume* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GVolume*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Volume_virtual_mount_fn(void* fnptr, GVolume* arg0, GMountMountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GVolume*, GMountMountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Volume_virtual_removed(void* fnptr, GVolume* arg0) {
+//   ((void (*)(GVolume*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -192,41 +222,9 @@ func marshalVolume(p uintptr) (interface{}, error) {
 	return wrapVolume(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gio2_Volume_ConnectChanged
-func _gotk4_gio2_Volume_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted when the volume has been changed.
 func (volume *Volume) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(volume, "changed", false, unsafe.Pointer(C._gotk4_gio2_Volume_ConnectChanged), f)
-}
-
-//export _gotk4_gio2_Volume_ConnectRemoved
-func _gotk4_gio2_Volume_ConnectRemoved(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectRemoved: this signal is emitted when the #GVolume have been removed.
@@ -353,77 +351,6 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// EjectWithOperation ejects a volume. This is an asynchronous operation, and is
-// finished by calling g_volume_eject_with_operation_finish() with the volume
-// and Result data returned in the callback.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
-//
-func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume            // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GMountUnmountFlags(flags)
-	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
-	}
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(volume)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(mountOperation)
-	runtime.KeepAlive(callback)
-}
-
-// EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
-// during the operation, error will be set to contain the errors and FALSE will
-// be returned.
-//
-// The function takes the following parameters:
-//
-//    - result: Result.
-//
-func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
-	var _arg0 *C.GVolume      // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
-	runtime.KeepAlive(volume)
-	runtime.KeepAlive(result)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
 // EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
 // volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
@@ -461,43 +388,6 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 	}
 
 	return _utf8s
-}
-
-// ActivationRoot gets the activation root for a #GVolume if it is known ahead
-// of mount time. Returns NULL otherwise. If not NULL and if volume is mounted,
-// then the result of g_mount_get_root() on the #GMount object obtained from
-// g_volume_get_mount() will always either be equal or a prefix of what this
-// function returns. In other words, in code
-//
-//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-//     g_file_equal (volume_activation_root, mount_root))
-//
-// will always be TRUE.
-//
-// Activation roots are typically used in Monitor implementations to find the
-// underlying mount to shadow, see g_mount_is_shadowed() for more details.
-//
-// The function returns the following values:
-//
-//    - file (optional): activation root of volume or NULL. Use g_object_unref()
-//      to free.
-//
-func (volume *Volume) ActivationRoot() *File {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GFile   // in
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
-
-	_cret = C.g_volume_get_activation_root(_arg0)
-	runtime.KeepAlive(volume)
-
-	var _file *File // out
-
-	if _cret != nil {
-		_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-
-	return _file
 }
 
 // Drive gets the drive for the volume.
@@ -634,54 +524,6 @@ func (volume *Volume) Name() string {
 	return _utf8
 }
 
-// SortKey gets the sort key for volume, if any.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): sorting key for volume or NULL if no such key is
-//      available.
-//
-func (volume *Volume) SortKey() string {
-	var _arg0 *C.GVolume // out
-	var _cret *C.gchar   // in
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
-
-	_cret = C.g_volume_get_sort_key(_arg0)
-	runtime.KeepAlive(volume)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// SymbolicIcon gets the symbolic icon for volume.
-//
-// The function returns the following values:
-//
-//    - icon: #GIcon. The returned object should be unreffed with
-//      g_object_unref() when no longer needed.
-//
-func (volume *Volume) SymbolicIcon() *Icon {
-	var _arg0 *C.GVolume // out
-	var _cret *C.GIcon   // in
-
-	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
-
-	_cret = C.g_volume_get_symbolic_icon(_arg0)
-	runtime.KeepAlive(volume)
-
-	var _icon *Icon // out
-
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _icon
-}
-
 // UUID gets the UUID for the volume. The reference is typically based on the
 // file system UUID for the volume in question and should be considered an
 // opaque string. Returns NULL if there is no UUID available.
@@ -798,6 +640,489 @@ func (volume *Volume) ShouldAutomount() bool {
 	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
 
 	_cret = C.g_volume_should_automount(_arg0)
+	runtime.KeepAlive(volume)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// canEject checks if a volume can be ejected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
+//
+func (volume *Volume) canEject() bool {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.can_eject
+
+	var _arg0 *C.GVolume // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_can_eject(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// canMount checks if a volume can be mounted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
+//
+func (volume *Volume) canMount() bool {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.can_mount
+
+	var _arg0 *C.GVolume // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_can_mount(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (volume *Volume) changed() {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	C._gotk4_gio2_Volume_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+}
+
+// Eject ejects a volume. This is an asynchronous operation, and is finished by
+// calling g_volume_eject_finish() with the volume and Result returned in the
+// callback.
+//
+// Deprecated: Use g_volume_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - callback (optional) or NULL.
+//
+func (volume *Volume) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.eject
+
+	var _arg0 *C.GVolume            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Volume_virtual_eject(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
+// ejectFinish finishes ejecting a volume. If any errors occurred during the
+// operation, error will be set to contain the errors and FALSE will be
+// returned.
+//
+// Deprecated: Use g_volume_eject_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (volume *Volume) ejectFinish(result AsyncResulter) error {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.eject_finish
+
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Volume_virtual_eject_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// enumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
+// volume has. Use g_volume_get_identifier() to obtain the identifiers
+// themselves.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//      Use g_strfreev() to free.
+//
+func (volume *Volume) enumerateIdentifiers() []string {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.enumerate_identifiers
+
+	var _arg0 *C.GVolume // out
+	var _cret **C.char   // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_enumerate_identifiers(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		var i int
+		var z *C.char
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// Drive gets the drive for the volume.
+//
+// The function returns the following values:
+//
+//    - drive (optional) or NULL if volume is not associated with a drive. The
+//      returned object should be unreffed with g_object_unref() when no longer
+//      needed.
+//
+func (volume *Volume) drive() *Drive {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.get_drive
+
+	var _arg0 *C.GVolume // out
+	var _cret *C.GDrive  // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_get_drive(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _drive *Drive // out
+
+	if _cret != nil {
+		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _drive
+}
+
+// Icon gets the icon for volume.
+//
+// The function returns the following values:
+//
+//    - icon: #GIcon. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
+func (volume *Volume) icon() *Icon {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.get_icon
+
+	var _arg0 *C.GVolume // out
+	var _cret *C.GIcon   // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_get_icon(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _icon *Icon // out
+
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _icon
+}
+
+// Identifier gets the identifier of the given kind for volume. See the
+// [introduction][volume-identifier] for more information about volume
+// identifiers.
+//
+// The function takes the following parameters:
+//
+//    - kind of identifier to return.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): newly allocated string containing the requested
+//      identifier, or NULL if the #GVolume doesn't have this kind of identifier.
+//
+func (volume *Volume) identifier(kind string) string {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.get_identifier
+
+	var _arg0 *C.GVolume // out
+	var _arg1 *C.char    // out
+	var _cret *C.char    // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_gio2_Volume_virtual_get_identifier(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(kind)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// Mount gets the mount for the volume.
+//
+// The function returns the following values:
+//
+//    - mount (optional) or NULL if volume isn't mounted. The returned object
+//      should be unreffed with g_object_unref() when no longer needed.
+//
+func (volume *Volume) mount() *Mount {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.get_mount
+
+	var _arg0 *C.GVolume // out
+	var _cret *C.GMount  // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_get_mount(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _mount *Mount // out
+
+	if _cret != nil {
+		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _mount
+}
+
+// Name gets the name of volume.
+//
+// The function returns the following values:
+//
+//    - utf8: name for the given volume. The returned string should be freed with
+//      g_free() when no longer needed.
+//
+func (volume *Volume) name() string {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.get_name
+
+	var _arg0 *C.GVolume // out
+	var _cret *C.char    // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_get_name(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// uuiD gets the UUID for the volume. The reference is typically based on the
+// file system UUID for the volume in question and should be considered an
+// opaque string. Returns NULL if there is no UUID available.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed. The
+//      returned string should be freed with g_free() when no longer needed.
+//
+func (volume *Volume) uuiD() string {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.get_uuid
+
+	var _arg0 *C.GVolume // out
+	var _cret *C.char    // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_get_uuid(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// mountFinish finishes mounting a volume. If any errors occurred during the
+// operation, error will be set to contain the errors and FALSE will be
+// returned.
+//
+// If the mount operation succeeded, g_volume_get_mount() on volume is
+// guaranteed to return the mount right after calling this function; there's no
+// need to listen for the 'mount-added' signal on Monitor.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (volume *Volume) mountFinish(result AsyncResulter) error {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.mount_finish
+
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Volume_virtual_mount_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// mountFn mounts a volume. This is an asynchronous operation, and is finished
+// by calling g_volume_mount_finish() with the volume and Result returned in the
+// callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (volume *Volume) mountFn(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.mount_fn
+
+	var _arg0 *C.GVolume            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Volume_virtual_mount_fn(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+func (volume *Volume) removed() {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.removed
+
+	var _arg0 *C.GVolume // out
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	C._gotk4_gio2_Volume_virtual_removed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(volume)
+}
+
+// shouldAutomount returns whether the volume should be automatically mounted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the volume should be automatically mounted.
+//
+func (volume *Volume) shouldAutomount() bool {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.should_automount
+
+	var _arg0 *C.GVolume // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+
+	_cret = C._gotk4_gio2_Volume_virtual_should_automount(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(volume)
 
 	var _ok bool // out

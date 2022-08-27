@@ -79,26 +79,6 @@ const PRINT_SETTINGS_WIN32_DRIVER_VERSION = "win32-driver-version"
 
 type PrintSettingsFunc func(key, value string)
 
-//export _gotk4_gtk4_PrintSettingsFunc
-func _gotk4_gtk4_PrintSettingsFunc(arg1 *C.char, arg2 *C.char, arg3 C.gpointer) {
-	var fn PrintSettingsFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PrintSettingsFunc)
-	}
-
-	var _key string   // out
-	var _value string // out
-
-	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_value = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	fn(_key, _value)
-}
-
 // PrintSettings: GtkPrintSettings object represents the settings of a print
 // dialog in a system-independent way.
 //

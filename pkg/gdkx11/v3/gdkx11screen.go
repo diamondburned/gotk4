@@ -3,7 +3,6 @@
 package gdkx11
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -68,118 +67,6 @@ func marshalX11Screen(p uintptr) (interface{}, error) {
 	return wrapX11Screen(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged
-func _gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(screen, "window-manager-changed", false, unsafe.Pointer(C._gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged), f)
-}
-
-// CurrentDesktop returns the current workspace for screen when running under a
-// window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
-//
-// The function returns the following values:
-//
-//    - guint32: current workspace, or 0 if workspaces are not supported.
-//
-func (screen *X11Screen) CurrentDesktop() uint32 {
-	var _arg0 *C.GdkScreen // out
-	var _cret C.guint32    // in
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
-	runtime.KeepAlive(screen)
-
-	var _guint32 uint32 // out
-
-	_guint32 = uint32(_cret)
-
-	return _guint32
-}
-
-// NumberOfDesktops returns the number of workspaces for screen when running
-// under a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
-//
-// The function returns the following values:
-//
-//    - guint32: number of workspaces, or 0 if workspaces are not supported.
-//
-func (screen *X11Screen) NumberOfDesktops() uint32 {
-	var _arg0 *C.GdkScreen // out
-	var _cret C.guint32    // in
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
-	runtime.KeepAlive(screen)
-
-	var _guint32 uint32 // out
-
-	_guint32 = uint32(_cret)
-
-	return _guint32
-}
-
-// ScreenNumber returns the index of a Screen.
-//
-// The function returns the following values:
-//
-//    - gint: position of screen among the screens of its display.
-//
-func (screen *X11Screen) ScreenNumber() int {
-	var _arg0 *C.GdkScreen // out
-	var _cret C.int        // in
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
-	runtime.KeepAlive(screen)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// WindowManagerName returns the name of the window manager for screen.
-//
-// The function returns the following values:
-//
-//    - utf8: name of the window manager screen screen, or "unknown" if the
-//      window manager is unknown. The string is owned by GDK and should not be
-//      freed.
-//
-func (screen *X11Screen) WindowManagerName() string {
-	var _arg0 *C.GdkScreen // out
-	var _cret *C.char      // in
-
-	_arg0 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
-	runtime.KeepAlive(screen)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
 }

@@ -10,14 +10,16 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
+// extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
+// void _gotk4_gio2_Cancellable_virtual_cancelled(void* fnptr, GCancellable* arg0) {
+//   ((void (*)(GCancellable*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -31,9 +33,15 @@ func init() {
 	})
 }
 
-// CancellableOverrider contains methods that are overridable.
-type CancellableOverrider interface {
-	Cancelled()
+// CancellableOverrides contains methods that are overridable.
+type CancellableOverrides struct {
+	Cancelled func()
+}
+
+func defaultCancellableOverrides(v *Cancellable) CancellableOverrides {
+	return CancellableOverrides{
+		Cancelled: v.cancelled,
+	}
 }
 
 // Cancellable is a thread-safe operation cancellation stack used throughout GIO
@@ -48,40 +56,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCancellable,
-		GoType:        reflect.TypeOf((*Cancellable)(nil)),
-		InitClass:     initClassCancellable,
-		FinalizeClass: finalizeClassCancellable,
-	})
+	coreglib.RegisterClassInfo[*Cancellable, *CancellableClass, CancellableOverrides](
+		GTypeCancellable,
+		initCancellableClass,
+		wrapCancellable,
+		defaultCancellableOverrides,
+	)
 }
 
-func initClassCancellable(gclass unsafe.Pointer, goval any) {
+func initCancellableClass(gclass unsafe.Pointer, overrides CancellableOverrides, classInitFunc func(*CancellableClass)) {
+	pclass := (*C.GCancellableClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCancellable))))
 
-	pclass := (*C.GCancellableClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Cancelled() }); ok {
+	if overrides.Cancelled != nil {
 		pclass.cancelled = (*[0]byte)(C._gotk4_gio2_CancellableClass_cancelled)
 	}
-	if goval, ok := goval.(interface{ InitCancellable(*CancellableClass) }); ok {
-		klass := (*CancellableClass)(gextras.NewStructNative(gclass))
-		goval.InitCancellable(klass)
+
+	if classInitFunc != nil {
+		class := (*CancellableClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCancellable(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCancellable(*CancellableClass) }); ok {
-		klass := (*CancellableClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCancellable(klass)
-	}
-}
-
-//export _gotk4_gio2_CancellableClass_cancelled
-func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.GCancellable) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Cancelled() })
-
-	iface.Cancelled()
 }
 
 func wrapCancellable(obj *coreglib.Object) *Cancellable {
@@ -92,22 +85,6 @@ func wrapCancellable(obj *coreglib.Object) *Cancellable {
 
 func marshalCancellable(p uintptr) (interface{}, error) {
 	return wrapCancellable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gio2_Cancellable_ConnectCancelled
-func _gotk4_gio2_Cancellable_ConnectCancelled(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectCancelled is emitted when the operation has been cancelled.
@@ -211,36 +188,6 @@ func (cancellable *Cancellable) Cancel() {
 	runtime.KeepAlive(cancellable)
 }
 
-// Disconnect disconnects a handler from a cancellable instance similar to
-// g_signal_handler_disconnect(). Additionally, in the event that a signal
-// handler is currently running, this call will block until the handler has
-// finished. Calling this function from a #GCancellable::cancelled signal
-// handler will therefore result in a deadlock.
-//
-// This avoids a race condition where a thread cancels at the same time as the
-// cancellable operation is finished and the signal handler is removed. See
-// #GCancellable::cancelled for details on how to use this.
-//
-// If cancellable is NULL or handler_id is 0 this function does nothing.
-//
-// The function takes the following parameters:
-//
-//    - handlerId: handler id of the handler to be disconnected, or 0.
-//
-func (cancellable *Cancellable) Disconnect(handlerId uint32) {
-	var _arg0 *C.GCancellable // out
-	var _arg1 C.gulong        // out
-
-	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
-	}
-	_arg1 = C.gulong(handlerId)
-
-	C.g_cancellable_disconnect(_arg0, _arg1)
-	runtime.KeepAlive(cancellable)
-	runtime.KeepAlive(handlerId)
-}
-
 // Fd gets the file descriptor for a cancellable job. This can be used to
 // implement cancellable operations on Unix systems. The returned fd will turn
 // readable when cancellable is cancelled.
@@ -337,26 +284,6 @@ func (cancellable *Cancellable) PushCurrent() {
 	runtime.KeepAlive(cancellable)
 }
 
-// ReleaseFd releases a resources previously allocated by g_cancellable_get_fd()
-// or g_cancellable_make_pollfd().
-//
-// For compatibility reasons with older releases, calling this function is not
-// strictly required, the resources will be automatically freed when the
-// cancellable is finalized. However, the cancellable will block scarce file
-// descriptors until it is finalized if this function is not called. This can
-// cause the application to run out of file descriptors when many #GCancellables
-// are used at the same time.
-func (cancellable *Cancellable) ReleaseFd() {
-	var _arg0 *C.GCancellable // out
-
-	if cancellable != nil {
-		_arg0 = (*C.GCancellable)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
-	}
-
-	C.g_cancellable_release_fd(_arg0)
-	runtime.KeepAlive(cancellable)
-}
-
 // Reset resets cancellable to its uncancelled state.
 //
 // If cancellable is currently in use by any cancellable operation then the
@@ -401,42 +328,18 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	return _goerr
 }
 
-// NewSource creates a source that triggers if cancellable is cancelled and
-// calls its callback of type SourceFunc. This is primarily useful for attaching
-// to another (non-cancellable) source with g_source_add_child_source() to add
-// cancellability to it.
-//
-// For convenience, you can call this with a NULL #GCancellable, in which case
-// the source will never trigger.
-//
-// The new #GSource will hold a reference to the #GCancellable.
-//
-// The function returns the following values:
-//
-//    - source: new #GSource.
-//
-func (cancellable *Cancellable) NewSource() *glib.Source {
+func (cancellable *Cancellable) cancelled() {
+	gclass := (*C.GCancellableClass)(coreglib.PeekParentClass(cancellable))
+	fnarg := gclass.cancelled
+
 	var _arg0 *C.GCancellable // out
-	var _cret *C.GSource      // in
 
 	if cancellable != nil {
 		_arg0 = (*C.GCancellable)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
 
-	_cret = C.g_cancellable_source_new(_arg0)
+	C._gotk4_gio2_Cancellable_virtual_cancelled(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(cancellable)
-
-	var _source *glib.Source // out
-
-	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
-
-	return _source
 }
 
 // CancellableGetCurrent gets the top cancellable from the stack.

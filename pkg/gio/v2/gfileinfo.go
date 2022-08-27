@@ -69,28 +69,11 @@ const FILE_ATTRIBUTE_ACCESS_CAN_WRITE = "access::can-write"
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_DOS_IS_ARCHIVE = "dos::is-archive"
 
-// FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT: key in the "dos" namespace for checking if
-// the file is a NTFS mount point (a volume mount or a junction point). This
-// attribute is TRUE if file is a reparse point of type
-// IO_REPARSE_TAG_MOUNT_POINT
-// (https://msdn.microsoft.com/en-us/library/dd541667.aspx). This attribute is
-// only available for DOS file systems. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT = "dos::is-mountpoint"
-
 // FILE_ATTRIBUTE_DOS_IS_SYSTEM: key in the "dos" namespace for checking if the
 // file's backup flag is set. This attribute is TRUE if the backup flag is set.
 // This attribute is only available for DOS file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_DOS_IS_SYSTEM = "dos::is-system"
-
-// FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG: key in the "dos" namespace for getting
-// the file NTFS reparse tag. This value is 0 for files that are not reparse
-// points. See the Reparse Tags
-// (https://msdn.microsoft.com/en-us/library/dd541667.aspx) page for possible
-// reparse tag values. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG = "dos::reparse-point-tag"
 
 // FILE_ATTRIBUTE_ETAG_VALUE: key in the "etag" namespace for getting the value
 // of the file's entity tag. Corresponding AttributeType is
@@ -122,11 +105,6 @@ const FILE_ATTRIBUTE_FILESYSTEM_SIZE = "filesystem::size"
 // the file system's type. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_FILESYSTEM_TYPE = "filesystem::type"
-
-// FILE_ATTRIBUTE_FILESYSTEM_USED: key in the "filesystem" namespace for getting
-// the number of bytes of used on the file system. Corresponding AttributeType
-// is G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_FILESYSTEM_USED = "filesystem::used"
 
 // FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW: key in the "filesystem" namespace for
 // hinting a file manager application whether it should preview (e.g. thumbnail)
@@ -161,26 +139,6 @@ const FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT = "mountable::can-eject"
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT = "mountable::can-mount"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be polled.
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL = "mountable::can-poll"
-
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_START: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started.
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_START = "mountable::can-start"
-
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED: key in the "mountable" namespace
-// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started
-// degraded. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED = "mountable::can-start-degraded"
-
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be stopped.
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP = "mountable::can-stop"
-
 // FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT: key in the "mountable" namespace for
 // checking if a file (of type G_FILE_TYPE_MOUNTABLE) is unmountable.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
@@ -191,26 +149,10 @@ const FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT = "mountable::can-unmount"
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI = "mountable::hal-udi"
 
-// FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC: key in the "mountable"
-// namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is
-// automatically polled for media. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC = "mountable::is-media-check-automatic"
-
-// FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE: key in the "mountable" namespace
-// for getting the StartStopType. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_UINT32.
-const FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE = "mountable::start-stop-type"
-
 // FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE: key in the "mountable" namespace for
 // getting the unix device. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE = "mountable::unix-device"
-
-// FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE: key in the "mountable" namespace
-// for getting the unix device file. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE = "mountable::unix-device-file"
 
 // FILE_ATTRIBUTE_OWNER_GROUP: key in the "owner" namespace for getting the file
 // owner's group. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
@@ -226,29 +168,11 @@ const FILE_ATTRIBUTE_OWNER_USER = "owner::user"
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_OWNER_USER_REAL = "owner::user-real"
 
-// FILE_ATTRIBUTE_PREVIEW_ICON: key in the "preview" namespace for getting a
-// #GIcon that can be used to get preview of the file. For example, it may be a
-// low resolution thumbnail without metadata. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
-const FILE_ATTRIBUTE_PREVIEW_ICON = "preview::icon"
-
-// FILE_ATTRIBUTE_RECENT_MODIFIED: key in the "recent" namespace for getting
-// time, when the metadata for the file in recent:/// was last changed.
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_INT64.
-const FILE_ATTRIBUTE_RECENT_MODIFIED = "recent::modified"
-
 // FILE_ATTRIBUTE_SELINUX_CONTEXT: key in the "selinux" namespace for getting
 // the file's SELinux context. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. Note that this attribute is only available if
 // GLib has been built with SELinux support.
 const FILE_ATTRIBUTE_SELINUX_CONTEXT = "selinux::context"
-
-// FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE: key in the "standard" namespace for
-// getting the amount of disk space that is consumed by the file (in bytes).
-// This will generally be larger than the file size (due to block size overhead)
-// but can occasionally be smaller (for example, for sparse files).
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT64.
-const FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE = "standard::allocated-size"
 
 // FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE: key in the "standard" namespace for
 // getting the content type of the file. Corresponding AttributeType is
@@ -327,14 +251,6 @@ const FILE_ATTRIBUTE_STANDARD_IS_SYMLINK = "standard::is-symlink"
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL = "standard::is-virtual"
 
-// FILE_ATTRIBUTE_STANDARD_IS_VOLATILE: key in the "standard" namespace for
-// checking if a file is volatile. This is meant for opaque, non-POSIX-like
-// backends to indicate that the URI is not persistent. Applications should look
-// at FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET for the persistent URI.
-//
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_STANDARD_IS_VOLATILE = "standard::is-volatile"
-
 // FILE_ATTRIBUTE_STANDARD_NAME: key in the "standard" namespace for getting the
 // name of the file. The name is the on-disk filename which may not be in any
 // known encoding, and can thus not be generally displayed as is. It is
@@ -356,11 +272,6 @@ const FILE_ATTRIBUTE_STANDARD_SIZE = "standard::size"
 // order was zero.
 const FILE_ATTRIBUTE_STANDARD_SORT_ORDER = "standard::sort-order"
 
-// FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON: key in the "standard" namespace for
-// getting the symbolic icon for the file. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
-const FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON = "standard::symbolic-icon"
-
 // FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET: key in the "standard" namespace for
 // getting the symlink target, if the file is a symlink. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
@@ -381,17 +292,6 @@ const FILE_ATTRIBUTE_STANDARD_TYPE = "standard::type"
 // checking if thumbnailing failed. This attribute is TRUE if thumbnailing
 // failed. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_THUMBNAILING_FAILED = "thumbnail::failed"
-
-// FILE_ATTRIBUTE_THUMBNAIL_IS_VALID: key in the "thumbnail" namespace for
-// checking whether the thumbnail is outdated. This attribute is TRUE if the
-// thumbnail is up-to-date with the file it represents, and FALSE if the file
-// has been modified since the thumbnail was generated.
-//
-// If G_FILE_ATTRIBUTE_THUMBNAILING_FAILED is TRUE and this attribute is FALSE,
-// it indicates that thumbnailing may be attempted again and may succeed.
-//
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
-const FILE_ATTRIBUTE_THUMBNAIL_IS_VALID = "thumbnail::is-valid"
 
 // FILE_ATTRIBUTE_THUMBNAIL_PATH: key in the "thumbnail" namespace for getting
 // the path to the thumbnail image. Corresponding AttributeType is
@@ -451,22 +351,10 @@ const FILE_ATTRIBUTE_TIME_MODIFIED = "time::modified"
 // is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_TIME_MODIFIED_USEC = "time::modified-usec"
 
-// FILE_ATTRIBUTE_TRASH_DELETION_DATE: key in the "trash" namespace. When
-// requested against items in trash:///, will return the date and time when the
-// file was trashed. The format of the returned string is YYYY-MM-DDThh:mm:ss.
-// Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
-const FILE_ATTRIBUTE_TRASH_DELETION_DATE = "trash::deletion-date"
-
 // FILE_ATTRIBUTE_TRASH_ITEM_COUNT: key in the "trash" namespace. When requested
 // against trash:/// returns the number of (toplevel) items in the trash folder.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_TRASH_ITEM_COUNT = "trash::item-count"
-
-// FILE_ATTRIBUTE_TRASH_ORIG_PATH: key in the "trash" namespace. When requested
-// against items in trash:///, will return the original path to the file before
-// it was trashed. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
-const FILE_ATTRIBUTE_TRASH_ORIG_PATH = "trash::orig-path"
 
 // FILE_ATTRIBUTE_UNIX_BLOCKS: key in the "unix" namespace for getting the
 // number of blocks allocated for the file. This attribute is only available for
@@ -949,52 +837,6 @@ func (info *FileInfo) AttributeString(attribute string) string {
 	return _utf8
 }
 
-// AttributeStringv gets the value of a stringv attribute. If the attribute does
-// not contain a stringv, NULL will be returned.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//
-// The function returns the following values:
-//
-//    - utf8s (optional) contents of the attribute value as a stringv, or NULL
-//      otherwise. Do not free. These returned strings are UTF-8.
-//
-func (info *FileInfo) AttributeStringv(attribute string) []string {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret **C.char     // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_file_info_get_attribute_stringv(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-
-	var _utf8s []string // out
-
-	if _cret != nil {
-		{
-			var i int
-			var z *C.char
-			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-				i++
-			}
-
-			src := unsafe.Slice(_cret, i)
-			_utf8s = make([]string, i)
-			for i := range src {
-				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			}
-		}
-	}
-
-	return _utf8s
-}
-
 // AttributeType gets the attribute type for an attribute key.
 //
 // The function takes the following parameters:
@@ -1113,38 +955,6 @@ func (info *FileInfo) ContentType() string {
 	}
 
 	return _utf8
-}
-
-// DeletionDate returns the Time representing the deletion date of the file, as
-// available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
-// G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, NULL is returned.
-//
-// The function returns the following values:
-//
-//    - dateTime (optional) or NULL.
-//
-func (info *FileInfo) DeletionDate() *glib.DateTime {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GDateTime // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-
-	_cret = C.g_file_info_get_deletion_date(_arg0)
-	runtime.KeepAlive(info)
-
-	var _dateTime *glib.DateTime // out
-
-	if _cret != nil {
-		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
-		)
-	}
-
-	return _dateTime
 }
 
 // DisplayName gets a display name for a file. This is guaranteed to always be
@@ -1338,41 +1148,6 @@ func (info *FileInfo) IsSymlink() bool {
 	return _ok
 }
 
-// ModificationDateTime gets the modification time of the current info and
-// returns it as a Time.
-//
-// This requires the G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
-// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting Time will have
-// microsecond precision.
-//
-// The function returns the following values:
-//
-//    - dateTime (optional): modification time, or NULL if unknown.
-//
-func (info *FileInfo) ModificationDateTime() *glib.DateTime {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GDateTime // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-
-	_cret = C.g_file_info_get_modification_date_time(_arg0)
-	runtime.KeepAlive(info)
-
-	var _dateTime *glib.DateTime // out
-
-	if _cret != nil {
-		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
-		)
-	}
-
-	return _dateTime
-}
-
 // ModificationTime gets the modification time of the current info and sets it
 // in result.
 //
@@ -1468,30 +1243,6 @@ func (info *FileInfo) SortOrder() int32 {
 	return _gint32
 }
 
-// SymbolicIcon gets the symbolic icon for a file.
-//
-// The function returns the following values:
-//
-//    - icon (optional) for the given info.
-//
-func (info *FileInfo) SymbolicIcon() *Icon {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GIcon     // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-
-	_cret = C.g_file_info_get_symbolic_icon(_arg0)
-	runtime.KeepAlive(info)
-
-	var _icon *Icon // out
-
-	if _cret != nil {
-		_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _icon
-}
-
 // SymlinkTarget gets the symlink target for a given Info.
 //
 // The function returns the following values:
@@ -1539,39 +1290,6 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 	_cret = C.g_file_info_has_attribute(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HasNamespace checks if a file info structure has an attribute in the
-// specified name_space.
-//
-// The function takes the following parameters:
-//
-//    - nameSpace: file attribute namespace.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if info has an attribute in name_space, FALSE otherwise.
-//
-func (info *FileInfo) HasNamespace(nameSpace string) bool {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.char      // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_file_info_has_namespace(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(nameSpace)
 
 	var _ok bool // out
 
@@ -1818,47 +1536,6 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.O
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
-}
-
-// SetAttributeStatus sets the attribute status for an attribute key. This is
-// only needed by external code that implement g_file_set_attributes_from_info()
-// or similar functions.
-//
-// The attribute must exist in info for this to work. Otherwise FALSE is
-// returned and info is unchanged.
-//
-// The function takes the following parameters:
-//
-//    - attribute: file attribute key.
-//    - status: AttributeStatus.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the status was changed, FALSE if the key was not set.
-//
-func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
-	var _arg0 *C.GFileInfo           // out
-	var _arg1 *C.char                // out
-	var _arg2 C.GFileAttributeStatus // out
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GFileAttributeStatus(status)
-
-	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(attribute)
-	runtime.KeepAlive(status)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SetAttributeString sets the attribute to contain the given attr_value, if
@@ -2111,26 +1788,6 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	runtime.KeepAlive(isSymlink)
 }
 
-// SetModificationDateTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
-// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the given
-// date/time value.
-//
-// The function takes the following parameters:
-//
-//    - mtime: Time.
-//
-func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GDateTime // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	_arg1 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(mtime)))
-
-	C.g_file_info_set_modification_date_time(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(mtime)
-}
-
 // SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
 // G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the given
 // time value.
@@ -2210,25 +1867,6 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 	C.g_file_info_set_sort_order(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(sortOrder)
-}
-
-// SetSymbolicIcon sets the symbolic icon for a given Info. See
-// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-//
-// The function takes the following parameters:
-//
-//    - icon: #GIcon.
-//
-func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GIcon     // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(icon)
 }
 
 // SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute

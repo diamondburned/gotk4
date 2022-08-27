@@ -3,7 +3,6 @@
 package atk
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -12,7 +11,6 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
-// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(AtkHyperlinkImpl*);
 import "C"
 
 // GType values.
@@ -24,18 +22,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeHyperlinkImpl, F: marshalHyperlinkImpl},
 	})
-}
-
-// HyperlinkImplOverrider contains methods that are overridable.
-type HyperlinkImplOverrider interface {
-	// Hyperlink gets the hyperlink associated with this object.
-	//
-	// The function returns the following values:
-	//
-	//    - hyperlink: atkHyperlink object which points to this implementing
-	//      AtkObject.
-	//
-	Hyperlink() *Hyperlink
 }
 
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
@@ -84,24 +70,6 @@ type HyperlinkImpler interface {
 
 var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
 
-func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkHyperlinkImplIface)(unsafe.Pointer(gifacePtr))
-	iface.get_hyperlink = (*[0]byte)(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
-}
-
-//export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
-func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cret *C.AtkHyperlink) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(HyperlinkImplOverrider)
-
-	hyperlink := iface.Hyperlink()
-
-	cret = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(hyperlink).Native()))
-
-	return cret
-}
-
 func wrapHyperlinkImpl(obj *coreglib.Object) *HyperlinkImpl {
 	return &HyperlinkImpl{
 		Object: obj,
@@ -110,29 +78,6 @@ func wrapHyperlinkImpl(obj *coreglib.Object) *HyperlinkImpl {
 
 func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 	return wrapHyperlinkImpl(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Hyperlink gets the hyperlink associated with this object.
-//
-// The function returns the following values:
-//
-//    - hyperlink: atkHyperlink object which points to this implementing
-//      AtkObject.
-//
-func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
-	var _arg0 *C.AtkHyperlinkImpl // out
-	var _cret *C.AtkHyperlink     // in
-
-	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
-
-	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
-	runtime.KeepAlive(impl)
-
-	var _hyperlink *Hyperlink // out
-
-	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _hyperlink
 }
 
 // HyperlinkImplIface: instance of this type is always passed by reference.

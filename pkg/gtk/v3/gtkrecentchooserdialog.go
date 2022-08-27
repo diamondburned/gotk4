@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// RecentChooserDialogOverrider contains methods that are overridable.
-type RecentChooserDialogOverrider interface {
+// RecentChooserDialogOverrides contains methods that are overridable.
+type RecentChooserDialogOverrides struct {
+}
+
+func defaultRecentChooserDialogOverrides(v *RecentChooserDialog) RecentChooserDialogOverrides {
+	return RecentChooserDialogOverrides{}
 }
 
 // RecentChooserDialog is a dialog box suitable for displaying the recently used
@@ -87,29 +91,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRecentChooserDialog,
-		GoType:        reflect.TypeOf((*RecentChooserDialog)(nil)),
-		InitClass:     initClassRecentChooserDialog,
-		FinalizeClass: finalizeClassRecentChooserDialog,
-	})
+	coreglib.RegisterClassInfo[*RecentChooserDialog, *RecentChooserDialogClass, RecentChooserDialogOverrides](
+		GTypeRecentChooserDialog,
+		initRecentChooserDialogClass,
+		wrapRecentChooserDialog,
+		defaultRecentChooserDialogOverrides,
+	)
 }
 
-func initClassRecentChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitRecentChooserDialog(*RecentChooserDialogClass)
-	}); ok {
-		klass := (*RecentChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitRecentChooserDialog(klass)
-	}
-}
-
-func finalizeClassRecentChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeRecentChooserDialog(*RecentChooserDialogClass)
-	}); ok {
-		klass := (*RecentChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRecentChooserDialog(klass)
+func initRecentChooserDialogClass(gclass unsafe.Pointer, overrides RecentChooserDialogOverrides, classInitFunc func(*RecentChooserDialogClass)) {
+	if classInitFunc != nil {
+		class := (*RecentChooserDialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

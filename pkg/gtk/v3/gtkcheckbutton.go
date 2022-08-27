@@ -19,6 +19,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_CheckButtonClass_draw_indicator(GtkCheckButton*, cairo_t*);
+// void _gotk4_gtk3_CheckButton_virtual_draw_indicator(void* fnptr, GtkCheckButton* arg0, cairo_t* arg1) {
+//   ((void (*)(GtkCheckButton*, cairo_t*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -32,11 +35,17 @@ func init() {
 	})
 }
 
-// CheckButtonOverrider contains methods that are overridable.
-type CheckButtonOverrider interface {
+// CheckButtonOverrides contains methods that are overridable.
+type CheckButtonOverrides struct {
 	// The function takes the following parameters:
 	//
-	DrawIndicator(cr *cairo.Context)
+	DrawIndicator func(cr *cairo.Context)
+}
+
+func defaultCheckButtonOverrides(v *CheckButton) CheckButtonOverrides {
+	return CheckButtonOverrides{
+		DrawIndicator: v.drawIndicator,
+	}
 }
 
 // CheckButton places a discrete ToggleButton next to a widget, (usually a
@@ -66,48 +75,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCheckButton,
-		GoType:        reflect.TypeOf((*CheckButton)(nil)),
-		InitClass:     initClassCheckButton,
-		FinalizeClass: finalizeClassCheckButton,
-	})
+	coreglib.RegisterClassInfo[*CheckButton, *CheckButtonClass, CheckButtonOverrides](
+		GTypeCheckButton,
+		initCheckButtonClass,
+		wrapCheckButton,
+		defaultCheckButtonOverrides,
+	)
 }
 
-func initClassCheckButton(gclass unsafe.Pointer, goval any) {
+func initCheckButtonClass(gclass unsafe.Pointer, overrides CheckButtonOverrides, classInitFunc func(*CheckButtonClass)) {
+	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCheckButton))))
 
-	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
+	if overrides.DrawIndicator != nil {
 		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
 	}
-	if goval, ok := goval.(interface{ InitCheckButton(*CheckButtonClass) }); ok {
-		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitCheckButton(klass)
+
+	if classInitFunc != nil {
+		class := (*CheckButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCheckButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCheckButton(*CheckButtonClass) }); ok {
-		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCheckButton(klass)
-	}
-}
-
-//export _gotk4_gtk3_CheckButtonClass_draw_indicator
-func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.GtkCheckButton, arg1 *C.cairo_t) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
-
-	var _cr *cairo.Context // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-
-	iface.DrawIndicator(_cr)
 }
 
 func wrapCheckButton(obj *coreglib.Object) *CheckButton {
@@ -231,6 +217,23 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _checkButton
+}
+
+// The function takes the following parameters:
+//
+func (checkButton *CheckButton) drawIndicator(cr *cairo.Context) {
+	gclass := (*C.GtkCheckButtonClass)(coreglib.PeekParentClass(checkButton))
+	fnarg := gclass.draw_indicator
+
+	var _arg0 *C.GtkCheckButton // out
+	var _arg1 *C.cairo_t        // out
+
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(coreglib.InternObject(checkButton).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C._gotk4_gtk3_CheckButton_virtual_draw_indicator(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(checkButton)
+	runtime.KeepAlive(cr)
 }
 
 // CheckButtonClass: instance of this type is always passed by reference.

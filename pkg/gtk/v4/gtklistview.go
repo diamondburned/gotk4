@@ -163,26 +163,6 @@ func marshalListView(p uintptr) (interface{}, error) {
 	return wrapListView(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_ListView_ConnectActivate
-func _gotk4_gtk4_ListView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) {
-	var f func(position uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(position uint))
-	}
-
-	var _position uint // out
-
-	_position = uint(arg1)
-
-	f(_position)
-}
-
 // ConnectActivate is emitted when a row has been activated by the user, usually
 // via activating the GtkListView|list.activate-item action.
 //

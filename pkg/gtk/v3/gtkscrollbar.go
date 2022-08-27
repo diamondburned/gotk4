@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,8 +29,12 @@ func init() {
 	})
 }
 
-// ScrollbarOverrider contains methods that are overridable.
-type ScrollbarOverrider interface {
+// ScrollbarOverrides contains methods that are overridable.
+type ScrollbarOverrides struct {
+}
+
+func defaultScrollbarOverrides(v *Scrollbar) ScrollbarOverrides {
+	return ScrollbarOverrides{}
 }
 
 // Scrollbar widget is a horizontal or vertical scrollbar, depending on the
@@ -82,25 +85,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeScrollbar,
-		GoType:        reflect.TypeOf((*Scrollbar)(nil)),
-		InitClass:     initClassScrollbar,
-		FinalizeClass: finalizeClassScrollbar,
-	})
+	coreglib.RegisterClassInfo[*Scrollbar, *ScrollbarClass, ScrollbarOverrides](
+		GTypeScrollbar,
+		initScrollbarClass,
+		wrapScrollbar,
+		defaultScrollbarOverrides,
+	)
 }
 
-func initClassScrollbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitScrollbar(*ScrollbarClass) }); ok {
-		klass := (*ScrollbarClass)(gextras.NewStructNative(gclass))
-		goval.InitScrollbar(klass)
-	}
-}
-
-func finalizeClassScrollbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeScrollbar(*ScrollbarClass) }); ok {
-		klass := (*ScrollbarClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeScrollbar(klass)
+func initScrollbarClass(gclass unsafe.Pointer, overrides ScrollbarOverrides, classInitFunc func(*ScrollbarClass)) {
+	if classInitFunc != nil {
+		class := (*ScrollbarClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -129,38 +125,6 @@ func wrapScrollbar(obj *coreglib.Object) *Scrollbar {
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
 	return wrapScrollbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewScrollbar creates a new scrollbar with the given orientation.
-//
-// The function takes the following parameters:
-//
-//    - orientation scrollbar’s orientation.
-//    - adjustment (optional) to use, or NULL to create a new adjustment.
-//
-// The function returns the following values:
-//
-//    - scrollbar: new Scrollbar.
-//
-func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 *C.GtkAdjustment // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	if adjustment != nil {
-		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-	}
-
-	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(adjustment)
-
-	var _scrollbar *Scrollbar // out
-
-	_scrollbar = wrapScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _scrollbar
 }
 
 // ScrollbarClass: instance of this type is always passed by reference.

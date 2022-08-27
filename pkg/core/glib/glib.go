@@ -2,6 +2,7 @@
 package glib
 
 // #cgo pkg-config: gio-2.0 glib-2.0 gobject-2.0
+// #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gio.h>
 // #include <stdlib.h>
 // #include <stdint.h>
@@ -566,9 +567,6 @@ func _gotk4_removeGeneratedClosure(fnID C.guintptr, gclosure *C.GClosure) {
 // Objector is an interface that describes the Object type's methods. Only this
 // package's Object types and types that embed it can satisfy this interface.
 type Objector interface {
-	Connect(string, interface{}) SignalHandle
-	ConnectAfter(string, interface{}) SignalHandle
-
 	HandlerBlock(SignalHandle)
 	HandlerUnblock(SignalHandle)
 	HandlerDisconnect(SignalHandle)
@@ -576,8 +574,6 @@ type Objector interface {
 	NotifyProperty(string, func()) SignalHandle
 	ObjectProperty(string) interface{}
 	SetObjectProperty(string, interface{})
-
-	Cast() Objector
 
 	baseObject() *Object
 }
@@ -677,6 +673,32 @@ func (v *Object) Cast() Objector {
 	return v
 }
 
+// CastType casts v to a concrete Go type that is associated with the given
+// GType.
+//go:nosplit
+//go:nocheckptr
+func (v *Object) CastType(gtype Type) Objector {
+	if v.native() == nil {
+		// nil-typed interface != non-nil-typed nil-value interface
+		return nil
+	}
+
+	var gvalue C.GValue
+	C.g_value_init_from_instance(&gvalue, C.gpointer(v.Native()))
+
+	value := ValueFromNative(unsafe.Pointer(&gvalue))
+	defer value.unset()
+
+	// Note that if GoValue successfully unmarshaled into a nil object type,
+	// then the interface would actually be non-nil.
+	if gv := value.GoValueAsType(gtype); gv != nil && gv != InvalidValue {
+		return gv.(Objector)
+	}
+
+	runtime.KeepAlive(v)
+	return v
+}
+
 // WalkCast is like Cast, except the user is walked through the object's entire
 // inheritance tree as well as all its interfaces. This is used in the code
 // generator for type assertions.
@@ -737,6 +759,11 @@ func (v *Object) Eq(other Objector) bool {
 // IsA is a wrapper around g_type_is_a().
 func (v *Object) IsA(typ Type) bool {
 	return gobool(C.g_type_is_a(C.GType(v.TypeFromInstance()), C.GType(typ)))
+}
+
+// Type aliases to TypeFromInstance.
+func (v *Object) Type() Type {
+	return v.TypeFromInstance()
 }
 
 // TypeFromInstance is a wrapper around g_type_from_instance().
@@ -978,7 +1005,7 @@ func AllocateValue() *Value {
 // error if the allocation failed.
 func InitValue(t Type) *Value {
 	v := AllocateValue()
-	C.g_value_init(v.native(), C.GType(t))
+	v.Init(t)
 	return v
 }
 
@@ -993,99 +1020,8 @@ func ValueFromNative(l unsafe.Pointer) *Value {
 // given type is unknown. Most Go primitive types and all Object types are
 // supported.
 func NewValue(v interface{}) *Value {
-	if v == nil {
-		val := InitValue(TypePointer)
-		val.SetPointer(uintptr(unsafe.Pointer(nil)))
-		return val
-	}
-
-	if val := newValuePrimitive(v); val != nil {
-		return val
-	}
-
-	if v == InvalidValue {
-		return InitValue(TypeInvalid)
-	}
-
-	// Try this since above doesn't catch constants under other types.
-	rval := reflect.Indirect(reflect.ValueOf(v))
-
-	switch rval.Kind() {
-	case reflect.Bool:
-		return newValuePrimitive(rval.Bool())
-	case reflect.Int8:
-		return newValuePrimitive(int8(rval.Int()))
-	case reflect.Int32:
-		return newValuePrimitive(int32(rval.Int()))
-	case reflect.Int64:
-		return newValuePrimitive(int64(rval.Int()))
-	case reflect.Int:
-		return newValuePrimitive(int(rval.Int()))
-	case reflect.Uint8:
-		return newValuePrimitive(uint8(rval.Uint()))
-	case reflect.Uint32:
-		return newValuePrimitive(uint32(rval.Uint()))
-	case reflect.Uint64:
-		return newValuePrimitive(uint64(rval.Uint()))
-	case reflect.Uint:
-		return newValuePrimitive(uint(rval.Uint()))
-	case reflect.Float32:
-		return newValuePrimitive(float32(rval.Float()))
-	case reflect.Float64:
-		return newValuePrimitive(float64(rval.Float()))
-	case reflect.String:
-		return newValuePrimitive(rval.String())
-	}
-
-	log.Panicf("type %T not implemented", v)
-	return nil
-}
-
-func newValuePrimitive(v interface{}) *Value {
-	var val *Value
-	switch e := v.(type) {
-	case *Value:
-		val = e
-	case bool:
-		val = InitValue(TypeBoolean)
-		val.SetBool(e)
-	case int8:
-		val = InitValue(TypeChar)
-		val.SetSchar(e)
-	case int32:
-		val = InitValue(TypeLong)
-		val.SetLong(e)
-	case int64:
-		val = InitValue(TypeInt64)
-		val.SetInt64(e)
-	case int:
-		val = InitValue(TypeInt)
-		val.SetInt(e)
-	case uint8:
-		val = InitValue(TypeUchar)
-		val.SetUchar(e)
-	case uint32:
-		val = InitValue(TypeUlong)
-		val.SetUlong(e)
-	case uint64:
-		val = InitValue(TypeUint64)
-		val.SetUint64(e)
-	case uint:
-		val = InitValue(TypeUint)
-		val.SetUint(e)
-	case float32:
-		val = InitValue(TypeFloat)
-		val.SetFloat(e)
-	case float64:
-		val = InitValue(TypeDouble)
-		val.SetDouble(e)
-	case string:
-		val = InitValue(TypeString)
-		val.SetString(e)
-	case Objector:
-		val = InitValue(TypeObject)
-		val.SetObject(InternObject(e))
-	}
+	val := AllocateValue()
+	val.InitGoValue(v)
 	return val
 }
 
@@ -1117,6 +1053,120 @@ func (v *Value) TypeName() string {
 	s := C.GoString((*C.char)(C._g_value_type_name(v.native())))
 	runtime.KeepAlive(v)
 	return s
+}
+
+// Init initializes the Value to the given GType. It does nothing if the Value
+// is already initialized.
+func (v *Value) Init(gtype Type) {
+	if !v.IsValue() {
+		C.g_value_init(v.native(), C.GType(gtype))
+	}
+	runtime.KeepAlive(v)
+}
+
+// InitGoValue sets the Go value of the GValue. The GValue MUST NOT HAVE BEEN
+// INITIALIED ALREADY!
+func (v *Value) InitGoValue(goValue any) {
+	if goValue == nil {
+		v.Init(TypePointer)
+		v.SetPointer(uintptr(unsafe.Pointer(nil)))
+		return
+	}
+
+	if newValuePrimitive(v, goValue) {
+		return
+	}
+
+	if goValue == InvalidValue {
+		v.Init(TypeInvalid)
+		return
+	}
+
+	// Try this since above doesn't catch constants under other types.
+	rval := reflect.Indirect(reflect.ValueOf(goValue))
+
+	var ok bool
+	switch rval.Kind() {
+	case reflect.Bool:
+		ok = newValuePrimitive(v, rval.Bool())
+	case reflect.Int8:
+		ok = newValuePrimitive(v, int8(rval.Int()))
+	case reflect.Int32:
+		ok = newValuePrimitive(v, int32(rval.Int()))
+	case reflect.Int64:
+		ok = newValuePrimitive(v, int64(rval.Int()))
+	case reflect.Int:
+		ok = newValuePrimitive(v, int(rval.Int()))
+	case reflect.Uint8:
+		ok = newValuePrimitive(v, uint8(rval.Uint()))
+	case reflect.Uint32:
+		ok = newValuePrimitive(v, uint32(rval.Uint()))
+	case reflect.Uint64:
+		ok = newValuePrimitive(v, uint64(rval.Uint()))
+	case reflect.Uint:
+		ok = newValuePrimitive(v, uint(rval.Uint()))
+	case reflect.Float32:
+		ok = newValuePrimitive(v, float32(rval.Float()))
+	case reflect.Float64:
+		ok = newValuePrimitive(v, float64(rval.Float()))
+	case reflect.String:
+		ok = newValuePrimitive(v, rval.String())
+	}
+
+	if ok {
+		return
+	}
+
+	log.Panicf("type %T not implemented", goValue)
+}
+
+func newValuePrimitive(val *Value, v interface{}) bool {
+	switch e := v.(type) {
+	case *Value:
+		*val = *e
+	case bool:
+		val.Init(TypeBoolean)
+		val.SetBool(e)
+	case int8:
+		val.Init(TypeChar)
+		val.SetSchar(e)
+	case int32:
+		val.Init(TypeInt) // C int is 32-bit
+		val.SetInt(int(e))
+	case int64:
+		val.Init(TypeInt64)
+		val.SetInt64(e)
+	case int:
+		val.Init(TypeInt64)
+		val.SetInt64(int64(e))
+	case uint8:
+		val.Init(TypeUchar)
+		val.SetUchar(e)
+	case uint32:
+		val.Init(TypeUint)
+		val.SetUint(uint(e))
+	case uint64:
+		val.Init(TypeUint64)
+		val.SetUint64(e)
+	case uint:
+		val.Init(TypeUint64)
+		val.SetUint64(uint64(e))
+	case float32:
+		val.Init(TypeFloat)
+		val.SetFloat(e)
+	case float64:
+		val.Init(TypeDouble)
+		val.SetDouble(e)
+	case string:
+		val.Init(TypeString)
+		val.SetString(e)
+	case Objector:
+		val.Init(TypeObject)
+		val.SetObject(InternObject(e))
+	default:
+		return false
+	}
+	return true
 }
 
 // Type returns the Value's actual type. is a wrapper around the G_VALUE_TYPE()
@@ -1400,6 +1450,31 @@ func (v *Value) GoValue() interface{} {
 	f := marshalers.lookup(v)
 	runtime.KeepAlive(v)
 	if f == nil {
+		return InvalidValue
+	}
+
+	// No need to add finalizer because it is already done by AllocateValue and
+	// InitValue. (?)
+	g, err := f(uintptr(unsafe.Pointer(v.native())))
+	runtime.KeepAlive(v)
+	if err != nil {
+		log.Printf("gotk4: marshaler error for %s: %v", v.Type(), err)
+		return InvalidValue
+	}
+
+	return g
+}
+
+// GoValueAsType is like GoValue, except it tries to cast into the given gtype
+// instead of the detected underlying type.
+func (v *Value) GoValueAsType(gtype Type) interface{} {
+	if !v.isValue() {
+		return InvalidValue
+	}
+
+	f, ok := marshalers.lookupType(gtype)
+	if !ok {
+		runtime.KeepAlive(v)
 		return InvalidValue
 	}
 

@@ -14,12 +14,6 @@ import (
 // #include <glib.h>
 import "C"
 
-// UNICHAR_MAX_DECOMPOSITION_LENGTH: maximum length (in codepoints) of a
-// compatibility or canonical decomposition of a single Unicode character.
-//
-// This is as defined by Unicode 6.1.
-const UNICHAR_MAX_DECOMPOSITION_LENGTH = 18
-
 // NormalizeMode defines how a Unicode string is transformed in a canonical
 // form, standardizing such issues as whether a character with an accent is
 // represented as a base character and combining accent or as a single
@@ -1188,132 +1182,6 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 	return _unicodeBreakType
 }
 
-// UnicharCombiningClass determines the canonical combining class of a Unicode
-// character.
-//
-// The function takes the following parameters:
-//
-//    - uc: unicode character.
-//
-// The function returns the following values:
-//
-//    - gint: combining class of the character.
-//
-func UnicharCombiningClass(uc uint32) int {
-	var _arg1 C.gunichar // out
-	var _cret C.gint     // in
-
-	_arg1 = C.gunichar(uc)
-
-	_cret = C.g_unichar_combining_class(_arg1)
-	runtime.KeepAlive(uc)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// UnicharCompose performs a single composition step of the Unicode canonical
-// composition algorithm.
-//
-// This function includes algorithmic Hangul Jamo composition, but it is not
-// exactly the inverse of g_unichar_decompose(). No composition can have either
-// of a or b equal to zero. To be precise, this function composes if and only if
-// there exists a Primary Composite P which is canonically equivalent to the
-// sequence <a,b>. See the Unicode Standard for the definition of Primary
-// Composite.
-//
-// If a and b do not compose a new character, ch is set to zero.
-//
-// See UAX#15 (http://unicode.org/reports/tr15/) for details.
-//
-// The function takes the following parameters:
-//
-//    - a: unicode character.
-//    - b: unicode character.
-//
-// The function returns the following values:
-//
-//    - ch: return location for the composed character.
-//    - ok: TRUE if the characters could be composed.
-//
-func UnicharCompose(a, b uint32) (uint32, bool) {
-	var _arg1 C.gunichar // out
-	var _arg2 C.gunichar // out
-	var _arg3 C.gunichar // in
-	var _cret C.gboolean // in
-
-	_arg1 = C.gunichar(a)
-	_arg2 = C.gunichar(b)
-
-	_cret = C.g_unichar_compose(_arg1, _arg2, &_arg3)
-	runtime.KeepAlive(a)
-	runtime.KeepAlive(b)
-
-	var _ch uint32 // out
-	var _ok bool   // out
-
-	_ch = uint32(_arg3)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ch, _ok
-}
-
-// UnicharDecompose performs a single decomposition step of the Unicode
-// canonical decomposition algorithm.
-//
-// This function does not include compatibility decompositions. It does,
-// however, include algorithmic Hangul Jamo decomposition, as well as
-// 'singleton' decompositions which replace a character by a single other
-// character. In the case of singletons *b will be set to zero.
-//
-// If ch is not decomposable, *a is set to ch and *b is set to zero.
-//
-// Note that the way Unicode decomposition pairs are defined, it is guaranteed
-// that b would not decompose further, but a may itself decompose. To get the
-// full canonical decomposition for ch, one would need to recursively call this
-// function on a. Or use g_unichar_fully_decompose().
-//
-// See UAX#15 (http://unicode.org/reports/tr15/) for details.
-//
-// The function takes the following parameters:
-//
-//    - ch: unicode character.
-//
-// The function returns the following values:
-//
-//    - a: return location for the first component of ch.
-//    - b: return location for the second component of ch.
-//    - ok: TRUE if the character could be decomposed.
-//
-func UnicharDecompose(ch uint32) (a, b uint32, ok bool) {
-	var _arg1 C.gunichar // out
-	var _arg2 C.gunichar // in
-	var _arg3 C.gunichar // in
-	var _cret C.gboolean // in
-
-	_arg1 = C.gunichar(ch)
-
-	_cret = C.g_unichar_decompose(_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(ch)
-
-	var _a uint32 // out
-	var _b uint32 // out
-	var _ok bool  // out
-
-	_a = uint32(_arg2)
-	_b = uint32(_arg3)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _a, _b, _ok
-}
-
 // UnicharDigitValue determines the numeric value of a character as a decimal
 // digit.
 //
@@ -1340,130 +1208,6 @@ func UnicharDigitValue(c uint32) int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// UnicharFullyDecompose computes the canonical or compatibility decomposition
-// of a Unicode character. For compatibility decomposition, pass TRUE for
-// compat; for canonical decomposition pass FALSE for compat.
-//
-// The decomposed sequence is placed in result. Only up to result_len characters
-// are written into result. The length of the full decomposition (irrespective
-// of result_len) is returned by the function. For canonical decomposition,
-// currently all decompositions are of length at most 4, but this may change in
-// the future (very unlikely though). At any rate, Unicode does guarantee that a
-// buffer of length 18 is always enough for both compatibility and canonical
-// decompositions, so that is the size recommended. This is provided as
-// G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
-//
-// See UAX#15 (http://unicode.org/reports/tr15/) for details.
-//
-// The function takes the following parameters:
-//
-//    - ch: unicode character.
-//    - compat: whether perform canonical or compatibility decomposition.
-//    - resultLen: length of result.
-//
-// The function returns the following values:
-//
-//    - result (optional): location to store decomposed result, or NULL.
-//    - gsize: length of the full decomposition.
-//
-func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint) {
-	var _arg1 C.gunichar // out
-	var _arg2 C.gboolean // out
-	var _arg3 C.gunichar // in
-	var _arg4 C.gsize    // out
-	var _cret C.gsize    // in
-
-	_arg1 = C.gunichar(ch)
-	if compat {
-		_arg2 = C.TRUE
-	}
-	_arg4 = C.gsize(resultLen)
-
-	_cret = C.g_unichar_fully_decompose(_arg1, _arg2, &_arg3, _arg4)
-	runtime.KeepAlive(ch)
-	runtime.KeepAlive(compat)
-	runtime.KeepAlive(resultLen)
-
-	var _result uint32 // out
-	var _gsize uint    // out
-
-	_result = uint32(_arg3)
-	_gsize = uint(_cret)
-
-	return _result, _gsize
-}
-
-// UnicharGetMirrorChar: in Unicode, some characters are "mirrored". This means
-// that their images are mirrored horizontally in text that is laid out from
-// right to left. For instance, "(" would become its mirror image, ")", in
-// right-to-left text.
-//
-// If ch has the Unicode mirrored property and there is another unicode
-// character that typically has a glyph that is the mirror image of ch's glyph
-// and mirrored_ch is set, it puts that character in the address pointed to by
-// mirrored_ch. Otherwise the original character is put.
-//
-// The function takes the following parameters:
-//
-//    - ch: unicode character.
-//    - mirroredCh: location to store the mirrored character.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if ch has a mirrored character, FALSE otherwise.
-//
-func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
-	var _arg1 C.gunichar  // out
-	var _arg2 *C.gunichar // out
-	var _cret C.gboolean  // in
-
-	_arg1 = C.gunichar(ch)
-	_arg2 = (*C.gunichar)(unsafe.Pointer(mirroredCh))
-
-	_cret = C.g_unichar_get_mirror_char(_arg1, _arg2)
-	runtime.KeepAlive(ch)
-	runtime.KeepAlive(mirroredCh)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// UnicharGetScript looks up the Script for a particular character (as defined
-// by Unicode Standard Annex \#24). No check is made for ch being a valid
-// Unicode character; if you pass in invalid character, the result is undefined.
-//
-// This function is equivalent to pango_script_for_unichar() and the two are
-// interchangeable.
-//
-// The function takes the following parameters:
-//
-//    - ch: unicode character.
-//
-// The function returns the following values:
-//
-//    - unicodeScript for the character.
-//
-func UnicharGetScript(ch uint32) UnicodeScript {
-	var _arg1 C.gunichar       // out
-	var _cret C.GUnicodeScript // in
-
-	_arg1 = C.gunichar(ch)
-
-	_cret = C.g_unichar_get_script(_arg1)
-	runtime.KeepAlive(ch)
-
-	var _unicodeScript UnicodeScript // out
-
-	_unicodeScript = UnicodeScript(_cret)
-
-	return _unicodeScript
 }
 
 // UnicharIsalnum determines whether a character is alphanumeric. Given some
@@ -1672,40 +1416,6 @@ func UnicharIslower(c uint32) bool {
 	return _ok
 }
 
-// UnicharIsmark determines whether a character is a mark (non-spacing mark,
-// combining mark, or enclosing mark in Unicode speak). Given some UTF-8 text,
-// obtain a character value with g_utf8_get_char().
-//
-// Note: in most cases where isalpha characters are allowed, ismark characters
-// should be allowed to as they are essential for writing most European
-// languages as well as many non-Latin scripts.
-//
-// The function takes the following parameters:
-//
-//    - c: unicode character.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if c is a mark character.
-//
-func UnicharIsmark(c uint32) bool {
-	var _arg1 C.gunichar // out
-	var _cret C.gboolean // in
-
-	_arg1 = C.gunichar(c)
-
-	_cret = C.g_unichar_ismark(_arg1)
-	runtime.KeepAlive(c)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // UnicharIsprint determines whether a character is printable. Unlike
 // g_unichar_isgraph(), returns TRUE for spaces. Given some UTF-8 text, obtain a
 // character value with g_utf8_get_char().
@@ -1887,42 +1597,6 @@ func UnicharIswide(c uint32) bool {
 	return _ok
 }
 
-// UnicharIswideCjk determines if a character is typically rendered in a
-// double-width cell under legacy East Asian locales. If a character is wide
-// according to g_unichar_iswide(), then it is also reported wide with this
-// function, but the converse is not necessarily true. See the Unicode Standard
-// Annex #11 (http://www.unicode.org/reports/tr11/) for details.
-//
-// If a character passes the g_unichar_iswide() test then it will also pass this
-// test, but not the other way around. Note that some characters may pass both
-// this test and g_unichar_iszerowidth().
-//
-// The function takes the following parameters:
-//
-//    - c: unicode character.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the character is wide in legacy East Asian locales.
-//
-func UnicharIswideCjk(c uint32) bool {
-	var _arg1 C.gunichar // out
-	var _cret C.gboolean // in
-
-	_arg1 = C.gunichar(c)
-
-	_cret = C.g_unichar_iswide_cjk(_arg1)
-	runtime.KeepAlive(c)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // UnicharIsxdigit determines if a character is a hexadecimal digit.
 //
 // The function takes the following parameters:
@@ -1940,42 +1614,6 @@ func UnicharIsxdigit(c uint32) bool {
 	_arg1 = C.gunichar(c)
 
 	_cret = C.g_unichar_isxdigit(_arg1)
-	runtime.KeepAlive(c)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// UnicharIszerowidth determines if a given character typically takes zero width
-// when rendered. The return value is TRUE for all non-spacing and enclosing
-// marks (e.g., combining accents), format characters, zero-width space, but not
-// U+00AD SOFT HYPHEN.
-//
-// A typical use of this function is with one of g_unichar_iswide() or
-// g_unichar_iswide_cjk() to determine the number of cells a string occupies
-// when displayed on a grid display (terminals). However, note that not all
-// terminals support zero-width rendering of zero-width marks.
-//
-// The function takes the following parameters:
-//
-//    - c: unicode character.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the character has zero width.
-//
-func UnicharIszerowidth(c uint32) bool {
-	var _arg1 C.gunichar // out
-	var _cret C.gboolean // in
-
-	_arg1 = C.gunichar(c)
-
-	_cret = C.g_unichar_iszerowidth(_arg1)
 	runtime.KeepAlive(c)
 
 	var _ok bool // out
@@ -2209,76 +1847,6 @@ func UnicodeCanonicalOrdering(str *uint32, len uint) {
 	runtime.KeepAlive(len)
 }
 
-// UnicodeScriptFromISO15924 looks up the Unicode script for iso15924. ISO 15924
-// assigns four-letter codes to scripts. For example, the code for Arabic is
-// 'Arab'. This function accepts four letter codes encoded as a guint32 in a
-// big-endian fashion. That is, the code expected for Arabic is 0x41726162 (0x41
-// is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
-//
-// See Codes for the representation of names of scripts
-// (http://unicode.org/iso15924/codelists.html) for details.
-//
-// The function takes the following parameters:
-//
-//    - iso15924: unicode script.
-//
-// The function returns the following values:
-//
-//    - unicodeScript: unicode script for iso15924, or of
-//      G_UNICODE_SCRIPT_INVALID_CODE if iso15924 is zero and
-//      G_UNICODE_SCRIPT_UNKNOWN if iso15924 is unknown.
-//
-func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
-	var _arg1 C.guint32        // out
-	var _cret C.GUnicodeScript // in
-
-	_arg1 = C.guint32(iso15924)
-
-	_cret = C.g_unicode_script_from_iso15924(_arg1)
-	runtime.KeepAlive(iso15924)
-
-	var _unicodeScript UnicodeScript // out
-
-	_unicodeScript = UnicodeScript(_cret)
-
-	return _unicodeScript
-}
-
-// UnicodeScriptToISO15924 looks up the ISO 15924 code for script. ISO 15924
-// assigns four-letter codes to scripts. For example, the code for Arabic is
-// 'Arab'. The four letter codes are encoded as a guint32 by this function in a
-// big-endian fashion. That is, the code returned for Arabic is 0x41726162 (0x41
-// is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
-//
-// See Codes for the representation of names of scripts
-// (http://unicode.org/iso15924/codelists.html) for details.
-//
-// The function takes the following parameters:
-//
-//    - script: unicode script.
-//
-// The function returns the following values:
-//
-//    - guint32: ISO 15924 code for script, encoded as an integer, of zero if
-//      script is G_UNICODE_SCRIPT_INVALID_CODE or ISO 15924 code 'Zzzz' (script
-//      code for UNKNOWN) if script is not understood.
-//
-func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
-	var _arg1 C.GUnicodeScript // out
-	var _cret C.guint32        // in
-
-	_arg1 = C.GUnicodeScript(script)
-
-	_cret = C.g_unicode_script_to_iso15924(_arg1)
-	runtime.KeepAlive(script)
-
-	var _guint32 uint32 // out
-
-	_guint32 = uint32(_cret)
-
-	return _guint32
-}
-
 // UTF16ToUCS4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
 //
@@ -2507,50 +2075,6 @@ func UTF8CollateKey(str string, len int) string {
 	return _utf8
 }
 
-// UTF8CollateKeyForFilename converts a string into a collation key that can be
-// compared with other collation keys produced by the same function using
-// strcmp().
-//
-// In order to sort filenames correctly, this function treats the dot '.' as a
-// special case. Most dictionary orderings seem to consider it insignificant,
-// thus producing the ordering "event.c" "eventgenerator.c" "event.h" instead of
-// "event.c" "event.h" "eventgenerator.c". Also, we would like to treat numbers
-// intelligently so that "file1" "file10" "file5" is sorted as "file1" "file5"
-// "file10".
-//
-// Note that this function depends on the [current locale][setlocale].
-//
-// The function takes the following parameters:
-//
-//    - str: UTF-8 encoded string.
-//    - len: length of str, in bytes, or -1 if str is nul-terminated.
-//
-// The function returns the following values:
-//
-//    - utf8: newly allocated string. This string should be freed with g_free()
-//      when you are done with it.
-//
-func UTF8CollateKeyForFilename(str string, len int) string {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gssize // out
-	var _cret *C.gchar // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(len)
-
-	_cret = C.g_utf8_collate_key_for_filename(_arg1, _arg2)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(len)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
 // UTF8FindNextChar finds the start of the next UTF-8 character in the string
 // after p.
 //
@@ -2708,47 +2232,6 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 	_gunichar = uint32(_cret)
 
 	return _gunichar
-}
-
-// UTF8MakeValid: if the provided string is valid UTF-8, return a copy of it. If
-// not, return a copy in which bytes that could not be interpreted as valid
-// Unicode are replaced with the Unicode replacement character (U+FFFD).
-//
-// For example, this is an appropriate function to use if you have received a
-// string that was incorrectly declared to be UTF-8, and you need a valid UTF-8
-// version of it that can be logged or displayed to the user, with the
-// assumption that it is close enough to ASCII or UTF-8 to be mostly readable
-// as-is.
-//
-// The function takes the following parameters:
-//
-//    - str: string to coerce into UTF-8.
-//    - len: maximum length of str to use, in bytes. If len < 0, then the string
-//      is nul-terminated.
-//
-// The function returns the following values:
-//
-//    - utf8: valid UTF-8 string whose content resembles str.
-//
-func UTF8MakeValid(str string, len int) string {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gssize // out
-	var _cret *C.gchar // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(len)
-
-	_cret = C.g_utf8_make_valid(_arg1, _arg2)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(len)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
 }
 
 // UTF8Normalize converts a string into canonical form, standardizing such
@@ -3112,49 +2595,6 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 	return _utf8
 }
 
-// UTF8Strreverse reverses a UTF-8 string. str must be valid UTF-8 encoded text.
-// (Use g_utf8_validate() on all text before trying to use UTF-8 utility
-// functions with it.)
-//
-// This function is intended for programmatic uses of reversed strings. It pays
-// no attention to decomposed characters, combining marks, byte order marks,
-// directional indicators (LRM, LRO, etc) and similar characters which might
-// need special handling when reversing a string for display purposes.
-//
-// Note that unlike g_strreverse(), this function returns newly-allocated
-// memory, which should be freed with g_free() when no longer needed.
-//
-// The function takes the following parameters:
-//
-//    - str: UTF-8 encoded string.
-//    - len: maximum length of str to use, in bytes. If len < 0, then the string
-//      is nul-terminated.
-//
-// The function returns the following values:
-//
-//    - utf8: newly-allocated string which is the reverse of str.
-//
-func UTF8Strreverse(str string, len int) string {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gssize // out
-	var _cret *C.gchar // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(len)
-
-	_cret = C.g_utf8_strreverse(_arg1, _arg2)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(len)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
 // UTF8Strup converts all Unicode characters in the string that have a case to
 // uppercase. The exact manner that this is done depends on the current locale,
 // and may result in the number of characters in the string increasing. (For
@@ -3181,44 +2621,6 @@ func UTF8Strup(str string, len int) string {
 	_cret = C.g_utf8_strup(_arg1, _arg2)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(len)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-// UTF8Substring copies a substring out of a UTF-8 encoded string. The substring
-// will contain end_pos - start_pos characters.
-//
-// The function takes the following parameters:
-//
-//    - str: UTF-8 encoded string.
-//    - startPos: character offset within str.
-//    - endPos: another character offset within str.
-//
-// The function returns the following values:
-//
-//    - utf8: newly allocated copy of the requested substring. Free with g_free()
-//      when no longer needed.
-//
-func UTF8Substring(str string, startPos, endPos int32) string {
-	var _arg1 *C.gchar // out
-	var _arg2 C.glong  // out
-	var _arg3 C.glong  // out
-	var _cret *C.gchar // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.glong(startPos)
-	_arg3 = C.glong(endPos)
-
-	_cret = C.g_utf8_substring(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(startPos)
-	runtime.KeepAlive(endPos)
 
 	var _utf8 string // out
 
@@ -3409,47 +2811,6 @@ func UTF8Validate(str string) (string, bool) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
-	runtime.KeepAlive(str)
-
-	var _end string // out
-	var _ok bool    // out
-
-	if _arg3 != nil {
-		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _end, _ok
-}
-
-// UTF8ValidateLen validates UTF-8 encoded text.
-//
-// As with g_utf8_validate(), but max_len must be set, and hence this function
-// will always return FALSE if any of the bytes of str are nul.
-//
-// The function takes the following parameters:
-//
-//    - str: pointer to character data.
-//
-// The function returns the following values:
-//
-//    - end (optional): return location for end of valid data.
-//    - ok: TRUE if the text was valid UTF-8.
-//
-func UTF8ValidateLen(str string) (string, bool) {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gsize
-	var _arg3 *C.gchar   // in
-	var _cret C.gboolean // in
-
-	_arg2 = (C.gsize)(len(str))
-	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)
 
 	var _end string // out

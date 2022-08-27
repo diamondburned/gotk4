@@ -220,6 +220,13 @@ func (h *Header) SortedCallbackHeaders() []string {
 	}
 
 	sort.Strings(headers)
+	sort.SliceStable(headers, func(i, j int) bool {
+		if strings.HasPrefix(headers[i], "extern") {
+			return true
+		}
+		return false
+	})
+
 	return headers
 }
 

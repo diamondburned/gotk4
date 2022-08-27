@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// DataOutputStreamOverrider contains methods that are overridable.
-type DataOutputStreamOverrider interface {
+// DataOutputStreamOverrides contains methods that are overridable.
+type DataOutputStreamOverrides struct {
+}
+
+func defaultDataOutputStreamOverrides(v *DataOutputStream) DataOutputStreamOverrides {
+	return DataOutputStreamOverrides{}
 }
 
 // DataOutputStream: data output stream implements Stream and includes functions
@@ -48,25 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDataOutputStream,
-		GoType:        reflect.TypeOf((*DataOutputStream)(nil)),
-		InitClass:     initClassDataOutputStream,
-		FinalizeClass: finalizeClassDataOutputStream,
-	})
+	coreglib.RegisterClassInfo[*DataOutputStream, *DataOutputStreamClass, DataOutputStreamOverrides](
+		GTypeDataOutputStream,
+		initDataOutputStreamClass,
+		wrapDataOutputStream,
+		defaultDataOutputStreamOverrides,
+	)
 }
 
-func initClassDataOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitDataOutputStream(*DataOutputStreamClass) }); ok {
-		klass := (*DataOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.InitDataOutputStream(klass)
-	}
-}
-
-func finalizeClassDataOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDataOutputStream(*DataOutputStreamClass) }); ok {
-		klass := (*DataOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDataOutputStream(klass)
+func initDataOutputStreamClass(gclass unsafe.Pointer, overrides DataOutputStreamOverrides, classInitFunc func(*DataOutputStreamClass)) {
+	if classInitFunc != nil {
+		class := (*DataOutputStreamClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

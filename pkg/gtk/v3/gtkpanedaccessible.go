@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// PanedAccessibleOverrider contains methods that are overridable.
-type PanedAccessibleOverrider interface {
+// PanedAccessibleOverrides contains methods that are overridable.
+type PanedAccessibleOverrides struct {
+}
+
+func defaultPanedAccessibleOverrides(v *PanedAccessible) PanedAccessibleOverrides {
+	return PanedAccessibleOverrides{}
 }
 
 type PanedAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePanedAccessible,
-		GoType:        reflect.TypeOf((*PanedAccessible)(nil)),
-		InitClass:     initClassPanedAccessible,
-		FinalizeClass: finalizeClassPanedAccessible,
-	})
+	coreglib.RegisterClassInfo[*PanedAccessible, *PanedAccessibleClass, PanedAccessibleOverrides](
+		GTypePanedAccessible,
+		initPanedAccessibleClass,
+		wrapPanedAccessible,
+		defaultPanedAccessibleOverrides,
+	)
 }
 
-func initClassPanedAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitPanedAccessible(*PanedAccessibleClass) }); ok {
-		klass := (*PanedAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitPanedAccessible(klass)
-	}
-}
-
-func finalizeClassPanedAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePanedAccessible(*PanedAccessibleClass) }); ok {
-		klass := (*PanedAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePanedAccessible(klass)
+func initPanedAccessibleClass(gclass unsafe.Pointer, overrides PanedAccessibleOverrides, classInitFunc func(*PanedAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*PanedAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

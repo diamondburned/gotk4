@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// TextCellAccessibleOverrider contains methods that are overridable.
-type TextCellAccessibleOverrider interface {
+// TextCellAccessibleOverrides contains methods that are overridable.
+type TextCellAccessibleOverrides struct {
+}
+
+func defaultTextCellAccessibleOverrides(v *TextCellAccessible) TextCellAccessibleOverrides {
+	return TextCellAccessibleOverrides{}
 }
 
 type TextCellAccessible struct {
@@ -47,29 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextCellAccessible,
-		GoType:        reflect.TypeOf((*TextCellAccessible)(nil)),
-		InitClass:     initClassTextCellAccessible,
-		FinalizeClass: finalizeClassTextCellAccessible,
-	})
+	coreglib.RegisterClassInfo[*TextCellAccessible, *TextCellAccessibleClass, TextCellAccessibleOverrides](
+		GTypeTextCellAccessible,
+		initTextCellAccessibleClass,
+		wrapTextCellAccessible,
+		defaultTextCellAccessibleOverrides,
+	)
 }
 
-func initClassTextCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitTextCellAccessible(*TextCellAccessibleClass)
-	}); ok {
-		klass := (*TextCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitTextCellAccessible(klass)
-	}
-}
-
-func finalizeClassTextCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeTextCellAccessible(*TextCellAccessibleClass)
-	}); ok {
-		klass := (*TextCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextCellAccessible(klass)
+func initTextCellAccessibleClass(gclass unsafe.Pointer, overrides TextCellAccessibleOverrides, classInitFunc func(*TextCellAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*TextCellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

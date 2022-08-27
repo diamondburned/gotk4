@@ -325,22 +325,6 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 	return wrapIconTheme(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_IconTheme_ConnectChanged
-func _gotk4_gtk4_IconTheme_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted when the icon theme changes.
 //
 // This can happen becuase current icon theme is switched or because GTK detects

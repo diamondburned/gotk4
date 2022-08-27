@@ -9,7 +9,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -30,8 +29,12 @@ func init() {
 	})
 }
 
-// SettingsOverrider contains methods that are overridable.
-type SettingsOverrider interface {
+// SettingsOverrides contains methods that are overridable.
+type SettingsOverrides struct {
+}
+
+func defaultSettingsOverrides(v *Settings) SettingsOverrides {
+	return SettingsOverrides{}
 }
 
 // Settings provide a mechanism to share global settings between applications.
@@ -76,25 +79,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSettings,
-		GoType:        reflect.TypeOf((*Settings)(nil)),
-		InitClass:     initClassSettings,
-		FinalizeClass: finalizeClassSettings,
-	})
+	coreglib.RegisterClassInfo[*Settings, *SettingsClass, SettingsOverrides](
+		GTypeSettings,
+		initSettingsClass,
+		wrapSettings,
+		defaultSettingsOverrides,
+	)
 }
 
-func initClassSettings(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSettings(*SettingsClass) }); ok {
-		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
-		goval.InitSettings(klass)
-	}
-}
-
-func finalizeClassSettings(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSettings(*SettingsClass) }); ok {
-		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSettings(klass)
+func initSettingsClass(gclass unsafe.Pointer, overrides SettingsOverrides, classInitFunc func(*SettingsClass)) {
+	if classInitFunc != nil {
+		class := (*SettingsClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -109,27 +105,6 @@ func wrapSettings(obj *coreglib.Object) *Settings {
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	return wrapSettings(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// ResetProperty undoes the effect of calling g_object_set() to install an
-// application-specific value for a setting. After this call, the setting will
-// again follow the session-wide value for this setting.
-//
-// The function takes the following parameters:
-//
-//    - name of the setting to reset.
-//
-func (settings *Settings) ResetProperty(name string) {
-	var _arg0 *C.GtkSettings // out
-	var _arg1 *C.gchar       // out
-
-	_arg0 = (*C.GtkSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_settings_reset_property(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(name)
 }
 
 // SetDoubleProperty: deprecated: Use g_object_set() instead.
@@ -258,33 +233,6 @@ func SettingsGetDefault() *Settings {
 	if _cret != nil {
 		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 	}
-
-	return _settings
-}
-
-// SettingsGetForScreen gets the Settings object for screen, creating it if
-// necessary.
-//
-// The function takes the following parameters:
-//
-//    - screen: Screen.
-//
-// The function returns the following values:
-//
-//    - settings Settings object.
-//
-func SettingsGetForScreen(screen *gdk.Screen) *Settings {
-	var _arg1 *C.GdkScreen   // out
-	var _cret *C.GtkSettings // in
-
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	_cret = C.gtk_settings_get_for_screen(_arg1)
-	runtime.KeepAlive(screen)
-
-	var _settings *Settings // out
-
-	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _settings
 }

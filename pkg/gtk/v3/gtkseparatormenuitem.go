@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// SeparatorMenuItemOverrider contains methods that are overridable.
-type SeparatorMenuItemOverrider interface {
+// SeparatorMenuItemOverrides contains methods that are overridable.
+type SeparatorMenuItemOverrides struct {
+}
+
+func defaultSeparatorMenuItemOverrides(v *SeparatorMenuItem) SeparatorMenuItemOverrides {
+	return SeparatorMenuItemOverrides{}
 }
 
 // SeparatorMenuItem is a separator used to group items within a menu. It
@@ -52,25 +56,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSeparatorMenuItem,
-		GoType:        reflect.TypeOf((*SeparatorMenuItem)(nil)),
-		InitClass:     initClassSeparatorMenuItem,
-		FinalizeClass: finalizeClassSeparatorMenuItem,
-	})
+	coreglib.RegisterClassInfo[*SeparatorMenuItem, *SeparatorMenuItemClass, SeparatorMenuItemOverrides](
+		GTypeSeparatorMenuItem,
+		initSeparatorMenuItemClass,
+		wrapSeparatorMenuItem,
+		defaultSeparatorMenuItemOverrides,
+	)
 }
 
-func initClassSeparatorMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSeparatorMenuItem(*SeparatorMenuItemClass) }); ok {
-		klass := (*SeparatorMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.InitSeparatorMenuItem(klass)
-	}
-}
-
-func finalizeClassSeparatorMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSeparatorMenuItem(*SeparatorMenuItemClass) }); ok {
-		klass := (*SeparatorMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSeparatorMenuItem(klass)
+func initSeparatorMenuItemClass(gclass unsafe.Pointer, overrides SeparatorMenuItemOverrides, classInitFunc func(*SeparatorMenuItemClass)) {
+	if classInitFunc != nil {
+		class := (*SeparatorMenuItemClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

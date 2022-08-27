@@ -17,8 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_TextTagClass_event(GtkTextTag*, GObject*, GdkEvent*, GtkTextIter*);
 // extern gboolean _gotk4_gtk3_TextTag_ConnectEvent(gpointer, GObject, GdkEvent, GtkTextIter*, guintptr);
+// extern gboolean _gotk4_gtk3_TextTagClass_event(GtkTextTag*, GObject*, GdkEvent*, GtkTextIter*);
+// gboolean _gotk4_gtk3_TextTag_virtual_event(void* fnptr, GtkTextTag* arg0, GObject* arg1, GdkEvent* arg2, GtkTextIter* arg3) {
+//   return ((gboolean (*)(GtkTextTag*, GObject*, GdkEvent*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -32,8 +35,8 @@ func init() {
 	})
 }
 
-// TextTagOverrider contains methods that are overridable.
-type TextTagOverrider interface {
+// TextTagOverrides contains methods that are overridable.
+type TextTagOverrides struct {
 	// Event emits the “event” signal on the TextTag.
 	//
 	// The function takes the following parameters:
@@ -46,7 +49,13 @@ type TextTagOverrider interface {
 	//
 	//    - ok: result of signal emission (whether the event was handled).
 	//
-	Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
+	Event func(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
+}
+
+func defaultTextTagOverrides(v *TextTag) TextTagOverrides {
+	return TextTagOverrides{
+		Event: v.event,
+	}
 }
 
 // TextTag: you may wish to begin by reading the [text widget conceptual
@@ -73,62 +82,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextTag,
-		GoType:        reflect.TypeOf((*TextTag)(nil)),
-		InitClass:     initClassTextTag,
-		FinalizeClass: finalizeClassTextTag,
-	})
+	coreglib.RegisterClassInfo[*TextTag, *TextTagClass, TextTagOverrides](
+		GTypeTextTag,
+		initTextTagClass,
+		wrapTextTag,
+		defaultTextTagOverrides,
+	)
 }
 
-func initClassTextTag(gclass unsafe.Pointer, goval any) {
+func initTextTagClass(gclass unsafe.Pointer, overrides TextTagOverrides, classInitFunc func(*TextTagClass)) {
+	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTextTag))))
 
-	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
-	}); ok {
+	if overrides.Event != nil {
 		pclass.event = (*[0]byte)(C._gotk4_gtk3_TextTagClass_event)
 	}
-	if goval, ok := goval.(interface{ InitTextTag(*TextTagClass) }); ok {
-		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
-		goval.InitTextTag(klass)
+
+	if classInitFunc != nil {
+		class := (*TextTagClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassTextTag(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextTag(*TextTagClass) }); ok {
-		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextTag(klass)
-	}
-}
-
-//export _gotk4_gtk3_TextTagClass_event
-func _gotk4_gtk3_TextTagClass_event(arg0 *C.GtkTextTag, arg1 *C.GObject, arg2 *C.GdkEvent, arg3 *C.GtkTextIter) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
-	})
-
-	var _eventObject *coreglib.Object // out
-	var _event *gdk.Event             // out
-	var _iter *TextIter               // out
-
-	_eventObject = coreglib.Take(unsafe.Pointer(arg1))
-	{
-		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-		v = gdk.CopyEventer(v)
-		_event = v
-	}
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	ok := iface.Event(_eventObject, _event, _iter)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 func wrapTextTag(obj *coreglib.Object) *TextTag {
@@ -139,40 +111,6 @@ func wrapTextTag(obj *coreglib.Object) *TextTag {
 
 func marshalTextTag(p uintptr) (interface{}, error) {
 	return wrapTextTag(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_TextTag_ConnectEvent
-func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 C.GObject, arg2 C.GdkEvent, arg3 *C.GtkTextIter, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(object *coreglib.Object, event *gdk.Event, iter *TextIter) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object *coreglib.Object, event *gdk.Event, iter *TextIter) (ok bool))
-	}
-
-	var _object *coreglib.Object // out
-	var _event *gdk.Event        // out
-	var _iter *TextIter          // out
-
-	_object = coreglib.Take(unsafe.Pointer(&arg1))
-	{
-		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg2))))
-		v = gdk.CopyEventer(v)
-		_event = v
-	}
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	ok := f(_object, _event, _iter)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectEvent signal is emitted when an event occurs on a region of the buffer
@@ -209,30 +147,6 @@ func NewTextTag(name string) *TextTag {
 	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
-}
-
-// Changed emits the TextTagTable::tag-changed signal on the TextTagTable where
-// the tag is included.
-//
-// The signal is already emitted when setting a TextTag property. This function
-// is useful for a TextTag subclass.
-//
-// The function takes the following parameters:
-//
-//    - sizeChanged: whether the change affects the TextView layout.
-//
-func (tag *TextTag) Changed(sizeChanged bool) {
-	var _arg0 *C.GtkTextTag // out
-	var _arg1 C.gboolean    // out
-
-	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	if sizeChanged {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_text_tag_changed(_arg0, _arg1)
-	runtime.KeepAlive(tag)
-	runtime.KeepAlive(sizeChanged)
 }
 
 // Event emits the “event” signal on the TextTag.
@@ -321,6 +235,48 @@ func (tag *TextTag) SetPriority(priority int) {
 	C.gtk_text_tag_set_priority(_arg0, _arg1)
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)
+}
+
+// Event emits the “event” signal on the TextTag.
+//
+// The function takes the following parameters:
+//
+//    - eventObject: object that received the event, such as a widget.
+//    - event: event.
+//    - iter: location where the event was received.
+//
+// The function returns the following values:
+//
+//    - ok: result of signal emission (whether the event was handled).
+//
+func (tag *TextTag) event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool {
+	gclass := (*C.GtkTextTagClass)(coreglib.PeekParentClass(tag))
+	fnarg := gclass.event
+
+	var _arg0 *C.GtkTextTag  // out
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GdkEvent    // out
+	var _arg3 *C.GtkTextIter // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(eventObject.Native()))
+	_arg2 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C._gotk4_gtk3_TextTag_virtual_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(eventObject)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // TextTagClass: instance of this type is always passed by reference.

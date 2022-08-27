@@ -4,12 +4,10 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -31,8 +29,12 @@ func init() {
 	})
 }
 
-// MountOperationOverrider contains methods that are overridable.
-type MountOperationOverrider interface {
+// MountOperationOverrides contains methods that are overridable.
+type MountOperationOverrides struct {
+}
+
+func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
+	return MountOperationOverrides{}
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor
@@ -47,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMountOperation,
-		GoType:        reflect.TypeOf((*MountOperation)(nil)),
-		InitClass:     initClassMountOperation,
-		FinalizeClass: finalizeClassMountOperation,
-	})
+	coreglib.RegisterClassInfo[*MountOperation, *MountOperationClass, MountOperationOverrides](
+		GTypeMountOperation,
+		initMountOperationClass,
+		wrapMountOperation,
+		defaultMountOperationOverrides,
+	)
 }
 
-func initClassMountOperation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMountOperation(*MountOperationClass) }); ok {
-		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
-		goval.InitMountOperation(klass)
-	}
-}
-
-func finalizeClassMountOperation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMountOperation(*MountOperationClass) }); ok {
-		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMountOperation(klass)
+func initMountOperationClass(gclass unsafe.Pointer, overrides MountOperationOverrides, classInitFunc func(*MountOperationClass)) {
+	if classInitFunc != nil {
+		class := (*MountOperationClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -79,146 +74,6 @@ func wrapMountOperation(obj *coreglib.Object) *MountOperation {
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
 	return wrapMountOperation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewMountOperation creates a new MountOperation.
-//
-// The function takes the following parameters:
-//
-//    - parent (optional): transient parent of the window, or NULL.
-//
-// The function returns the following values:
-//
-//    - mountOperation: new MountOperation.
-//
-func NewMountOperation(parent *Window) *MountOperation {
-	var _arg1 *C.GtkWindow       // out
-	var _cret *C.GMountOperation // in
-
-	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-
-	_cret = C.gtk_mount_operation_new(_arg1)
-	runtime.KeepAlive(parent)
-
-	var _mountOperation *MountOperation // out
-
-	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _mountOperation
-}
-
-// Parent gets the transient parent used by the MountOperation.
-//
-// The function returns the following values:
-//
-//    - window: transient parent for windows shown by op.
-//
-func (op *MountOperation) Parent() *Window {
-	var _arg0 *C.GtkMountOperation // out
-	var _cret *C.GtkWindow         // in
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	_cret = C.gtk_mount_operation_get_parent(_arg0)
-	runtime.KeepAlive(op)
-
-	var _window *Window // out
-
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _window
-}
-
-// Screen gets the screen on which windows of the MountOperation will be shown.
-//
-// The function returns the following values:
-//
-//    - screen on which windows of op are shown.
-//
-func (op *MountOperation) Screen() *gdk.Screen {
-	var _arg0 *C.GtkMountOperation // out
-	var _cret *C.GdkScreen         // in
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	_cret = C.gtk_mount_operation_get_screen(_arg0)
-	runtime.KeepAlive(op)
-
-	var _screen *gdk.Screen // out
-
-	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_screen = &gdk.Screen{
-			Object: obj,
-		}
-	}
-
-	return _screen
-}
-
-// IsShowing returns whether the MountOperation is currently displaying a
-// window.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if op is currently displaying a window.
-//
-func (op *MountOperation) IsShowing() bool {
-	var _arg0 *C.GtkMountOperation // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	_cret = C.gtk_mount_operation_is_showing(_arg0)
-	runtime.KeepAlive(op)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetParent sets the transient parent for windows shown by the MountOperation.
-//
-// The function takes the following parameters:
-//
-//    - parent (optional): transient parent of the window, or NULL.
-//
-func (op *MountOperation) SetParent(parent *Window) {
-	var _arg0 *C.GtkMountOperation // out
-	var _arg1 *C.GtkWindow         // out
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-
-	C.gtk_mount_operation_set_parent(_arg0, _arg1)
-	runtime.KeepAlive(op)
-	runtime.KeepAlive(parent)
-}
-
-// SetScreen sets the screen to show windows of the MountOperation on.
-//
-// The function takes the following parameters:
-//
-//    - screen: Screen.
-//
-func (op *MountOperation) SetScreen(screen *gdk.Screen) {
-	var _arg0 *C.GtkMountOperation // out
-	var _arg1 *C.GdkScreen         // out
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	C.gtk_mount_operation_set_screen(_arg0, _arg1)
-	runtime.KeepAlive(op)
-	runtime.KeepAlive(screen)
 }
 
 // MountOperationClass: instance of this type is always passed by reference.

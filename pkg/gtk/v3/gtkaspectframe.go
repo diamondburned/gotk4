@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// AspectFrameOverrider contains methods that are overridable.
-type AspectFrameOverrider interface {
+// AspectFrameOverrides contains methods that are overridable.
+type AspectFrameOverrides struct {
+}
+
+func defaultAspectFrameOverrides(v *AspectFrame) AspectFrameOverrides {
+	return AspectFrameOverrides{}
 }
 
 // AspectFrame is useful when you want pack a widget so that it can resize but
@@ -54,25 +58,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeAspectFrame,
-		GoType:        reflect.TypeOf((*AspectFrame)(nil)),
-		InitClass:     initClassAspectFrame,
-		FinalizeClass: finalizeClassAspectFrame,
-	})
+	coreglib.RegisterClassInfo[*AspectFrame, *AspectFrameClass, AspectFrameOverrides](
+		GTypeAspectFrame,
+		initAspectFrameClass,
+		wrapAspectFrame,
+		defaultAspectFrameOverrides,
+	)
 }
 
-func initClassAspectFrame(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitAspectFrame(*AspectFrameClass) }); ok {
-		klass := (*AspectFrameClass)(gextras.NewStructNative(gclass))
-		goval.InitAspectFrame(klass)
-	}
-}
-
-func finalizeClassAspectFrame(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeAspectFrame(*AspectFrameClass) }); ok {
-		klass := (*AspectFrameClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeAspectFrame(klass)
+func initAspectFrameClass(gclass unsafe.Pointer, overrides AspectFrameOverrides, classInitFunc func(*AspectFrameClass)) {
+	if classInitFunc != nil {
+		class := (*AspectFrameClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

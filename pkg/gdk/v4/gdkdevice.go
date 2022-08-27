@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_Device_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, GdkDeviceTool*, guintptr);
+// extern void _gotk4_gdk4_Device_ConnectChanged(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -125,22 +125,6 @@ func BaseDevice(obj Devicer) *Device {
 	return obj.baseDevice()
 }
 
-//export _gotk4_gdk4_Device_ConnectChanged
-func _gotk4_gdk4_Device_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted either when the the number of either axes or keys
 // changes.
 //
@@ -150,26 +134,6 @@ func _gotk4_gdk4_Device_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 // the axes and keys on the new physical device.
 func (device *Device) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(device, "changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectChanged), f)
-}
-
-//export _gotk4_gdk4_Device_ConnectToolChanged
-func _gotk4_gdk4_Device_ConnectToolChanged(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
-	var f func(tool *DeviceTool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tool *DeviceTool))
-	}
-
-	var _tool *DeviceTool // out
-
-	_tool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_tool)
 }
 
 // ConnectToolChanged is emitted on pen/eraser devices whenever tools enter or
@@ -561,32 +525,6 @@ func (device *Device) SurfaceAtPosition() (winX, winY float64, surface Surfacer)
 	}
 
 	return _winX, _winY, _surface
-}
-
-// Timestamp returns the timestamp of the last activity for this device.
-//
-// In practice, this means the timestamp of the last event that was received
-// from the OS for this device. (GTK may occasionally produce events for a
-// device that are not received from the OS, and will not update the timestamp).
-//
-// The function returns the following values:
-//
-//    - guint32: timestamp of the last activity for this device.
-//
-func (device *Device) Timestamp() uint32 {
-	var _arg0 *C.GdkDevice // out
-	var _cret C.guint32    // in
-
-	_arg0 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	_cret = C.gdk_device_get_timestamp(_arg0)
-	runtime.KeepAlive(device)
-
-	var _guint32 uint32 // out
-
-	_guint32 = uint32(_cret)
-
-	return _guint32
 }
 
 // VendorID returns the vendor ID of this device.

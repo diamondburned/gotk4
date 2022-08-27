@@ -16,12 +16,30 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_MediaStreamClass_play(GtkMediaStream*);
-// extern void _gotk4_gtk4_MediaStreamClass_pause(GtkMediaStream*);
-// extern void _gotk4_gtk4_MediaStreamClass_realize(GtkMediaStream*, GdkSurface*);
-// extern void _gotk4_gtk4_MediaStreamClass_seek(GtkMediaStream*, gint64);
-// extern void _gotk4_gtk4_MediaStreamClass_unrealize(GtkMediaStream*, GdkSurface*);
 // extern void _gotk4_gtk4_MediaStreamClass_update_audio(GtkMediaStream*, gboolean, double);
+// extern void _gotk4_gtk4_MediaStreamClass_unrealize(GtkMediaStream*, GdkSurface*);
+// extern void _gotk4_gtk4_MediaStreamClass_seek(GtkMediaStream*, gint64);
+// extern void _gotk4_gtk4_MediaStreamClass_realize(GtkMediaStream*, GdkSurface*);
+// extern void _gotk4_gtk4_MediaStreamClass_pause(GtkMediaStream*);
+// extern gboolean _gotk4_gtk4_MediaStreamClass_play(GtkMediaStream*);
+// gboolean _gotk4_gtk4_MediaStream_virtual_play(void* fnptr, GtkMediaStream* arg0) {
+//   return ((gboolean (*)(GtkMediaStream*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_MediaStream_virtual_pause(void* fnptr, GtkMediaStream* arg0) {
+//   ((void (*)(GtkMediaStream*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_MediaStream_virtual_realize(void* fnptr, GtkMediaStream* arg0, GdkSurface* arg1) {
+//   ((void (*)(GtkMediaStream*, GdkSurface*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_MediaStream_virtual_seek(void* fnptr, GtkMediaStream* arg0, gint64 arg1) {
+//   ((void (*)(GtkMediaStream*, gint64))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_MediaStream_virtual_unrealize(void* fnptr, GtkMediaStream* arg0, GdkSurface* arg1) {
+//   ((void (*)(GtkMediaStream*, GdkSurface*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_MediaStream_virtual_update_audio(void* fnptr, GtkMediaStream* arg0, gboolean arg1, double arg2) {
+//   ((void (*)(GtkMediaStream*, gboolean, double))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -35,15 +53,15 @@ func init() {
 	})
 }
 
-// MediaStreamOverrider contains methods that are overridable.
-type MediaStreamOverrider interface {
+// MediaStreamOverrides contains methods that are overridable.
+type MediaStreamOverrides struct {
 	// Pause pauses playback of the stream.
 	//
 	// If the stream is not playing, do nothing.
-	Pause()
+	Pause func()
 	// The function returns the following values:
 	//
-	Play() bool
+	Play func() bool
 	// Realize: called by users to attach the media stream to a GdkSurface they
 	// manage.
 	//
@@ -65,7 +83,7 @@ type MediaStreamOverrider interface {
 	//
 	//    - surface: GdkSurface.
 	//
-	Realize(surface gdk.Surfacer)
+	Realize func(surface gdk.Surfacer)
 	// Seek: start a seek operation on self to timestamp.
 	//
 	// If timestamp is out of range, it will be clamped.
@@ -80,7 +98,7 @@ type MediaStreamOverrider interface {
 	//
 	//    - timestamp to seek to.
 	//
-	Seek(timestamp int64)
+	Seek func(timestamp int64)
 	// Unrealize undoes a previous call to gtk_media_stream_realize().
 	//
 	// This causes the stream to release all resources it had allocated from
@@ -90,13 +108,24 @@ type MediaStreamOverrider interface {
 	//
 	//    - surface: GdkSurface the stream was realized with.
 	//
-	Unrealize(surface gdk.Surfacer)
+	Unrealize func(surface gdk.Surfacer)
 	// The function takes the following parameters:
 	//
 	//    - muted
 	//    - volume
 	//
-	UpdateAudio(muted bool, volume float64)
+	UpdateAudio func(muted bool, volume float64)
+}
+
+func defaultMediaStreamOverrides(v *MediaStream) MediaStreamOverrides {
+	return MediaStreamOverrides{
+		Pause:       v.pause,
+		Play:        v.play,
+		Realize:     v.realize,
+		Seek:        v.seek,
+		Unrealize:   v.unrealize,
+		UpdateAudio: v.updateAudio,
+	}
 }
 
 // MediaStream: GtkMediaStream is the integration point for media playback
@@ -135,162 +164,45 @@ type MediaStreamer interface {
 var _ MediaStreamer = (*MediaStream)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMediaStream,
-		GoType:        reflect.TypeOf((*MediaStream)(nil)),
-		InitClass:     initClassMediaStream,
-		FinalizeClass: finalizeClassMediaStream,
-	})
+	coreglib.RegisterClassInfo[*MediaStream, *MediaStreamClass, MediaStreamOverrides](
+		GTypeMediaStream,
+		initMediaStreamClass,
+		wrapMediaStream,
+		defaultMediaStreamOverrides,
+	)
 }
 
-func initClassMediaStream(gclass unsafe.Pointer, goval any) {
+func initMediaStreamClass(gclass unsafe.Pointer, overrides MediaStreamOverrides, classInitFunc func(*MediaStreamClass)) {
+	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeMediaStream))))
 
-	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Pause() }); ok {
+	if overrides.Pause != nil {
 		pclass.pause = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_pause)
 	}
 
-	if _, ok := goval.(interface{ Play() bool }); ok {
+	if overrides.Play != nil {
 		pclass.play = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_play)
 	}
 
-	if _, ok := goval.(interface{ Realize(surface gdk.Surfacer) }); ok {
+	if overrides.Realize != nil {
 		pclass.realize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_realize)
 	}
 
-	if _, ok := goval.(interface{ Seek(timestamp int64) }); ok {
+	if overrides.Seek != nil {
 		pclass.seek = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_seek)
 	}
 
-	if _, ok := goval.(interface{ Unrealize(surface gdk.Surfacer) }); ok {
+	if overrides.Unrealize != nil {
 		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_unrealize)
 	}
 
-	if _, ok := goval.(interface {
-		UpdateAudio(muted bool, volume float64)
-	}); ok {
+	if overrides.UpdateAudio != nil {
 		pclass.update_audio = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_update_audio)
 	}
-	if goval, ok := goval.(interface{ InitMediaStream(*MediaStreamClass) }); ok {
-		klass := (*MediaStreamClass)(gextras.NewStructNative(gclass))
-		goval.InitMediaStream(klass)
+
+	if classInitFunc != nil {
+		class := (*MediaStreamClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassMediaStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMediaStream(*MediaStreamClass) }); ok {
-		klass := (*MediaStreamClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMediaStream(klass)
-	}
-}
-
-//export _gotk4_gtk4_MediaStreamClass_pause
-func _gotk4_gtk4_MediaStreamClass_pause(arg0 *C.GtkMediaStream) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Pause() })
-
-	iface.Pause()
-}
-
-//export _gotk4_gtk4_MediaStreamClass_play
-func _gotk4_gtk4_MediaStreamClass_play(arg0 *C.GtkMediaStream) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Play() bool })
-
-	ok := iface.Play()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_MediaStreamClass_realize
-func _gotk4_gtk4_MediaStreamClass_realize(arg0 *C.GtkMediaStream, arg1 *C.GdkSurface) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Realize(surface gdk.Surfacer) })
-
-	var _surface gdk.Surfacer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Surfacer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Surfacer)
-			return ok
-		})
-		rv, ok := casted.(gdk.Surfacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
-		}
-		_surface = rv
-	}
-
-	iface.Realize(_surface)
-}
-
-//export _gotk4_gtk4_MediaStreamClass_seek
-func _gotk4_gtk4_MediaStreamClass_seek(arg0 *C.GtkMediaStream, arg1 C.gint64) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Seek(timestamp int64) })
-
-	var _timestamp int64 // out
-
-	_timestamp = int64(arg1)
-
-	iface.Seek(_timestamp)
-}
-
-//export _gotk4_gtk4_MediaStreamClass_unrealize
-func _gotk4_gtk4_MediaStreamClass_unrealize(arg0 *C.GtkMediaStream, arg1 *C.GdkSurface) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Unrealize(surface gdk.Surfacer) })
-
-	var _surface gdk.Surfacer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Surfacer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Surfacer)
-			return ok
-		})
-		rv, ok := casted.(gdk.Surfacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
-		}
-		_surface = rv
-	}
-
-	iface.Unrealize(_surface)
-}
-
-//export _gotk4_gtk4_MediaStreamClass_update_audio
-func _gotk4_gtk4_MediaStreamClass_update_audio(arg0 *C.GtkMediaStream, arg1 C.gboolean, arg2 C.double) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		UpdateAudio(muted bool, volume float64)
-	})
-
-	var _muted bool     // out
-	var _volume float64 // out
-
-	if arg1 != 0 {
-		_muted = true
-	}
-	_volume = float64(arg2)
-
-	iface.UpdateAudio(_muted, _volume)
 }
 
 func wrapMediaStream(obj *coreglib.Object) *MediaStream {
@@ -1011,6 +923,158 @@ func (self *MediaStream) Update(timestamp int64) {
 	C.gtk_media_stream_update(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(timestamp)
+}
+
+// Pause pauses playback of the stream.
+//
+// If the stream is not playing, do nothing.
+func (self *MediaStream) pause() {
+	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.pause
+
+	var _arg0 *C.GtkMediaStream // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk4_MediaStream_virtual_pause(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
+}
+
+// The function returns the following values:
+//
+func (self *MediaStream) play() bool {
+	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.play
+
+	var _arg0 *C.GtkMediaStream // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C._gotk4_gtk4_MediaStream_virtual_play(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Realize: called by users to attach the media stream to a GdkSurface they
+// manage.
+//
+// The stream can then access the resources of surface for its rendering
+// purposes. In particular, media streams might want to create a GdkGLContext or
+// sync to the GdkFrameClock.
+//
+// Whoever calls this function is responsible for calling
+// gtk.MediaStream.Unrealize() before either the stream or surface get
+// destroyed.
+//
+// Multiple calls to this function may happen from different users of the video,
+// even with the same surface. Each of these calls must be followed by its own
+// call to gtk.MediaStream.Unrealize().
+//
+// It is not required to call this function to make a media stream work.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface.
+//
+func (self *MediaStream) realize(surface gdk.Surfacer) {
+	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.realize
+
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 *C.GdkSurface     // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+
+	C._gotk4_gtk4_MediaStream_virtual_realize(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(surface)
+}
+
+// Seek: start a seek operation on self to timestamp.
+//
+// If timestamp is out of range, it will be clamped.
+//
+// Seek operations may not finish instantly. While a seek operation is in
+// process, the gtk.MediaStream:seeking property will be set.
+//
+// When calling gtk_media_stream_seek() during an ongoing seek operation, the
+// new seek will override any pending seek.
+//
+// The function takes the following parameters:
+//
+//    - timestamp to seek to.
+//
+func (self *MediaStream) seek(timestamp int64) {
+	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.seek
+
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 C.gint64          // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gint64(timestamp)
+
+	C._gotk4_gtk4_MediaStream_virtual_seek(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(timestamp)
+}
+
+// Unrealize undoes a previous call to gtk_media_stream_realize().
+//
+// This causes the stream to release all resources it had allocated from
+// surface.
+//
+// The function takes the following parameters:
+//
+//    - surface: GdkSurface the stream was realized with.
+//
+func (self *MediaStream) unrealize(surface gdk.Surfacer) {
+	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.unrealize
+
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 *C.GdkSurface     // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+
+	C._gotk4_gtk4_MediaStream_virtual_unrealize(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(surface)
+}
+
+// The function takes the following parameters:
+//
+//    - muted
+//    - volume
+//
+func (self *MediaStream) updateAudio(muted bool, volume float64) {
+	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.update_audio
+
+	var _arg0 *C.GtkMediaStream // out
+	var _arg1 C.gboolean        // out
+	var _arg2 C.double          // out
+
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if muted {
+		_arg1 = C.TRUE
+	}
+	_arg2 = C.double(volume)
+
+	C._gotk4_gtk4_MediaStream_virtual_update_audio(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(muted)
+	runtime.KeepAlive(volume)
 }
 
 // MediaStreamClass: instance of this type is always passed by reference.

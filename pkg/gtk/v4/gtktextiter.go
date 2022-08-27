@@ -96,30 +96,6 @@ func (t TextSearchFlags) Has(other TextSearchFlags) bool {
 // gtk_text_iter_forward_find_char() and gtk_text_iter_backward_find_char().
 type TextCharPredicate func(ch uint32) (ok bool)
 
-//export _gotk4_gtk4_TextCharPredicate
-func _gotk4_gtk4_TextCharPredicate(arg1 C.gunichar, arg2 C.gpointer) (cret C.gboolean) {
-	var fn TextCharPredicate
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TextCharPredicate)
-	}
-
-	var _ch uint32 // out
-
-	_ch = uint32(arg1)
-
-	ok := fn(_ch)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // TextIter: iterator for the contents of a GtkTextBuffer.
 //
 // You may wish to begin by reading the text widget conceptual overview

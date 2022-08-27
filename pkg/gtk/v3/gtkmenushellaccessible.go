@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// MenuShellAccessibleOverrider contains methods that are overridable.
-type MenuShellAccessibleOverrider interface {
+// MenuShellAccessibleOverrides contains methods that are overridable.
+type MenuShellAccessibleOverrides struct {
+}
+
+func defaultMenuShellAccessibleOverrides(v *MenuShellAccessible) MenuShellAccessibleOverrides {
+	return MenuShellAccessibleOverrides{}
 }
 
 type MenuShellAccessible struct {
@@ -45,29 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMenuShellAccessible,
-		GoType:        reflect.TypeOf((*MenuShellAccessible)(nil)),
-		InitClass:     initClassMenuShellAccessible,
-		FinalizeClass: finalizeClassMenuShellAccessible,
-	})
+	coreglib.RegisterClassInfo[*MenuShellAccessible, *MenuShellAccessibleClass, MenuShellAccessibleOverrides](
+		GTypeMenuShellAccessible,
+		initMenuShellAccessibleClass,
+		wrapMenuShellAccessible,
+		defaultMenuShellAccessibleOverrides,
+	)
 }
 
-func initClassMenuShellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitMenuShellAccessible(*MenuShellAccessibleClass)
-	}); ok {
-		klass := (*MenuShellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitMenuShellAccessible(klass)
-	}
-}
-
-func finalizeClassMenuShellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeMenuShellAccessible(*MenuShellAccessibleClass)
-	}); ok {
-		klass := (*MenuShellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMenuShellAccessible(klass)
+func initMenuShellAccessibleClass(gclass unsafe.Pointer, overrides MenuShellAccessibleOverrides, classInitFunc func(*MenuShellAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*MenuShellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

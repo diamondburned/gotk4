@@ -17,10 +17,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_SwitchClass_state_set(GtkSwitch*, gboolean);
-// extern gboolean _gotk4_gtk3_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
-// extern void _gotk4_gtk3_SwitchClass_activate(GtkSwitch*);
 // extern void _gotk4_gtk3_Switch_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_SwitchClass_activate(GtkSwitch*);
+// extern gboolean _gotk4_gtk3_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk3_SwitchClass_state_set(GtkSwitch*, gboolean);
+// gboolean _gotk4_gtk3_Switch_virtual_state_set(void* fnptr, GtkSwitch* arg0, gboolean arg1) {
+//   return ((gboolean (*)(GtkSwitch*, gboolean))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Switch_virtual_activate(void* fnptr, GtkSwitch* arg0) {
+//   ((void (*)(GtkSwitch*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -34,14 +40,21 @@ func init() {
 	})
 }
 
-// SwitchOverrider contains methods that are overridable.
-type SwitchOverrider interface {
-	Activate()
+// SwitchOverrides contains methods that are overridable.
+type SwitchOverrides struct {
+	Activate func()
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	StateSet(state bool) bool
+	StateSet func(state bool) bool
+}
+
+func defaultSwitchOverrides(v *Switch) SwitchOverrides {
+	return SwitchOverrides{
+		Activate: v.activate,
+		StateSet: v.stateSet,
+	}
 }
 
 // Switch is a widget that has two states: on or off. The user can control which
@@ -72,64 +85,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSwitch,
-		GoType:        reflect.TypeOf((*Switch)(nil)),
-		InitClass:     initClassSwitch,
-		FinalizeClass: finalizeClassSwitch,
-	})
+	coreglib.RegisterClassInfo[*Switch, *SwitchClass, SwitchOverrides](
+		GTypeSwitch,
+		initSwitchClass,
+		wrapSwitch,
+		defaultSwitchOverrides,
+	)
 }
 
-func initClassSwitch(gclass unsafe.Pointer, goval any) {
+func initSwitchClass(gclass unsafe.Pointer, overrides SwitchOverrides, classInitFunc func(*SwitchClass)) {
+	pclass := (*C.GtkSwitchClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSwitch))))
 
-	pclass := (*C.GtkSwitchClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Activate() }); ok {
+	if overrides.Activate != nil {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_SwitchClass_activate)
 	}
 
-	if _, ok := goval.(interface{ StateSet(state bool) bool }); ok {
+	if overrides.StateSet != nil {
 		pclass.state_set = (*[0]byte)(C._gotk4_gtk3_SwitchClass_state_set)
 	}
-	if goval, ok := goval.(interface{ InitSwitch(*SwitchClass) }); ok {
-		klass := (*SwitchClass)(gextras.NewStructNative(gclass))
-		goval.InitSwitch(klass)
+
+	if classInitFunc != nil {
+		class := (*SwitchClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassSwitch(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSwitch(*SwitchClass) }); ok {
-		klass := (*SwitchClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSwitch(klass)
-	}
-}
-
-//export _gotk4_gtk3_SwitchClass_activate
-func _gotk4_gtk3_SwitchClass_activate(arg0 *C.GtkSwitch) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Activate() })
-
-	iface.Activate()
-}
-
-//export _gotk4_gtk3_SwitchClass_state_set
-func _gotk4_gtk3_SwitchClass_state_set(arg0 *C.GtkSwitch, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ StateSet(state bool) bool })
-
-	var _state bool // out
-
-	if arg1 != 0 {
-		_state = true
-	}
-
-	ok := iface.StateSet(_state)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 func wrapSwitch(obj *coreglib.Object) *Switch {
@@ -171,55 +149,11 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return wrapSwitch(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Switch_ConnectActivate
-func _gotk4_gtk3_Switch_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate signal on GtkSwitch is an action signal and emitting it
 // causes the switch to animate. Applications should never connect to this
 // signal, but use the notify::active signal.
 func (sw *Switch) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(sw, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Switch_ConnectActivate), f)
-}
-
-//export _gotk4_gtk3_Switch_ConnectStateSet
-func _gotk4_gtk3_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(state bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(state bool) (ok bool))
-	}
-
-	var _state bool // out
-
-	if arg1 != 0 {
-		_state = true
-	}
-
-	ok := f(_state)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectStateSet signal on GtkSwitch is emitted to change the underlying
@@ -238,116 +172,46 @@ func (sw *Switch) ConnectStateSet(f func(state bool) (ok bool)) coreglib.SignalH
 	return coreglib.ConnectGeneratedClosure(sw, "state-set", false, unsafe.Pointer(C._gotk4_gtk3_Switch_ConnectStateSet), f)
 }
 
-// NewSwitch creates a new Switch widget.
-//
-// The function returns the following values:
-//
-//    - _switch: newly created Switch instance.
-//
-func NewSwitch() *Switch {
-	var _cret *C.GtkWidget // in
+func (sw *Switch) activate() {
+	gclass := (*C.GtkSwitchClass)(coreglib.PeekParentClass(sw))
+	fnarg := gclass.activate
 
-	_cret = C.gtk_switch_new()
-
-	var __switch *Switch // out
-
-	__switch = wrapSwitch(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return __switch
-}
-
-// Active gets whether the Switch is in its “on” or “off” state.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the Switch is active, and FALSE otherwise.
-//
-func (sw *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
-	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(coreglib.InternObject(sw).Native()))
 
-	_cret = C.gtk_switch_get_active(_arg0)
+	C._gotk4_gtk3_Switch_virtual_activate(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(sw)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
-// State gets the underlying state of the Switch.
-//
-// The function returns the following values:
-//
-//    - ok: underlying state.
-//
-func (sw *Switch) State() bool {
-	var _arg0 *C.GtkSwitch // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(coreglib.InternObject(sw).Native()))
-
-	_cret = C.gtk_switch_get_state(_arg0)
-	runtime.KeepAlive(sw)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetActive changes the state of sw to the desired one.
-//
 // The function takes the following parameters:
 //
-//    - isActive: TRUE if sw should be active, and FALSE otherwise.
+// The function returns the following values:
 //
-func (sw *Switch) SetActive(isActive bool) {
+func (sw *Switch) stateSet(state bool) bool {
+	gclass := (*C.GtkSwitchClass)(coreglib.PeekParentClass(sw))
+	fnarg := gclass.state_set
+
 	var _arg0 *C.GtkSwitch // out
 	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(coreglib.InternObject(sw).Native()))
-	if isActive {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_switch_set_active(_arg0, _arg1)
-	runtime.KeepAlive(sw)
-	runtime.KeepAlive(isActive)
-}
-
-// SetState sets the underlying state of the Switch.
-//
-// Normally, this is the same as Switch:active, unless the switch is set up for
-// delayed state changes. This function is typically called from a
-// Switch::state-set signal handler.
-//
-// See Switch::state-set for details.
-//
-// The function takes the following parameters:
-//
-//    - state: new state.
-//
-func (sw *Switch) SetState(state bool) {
-	var _arg0 *C.GtkSwitch // out
-	var _arg1 C.gboolean   // out
+	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(coreglib.InternObject(sw).Native()))
 	if state {
 		_arg1 = C.TRUE
 	}
 
-	C.gtk_switch_set_state(_arg0, _arg1)
+	_cret = C._gotk4_gtk3_Switch_virtual_state_set(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(sw)
 	runtime.KeepAlive(state)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SwitchClass: instance of this type is always passed by reference.

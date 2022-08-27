@@ -23,6 +23,14 @@ type FileGenerator interface {
 	types.FileGenerator
 }
 
+// CallablePreamble returns CIdentifier or fails.
+func CallablePreamble(g *Generator, sect *pen.BlockSection) (string, bool) {
+	if g.CIdentifier == "" {
+		return "", false
+	}
+	return "C." + g.CIdentifier, true
+}
+
 // Generator is a generator instance that generates a GIR callable.
 type Generator struct {
 	*gir.CallableAttrs
@@ -33,10 +41,12 @@ type Generator struct {
 	constructor bool
 	Converts    []string
 
-	Conv    *typeconv.Converter
-	Results []typeconv.ValueConverted
-	GoArgs  pen.Joints
-	GoRets  pen.Joints
+	Preamble  func(g *Generator, sect *pen.BlockSection) (call string, ok bool)
+	ExtraArgs [2][]string // {front, back}
+	Conv      *typeconv.Converter
+	Results   []typeconv.ValueConverted
+	GoArgs    pen.Joints
+	GoRets    pen.Joints
 
 	ParamDocs  []cmt.ParamDoc
 	ReturnDocs []cmt.ParamDoc
@@ -61,8 +71,9 @@ func NewGenerator(gen FileGenerator) Generator {
 	pen := pen.NewBlockSections(1024, 4096, 256, 1024, 4096, 128)
 
 	return Generator{
-		pen: pen,
-		gen: gen,
+		Preamble: CallablePreamble,
+		pen:      pen,
+		gen:      gen,
 	}
 }
 
@@ -74,11 +85,12 @@ func (g *Generator) Reset() {
 	g.GoRets.Reset(", ")
 
 	*g = Generator{
-		pen:    g.pen,
-		gen:    g.gen,
-		hdr:    g.hdr,
-		GoArgs: g.GoArgs,
-		GoRets: g.GoRets,
+		pen:      g.pen,
+		gen:      g.gen,
+		hdr:      g.hdr,
+		Preamble: g.Preamble,
+		GoArgs:   g.GoArgs,
+		GoRets:   g.GoRets,
 
 		constructor: g.constructor,
 	}
@@ -199,7 +211,8 @@ func (g *Generator) renderBlock() bool {
 
 func (g *Generator) renderDynamicLinkedBlock() bool {
 	const (
-		secInputDecl = iota
+		secPreamble = iota
+		secInputDecl
 		secInputConv
 		secFnCall
 		secOutputDecl
@@ -367,13 +380,26 @@ func (g *Generator) renderDynamicLinkedBlock() bool {
 		}
 	}
 
+	fn, ok := g.Preamble(g, g.pen.Section(secPreamble))
+	if !ok {
+		return false
+	}
+
 	// For C function calling.
-	callParams := strings.Join(g.Conv.CCallParams(), ", ")
+	ccallParams := g.Conv.CCallParams()
+	if g.ExtraArgs[0] != nil {
+		ccallParams = append(g.ExtraArgs[0], ccallParams...)
+	}
+	if g.ExtraArgs[1] != nil {
+		ccallParams = append(ccallParams, g.ExtraArgs[1]...)
+	}
+
+	callParams := strings.Join(ccallParams, ", ")
 
 	if !hasReturn {
-		g.pen.Linef(secFnCall, "C.%s(%s)", g.CIdentifier, callParams)
+		g.pen.Linef(secFnCall, "%s(%s)", fn, callParams)
 	} else {
-		g.pen.Linef(secFnCall, "_cret = C.%s(%s)", g.CIdentifier, callParams)
+		g.pen.Linef(secFnCall, "_cret = %s(%s)", fn, callParams)
 	}
 
 	// Generate the right statements to ensure that nothing is freed before or
@@ -398,6 +424,8 @@ func (g *Generator) renderDynamicLinkedBlock() bool {
 }
 
 func (g *Generator) renderRuntimeLinkedBlock() bool {
+	return false // TODO
+
 	const (
 		secInputDecl = iota
 		secInputConv

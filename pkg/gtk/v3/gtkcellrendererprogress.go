@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// CellRendererProgressOverrider contains methods that are overridable.
-type CellRendererProgressOverrider interface {
+// CellRendererProgressOverrides contains methods that are overridable.
+type CellRendererProgressOverrides struct {
+}
+
+func defaultCellRendererProgressOverrides(v *CellRendererProgress) CellRendererProgressOverrides {
+	return CellRendererProgressOverrides{}
 }
 
 // CellRendererProgress renders a numeric value as a progress par in a cell.
@@ -48,29 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellRendererProgress,
-		GoType:        reflect.TypeOf((*CellRendererProgress)(nil)),
-		InitClass:     initClassCellRendererProgress,
-		FinalizeClass: finalizeClassCellRendererProgress,
-	})
+	coreglib.RegisterClassInfo[*CellRendererProgress, *CellRendererProgressClass, CellRendererProgressOverrides](
+		GTypeCellRendererProgress,
+		initCellRendererProgressClass,
+		wrapCellRendererProgress,
+		defaultCellRendererProgressOverrides,
+	)
 }
 
-func initClassCellRendererProgress(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitCellRendererProgress(*CellRendererProgressClass)
-	}); ok {
-		klass := (*CellRendererProgressClass)(gextras.NewStructNative(gclass))
-		goval.InitCellRendererProgress(klass)
-	}
-}
-
-func finalizeClassCellRendererProgress(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeCellRendererProgress(*CellRendererProgressClass)
-	}); ok {
-		klass := (*CellRendererProgressClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellRendererProgress(klass)
+func initCellRendererProgressClass(gclass unsafe.Pointer, overrides CellRendererProgressOverrides, classInitFunc func(*CellRendererProgressClass)) {
+	if classInitFunc != nil {
+		class := (*CellRendererProgressClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -89,24 +82,6 @@ func wrapCellRendererProgress(obj *coreglib.Object) *CellRendererProgress {
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return wrapCellRendererProgress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewCellRendererProgress creates a new CellRendererProgress.
-//
-// The function returns the following values:
-//
-//    - cellRendererProgress: new cell renderer.
-//
-func NewCellRendererProgress() *CellRendererProgress {
-	var _cret *C.GtkCellRenderer // in
-
-	_cret = C.gtk_cell_renderer_progress_new()
-
-	var _cellRendererProgress *CellRendererProgress // out
-
-	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _cellRendererProgress
 }
 
 // CellRendererProgressClass: instance of this type is always passed by

@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// BinOverrider contains methods that are overridable.
-type BinOverrider interface {
+// BinOverrides contains methods that are overridable.
+type BinOverrides struct {
+}
+
+func defaultBinOverrides(v *Bin) BinOverrides {
+	return BinOverrides{}
 }
 
 // Bin widget is a container with just one child. It is not very useful itself,
@@ -61,25 +65,18 @@ type Binner interface {
 var _ Binner = (*Bin)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBin,
-		GoType:        reflect.TypeOf((*Bin)(nil)),
-		InitClass:     initClassBin,
-		FinalizeClass: finalizeClassBin,
-	})
+	coreglib.RegisterClassInfo[*Bin, *BinClass, BinOverrides](
+		GTypeBin,
+		initBinClass,
+		wrapBin,
+		defaultBinOverrides,
+	)
 }
 
-func initClassBin(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBin(*BinClass) }); ok {
-		klass := (*BinClass)(gextras.NewStructNative(gclass))
-		goval.InitBin(klass)
-	}
-}
-
-func finalizeClassBin(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBin(*BinClass) }); ok {
-		klass := (*BinClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBin(klass)
+func initBinClass(gclass unsafe.Pointer, overrides BinOverrides, classInitFunc func(*BinClass)) {
+	if classInitFunc != nil {
+		class := (*BinClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

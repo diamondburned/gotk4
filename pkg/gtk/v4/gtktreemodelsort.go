@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TreeModelSortOverrider contains methods that are overridable.
-type TreeModelSortOverrider interface {
+// TreeModelSortOverrides contains methods that are overridable.
+type TreeModelSortOverrides struct {
+}
+
+func defaultTreeModelSortOverrides(v *TreeModelSort) TreeModelSortOverrides {
+	return TreeModelSortOverrides{}
 }
 
 // TreeModelSort: gtkTreeModel which makes an underlying tree model sortable
@@ -101,25 +105,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeModelSort,
-		GoType:        reflect.TypeOf((*TreeModelSort)(nil)),
-		InitClass:     initClassTreeModelSort,
-		FinalizeClass: finalizeClassTreeModelSort,
-	})
+	coreglib.RegisterClassInfo[*TreeModelSort, *TreeModelSortClass, TreeModelSortOverrides](
+		GTypeTreeModelSort,
+		initTreeModelSortClass,
+		wrapTreeModelSort,
+		defaultTreeModelSortOverrides,
+	)
 }
 
-func initClassTreeModelSort(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTreeModelSort(*TreeModelSortClass) }); ok {
-		klass := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeModelSort(klass)
-	}
-}
-
-func finalizeClassTreeModelSort(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeModelSort(*TreeModelSortClass) }); ok {
-		klass := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeModelSort(klass)
+func initTreeModelSortClass(gclass unsafe.Pointer, overrides TreeModelSortOverrides, classInitFunc func(*TreeModelSortClass)) {
+	if classInitFunc != nil {
+		class := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

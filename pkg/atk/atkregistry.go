@@ -50,8 +50,12 @@ func GetDefaultRegistry() *Registry {
 	return _registry
 }
 
-// RegistryOverrider contains methods that are overridable.
-type RegistryOverrider interface {
+// RegistryOverrides contains methods that are overridable.
+type RegistryOverrides struct {
+}
+
+func defaultRegistryOverrides(v *Registry) RegistryOverrides {
+	return RegistryOverrides{}
 }
 
 // Registry is normally used to create appropriate ATK "peers" for user
@@ -69,25 +73,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRegistry,
-		GoType:        reflect.TypeOf((*Registry)(nil)),
-		InitClass:     initClassRegistry,
-		FinalizeClass: finalizeClassRegistry,
-	})
+	coreglib.RegisterClassInfo[*Registry, *RegistryClass, RegistryOverrides](
+		GTypeRegistry,
+		initRegistryClass,
+		wrapRegistry,
+		defaultRegistryOverrides,
+	)
 }
 
-func initClassRegistry(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitRegistry(*RegistryClass) }); ok {
-		klass := (*RegistryClass)(gextras.NewStructNative(gclass))
-		goval.InitRegistry(klass)
-	}
-}
-
-func finalizeClassRegistry(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRegistry(*RegistryClass) }); ok {
-		klass := (*RegistryClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRegistry(klass)
+func initRegistryClass(gclass unsafe.Pointer, overrides RegistryOverrides, classInitFunc func(*RegistryClass)) {
+	if classInitFunc != nil {
+		class := (*RegistryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

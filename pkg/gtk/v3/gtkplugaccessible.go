@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// PlugAccessibleOverrider contains methods that are overridable.
-type PlugAccessibleOverrider interface {
+// PlugAccessibleOverrides contains methods that are overridable.
+type PlugAccessibleOverrides struct {
+}
+
+func defaultPlugAccessibleOverrides(v *PlugAccessible) PlugAccessibleOverrides {
+	return PlugAccessibleOverrides{}
 }
 
 type PlugAccessible struct {
@@ -44,25 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePlugAccessible,
-		GoType:        reflect.TypeOf((*PlugAccessible)(nil)),
-		InitClass:     initClassPlugAccessible,
-		FinalizeClass: finalizeClassPlugAccessible,
-	})
+	coreglib.RegisterClassInfo[*PlugAccessible, *PlugAccessibleClass, PlugAccessibleOverrides](
+		GTypePlugAccessible,
+		initPlugAccessibleClass,
+		wrapPlugAccessible,
+		defaultPlugAccessibleOverrides,
+	)
 }
 
-func initClassPlugAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitPlugAccessible(*PlugAccessibleClass) }); ok {
-		klass := (*PlugAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitPlugAccessible(klass)
-	}
-}
-
-func finalizeClassPlugAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePlugAccessible(*PlugAccessibleClass) }); ok {
-		klass := (*PlugAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePlugAccessible(klass)
+func initPlugAccessibleClass(gclass unsafe.Pointer, overrides PlugAccessibleOverrides, classInitFunc func(*PlugAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*PlugAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

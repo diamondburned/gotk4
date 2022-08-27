@@ -14,9 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_Drag_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
-// extern void _gotk4_gdk4_Drag_ConnectDNDFinished(gpointer, guintptr);
 // extern void _gotk4_gdk4_Drag_ConnectDropPerformed(gpointer, guintptr);
+// extern void _gotk4_gdk4_Drag_ConnectDNDFinished(gpointer, guintptr);
+// extern void _gotk4_gdk4_Drag_ConnectCancel(gpointer, GdkDragCancelReason, guintptr);
 import "C"
 
 // GType values.
@@ -142,45 +142,9 @@ func BaseDrag(obj Dragger) *Drag {
 	return obj.baseDrag()
 }
 
-//export _gotk4_gdk4_Drag_ConnectCancel
-func _gotk4_gdk4_Drag_ConnectCancel(arg0 C.gpointer, arg1 C.GdkDragCancelReason, arg2 C.guintptr) {
-	var f func(reason DragCancelReason)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(reason DragCancelReason))
-	}
-
-	var _reason DragCancelReason // out
-
-	_reason = DragCancelReason(arg1)
-
-	f(_reason)
-}
-
 // ConnectCancel is emitted when the drag operation is cancelled.
 func (drag *Drag) ConnectCancel(f func(reason DragCancelReason)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(drag, "cancel", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectCancel), f)
-}
-
-//export _gotk4_gdk4_Drag_ConnectDNDFinished
-func _gotk4_gdk4_Drag_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectDNDFinished is emitted when the destination side has finished reading
@@ -189,22 +153,6 @@ func _gotk4_gdk4_Drag_ConnectDNDFinished(arg0 C.gpointer, arg1 C.guintptr) {
 // The drag object can now free all miscellaneous data.
 func (drag *Drag) ConnectDNDFinished(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(drag, "dnd-finished", false, unsafe.Pointer(C._gotk4_gdk4_Drag_ConnectDNDFinished), f)
-}
-
-//export _gotk4_gdk4_Drag_ConnectDropPerformed
-func _gotk4_gdk4_Drag_ConnectDropPerformed(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectDropPerformed is emitted when the drop operation is performed on an

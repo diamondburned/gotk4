@@ -17,11 +17,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
-// extern void _gotk4_gtk3_TreeSelectionClass_changed(GtkTreeSelection*);
-// extern void _gotk4_gtk3_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
-// extern void _gotk4_gtk3_TreeSelection_ConnectChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk3_TreeSelection_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
+// extern void _gotk4_gtk3_TreeSelectionClass_changed(GtkTreeSelection*);
+// extern gboolean _gotk4_gtk3_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
+// void _gotk4_gtk3_TreeSelection_virtual_changed(void* fnptr, GtkTreeSelection* arg0) {
+//   ((void (*)(GtkTreeSelection*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -40,101 +43,21 @@ func init() {
 // called on every selected row in the view.
 type TreeSelectionForEachFunc func(model TreeModeller, path *TreePath, iter *TreeIter)
 
-//export _gotk4_gtk3_TreeSelectionForEachFunc
-func _gotk4_gtk3_TreeSelectionForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
-	var fn TreeSelectionForEachFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TreeSelectionForEachFunc)
-	}
-
-	var _model TreeModeller // out
-	var _path *TreePath     // out
-	var _iter *TreeIter     // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
-			return ok
-		})
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-		}
-		_model = rv
-	}
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	fn(_model, _path, _iter)
-}
-
 // TreeSelectionFunc: function used by gtk_tree_selection_set_select_function()
 // to filter whether or not a row may be selected. It is called whenever a row's
 // state might change. A return value of TRUE indicates to selection that it is
 // okay to change the selection.
 type TreeSelectionFunc func(selection *TreeSelection, model TreeModeller, path *TreePath, pathCurrentlySelected bool) (ok bool)
 
-//export _gotk4_gtk3_TreeSelectionFunc
-func _gotk4_gtk3_TreeSelectionFunc(arg1 *C.GtkTreeSelection, arg2 *C.GtkTreeModel, arg3 *C.GtkTreePath, arg4 C.gboolean, arg5 C.gpointer) (cret C.gboolean) {
-	var fn TreeSelectionFunc
-	{
-		v := gbox.Get(uintptr(arg5))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TreeSelectionFunc)
-	}
-
-	var _selection *TreeSelection   // out
-	var _model TreeModeller         // out
-	var _path *TreePath             // out
-	var _pathCurrentlySelected bool // out
-
-	_selection = wrapTreeSelection(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.TreeModeller is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(TreeModeller)
-			return ok
-		})
-		rv, ok := casted.(TreeModeller)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.TreeModeller")
-		}
-		_model = rv
-	}
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	if arg4 != 0 {
-		_pathCurrentlySelected = true
-	}
-
-	ok := fn(_selection, _model, _path, _pathCurrentlySelected)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
+// TreeSelectionOverrides contains methods that are overridable.
+type TreeSelectionOverrides struct {
+	Changed func()
 }
 
-// TreeSelectionOverrider contains methods that are overridable.
-type TreeSelectionOverrider interface {
-	Changed()
+func defaultTreeSelectionOverrides(v *TreeSelection) TreeSelectionOverrides {
+	return TreeSelectionOverrides{
+		Changed: v.changed,
+	}
 }
 
 // TreeSelection object is a helper object to manage the selection for a
@@ -168,40 +91,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeSelection,
-		GoType:        reflect.TypeOf((*TreeSelection)(nil)),
-		InitClass:     initClassTreeSelection,
-		FinalizeClass: finalizeClassTreeSelection,
-	})
+	coreglib.RegisterClassInfo[*TreeSelection, *TreeSelectionClass, TreeSelectionOverrides](
+		GTypeTreeSelection,
+		initTreeSelectionClass,
+		wrapTreeSelection,
+		defaultTreeSelectionOverrides,
+	)
 }
 
-func initClassTreeSelection(gclass unsafe.Pointer, goval any) {
+func initTreeSelectionClass(gclass unsafe.Pointer, overrides TreeSelectionOverrides, classInitFunc func(*TreeSelectionClass)) {
+	pclass := (*C.GtkTreeSelectionClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTreeSelection))))
 
-	pclass := (*C.GtkTreeSelectionClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Changed() }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_TreeSelectionClass_changed)
 	}
-	if goval, ok := goval.(interface{ InitTreeSelection(*TreeSelectionClass) }); ok {
-		klass := (*TreeSelectionClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeSelection(klass)
+
+	if classInitFunc != nil {
+		class := (*TreeSelectionClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassTreeSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeSelection(*TreeSelectionClass) }); ok {
-		klass := (*TreeSelectionClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeSelection(klass)
-	}
-}
-
-//export _gotk4_gtk3_TreeSelectionClass_changed
-func _gotk4_gtk3_TreeSelectionClass_changed(arg0 *C.GtkTreeSelection) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed() })
-
-	iface.Changed()
 }
 
 func wrapTreeSelection(obj *coreglib.Object) *TreeSelection {
@@ -214,50 +122,12 @@ func marshalTreeSelection(p uintptr) (interface{}, error) {
 	return wrapTreeSelection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_TreeSelection_ConnectChanged
-func _gotk4_gtk3_TreeSelection_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted whenever the selection has (possibly) changed.
 // Please note that this signal is mostly a hint. It may only be emitted once
 // when a range of rows are selected, and it may occasionally be emitted when
 // nothing has happened.
 func (selection *TreeSelection) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(selection, "changed", false, unsafe.Pointer(C._gotk4_gtk3_TreeSelection_ConnectChanged), f)
-}
-
-// CountSelectedRows returns the number of rows that have been selected in tree.
-//
-// The function returns the following values:
-//
-//    - gint: number of rows selected.
-//
-func (selection *TreeSelection) CountSelectedRows() int {
-	var _arg0 *C.GtkTreeSelection // out
-	var _cret C.gint              // in
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
-	runtime.KeepAlive(selection)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // Mode gets the selection mode for selection. See
@@ -319,53 +189,6 @@ func (selection *TreeSelection) Selected() (*TreeModel, *TreeIter, bool) {
 	}
 
 	return _model, _iter, _ok
-}
-
-// SelectedRows creates a list of path of all selected rows. Additionally, if
-// you are planning on modifying the model after calling this function, you may
-// want to convert the returned list into a list of TreeRowReferences. To do
-// this, you can use gtk_tree_row_reference_new().
-//
-// To free the return value, use:
-//
-//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);.
-//
-// The function returns the following values:
-//
-//    - model (optional): pointer to set to the TreeModel, or NULL.
-//    - list containing a TreePath for each selected row.
-//
-func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
-	var _arg0 *C.GtkTreeSelection // out
-	var _arg1 *C.GtkTreeModel     // in
-	var _cret *C.GList            // in
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	_cret = C.gtk_tree_selection_get_selected_rows(_arg0, &_arg1)
-	runtime.KeepAlive(selection)
-
-	var _model *TreeModel // out
-	var _list []*TreePath // out
-
-	if _arg1 != nil {
-		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_arg1)))
-	}
-	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkTreePath)(v)
-		var dst *TreePath // out
-		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
-		)
-		_list = append(_list, dst)
-	})
-
-	return _model, _list
 }
 
 // TreeView returns the tree view associated with selection.
@@ -641,27 +464,16 @@ func (selection *TreeSelection) UnselectPath(path *TreePath) {
 	runtime.KeepAlive(path)
 }
 
-// UnselectRange unselects a range of nodes, determined by start_path and
-// end_path inclusive.
-//
-// The function takes the following parameters:
-//
-//    - startPath: initial node of the range.
-//    - endPath: initial node of the range.
-//
-func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
+func (selection *TreeSelection) changed() {
+	gclass := (*C.GtkTreeSelectionClass)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.changed
+
 	var _arg0 *C.GtkTreeSelection // out
-	var _arg1 *C.GtkTreePath      // out
-	var _arg2 *C.GtkTreePath      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(startPath)))
-	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(endPath)))
 
-	C.gtk_tree_selection_unselect_range(_arg0, _arg1, _arg2)
+	C._gotk4_gtk3_TreeSelection_virtual_changed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(selection)
-	runtime.KeepAlive(startPath)
-	runtime.KeepAlive(endPath)
 }
 
 // TreeSelectionClass: instance of this type is always passed by reference.

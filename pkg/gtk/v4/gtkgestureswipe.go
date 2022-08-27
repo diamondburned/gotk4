@@ -62,28 +62,6 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return wrapGestureSwipe(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_GestureSwipe_ConnectSwipe
-func _gotk4_gtk4_GestureSwipe_ConnectSwipe(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(velocityX, velocityY float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(velocityX, velocityY float64))
-	}
-
-	var _velocityX float64 // out
-	var _velocityY float64 // out
-
-	_velocityX = float64(arg1)
-	_velocityY = float64(arg2)
-
-	f(_velocityX, _velocityY)
-}
-
 // ConnectSwipe is emitted when the recognized gesture is finished.
 //
 // Velocity and direction are a product of previously recorded events.

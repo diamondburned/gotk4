@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// SpinButtonAccessibleOverrider contains methods that are overridable.
-type SpinButtonAccessibleOverrider interface {
+// SpinButtonAccessibleOverrides contains methods that are overridable.
+type SpinButtonAccessibleOverrides struct {
+}
+
+func defaultSpinButtonAccessibleOverrides(v *SpinButtonAccessible) SpinButtonAccessibleOverrides {
+	return SpinButtonAccessibleOverrides{}
 }
 
 type SpinButtonAccessible struct {
@@ -46,29 +50,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSpinButtonAccessible,
-		GoType:        reflect.TypeOf((*SpinButtonAccessible)(nil)),
-		InitClass:     initClassSpinButtonAccessible,
-		FinalizeClass: finalizeClassSpinButtonAccessible,
-	})
+	coreglib.RegisterClassInfo[*SpinButtonAccessible, *SpinButtonAccessibleClass, SpinButtonAccessibleOverrides](
+		GTypeSpinButtonAccessible,
+		initSpinButtonAccessibleClass,
+		wrapSpinButtonAccessible,
+		defaultSpinButtonAccessibleOverrides,
+	)
 }
 
-func initClassSpinButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitSpinButtonAccessible(*SpinButtonAccessibleClass)
-	}); ok {
-		klass := (*SpinButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitSpinButtonAccessible(klass)
-	}
-}
-
-func finalizeClassSpinButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeSpinButtonAccessible(*SpinButtonAccessibleClass)
-	}); ok {
-		klass := (*SpinButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSpinButtonAccessible(klass)
+func initSpinButtonAccessibleClass(gclass unsafe.Pointer, overrides SpinButtonAccessibleOverrides, classInitFunc func(*SpinButtonAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*SpinButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// FileChooserNativeOverrider contains methods that are overridable.
-type FileChooserNativeOverrider interface {
+// FileChooserNativeOverrides contains methods that are overridable.
+type FileChooserNativeOverrides struct {
+}
+
+func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOverrides {
+	return FileChooserNativeOverrides{}
 }
 
 // FileChooserNative: GtkFileChooserNative is an abstraction of a dialog
@@ -192,25 +196,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFileChooserNative,
-		GoType:        reflect.TypeOf((*FileChooserNative)(nil)),
-		InitClass:     initClassFileChooserNative,
-		FinalizeClass: finalizeClassFileChooserNative,
-	})
+	coreglib.RegisterClassInfo[*FileChooserNative, *FileChooserNativeClass, FileChooserNativeOverrides](
+		GTypeFileChooserNative,
+		initFileChooserNativeClass,
+		wrapFileChooserNative,
+		defaultFileChooserNativeOverrides,
+	)
 }
 
-func initClassFileChooserNative(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFileChooserNative(*FileChooserNativeClass) }); ok {
-		klass := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
-		goval.InitFileChooserNative(klass)
-	}
-}
-
-func finalizeClassFileChooserNative(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFileChooserNative(*FileChooserNativeClass) }); ok {
-		klass := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFileChooserNative(klass)
+func initFileChooserNativeClass(gclass unsafe.Pointer, overrides FileChooserNativeOverrides, classInitFunc func(*FileChooserNativeClass)) {
+	if classInitFunc != nil {
+		class := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

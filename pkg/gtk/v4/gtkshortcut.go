@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// ShortcutOverrider contains methods that are overridable.
-type ShortcutOverrider interface {
+// ShortcutOverrides contains methods that are overridable.
+type ShortcutOverrides struct {
+}
+
+func defaultShortcutOverrides(v *Shortcut) ShortcutOverrides {
+	return ShortcutOverrides{}
 }
 
 // Shortcut: GtkShortcut describes a keyboard shortcut.
@@ -56,25 +60,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeShortcut,
-		GoType:        reflect.TypeOf((*Shortcut)(nil)),
-		InitClass:     initClassShortcut,
-		FinalizeClass: finalizeClassShortcut,
-	})
+	coreglib.RegisterClassInfo[*Shortcut, *ShortcutClass, ShortcutOverrides](
+		GTypeShortcut,
+		initShortcutClass,
+		wrapShortcut,
+		defaultShortcutOverrides,
+	)
 }
 
-func initClassShortcut(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitShortcut(*ShortcutClass) }); ok {
-		klass := (*ShortcutClass)(gextras.NewStructNative(gclass))
-		goval.InitShortcut(klass)
-	}
-}
-
-func finalizeClassShortcut(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeShortcut(*ShortcutClass) }); ok {
-		klass := (*ShortcutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeShortcut(klass)
+func initShortcutClass(gclass unsafe.Pointer, overrides ShortcutOverrides, classInitFunc func(*ShortcutClass)) {
+	if classInitFunc != nil {
+		class := (*ShortcutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

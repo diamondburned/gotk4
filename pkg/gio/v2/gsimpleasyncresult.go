@@ -3,12 +3,10 @@
 package gio
 
 import (
-	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -455,44 +453,6 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 	return _goerr
 }
 
-// SetCheckCancellable sets a #GCancellable to check before dispatching results.
-//
-// This function has one very specific purpose: the provided cancellable is
-// checked at the time of g_simple_async_result_propagate_error() If it is
-// cancelled, these functions will return an "Operation was cancelled" error
-// (G_IO_ERROR_CANCELLED).
-//
-// Implementors of cancellable asynchronous functions should use this in order
-// to provide a guarantee to their callers that cancelling an async operation
-// will reliably result in an error being returned for that operation (even if a
-// positive result for the operation has already been sent as an idle to the
-// main context to be dispatched).
-//
-// The checking described above is done regardless of any call to the unrelated
-// g_simple_async_result_set_handle_cancellation() function.
-//
-// Deprecated: Use #GTask instead.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional) to check, or NULL to unset.
-//
-func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
-	var _arg0 *C.GSimpleAsyncResult // out
-	var _arg1 *C.GCancellable       // out
-
-	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-
-	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
-	runtime.KeepAlive(simple)
-	runtime.KeepAlive(ctx)
-}
-
 // SetFromError sets the result from a #GError.
 //
 // Deprecated: Use #GTask and g_task_return_error() instead.
@@ -584,53 +544,4 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	C.g_simple_async_result_set_op_res_gssize(_arg0, _arg1)
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(opRes)
-}
-
-// SimpleAsyncResultIsValid ensures that the data passed to the _finish function
-// of an async operation is consistent. Three checks are performed.
-//
-// First, result is checked to ensure that it is really a AsyncResult. Second,
-// source is checked to ensure that it matches the source object of result.
-// Third, source_tag is checked to ensure that it is equal to the source_tag
-// argument given to g_simple_async_result_new() (which, by convention, is a
-// pointer to the _async function corresponding to the _finish function from
-// which this function is called). (Alternatively, if either source_tag or
-// result's source tag is NULL, then the source tag check is skipped.)
-//
-// Deprecated: Use #GTask and g_task_is_valid() instead.
-//
-// The function takes the following parameters:
-//
-//    - result passed to the _finish function.
-//    - source (optional) passed to the _finish function.
-//    - sourceTag (optional) asynchronous function.
-//
-// The function returns the following values:
-//
-//    - ok if all checks passed or LSE if any failed.
-//
-func SimpleAsyncResultIsValid(result AsyncResulter, source *coreglib.Object, sourceTag unsafe.Pointer) bool {
-	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.GObject      // out
-	var _arg3 C.gpointer      // out
-	var _cret C.gboolean      // in
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	if source != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(source.Native()))
-	}
-	_arg3 = (C.gpointer)(unsafe.Pointer(sourceTag))
-
-	_cret = C.g_simple_async_result_is_valid(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(result)
-	runtime.KeepAlive(source)
-	runtime.KeepAlive(sourceTag)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }

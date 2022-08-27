@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// ConstraintGuideOverrider contains methods that are overridable.
-type ConstraintGuideOverrider interface {
+// ConstraintGuideOverrides contains methods that are overridable.
+type ConstraintGuideOverrides struct {
+}
+
+func defaultConstraintGuideOverrides(v *ConstraintGuide) ConstraintGuideOverrides {
+	return ConstraintGuideOverrides{}
 }
 
 // ConstraintGuide: GtkConstraintGuide is an invisible layout element in a
@@ -54,25 +58,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeConstraintGuide,
-		GoType:        reflect.TypeOf((*ConstraintGuide)(nil)),
-		InitClass:     initClassConstraintGuide,
-		FinalizeClass: finalizeClassConstraintGuide,
-	})
+	coreglib.RegisterClassInfo[*ConstraintGuide, *ConstraintGuideClass, ConstraintGuideOverrides](
+		GTypeConstraintGuide,
+		initConstraintGuideClass,
+		wrapConstraintGuide,
+		defaultConstraintGuideOverrides,
+	)
 }
 
-func initClassConstraintGuide(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitConstraintGuide(*ConstraintGuideClass) }); ok {
-		klass := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
-		goval.InitConstraintGuide(klass)
-	}
-}
-
-func finalizeClassConstraintGuide(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeConstraintGuide(*ConstraintGuideClass) }); ok {
-		klass := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeConstraintGuide(klass)
+func initConstraintGuideClass(gclass unsafe.Pointer, overrides ConstraintGuideOverrides, classInitFunc func(*ConstraintGuideClass)) {
+	if classInitFunc != nil {
+		class := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// CellRendererPixbufOverrider contains methods that are overridable.
-type CellRendererPixbufOverrider interface {
+// CellRendererPixbufOverrides contains methods that are overridable.
+type CellRendererPixbufOverrides struct {
+}
+
+func defaultCellRendererPixbufOverrides(v *CellRendererPixbuf) CellRendererPixbufOverrides {
+	return CellRendererPixbufOverrides{}
 }
 
 // CellRendererPixbuf can be used to render an image in a cell. It allows to
@@ -53,29 +57,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellRendererPixbuf,
-		GoType:        reflect.TypeOf((*CellRendererPixbuf)(nil)),
-		InitClass:     initClassCellRendererPixbuf,
-		FinalizeClass: finalizeClassCellRendererPixbuf,
-	})
+	coreglib.RegisterClassInfo[*CellRendererPixbuf, *CellRendererPixbufClass, CellRendererPixbufOverrides](
+		GTypeCellRendererPixbuf,
+		initCellRendererPixbufClass,
+		wrapCellRendererPixbuf,
+		defaultCellRendererPixbufOverrides,
+	)
 }
 
-func initClassCellRendererPixbuf(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitCellRendererPixbuf(*CellRendererPixbufClass)
-	}); ok {
-		klass := (*CellRendererPixbufClass)(gextras.NewStructNative(gclass))
-		goval.InitCellRendererPixbuf(klass)
-	}
-}
-
-func finalizeClassCellRendererPixbuf(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeCellRendererPixbuf(*CellRendererPixbufClass)
-	}); ok {
-		klass := (*CellRendererPixbufClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellRendererPixbuf(klass)
+func initCellRendererPixbufClass(gclass unsafe.Pointer, overrides CellRendererPixbufOverrides, classInitFunc func(*CellRendererPixbufClass)) {
+	if classInitFunc != nil {
+		class := (*CellRendererPixbufClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

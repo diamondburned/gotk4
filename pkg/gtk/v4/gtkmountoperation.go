@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// MountOperationOverrider contains methods that are overridable.
-type MountOperationOverrider interface {
+// MountOperationOverrides contains methods that are overridable.
+type MountOperationOverrides struct {
+}
+
+func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
+	return MountOperationOverrides{}
 }
 
 // MountOperation: GtkMountOperation is an implementation of GMountOperation.
@@ -55,25 +59,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMountOperation,
-		GoType:        reflect.TypeOf((*MountOperation)(nil)),
-		InitClass:     initClassMountOperation,
-		FinalizeClass: finalizeClassMountOperation,
-	})
+	coreglib.RegisterClassInfo[*MountOperation, *MountOperationClass, MountOperationOverrides](
+		GTypeMountOperation,
+		initMountOperationClass,
+		wrapMountOperation,
+		defaultMountOperationOverrides,
+	)
 }
 
-func initClassMountOperation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMountOperation(*MountOperationClass) }); ok {
-		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
-		goval.InitMountOperation(klass)
-	}
-}
-
-func finalizeClassMountOperation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMountOperation(*MountOperationClass) }); ok {
-		klass := (*MountOperationClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMountOperation(klass)
+func initMountOperationClass(gclass unsafe.Pointer, overrides MountOperationOverrides, classInitFunc func(*MountOperationClass)) {
+	if classInitFunc != nil {
+		class := (*MountOperationClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -26,8 +26,12 @@ func init() {
 	})
 }
 
-// BinLayoutOverrider contains methods that are overridable.
-type BinLayoutOverrider interface {
+// BinLayoutOverrides contains methods that are overridable.
+type BinLayoutOverrides struct {
+}
+
+func defaultBinLayoutOverrides(v *BinLayout) BinLayoutOverrides {
+	return BinLayoutOverrides{}
 }
 
 // BinLayout: GtkBinLayout is a GtkLayoutManager subclass useful for create
@@ -47,25 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBinLayout,
-		GoType:        reflect.TypeOf((*BinLayout)(nil)),
-		InitClass:     initClassBinLayout,
-		FinalizeClass: finalizeClassBinLayout,
-	})
+	coreglib.RegisterClassInfo[*BinLayout, *BinLayoutClass, BinLayoutOverrides](
+		GTypeBinLayout,
+		initBinLayoutClass,
+		wrapBinLayout,
+		defaultBinLayoutOverrides,
+	)
 }
 
-func initClassBinLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBinLayout(*BinLayoutClass) }); ok {
-		klass := (*BinLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitBinLayout(klass)
-	}
-}
-
-func finalizeClassBinLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBinLayout(*BinLayoutClass) }); ok {
-		klass := (*BinLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBinLayout(klass)
+func initBinLayoutClass(gclass unsafe.Pointer, overrides BinLayoutOverrides, classInitFunc func(*BinLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*BinLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

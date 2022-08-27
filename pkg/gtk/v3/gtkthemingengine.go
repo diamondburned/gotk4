@@ -12,7 +12,6 @@ import (
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -21,22 +20,70 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_ThemingEngineClass_render_activity(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_arrow(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_background(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_check(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_expander(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_extension(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkPositionType);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_focus(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_frame(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_frame_gap(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkPositionType, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_handle(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_icon(GtkThemingEngine*, cairo_t*, GdkPixbuf*, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_icon_surface(GtkThemingEngine*, cairo_t*, cairo_surface_t*, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_layout(GtkThemingEngine*, cairo_t*, gdouble, gdouble, PangoLayout*);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_line(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_option(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_slider(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkOrientation);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_option(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_line(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_layout(GtkThemingEngine*, cairo_t*, gdouble, gdouble, PangoLayout*);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_icon_surface(GtkThemingEngine*, cairo_t*, cairo_surface_t*, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_icon(GtkThemingEngine*, cairo_t*, GdkPixbuf*, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_handle(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_frame_gap(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkPositionType, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_frame(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_focus(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_extension(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkPositionType);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_expander(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_check(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_background(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_arrow(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_activity(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble);
+// void _gotk4_gtk3_ThemingEngine_virtual_render_activity(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_arrow(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_background(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_check(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_expander(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_extension(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5, GtkPositionType arg6) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkPositionType))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_focus(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_frame(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_frame_gap(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5, GtkPositionType arg6, gdouble arg7, gdouble arg8) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkPositionType, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_handle(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_icon(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, GdkPixbuf* arg2, gdouble arg3, gdouble arg4) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, GdkPixbuf*, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_icon_surface(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, cairo_surface_t* arg2, gdouble arg3, gdouble arg4) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, cairo_surface_t*, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_layout(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, PangoLayout* arg4) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, PangoLayout*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_line(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_option(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gtk3_ThemingEngine_virtual_render_slider(void* fnptr, GtkThemingEngine* arg0, cairo_t* arg1, gdouble arg2, gdouble arg3, gdouble arg4, gdouble arg5, GtkOrientation arg6) {
+//   ((void (*)(GtkThemingEngine*, cairo_t*, gdouble, gdouble, gdouble, gdouble, GtkOrientation))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
 import "C"
 
 // GType values.
@@ -50,8 +97,8 @@ func init() {
 	})
 }
 
-// ThemingEngineOverrider contains methods that are overridable.
-type ThemingEngineOverrider interface {
+// ThemingEngineOverrides contains methods that are overridable.
+type ThemingEngineOverrides struct {
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -60,7 +107,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderActivity(cr *cairo.Context, x, y, width, height float64)
+	RenderActivity func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -69,7 +116,7 @@ type ThemingEngineOverrider interface {
 	//    - y
 	//    - size
 	//
-	RenderArrow(cr *cairo.Context, angle, x, y, size float64)
+	RenderArrow func(cr *cairo.Context, angle, x, y, size float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -78,7 +125,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderBackground(cr *cairo.Context, x, y, width, height float64)
+	RenderBackground func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -87,7 +134,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderCheck(cr *cairo.Context, x, y, width, height float64)
+	RenderCheck func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -96,7 +143,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderExpander(cr *cairo.Context, x, y, width, height float64)
+	RenderExpander func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -106,7 +153,7 @@ type ThemingEngineOverrider interface {
 	//    - height
 	//    - gapSide
 	//
-	RenderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
+	RenderExtension func(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -115,7 +162,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderFocus(cr *cairo.Context, x, y, width, height float64)
+	RenderFocus func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -124,7 +171,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderFrame(cr *cairo.Context, x, y, width, height float64)
+	RenderFrame func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -136,7 +183,7 @@ type ThemingEngineOverrider interface {
 	//    - xy0Gap
 	//    - xy1Gap
 	//
-	RenderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
+	RenderFrameGap func(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -145,7 +192,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderHandle(cr *cairo.Context, x, y, width, height float64)
+	RenderHandle func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -153,7 +200,7 @@ type ThemingEngineOverrider interface {
 	//    - x
 	//    - y
 	//
-	RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
+	RenderIcon func(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -161,7 +208,7 @@ type ThemingEngineOverrider interface {
 	//    - x
 	//    - y
 	//
-	RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64)
+	RenderIconSurface func(cr *cairo.Context, surface *cairo.Surface, x, y float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -169,7 +216,7 @@ type ThemingEngineOverrider interface {
 	//    - y
 	//    - layout
 	//
-	RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout)
+	RenderLayout func(cr *cairo.Context, x, y float64, layout *pango.Layout)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -178,7 +225,7 @@ type ThemingEngineOverrider interface {
 	//    - x1
 	//    - y1
 	//
-	RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64)
+	RenderLine func(cr *cairo.Context, x0, y0, x1, y1 float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -187,7 +234,7 @@ type ThemingEngineOverrider interface {
 	//    - width
 	//    - height
 	//
-	RenderOption(cr *cairo.Context, x, y, width, height float64)
+	RenderOption func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
 	//    - cr
@@ -197,7 +244,28 @@ type ThemingEngineOverrider interface {
 	//    - height
 	//    - orientation
 	//
-	RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
+	RenderSlider func(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
+}
+
+func defaultThemingEngineOverrides(v *ThemingEngine) ThemingEngineOverrides {
+	return ThemingEngineOverrides{
+		RenderActivity:    v.renderActivity,
+		RenderArrow:       v.renderArrow,
+		RenderBackground:  v.renderBackground,
+		RenderCheck:       v.renderCheck,
+		RenderExpander:    v.renderExpander,
+		RenderExtension:   v.renderExtension,
+		RenderFocus:       v.renderFocus,
+		RenderFrame:       v.renderFrame,
+		RenderFrameGap:    v.renderFrameGap,
+		RenderHandle:      v.renderHandle,
+		RenderIcon:        v.renderIcon,
+		RenderIconSurface: v.renderIconSurface,
+		RenderLayout:      v.renderLayout,
+		RenderLine:        v.renderLine,
+		RenderOption:      v.renderOption,
+		RenderSlider:      v.renderSlider,
+	}
 }
 
 // ThemingEngine was the object used for rendering themed content in GTK+
@@ -217,563 +285,85 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeThemingEngine,
-		GoType:        reflect.TypeOf((*ThemingEngine)(nil)),
-		InitClass:     initClassThemingEngine,
-		FinalizeClass: finalizeClassThemingEngine,
-	})
+	coreglib.RegisterClassInfo[*ThemingEngine, *ThemingEngineClass, ThemingEngineOverrides](
+		GTypeThemingEngine,
+		initThemingEngineClass,
+		wrapThemingEngine,
+		defaultThemingEngineOverrides,
+	)
 }
 
-func initClassThemingEngine(gclass unsafe.Pointer, goval any) {
+func initThemingEngineClass(gclass unsafe.Pointer, overrides ThemingEngineOverrides, classInitFunc func(*ThemingEngineClass)) {
+	pclass := (*C.GtkThemingEngineClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeThemingEngine))))
 
-	pclass := (*C.GtkThemingEngineClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		RenderActivity(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderActivity != nil {
 		pclass.render_activity = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_activity)
 	}
 
-	if _, ok := goval.(interface {
-		RenderArrow(cr *cairo.Context, angle, x, y, size float64)
-	}); ok {
+	if overrides.RenderArrow != nil {
 		pclass.render_arrow = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_arrow)
 	}
 
-	if _, ok := goval.(interface {
-		RenderBackground(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderBackground != nil {
 		pclass.render_background = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_background)
 	}
 
-	if _, ok := goval.(interface {
-		RenderCheck(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderCheck != nil {
 		pclass.render_check = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_check)
 	}
 
-	if _, ok := goval.(interface {
-		RenderExpander(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderExpander != nil {
 		pclass.render_expander = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_expander)
 	}
 
-	if _, ok := goval.(interface {
-		RenderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
-	}); ok {
+	if overrides.RenderExtension != nil {
 		pclass.render_extension = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_extension)
 	}
 
-	if _, ok := goval.(interface {
-		RenderFocus(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderFocus != nil {
 		pclass.render_focus = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_focus)
 	}
 
-	if _, ok := goval.(interface {
-		RenderFrame(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderFrame != nil {
 		pclass.render_frame = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_frame)
 	}
 
-	if _, ok := goval.(interface {
-		RenderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
-	}); ok {
+	if overrides.RenderFrameGap != nil {
 		pclass.render_frame_gap = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_frame_gap)
 	}
 
-	if _, ok := goval.(interface {
-		RenderHandle(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderHandle != nil {
 		pclass.render_handle = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_handle)
 	}
 
-	if _, ok := goval.(interface {
-		RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
-	}); ok {
+	if overrides.RenderIcon != nil {
 		pclass.render_icon = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_icon)
 	}
 
-	if _, ok := goval.(interface {
-		RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64)
-	}); ok {
+	if overrides.RenderIconSurface != nil {
 		pclass.render_icon_surface = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_icon_surface)
 	}
 
-	if _, ok := goval.(interface {
-		RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout)
-	}); ok {
+	if overrides.RenderLayout != nil {
 		pclass.render_layout = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_layout)
 	}
 
-	if _, ok := goval.(interface {
-		RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64)
-	}); ok {
+	if overrides.RenderLine != nil {
 		pclass.render_line = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_line)
 	}
 
-	if _, ok := goval.(interface {
-		RenderOption(cr *cairo.Context, x, y, width, height float64)
-	}); ok {
+	if overrides.RenderOption != nil {
 		pclass.render_option = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_option)
 	}
 
-	if _, ok := goval.(interface {
-		RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
-	}); ok {
+	if overrides.RenderSlider != nil {
 		pclass.render_slider = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_slider)
 	}
-	if goval, ok := goval.(interface{ InitThemingEngine(*ThemingEngineClass) }); ok {
-		klass := (*ThemingEngineClass)(gextras.NewStructNative(gclass))
-		goval.InitThemingEngine(klass)
+
+	if classInitFunc != nil {
+		class := (*ThemingEngineClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassThemingEngine(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeThemingEngine(*ThemingEngineClass) }); ok {
-		klass := (*ThemingEngineClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeThemingEngine(klass)
-	}
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_activity
-func _gotk4_gtk3_ThemingEngineClass_render_activity(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderActivity(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderActivity(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_arrow
-func _gotk4_gtk3_ThemingEngineClass_render_arrow(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderArrow(cr *cairo.Context, angle, x, y, size float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _angle float64     // out
-	var _x float64         // out
-	var _y float64         // out
-	var _size float64      // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_angle = float64(arg2)
-	_x = float64(arg3)
-	_y = float64(arg4)
-	_size = float64(arg5)
-
-	iface.RenderArrow(_cr, _angle, _x, _y, _size)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_background
-func _gotk4_gtk3_ThemingEngineClass_render_background(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderBackground(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderBackground(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_check
-func _gotk4_gtk3_ThemingEngineClass_render_check(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderCheck(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderCheck(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_expander
-func _gotk4_gtk3_ThemingEngineClass_render_expander(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderExpander(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderExpander(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_extension
-func _gotk4_gtk3_ThemingEngineClass_render_extension(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble, arg6 C.GtkPositionType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
-	})
-
-	var _cr *cairo.Context    // out
-	var _x float64            // out
-	var _y float64            // out
-	var _width float64        // out
-	var _height float64       // out
-	var _gapSide PositionType // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-	_gapSide = PositionType(arg6)
-
-	iface.RenderExtension(_cr, _x, _y, _width, _height, _gapSide)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_focus
-func _gotk4_gtk3_ThemingEngineClass_render_focus(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderFocus(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderFocus(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_frame
-func _gotk4_gtk3_ThemingEngineClass_render_frame(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderFrame(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderFrame(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_frame_gap
-func _gotk4_gtk3_ThemingEngineClass_render_frame_gap(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble, arg6 C.GtkPositionType, arg7 C.gdouble, arg8 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
-	})
-
-	var _cr *cairo.Context    // out
-	var _x float64            // out
-	var _y float64            // out
-	var _width float64        // out
-	var _height float64       // out
-	var _gapSide PositionType // out
-	var _xy0Gap float64       // out
-	var _xy1Gap float64       // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-	_gapSide = PositionType(arg6)
-	_xy0Gap = float64(arg7)
-	_xy1Gap = float64(arg8)
-
-	iface.RenderFrameGap(_cr, _x, _y, _width, _height, _gapSide, _xy0Gap, _xy1Gap)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_handle
-func _gotk4_gtk3_ThemingEngineClass_render_handle(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderHandle(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderHandle(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_icon
-func _gotk4_gtk3_ThemingEngineClass_render_icon(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 *C.GdkPixbuf, arg3 C.gdouble, arg4 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
-	})
-
-	var _cr *cairo.Context        // out
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-	var _x float64                // out
-	var _y float64                // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	{
-		obj := coreglib.Take(unsafe.Pointer(arg2))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
-				},
-			},
-		}
-	}
-	_x = float64(arg3)
-	_y = float64(arg4)
-
-	iface.RenderIcon(_cr, _pixbuf, _x, _y)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_icon_surface
-func _gotk4_gtk3_ThemingEngineClass_render_icon_surface(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 *C.cairo_surface_t, arg3 C.gdouble, arg4 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64)
-	})
-
-	var _cr *cairo.Context      // out
-	var _surface *cairo.Surface // out
-	var _x float64              // out
-	var _y float64              // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(arg2)))
-	C.cairo_surface_reference(arg2)
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg3)
-	_y = float64(arg4)
-
-	iface.RenderIconSurface(_cr, _surface, _x, _y)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_layout
-func _gotk4_gtk3_ThemingEngineClass_render_layout(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 *C.PangoLayout) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout)
-	})
-
-	var _cr *cairo.Context    // out
-	var _x float64            // out
-	var _y float64            // out
-	var _layout *pango.Layout // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	{
-		obj := coreglib.Take(unsafe.Pointer(arg4))
-		_layout = &pango.Layout{
-			Object: obj,
-		}
-	}
-
-	iface.RenderLayout(_cr, _x, _y, _layout)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_line
-func _gotk4_gtk3_ThemingEngineClass_render_line(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x0 float64        // out
-	var _y0 float64        // out
-	var _x1 float64        // out
-	var _y1 float64        // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x0 = float64(arg2)
-	_y0 = float64(arg3)
-	_x1 = float64(arg4)
-	_y1 = float64(arg5)
-
-	iface.RenderLine(_cr, _x0, _y0, _x1, _y1)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_option
-func _gotk4_gtk3_ThemingEngineClass_render_option(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderOption(cr *cairo.Context, x, y, width, height float64)
-	})
-
-	var _cr *cairo.Context // out
-	var _x float64         // out
-	var _y float64         // out
-	var _width float64     // out
-	var _height float64    // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-
-	iface.RenderOption(_cr, _x, _y, _width, _height)
-}
-
-//export _gotk4_gtk3_ThemingEngineClass_render_slider
-func _gotk4_gtk3_ThemingEngineClass_render_slider(arg0 *C.GtkThemingEngine, arg1 *C.cairo_t, arg2 C.gdouble, arg3 C.gdouble, arg4 C.gdouble, arg5 C.gdouble, arg6 C.GtkOrientation) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
-	})
-
-	var _cr *cairo.Context       // out
-	var _x float64               // out
-	var _y float64               // out
-	var _width float64           // out
-	var _height float64          // out
-	var _orientation Orientation // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_x = float64(arg2)
-	_y = float64(arg3)
-	_width = float64(arg4)
-	_height = float64(arg5)
-	_orientation = Orientation(arg6)
-
-	iface.RenderSlider(_cr, _x, _y, _width, _height, _orientation)
 }
 
 func wrapThemingEngine(obj *coreglib.Object) *ThemingEngine {
@@ -784,345 +374,6 @@ func wrapThemingEngine(obj *coreglib.Object) *ThemingEngine {
 
 func marshalThemingEngine(p uintptr) (interface{}, error) {
 	return wrapThemingEngine(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// BackgroundColor gets the background color for a given state.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the color for.
-//
-// The function returns the following values:
-//
-//    - color: return value for the background color.
-//
-func (engine *ThemingEngine) BackgroundColor(state StateFlags) *gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-	var _arg2 C.GdkRGBA           // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_background_color(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _color *gdk.RGBA // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _color
-}
-
-// Border gets the border for a given state as a Border.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the border for.
-//
-// The function returns the following values:
-//
-//    - border: return value for the border settings.
-//
-func (engine *ThemingEngine) Border(state StateFlags) *Border {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-	var _arg2 C.GtkBorder         // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_border(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _border *Border // out
-
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _border
-}
-
-// BorderColor gets the border color for a given state.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the color for.
-//
-// The function returns the following values:
-//
-//    - color: return value for the border color.
-//
-func (engine *ThemingEngine) BorderColor(state StateFlags) *gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-	var _arg2 C.GdkRGBA           // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_border_color(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _color *gdk.RGBA // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _color
-}
-
-// Color gets the foreground color for a given state.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the color for.
-//
-// The function returns the following values:
-//
-//    - color: return value for the foreground color.
-//
-func (engine *ThemingEngine) Color(state StateFlags) *gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-	var _arg2 C.GdkRGBA           // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_color(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _color *gdk.RGBA // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _color
-}
-
-// Direction returns the widget direction used for rendering.
-//
-// Deprecated: Use gtk_theming_engine_get_state() and check for
-// K_STATE_FLAG_DIR_LTR and K_STATE_FLAG_DIR_RTL instead.
-//
-// The function returns the following values:
-//
-//    - textDirection: widget direction.
-//
-func (engine *ThemingEngine) Direction() TextDirection {
-	var _arg0 *C.GtkThemingEngine // out
-	var _cret C.GtkTextDirection  // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-
-	_cret = C.gtk_theming_engine_get_direction(_arg0)
-	runtime.KeepAlive(engine)
-
-	var _textDirection TextDirection // out
-
-	_textDirection = TextDirection(_cret)
-
-	return _textDirection
-}
-
-// Font returns the font description for a given state.
-//
-// Deprecated: Use gtk_theming_engine_get().
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the font for.
-//
-// The function returns the following values:
-//
-//    - fontDescription for the given state. This object is owned by GTK+ and
-//      should not be freed.
-//
-func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
-	var _arg0 *C.GtkThemingEngine     // out
-	var _arg1 C.GtkStateFlags         // out
-	var _cret *C.PangoFontDescription // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	_cret = C.gtk_theming_engine_get_font(_arg0, _arg1)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _fontDescription *pango.FontDescription // out
-
-	_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-
-	return _fontDescription
-}
-
-// JunctionSides returns the widget direction used for rendering.
-//
-// Deprecated: since version 3.14.
-//
-// The function returns the following values:
-//
-//    - junctionSides: widget direction.
-//
-func (engine *ThemingEngine) JunctionSides() JunctionSides {
-	var _arg0 *C.GtkThemingEngine // out
-	var _cret C.GtkJunctionSides  // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-
-	_cret = C.gtk_theming_engine_get_junction_sides(_arg0)
-	runtime.KeepAlive(engine)
-
-	var _junctionSides JunctionSides // out
-
-	_junctionSides = JunctionSides(_cret)
-
-	return _junctionSides
-}
-
-// Margin gets the margin for a given state as a Border.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the border for.
-//
-// The function returns the following values:
-//
-//    - margin: return value for the margin settings.
-//
-func (engine *ThemingEngine) Margin(state StateFlags) *Border {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-	var _arg2 C.GtkBorder         // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_margin(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _margin *Border // out
-
-	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _margin
-}
-
-// Padding gets the padding for a given state as a Border.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - state to retrieve the padding for.
-//
-// The function returns the following values:
-//
-//    - padding: return value for the padding settings.
-//
-func (engine *ThemingEngine) Padding(state StateFlags) *Border {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateFlags     // out
-	var _arg2 C.GtkBorder         // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_padding(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
-
-	var _padding *Border // out
-
-	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-
-	return _padding
-}
-
-// Path returns the widget path used for style matching.
-//
-// Deprecated: since version 3.14.
-//
-// The function returns the following values:
-//
-//    - widgetPath: WidgetPath.
-//
-func (engine *ThemingEngine) Path() *WidgetPath {
-	var _arg0 *C.GtkThemingEngine // out
-	var _cret *C.GtkWidgetPath    // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-
-	_cret = C.gtk_theming_engine_get_path(_arg0)
-	runtime.KeepAlive(engine)
-
-	var _widgetPath *WidgetPath // out
-
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
-		},
-	)
-
-	return _widgetPath
-}
-
-// Property gets a property value as retrieved from the style settings that
-// apply to the currently rendered element.
-//
-// Deprecated: since version 3.14.
-//
-// The function takes the following parameters:
-//
-//    - property name.
-//    - state to retrieve the value for.
-//
-// The function returns the following values:
-//
-//    - value: return location for the property value, you must free this memory
-//      using g_value_unset() once you are done with it.
-//
-func (engine *ThemingEngine) Property(property string, state StateFlags) coreglib.Value {
-	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
-	var _arg2 C.GtkStateFlags     // out
-	var _arg3 C.GValue            // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkStateFlags(state)
-
-	C.gtk_theming_engine_get_property(_arg0, _arg1, _arg2, &_arg3)
-	runtime.KeepAlive(engine)
-	runtime.KeepAlive(property)
-	runtime.KeepAlive(state)
-
-	var _value coreglib.Value // out
-
-	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg3)))
-	runtime.SetFinalizer(_value, func(v *coreglib.Value) {
-		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
-	})
-
-	return _value
 }
 
 // Screen returns the Screen to which engine currently rendering to.
@@ -1156,218 +407,572 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 	return _screen
 }
 
-// State returns the state used when rendering.
-//
-// Deprecated: since version 3.14.
-//
-// The function returns the following values:
-//
-//    - stateFlags: state flags.
-//
-func (engine *ThemingEngine) State() StateFlags {
-	var _arg0 *C.GtkThemingEngine // out
-	var _cret C.GtkStateFlags     // in
-
-	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-
-	_cret = C.gtk_theming_engine_get_state(_arg0)
-	runtime.KeepAlive(engine)
-
-	var _stateFlags StateFlags // out
-
-	_stateFlags = StateFlags(_cret)
-
-	return _stateFlags
-}
-
-// StyleProperty gets the value for a widget style property.
-//
-// Deprecated: since version 3.14.
-//
 // The function takes the following parameters:
 //
-//    - propertyName: name of the widget style property.
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
 //
-// The function returns the following values:
-//
-//    - value: return location for the property value, free with g_value_unset()
-//      after use.
-//
-func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
+func (engine *ThemingEngine) renderActivity(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_activity
+
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
-	var _arg2 C.GValue            // in
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
 
-	C.gtk_theming_engine_get_style_property(_arg0, _arg1, &_arg2)
+	C._gotk4_gtk3_ThemingEngine_virtual_render_activity(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(engine)
-	runtime.KeepAlive(propertyName)
-
-	var _value coreglib.Value // out
-
-	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg2)))
-
-	return _value
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
-// HasClass returns TRUE if the currently rendered contents have defined the
-// given class name.
-//
-// Deprecated: since version 3.14.
-//
 // The function takes the following parameters:
 //
-//    - styleClass class name to look up.
+//    - cr
+//    - angle
+//    - x
+//    - y
+//    - size
 //
-// The function returns the following values:
-//
-//    - ok: TRUE if engine has class_name defined.
-//
-func (engine *ThemingEngine) HasClass(styleClass string) bool {
+func (engine *ThemingEngine) renderArrow(cr *cairo.Context, angle, x, y, size float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_arrow
+
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
-	var _cret C.gboolean          // in
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(styleClass)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(angle)
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+	_arg5 = C.gdouble(size)
 
-	_cret = C.gtk_theming_engine_has_class(_arg0, _arg1)
+	C._gotk4_gtk3_ThemingEngine_virtual_render_arrow(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(engine)
-	runtime.KeepAlive(styleClass)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(angle)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(size)
 }
 
-// HasRegion returns TRUE if the currently rendered contents have the region
-// defined. If flags_return is not NULL, it is set to the flags affecting the
-// region.
-//
-// Deprecated: since version 3.14.
-//
 // The function takes the following parameters:
 //
-//    - styleRegion: region name.
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
 //
-// The function returns the following values:
-//
-//    - flags (optional): return location for region flags.
-//    - ok: TRUE if region is defined.
-//
-func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
+func (engine *ThemingEngine) renderBackground(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_background
+
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
-	var _arg2 C.GtkRegionFlags    // in
-	var _cret C.gboolean          // in
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(styleRegion)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
 
-	_cret = C.gtk_theming_engine_has_region(_arg0, _arg1, &_arg2)
+	C._gotk4_gtk3_ThemingEngine_virtual_render_background(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(engine)
-	runtime.KeepAlive(styleRegion)
-
-	var _flags RegionFlags // out
-	var _ok bool           // out
-
-	_flags = RegionFlags(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _flags, _ok
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
-// LookupColor looks up and resolves a color name in the current style’s color
-// map.
-//
-// Deprecated: since version 3.14.
-//
 // The function takes the following parameters:
 //
-//    - colorName: color name to lookup.
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
 //
-// The function returns the following values:
-//
-//    - color: return location for the looked up color.
-//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
-//
-func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
+func (engine *ThemingEngine) renderCheck(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_check
+
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 *C.gchar            // out
-	var _arg2 C.GdkRGBA           // in
-	var _cret C.gboolean          // in
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
 
-	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, &_arg2)
+	C._gotk4_gtk3_ThemingEngine_virtual_render_check(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(engine)
-	runtime.KeepAlive(colorName)
-
-	var _color *gdk.RGBA // out
-	var _ok bool         // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _color, _ok
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
-// StateIsRunning returns TRUE if there is a transition animation running for
-// the current region (see gtk_style_context_push_animatable_region()).
-//
-// If progress is not NULL, the animation progress will be returned there, 0.0
-// means the state is closest to being FALSE, while 1.0 means it’s closest to
-// being TRUE. This means transition animations will run from 0 to 1 when state
-// is being set to TRUE and from 1 to 0 when it’s being set to FALSE.
-//
-// Deprecated: Always returns FALSE.
-//
 // The function takes the following parameters:
 //
-//    - state: widget state.
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
 //
-// The function returns the following values:
-//
-//    - progress: return location for the transition progress.
-//    - ok: TRUE if there is a running transition animation for state.
-//
-func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
+func (engine *ThemingEngine) renderExpander(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_expander
+
 	var _arg0 *C.GtkThemingEngine // out
-	var _arg1 C.GtkStateType      // out
-	var _arg2 C.gdouble           // in
-	var _cret C.gboolean          // in
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	_arg1 = C.GtkStateType(state)
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
 
-	_cret = C.gtk_theming_engine_state_is_running(_arg0, _arg1, &_arg2)
+	C._gotk4_gtk3_ThemingEngine_virtual_render_expander(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 	runtime.KeepAlive(engine)
-	runtime.KeepAlive(state)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
 
-	var _progress float64 // out
-	var _ok bool          // out
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//    - gapSide
+//
+func (engine *ThemingEngine) renderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_extension
 
-	_progress = float64(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+	var _arg6 C.GtkPositionType   // out
 
-	return _progress, _ok
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+	_arg6 = C.GtkPositionType(gapSide)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_extension(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(gapSide)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//
+func (engine *ThemingEngine) renderFocus(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_focus
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_focus(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//
+func (engine *ThemingEngine) renderFrame(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_frame
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_frame(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//    - gapSide
+//    - xy0Gap
+//    - xy1Gap
+//
+func (engine *ThemingEngine) renderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_frame_gap
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+	var _arg6 C.GtkPositionType   // out
+	var _arg7 C.gdouble           // out
+	var _arg8 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+	_arg6 = C.GtkPositionType(gapSide)
+	_arg7 = C.gdouble(xy0Gap)
+	_arg8 = C.gdouble(xy1Gap)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_frame_gap(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(gapSide)
+	runtime.KeepAlive(xy0Gap)
+	runtime.KeepAlive(xy1Gap)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//
+func (engine *ThemingEngine) renderHandle(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_handle
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_handle(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - pixbuf
+//    - x
+//    - y
+//
+func (engine *ThemingEngine) renderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_icon
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 *C.GdkPixbuf        // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_icon(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(pixbuf)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - surface
+//    - x
+//    - y
+//
+func (engine *ThemingEngine) renderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_icon_surface
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 *C.cairo_surface_t  // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_icon_surface(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(surface)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - layout
+//
+func (engine *ThemingEngine) renderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_layout
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 *C.PangoLayout      // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_layout(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(layout)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x0
+//    - y0
+//    - x1
+//    - y1
+//
+func (engine *ThemingEngine) renderLine(cr *cairo.Context, x0, y0, x1, y1 float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_line
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x0)
+	_arg3 = C.gdouble(y0)
+	_arg4 = C.gdouble(x1)
+	_arg5 = C.gdouble(y1)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_line(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x0)
+	runtime.KeepAlive(y0)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//
+func (engine *ThemingEngine) renderOption(cr *cairo.Context, x, y, width, height float64) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_option
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_option(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// The function takes the following parameters:
+//
+//    - cr
+//    - x
+//    - y
+//    - width
+//    - height
+//    - orientation
+//
+func (engine *ThemingEngine) renderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation) {
+	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
+	fnarg := gclass.render_slider
+
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.cairo_t          // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.gdouble           // out
+	var _arg4 C.gdouble           // out
+	var _arg5 C.gdouble           // out
+	var _arg6 C.GtkOrientation    // out
+
+	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.gdouble(x)
+	_arg3 = C.gdouble(y)
+	_arg4 = C.gdouble(width)
+	_arg5 = C.gdouble(height)
+	_arg6 = C.GtkOrientation(orientation)
+
+	C._gotk4_gtk3_ThemingEngine_virtual_render_slider(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(engine)
+	runtime.KeepAlive(cr)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(orientation)
 }
 
 // ThemingEngineLoad loads and initializes a theming engine module from the

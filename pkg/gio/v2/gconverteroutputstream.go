@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// ConverterOutputStreamOverrider contains methods that are overridable.
-type ConverterOutputStreamOverrider interface {
+// ConverterOutputStreamOverrides contains methods that are overridable.
+type ConverterOutputStreamOverrides struct {
+}
+
+func defaultConverterOutputStreamOverrides(v *ConverterOutputStream) ConverterOutputStreamOverrides {
+	return ConverterOutputStreamOverrides{}
 }
 
 // ConverterOutputStream: converter output stream implements Stream and allows
@@ -51,29 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeConverterOutputStream,
-		GoType:        reflect.TypeOf((*ConverterOutputStream)(nil)),
-		InitClass:     initClassConverterOutputStream,
-		FinalizeClass: finalizeClassConverterOutputStream,
-	})
+	coreglib.RegisterClassInfo[*ConverterOutputStream, *ConverterOutputStreamClass, ConverterOutputStreamOverrides](
+		GTypeConverterOutputStream,
+		initConverterOutputStreamClass,
+		wrapConverterOutputStream,
+		defaultConverterOutputStreamOverrides,
+	)
 }
 
-func initClassConverterOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitConverterOutputStream(*ConverterOutputStreamClass)
-	}); ok {
-		klass := (*ConverterOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.InitConverterOutputStream(klass)
-	}
-}
-
-func finalizeClassConverterOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeConverterOutputStream(*ConverterOutputStreamClass)
-	}); ok {
-		klass := (*ConverterOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeConverterOutputStream(klass)
+func initConverterOutputStreamClass(gclass unsafe.Pointer, overrides ConverterOutputStreamOverrides, classInitFunc func(*ConverterOutputStreamClass)) {
+	if classInitFunc != nil {
+		class := (*ConverterOutputStreamClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -129,28 +122,6 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) 
 	_converterOutputStream = wrapConverterOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterOutputStream
-}
-
-// Converter gets the #GConverter that is used by converter_stream.
-//
-// The function returns the following values:
-//
-//    - converter of the converter output stream.
-//
-func (converterStream *ConverterOutputStream) Converter() *Converter {
-	var _arg0 *C.GConverterOutputStream // out
-	var _cret *C.GConverter             // in
-
-	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(coreglib.InternObject(converterStream).Native()))
-
-	_cret = C.g_converter_output_stream_get_converter(_arg0)
-	runtime.KeepAlive(converterStream)
-
-	var _converter *Converter // out
-
-	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _converter
 }
 
 // ConverterOutputStreamClass: instance of this type is always passed by

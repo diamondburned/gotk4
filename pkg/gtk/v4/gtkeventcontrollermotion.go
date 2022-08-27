@@ -12,9 +12,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk4_EventControllerMotion_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk4_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk4_EventControllerMotion_ConnectLeave(gpointer, guintptr);
+// extern void _gotk4_gtk4_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -57,74 +57,14 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return wrapEventControllerMotion(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_EventControllerMotion_ConnectEnter
-func _gotk4_gtk4_EventControllerMotion_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
-}
-
 // ConnectEnter signals that the pointer has entered the widget.
 func (self *EventControllerMotion) ConnectEnter(f func(x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerMotion_ConnectEnter), f)
 }
 
-//export _gotk4_gtk4_EventControllerMotion_ConnectLeave
-func _gotk4_gtk4_EventControllerMotion_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectLeave signals that the pointer has left the widget.
 func (self *EventControllerMotion) ConnectLeave(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerMotion_ConnectLeave), f)
-}
-
-//export _gotk4_gtk4_EventControllerMotion_ConnectMotion
-func _gotk4_gtk4_EventControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
 }
 
 // ConnectMotion is emitted when the pointer moves inside the widget.

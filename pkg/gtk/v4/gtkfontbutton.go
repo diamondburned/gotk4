@@ -83,22 +83,6 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return wrapFontButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_FontButton_ConnectFontSet
-func _gotk4_gtk4_FontButton_ConnectFontSet(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectFontSet is emitted when the user selects a font.
 //
 // When handling this signal, use gtk.FontChooser.GetFont() to find out which

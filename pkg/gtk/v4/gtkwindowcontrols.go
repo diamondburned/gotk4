@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// WindowControlsOverrider contains methods that are overridable.
-type WindowControlsOverrider interface {
+// WindowControlsOverrides contains methods that are overridable.
+type WindowControlsOverrides struct {
+}
+
+func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
+	return WindowControlsOverrides{}
 }
 
 // WindowControls: GtkWindowControls shows window frame controls.
@@ -89,25 +93,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWindowControls,
-		GoType:        reflect.TypeOf((*WindowControls)(nil)),
-		InitClass:     initClassWindowControls,
-		FinalizeClass: finalizeClassWindowControls,
-	})
+	coreglib.RegisterClassInfo[*WindowControls, *WindowControlsClass, WindowControlsOverrides](
+		GTypeWindowControls,
+		initWindowControlsClass,
+		wrapWindowControls,
+		defaultWindowControlsOverrides,
+	)
 }
 
-func initClassWindowControls(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitWindowControls(*WindowControlsClass) }); ok {
-		klass := (*WindowControlsClass)(gextras.NewStructNative(gclass))
-		goval.InitWindowControls(klass)
-	}
-}
-
-func finalizeClassWindowControls(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWindowControls(*WindowControlsClass) }); ok {
-		klass := (*WindowControlsClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWindowControls(klass)
+func initWindowControlsClass(gclass unsafe.Pointer, overrides WindowControlsOverrides, classInitFunc func(*WindowControlsClass)) {
+	if classInitFunc != nil {
+		class := (*WindowControlsClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// ArrowOverrider contains methods that are overridable.
-type ArrowOverrider interface {
+// ArrowOverrides contains methods that are overridable.
+type ArrowOverrides struct {
+}
+
+func defaultArrowOverrides(v *Arrow) ArrowOverrides {
+	return ArrowOverrides{}
 }
 
 // Arrow should be used to draw simple arrows that need to point in one of the
@@ -62,25 +66,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeArrow,
-		GoType:        reflect.TypeOf((*Arrow)(nil)),
-		InitClass:     initClassArrow,
-		FinalizeClass: finalizeClassArrow,
-	})
+	coreglib.RegisterClassInfo[*Arrow, *ArrowClass, ArrowOverrides](
+		GTypeArrow,
+		initArrowClass,
+		wrapArrow,
+		defaultArrowOverrides,
+	)
 }
 
-func initClassArrow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitArrow(*ArrowClass) }); ok {
-		klass := (*ArrowClass)(gextras.NewStructNative(gclass))
-		goval.InitArrow(klass)
-	}
-}
-
-func finalizeClassArrow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeArrow(*ArrowClass) }); ok {
-		klass := (*ArrowClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeArrow(klass)
+func initArrowClass(gclass unsafe.Pointer, overrides ArrowOverrides, classInitFunc func(*ArrowClass)) {
+	if classInitFunc != nil {
+		class := (*ArrowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

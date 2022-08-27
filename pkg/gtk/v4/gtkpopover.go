@@ -15,10 +15,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_PopoverClass_activate_default(GtkPopover*);
-// extern void _gotk4_gtk4_PopoverClass_closed(GtkPopover*);
-// extern void _gotk4_gtk4_Popover_ConnectActivateDefault(gpointer, guintptr);
 // extern void _gotk4_gtk4_Popover_ConnectClosed(gpointer, guintptr);
+// extern void _gotk4_gtk4_Popover_ConnectActivateDefault(gpointer, guintptr);
+// extern void _gotk4_gtk4_PopoverClass_closed(GtkPopover*);
+// extern void _gotk4_gtk4_PopoverClass_activate_default(GtkPopover*);
+// void _gotk4_gtk4_Popover_virtual_activate_default(void* fnptr, GtkPopover* arg0) {
+//   ((void (*)(GtkPopover*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Popover_virtual_closed(void* fnptr, GtkPopover* arg0) {
+//   ((void (*)(GtkPopover*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -32,10 +38,17 @@ func init() {
 	})
 }
 
-// PopoverOverrider contains methods that are overridable.
-type PopoverOverrider interface {
-	ActivateDefault()
-	Closed()
+// PopoverOverrides contains methods that are overridable.
+type PopoverOverrides struct {
+	ActivateDefault func()
+	Closed          func()
+}
+
+func defaultPopoverOverrides(v *Popover) PopoverOverrides {
+	return PopoverOverrides{
+		ActivateDefault: v.activateDefault,
+		Closed:          v.closed,
+	}
 }
 
 // Popover: GtkPopover is a bubble-like context popup.
@@ -126,52 +139,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePopover,
-		GoType:        reflect.TypeOf((*Popover)(nil)),
-		InitClass:     initClassPopover,
-		FinalizeClass: finalizeClassPopover,
-	})
+	coreglib.RegisterClassInfo[*Popover, *PopoverClass, PopoverOverrides](
+		GTypePopover,
+		initPopoverClass,
+		wrapPopover,
+		defaultPopoverOverrides,
+	)
 }
 
-func initClassPopover(gclass unsafe.Pointer, goval any) {
+func initPopoverClass(gclass unsafe.Pointer, overrides PopoverOverrides, classInitFunc func(*PopoverClass)) {
+	pclass := (*C.GtkPopoverClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePopover))))
 
-	pclass := (*C.GtkPopoverClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ActivateDefault() }); ok {
+	if overrides.ActivateDefault != nil {
 		pclass.activate_default = (*[0]byte)(C._gotk4_gtk4_PopoverClass_activate_default)
 	}
 
-	if _, ok := goval.(interface{ Closed() }); ok {
+	if overrides.Closed != nil {
 		pclass.closed = (*[0]byte)(C._gotk4_gtk4_PopoverClass_closed)
 	}
-	if goval, ok := goval.(interface{ InitPopover(*PopoverClass) }); ok {
-		klass := (*PopoverClass)(gextras.NewStructNative(gclass))
-		goval.InitPopover(klass)
+
+	if classInitFunc != nil {
+		class := (*PopoverClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassPopover(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePopover(*PopoverClass) }); ok {
-		klass := (*PopoverClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePopover(klass)
-	}
-}
-
-//export _gotk4_gtk4_PopoverClass_activate_default
-func _gotk4_gtk4_PopoverClass_activate_default(arg0 *C.GtkPopover) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateDefault() })
-
-	iface.ActivateDefault()
-}
-
-//export _gotk4_gtk4_PopoverClass_closed
-func _gotk4_gtk4_PopoverClass_closed(arg0 *C.GtkPopover) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Closed() })
-
-	iface.Closed()
 }
 
 func wrapPopover(obj *coreglib.Object) *Popover {
@@ -219,44 +209,12 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return wrapPopover(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Popover_ConnectActivateDefault
-func _gotk4_gtk4_Popover_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivateDefault is emitted whend the user activates the default
 // widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (popover *Popover) ConnectActivateDefault(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(popover, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectActivateDefault), f)
-}
-
-//export _gotk4_gtk4_Popover_ConnectClosed
-func _gotk4_gtk4_Popover_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectClosed is emitted when the popover is closed.
@@ -740,6 +698,30 @@ func (popover *Popover) SetPosition(position PositionType) {
 	C.gtk_popover_set_position(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(position)
+}
+
+func (popover *Popover) activateDefault() {
+	gclass := (*C.GtkPopoverClass)(coreglib.PeekParentClass(popover))
+	fnarg := gclass.activate_default
+
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	C._gotk4_gtk4_Popover_virtual_activate_default(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(popover)
+}
+
+func (popover *Popover) closed() {
+	gclass := (*C.GtkPopoverClass)(coreglib.PeekParentClass(popover))
+	fnarg := gclass.closed
+
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	C._gotk4_gtk4_Popover_virtual_closed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(popover)
 }
 
 // PopoverClass: instance of this type is always passed by reference.

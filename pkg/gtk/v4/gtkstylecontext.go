@@ -18,6 +18,9 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 // extern void _gotk4_gtk4_StyleContextClass_changed(GtkStyleContext*);
+// void _gotk4_gtk4_StyleContext_virtual_changed(void* fnptr, GtkStyleContext* arg0) {
+//   ((void (*)(GtkStyleContext*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -94,9 +97,15 @@ func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
 	return (s & other) == other
 }
 
-// StyleContextOverrider contains methods that are overridable.
-type StyleContextOverrider interface {
-	Changed()
+// StyleContextOverrides contains methods that are overridable.
+type StyleContextOverrides struct {
+	Changed func()
+}
+
+func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
+	return StyleContextOverrides{
+		Changed: v.changed,
+	}
 }
 
 // StyleContext: GtkStyleContext stores styling information affecting a widget.
@@ -147,40 +156,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStyleContext,
-		GoType:        reflect.TypeOf((*StyleContext)(nil)),
-		InitClass:     initClassStyleContext,
-		FinalizeClass: finalizeClassStyleContext,
-	})
+	coreglib.RegisterClassInfo[*StyleContext, *StyleContextClass, StyleContextOverrides](
+		GTypeStyleContext,
+		initStyleContextClass,
+		wrapStyleContext,
+		defaultStyleContextOverrides,
+	)
 }
 
-func initClassStyleContext(gclass unsafe.Pointer, goval any) {
+func initStyleContextClass(gclass unsafe.Pointer, overrides StyleContextOverrides, classInitFunc func(*StyleContextClass)) {
+	pclass := (*C.GtkStyleContextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeStyleContext))))
 
-	pclass := (*C.GtkStyleContextClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Changed() }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_StyleContextClass_changed)
 	}
-	if goval, ok := goval.(interface{ InitStyleContext(*StyleContextClass) }); ok {
-		klass := (*StyleContextClass)(gextras.NewStructNative(gclass))
-		goval.InitStyleContext(klass)
+
+	if classInitFunc != nil {
+		class := (*StyleContextClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassStyleContext(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeStyleContext(*StyleContextClass) }); ok {
-		klass := (*StyleContextClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStyleContext(klass)
-	}
-}
-
-//export _gotk4_gtk4_StyleContextClass_changed
-func _gotk4_gtk4_StyleContextClass_changed(arg0 *C.GtkStyleContext) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed() })
-
-	iface.Changed()
 }
 
 func wrapStyleContext(obj *coreglib.Object) *StyleContext {
@@ -650,6 +644,18 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+func (context *StyleContext) changed() {
+	gclass := (*C.GtkStyleContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkStyleContext // out
+
+	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	C._gotk4_gtk4_StyleContext_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(context)
 }
 
 // StyleContextAddProviderForDisplay adds a global style provider to display,

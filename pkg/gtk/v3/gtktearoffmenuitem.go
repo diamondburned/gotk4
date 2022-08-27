@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// TearoffMenuItemOverrider contains methods that are overridable.
-type TearoffMenuItemOverrider interface {
+// TearoffMenuItemOverrides contains methods that are overridable.
+type TearoffMenuItemOverrides struct {
+}
+
+func defaultTearoffMenuItemOverrides(v *TearoffMenuItem) TearoffMenuItemOverrides {
+	return TearoffMenuItemOverrides{}
 }
 
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach
@@ -58,25 +62,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTearoffMenuItem,
-		GoType:        reflect.TypeOf((*TearoffMenuItem)(nil)),
-		InitClass:     initClassTearoffMenuItem,
-		FinalizeClass: finalizeClassTearoffMenuItem,
-	})
+	coreglib.RegisterClassInfo[*TearoffMenuItem, *TearoffMenuItemClass, TearoffMenuItemOverrides](
+		GTypeTearoffMenuItem,
+		initTearoffMenuItemClass,
+		wrapTearoffMenuItem,
+		defaultTearoffMenuItemOverrides,
+	)
 }
 
-func initClassTearoffMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTearoffMenuItem(*TearoffMenuItemClass) }); ok {
-		klass := (*TearoffMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.InitTearoffMenuItem(klass)
-	}
-}
-
-func finalizeClassTearoffMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTearoffMenuItem(*TearoffMenuItemClass) }); ok {
-		klass := (*TearoffMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTearoffMenuItem(klass)
+func initTearoffMenuItemClass(gclass unsafe.Pointer, overrides TearoffMenuItemOverrides, classInitFunc func(*TearoffMenuItemClass)) {
+	if classInitFunc != nil {
+		class := (*TearoffMenuItemClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

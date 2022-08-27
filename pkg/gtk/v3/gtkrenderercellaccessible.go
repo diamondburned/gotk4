@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// RendererCellAccessibleOverrider contains methods that are overridable.
-type RendererCellAccessibleOverrider interface {
+// RendererCellAccessibleOverrides contains methods that are overridable.
+type RendererCellAccessibleOverrides struct {
+}
+
+func defaultRendererCellAccessibleOverrides(v *RendererCellAccessible) RendererCellAccessibleOverrides {
+	return RendererCellAccessibleOverrides{}
 }
 
 type RendererCellAccessible struct {
@@ -44,29 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRendererCellAccessible,
-		GoType:        reflect.TypeOf((*RendererCellAccessible)(nil)),
-		InitClass:     initClassRendererCellAccessible,
-		FinalizeClass: finalizeClassRendererCellAccessible,
-	})
+	coreglib.RegisterClassInfo[*RendererCellAccessible, *RendererCellAccessibleClass, RendererCellAccessibleOverrides](
+		GTypeRendererCellAccessible,
+		initRendererCellAccessibleClass,
+		wrapRendererCellAccessible,
+		defaultRendererCellAccessibleOverrides,
+	)
 }
 
-func initClassRendererCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitRendererCellAccessible(*RendererCellAccessibleClass)
-	}); ok {
-		klass := (*RendererCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitRendererCellAccessible(klass)
-	}
-}
-
-func finalizeClassRendererCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeRendererCellAccessible(*RendererCellAccessibleClass)
-	}); ok {
-		klass := (*RendererCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRendererCellAccessible(klass)
+func initRendererCellAccessibleClass(gclass unsafe.Pointer, overrides RendererCellAccessibleOverrides, classInitFunc func(*RendererCellAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*RendererCellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

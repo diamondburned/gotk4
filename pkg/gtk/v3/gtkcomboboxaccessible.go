@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ComboBoxAccessibleOverrider contains methods that are overridable.
-type ComboBoxAccessibleOverrider interface {
+// ComboBoxAccessibleOverrides contains methods that are overridable.
+type ComboBoxAccessibleOverrides struct {
+}
+
+func defaultComboBoxAccessibleOverrides(v *ComboBoxAccessible) ComboBoxAccessibleOverrides {
+	return ComboBoxAccessibleOverrides{}
 }
 
 type ComboBoxAccessible struct {
@@ -47,29 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeComboBoxAccessible,
-		GoType:        reflect.TypeOf((*ComboBoxAccessible)(nil)),
-		InitClass:     initClassComboBoxAccessible,
-		FinalizeClass: finalizeClassComboBoxAccessible,
-	})
+	coreglib.RegisterClassInfo[*ComboBoxAccessible, *ComboBoxAccessibleClass, ComboBoxAccessibleOverrides](
+		GTypeComboBoxAccessible,
+		initComboBoxAccessibleClass,
+		wrapComboBoxAccessible,
+		defaultComboBoxAccessibleOverrides,
+	)
 }
 
-func initClassComboBoxAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitComboBoxAccessible(*ComboBoxAccessibleClass)
-	}); ok {
-		klass := (*ComboBoxAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitComboBoxAccessible(klass)
-	}
-}
-
-func finalizeClassComboBoxAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeComboBoxAccessible(*ComboBoxAccessibleClass)
-	}); ok {
-		klass := (*ComboBoxAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeComboBoxAccessible(klass)
+func initComboBoxAccessibleClass(gclass unsafe.Pointer, overrides ComboBoxAccessibleOverrides, classInitFunc func(*ComboBoxAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ComboBoxAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

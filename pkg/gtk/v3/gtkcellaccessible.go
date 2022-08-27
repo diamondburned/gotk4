@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -17,6 +18,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_CellAccessibleClass_update_cache(GtkCellAccessible*, gboolean);
+// void _gotk4_gtk3_CellAccessible_virtual_update_cache(void* fnptr, GtkCellAccessible* arg0, gboolean arg1) {
+//   ((void (*)(GtkCellAccessible*, gboolean))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -30,11 +34,17 @@ func init() {
 	})
 }
 
-// CellAccessibleOverrider contains methods that are overridable.
-type CellAccessibleOverrider interface {
+// CellAccessibleOverrides contains methods that are overridable.
+type CellAccessibleOverrides struct {
 	// The function takes the following parameters:
 	//
-	UpdateCache(emitSignal bool)
+	UpdateCache func(emitSignal bool)
+}
+
+func defaultCellAccessibleOverrides(v *CellAccessible) CellAccessibleOverrides {
+	return CellAccessibleOverrides{
+		UpdateCache: v.updateCache,
+	}
 }
 
 type CellAccessible struct {
@@ -53,46 +63,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellAccessible,
-		GoType:        reflect.TypeOf((*CellAccessible)(nil)),
-		InitClass:     initClassCellAccessible,
-		FinalizeClass: finalizeClassCellAccessible,
-	})
+	coreglib.RegisterClassInfo[*CellAccessible, *CellAccessibleClass, CellAccessibleOverrides](
+		GTypeCellAccessible,
+		initCellAccessibleClass,
+		wrapCellAccessible,
+		defaultCellAccessibleOverrides,
+	)
 }
 
-func initClassCellAccessible(gclass unsafe.Pointer, goval any) {
+func initCellAccessibleClass(gclass unsafe.Pointer, overrides CellAccessibleOverrides, classInitFunc func(*CellAccessibleClass)) {
+	pclass := (*C.GtkCellAccessibleClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellAccessible))))
 
-	pclass := (*C.GtkCellAccessibleClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ UpdateCache(emitSignal bool) }); ok {
+	if overrides.UpdateCache != nil {
 		pclass.update_cache = (*[0]byte)(C._gotk4_gtk3_CellAccessibleClass_update_cache)
 	}
-	if goval, ok := goval.(interface{ InitCellAccessible(*CellAccessibleClass) }); ok {
-		klass := (*CellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitCellAccessible(klass)
+
+	if classInitFunc != nil {
+		class := (*CellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCellAccessible(*CellAccessibleClass) }); ok {
-		klass := (*CellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellAccessible(klass)
-	}
-}
-
-//export _gotk4_gtk3_CellAccessibleClass_update_cache
-func _gotk4_gtk3_CellAccessibleClass_update_cache(arg0 *C.GtkCellAccessible, arg1 C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ UpdateCache(emitSignal bool) })
-
-	var _emitSignal bool // out
-
-	if arg1 != 0 {
-		_emitSignal = true
-	}
-
-	iface.UpdateCache(_emitSignal)
 }
 
 func wrapCellAccessible(obj *coreglib.Object) *CellAccessible {
@@ -122,6 +111,25 @@ func wrapCellAccessible(obj *coreglib.Object) *CellAccessible {
 
 func marshalCellAccessible(p uintptr) (interface{}, error) {
 	return wrapCellAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// The function takes the following parameters:
+//
+func (cell *CellAccessible) updateCache(emitSignal bool) {
+	gclass := (*C.GtkCellAccessibleClass)(coreglib.PeekParentClass(cell))
+	fnarg := gclass.update_cache
+
+	var _arg0 *C.GtkCellAccessible // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if emitSignal {
+		_arg1 = C.TRUE
+	}
+
+	C._gotk4_gtk3_CellAccessible_virtual_update_cache(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(emitSignal)
 }
 
 // CellAccessibleClass: instance of this type is always passed by reference.

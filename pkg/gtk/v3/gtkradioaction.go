@@ -16,8 +16,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_RadioActionClass_changed(GtkRadioAction*, GtkRadioAction*);
 // extern void _gotk4_gtk3_RadioAction_ConnectChanged(gpointer, GtkRadioAction*, guintptr);
+// extern void _gotk4_gtk3_RadioActionClass_changed(GtkRadioAction*, GtkRadioAction*);
+// void _gotk4_gtk3_RadioAction_virtual_changed(void* fnptr, GtkRadioAction* arg0, GtkRadioAction* arg1) {
+//   ((void (*)(GtkRadioAction*, GtkRadioAction*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -31,11 +34,17 @@ func init() {
 	})
 }
 
-// RadioActionOverrider contains methods that are overridable.
-type RadioActionOverrider interface {
+// RadioActionOverrides contains methods that are overridable.
+type RadioActionOverrides struct {
 	// The function takes the following parameters:
 	//
-	Changed(current *RadioAction)
+	Changed func(current *RadioAction)
+}
+
+func defaultRadioActionOverrides(v *RadioAction) RadioActionOverrides {
+	return RadioActionOverrides{
+		Changed: v.changed,
+	}
 }
 
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
@@ -50,44 +59,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRadioAction,
-		GoType:        reflect.TypeOf((*RadioAction)(nil)),
-		InitClass:     initClassRadioAction,
-		FinalizeClass: finalizeClassRadioAction,
-	})
+	coreglib.RegisterClassInfo[*RadioAction, *RadioActionClass, RadioActionOverrides](
+		GTypeRadioAction,
+		initRadioActionClass,
+		wrapRadioAction,
+		defaultRadioActionOverrides,
+	)
 }
 
-func initClassRadioAction(gclass unsafe.Pointer, goval any) {
+func initRadioActionClass(gclass unsafe.Pointer, overrides RadioActionOverrides, classInitFunc func(*RadioActionClass)) {
+	pclass := (*C.GtkRadioActionClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRadioAction))))
 
-	pclass := (*C.GtkRadioActionClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Changed(current *RadioAction) }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_RadioActionClass_changed)
 	}
-	if goval, ok := goval.(interface{ InitRadioAction(*RadioActionClass) }); ok {
-		klass := (*RadioActionClass)(gextras.NewStructNative(gclass))
-		goval.InitRadioAction(klass)
+
+	if classInitFunc != nil {
+		class := (*RadioActionClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassRadioAction(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRadioAction(*RadioActionClass) }); ok {
-		klass := (*RadioActionClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRadioAction(klass)
-	}
-}
-
-//export _gotk4_gtk3_RadioActionClass_changed
-func _gotk4_gtk3_RadioActionClass_changed(arg0 *C.GtkRadioAction, arg1 *C.GtkRadioAction) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed(current *RadioAction) })
-
-	var _current *RadioAction // out
-
-	_current = wrapRadioAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.Changed(_current)
 }
 
 func wrapRadioAction(obj *coreglib.Object) *RadioAction {
@@ -107,26 +97,6 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 	return wrapRadioAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_RadioAction_ConnectChanged
-func _gotk4_gtk3_RadioAction_ConnectChanged(arg0 C.gpointer, arg1 *C.GtkRadioAction, arg2 C.guintptr) {
-	var f func(current *RadioAction)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(current *RadioAction))
-	}
-
-	var _current *RadioAction // out
-
-	_current = wrapRadioAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_current)
-}
-
 // ConnectChanged signal is emitted on every member of a radio group when the
 // active member is changed. The signal gets emitted after the ::activate
 // signals for the previous and current active members.
@@ -134,220 +104,21 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 	return coreglib.ConnectGeneratedClosure(action, "changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioAction_ConnectChanged), f)
 }
 
-// NewRadioAction creates a new RadioAction object. To add the action to a
-// ActionGroup and set the accelerator for the action, call
-// gtk_action_group_add_action_with_accel().
-//
-// Deprecated: since version 3.10.
-//
 // The function takes the following parameters:
 //
-//    - name: unique name for the action.
-//    - label (optional) displayed in menu items and on buttons, or NULL.
-//    - tooltip (optional) for this action, or NULL.
-//    - stockId (optional): stock icon to display in widgets representing this
-//      action, or NULL.
-//    - value which gtk_radio_action_get_current_value() should return if this
-//      action is selected.
-//
-// The function returns the following values:
-//
-//    - radioAction: new RadioAction.
-//
-func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioAction {
-	var _arg1 *C.gchar          // out
-	var _arg2 *C.gchar          // out
-	var _arg3 *C.gchar          // out
-	var _arg4 *C.gchar          // out
-	var _arg5 C.gint            // out
-	var _cret *C.GtkRadioAction // in
+func (action *RadioAction) changed(current *RadioAction) {
+	gclass := (*C.GtkRadioActionClass)(coreglib.PeekParentClass(action))
+	fnarg := gclass.changed
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if tooltip != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-	if stockId != "" {
-		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(_arg4))
-	}
-	_arg5 = C.gint(value)
-
-	_cret = C.gtk_radio_action_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(label)
-	runtime.KeepAlive(tooltip)
-	runtime.KeepAlive(stockId)
-	runtime.KeepAlive(value)
-
-	var _radioAction *RadioAction // out
-
-	_radioAction = wrapRadioAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _radioAction
-}
-
-// CurrentValue obtains the value property of the currently active member of the
-// group to which action belongs.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - gint: value of the currently active group member.
-//
-func (action *RadioAction) CurrentValue() int {
-	var _arg0 *C.GtkRadioAction // out
-	var _cret C.gint            // in
-
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	_cret = C.gtk_radio_action_get_current_value(_arg0)
-	runtime.KeepAlive(action)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Group returns the list representing the radio group for this object. Note
-// that the returned list is only valid until the next change to the group.
-//
-// A common way to set up a group of radio group is the following:
-//
-//     GSList *group = NULL;
-//     GtkRadioAction *action;
-//
-//     while ( ...more actions to add... /)
-//       {
-//          action = gtk_radio_action_new (...);
-//
-//          gtk_radio_action_set_group (action, group);
-//          group = gtk_radio_action_get_group (action);
-//       }
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - sList: list representing the radio group for this object.
-//
-func (action *RadioAction) Group() []*RadioAction {
-	var _arg0 *C.GtkRadioAction // out
-	var _cret *C.GSList         // in
-
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	_cret = C.gtk_radio_action_get_group(_arg0)
-	runtime.KeepAlive(action)
-
-	var _sList []*RadioAction // out
-
-	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkRadioAction)(v)
-		var dst *RadioAction // out
-		dst = wrapRadioAction(coreglib.Take(unsafe.Pointer(src)))
-		_sList = append(_sList, dst)
-	})
-
-	return _sList
-}
-
-// JoinGroup joins a radio action object to the group of another radio action
-// object.
-//
-// Use this in language bindings instead of the gtk_radio_action_get_group() and
-// gtk_radio_action_set_group() methods
-//
-// A common way to set up a group of radio actions is the following:
-//
-//     GtkRadioAction *action;
-//     GtkRadioAction *last_action;
-//
-//     while ( ...more actions to add... /)
-//       {
-//          action = gtk_radio_action_new (...);
-//
-//          gtk_radio_action_join_group (action, last_action);
-//          last_action = action;
-//       }
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - groupSource (optional): radio action object whos group we are joining, or
-//      NULL to remove the radio action from its group.
-//
-func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
 	var _arg1 *C.GtkRadioAction // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	if groupSource != nil {
-		_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
-	}
+	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(current).Native()))
 
-	C.gtk_radio_action_join_group(_arg0, _arg1)
+	C._gotk4_gtk3_RadioAction_virtual_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(action)
-	runtime.KeepAlive(groupSource)
-}
-
-// SetCurrentValue sets the currently active group member to the member with
-// value property current_value.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - currentValue: new value.
-//
-func (action *RadioAction) SetCurrentValue(currentValue int) {
-	var _arg0 *C.GtkRadioAction // out
-	var _arg1 C.gint            // out
-
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	_arg1 = C.gint(currentValue)
-
-	C.gtk_radio_action_set_current_value(_arg0, _arg1)
-	runtime.KeepAlive(action)
-	runtime.KeepAlive(currentValue)
-}
-
-// SetGroup sets the radio group for the radio action object.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - group (optional): list representing a radio group, or NULL.
-//
-func (action *RadioAction) SetGroup(group []*RadioAction) {
-	var _arg0 *C.GtkRadioAction // out
-	var _arg1 *C.GSList         // out
-
-	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	if group != nil {
-		for i := len(group) - 1; i >= 0; i-- {
-			src := group[i]
-			var dst *C.GtkRadioAction // out
-			dst = (*C.GtkRadioAction)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
-		}
-		defer C.g_slist_free(_arg1)
-	}
-
-	C.gtk_radio_action_set_group(_arg0, _arg1)
-	runtime.KeepAlive(action)
-	runtime.KeepAlive(group)
+	runtime.KeepAlive(current)
 }
 
 // RadioActionClass: instance of this type is always passed by reference.

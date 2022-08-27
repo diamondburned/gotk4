@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// RadioButtonAccessibleOverrider contains methods that are overridable.
-type RadioButtonAccessibleOverrider interface {
+// RadioButtonAccessibleOverrides contains methods that are overridable.
+type RadioButtonAccessibleOverrides struct {
+}
+
+func defaultRadioButtonAccessibleOverrides(v *RadioButtonAccessible) RadioButtonAccessibleOverrides {
+	return RadioButtonAccessibleOverrides{}
 }
 
 type RadioButtonAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRadioButtonAccessible,
-		GoType:        reflect.TypeOf((*RadioButtonAccessible)(nil)),
-		InitClass:     initClassRadioButtonAccessible,
-		FinalizeClass: finalizeClassRadioButtonAccessible,
-	})
+	coreglib.RegisterClassInfo[*RadioButtonAccessible, *RadioButtonAccessibleClass, RadioButtonAccessibleOverrides](
+		GTypeRadioButtonAccessible,
+		initRadioButtonAccessibleClass,
+		wrapRadioButtonAccessible,
+		defaultRadioButtonAccessibleOverrides,
+	)
 }
 
-func initClassRadioButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitRadioButtonAccessible(*RadioButtonAccessibleClass)
-	}); ok {
-		klass := (*RadioButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitRadioButtonAccessible(klass)
-	}
-}
-
-func finalizeClassRadioButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeRadioButtonAccessible(*RadioButtonAccessibleClass)
-	}); ok {
-		klass := (*RadioButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRadioButtonAccessible(klass)
+func initRadioButtonAccessibleClass(gclass unsafe.Pointer, overrides RadioButtonAccessibleOverrides, classInitFunc func(*RadioButtonAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*RadioButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

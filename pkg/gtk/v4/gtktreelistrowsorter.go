@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TreeListRowSorterOverrider contains methods that are overridable.
-type TreeListRowSorterOverrider interface {
+// TreeListRowSorterOverrides contains methods that are overridable.
+type TreeListRowSorterOverrides struct {
+}
+
+func defaultTreeListRowSorterOverrides(v *TreeListRowSorter) TreeListRowSorterOverrides {
+	return TreeListRowSorterOverrides{}
 }
 
 // TreeListRowSorter: GtkTreeListRowSorter is a special-purpose sorter that will
@@ -52,25 +56,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeListRowSorter,
-		GoType:        reflect.TypeOf((*TreeListRowSorter)(nil)),
-		InitClass:     initClassTreeListRowSorter,
-		FinalizeClass: finalizeClassTreeListRowSorter,
-	})
+	coreglib.RegisterClassInfo[*TreeListRowSorter, *TreeListRowSorterClass, TreeListRowSorterOverrides](
+		GTypeTreeListRowSorter,
+		initTreeListRowSorterClass,
+		wrapTreeListRowSorter,
+		defaultTreeListRowSorterOverrides,
+	)
 }
 
-func initClassTreeListRowSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTreeListRowSorter(*TreeListRowSorterClass) }); ok {
-		klass := (*TreeListRowSorterClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeListRowSorter(klass)
-	}
-}
-
-func finalizeClassTreeListRowSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeListRowSorter(*TreeListRowSorterClass) }); ok {
-		klass := (*TreeListRowSorterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeListRowSorter(klass)
+func initTreeListRowSorterClass(gclass unsafe.Pointer, overrides TreeListRowSorterOverrides, classInitFunc func(*TreeListRowSorterClass)) {
+	if classInitFunc != nil {
+		class := (*TreeListRowSorterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

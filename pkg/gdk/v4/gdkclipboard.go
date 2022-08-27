@@ -18,9 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
-// extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GType values.
@@ -65,22 +65,6 @@ func wrapClipboard(obj *coreglib.Object) *Clipboard {
 
 func marshalClipboard(p uintptr) (interface{}, error) {
 	return wrapClipboard(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gdk4_Clipboard_ConnectChanged
-func _gotk4_gdk4_Clipboard_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectChanged is emitted when the clipboard changes ownership.

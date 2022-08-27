@@ -14,9 +14,15 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_FileMonitorClass_cancel(GFileMonitor*);
-// extern void _gotk4_gio2_FileMonitorClass_changed(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent);
 // extern void _gotk4_gio2_FileMonitor_ConnectChanged(gpointer, GFile*, GFile*, GFileMonitorEvent, guintptr);
+// extern void _gotk4_gio2_FileMonitorClass_changed(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent);
+// extern gboolean _gotk4_gio2_FileMonitorClass_cancel(GFileMonitor*);
+// gboolean _gotk4_gio2_FileMonitor_virtual_cancel(void* fnptr, GFileMonitor* arg0) {
+//   return ((gboolean (*)(GFileMonitor*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_FileMonitor_virtual_changed(void* fnptr, GFileMonitor* arg0, GFile* arg1, GFile* arg2, GFileMonitorEvent arg3) {
+//   ((void (*)(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -30,22 +36,29 @@ func init() {
 	})
 }
 
-// FileMonitorOverrider contains methods that are overridable.
-type FileMonitorOverrider interface {
+// FileMonitorOverrides contains methods that are overridable.
+type FileMonitorOverrides struct {
 	// Cancel cancels a file monitor.
 	//
 	// The function returns the following values:
 	//
 	//    - ok always TRUE.
 	//
-	Cancel() bool
+	Cancel func() bool
 	// The function takes the following parameters:
 	//
 	//    - file
 	//    - otherFile
 	//    - eventType
 	//
-	Changed(file, otherFile Filer, eventType FileMonitorEvent)
+	Changed func(file, otherFile Filer, eventType FileMonitorEvent)
+}
+
+func defaultFileMonitorOverrides(v *FileMonitor) FileMonitorOverrides {
+	return FileMonitorOverrides{
+		Cancel:  v.cancel,
+		Changed: v.changed,
+	}
 }
 
 // FileMonitor monitors a file or directory for changes.
@@ -80,102 +93,29 @@ type FileMonitorrer interface {
 var _ FileMonitorrer = (*FileMonitor)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFileMonitor,
-		GoType:        reflect.TypeOf((*FileMonitor)(nil)),
-		InitClass:     initClassFileMonitor,
-		FinalizeClass: finalizeClassFileMonitor,
-	})
+	coreglib.RegisterClassInfo[*FileMonitor, *FileMonitorClass, FileMonitorOverrides](
+		GTypeFileMonitor,
+		initFileMonitorClass,
+		wrapFileMonitor,
+		defaultFileMonitorOverrides,
+	)
 }
 
-func initClassFileMonitor(gclass unsafe.Pointer, goval any) {
+func initFileMonitorClass(gclass unsafe.Pointer, overrides FileMonitorOverrides, classInitFunc func(*FileMonitorClass)) {
+	pclass := (*C.GFileMonitorClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFileMonitor))))
 
-	pclass := (*C.GFileMonitorClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Cancel() bool }); ok {
+	if overrides.Cancel != nil {
 		pclass.cancel = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_cancel)
 	}
 
-	if _, ok := goval.(interface {
-		Changed(file, otherFile Filer, eventType FileMonitorEvent)
-	}); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_changed)
 	}
-	if goval, ok := goval.(interface{ InitFileMonitor(*FileMonitorClass) }); ok {
-		klass := (*FileMonitorClass)(gextras.NewStructNative(gclass))
-		goval.InitFileMonitor(klass)
+
+	if classInitFunc != nil {
+		class := (*FileMonitorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassFileMonitor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFileMonitor(*FileMonitorClass) }); ok {
-		klass := (*FileMonitorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFileMonitor(klass)
-	}
-}
-
-//export _gotk4_gio2_FileMonitorClass_cancel
-func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Cancel() bool })
-
-	ok := iface.Cancel()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileMonitorClass_changed
-func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Changed(file, otherFile Filer, eventType FileMonitorEvent)
-	})
-
-	var _file Filer                 // out
-	var _otherFile Filer            // out
-	var _eventType FileMonitorEvent // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_otherFile = rv
-	}
-	_eventType = FileMonitorEvent(arg3)
-
-	iface.Changed(_file, _otherFile, _eventType)
 }
 
 func wrapFileMonitor(obj *coreglib.Object) *FileMonitor {
@@ -195,61 +135,6 @@ func (monitor *FileMonitor) baseFileMonitor() *FileMonitor {
 // BaseFileMonitor returns the underlying base object.
 func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 	return obj.baseFileMonitor()
-}
-
-//export _gotk4_gio2_FileMonitor_ConnectChanged
-func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent, arg4 C.guintptr) {
-	var f func(file, otherFile Filer, eventType FileMonitorEvent)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(file, otherFile Filer, eventType FileMonitorEvent))
-	}
-
-	var _file Filer                 // out
-	var _otherFile Filer            // out
-	var _eventType FileMonitorEvent // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.Filer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Filer)
-			return ok
-		})
-		rv, ok := casted.(Filer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-		}
-		_file = rv
-	}
-	if arg2 != nil {
-		{
-			objptr := unsafe.Pointer(arg2)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Filer)
-				return ok
-			})
-			rv, ok := casted.(Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			_otherFile = rv
-		}
-	}
-	_eventType = FileMonitorEvent(arg3)
-
-	f(_file, _otherFile, _eventType)
 }
 
 // ConnectChanged is emitted when file has been changed.
@@ -379,6 +264,60 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)
+}
+
+// Cancel cancels a file monitor.
+//
+// The function returns the following values:
+//
+//    - ok always TRUE.
+//
+func (monitor *FileMonitor) cancel() bool {
+	gclass := (*C.GFileMonitorClass)(coreglib.PeekParentClass(monitor))
+	fnarg := gclass.cancel
+
+	var _arg0 *C.GFileMonitor // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+
+	_cret = C._gotk4_gio2_FileMonitor_virtual_cancel(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(monitor)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - file
+//    - otherFile
+//    - eventType
+//
+func (monitor *FileMonitor) changed(file, otherFile Filer, eventType FileMonitorEvent) {
+	gclass := (*C.GFileMonitorClass)(coreglib.PeekParentClass(monitor))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GFileMonitor     // out
+	var _arg1 *C.GFile            // out
+	var _arg2 *C.GFile            // out
+	var _arg3 C.GFileMonitorEvent // out
+
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	_arg2 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(otherFile).Native()))
+	_arg3 = C.GFileMonitorEvent(eventType)
+
+	C._gotk4_gio2_FileMonitor_virtual_changed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(otherFile)
+	runtime.KeepAlive(eventType)
 }
 
 // FileMonitorClass: instance of this type is always passed by reference.

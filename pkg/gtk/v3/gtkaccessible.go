@@ -17,9 +17,18 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(GtkAccessible*);
-// extern void _gotk4_gtk3_AccessibleClass_widget_set(GtkAccessible*);
 // extern void _gotk4_gtk3_AccessibleClass_widget_unset(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_widget_set(GtkAccessible*);
+// extern void _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(GtkAccessible*);
+// void _gotk4_gtk3_Accessible_virtual_connect_widget_destroyed(void* fnptr, GtkAccessible* arg0) {
+//   ((void (*)(GtkAccessible*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Accessible_virtual_widget_set(void* fnptr, GtkAccessible* arg0) {
+//   ((void (*)(GtkAccessible*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Accessible_virtual_widget_unset(void* fnptr, GtkAccessible* arg0) {
+//   ((void (*)(GtkAccessible*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -33,15 +42,23 @@ func init() {
 	})
 }
 
-// AccessibleOverrider contains methods that are overridable.
-type AccessibleOverrider interface {
+// AccessibleOverrides contains methods that are overridable.
+type AccessibleOverrides struct {
 	// ConnectWidgetDestroyed: this function specifies the callback function to
 	// be called when the widget corresponding to a GtkAccessible is destroyed.
 	//
 	// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
-	ConnectWidgetDestroyed()
-	WidgetSet()
-	WidgetUnset()
+	ConnectWidgetDestroyed func()
+	WidgetSet              func()
+	WidgetUnset            func()
+}
+
+func defaultAccessibleOverrides(v *Accessible) AccessibleOverrides {
+	return AccessibleOverrides{
+		ConnectWidgetDestroyed: v.connectWidgetDestroyed,
+		WidgetSet:              v.widgetSet,
+		WidgetUnset:            v.widgetUnset,
+	}
 }
 
 // Accessible class is the base class for accessible implementations for Widget
@@ -63,64 +80,33 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeAccessible,
-		GoType:        reflect.TypeOf((*Accessible)(nil)),
-		InitClass:     initClassAccessible,
-		FinalizeClass: finalizeClassAccessible,
-	})
+	coreglib.RegisterClassInfo[*Accessible, *AccessibleClass, AccessibleOverrides](
+		GTypeAccessible,
+		initAccessibleClass,
+		wrapAccessible,
+		defaultAccessibleOverrides,
+	)
 }
 
-func initClassAccessible(gclass unsafe.Pointer, goval any) {
+func initAccessibleClass(gclass unsafe.Pointer, overrides AccessibleOverrides, classInitFunc func(*AccessibleClass)) {
+	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeAccessible))))
 
-	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ConnectWidgetDestroyed() }); ok {
+	if overrides.ConnectWidgetDestroyed != nil {
 		pclass.connect_widget_destroyed = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
 	}
 
-	if _, ok := goval.(interface{ WidgetSet() }); ok {
+	if overrides.WidgetSet != nil {
 		pclass.widget_set = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_set)
 	}
 
-	if _, ok := goval.(interface{ WidgetUnset() }); ok {
+	if overrides.WidgetUnset != nil {
 		pclass.widget_unset = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_unset)
 	}
-	if goval, ok := goval.(interface{ InitAccessible(*AccessibleClass) }); ok {
-		klass := (*AccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitAccessible(klass)
+
+	if classInitFunc != nil {
+		class := (*AccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeAccessible(*AccessibleClass) }); ok {
-		klass := (*AccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeAccessible(klass)
-	}
-}
-
-//export _gotk4_gtk3_AccessibleClass_connect_widget_destroyed
-func _gotk4_gtk3_AccessibleClass_connect_widget_destroyed(arg0 *C.GtkAccessible) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ConnectWidgetDestroyed() })
-
-	iface.ConnectWidgetDestroyed()
-}
-
-//export _gotk4_gtk3_AccessibleClass_widget_set
-func _gotk4_gtk3_AccessibleClass_widget_set(arg0 *C.GtkAccessible) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ WidgetSet() })
-
-	iface.WidgetSet()
-}
-
-//export _gotk4_gtk3_AccessibleClass_widget_unset
-func _gotk4_gtk3_AccessibleClass_widget_unset(arg0 *C.GtkAccessible) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ WidgetUnset() })
-
-	iface.WidgetUnset()
 }
 
 func wrapAccessible(obj *coreglib.Object) *Accessible {
@@ -148,67 +134,44 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 	runtime.KeepAlive(accessible)
 }
 
-// Widget gets the Widget corresponding to the Accessible. The returned widget
-// does not have a reference added, so you do not need to unref it.
+// connectWidgetDestroyed: this function specifies the callback function to be
+// called when the widget corresponding to a GtkAccessible is destroyed.
 //
-// The function returns the following values:
-//
-//    - widget (optional): pointer to the Widget corresponding to the Accessible,
-//      or NULL.
-//
-func (accessible *Accessible) Widget() Widgetter {
+// Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
+func (accessible *Accessible) connectWidgetDestroyed() {
+	gclass := (*C.GtkAccessibleClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.connect_widget_destroyed
+
 	var _arg0 *C.GtkAccessible // out
-	var _cret *C.GtkWidget     // in
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_cret = C.gtk_accessible_get_widget(_arg0)
+	C._gotk4_gtk3_Accessible_virtual_connect_widget_destroyed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(accessible)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
 }
 
-// SetWidget sets the Widget corresponding to the Accessible.
-//
-// accessible will not hold a reference to widget. It is the caller’s
-// responsibility to ensure that when widget is destroyed, the widget is unset
-// by calling this function again with widget set to NULL.
-//
-// The function takes the following parameters:
-//
-//    - widget (optional) or NULL to unset.
-//
-func (accessible *Accessible) SetWidget(widget Widgetter) {
+func (accessible *Accessible) widgetSet() {
+	gclass := (*C.GtkAccessibleClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.widget_set
+
 	var _arg0 *C.GtkAccessible // out
-	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	}
 
-	C.gtk_accessible_set_widget(_arg0, _arg1)
+	C._gotk4_gtk3_Accessible_virtual_widget_set(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(accessible)
-	runtime.KeepAlive(widget)
+}
+
+func (accessible *Accessible) widgetUnset() {
+	gclass := (*C.GtkAccessibleClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.widget_unset
+
+	var _arg0 *C.GtkAccessible // out
+
+	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	C._gotk4_gtk3_Accessible_virtual_widget_unset(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
 }
 
 // AccessibleClass: instance of this type is always passed by reference.

@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// HBoxOverrider contains methods that are overridable.
-type HBoxOverrider interface {
+// HBoxOverrides contains methods that are overridable.
+type HBoxOverrides struct {
+}
+
+func defaultHBoxOverrides(v *HBox) HBoxOverrides {
+	return HBoxOverrides{}
 }
 
 // HBox is a container that organizes child widgets into a single row.
@@ -62,25 +66,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHBox,
-		GoType:        reflect.TypeOf((*HBox)(nil)),
-		InitClass:     initClassHBox,
-		FinalizeClass: finalizeClassHBox,
-	})
+	coreglib.RegisterClassInfo[*HBox, *HBoxClass, HBoxOverrides](
+		GTypeHBox,
+		initHBoxClass,
+		wrapHBox,
+		defaultHBoxOverrides,
+	)
 }
 
-func initClassHBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitHBox(*HBoxClass) }); ok {
-		klass := (*HBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitHBox(klass)
-	}
-}
-
-func finalizeClassHBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHBox(*HBoxClass) }); ok {
-		klass := (*HBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHBox(klass)
+func initHBoxClass(gclass unsafe.Pointer, overrides HBoxOverrides, classInitFunc func(*HBoxClass)) {
+	if classInitFunc != nil {
+		class := (*HBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -20,15 +20,21 @@ type FileGenerator interface {
 type FileGeneratorWriter interface {
 	FileGenerator
 	// FileWriter returns the file writer for the given source position.
-	FileWriter(cmt.InfoFields) FileWriter
+	FileWriter(info cmt.InfoFields, export bool) FileWriter
 	// CHeaderFile returns the C header file.
-	CHeaderFile() FileWriter
+	// CHeaderFile() FileWriter
 }
 
 // FileWriterFromType is a convenient function that returns the FileWriter from
 // the given GIR type.
 func FileWriterFromType(w FileGeneratorWriter, v interface{}) FileWriter {
-	return w.FileWriter(cmt.GetInfoFields(v))
+	return w.FileWriter(cmt.GetInfoFields(v), false)
+}
+
+// FileWriterExportedFromType is like FileWriterFromType, but it should only
+// contain exported Cgo functions.
+func FileWriterExportedFromType(w FileGeneratorWriter, v interface{}) FileWriter {
+	return w.FileWriter(cmt.GetInfoFields(v), true)
 }
 
 // FileWriter describes a file that generators can write into and change its
@@ -58,8 +64,8 @@ type (
 	stubFileWriter          struct{}
 )
 
-func (s stubFileGeneratorWriter) FileWriter(cmt.InfoFields) FileWriter { return stubFileWriter{} }
-func (s stubFileGeneratorWriter) CHeaderFile() FileWriter              { return stubFileWriter{} }
+func (s stubFileGeneratorWriter) FileWriter(cmt.InfoFields, bool) FileWriter { return stubFileWriter{} }
+func (s stubFileGeneratorWriter) CHeaderFile() FileWriter                    { return stubFileWriter{} }
 
 func (s stubFileWriter) Header() *file.Header { return file.NoopHeader }
 func (s stubFileWriter) Pen() *pen.Pen        { return pen.NoopPen }

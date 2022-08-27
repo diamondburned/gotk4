@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// FilterOutputStreamOverrider contains methods that are overridable.
-type FilterOutputStreamOverrider interface {
+// FilterOutputStreamOverrides contains methods that are overridable.
+type FilterOutputStreamOverrides struct {
+}
+
+func defaultFilterOutputStreamOverrides(v *FilterOutputStream) FilterOutputStreamOverrides {
+	return FilterOutputStreamOverrides{}
 }
 
 // FilterOutputStream: base class for output stream implementations that perform
@@ -56,29 +60,18 @@ type FilterOutputStreamer interface {
 var _ FilterOutputStreamer = (*FilterOutputStream)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFilterOutputStream,
-		GoType:        reflect.TypeOf((*FilterOutputStream)(nil)),
-		InitClass:     initClassFilterOutputStream,
-		FinalizeClass: finalizeClassFilterOutputStream,
-	})
+	coreglib.RegisterClassInfo[*FilterOutputStream, *FilterOutputStreamClass, FilterOutputStreamOverrides](
+		GTypeFilterOutputStream,
+		initFilterOutputStreamClass,
+		wrapFilterOutputStream,
+		defaultFilterOutputStreamOverrides,
+	)
 }
 
-func initClassFilterOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitFilterOutputStream(*FilterOutputStreamClass)
-	}); ok {
-		klass := (*FilterOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.InitFilterOutputStream(klass)
-	}
-}
-
-func finalizeClassFilterOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeFilterOutputStream(*FilterOutputStreamClass)
-	}); ok {
-		klass := (*FilterOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFilterOutputStream(klass)
+func initFilterOutputStreamClass(gclass unsafe.Pointer, overrides FilterOutputStreamOverrides, classInitFunc func(*FilterOutputStreamClass)) {
+	if classInitFunc != nil {
+		class := (*FilterOutputStreamClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

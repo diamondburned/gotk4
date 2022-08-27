@@ -72,32 +72,6 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 	return wrapX11Display(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdkx114_X11Display_ConnectXevent
-func _gotk4_gdkx114_X11Display_ConnectXevent(arg0 C.gpointer, arg1 C.gpointer, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(xevent unsafe.Pointer) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(xevent unsafe.Pointer) (ok bool))
-	}
-
-	var _xevent unsafe.Pointer // out
-
-	_xevent = (unsafe.Pointer)(unsafe.Pointer(arg1))
-
-	ok := f(_xevent)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectXevent signal is a low level signal that is emitted whenever an XEvent
 // has been received.
 //

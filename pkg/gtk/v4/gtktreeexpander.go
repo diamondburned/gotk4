@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TreeExpanderOverrider contains methods that are overridable.
-type TreeExpanderOverrider interface {
+// TreeExpanderOverrides contains methods that are overridable.
+type TreeExpanderOverrides struct {
+}
+
+func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
+	return TreeExpanderOverrides{}
 }
 
 // TreeExpander: GtkTreeExpander is a widget that provides an expander for a
@@ -80,25 +84,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeExpander,
-		GoType:        reflect.TypeOf((*TreeExpander)(nil)),
-		InitClass:     initClassTreeExpander,
-		FinalizeClass: finalizeClassTreeExpander,
-	})
+	coreglib.RegisterClassInfo[*TreeExpander, *TreeExpanderClass, TreeExpanderOverrides](
+		GTypeTreeExpander,
+		initTreeExpanderClass,
+		wrapTreeExpander,
+		defaultTreeExpanderOverrides,
+	)
 }
 
-func initClassTreeExpander(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTreeExpander(*TreeExpanderClass) }); ok {
-		klass := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeExpander(klass)
-	}
-}
-
-func finalizeClassTreeExpander(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeExpander(*TreeExpanderClass) }); ok {
-		klass := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeExpander(klass)
+func initTreeExpanderClass(gclass unsafe.Pointer, overrides TreeExpanderOverrides, classInitFunc func(*TreeExpanderClass)) {
+	if classInitFunc != nil {
+		class := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

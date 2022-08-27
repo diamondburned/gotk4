@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// NotebookPageAccessibleOverrider contains methods that are overridable.
-type NotebookPageAccessibleOverrider interface {
+// NotebookPageAccessibleOverrides contains methods that are overridable.
+type NotebookPageAccessibleOverrides struct {
+}
+
+func defaultNotebookPageAccessibleOverrides(v *NotebookPageAccessible) NotebookPageAccessibleOverrides {
+	return NotebookPageAccessibleOverrides{}
 }
 
 type NotebookPageAccessible struct {
@@ -47,29 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNotebookPageAccessible,
-		GoType:        reflect.TypeOf((*NotebookPageAccessible)(nil)),
-		InitClass:     initClassNotebookPageAccessible,
-		FinalizeClass: finalizeClassNotebookPageAccessible,
-	})
+	coreglib.RegisterClassInfo[*NotebookPageAccessible, *NotebookPageAccessibleClass, NotebookPageAccessibleOverrides](
+		GTypeNotebookPageAccessible,
+		initNotebookPageAccessibleClass,
+		wrapNotebookPageAccessible,
+		defaultNotebookPageAccessibleOverrides,
+	)
 }
 
-func initClassNotebookPageAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitNotebookPageAccessible(*NotebookPageAccessibleClass)
-	}); ok {
-		klass := (*NotebookPageAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitNotebookPageAccessible(klass)
-	}
-}
-
-func finalizeClassNotebookPageAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeNotebookPageAccessible(*NotebookPageAccessibleClass)
-	}); ok {
-		klass := (*NotebookPageAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNotebookPageAccessible(klass)
+func initNotebookPageAccessibleClass(gclass unsafe.Pointer, overrides NotebookPageAccessibleOverrides, classInitFunc func(*NotebookPageAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*NotebookPageAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

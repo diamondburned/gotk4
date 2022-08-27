@@ -14,10 +14,19 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_NativeDialogClass_hide(GtkNativeDialog*);
-// extern void _gotk4_gtk4_NativeDialogClass_response(GtkNativeDialog*, int);
-// extern void _gotk4_gtk4_NativeDialogClass_show(GtkNativeDialog*);
 // extern void _gotk4_gtk4_NativeDialog_ConnectResponse(gpointer, gint, guintptr);
+// extern void _gotk4_gtk4_NativeDialogClass_show(GtkNativeDialog*);
+// extern void _gotk4_gtk4_NativeDialogClass_response(GtkNativeDialog*, int);
+// extern void _gotk4_gtk4_NativeDialogClass_hide(GtkNativeDialog*);
+// void _gotk4_gtk4_NativeDialog_virtual_hide(void* fnptr, GtkNativeDialog* arg0) {
+//   ((void (*)(GtkNativeDialog*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_NativeDialog_virtual_response(void* fnptr, GtkNativeDialog* arg0, int arg1) {
+//   ((void (*)(GtkNativeDialog*, int))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_NativeDialog_virtual_show(void* fnptr, GtkNativeDialog* arg0) {
+//   ((void (*)(GtkNativeDialog*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -31,18 +40,18 @@ func init() {
 	})
 }
 
-// NativeDialogOverrider contains methods that are overridable.
-type NativeDialogOverrider interface {
+// NativeDialogOverrides contains methods that are overridable.
+type NativeDialogOverrides struct {
 	// Hide hides the dialog if it is visible, aborting any interaction.
 	//
 	// Once this is called the gtk.NativeDialog::response signal will *not* be
 	// emitted until after the next call to gtk.NativeDialog.Show().
 	//
 	// If the dialog is not visible this does nothing.
-	Hide()
+	Hide func()
 	// The function takes the following parameters:
 	//
-	Response(responseId int)
+	Response func(responseId int)
 	// Show shows the dialog on the display.
 	//
 	// When the user accepts the state of the dialog the dialog will be
@@ -50,7 +59,15 @@ type NativeDialogOverrider interface {
 	// emitted.
 	//
 	// Multiple calls while the dialog is visible will be ignored.
-	Show()
+	Show func()
+}
+
+func defaultNativeDialogOverrides(v *NativeDialog) NativeDialogOverrides {
+	return NativeDialogOverrides{
+		Hide:     v.hide,
+		Response: v.response,
+		Show:     v.show,
+	}
 }
 
 // NativeDialog: native dialogs are platform dialogs that don't use GtkDialog.
@@ -88,68 +105,33 @@ type NativeDialogger interface {
 var _ NativeDialogger = (*NativeDialog)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNativeDialog,
-		GoType:        reflect.TypeOf((*NativeDialog)(nil)),
-		InitClass:     initClassNativeDialog,
-		FinalizeClass: finalizeClassNativeDialog,
-	})
+	coreglib.RegisterClassInfo[*NativeDialog, *NativeDialogClass, NativeDialogOverrides](
+		GTypeNativeDialog,
+		initNativeDialogClass,
+		wrapNativeDialog,
+		defaultNativeDialogOverrides,
+	)
 }
 
-func initClassNativeDialog(gclass unsafe.Pointer, goval any) {
+func initNativeDialogClass(gclass unsafe.Pointer, overrides NativeDialogOverrides, classInitFunc func(*NativeDialogClass)) {
+	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeNativeDialog))))
 
-	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Hide() }); ok {
+	if overrides.Hide != nil {
 		pclass.hide = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_hide)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+	if overrides.Response != nil {
 		pclass.response = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_response)
 	}
 
-	if _, ok := goval.(interface{ Show() }); ok {
+	if overrides.Show != nil {
 		pclass.show = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_show)
 	}
-	if goval, ok := goval.(interface{ InitNativeDialog(*NativeDialogClass) }); ok {
-		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitNativeDialog(klass)
+
+	if classInitFunc != nil {
+		class := (*NativeDialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassNativeDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeNativeDialog(*NativeDialogClass) }); ok {
-		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNativeDialog(klass)
-	}
-}
-
-//export _gotk4_gtk4_NativeDialogClass_hide
-func _gotk4_gtk4_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Hide() })
-
-	iface.Hide()
-}
-
-//export _gotk4_gtk4_NativeDialogClass_response
-func _gotk4_gtk4_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int) })
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	iface.Response(_responseId)
-}
-
-//export _gotk4_gtk4_NativeDialogClass_show
-func _gotk4_gtk4_NativeDialogClass_show(arg0 *C.GtkNativeDialog) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Show() })
-
-	iface.Show()
 }
 
 func wrapNativeDialog(obj *coreglib.Object) *NativeDialog {
@@ -169,26 +151,6 @@ func (self *NativeDialog) baseNativeDialog() *NativeDialog {
 // BaseNativeDialog returns the underlying base object.
 func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 	return obj.baseNativeDialog()
-}
-
-//export _gotk4_gtk4_NativeDialog_ConnectResponse
-func _gotk4_gtk4_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(responseId int))
-	}
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	f(_responseId)
 }
 
 // ConnectResponse is emitted when the user responds to the dialog.
@@ -419,6 +381,60 @@ func (self *NativeDialog) Show() {
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	C.gtk_native_dialog_show(_arg0)
+	runtime.KeepAlive(self)
+}
+
+// Hide hides the dialog if it is visible, aborting any interaction.
+//
+// Once this is called the gtk.NativeDialog::response signal will *not* be
+// emitted until after the next call to gtk.NativeDialog.Show().
+//
+// If the dialog is not visible this does nothing.
+func (self *NativeDialog) hide() {
+	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.hide
+
+	var _arg0 *C.GtkNativeDialog // out
+
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk4_NativeDialog_virtual_hide(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
+}
+
+// The function takes the following parameters:
+//
+func (self *NativeDialog) response(responseId int) {
+	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.response
+
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 C.int              // out
+
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(responseId)
+
+	C._gotk4_gtk4_NativeDialog_virtual_response(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(responseId)
+}
+
+// Show shows the dialog on the display.
+//
+// When the user accepts the state of the dialog the dialog will be
+// automatically hidden and the gtk.NativeDialog::response signal will be
+// emitted.
+//
+// Multiple calls while the dialog is visible will be ignored.
+func (self *NativeDialog) show() {
+	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.show
+
+	var _arg0 *C.GtkNativeDialog // out
+
+	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk4_NativeDialog_virtual_show(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(self)
 }
 

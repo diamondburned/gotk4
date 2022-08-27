@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// PopoverAccessibleOverrider contains methods that are overridable.
-type PopoverAccessibleOverrider interface {
+// PopoverAccessibleOverrides contains methods that are overridable.
+type PopoverAccessibleOverrides struct {
+}
+
+func defaultPopoverAccessibleOverrides(v *PopoverAccessible) PopoverAccessibleOverrides {
+	return PopoverAccessibleOverrides{}
 }
 
 type PopoverAccessible struct {
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePopoverAccessible,
-		GoType:        reflect.TypeOf((*PopoverAccessible)(nil)),
-		InitClass:     initClassPopoverAccessible,
-		FinalizeClass: finalizeClassPopoverAccessible,
-	})
+	coreglib.RegisterClassInfo[*PopoverAccessible, *PopoverAccessibleClass, PopoverAccessibleOverrides](
+		GTypePopoverAccessible,
+		initPopoverAccessibleClass,
+		wrapPopoverAccessible,
+		defaultPopoverAccessibleOverrides,
+	)
 }
 
-func initClassPopoverAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitPopoverAccessible(*PopoverAccessibleClass) }); ok {
-		klass := (*PopoverAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitPopoverAccessible(klass)
-	}
-}
-
-func finalizeClassPopoverAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePopoverAccessible(*PopoverAccessibleClass) }); ok {
-		klass := (*PopoverAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePopoverAccessible(klass)
+func initPopoverAccessibleClass(gclass unsafe.Pointer, overrides PopoverAccessibleOverrides, classInitFunc func(*PopoverAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*PopoverAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

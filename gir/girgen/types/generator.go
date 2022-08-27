@@ -78,6 +78,10 @@ func AddCallableHeader(gen FileGenerator, h *file.Header, name string, callable 
 //    func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string
 //
 func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string {
+	return "extern " + callableCHeader(gen, name, callable) + ";"
+}
+
+func callableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string {
 	resolveAny := func(any gir.AnyType) string {
 		cType := ResolveAnyTypeC(gen, any)
 		if cType == "" {
@@ -110,5 +114,60 @@ func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs
 		name = file.CallableExportedName(gen.Namespace(), callable)
 	}
 
-	return fmt.Sprintf("extern %s %s(%s);", cReturn, name, ctail.Join())
+	return fmt.Sprintf("%s %s(%s)", cReturn, name, ctail.Join())
+}
+
+// CgoFuncBridge generates a C function that calls a C function pointer.
+func CgoFuncBridge(gen FileGenerator, name string, callable *gir.CallableAttrs) string {
+	resolveAny := func(any gir.AnyType) string {
+		cType := ResolveAnyTypeC(gen, any)
+		if cType == "" {
+			panic("unknown primitive " + AnyTypeC(any))
+		}
+		return cType
+	}
+
+	ccall := pen.NewJoints(", ", 0)
+
+	ctail := pen.NewJoints(", ", 0)
+	ctail.Add("void* fnptr")
+
+	if callable.Parameters != nil {
+		nextArg := func() string {
+			return fmt.Sprintf("arg%d", ctail.Len()-1)
+		}
+
+		if callable.Parameters.InstanceParameter != nil {
+			arg := nextArg()
+			ccall.Add(arg)
+			ctail.Add(resolveAny(callable.Parameters.InstanceParameter.AnyType) + " " + arg)
+		}
+		for _, param := range callable.Parameters.Parameters {
+			arg := nextArg()
+			ccall.Add(arg)
+			ctail.Add(resolveAny(param.AnyType) + " " + arg)
+		}
+		if callable.Throws {
+			arg := nextArg()
+			ccall.Add(arg)
+			ctail.Add("GError** " + arg)
+		}
+	}
+
+	typedef := callableCHeader(gen, "(*)", callable)
+
+	cReturn := "void"
+	cBody := ""
+
+	if !ReturnIsVoid(callable.ReturnValue) {
+		cReturn = resolveAny(callable.ReturnValue.AnyType)
+		cBody = fmt.Sprintf("return ((%s)(fnptr))(%s)", typedef, ccall.Join())
+	} else {
+		cBody = fmt.Sprintf("((%s)(fnptr))(%s)", typedef, ccall.Join())
+	}
+
+	return fmt.Sprintf(`%s %s(%s) {
+  %s;
+};`,
+		cReturn, name, ctail.Join(), cBody)
 }

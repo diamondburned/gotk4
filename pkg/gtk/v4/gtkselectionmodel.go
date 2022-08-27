@@ -14,16 +14,34 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(GtkSelectionModel*, guint, guint);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(GtkSelectionModel*, guint);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(GtkSelectionModel*);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_item(GtkSelectionModel*, guint, gboolean);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_range(GtkSelectionModel*, guint, guint, gboolean);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_set_selection(GtkSelectionModel*, GtkBitset*, GtkBitset*);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_all(GtkSelectionModel*);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(GtkSelectionModel*, guint);
-// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(GtkSelectionModel*, guint, guint);
 // extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
+// GtkBitset* _gotk4_gtk4_SelectionModel_virtual_get_selection_in_range(void* fnptr, GtkSelectionModel* arg0, guint arg1, guint arg2) {
+//   return ((GtkBitset* (*)(GtkSelectionModel*, guint, guint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_is_selected(void* fnptr, GtkSelectionModel* arg0, guint arg1) {
+//   return ((gboolean (*)(GtkSelectionModel*, guint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_select_all(void* fnptr, GtkSelectionModel* arg0) {
+//   return ((gboolean (*)(GtkSelectionModel*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_select_item(void* fnptr, GtkSelectionModel* arg0, guint arg1, gboolean arg2) {
+//   return ((gboolean (*)(GtkSelectionModel*, guint, gboolean))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_select_range(void* fnptr, GtkSelectionModel* arg0, guint arg1, guint arg2, gboolean arg3) {
+//   return ((gboolean (*)(GtkSelectionModel*, guint, guint, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_set_selection(void* fnptr, GtkSelectionModel* arg0, GtkBitset* arg1, GtkBitset* arg2) {
+//   return ((gboolean (*)(GtkSelectionModel*, GtkBitset*, GtkBitset*))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_unselect_all(void* fnptr, GtkSelectionModel* arg0) {
+//   return ((gboolean (*)(GtkSelectionModel*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_unselect_item(void* fnptr, GtkSelectionModel* arg0, guint arg1) {
+//   return ((gboolean (*)(GtkSelectionModel*, guint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk4_SelectionModel_virtual_unselect_range(void* fnptr, GtkSelectionModel* arg0, guint arg1, guint arg2) {
+//   return ((gboolean (*)(GtkSelectionModel*, guint, guint))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -35,153 +53,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeSelectionModel, F: marshalSelectionModel},
 	})
-}
-
-// SelectionModelOverrider contains methods that are overridable.
-type SelectionModelOverrider interface {
-	// SelectionInRange gets the set of selected items in a range.
-	//
-	// This function is an optimization for gtk.SelectionModel.GetSelection()
-	// when you are only interested in part of the model's selected state. A
-	// common use case is in response to the
-	// gtk.SelectionModel::selection-changed signal.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position: start of the queired range.
-	//    - nItems: number of items in the queried range.
-	//
-	// The function returns the following values:
-	//
-	//    - bitset: GtkBitset that matches the selection state for the given
-	//      range with all other values being undefined. The bitset must not be
-	//      modified.
-	//
-	SelectionInRange(position, nItems uint) *Bitset
-	// IsSelected checks if the given item is selected.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position of the item to query.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the item is selected.
-	//
-	IsSelected(position uint) bool
-	// SelectAll requests to select all items in the model.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean that all items are now selected.
-	//
-	SelectAll() bool
-	// SelectItem requests to select an item in the model.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position of the item to select.
-	//    - unselectRest: whether previously selected items should be unselected.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean the item was selected.
-	//
-	SelectItem(position uint, unselectRest bool) bool
-	// SelectRange requests to select a range of items in the model.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position: first item to select.
-	//    - nItems: number of items to select.
-	//    - unselectRest: whether previously selected items should be unselected.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean the range was selected.
-	//
-	SelectRange(position, nItems uint, unselectRest bool) bool
-	// SetSelection: make selection changes.
-	//
-	// This is the most advanced selection updating method that allows the most
-	// fine-grained control over selection changes. If you can, you should try
-	// the simpler versions, as implementations are more likely to implement
-	// support for those.
-	//
-	// Requests that the selection state of all positions set in mask be updated
-	// to the respective value in the selected bitmask.
-	//
-	// In pseudocode, it would look something like this:
-	//
-	//    for (i = 0; i < n_items; i++)
-	//      {
-	//        // don't change values not in the mask
-	//        if (!gtk_bitset_contains (mask, i))
-	//          continue;
-	//
-	//        if (gtk_bitset_contains (selected, i))
-	//          select_item (i);
-	//        else
-	//          unselect_item (i);
-	//      }
-	//
-	//    gtk_selection_model_selection_changed (model,
-	//                                           first_changed_item,
-	//                                           n_changed_items);
-	//
-	//
-	// mask and selected must not be modified. They may refer to the same
-	// bitset, which would mean that every item in the set should be selected.
-	//
-	// The function takes the following parameters:
-	//
-	//    - selected: bitmask specifying if items should be selected or
-	//      unselected.
-	//    - mask specifying which items should be updated.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean that all items were updated according to
-	//      the inputs.
-	//
-	SetSelection(selected, mask *Bitset) bool
-	// UnselectAll requests to unselect all items in the model.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean that all items are now unselected.
-	//
-	UnselectAll() bool
-	// UnselectItem requests to unselect an item in the model.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position of the item to unselect.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean the item was unselected.
-	//
-	UnselectItem(position uint) bool
-	// UnselectRange requests to unselect a range of items in the model.
-	//
-	// The function takes the following parameters:
-	//
-	//    - position: first item to unselect.
-	//    - nItems: number of items to unselect.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if this action was supported and no fallback should be
-	//      tried. This does not mean the range was unselected.
-	//
-	UnselectRange(position, nItems uint) bool
 }
 
 // SelectionModel: GtkSelectionModel is an interface that add support for
@@ -267,201 +138,6 @@ type SelectionModeller interface {
 
 var _ SelectionModeller = (*SelectionModel)(nil)
 
-func ifaceInitSelectionModeller(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkSelectionModelInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_selection_in_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_get_selection_in_range)
-	iface.is_selected = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_is_selected)
-	iface.select_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_all)
-	iface.select_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_item)
-	iface.select_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_range)
-	iface.set_selection = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_set_selection)
-	iface.unselect_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_all)
-	iface.unselect_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_item)
-	iface.unselect_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_range)
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_get_selection_in_range
-func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret *C.GtkBitset) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _position uint // out
-	var _nItems uint   // out
-
-	_position = uint(arg1)
-	_nItems = uint(arg2)
-
-	bitset := iface.SelectionInRange(_position, _nItems)
-
-	cret = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(bitset)))
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_is_selected
-func _gotk4_gtk4_SelectionModelInterface_is_selected(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _position uint // out
-
-	_position = uint(arg1)
-
-	ok := iface.IsSelected(_position)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_select_all
-func _gotk4_gtk4_SelectionModelInterface_select_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	ok := iface.SelectAll()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_select_item
-func _gotk4_gtk4_SelectionModelInterface_select_item(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _position uint     // out
-	var _unselectRest bool // out
-
-	_position = uint(arg1)
-	if arg2 != 0 {
-		_unselectRest = true
-	}
-
-	ok := iface.SelectItem(_position, _unselectRest)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_select_range
-func _gotk4_gtk4_SelectionModelInterface_select_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint, arg3 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _position uint     // out
-	var _nItems uint       // out
-	var _unselectRest bool // out
-
-	_position = uint(arg1)
-	_nItems = uint(arg2)
-	if arg3 != 0 {
-		_unselectRest = true
-	}
-
-	ok := iface.SelectRange(_position, _nItems, _unselectRest)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_set_selection
-func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.GtkSelectionModel, arg1 *C.GtkBitset, arg2 *C.GtkBitset) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _selected *Bitset // out
-	var _mask *Bitset     // out
-
-	_selected = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.gtk_bitset_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_selected)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
-	)
-	_mask = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	C.gtk_bitset_ref(arg2)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_mask)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
-	)
-
-	ok := iface.SetSelection(_selected, _mask)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_unselect_all
-func _gotk4_gtk4_SelectionModelInterface_unselect_all(arg0 *C.GtkSelectionModel) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	ok := iface.UnselectAll()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_unselect_item
-func _gotk4_gtk4_SelectionModelInterface_unselect_item(arg0 *C.GtkSelectionModel, arg1 C.guint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _position uint // out
-
-	_position = uint(arg1)
-
-	ok := iface.UnselectItem(_position)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_SelectionModelInterface_unselect_range
-func _gotk4_gtk4_SelectionModelInterface_unselect_range(arg0 *C.GtkSelectionModel, arg1 C.guint, arg2 C.guint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionModelOverrider)
-
-	var _position uint // out
-	var _nItems uint   // out
-
-	_position = uint(arg1)
-	_nItems = uint(arg2)
-
-	ok := iface.UnselectRange(_position, _nItems)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 func wrapSelectionModel(obj *coreglib.Object) *SelectionModel {
 	return &SelectionModel{
 		ListModel: gio.ListModel{
@@ -472,28 +148,6 @@ func wrapSelectionModel(obj *coreglib.Object) *SelectionModel {
 
 func marshalSelectionModel(p uintptr) (interface{}, error) {
 	return wrapSelectionModel(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_SelectionModel_ConnectSelectionChanged
-func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
-	var f func(position, nItems uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(position, nItems uint))
-	}
-
-	var _position uint // out
-	var _nItems uint   // out
-
-	_position = uint(arg1)
-	_nItems = uint(arg2)
-
-	f(_position, _nItems)
 }
 
 // ConnectSelectionChanged is emitted when the selection state of some of the
@@ -892,6 +546,372 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	_arg2 = C.guint(nItems)
 
 	_cret = C.gtk_selection_model_unselect_range(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectionInRange gets the set of selected items in a range.
+//
+// This function is an optimization for gtk.SelectionModel.GetSelection() when
+// you are only interested in part of the model's selected state. A common use
+// case is in response to the gtk.SelectionModel::selection-changed signal.
+//
+// The function takes the following parameters:
+//
+//    - position: start of the queired range.
+//    - nItems: number of items in the queried range.
+//
+// The function returns the following values:
+//
+//    - bitset: GtkBitset that matches the selection state for the given range
+//      with all other values being undefined. The bitset must not be modified.
+//
+func (model *SelectionModel) selectionInRange(position, nItems uint) *Bitset {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.get_selection_in_range
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 C.guint              // out
+	var _arg2 C.guint              // out
+	var _cret *C.GtkBitset         // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_get_selection_in_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
+
+	var _bitset *Bitset // out
+
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bitset)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+		},
+	)
+
+	return _bitset
+}
+
+// isSelected checks if the given item is selected.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to query.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the item is selected.
+//
+func (model *SelectionModel) isSelected(position uint) bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.is_selected
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 C.guint              // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = C.guint(position)
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_is_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectAll requests to select all items in the model.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean that all items are now selected.
+//
+func (model *SelectionModel) selectAll() bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.select_all
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_select_all(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(model)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectItem requests to select an item in the model.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to select.
+//    - unselectRest: whether previously selected items should be unselected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the item was selected.
+//
+func (model *SelectionModel) selectItem(position uint, unselectRest bool) bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.select_item
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 C.guint              // out
+	var _arg2 C.gboolean           // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = C.guint(position)
+	if unselectRest {
+		_arg2 = C.TRUE
+	}
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_select_item(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(unselectRest)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectRange requests to select a range of items in the model.
+//
+// The function takes the following parameters:
+//
+//    - position: first item to select.
+//    - nItems: number of items to select.
+//    - unselectRest: whether previously selected items should be unselected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the range was selected.
+//
+func (model *SelectionModel) selectRange(position, nItems uint, unselectRest bool) bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.select_range
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 C.guint              // out
+	var _arg2 C.guint              // out
+	var _arg3 C.gboolean           // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
+	if unselectRest {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_select_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nItems)
+	runtime.KeepAlive(unselectRest)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setSelection: make selection changes.
+//
+// This is the most advanced selection updating method that allows the most
+// fine-grained control over selection changes. If you can, you should try the
+// simpler versions, as implementations are more likely to implement support for
+// those.
+//
+// Requests that the selection state of all positions set in mask be updated to
+// the respective value in the selected bitmask.
+//
+// In pseudocode, it would look something like this:
+//
+//    for (i = 0; i < n_items; i++)
+//      {
+//        // don't change values not in the mask
+//        if (!gtk_bitset_contains (mask, i))
+//          continue;
+//
+//        if (gtk_bitset_contains (selected, i))
+//          select_item (i);
+//        else
+//          unselect_item (i);
+//      }
+//
+//    gtk_selection_model_selection_changed (model,
+//                                           first_changed_item,
+//                                           n_changed_items);
+//
+//
+// mask and selected must not be modified. They may refer to the same bitset,
+// which would mean that every item in the set should be selected.
+//
+// The function takes the following parameters:
+//
+//    - selected: bitmask specifying if items should be selected or unselected.
+//    - mask specifying which items should be updated.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean that all items were updated according to the inputs.
+//
+func (model *SelectionModel) setSelection(selected, mask *Bitset) bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.set_selection
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 *C.GtkBitset         // out
+	var _arg2 *C.GtkBitset         // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(selected)))
+	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(mask)))
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_set_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(selected)
+	runtime.KeepAlive(mask)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// unselectAll requests to unselect all items in the model.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean that all items are now unselected.
+//
+func (model *SelectionModel) unselectAll() bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.unselect_all
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_unselect_all(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(model)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// unselectItem requests to unselect an item in the model.
+//
+// The function takes the following parameters:
+//
+//    - position of the item to unselect.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the item was unselected.
+//
+func (model *SelectionModel) unselectItem(position uint) bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.unselect_item
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 C.guint              // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = C.guint(position)
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_unselect_item(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(position)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// unselectRange requests to unselect a range of items in the model.
+//
+// The function takes the following parameters:
+//
+//    - position: first item to unselect.
+//    - nItems: number of items to unselect.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if this action was supported and no fallback should be tried.
+//      This does not mean the range was unselected.
+//
+func (model *SelectionModel) unselectRange(position, nItems uint) bool {
+	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
+	fnarg := gclass.unselect_range
+
+	var _arg0 *C.GtkSelectionModel // out
+	var _arg1 C.guint              // out
+	var _arg2 C.guint              // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
+
+	_cret = C._gotk4_gtk4_SelectionModel_virtual_unselect_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
 	runtime.KeepAlive(nItems)

@@ -16,8 +16,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_CellRendererTextClass_edited(GtkCellRendererText*, gchar*, gchar*);
 // extern void _gotk4_gtk3_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellRendererTextClass_edited(GtkCellRendererText*, gchar*, gchar*);
+// void _gotk4_gtk3_CellRendererText_virtual_edited(void* fnptr, GtkCellRendererText* arg0, gchar* arg1, gchar* arg2) {
+//   ((void (*)(GtkCellRendererText*, gchar*, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -31,14 +34,20 @@ func init() {
 	})
 }
 
-// CellRendererTextOverrider contains methods that are overridable.
-type CellRendererTextOverrider interface {
+// CellRendererTextOverrides contains methods that are overridable.
+type CellRendererTextOverrides struct {
 	// The function takes the following parameters:
 	//
 	//    - path
 	//    - newText
 	//
-	Edited(path, newText string)
+	Edited func(path, newText string)
+}
+
+func defaultCellRendererTextOverrides(v *CellRendererText) CellRendererTextOverrides {
+	return CellRendererTextOverrides{
+		Edited: v.edited,
+	}
 }
 
 // CellRendererText renders a given text in its cell, using the font, color and
@@ -57,46 +66,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellRendererText,
-		GoType:        reflect.TypeOf((*CellRendererText)(nil)),
-		InitClass:     initClassCellRendererText,
-		FinalizeClass: finalizeClassCellRendererText,
-	})
+	coreglib.RegisterClassInfo[*CellRendererText, *CellRendererTextClass, CellRendererTextOverrides](
+		GTypeCellRendererText,
+		initCellRendererTextClass,
+		wrapCellRendererText,
+		defaultCellRendererTextOverrides,
+	)
 }
 
-func initClassCellRendererText(gclass unsafe.Pointer, goval any) {
+func initCellRendererTextClass(gclass unsafe.Pointer, overrides CellRendererTextOverrides, classInitFunc func(*CellRendererTextClass)) {
+	pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellRendererText))))
 
-	pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Edited(path, newText string) }); ok {
+	if overrides.Edited != nil {
 		pclass.edited = (*[0]byte)(C._gotk4_gtk3_CellRendererTextClass_edited)
 	}
-	if goval, ok := goval.(interface{ InitCellRendererText(*CellRendererTextClass) }); ok {
-		klass := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
-		goval.InitCellRendererText(klass)
+
+	if classInitFunc != nil {
+		class := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCellRendererText(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCellRendererText(*CellRendererTextClass) }); ok {
-		klass := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellRendererText(klass)
-	}
-}
-
-//export _gotk4_gtk3_CellRendererTextClass_edited
-func _gotk4_gtk3_CellRendererTextClass_edited(arg0 *C.GtkCellRendererText, arg1 *C.gchar, arg2 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Edited(path, newText string) })
-
-	var _path string    // out
-	var _newText string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	iface.Edited(_path, _newText)
 }
 
 func wrapCellRendererText(obj *coreglib.Object) *CellRendererText {
@@ -111,28 +99,6 @@ func wrapCellRendererText(obj *coreglib.Object) *CellRendererText {
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
 	return wrapCellRendererText(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_CellRendererText_ConnectEdited
-func _gotk4_gtk3_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(path, newText string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(path, newText string))
-	}
-
-	var _path string    // out
-	var _newText string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	f(_path, _newText)
 }
 
 // ConnectEdited: this signal is emitted after renderer has been edited.
@@ -189,6 +155,31 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)
+}
+
+// The function takes the following parameters:
+//
+//    - path
+//    - newText
+//
+func (cellRendererText *CellRendererText) edited(path, newText string) {
+	gclass := (*C.GtkCellRendererTextClass)(coreglib.PeekParentClass(cellRendererText))
+	fnarg := gclass.edited
+
+	var _arg0 *C.GtkCellRendererText // out
+	var _arg1 *C.gchar               // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(coreglib.InternObject(cellRendererText).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(newText)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_gtk3_CellRendererText_virtual_edited(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellRendererText)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(newText)
 }
 
 // CellRendererTextClass: instance of this type is always passed by reference.

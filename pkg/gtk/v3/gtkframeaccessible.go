@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// FrameAccessibleOverrider contains methods that are overridable.
-type FrameAccessibleOverrider interface {
+// FrameAccessibleOverrides contains methods that are overridable.
+type FrameAccessibleOverrides struct {
+}
+
+func defaultFrameAccessibleOverrides(v *FrameAccessible) FrameAccessibleOverrides {
+	return FrameAccessibleOverrides{}
 }
 
 type FrameAccessible struct {
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFrameAccessible,
-		GoType:        reflect.TypeOf((*FrameAccessible)(nil)),
-		InitClass:     initClassFrameAccessible,
-		FinalizeClass: finalizeClassFrameAccessible,
-	})
+	coreglib.RegisterClassInfo[*FrameAccessible, *FrameAccessibleClass, FrameAccessibleOverrides](
+		GTypeFrameAccessible,
+		initFrameAccessibleClass,
+		wrapFrameAccessible,
+		defaultFrameAccessibleOverrides,
+	)
 }
 
-func initClassFrameAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFrameAccessible(*FrameAccessibleClass) }); ok {
-		klass := (*FrameAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitFrameAccessible(klass)
-	}
-}
-
-func finalizeClassFrameAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFrameAccessible(*FrameAccessibleClass) }); ok {
-		klass := (*FrameAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFrameAccessible(klass)
+func initFrameAccessibleClass(gclass unsafe.Pointer, overrides FrameAccessibleOverrides, classInitFunc func(*FrameAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*FrameAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

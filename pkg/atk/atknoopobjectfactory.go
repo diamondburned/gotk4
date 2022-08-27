@@ -26,8 +26,12 @@ func init() {
 	})
 }
 
-// NoOpObjectFactoryOverrider contains methods that are overridable.
-type NoOpObjectFactoryOverrider interface {
+// NoOpObjectFactoryOverrides contains methods that are overridable.
+type NoOpObjectFactoryOverrides struct {
+}
+
+func defaultNoOpObjectFactoryOverrides(v *NoOpObjectFactory) NoOpObjectFactoryOverrides {
+	return NoOpObjectFactoryOverrides{}
 }
 
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNoOpObjectFactory,
-		GoType:        reflect.TypeOf((*NoOpObjectFactory)(nil)),
-		InitClass:     initClassNoOpObjectFactory,
-		FinalizeClass: finalizeClassNoOpObjectFactory,
-	})
+	coreglib.RegisterClassInfo[*NoOpObjectFactory, *NoOpObjectFactoryClass, NoOpObjectFactoryOverrides](
+		GTypeNoOpObjectFactory,
+		initNoOpObjectFactoryClass,
+		wrapNoOpObjectFactory,
+		defaultNoOpObjectFactoryOverrides,
+	)
 }
 
-func initClassNoOpObjectFactory(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitNoOpObjectFactory(*NoOpObjectFactoryClass) }); ok {
-		klass := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
-		goval.InitNoOpObjectFactory(klass)
-	}
-}
-
-func finalizeClassNoOpObjectFactory(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeNoOpObjectFactory(*NoOpObjectFactoryClass) }); ok {
-		klass := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNoOpObjectFactory(klass)
+func initNoOpObjectFactoryClass(gclass unsafe.Pointer, overrides NoOpObjectFactoryOverrides, classInitFunc func(*NoOpObjectFactoryClass)) {
+	if classInitFunc != nil {
+		class := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

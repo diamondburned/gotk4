@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TreeStoreOverrider contains methods that are overridable.
-type TreeStoreOverrider interface {
+// TreeStoreOverrides contains methods that are overridable.
+type TreeStoreOverrides struct {
+}
+
+func defaultTreeStoreOverrides(v *TreeStore) TreeStoreOverrides {
+	return TreeStoreOverrides{}
 }
 
 // TreeStore: tree-like data structure that can be used with the GtkTreeView
@@ -71,25 +75,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeStore,
-		GoType:        reflect.TypeOf((*TreeStore)(nil)),
-		InitClass:     initClassTreeStore,
-		FinalizeClass: finalizeClassTreeStore,
-	})
+	coreglib.RegisterClassInfo[*TreeStore, *TreeStoreClass, TreeStoreOverrides](
+		GTypeTreeStore,
+		initTreeStoreClass,
+		wrapTreeStore,
+		defaultTreeStoreOverrides,
+	)
 }
 
-func initClassTreeStore(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTreeStore(*TreeStoreClass) }); ok {
-		klass := (*TreeStoreClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeStore(klass)
-	}
-}
-
-func finalizeClassTreeStore(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeStore(*TreeStoreClass) }); ok {
-		klass := (*TreeStoreClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeStore(klass)
+func initTreeStoreClass(gclass unsafe.Pointer, overrides TreeStoreOverrides, classInitFunc func(*TreeStoreClass)) {
+	if classInitFunc != nil {
+		class := (*TreeStoreClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

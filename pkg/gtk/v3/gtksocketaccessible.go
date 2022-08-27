@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// SocketAccessibleOverrider contains methods that are overridable.
-type SocketAccessibleOverrider interface {
+// SocketAccessibleOverrides contains methods that are overridable.
+type SocketAccessibleOverrides struct {
+}
+
+func defaultSocketAccessibleOverrides(v *SocketAccessible) SocketAccessibleOverrides {
+	return SocketAccessibleOverrides{}
 }
 
 type SocketAccessible struct {
@@ -44,25 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSocketAccessible,
-		GoType:        reflect.TypeOf((*SocketAccessible)(nil)),
-		InitClass:     initClassSocketAccessible,
-		FinalizeClass: finalizeClassSocketAccessible,
-	})
+	coreglib.RegisterClassInfo[*SocketAccessible, *SocketAccessibleClass, SocketAccessibleOverrides](
+		GTypeSocketAccessible,
+		initSocketAccessibleClass,
+		wrapSocketAccessible,
+		defaultSocketAccessibleOverrides,
+	)
 }
 
-func initClassSocketAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSocketAccessible(*SocketAccessibleClass) }); ok {
-		klass := (*SocketAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitSocketAccessible(klass)
-	}
-}
-
-func finalizeClassSocketAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSocketAccessible(*SocketAccessibleClass) }); ok {
-		klass := (*SocketAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSocketAccessible(klass)
+func initSocketAccessibleClass(gclass unsafe.Pointer, overrides SocketAccessibleOverrides, classInitFunc func(*SocketAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*SocketAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

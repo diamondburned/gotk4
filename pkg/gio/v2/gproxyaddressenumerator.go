@@ -26,8 +26,12 @@ func init() {
 	})
 }
 
-// ProxyAddressEnumeratorOverrider contains methods that are overridable.
-type ProxyAddressEnumeratorOverrider interface {
+// ProxyAddressEnumeratorOverrides contains methods that are overridable.
+type ProxyAddressEnumeratorOverrides struct {
+}
+
+func defaultProxyAddressEnumeratorOverrides(v *ProxyAddressEnumerator) ProxyAddressEnumeratorOverrides {
+	return ProxyAddressEnumeratorOverrides{}
 }
 
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
@@ -48,29 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeProxyAddressEnumerator,
-		GoType:        reflect.TypeOf((*ProxyAddressEnumerator)(nil)),
-		InitClass:     initClassProxyAddressEnumerator,
-		FinalizeClass: finalizeClassProxyAddressEnumerator,
-	})
+	coreglib.RegisterClassInfo[*ProxyAddressEnumerator, *ProxyAddressEnumeratorClass, ProxyAddressEnumeratorOverrides](
+		GTypeProxyAddressEnumerator,
+		initProxyAddressEnumeratorClass,
+		wrapProxyAddressEnumerator,
+		defaultProxyAddressEnumeratorOverrides,
+	)
 }
 
-func initClassProxyAddressEnumerator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitProxyAddressEnumerator(*ProxyAddressEnumeratorClass)
-	}); ok {
-		klass := (*ProxyAddressEnumeratorClass)(gextras.NewStructNative(gclass))
-		goval.InitProxyAddressEnumerator(klass)
-	}
-}
-
-func finalizeClassProxyAddressEnumerator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeProxyAddressEnumerator(*ProxyAddressEnumeratorClass)
-	}); ok {
-		klass := (*ProxyAddressEnumeratorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeProxyAddressEnumerator(klass)
+func initProxyAddressEnumeratorClass(gclass unsafe.Pointer, overrides ProxyAddressEnumeratorOverrides, classInitFunc func(*ProxyAddressEnumeratorClass)) {
+	if classInitFunc != nil {
+		class := (*ProxyAddressEnumeratorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

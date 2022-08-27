@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// NoOpObjectOverrider contains methods that are overridable.
-type NoOpObjectOverrider interface {
+// NoOpObjectOverrides contains methods that are overridable.
+type NoOpObjectOverrides struct {
+}
+
+func defaultNoOpObjectOverrides(v *NoOpObject) NoOpObjectOverrides {
+	return NoOpObjectOverrides{}
 }
 
 // NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
@@ -58,25 +62,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNoOpObject,
-		GoType:        reflect.TypeOf((*NoOpObject)(nil)),
-		InitClass:     initClassNoOpObject,
-		FinalizeClass: finalizeClassNoOpObject,
-	})
+	coreglib.RegisterClassInfo[*NoOpObject, *NoOpObjectClass, NoOpObjectOverrides](
+		GTypeNoOpObject,
+		initNoOpObjectClass,
+		wrapNoOpObject,
+		defaultNoOpObjectOverrides,
+	)
 }
 
-func initClassNoOpObject(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitNoOpObject(*NoOpObjectClass) }); ok {
-		klass := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
-		goval.InitNoOpObject(klass)
-	}
-}
-
-func finalizeClassNoOpObject(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeNoOpObject(*NoOpObjectClass) }); ok {
-		klass := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNoOpObject(klass)
+func initNoOpObjectClass(gclass unsafe.Pointer, overrides NoOpObjectOverrides, classInitFunc func(*NoOpObjectClass)) {
+	if classInitFunc != nil {
+		class := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

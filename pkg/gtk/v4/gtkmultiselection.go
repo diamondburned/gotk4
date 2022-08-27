@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// MultiSelectionOverrider contains methods that are overridable.
-type MultiSelectionOverrider interface {
+// MultiSelectionOverrides contains methods that are overridable.
+type MultiSelectionOverrides struct {
+}
+
+func defaultMultiSelectionOverrides(v *MultiSelection) MultiSelectionOverrides {
+	return MultiSelectionOverrides{}
 }
 
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
@@ -46,25 +50,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMultiSelection,
-		GoType:        reflect.TypeOf((*MultiSelection)(nil)),
-		InitClass:     initClassMultiSelection,
-		FinalizeClass: finalizeClassMultiSelection,
-	})
+	coreglib.RegisterClassInfo[*MultiSelection, *MultiSelectionClass, MultiSelectionOverrides](
+		GTypeMultiSelection,
+		initMultiSelectionClass,
+		wrapMultiSelection,
+		defaultMultiSelectionOverrides,
+	)
 }
 
-func initClassMultiSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMultiSelection(*MultiSelectionClass) }); ok {
-		klass := (*MultiSelectionClass)(gextras.NewStructNative(gclass))
-		goval.InitMultiSelection(klass)
-	}
-}
-
-func finalizeClassMultiSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMultiSelection(*MultiSelectionClass) }); ok {
-		klass := (*MultiSelectionClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMultiSelection(klass)
+func initMultiSelectionClass(gclass unsafe.Pointer, overrides MultiSelectionOverrides, classInitFunc func(*MultiSelectionClass)) {
+	if classInitFunc != nil {
+		class := (*MultiSelectionClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

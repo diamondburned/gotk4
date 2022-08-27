@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// LevelBarAccessibleOverrider contains methods that are overridable.
-type LevelBarAccessibleOverrider interface {
+// LevelBarAccessibleOverrides contains methods that are overridable.
+type LevelBarAccessibleOverrides struct {
+}
+
+func defaultLevelBarAccessibleOverrides(v *LevelBarAccessible) LevelBarAccessibleOverrides {
+	return LevelBarAccessibleOverrides{}
 }
 
 type LevelBarAccessible struct {
@@ -45,29 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLevelBarAccessible,
-		GoType:        reflect.TypeOf((*LevelBarAccessible)(nil)),
-		InitClass:     initClassLevelBarAccessible,
-		FinalizeClass: finalizeClassLevelBarAccessible,
-	})
+	coreglib.RegisterClassInfo[*LevelBarAccessible, *LevelBarAccessibleClass, LevelBarAccessibleOverrides](
+		GTypeLevelBarAccessible,
+		initLevelBarAccessibleClass,
+		wrapLevelBarAccessible,
+		defaultLevelBarAccessibleOverrides,
+	)
 }
 
-func initClassLevelBarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitLevelBarAccessible(*LevelBarAccessibleClass)
-	}); ok {
-		klass := (*LevelBarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitLevelBarAccessible(klass)
-	}
-}
-
-func finalizeClassLevelBarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeLevelBarAccessible(*LevelBarAccessibleClass)
-	}); ok {
-		klass := (*LevelBarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLevelBarAccessible(klass)
+func initLevelBarAccessibleClass(gclass unsafe.Pointer, overrides LevelBarAccessibleOverrides, classInitFunc func(*LevelBarAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*LevelBarAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

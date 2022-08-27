@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,8 +29,12 @@ func init() {
 	})
 }
 
-// PopoverMenuOverrider contains methods that are overridable.
-type PopoverMenuOverrider interface {
+// PopoverMenuOverrides contains methods that are overridable.
+type PopoverMenuOverrides struct {
+}
+
+func defaultPopoverMenuOverrides(v *PopoverMenu) PopoverMenuOverrides {
+	return PopoverMenuOverrides{}
 }
 
 // PopoverMenu is a subclass of Popover that treats its children like menus and
@@ -112,25 +115,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePopoverMenu,
-		GoType:        reflect.TypeOf((*PopoverMenu)(nil)),
-		InitClass:     initClassPopoverMenu,
-		FinalizeClass: finalizeClassPopoverMenu,
-	})
+	coreglib.RegisterClassInfo[*PopoverMenu, *PopoverMenuClass, PopoverMenuOverrides](
+		GTypePopoverMenu,
+		initPopoverMenuClass,
+		wrapPopoverMenu,
+		defaultPopoverMenuOverrides,
+	)
 }
 
-func initClassPopoverMenu(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitPopoverMenu(*PopoverMenuClass) }); ok {
-		klass := (*PopoverMenuClass)(gextras.NewStructNative(gclass))
-		goval.InitPopoverMenu(klass)
-	}
-}
-
-func finalizeClassPopoverMenu(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePopoverMenu(*PopoverMenuClass) }); ok {
-		klass := (*PopoverMenuClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePopoverMenu(klass)
+func initPopoverMenuClass(gclass unsafe.Pointer, overrides PopoverMenuOverrides, classInitFunc func(*PopoverMenuClass)) {
+	if classInitFunc != nil {
+		class := (*PopoverMenuClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -159,49 +155,6 @@ func wrapPopoverMenu(obj *coreglib.Object) *PopoverMenu {
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return wrapPopoverMenu(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewPopoverMenu creates a new popover menu.
-//
-// The function returns the following values:
-//
-//    - popoverMenu: new PopoverMenu.
-//
-func NewPopoverMenu() *PopoverMenu {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_popover_menu_new()
-
-	var _popoverMenu *PopoverMenu // out
-
-	_popoverMenu = wrapPopoverMenu(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _popoverMenu
-}
-
-// OpenSubmenu opens a submenu of the popover. The name must be one of the names
-// given to the submenus of popover with PopoverMenu:submenu, or "main" to
-// switch back to the main menu.
-//
-// ModelButton will open submenus automatically when the ModelButton:menu-name
-// property is set, so this function is only needed when you are using other
-// kinds of widgets to initiate menu changes.
-//
-// The function takes the following parameters:
-//
-//    - name of the menu to switch to.
-//
-func (popover *PopoverMenu) OpenSubmenu(name string) {
-	var _arg0 *C.GtkPopoverMenu // out
-	var _arg1 *C.gchar          // out
-
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
-	runtime.KeepAlive(popover)
-	runtime.KeepAlive(name)
 }
 
 // PopoverMenuClass: instance of this type is always passed by reference.

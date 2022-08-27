@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// CenterLayoutOverrider contains methods that are overridable.
-type CenterLayoutOverrider interface {
+// CenterLayoutOverrides contains methods that are overridable.
+type CenterLayoutOverrides struct {
+}
+
+func defaultCenterLayoutOverrides(v *CenterLayout) CenterLayoutOverrides {
+	return CenterLayoutOverrides{}
 }
 
 // CenterLayout: GtkCenterLayout is a layout manager that manages up to three
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCenterLayout,
-		GoType:        reflect.TypeOf((*CenterLayout)(nil)),
-		InitClass:     initClassCenterLayout,
-		FinalizeClass: finalizeClassCenterLayout,
-	})
+	coreglib.RegisterClassInfo[*CenterLayout, *CenterLayoutClass, CenterLayoutOverrides](
+		GTypeCenterLayout,
+		initCenterLayoutClass,
+		wrapCenterLayout,
+		defaultCenterLayoutOverrides,
+	)
 }
 
-func initClassCenterLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitCenterLayout(*CenterLayoutClass) }); ok {
-		klass := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitCenterLayout(klass)
-	}
-}
-
-func finalizeClassCenterLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCenterLayout(*CenterLayoutClass) }); ok {
-		klass := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCenterLayout(klass)
+func initCenterLayoutClass(gclass unsafe.Pointer, overrides CenterLayoutOverrides, classInitFunc func(*CenterLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

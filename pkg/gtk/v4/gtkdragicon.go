@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// DragIconOverrider contains methods that are overridable.
-type DragIconOverrider interface {
+// DragIconOverrides contains methods that are overridable.
+type DragIconOverrides struct {
+}
+
+func defaultDragIconOverrides(v *DragIcon) DragIconOverrides {
+	return DragIconOverrides{}
 }
 
 // DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
@@ -57,25 +61,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDragIcon,
-		GoType:        reflect.TypeOf((*DragIcon)(nil)),
-		InitClass:     initClassDragIcon,
-		FinalizeClass: finalizeClassDragIcon,
-	})
+	coreglib.RegisterClassInfo[*DragIcon, *DragIconClass, DragIconOverrides](
+		GTypeDragIcon,
+		initDragIconClass,
+		wrapDragIcon,
+		defaultDragIconOverrides,
+	)
 }
 
-func initClassDragIcon(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitDragIcon(*DragIconClass) }); ok {
-		klass := (*DragIconClass)(gextras.NewStructNative(gclass))
-		goval.InitDragIcon(klass)
-	}
-}
-
-func finalizeClassDragIcon(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDragIcon(*DragIconClass) }); ok {
-		klass := (*DragIconClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDragIcon(klass)
+func initDragIconClass(gclass unsafe.Pointer, overrides DragIconOverrides, classInitFunc func(*DragIconClass)) {
+	if classInitFunc != nil {
+		class := (*DragIconClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

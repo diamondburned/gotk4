@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// VScrollbarOverrider contains methods that are overridable.
-type VScrollbarOverrider interface {
+// VScrollbarOverrides contains methods that are overridable.
+type VScrollbarOverrides struct {
+}
+
+func defaultVScrollbarOverrides(v *VScrollbar) VScrollbarOverrides {
+	return VScrollbarOverrides{}
 }
 
 // VScrollbar widget is a widget arranged vertically creating a scrollbar. See
@@ -51,25 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVScrollbar,
-		GoType:        reflect.TypeOf((*VScrollbar)(nil)),
-		InitClass:     initClassVScrollbar,
-		FinalizeClass: finalizeClassVScrollbar,
-	})
+	coreglib.RegisterClassInfo[*VScrollbar, *VScrollbarClass, VScrollbarOverrides](
+		GTypeVScrollbar,
+		initVScrollbarClass,
+		wrapVScrollbar,
+		defaultVScrollbarOverrides,
+	)
 }
 
-func initClassVScrollbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVScrollbar(*VScrollbarClass) }); ok {
-		klass := (*VScrollbarClass)(gextras.NewStructNative(gclass))
-		goval.InitVScrollbar(klass)
-	}
-}
-
-func finalizeClassVScrollbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVScrollbar(*VScrollbarClass) }); ok {
-		klass := (*VScrollbarClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVScrollbar(klass)
+func initVScrollbarClass(gclass unsafe.Pointer, overrides VScrollbarOverrides, classInitFunc func(*VScrollbarClass)) {
+	if classInitFunc != nil {
+		class := (*VScrollbarClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

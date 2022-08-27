@@ -9,7 +9,6 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -19,20 +18,38 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(GtkUIManager*, gchar*);
-// extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(GtkUIManager*, gchar*);
-// extern void _gotk4_gtk3_UIManagerClass_actions_changed(GtkUIManager*);
-// extern void _gotk4_gtk3_UIManagerClass_add_widget(GtkUIManager*, GtkWidget*);
-// extern void _gotk4_gtk3_UIManagerClass_connect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
-// extern void _gotk4_gtk3_UIManagerClass_disconnect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
-// extern void _gotk4_gtk3_UIManagerClass_post_activate(GtkUIManager*, GtkAction*);
-// extern void _gotk4_gtk3_UIManagerClass_pre_activate(GtkUIManager*, GtkAction*);
-// extern void _gotk4_gtk3_UIManager_ConnectActionsChanged(gpointer, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectAddWidget(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_UIManager_ConnectPostActivate(gpointer, GtkAction*, guintptr);
 // extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, GtkAction*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectPostActivate(gpointer, GtkAction*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectAddWidget(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_UIManager_ConnectActionsChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_UIManagerClass_pre_activate(GtkUIManager*, GtkAction*);
+// extern void _gotk4_gtk3_UIManagerClass_post_activate(GtkUIManager*, GtkAction*);
+// extern void _gotk4_gtk3_UIManagerClass_disconnect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
+// extern void _gotk4_gtk3_UIManagerClass_connect_proxy(GtkUIManager*, GtkAction*, GtkWidget*);
+// extern void _gotk4_gtk3_UIManagerClass_add_widget(GtkUIManager*, GtkWidget*);
+// extern void _gotk4_gtk3_UIManagerClass_actions_changed(GtkUIManager*);
+// extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(GtkUIManager*, gchar*);
+// extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(GtkUIManager*, gchar*);
+// void _gotk4_gtk3_UIManager_virtual_actions_changed(void* fnptr, GtkUIManager* arg0) {
+//   ((void (*)(GtkUIManager*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_UIManager_virtual_add_widget(void* fnptr, GtkUIManager* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkUIManager*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_UIManager_virtual_connect_proxy(void* fnptr, GtkUIManager* arg0, GtkAction* arg1, GtkWidget* arg2) {
+//   ((void (*)(GtkUIManager*, GtkAction*, GtkWidget*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_UIManager_virtual_disconnect_proxy(void* fnptr, GtkUIManager* arg0, GtkAction* arg1, GtkWidget* arg2) {
+//   ((void (*)(GtkUIManager*, GtkAction*, GtkWidget*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_UIManager_virtual_post_activate(void* fnptr, GtkUIManager* arg0, GtkAction* arg1) {
+//   ((void (*)(GtkUIManager*, GtkAction*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_UIManager_virtual_pre_activate(void* fnptr, GtkUIManager* arg0, GtkAction* arg1) {
+//   ((void (*)(GtkUIManager*, GtkAction*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -135,24 +152,24 @@ func (u UIManagerItemType) Has(other UIManagerItemType) bool {
 	return (u & other) == other
 }
 
-// UIManagerOverrider contains methods that are overridable.
-type UIManagerOverrider interface {
-	ActionsChanged()
+// UIManagerOverrides contains methods that are overridable.
+type UIManagerOverrides struct {
+	ActionsChanged func()
 	// The function takes the following parameters:
 	//
-	AddWidget(widget Widgetter)
-	// The function takes the following parameters:
-	//
-	//    - action
-	//    - proxy
-	//
-	ConnectProxy(action *Action, proxy Widgetter)
+	AddWidget func(widget Widgetter)
 	// The function takes the following parameters:
 	//
 	//    - action
 	//    - proxy
 	//
-	DisconnectProxy(action *Action, proxy Widgetter)
+	ConnectProxy func(action *Action, proxy Widgetter)
+	// The function takes the following parameters:
+	//
+	//    - action
+	//    - proxy
+	//
+	DisconnectProxy func(action *Action, proxy Widgetter)
 	// Action looks up an action by following a path. See
 	// gtk_ui_manager_get_widget() for more information about paths.
 	//
@@ -167,7 +184,7 @@ type UIManagerOverrider interface {
 	//    - action whose proxy widget is found by following the path, or NULL if
 	//      no widget was found.
 	//
-	Action(path string) *Action
+	Action func(path string) *Action
 	// Widget looks up a widget by following a path. The path consists of the
 	// names specified in the XML description of the UI. separated by “/”.
 	// Elements which don’t have a name or action attribute in the XML (e.g.
@@ -193,13 +210,26 @@ type UIManagerOverrider interface {
 	//
 	//    - widget found by following the path, or NULL if no widget was found.
 	//
-	Widget(path string) Widgetter
+	Widget func(path string) Widgetter
 	// The function takes the following parameters:
 	//
-	PostActivate(action *Action)
+	PostActivate func(action *Action)
 	// The function takes the following parameters:
 	//
-	PreActivate(action *Action)
+	PreActivate func(action *Action)
+}
+
+func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
+	return UIManagerOverrides{
+		ActionsChanged:  v.actionsChanged,
+		AddWidget:       v.addWidget,
+		ConnectProxy:    v.connectProxy,
+		DisconnectProxy: v.disconnectProxy,
+		Action:          v.action,
+		Widget:          v.widget,
+		PostActivate:    v.postActivate,
+		PreActivate:     v.preActivate,
+	}
 }
 
 // UIManager: > GtkUIManager is deprecated since GTK+ 3.10. To construct user
@@ -433,220 +463,53 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeUIManager,
-		GoType:        reflect.TypeOf((*UIManager)(nil)),
-		InitClass:     initClassUIManager,
-		FinalizeClass: finalizeClassUIManager,
-	})
+	coreglib.RegisterClassInfo[*UIManager, *UIManagerClass, UIManagerOverrides](
+		GTypeUIManager,
+		initUIManagerClass,
+		wrapUIManager,
+		defaultUIManagerOverrides,
+	)
 }
 
-func initClassUIManager(gclass unsafe.Pointer, goval any) {
+func initUIManagerClass(gclass unsafe.Pointer, overrides UIManagerOverrides, classInitFunc func(*UIManagerClass)) {
+	pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeUIManager))))
 
-	pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ActionsChanged() }); ok {
+	if overrides.ActionsChanged != nil {
 		pclass.actions_changed = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_actions_changed)
 	}
 
-	if _, ok := goval.(interface{ AddWidget(widget Widgetter) }); ok {
+	if overrides.AddWidget != nil {
 		pclass.add_widget = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_add_widget)
 	}
 
-	if _, ok := goval.(interface {
-		ConnectProxy(action *Action, proxy Widgetter)
-	}); ok {
+	if overrides.ConnectProxy != nil {
 		pclass.connect_proxy = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_connect_proxy)
 	}
 
-	if _, ok := goval.(interface {
-		DisconnectProxy(action *Action, proxy Widgetter)
-	}); ok {
+	if overrides.DisconnectProxy != nil {
 		pclass.disconnect_proxy = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_disconnect_proxy)
 	}
 
-	if _, ok := goval.(interface{ Action(path string) *Action }); ok {
+	if overrides.Action != nil {
 		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_get_action)
 	}
 
-	if _, ok := goval.(interface{ Widget(path string) Widgetter }); ok {
+	if overrides.Widget != nil {
 		pclass.get_widget = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_get_widget)
 	}
 
-	if _, ok := goval.(interface{ PostActivate(action *Action) }); ok {
+	if overrides.PostActivate != nil {
 		pclass.post_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_post_activate)
 	}
 
-	if _, ok := goval.(interface{ PreActivate(action *Action) }); ok {
+	if overrides.PreActivate != nil {
 		pclass.pre_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_pre_activate)
 	}
-	if goval, ok := goval.(interface{ InitUIManager(*UIManagerClass) }); ok {
-		klass := (*UIManagerClass)(gextras.NewStructNative(gclass))
-		goval.InitUIManager(klass)
+
+	if classInitFunc != nil {
+		class := (*UIManagerClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassUIManager(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeUIManager(*UIManagerClass) }); ok {
-		klass := (*UIManagerClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeUIManager(klass)
-	}
-}
-
-//export _gotk4_gtk3_UIManagerClass_actions_changed
-func _gotk4_gtk3_UIManagerClass_actions_changed(arg0 *C.GtkUIManager) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActionsChanged() })
-
-	iface.ActionsChanged()
-}
-
-//export _gotk4_gtk3_UIManagerClass_add_widget
-func _gotk4_gtk3_UIManagerClass_add_widget(arg0 *C.GtkUIManager, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ AddWidget(widget Widgetter) })
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	iface.AddWidget(_widget)
-}
-
-//export _gotk4_gtk3_UIManagerClass_connect_proxy
-func _gotk4_gtk3_UIManagerClass_connect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ConnectProxy(action *Action, proxy Widgetter)
-	})
-
-	var _action *Action  // out
-	var _proxy Widgetter // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_proxy = rv
-	}
-
-	iface.ConnectProxy(_action, _proxy)
-}
-
-//export _gotk4_gtk3_UIManagerClass_disconnect_proxy
-func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.GtkUIManager, arg1 *C.GtkAction, arg2 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DisconnectProxy(action *Action, proxy Widgetter)
-	})
-
-	var _action *Action  // out
-	var _proxy Widgetter // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_proxy = rv
-	}
-
-	iface.DisconnectProxy(_action, _proxy)
-}
-
-//export _gotk4_gtk3_UIManagerClass_get_action
-func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkAction) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Action(path string) *Action })
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	action := iface.Action(_path)
-
-	cret = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	return cret
-}
-
-//export _gotk4_gtk3_UIManagerClass_get_widget
-func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.GtkUIManager, arg1 *C.gchar) (cret *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Widget(path string) Widgetter })
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	widget := iface.Widget(_path)
-
-	cret = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	return cret
-}
-
-//export _gotk4_gtk3_UIManagerClass_post_activate
-func _gotk4_gtk3_UIManagerClass_post_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PostActivate(action *Action) })
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.PostActivate(_action)
-}
-
-//export _gotk4_gtk3_UIManagerClass_pre_activate
-func _gotk4_gtk3_UIManagerClass_pre_activate(arg0 *C.GtkUIManager, arg1 *C.GtkAction) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PreActivate(action *Action) })
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.PreActivate(_action)
 }
 
 func wrapUIManager(obj *coreglib.Object) *UIManager {
@@ -662,61 +525,9 @@ func marshalUIManager(p uintptr) (interface{}, error) {
 	return wrapUIManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_UIManager_ConnectActionsChanged
-func _gotk4_gtk3_UIManager_ConnectActionsChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActionsChanged signal is emitted whenever the set of actions changes.
 func (manager *UIManager) ConnectActionsChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(manager, "actions-changed", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectActionsChanged), f)
-}
-
-//export _gotk4_gtk3_UIManager_ConnectAddWidget
-func _gotk4_gtk3_UIManager_ConnectAddWidget(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(widget Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(widget Widgetter))
-	}
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	f(_widget)
 }
 
 // ConnectAddWidget signal is emitted for each generated menubar and toolbar. It
@@ -724,44 +535,6 @@ func _gotk4_gtk3_UIManager_ConnectAddWidget(arg0 C.gpointer, arg1 *C.GtkWidget, 
 // gtk_ui_manager_get_widget().
 func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(manager, "add-widget", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectAddWidget), f)
-}
-
-//export _gotk4_gtk3_UIManager_ConnectConnectProxy
-func _gotk4_gtk3_UIManager_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
-	var f func(action *Action, proxy Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action, proxy Widgetter))
-	}
-
-	var _action *Action  // out
-	var _proxy Widgetter // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_proxy = rv
-	}
-
-	f(_action, _proxy)
 }
 
 // ConnectConnectProxy signal is emitted after connecting a proxy to an action
@@ -773,68 +546,10 @@ func (manager *UIManager) ConnectConnectProxy(f func(action *Action, proxy Widge
 	return coreglib.ConnectGeneratedClosure(manager, "connect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectConnectProxy), f)
 }
 
-//export _gotk4_gtk3_UIManager_ConnectDisconnectProxy
-func _gotk4_gtk3_UIManager_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
-	var f func(action *Action, proxy Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action, proxy Widgetter))
-	}
-
-	var _action *Action  // out
-	var _proxy Widgetter // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_proxy = rv
-	}
-
-	f(_action, _proxy)
-}
-
 // ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
 // action in the group.
 func (manager *UIManager) ConnectDisconnectProxy(f func(action *Action, proxy Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(manager, "disconnect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectDisconnectProxy), f)
-}
-
-//export _gotk4_gtk3_UIManager_ConnectPostActivate
-func _gotk4_gtk3_UIManager_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
-	var f func(action *Action)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action))
-	}
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_action)
 }
 
 // ConnectPostActivate signal is emitted just after the action is activated.
@@ -845,26 +560,6 @@ func (manager *UIManager) ConnectPostActivate(f func(action *Action)) coreglib.S
 	return coreglib.ConnectGeneratedClosure(manager, "post-activate", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectPostActivate), f)
 }
 
-//export _gotk4_gtk3_UIManager_ConnectPreActivate
-func _gotk4_gtk3_UIManager_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
-	var f func(action *Action)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action))
-	}
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_action)
-}
-
 // ConnectPreActivate signal is emitted just before the action is activated.
 //
 // This is intended for applications to get notification just before any action
@@ -873,611 +568,113 @@ func (manager *UIManager) ConnectPreActivate(f func(action *Action)) coreglib.Si
 	return coreglib.ConnectGeneratedClosure(manager, "pre-activate", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectPreActivate), f)
 }
 
-// NewUIManager creates a new ui manager object.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - uiManager: new ui manager object.
-//
-func NewUIManager() *UIManager {
-	var _cret *C.GtkUIManager // in
+func (manager *UIManager) actionsChanged() {
+	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.actions_changed
 
-	_cret = C.gtk_ui_manager_new()
-
-	var _uiManager *UIManager // out
-
-	_uiManager = wrapUIManager(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _uiManager
-}
-
-// AddUi adds a UI element to the current contents of manager.
-//
-// If type is GTK_UI_MANAGER_AUTO, GTK+ inserts a menuitem, toolitem or
-// separator if such an element can be inserted at the place determined by path.
-// Otherwise type must indicate an element that can be inserted at the place
-// determined by path.
-//
-// If path points to a menuitem or toolitem, the new element will be inserted
-// before or after this item, depending on top.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - mergeId: merge id for the merged UI, see gtk_ui_manager_new_merge_id().
-//    - path: path.
-//    - name for the added UI element.
-//    - action (optional): name of the action to be proxied, or NULL to add a
-//      separator.
-//    - typ: type of UI element to add.
-//    - top: if TRUE, the UI element is added before its siblings, otherwise it
-//      is added after its siblings.
-//
-func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIManagerItemType, top bool) {
-	var _arg0 *C.GtkUIManager        // out
-	var _arg1 C.guint                // out
-	var _arg2 *C.gchar               // out
-	var _arg3 *C.gchar               // out
-	var _arg4 *C.gchar               // out
-	var _arg5 C.GtkUIManagerItemType // out
-	var _arg6 C.gboolean             // out
+	var _arg0 *C.GtkUIManager // out
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = C.guint(mergeId)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg3))
-	if action != "" {
-		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(action)))
-		defer C.free(unsafe.Pointer(_arg4))
-	}
-	_arg5 = C.GtkUIManagerItemType(typ)
-	if top {
-		_arg6 = C.TRUE
-	}
 
-	C.gtk_ui_manager_add_ui(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	C._gotk4_gtk3_UIManager_virtual_actions_changed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(manager)
-	runtime.KeepAlive(mergeId)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(name)
+}
+
+// The function takes the following parameters:
+//
+func (manager *UIManager) addWidget(widget Widgetter) {
+	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.add_widget
+
+	var _arg0 *C.GtkUIManager // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk3_UIManager_virtual_add_widget(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+}
+
+// The function takes the following parameters:
+//
+//    - action
+//    - proxy
+//
+func (manager *UIManager) connectProxy(action *Action, proxy Widgetter) {
+	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.connect_proxy
+
+	var _arg0 *C.GtkUIManager // out
+	var _arg1 *C.GtkAction    // out
+	var _arg2 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+
+	C._gotk4_gtk3_UIManager_virtual_connect_proxy(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(manager)
 	runtime.KeepAlive(action)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(top)
+	runtime.KeepAlive(proxy)
 }
 
-// AddUiFromFile parses a file containing a [UI definition][XML-UI] and merges
-// it with the current contents of manager.
-//
-// Deprecated: since version 3.10.
-//
 // The function takes the following parameters:
 //
-//    - filename: name of the file to parse.
+//    - action
+//    - proxy
 //
-// The function returns the following values:
-//
-//    - guint: merge id for the merged UI. The merge id can be used to unmerge
-//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
-//      value is 0.
-//
-func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
+func (manager *UIManager) disconnectProxy(action *Action, proxy Widgetter) {
+	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.disconnect_proxy
+
 	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-	var _cret C.guint         // in
-	var _cerr *C.GError       // in
+	var _arg1 *C.GtkAction    // out
+	var _arg2 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, &_cerr)
+	C._gotk4_gtk3_UIManager_virtual_disconnect_proxy(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(manager)
-	runtime.KeepAlive(filename)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = uint(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _guint, _goerr
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(proxy)
 }
 
-// AddUiFromResource parses a resource file containing a [UI definition][XML-UI]
-// and merges it with the current contents of manager.
-//
-// Deprecated: since version 3.10.
-//
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path of the file to parse.
-//
-// The function returns the following values:
-//
-//    - guint: merge id for the merged UI. The merge id can be used to unmerge
-//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
-//      value is 0.
-//
-func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
+func (manager *UIManager) postActivate(action *Action) {
+	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.post_activate
+
 	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-	var _cret C.guint         // in
-	var _cerr *C.GError       // in
+	var _arg1 *C.GtkAction    // out
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, &_cerr)
+	C._gotk4_gtk3_UIManager_virtual_post_activate(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(manager)
-	runtime.KeepAlive(resourcePath)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = uint(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _guint, _goerr
+	runtime.KeepAlive(action)
 }
 
-// AddUiFromString parses a string containing a [UI definition][XML-UI] and
-// merges it with the current contents of manager. An enclosing <ui> element is
-// added if it is missing.
-//
-// Deprecated: since version 3.10.
-//
 // The function takes the following parameters:
 //
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
-//
-// The function returns the following values:
-//
-//    - guint: merge id for the merged UI. The merge id can be used to unmerge
-//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
-//      value is 0.
-//
-func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, error) {
+func (manager *UIManager) preActivate(action *Action) {
+	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.pre_activate
+
 	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-	var _arg2 C.gssize        // out
-	var _cret C.guint         // in
-	var _cerr *C.GError       // in
+	var _arg1 *C.GtkAction    // out
 
 	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_cret = C.gtk_ui_manager_add_ui_from_string(_arg0, _arg1, _arg2, &_cerr)
+	C._gotk4_gtk3_UIManager_virtual_pre_activate(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(manager)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(length)
-
-	var _guint uint  // out
-	var _goerr error // out
-
-	_guint = uint(_cret)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _guint, _goerr
-}
-
-// EnsureUpdate makes sure that all pending updates to the UI have been
-// completed.
-//
-// This may occasionally be necessary, since UIManager updates the UI in an idle
-// function. A typical example where this function is useful is to enforce that
-// the menubar and toolbar have been added to the main window before showing it:
-//
-//    gtk_container_add (GTK_CONTAINER (window), vbox);
-//    g_signal_connect (merge, "add-widget",
-//                      G_CALLBACK (add_widget), vbox);
-//    gtk_ui_manager_add_ui_from_file (merge, "my-menus");
-//    gtk_ui_manager_add_ui_from_file (merge, "my-toolbars");
-//    gtk_ui_manager_ensure_update (merge);
-//    gtk_widget_show (window);
-//
-// Deprecated: since version 3.10.
-func (manager *UIManager) EnsureUpdate() {
-	var _arg0 *C.GtkUIManager // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	C.gtk_ui_manager_ensure_update(_arg0)
-	runtime.KeepAlive(manager)
-}
-
-// AccelGroup returns the AccelGroup associated with manager.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - accelGroup: AccelGroup.
-//
-func (manager *UIManager) AccelGroup() *AccelGroup {
-	var _arg0 *C.GtkUIManager  // out
-	var _cret *C.GtkAccelGroup // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	_cret = C.gtk_ui_manager_get_accel_group(_arg0)
-	runtime.KeepAlive(manager)
-
-	var _accelGroup *AccelGroup // out
-
-	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _accelGroup
-}
-
-// Action looks up an action by following a path. See
-// gtk_ui_manager_get_widget() for more information about paths.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - path: path.
-//
-// The function returns the following values:
-//
-//    - action whose proxy widget is found by following the path, or NULL if no
-//      widget was found.
-//
-func (manager *UIManager) Action(path string) *Action {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-	var _cret *C.GtkAction    // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_ui_manager_get_action(_arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(path)
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _action
-}
-
-// ActionGroups returns the list of action groups associated with manager.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - list of action groups. The list is owned by GTK+ and should not be
-//      modified.
-//
-func (manager *UIManager) ActionGroups() []*ActionGroup {
-	var _arg0 *C.GtkUIManager // out
-	var _cret *C.GList        // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	_cret = C.gtk_ui_manager_get_action_groups(_arg0)
-	runtime.KeepAlive(manager)
-
-	var _list []*ActionGroup // out
-
-	_list = make([]*ActionGroup, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkActionGroup)(v)
-		var dst *ActionGroup // out
-		dst = wrapActionGroup(coreglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
-// AddTearoffs returns whether menus generated by this UIManager will have
-// tearoff menu items.
-//
-// Deprecated: Tearoff menus are deprecated and should not be used in newly
-// written code.
-//
-// The function returns the following values:
-//
-//    - ok: whether tearoff menu items are added.
-//
-func (manager *UIManager) AddTearoffs() bool {
-	var _arg0 *C.GtkUIManager // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	_cret = C.gtk_ui_manager_get_add_tearoffs(_arg0)
-	runtime.KeepAlive(manager)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Toplevels obtains a list of all toplevel widgets of the requested types.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - types specifies the types of toplevel widgets to include. Allowed types
-//      are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
-//
-// The function returns the following values:
-//
-//    - sList: newly-allocated List of all toplevel widgets of the requested
-//      types. Free the returned list with g_slist_free().
-//
-func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
-	var _arg0 *C.GtkUIManager        // out
-	var _arg1 C.GtkUIManagerItemType // out
-	var _cret *C.GSList              // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = C.GtkUIManagerItemType(types)
-
-	_cret = C.gtk_ui_manager_get_toplevels(_arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(types)
-
-	var _sList []Widgetter // out
-
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_sList = append(_sList, dst)
-	})
-
-	return _sList
-}
-
-// Ui creates a [UI definition][XML-UI] of the merged UI.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - utf8: newly allocated string containing an XML representation of the
-//      merged UI.
-//
-func (manager *UIManager) Ui() string {
-	var _arg0 *C.GtkUIManager // out
-	var _cret *C.gchar        // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	_cret = C.gtk_ui_manager_get_ui(_arg0)
-	runtime.KeepAlive(manager)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-// Widget looks up a widget by following a path. The path consists of the names
-// specified in the XML description of the UI. separated by “/”. Elements which
-// don’t have a name or action attribute in the XML (e.g. <popup>) can be
-// addressed by their XML element name (e.g. "popup"). The root element ("/ui")
-// can be omitted in the path.
-//
-// Note that the widget found by following a path that ends in a <menu>; element
-// is the menuitem to which the menu is attached, not the menu it manages.
-//
-// Also note that the widgets constructed by a ui manager are not tied to the
-// lifecycle of the ui manager. If you add the widgets returned by this function
-// to some container or explicitly ref them, they will survive the destruction
-// of the ui manager.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - path: path.
-//
-// The function returns the following values:
-//
-//    - widget found by following the path, or NULL if no widget was found.
-//
-func (manager *UIManager) Widget(path string) Widgetter {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 *C.gchar        // out
-	var _cret *C.GtkWidget    // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(path)
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	return _widget
-}
-
-// InsertActionGroup inserts an action group into the list of action groups
-// associated with manager. Actions in earlier groups hide actions with the same
-// name in later groups.
-//
-// If pos is larger than the number of action groups in manager, or negative,
-// action_group will be inserted at the end of the internal list.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - actionGroup: action group to be inserted.
-//    - pos: position at which the group will be inserted.
-//
-func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
-	var _arg0 *C.GtkUIManager   // out
-	var _arg1 *C.GtkActionGroup // out
-	var _arg2 C.gint            // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg2 = C.gint(pos)
-
-	C.gtk_ui_manager_insert_action_group(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(pos)
-}
-
-// NewMergeID returns an unused merge id, suitable for use with
-// gtk_ui_manager_add_ui().
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - guint: unused merge id.
-//
-func (manager *UIManager) NewMergeID() uint {
-	var _arg0 *C.GtkUIManager // out
-	var _cret C.guint         // in
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	_cret = C.gtk_ui_manager_new_merge_id(_arg0)
-	runtime.KeepAlive(manager)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// RemoveActionGroup removes an action group from the list of action groups
-// associated with manager.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - actionGroup: action group to be removed.
-//
-func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
-	var _arg0 *C.GtkUIManager   // out
-	var _arg1 *C.GtkActionGroup // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	C.gtk_ui_manager_remove_action_group(_arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(actionGroup)
-}
-
-// RemoveUi unmerges the part of manager's content identified by merge_id.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - mergeId: merge id as returned by gtk_ui_manager_add_ui_from_string().
-//
-func (manager *UIManager) RemoveUi(mergeId uint) {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 C.guint         // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = C.guint(mergeId)
-
-	C.gtk_ui_manager_remove_ui(_arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(mergeId)
-}
-
-// SetAddTearoffs sets the “add_tearoffs” property, which controls whether menus
-// generated by this UIManager will have tearoff menu items.
-//
-// Note that this only affects regular menus. Generated popup menus never have
-// tearoff menu items.
-//
-// Deprecated: Tearoff menus are deprecated and should not be used in newly
-// written code.
-//
-// The function takes the following parameters:
-//
-//    - addTearoffs: whether tearoff menu items are added.
-//
-func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
-	var _arg0 *C.GtkUIManager // out
-	var _arg1 C.gboolean      // out
-
-	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	if addTearoffs {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_ui_manager_set_add_tearoffs(_arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(addTearoffs)
+	runtime.KeepAlive(action)
 }
 
 // UIManagerClass: instance of this type is always passed by reference.

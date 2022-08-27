@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// FixedLayoutOverrider contains methods that are overridable.
-type FixedLayoutOverrider interface {
+// FixedLayoutOverrides contains methods that are overridable.
+type FixedLayoutOverrides struct {
+}
+
+func defaultFixedLayoutOverrides(v *FixedLayout) FixedLayoutOverrides {
+	return FixedLayoutOverrides{}
 }
 
 // FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
@@ -73,25 +77,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFixedLayout,
-		GoType:        reflect.TypeOf((*FixedLayout)(nil)),
-		InitClass:     initClassFixedLayout,
-		FinalizeClass: finalizeClassFixedLayout,
-	})
+	coreglib.RegisterClassInfo[*FixedLayout, *FixedLayoutClass, FixedLayoutOverrides](
+		GTypeFixedLayout,
+		initFixedLayoutClass,
+		wrapFixedLayout,
+		defaultFixedLayoutOverrides,
+	)
 }
 
-func initClassFixedLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFixedLayout(*FixedLayoutClass) }); ok {
-		klass := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitFixedLayout(klass)
-	}
-}
-
-func finalizeClassFixedLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFixedLayout(*FixedLayoutClass) }); ok {
-		klass := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFixedLayout(klass)
+func initFixedLayoutClass(gclass unsafe.Pointer, overrides FixedLayoutOverrides, classInitFunc func(*FixedLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -125,8 +122,12 @@ func NewFixedLayout() *FixedLayout {
 	return _fixedLayout
 }
 
-// FixedLayoutChildOverrider contains methods that are overridable.
-type FixedLayoutChildOverrider interface {
+// FixedLayoutChildOverrides contains methods that are overridable.
+type FixedLayoutChildOverrides struct {
+}
+
+func defaultFixedLayoutChildOverrides(v *FixedLayoutChild) FixedLayoutChildOverrides {
+	return FixedLayoutChildOverrides{}
 }
 
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
@@ -140,25 +141,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFixedLayoutChild,
-		GoType:        reflect.TypeOf((*FixedLayoutChild)(nil)),
-		InitClass:     initClassFixedLayoutChild,
-		FinalizeClass: finalizeClassFixedLayoutChild,
-	})
+	coreglib.RegisterClassInfo[*FixedLayoutChild, *FixedLayoutChildClass, FixedLayoutChildOverrides](
+		GTypeFixedLayoutChild,
+		initFixedLayoutChildClass,
+		wrapFixedLayoutChild,
+		defaultFixedLayoutChildOverrides,
+	)
 }
 
-func initClassFixedLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFixedLayoutChild(*FixedLayoutChildClass) }); ok {
-		klass := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.InitFixedLayoutChild(klass)
-	}
-}
-
-func finalizeClassFixedLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFixedLayoutChild(*FixedLayoutChildClass) }); ok {
-		klass := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFixedLayoutChild(klass)
+func initFixedLayoutChildClass(gclass unsafe.Pointer, overrides FixedLayoutChildOverrides, classInitFunc func(*FixedLayoutChildClass)) {
+	if classInitFunc != nil {
+		class := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

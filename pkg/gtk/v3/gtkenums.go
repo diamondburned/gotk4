@@ -19,72 +19,60 @@ import "C"
 
 // GType values.
 var (
-	GTypeAlign              = coreglib.Type(C.gtk_align_get_type())
-	GTypeArrowType          = coreglib.Type(C.gtk_arrow_type_get_type())
-	GTypeBaselinePosition   = coreglib.Type(C.gtk_baseline_position_get_type())
-	GTypeBorderStyle        = coreglib.Type(C.gtk_border_style_get_type())
-	GTypeDeleteType         = coreglib.Type(C.gtk_delete_type_get_type())
-	GTypeDirectionType      = coreglib.Type(C.gtk_direction_type_get_type())
-	GTypeDragResult         = coreglib.Type(C.gtk_drag_result_get_type())
-	GTypeEventSequenceState = coreglib.Type(C.gtk_event_sequence_state_get_type())
-	GTypeIMPreeditStyle     = coreglib.Type(C.gtk_im_preedit_style_get_type())
-	GTypeIMStatusStyle      = coreglib.Type(C.gtk_im_status_style_get_type())
-	GTypeIconSize           = coreglib.Type(C.gtk_icon_size_get_type())
-	GTypeInputPurpose       = coreglib.Type(C.gtk_input_purpose_get_type())
-	GTypeJustification      = coreglib.Type(C.gtk_justification_get_type())
-	GTypeLevelBarMode       = coreglib.Type(C.gtk_level_bar_mode_get_type())
-	GTypeMenuDirectionType  = coreglib.Type(C.gtk_menu_direction_type_get_type())
-	GTypeMessageType        = coreglib.Type(C.gtk_message_type_get_type())
-	GTypeNumberUpLayout     = coreglib.Type(C.gtk_number_up_layout_get_type())
-	GTypeOrientation        = coreglib.Type(C.gtk_orientation_get_type())
-	GTypePackDirection      = coreglib.Type(C.gtk_pack_direction_get_type())
-	GTypePackType           = coreglib.Type(C.gtk_pack_type_get_type())
-	GTypePageOrientation    = coreglib.Type(C.gtk_page_orientation_get_type())
-	GTypePageSet            = coreglib.Type(C.gtk_page_set_get_type())
-	GTypePanDirection       = coreglib.Type(C.gtk_pan_direction_get_type())
-	GTypePopoverConstraint  = coreglib.Type(C.gtk_popover_constraint_get_type())
-	GTypePositionType       = coreglib.Type(C.gtk_position_type_get_type())
-	GTypePrintDuplex        = coreglib.Type(C.gtk_print_duplex_get_type())
-	GTypePrintPages         = coreglib.Type(C.gtk_print_pages_get_type())
-	GTypePrintQuality       = coreglib.Type(C.gtk_print_quality_get_type())
-	GTypePropagationPhase   = coreglib.Type(C.gtk_propagation_phase_get_type())
-	GTypeReliefStyle        = coreglib.Type(C.gtk_relief_style_get_type())
-	GTypeScrollType         = coreglib.Type(C.gtk_scroll_type_get_type())
-	GTypeScrollablePolicy   = coreglib.Type(C.gtk_scrollable_policy_get_type())
-	GTypeSelectionMode      = coreglib.Type(C.gtk_selection_mode_get_type())
-	GTypeSensitivityType    = coreglib.Type(C.gtk_sensitivity_type_get_type())
-	GTypeShadowType         = coreglib.Type(C.gtk_shadow_type_get_type())
-	GTypeSizeGroupMode      = coreglib.Type(C.gtk_size_group_mode_get_type())
-	GTypeSizeRequestMode    = coreglib.Type(C.gtk_size_request_mode_get_type())
-	GTypeSortType           = coreglib.Type(C.gtk_sort_type_get_type())
-	GTypeStateType          = coreglib.Type(C.gtk_state_type_get_type())
-	GTypeTextDirection      = coreglib.Type(C.gtk_text_direction_get_type())
-	GTypeToolbarStyle       = coreglib.Type(C.gtk_toolbar_style_get_type())
-	GTypeTreeViewGridLines  = coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
-	GTypeUnit               = coreglib.Type(C.gtk_unit_get_type())
-	GTypeWrapMode           = coreglib.Type(C.gtk_wrap_mode_get_type())
-	GTypeInputHints         = coreglib.Type(C.gtk_input_hints_get_type())
-	GTypeJunctionSides      = coreglib.Type(C.gtk_junction_sides_get_type())
-	GTypeRegionFlags        = coreglib.Type(C.gtk_region_flags_get_type())
-	GTypeStateFlags         = coreglib.Type(C.gtk_state_flags_get_type())
+	GTypeAlign             = coreglib.Type(C.gtk_align_get_type())
+	GTypeArrowType         = coreglib.Type(C.gtk_arrow_type_get_type())
+	GTypeBorderStyle       = coreglib.Type(C.gtk_border_style_get_type())
+	GTypeDeleteType        = coreglib.Type(C.gtk_delete_type_get_type())
+	GTypeDirectionType     = coreglib.Type(C.gtk_direction_type_get_type())
+	GTypeDragResult        = coreglib.Type(C.gtk_drag_result_get_type())
+	GTypeIMPreeditStyle    = coreglib.Type(C.gtk_im_preedit_style_get_type())
+	GTypeIMStatusStyle     = coreglib.Type(C.gtk_im_status_style_get_type())
+	GTypeIconSize          = coreglib.Type(C.gtk_icon_size_get_type())
+	GTypeJustification     = coreglib.Type(C.gtk_justification_get_type())
+	GTypeMenuDirectionType = coreglib.Type(C.gtk_menu_direction_type_get_type())
+	GTypeMessageType       = coreglib.Type(C.gtk_message_type_get_type())
+	GTypeNumberUpLayout    = coreglib.Type(C.gtk_number_up_layout_get_type())
+	GTypeOrientation       = coreglib.Type(C.gtk_orientation_get_type())
+	GTypePackDirection     = coreglib.Type(C.gtk_pack_direction_get_type())
+	GTypePackType          = coreglib.Type(C.gtk_pack_type_get_type())
+	GTypePageOrientation   = coreglib.Type(C.gtk_page_orientation_get_type())
+	GTypePageSet           = coreglib.Type(C.gtk_page_set_get_type())
+	GTypePositionType      = coreglib.Type(C.gtk_position_type_get_type())
+	GTypePrintDuplex       = coreglib.Type(C.gtk_print_duplex_get_type())
+	GTypePrintPages        = coreglib.Type(C.gtk_print_pages_get_type())
+	GTypePrintQuality      = coreglib.Type(C.gtk_print_quality_get_type())
+	GTypeReliefStyle       = coreglib.Type(C.gtk_relief_style_get_type())
+	GTypeScrollType        = coreglib.Type(C.gtk_scroll_type_get_type())
+	GTypeScrollablePolicy  = coreglib.Type(C.gtk_scrollable_policy_get_type())
+	GTypeSelectionMode     = coreglib.Type(C.gtk_selection_mode_get_type())
+	GTypeSensitivityType   = coreglib.Type(C.gtk_sensitivity_type_get_type())
+	GTypeShadowType        = coreglib.Type(C.gtk_shadow_type_get_type())
+	GTypeSizeGroupMode     = coreglib.Type(C.gtk_size_group_mode_get_type())
+	GTypeSizeRequestMode   = coreglib.Type(C.gtk_size_request_mode_get_type())
+	GTypeSortType          = coreglib.Type(C.gtk_sort_type_get_type())
+	GTypeStateType         = coreglib.Type(C.gtk_state_type_get_type())
+	GTypeTextDirection     = coreglib.Type(C.gtk_text_direction_get_type())
+	GTypeToolbarStyle      = coreglib.Type(C.gtk_toolbar_style_get_type())
+	GTypeTreeViewGridLines = coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
+	GTypeUnit              = coreglib.Type(C.gtk_unit_get_type())
+	GTypeWrapMode          = coreglib.Type(C.gtk_wrap_mode_get_type())
+	GTypeJunctionSides     = coreglib.Type(C.gtk_junction_sides_get_type())
+	GTypeRegionFlags       = coreglib.Type(C.gtk_region_flags_get_type())
+	GTypeStateFlags        = coreglib.Type(C.gtk_state_flags_get_type())
 )
 
 func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeAlign, F: marshalAlign},
 		coreglib.TypeMarshaler{T: GTypeArrowType, F: marshalArrowType},
-		coreglib.TypeMarshaler{T: GTypeBaselinePosition, F: marshalBaselinePosition},
 		coreglib.TypeMarshaler{T: GTypeBorderStyle, F: marshalBorderStyle},
 		coreglib.TypeMarshaler{T: GTypeDeleteType, F: marshalDeleteType},
 		coreglib.TypeMarshaler{T: GTypeDirectionType, F: marshalDirectionType},
 		coreglib.TypeMarshaler{T: GTypeDragResult, F: marshalDragResult},
-		coreglib.TypeMarshaler{T: GTypeEventSequenceState, F: marshalEventSequenceState},
 		coreglib.TypeMarshaler{T: GTypeIMPreeditStyle, F: marshalIMPreeditStyle},
 		coreglib.TypeMarshaler{T: GTypeIMStatusStyle, F: marshalIMStatusStyle},
 		coreglib.TypeMarshaler{T: GTypeIconSize, F: marshalIconSize},
-		coreglib.TypeMarshaler{T: GTypeInputPurpose, F: marshalInputPurpose},
 		coreglib.TypeMarshaler{T: GTypeJustification, F: marshalJustification},
-		coreglib.TypeMarshaler{T: GTypeLevelBarMode, F: marshalLevelBarMode},
 		coreglib.TypeMarshaler{T: GTypeMenuDirectionType, F: marshalMenuDirectionType},
 		coreglib.TypeMarshaler{T: GTypeMessageType, F: marshalMessageType},
 		coreglib.TypeMarshaler{T: GTypeNumberUpLayout, F: marshalNumberUpLayout},
@@ -93,13 +81,10 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypePackType, F: marshalPackType},
 		coreglib.TypeMarshaler{T: GTypePageOrientation, F: marshalPageOrientation},
 		coreglib.TypeMarshaler{T: GTypePageSet, F: marshalPageSet},
-		coreglib.TypeMarshaler{T: GTypePanDirection, F: marshalPanDirection},
-		coreglib.TypeMarshaler{T: GTypePopoverConstraint, F: marshalPopoverConstraint},
 		coreglib.TypeMarshaler{T: GTypePositionType, F: marshalPositionType},
 		coreglib.TypeMarshaler{T: GTypePrintDuplex, F: marshalPrintDuplex},
 		coreglib.TypeMarshaler{T: GTypePrintPages, F: marshalPrintPages},
 		coreglib.TypeMarshaler{T: GTypePrintQuality, F: marshalPrintQuality},
-		coreglib.TypeMarshaler{T: GTypePropagationPhase, F: marshalPropagationPhase},
 		coreglib.TypeMarshaler{T: GTypeReliefStyle, F: marshalReliefStyle},
 		coreglib.TypeMarshaler{T: GTypeScrollType, F: marshalScrollType},
 		coreglib.TypeMarshaler{T: GTypeScrollablePolicy, F: marshalScrollablePolicy},
@@ -115,7 +100,6 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeTreeViewGridLines, F: marshalTreeViewGridLines},
 		coreglib.TypeMarshaler{T: GTypeUnit, F: marshalUnit},
 		coreglib.TypeMarshaler{T: GTypeWrapMode, F: marshalWrapMode},
-		coreglib.TypeMarshaler{T: GTypeInputHints, F: marshalInputHints},
 		coreglib.TypeMarshaler{T: GTypeJunctionSides, F: marshalJunctionSides},
 		coreglib.TypeMarshaler{T: GTypeRegionFlags, F: marshalRegionFlags},
 		coreglib.TypeMarshaler{T: GTypeStateFlags, F: marshalStateFlags},
@@ -210,40 +194,6 @@ func (a ArrowType) String() string {
 		return "None"
 	default:
 		return fmt.Sprintf("ArrowType(%d)", a)
-	}
-}
-
-// BaselinePosition: whenever a container has some form of natural row it may
-// align children in that row along a common typographical baseline. If the
-// amount of verical space in the row is taller than the total requested height
-// of the baseline-aligned children then it can use a BaselinePosition to select
-// where to put the baseline inside the extra availible space.
-type BaselinePosition C.gint
-
-const (
-	// BaselinePositionTop: align the baseline at the top.
-	BaselinePositionTop BaselinePosition = iota
-	// BaselinePositionCenter: center the baseline.
-	BaselinePositionCenter
-	// BaselinePositionBottom: align the baseline at the bottom.
-	BaselinePositionBottom
-)
-
-func marshalBaselinePosition(p uintptr) (interface{}, error) {
-	return BaselinePosition(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for BaselinePosition.
-func (b BaselinePosition) String() string {
-	switch b {
-	case BaselinePositionTop:
-		return "Top"
-	case BaselinePositionCenter:
-		return "Center"
-	case BaselinePositionBottom:
-		return "Bottom"
-	default:
-		return fmt.Sprintf("BaselinePosition(%d)", b)
 	}
 }
 
@@ -446,36 +396,6 @@ func (d DragResult) String() string {
 	}
 }
 
-// EventSequenceState describes the state of a EventSequence in a Gesture.
-type EventSequenceState C.gint
-
-const (
-	// EventSequenceNone: sequence is handled, but not grabbed.
-	EventSequenceNone EventSequenceState = iota
-	// EventSequenceClaimed: sequence is handled and grabbed.
-	EventSequenceClaimed
-	// EventSequenceDenied: sequence is denied.
-	EventSequenceDenied
-)
-
-func marshalEventSequenceState(p uintptr) (interface{}, error) {
-	return EventSequenceState(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for EventSequenceState.
-func (e EventSequenceState) String() string {
-	switch e {
-	case EventSequenceNone:
-		return "None"
-	case EventSequenceClaimed:
-		return "Claimed"
-	case EventSequenceDenied:
-		return "Denied"
-	default:
-		return fmt.Sprintf("EventSequenceState(%d)", e)
-	}
-}
-
 // IMPreeditStyle: style for input method preedit. See also
 // Settings:gtk-im-preedit-style
 //
@@ -588,85 +508,6 @@ func (i IconSize) String() string {
 	}
 }
 
-// InputPurpose describes primary purpose of the input widget. This information
-// is useful for on-screen keyboards and similar input methods to decide which
-// keys should be presented to the user.
-//
-// Note that the purpose is not meant to impose a totally strict rule about
-// allowed characters, and does not replace input validation. It is fine for an
-// on-screen keyboard to let the user override the character set restriction
-// that is expressed by the purpose. The application is expected to validate the
-// entry contents, even if it specified a purpose.
-//
-// The difference between GTK_INPUT_PURPOSE_DIGITS and GTK_INPUT_PURPOSE_NUMBER
-// is that the former accepts only digits while the latter also some punctuation
-// (like commas or points, plus, minus) and “e” or “E” as in 3.14E+000.
-//
-// This enumeration may be extended in the future; input methods should
-// interpret unknown values as “free form”.
-type InputPurpose C.gint
-
-const (
-	// InputPurposeFreeForm: allow any character.
-	InputPurposeFreeForm InputPurpose = iota
-	// InputPurposeAlpha: allow only alphabetic characters.
-	InputPurposeAlpha
-	// InputPurposeDigits: allow only digits.
-	InputPurposeDigits
-	// InputPurposeNumber: edited field expects numbers.
-	InputPurposeNumber
-	// InputPurposePhone: edited field expects phone number.
-	InputPurposePhone
-	// InputPurposeURL: edited field expects URL.
-	InputPurposeURL
-	// InputPurposeEmail: edited field expects email address.
-	InputPurposeEmail
-	// InputPurposeName: edited field expects the name of a person.
-	InputPurposeName
-	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
-	// are hidden.
-	InputPurposePassword
-	// InputPurposePIN: like GTK_INPUT_PURPOSE_DIGITS, but characters are
-	// hidden.
-	InputPurposePIN
-	// InputPurposeTerminal: allow any character, in addition to control codes.
-	InputPurposeTerminal
-)
-
-func marshalInputPurpose(p uintptr) (interface{}, error) {
-	return InputPurpose(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for InputPurpose.
-func (i InputPurpose) String() string {
-	switch i {
-	case InputPurposeFreeForm:
-		return "FreeForm"
-	case InputPurposeAlpha:
-		return "Alpha"
-	case InputPurposeDigits:
-		return "Digits"
-	case InputPurposeNumber:
-		return "Number"
-	case InputPurposePhone:
-		return "Phone"
-	case InputPurposeURL:
-		return "URL"
-	case InputPurposeEmail:
-		return "Email"
-	case InputPurposeName:
-		return "Name"
-	case InputPurposePassword:
-		return "Password"
-	case InputPurposePIN:
-		return "PIN"
-	case InputPurposeTerminal:
-		return "Terminal"
-	default:
-		return fmt.Sprintf("InputPurpose(%d)", i)
-	}
-}
-
 // Justification: used for justifying the text inside a Label widget. (See also
 // Alignment).
 type Justification C.gint
@@ -699,33 +540,6 @@ func (j Justification) String() string {
 		return "Fill"
 	default:
 		return fmt.Sprintf("Justification(%d)", j)
-	}
-}
-
-// LevelBarMode describes how LevelBar contents should be rendered. Note that
-// this enumeration could be extended with additional modes in the future.
-type LevelBarMode C.gint
-
-const (
-	// LevelBarModeContinuous: bar has a continuous mode.
-	LevelBarModeContinuous LevelBarMode = iota
-	// LevelBarModeDiscrete: bar has a discrete mode.
-	LevelBarModeDiscrete
-)
-
-func marshalLevelBarMode(p uintptr) (interface{}, error) {
-	return LevelBarMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for LevelBarMode.
-func (l LevelBarMode) String() string {
-	switch l {
-	case LevelBarModeContinuous:
-		return "Continuous"
-	case LevelBarModeDiscrete:
-		return "Discrete"
-	default:
-		return fmt.Sprintf("LevelBarMode(%d)", l)
 	}
 }
 
@@ -1007,69 +821,6 @@ func (p PageSet) String() string {
 	}
 }
 
-// PanDirection describes the panning direction of a GesturePan.
-type PanDirection C.gint
-
-const (
-	// PanDirectionLeft: panned towards the left.
-	PanDirectionLeft PanDirection = iota
-	// PanDirectionRight: panned towards the right.
-	PanDirectionRight
-	// PanDirectionUp: panned upwards.
-	PanDirectionUp
-	// PanDirectionDown: panned downwards.
-	PanDirectionDown
-)
-
-func marshalPanDirection(p uintptr) (interface{}, error) {
-	return PanDirection(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for PanDirection.
-func (p PanDirection) String() string {
-	switch p {
-	case PanDirectionLeft:
-		return "Left"
-	case PanDirectionRight:
-		return "Right"
-	case PanDirectionUp:
-		return "Up"
-	case PanDirectionDown:
-		return "Down"
-	default:
-		return fmt.Sprintf("PanDirection(%d)", p)
-	}
-}
-
-// PopoverConstraint describes constraints to positioning of popovers. More
-// values may be added to this enumeration in the future.
-type PopoverConstraint C.gint
-
-const (
-	// PopoverConstraintNone: don't constrain the popover position beyond what
-	// is imposed by the implementation.
-	PopoverConstraintNone PopoverConstraint = iota
-	// PopoverConstraintWindow: constrain the popover to the boundaries of the
-	// window that it is attached to.
-	PopoverConstraintWindow
-)
-
-func marshalPopoverConstraint(p uintptr) (interface{}, error) {
-	return PopoverConstraint(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for PopoverConstraint.
-func (p PopoverConstraint) String() string {
-	switch p {
-	case PopoverConstraintNone:
-		return "None"
-	case PopoverConstraintWindow:
-		return "Window"
-	default:
-		return fmt.Sprintf("PopoverConstraint(%d)", p)
-	}
-}
-
 // PositionType describes which edge of a widget a certain feature is positioned
 // at, e.g. the tabs of a Notebook, the handle of a HandleBox or the label of a
 // Scale.
@@ -1201,51 +952,6 @@ func (p PrintQuality) String() string {
 		return "Draft"
 	default:
 		return fmt.Sprintf("PrintQuality(%d)", p)
-	}
-}
-
-// PropagationPhase describes the stage at which events are fed into a
-// EventController.
-type PropagationPhase C.gint
-
-const (
-	// PhaseNone events are not delivered automatically. Those can be manually
-	// fed through gtk_event_controller_handle_event(). This should only be used
-	// when full control about when, or whether the controller handles the event
-	// is needed.
-	PhaseNone PropagationPhase = iota
-	// PhaseCapture events are delivered in the capture phase. The capture phase
-	// happens before the bubble phase, runs from the toplevel down to the event
-	// widget. This option should only be used on containers that might possibly
-	// handle events before their children do.
-	PhaseCapture
-	// PhaseBubble events are delivered in the bubble phase. The bubble phase
-	// happens after the capture phase, and before the default handlers are run.
-	// This phase runs from the event widget, up to the toplevel.
-	PhaseBubble
-	// PhaseTarget events are delivered in the default widget event handlers,
-	// note that widget implementations must chain up on button, motion, touch
-	// and grab broken handlers for controllers in this phase to be run.
-	PhaseTarget
-)
-
-func marshalPropagationPhase(p uintptr) (interface{}, error) {
-	return PropagationPhase(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for PropagationPhase.
-func (p PropagationPhase) String() string {
-	switch p {
-	case PhaseNone:
-		return "None"
-	case PhaseCapture:
-		return "Capture"
-	case PhaseBubble:
-		return "Bubble"
-	case PhaseTarget:
-		return "Target"
-	default:
-		return fmt.Sprintf("PropagationPhase(%d)", p)
 	}
 }
 
@@ -1825,104 +1531,6 @@ func (w WrapMode) String() string {
 	default:
 		return fmt.Sprintf("WrapMode(%d)", w)
 	}
-}
-
-// InputHints describes hints that might be taken into account by input methods
-// or applications. Note that input methods may already tailor their behaviour
-// according to the InputPurpose of the entry.
-//
-// Some common sense is expected when using these flags - mixing
-// GTK_INPUT_HINT_LOWERCASE with any of the uppercase hints makes no sense.
-//
-// This enumeration may be extended in the future; input methods should ignore
-// unknown values.
-type InputHints C.guint
-
-const (
-	// InputHintNone: no special behaviour suggested.
-	InputHintNone InputHints = 0b0
-	// InputHintSpellcheck: suggest checking for typos.
-	InputHintSpellcheck InputHints = 0b1
-	// InputHintNoSpellcheck: suggest not checking for typos.
-	InputHintNoSpellcheck InputHints = 0b10
-	// InputHintWordCompletion: suggest word completion.
-	InputHintWordCompletion InputHints = 0b100
-	// InputHintLowercase: suggest to convert all text to lowercase.
-	InputHintLowercase InputHints = 0b1000
-	// InputHintUppercaseChars: suggest to capitalize all text.
-	InputHintUppercaseChars InputHints = 0b10000
-	// InputHintUppercaseWords: suggest to capitalize the first character of
-	// each word.
-	InputHintUppercaseWords InputHints = 0b100000
-	// InputHintUppercaseSentences: suggest to capitalize the first word of each
-	// sentence.
-	InputHintUppercaseSentences InputHints = 0b1000000
-	// InputHintInhibitOSK: suggest to not show an onscreen keyboard (e.g for a
-	// calculator that already has all the keys).
-	InputHintInhibitOSK InputHints = 0b10000000
-	// InputHintVerticalWriting: text is vertical. Since 3.18.
-	InputHintVerticalWriting InputHints = 0b100000000
-	// InputHintEmoji: suggest offering Emoji support. Since 3.22.20.
-	InputHintEmoji InputHints = 0b1000000000
-	// InputHintNoEmoji: suggest not offering Emoji support. Since 3.22.20.
-	InputHintNoEmoji InputHints = 0b10000000000
-)
-
-func marshalInputHints(p uintptr) (interface{}, error) {
-	return InputHints(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
-}
-
-// String returns the names in string for InputHints.
-func (i InputHints) String() string {
-	if i == 0 {
-		return "InputHints(0)"
-	}
-
-	var builder strings.Builder
-	builder.Grow(251)
-
-	for i != 0 {
-		next := i & (i - 1)
-		bit := i - next
-
-		switch bit {
-		case InputHintNone:
-			builder.WriteString("None|")
-		case InputHintSpellcheck:
-			builder.WriteString("Spellcheck|")
-		case InputHintNoSpellcheck:
-			builder.WriteString("NoSpellcheck|")
-		case InputHintWordCompletion:
-			builder.WriteString("WordCompletion|")
-		case InputHintLowercase:
-			builder.WriteString("Lowercase|")
-		case InputHintUppercaseChars:
-			builder.WriteString("UppercaseChars|")
-		case InputHintUppercaseWords:
-			builder.WriteString("UppercaseWords|")
-		case InputHintUppercaseSentences:
-			builder.WriteString("UppercaseSentences|")
-		case InputHintInhibitOSK:
-			builder.WriteString("InhibitOSK|")
-		case InputHintVerticalWriting:
-			builder.WriteString("VerticalWriting|")
-		case InputHintEmoji:
-			builder.WriteString("Emoji|")
-		case InputHintNoEmoji:
-			builder.WriteString("NoEmoji|")
-		default:
-			builder.WriteString(fmt.Sprintf("InputHints(0b%b)|", bit))
-		}
-
-		i = next
-	}
-
-	return strings.TrimSuffix(builder.String(), "|")
-}
-
-// Has returns true if i contains other.
-func (i InputHints) Has(other InputHints) bool {
-	return (i & other) == other
 }
 
 // JunctionSides describes how a rendered element connects to adjacent elements.

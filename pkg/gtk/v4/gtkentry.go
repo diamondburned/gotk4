@@ -18,10 +18,13 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_EntryClass_activate(GtkEntry*);
-// extern void _gotk4_gtk4_Entry_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk4_Entry_ConnectIconPress(gpointer, GtkEntryIconPosition, guintptr);
 // extern void _gotk4_gtk4_Entry_ConnectIconRelease(gpointer, GtkEntryIconPosition, guintptr);
+// extern void _gotk4_gtk4_Entry_ConnectIconPress(gpointer, GtkEntryIconPosition, guintptr);
+// extern void _gotk4_gtk4_Entry_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_EntryClass_activate(GtkEntry*);
+// void _gotk4_gtk4_Entry_virtual_activate(void* fnptr, GtkEntry* arg0) {
+//   ((void (*)(GtkEntry*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -65,9 +68,15 @@ func (e EntryIconPosition) String() string {
 	}
 }
 
-// EntryOverrider contains methods that are overridable.
-type EntryOverrider interface {
-	Activate()
+// EntryOverrides contains methods that are overridable.
+type EntryOverrides struct {
+	Activate func()
+}
+
+func defaultEntryOverrides(v *Entry) EntryOverrides {
+	return EntryOverrides{
+		Activate: v.activate,
+	}
 }
 
 // Entry: GtkEntry is a single line text entry widget.
@@ -172,40 +181,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeEntry,
-		GoType:        reflect.TypeOf((*Entry)(nil)),
-		InitClass:     initClassEntry,
-		FinalizeClass: finalizeClassEntry,
-	})
+	coreglib.RegisterClassInfo[*Entry, *EntryClass, EntryOverrides](
+		GTypeEntry,
+		initEntryClass,
+		wrapEntry,
+		defaultEntryOverrides,
+	)
 }
 
-func initClassEntry(gclass unsafe.Pointer, goval any) {
+func initEntryClass(gclass unsafe.Pointer, overrides EntryOverrides, classInitFunc func(*EntryClass)) {
+	pclass := (*C.GtkEntryClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeEntry))))
 
-	pclass := (*C.GtkEntryClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Activate() }); ok {
+	if overrides.Activate != nil {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_EntryClass_activate)
 	}
-	if goval, ok := goval.(interface{ InitEntry(*EntryClass) }); ok {
-		klass := (*EntryClass)(gextras.NewStructNative(gclass))
-		goval.InitEntry(klass)
+
+	if classInitFunc != nil {
+		class := (*EntryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassEntry(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeEntry(*EntryClass) }); ok {
-		klass := (*EntryClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeEntry(klass)
-	}
-}
-
-//export _gotk4_gtk4_EntryClass_activate
-func _gotk4_gtk4_EntryClass_activate(arg0 *C.GtkEntry) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Activate() })
-
-	iface.Activate()
 }
 
 func wrapEntry(obj *coreglib.Object) *Entry {
@@ -279,22 +273,6 @@ func marshalEntry(p uintptr) (interface{}, error) {
 	return wrapEntry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Entry_ConnectActivate
-func _gotk4_gtk4_Entry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.
@@ -302,49 +280,9 @@ func (entry *Entry) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectActivate), f)
 }
 
-//export _gotk4_gtk4_Entry_ConnectIconPress
-func _gotk4_gtk4_Entry_ConnectIconPress(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.guintptr) {
-	var f func(iconPos EntryIconPosition)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(iconPos EntryIconPosition))
-	}
-
-	var _iconPos EntryIconPosition // out
-
-	_iconPos = EntryIconPosition(arg1)
-
-	f(_iconPos)
-}
-
 // ConnectIconPress is emitted when an activatable icon is clicked.
 func (entry *Entry) ConnectIconPress(f func(iconPos EntryIconPosition)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "icon-press", false, unsafe.Pointer(C._gotk4_gtk4_Entry_ConnectIconPress), f)
-}
-
-//export _gotk4_gtk4_Entry_ConnectIconRelease
-func _gotk4_gtk4_Entry_ConnectIconRelease(arg0 C.gpointer, arg1 C.GtkEntryIconPosition, arg2 C.guintptr) {
-	var f func(iconPos EntryIconPosition)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(iconPos EntryIconPosition))
-	}
-
-	var _iconPos EntryIconPosition // out
-
-	_iconPos = EntryIconPosition(arg1)
-
-	f(_iconPos)
 }
 
 // ConnectIconRelease is emitted on the button release from a mouse click over
@@ -1916,6 +1854,18 @@ func (entry *Entry) UnsetInvisibleChar() {
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
 	C.gtk_entry_unset_invisible_char(_arg0)
+	runtime.KeepAlive(entry)
+}
+
+func (entry *Entry) activate() {
+	gclass := (*C.GtkEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.activate
+
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk4_Entry_virtual_activate(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(entry)
 }
 

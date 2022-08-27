@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -18,10 +17,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
-// extern gboolean _gotk4_gtk3_Socket_ConnectPlugRemoved(gpointer, guintptr);
-// extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
 // extern void _gotk4_gtk3_Socket_ConnectPlugAdded(gpointer, guintptr);
+// extern void _gotk4_gtk3_SocketClass_plug_added(GtkSocket*);
+// extern gboolean _gotk4_gtk3_Socket_ConnectPlugRemoved(gpointer, guintptr);
+// extern gboolean _gotk4_gtk3_SocketClass_plug_removed(GtkSocket*);
+// gboolean _gotk4_gtk3_Socket_virtual_plug_removed(void* fnptr, GtkSocket* arg0) {
+//   return ((gboolean (*)(GtkSocket*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Socket_virtual_plug_added(void* fnptr, GtkSocket* arg0) {
+//   ((void (*)(GtkSocket*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -35,12 +40,19 @@ func init() {
 	})
 }
 
-// SocketOverrider contains methods that are overridable.
-type SocketOverrider interface {
-	PlugAdded()
+// SocketOverrides contains methods that are overridable.
+type SocketOverrides struct {
+	PlugAdded func()
 	// The function returns the following values:
 	//
-	PlugRemoved() bool
+	PlugRemoved func() bool
+}
+
+func defaultSocketOverrides(v *Socket) SocketOverrides {
+	return SocketOverrides{
+		PlugAdded:   v.plugAdded,
+		PlugRemoved: v.plugRemoved,
+	}
 }
 
 // Socket: together with Plug, Socket provides the ability to embed widgets from
@@ -99,58 +111,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSocket,
-		GoType:        reflect.TypeOf((*Socket)(nil)),
-		InitClass:     initClassSocket,
-		FinalizeClass: finalizeClassSocket,
-	})
+	coreglib.RegisterClassInfo[*Socket, *SocketClass, SocketOverrides](
+		GTypeSocket,
+		initSocketClass,
+		wrapSocket,
+		defaultSocketOverrides,
+	)
 }
 
-func initClassSocket(gclass unsafe.Pointer, goval any) {
+func initSocketClass(gclass unsafe.Pointer, overrides SocketOverrides, classInitFunc func(*SocketClass)) {
+	pclass := (*C.GtkSocketClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSocket))))
 
-	pclass := (*C.GtkSocketClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ PlugAdded() }); ok {
+	if overrides.PlugAdded != nil {
 		pclass.plug_added = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_added)
 	}
 
-	if _, ok := goval.(interface{ PlugRemoved() bool }); ok {
+	if overrides.PlugRemoved != nil {
 		pclass.plug_removed = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_removed)
 	}
-	if goval, ok := goval.(interface{ InitSocket(*SocketClass) }); ok {
-		klass := (*SocketClass)(gextras.NewStructNative(gclass))
-		goval.InitSocket(klass)
+
+	if classInitFunc != nil {
+		class := (*SocketClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassSocket(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSocket(*SocketClass) }); ok {
-		klass := (*SocketClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSocket(klass)
-	}
-}
-
-//export _gotk4_gtk3_SocketClass_plug_added
-func _gotk4_gtk3_SocketClass_plug_added(arg0 *C.GtkSocket) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PlugAdded() })
-
-	iface.PlugAdded()
-}
-
-//export _gotk4_gtk3_SocketClass_plug_removed
-func _gotk4_gtk3_SocketClass_plug_removed(arg0 *C.GtkSocket) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PlugRemoved() bool })
-
-	ok := iface.PlugRemoved()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 func wrapSocket(obj *coreglib.Object) *Socket {
@@ -176,48 +159,10 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return wrapSocket(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Socket_ConnectPlugAdded
-func _gotk4_gtk3_Socket_ConnectPlugAdded(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectPlugAdded: this signal is emitted when a client is successfully added
 // to the socket.
 func (socket_ *Socket) ConnectPlugAdded(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(socket_, "plug-added", false, unsafe.Pointer(C._gotk4_gtk3_Socket_ConnectPlugAdded), f)
-}
-
-//export _gotk4_gtk3_Socket_ConnectPlugRemoved
-func _gotk4_gtk3_Socket_ConnectPlugRemoved(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectPlugRemoved: this signal is emitted when a client is removed from the
@@ -245,42 +190,39 @@ func NewSocket() *Socket {
 	return _socket
 }
 
-// PlugWindow retrieves the window of the plug. Use this to check if the plug
-// has been created inside of the socket.
-//
-// The function returns the following values:
-//
-//    - window (optional) of the plug if available, or NULL.
-//
-func (socket_ *Socket) PlugWindow() gdk.Windower {
+func (socket_ *Socket) plugAdded() {
+	gclass := (*C.GtkSocketClass)(coreglib.PeekParentClass(socket_))
+	fnarg := gclass.plug_added
+
 	var _arg0 *C.GtkSocket // out
-	var _cret *C.GdkWindow // in
 
 	_arg0 = (*C.GtkSocket)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
 
-	_cret = C.gtk_socket_get_plug_window(_arg0)
+	C._gotk4_gtk3_Socket_virtual_plug_added(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(socket_)
+}
+
+// The function returns the following values:
+//
+func (socket_ *Socket) plugRemoved() bool {
+	gclass := (*C.GtkSocketClass)(coreglib.PeekParentClass(socket_))
+	fnarg := gclass.plug_removed
+
+	var _arg0 *C.GtkSocket // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
+
+	_cret = C._gotk4_gtk3_Socket_virtual_plug_removed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(socket_)
 
-	var _window gdk.Windower // out
+	var _ok bool // out
 
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(gdk.Windower)
-				return ok
-			})
-			rv, ok := casted.(gdk.Windower)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-			}
-			_window = rv
-		}
+	if _cret != 0 {
+		_ok = true
 	}
 
-	return _window
+	return _ok
 }
 
 // SocketClass: instance of this type is always passed by reference.

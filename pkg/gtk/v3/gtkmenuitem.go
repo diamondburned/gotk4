@@ -17,19 +17,34 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_activate(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_activate_item(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_deselect(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_select(GtkMenuItem*);
-// extern void _gotk4_gtk3_MenuItemClass_set_label(GtkMenuItem*, gchar*);
-// extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(GtkMenuItem*, gint);
-// extern void _gotk4_gtk3_MenuItem_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk3_MenuItem_ConnectActivateItem(gpointer, guintptr);
-// extern void _gotk4_gtk3_MenuItem_ConnectDeselect(gpointer, guintptr);
-// extern void _gotk4_gtk3_MenuItem_ConnectSelect(gpointer, guintptr);
-// extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(gpointer, gint, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(gpointer, gint, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectSelect(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectDeselect(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectActivateItem(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItem_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(GtkMenuItem*, gint);
+// extern void _gotk4_gtk3_MenuItemClass_set_label(GtkMenuItem*, gchar*);
+// extern void _gotk4_gtk3_MenuItemClass_select(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_deselect(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_activate_item(GtkMenuItem*);
+// extern void _gotk4_gtk3_MenuItemClass_activate(GtkMenuItem*);
+// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(GtkMenuItem*);
+// void _gotk4_gtk3_MenuItem_virtual_activate(void* fnptr, GtkMenuItem* arg0) {
+//   ((void (*)(GtkMenuItem*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_MenuItem_virtual_activate_item(void* fnptr, GtkMenuItem* arg0) {
+//   ((void (*)(GtkMenuItem*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_MenuItem_virtual_deselect(void* fnptr, GtkMenuItem* arg0) {
+//   ((void (*)(GtkMenuItem*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_MenuItem_virtual_select(void* fnptr, GtkMenuItem* arg0) {
+//   ((void (*)(GtkMenuItem*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_MenuItem_virtual_toggle_size_allocate(void* fnptr, GtkMenuItem* arg0, gint arg1) {
+//   ((void (*)(GtkMenuItem*, gint))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -43,13 +58,13 @@ func init() {
 	})
 }
 
-// MenuItemOverrider contains methods that are overridable.
-type MenuItemOverrider interface {
+// MenuItemOverrides contains methods that are overridable.
+type MenuItemOverrides struct {
 	// Activate emits the MenuItem::activate signal on the given item.
-	Activate()
-	ActivateItem()
+	Activate     func()
+	ActivateItem func()
 	// Deselect emits the MenuItem::deselect signal on the given item.
-	Deselect()
+	Deselect func()
 	// Label sets text on the menu_item label.
 	//
 	// The function returns the following values:
@@ -57,16 +72,16 @@ type MenuItemOverrider interface {
 	//    - utf8: text in the menu_item label. This is the internal string used
 	//      by the label, and must not be modified.
 	//
-	Label() string
+	Label func() string
 	// Select emits the MenuItem::select signal on the given item.
-	Select()
+	Select func()
 	// SetLabel sets text on the menu_item label.
 	//
 	// The function takes the following parameters:
 	//
 	//    - label: text you want to set.
 	//
-	SetLabel(label string)
+	SetLabel func(label string)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 	// given item.
 	//
@@ -74,7 +89,19 @@ type MenuItemOverrider interface {
 	//
 	//    - allocation to use as signal data.
 	//
-	ToggleSizeAllocate(allocation int)
+	ToggleSizeAllocate func(allocation int)
+}
+
+func defaultMenuItemOverrides(v *MenuItem) MenuItemOverrides {
+	return MenuItemOverrides{
+		Activate:           v.activate,
+		ActivateItem:       v.activateItem,
+		Deselect:           v.deselect,
+		Label:              v.label,
+		Select:             v.sel,
+		SetLabel:           v.setLabel,
+		ToggleSizeAllocate: v.toggleSizeAllocate,
+	}
 }
 
 // MenuItem widget and the derived widgets are the only valid children for
@@ -112,125 +139,49 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMenuItem,
-		GoType:        reflect.TypeOf((*MenuItem)(nil)),
-		InitClass:     initClassMenuItem,
-		FinalizeClass: finalizeClassMenuItem,
-	})
+	coreglib.RegisterClassInfo[*MenuItem, *MenuItemClass, MenuItemOverrides](
+		GTypeMenuItem,
+		initMenuItemClass,
+		wrapMenuItem,
+		defaultMenuItemOverrides,
+	)
 }
 
-func initClassMenuItem(gclass unsafe.Pointer, goval any) {
+func initMenuItemClass(gclass unsafe.Pointer, overrides MenuItemOverrides, classInitFunc func(*MenuItemClass)) {
+	pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeMenuItem))))
 
-	pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Activate() }); ok {
+	if overrides.Activate != nil {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate)
 	}
 
-	if _, ok := goval.(interface{ ActivateItem() }); ok {
+	if overrides.ActivateItem != nil {
 		pclass.activate_item = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate_item)
 	}
 
-	if _, ok := goval.(interface{ Deselect() }); ok {
+	if overrides.Deselect != nil {
 		pclass.deselect = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_deselect)
 	}
 
-	if _, ok := goval.(interface{ Label() string }); ok {
+	if overrides.Label != nil {
 		pclass.get_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_get_label)
 	}
 
-	if _, ok := goval.(interface{ Select() }); ok {
+	if overrides.Select != nil {
 		pclass._select = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_select)
 	}
 
-	if _, ok := goval.(interface{ SetLabel(label string) }); ok {
+	if overrides.SetLabel != nil {
 		pclass.set_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_set_label)
 	}
 
-	if _, ok := goval.(interface{ ToggleSizeAllocate(allocation int) }); ok {
+	if overrides.ToggleSizeAllocate != nil {
 		pclass.toggle_size_allocate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_toggle_size_allocate)
 	}
-	if goval, ok := goval.(interface{ InitMenuItem(*MenuItemClass) }); ok {
-		klass := (*MenuItemClass)(gextras.NewStructNative(gclass))
-		goval.InitMenuItem(klass)
+
+	if classInitFunc != nil {
+		class := (*MenuItemClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMenuItem(*MenuItemClass) }); ok {
-		klass := (*MenuItemClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMenuItem(klass)
-	}
-}
-
-//export _gotk4_gtk3_MenuItemClass_activate
-func _gotk4_gtk3_MenuItemClass_activate(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Activate() })
-
-	iface.Activate()
-}
-
-//export _gotk4_gtk3_MenuItemClass_activate_item
-func _gotk4_gtk3_MenuItemClass_activate_item(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateItem() })
-
-	iface.ActivateItem()
-}
-
-//export _gotk4_gtk3_MenuItemClass_deselect
-func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Deselect() })
-
-	iface.Deselect()
-}
-
-//export _gotk4_gtk3_MenuItemClass_get_label
-func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.GtkMenuItem) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Label() string })
-
-	utf8 := iface.Label()
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-	defer C.free(unsafe.Pointer(cret))
-
-	return cret
-}
-
-//export _gotk4_gtk3_MenuItemClass_select
-func _gotk4_gtk3_MenuItemClass_select(arg0 *C.GtkMenuItem) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Select() })
-
-	iface.Select()
-}
-
-//export _gotk4_gtk3_MenuItemClass_set_label
-func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.GtkMenuItem, arg1 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SetLabel(label string) })
-
-	var _label string // out
-
-	_label = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.SetLabel(_label)
-}
-
-//export _gotk4_gtk3_MenuItemClass_toggle_size_allocate
-func _gotk4_gtk3_MenuItemClass_toggle_size_allocate(arg0 *C.GtkMenuItem, arg1 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ToggleSizeAllocate(allocation int) })
-
-	var _allocation int // out
-
-	_allocation = int(arg1)
-
-	iface.ToggleSizeAllocate(_allocation)
 }
 
 func wrapMenuItem(obj *coreglib.Object) *MenuItem {
@@ -276,41 +227,9 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 	return wrapMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_MenuItem_ConnectActivate
-func _gotk4_gtk3_MenuItem_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted when the item is activated.
 func (menuItem *MenuItem) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuItem, "activate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectActivate), f)
-}
-
-//export _gotk4_gtk3_MenuItem_ConnectActivateItem
-func _gotk4_gtk3_MenuItem_ConnectActivateItem(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectActivateItem is emitted when the item is activated, but also if the
@@ -320,88 +239,16 @@ func (menuItem *MenuItem) ConnectActivateItem(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuItem, "activate-item", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectActivateItem), f)
 }
 
-//export _gotk4_gtk3_MenuItem_ConnectDeselect
-func _gotk4_gtk3_MenuItem_ConnectDeselect(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 func (menuItem *MenuItem) ConnectDeselect(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuItem, "deselect", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectDeselect), f)
-}
-
-//export _gotk4_gtk3_MenuItem_ConnectSelect
-func _gotk4_gtk3_MenuItem_ConnectSelect(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 func (menuItem *MenuItem) ConnectSelect(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuItem, "select", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectSelect), f)
 }
 
-//export _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate
-func _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(object int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object int))
-	}
-
-	var _object int // out
-
-	_object = int(arg1)
-
-	f(_object)
-}
-
 func (menuItem *MenuItem) ConnectToggleSizeAllocate(f func(object int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menuItem, "toggle-size-allocate", false, unsafe.Pointer(C._gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate), f)
-}
-
-//export _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest
-func _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(arg0 C.gpointer, arg1 C.gpointer, arg2 C.guintptr) {
-	var f func(object unsafe.Pointer)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object unsafe.Pointer))
-	}
-
-	var _object unsafe.Pointer // out
-
-	_object = (unsafe.Pointer)(unsafe.Pointer(arg1))
-
-	f(_object)
 }
 
 func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object unsafe.Pointer)) coreglib.SignalHandle {
@@ -504,82 +351,6 @@ func (menuItem *MenuItem) Deselect() {
 	runtime.KeepAlive(menuItem)
 }
 
-// AccelPath: retrieve the accelerator path that was previously set on
-// menu_item.
-//
-// See gtk_menu_item_set_accel_path() for details.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): accelerator path corresponding to this menu item’s
-//      functionality, or NULL if not set.
-//
-func (menuItem *MenuItem) AccelPath() string {
-	var _arg0 *C.GtkMenuItem // out
-	var _cret *C.gchar       // in
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-
-	_cret = C.gtk_menu_item_get_accel_path(_arg0)
-	runtime.KeepAlive(menuItem)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// Label sets text on the menu_item label.
-//
-// The function returns the following values:
-//
-//    - utf8: text in the menu_item label. This is the internal string used by
-//      the label, and must not be modified.
-//
-func (menuItem *MenuItem) Label() string {
-	var _arg0 *C.GtkMenuItem // out
-	var _cret *C.gchar       // in
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-
-	_cret = C.gtk_menu_item_get_label(_arg0)
-	runtime.KeepAlive(menuItem)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// ReserveIndicator returns whether the menu_item reserves space for the submenu
-// indicator, regardless if it has a submenu or not.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if menu_item always reserves space for the submenu indicator.
-//
-func (menuItem *MenuItem) ReserveIndicator() bool {
-	var _arg0 *C.GtkMenuItem // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-
-	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
-	runtime.KeepAlive(menuItem)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // RightJustified gets whether the menu item appears justified at the right side
 // of the menu bar.
 //
@@ -646,32 +417,6 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 	return _widget
 }
 
-// UseUnderline checks if an underline in the text indicates the next character
-// should be used for the mnemonic accelerator key.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if an embedded underline in the label indicates the mnemonic
-//      accelerator key.
-//
-func (menuItem *MenuItem) UseUnderline() bool {
-	var _arg0 *C.GtkMenuItem // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-
-	_cret = C.gtk_menu_item_get_use_underline(_arg0)
-	runtime.KeepAlive(menuItem)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Select emits the MenuItem::select signal on the given item.
 func (menuItem *MenuItem) Select() {
 	var _arg0 *C.GtkMenuItem // out
@@ -719,48 +464,6 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	C.gtk_menu_item_set_accel_path(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(accelPath)
-}
-
-// SetLabel sets text on the menu_item label.
-//
-// The function takes the following parameters:
-//
-//    - label: text you want to set.
-//
-func (menuItem *MenuItem) SetLabel(label string) {
-	var _arg0 *C.GtkMenuItem // out
-	var _arg1 *C.gchar       // out
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_menu_item_set_label(_arg0, _arg1)
-	runtime.KeepAlive(menuItem)
-	runtime.KeepAlive(label)
-}
-
-// SetReserveIndicator sets whether the menu_item should reserve space for the
-// submenu indicator, regardless if it actually has a submenu or not.
-//
-// There should be little need for applications to call this functions.
-//
-// The function takes the following parameters:
-//
-//    - reserve: new value.
-//
-func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
-	var _arg0 *C.GtkMenuItem // out
-	var _arg1 C.gboolean     // out
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	if reserve {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_menu_item_set_reserve_indicator(_arg0, _arg1)
-	runtime.KeepAlive(menuItem)
-	runtime.KeepAlive(reserve)
 }
 
 // SetRightJustified sets whether the menu item appears justified at the right
@@ -812,27 +515,6 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	runtime.KeepAlive(submenu)
 }
 
-// SetUseUnderline: if true, an underline in the text indicates the next
-// character should be used for the mnemonic accelerator key.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE if underlines in the text indicate mnemonics.
-//
-func (menuItem *MenuItem) SetUseUnderline(setting bool) {
-	var _arg0 *C.GtkMenuItem // out
-	var _arg1 C.gboolean     // out
-
-	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_menu_item_set_use_underline(_arg0, _arg1)
-	runtime.KeepAlive(menuItem)
-	runtime.KeepAlive(setting)
-}
-
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 // given item.
 //
@@ -848,6 +530,79 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	_arg1 = C.gint(allocation)
 
 	C.gtk_menu_item_toggle_size_allocate(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(allocation)
+}
+
+// Activate emits the MenuItem::activate signal on the given item.
+func (menuItem *MenuItem) activate() {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass.activate
+
+	var _arg0 *C.GtkMenuItem // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	C._gotk4_gtk3_MenuItem_virtual_activate(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(menuItem)
+}
+
+func (menuItem *MenuItem) activateItem() {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass.activate_item
+
+	var _arg0 *C.GtkMenuItem // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	C._gotk4_gtk3_MenuItem_virtual_activate_item(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(menuItem)
+}
+
+// Deselect emits the MenuItem::deselect signal on the given item.
+func (menuItem *MenuItem) deselect() {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass.deselect
+
+	var _arg0 *C.GtkMenuItem // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	C._gotk4_gtk3_MenuItem_virtual_deselect(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(menuItem)
+}
+
+// Sel emits the MenuItem::select signal on the given item.
+func (menuItem *MenuItem) sel() {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass._select
+
+	var _arg0 *C.GtkMenuItem // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	C._gotk4_gtk3_MenuItem_virtual_select(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(menuItem)
+}
+
+// toggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
+// given item.
+//
+// The function takes the following parameters:
+//
+//    - allocation to use as signal data.
+//
+func (menuItem *MenuItem) toggleSizeAllocate(allocation int) {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass.toggle_size_allocate
+
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gint         // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = C.gint(allocation)
+
+	C._gotk4_gtk3_MenuItem_virtual_toggle_size_allocate(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(allocation)
 }

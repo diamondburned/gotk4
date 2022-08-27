@@ -18,28 +18,58 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GObject _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
-// extern gboolean _gotk4_gtk4_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
-// extern gboolean _gotk4_gtk4_PrintOperation_ConnectPaginate(gpointer, GtkPrintContext*, guintptr);
-// extern gboolean _gotk4_gtk4_PrintOperation_ConnectPreview(gpointer, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*, guintptr);
-// extern void _gotk4_gtk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
-// extern void _gotk4_gtk4_PrintOperationClass_begin_print(GtkPrintOperation*, GtkPrintContext*);
-// extern void _gotk4_gtk4_PrintOperationClass_custom_widget_apply(GtkPrintOperation*, GtkWidget*);
-// extern void _gotk4_gtk4_PrintOperationClass_done(GtkPrintOperation*, GtkPrintOperationResult);
-// extern void _gotk4_gtk4_PrintOperationClass_draw_page(GtkPrintOperation*, GtkPrintContext*, int);
-// extern void _gotk4_gtk4_PrintOperationClass_end_print(GtkPrintOperation*, GtkPrintContext*);
-// extern void _gotk4_gtk4_PrintOperationClass_request_page_setup(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*);
-// extern void _gotk4_gtk4_PrintOperationClass_status_changed(GtkPrintOperation*);
-// extern void _gotk4_gtk4_PrintOperationClass_update_custom_widget(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*);
-// extern void _gotk4_gtk4_PrintOperation_ConnectBeginPrint(gpointer, GtkPrintContext*, guintptr);
-// extern void _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk4_PrintOperation_ConnectDone(gpointer, GtkPrintOperationResult, guintptr);
-// extern void _gotk4_gtk4_PrintOperation_ConnectDrawPage(gpointer, GtkPrintContext*, gint, guintptr);
-// extern void _gotk4_gtk4_PrintOperation_ConnectEndPrint(gpointer, GtkPrintContext*, guintptr);
-// extern void _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(gpointer, GtkPrintContext*, gint, GtkPageSetup*, guintptr);
-// extern void _gotk4_gtk4_PrintOperation_ConnectStatusChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget(gpointer, GtkWidget*, GtkPageSetup*, GtkPrintSettings*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectStatusChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(gpointer, GtkPrintContext*, gint, GtkPageSetup*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectEndPrint(gpointer, GtkPrintContext*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectDrawPage(gpointer, GtkPrintContext*, gint, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectDone(gpointer, GtkPrintOperationResult, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk4_PrintOperation_ConnectBeginPrint(gpointer, GtkPrintContext*, guintptr);
+// extern void _gotk4_gtk4_PrintOperationClass_update_custom_widget(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*);
+// extern void _gotk4_gtk4_PrintOperationClass_status_changed(GtkPrintOperation*);
+// extern void _gotk4_gtk4_PrintOperationClass_request_page_setup(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*);
+// extern void _gotk4_gtk4_PrintOperationClass_end_print(GtkPrintOperation*, GtkPrintContext*);
+// extern void _gotk4_gtk4_PrintOperationClass_draw_page(GtkPrintOperation*, GtkPrintContext*, int);
+// extern void _gotk4_gtk4_PrintOperationClass_done(GtkPrintOperation*, GtkPrintOperationResult);
+// extern void _gotk4_gtk4_PrintOperationClass_custom_widget_apply(GtkPrintOperation*, GtkWidget*);
+// extern void _gotk4_gtk4_PrintOperationClass_begin_print(GtkPrintOperation*, GtkPrintContext*);
+// extern void _gotk4_gtk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
+// extern gboolean _gotk4_gtk4_PrintOperation_ConnectPreview(gpointer, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*, guintptr);
+// extern gboolean _gotk4_gtk4_PrintOperation_ConnectPaginate(gpointer, GtkPrintContext*, guintptr);
+// extern gboolean _gotk4_gtk4_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
+// extern gboolean _gotk4_gtk4_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
+// extern GObject _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
+// gboolean _gotk4_gtk4_PrintOperation_virtual_paginate(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1) {
+//   return ((gboolean (*)(GtkPrintOperation*, GtkPrintContext*))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk4_PrintOperation_virtual_preview(void* fnptr, GtkPrintOperation* arg0, GtkPrintOperationPreview* arg1, GtkPrintContext* arg2, GtkWindow* arg3) {
+//   return ((gboolean (*)(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_begin_print(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1) {
+//   ((void (*)(GtkPrintOperation*, GtkPrintContext*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_custom_widget_apply(void* fnptr, GtkPrintOperation* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkPrintOperation*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_done(void* fnptr, GtkPrintOperation* arg0, GtkPrintOperationResult arg1) {
+//   ((void (*)(GtkPrintOperation*, GtkPrintOperationResult))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_draw_page(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1, int arg2) {
+//   ((void (*)(GtkPrintOperation*, GtkPrintContext*, int))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_end_print(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1) {
+//   ((void (*)(GtkPrintOperation*, GtkPrintContext*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_request_page_setup(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1, int arg2, GtkPageSetup* arg3) {
+//   ((void (*)(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_status_changed(void* fnptr, GtkPrintOperation* arg0) {
+//   ((void (*)(GtkPrintOperation*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_PrintOperation_virtual_update_custom_widget(void* fnptr, GtkPrintOperation* arg0, GtkWidget* arg1, GtkPageSetup* arg2, GtkPrintSettings* arg3) {
+//   ((void (*)(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -259,24 +289,6 @@ func (p PrintStatus) String() string {
 // also serves as destroy notify for data.
 type PageSetupDoneFunc func(pageSetup *PageSetup)
 
-//export _gotk4_gtk4_PageSetupDoneFunc
-func _gotk4_gtk4_PageSetupDoneFunc(arg1 *C.GtkPageSetup, arg2 C.gpointer) {
-	var fn PageSetupDoneFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PageSetupDoneFunc)
-	}
-
-	var _pageSetup *PageSetup // out
-
-	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg1)))
-
-	fn(_pageSetup)
-}
-
 // PrintRunPageSetupDialog runs a page setup dialog, letting the user modify the
 // values from page_setup. If the user cancels the dialog, the returned
 // PageSetup is identical to the passed in page_setup, otherwise it contains the
@@ -359,31 +371,31 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 	runtime.KeepAlive(doneCb)
 }
 
-// PrintOperationOverrider contains methods that are overridable.
-type PrintOperationOverrider interface {
+// PrintOperationOverrides contains methods that are overridable.
+type PrintOperationOverrides struct {
 	// The function takes the following parameters:
 	//
-	BeginPrint(context *PrintContext)
+	BeginPrint func(context *PrintContext)
 	// The function takes the following parameters:
 	//
-	CustomWidgetApply(widget Widgetter)
+	CustomWidgetApply func(widget Widgetter)
 	// The function takes the following parameters:
 	//
-	Done(result PrintOperationResult)
+	Done func(result PrintOperationResult)
 	// The function takes the following parameters:
 	//
 	//    - context
 	//    - pageNr
 	//
-	DrawPage(context *PrintContext, pageNr int)
+	DrawPage func(context *PrintContext, pageNr int)
 	// The function takes the following parameters:
 	//
-	EndPrint(context *PrintContext)
+	EndPrint func(context *PrintContext)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	Paginate(context *PrintContext) bool
+	Paginate func(context *PrintContext) bool
 	// The function takes the following parameters:
 	//
 	//    - preview
@@ -392,22 +404,37 @@ type PrintOperationOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
+	Preview func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	// The function takes the following parameters:
 	//
 	//    - context
 	//    - pageNr
 	//    - setup
 	//
-	RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
-	StatusChanged()
+	RequestPageSetup func(context *PrintContext, pageNr int, setup *PageSetup)
+	StatusChanged    func()
 	// The function takes the following parameters:
 	//
 	//    - widget
 	//    - setup
 	//    - settings
 	//
-	UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
+	UpdateCustomWidget func(widget Widgetter, setup *PageSetup, settings *PrintSettings)
+}
+
+func defaultPrintOperationOverrides(v *PrintOperation) PrintOperationOverrides {
+	return PrintOperationOverrides{
+		BeginPrint:         v.beginPrint,
+		CustomWidgetApply:  v.customWidgetApply,
+		Done:               v.done,
+		DrawPage:           v.drawPage,
+		EndPrint:           v.endPrint,
+		Paginate:           v.paginate,
+		Preview:            v.preview,
+		RequestPageSetup:   v.requestPageSetup,
+		StatusChanged:      v.statusChanged,
+		UpdateCustomWidget: v.updateCustomWidget,
+	}
 }
 
 // PrintOperation: GtkPrintOperation is the high-level, portable printing API.
@@ -481,282 +508,61 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePrintOperation,
-		GoType:        reflect.TypeOf((*PrintOperation)(nil)),
-		InitClass:     initClassPrintOperation,
-		FinalizeClass: finalizeClassPrintOperation,
-	})
+	coreglib.RegisterClassInfo[*PrintOperation, *PrintOperationClass, PrintOperationOverrides](
+		GTypePrintOperation,
+		initPrintOperationClass,
+		wrapPrintOperation,
+		defaultPrintOperationOverrides,
+	)
 }
 
-func initClassPrintOperation(gclass unsafe.Pointer, goval any) {
+func initPrintOperationClass(gclass unsafe.Pointer, overrides PrintOperationOverrides, classInitFunc func(*PrintOperationClass)) {
+	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePrintOperation))))
 
-	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ BeginPrint(context *PrintContext) }); ok {
+	if overrides.BeginPrint != nil {
 		pclass.begin_print = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_begin_print)
 	}
 
-	if _, ok := goval.(interface{ CustomWidgetApply(widget Widgetter) }); ok {
+	if overrides.CustomWidgetApply != nil {
 		pclass.custom_widget_apply = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_custom_widget_apply)
 	}
 
-	if _, ok := goval.(interface {
-		Done(result PrintOperationResult)
-	}); ok {
+	if overrides.Done != nil {
 		pclass.done = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_done)
 	}
 
-	if _, ok := goval.(interface {
-		DrawPage(context *PrintContext, pageNr int)
-	}); ok {
+	if overrides.DrawPage != nil {
 		pclass.draw_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_draw_page)
 	}
 
-	if _, ok := goval.(interface{ EndPrint(context *PrintContext) }); ok {
+	if overrides.EndPrint != nil {
 		pclass.end_print = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_end_print)
 	}
 
-	if _, ok := goval.(interface {
-		Paginate(context *PrintContext) bool
-	}); ok {
+	if overrides.Paginate != nil {
 		pclass.paginate = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_paginate)
 	}
 
-	if _, ok := goval.(interface {
-		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
-	}); ok {
+	if overrides.Preview != nil {
 		pclass.preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_preview)
 	}
 
-	if _, ok := goval.(interface {
-		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
-	}); ok {
+	if overrides.RequestPageSetup != nil {
 		pclass.request_page_setup = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_request_page_setup)
 	}
 
-	if _, ok := goval.(interface{ StatusChanged() }); ok {
+	if overrides.StatusChanged != nil {
 		pclass.status_changed = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_status_changed)
 	}
 
-	if _, ok := goval.(interface {
-		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
-	}); ok {
+	if overrides.UpdateCustomWidget != nil {
 		pclass.update_custom_widget = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_update_custom_widget)
 	}
-	if goval, ok := goval.(interface{ InitPrintOperation(*PrintOperationClass) }); ok {
-		klass := (*PrintOperationClass)(gextras.NewStructNative(gclass))
-		goval.InitPrintOperation(klass)
+
+	if classInitFunc != nil {
+		class := (*PrintOperationClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassPrintOperation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePrintOperation(*PrintOperationClass) }); ok {
-		klass := (*PrintOperationClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePrintOperation(klass)
-	}
-}
-
-//export _gotk4_gtk4_PrintOperationClass_begin_print
-func _gotk4_gtk4_PrintOperationClass_begin_print(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ BeginPrint(context *PrintContext) })
-
-	var _context *PrintContext // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.BeginPrint(_context)
-}
-
-//export _gotk4_gtk4_PrintOperationClass_custom_widget_apply
-func _gotk4_gtk4_PrintOperationClass_custom_widget_apply(arg0 *C.GtkPrintOperation, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CustomWidgetApply(widget Widgetter) })
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	iface.CustomWidgetApply(_widget)
-}
-
-//export _gotk4_gtk4_PrintOperationClass_done
-func _gotk4_gtk4_PrintOperationClass_done(arg0 *C.GtkPrintOperation, arg1 C.GtkPrintOperationResult) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Done(result PrintOperationResult)
-	})
-
-	var _result PrintOperationResult // out
-
-	_result = PrintOperationResult(arg1)
-
-	iface.Done(_result)
-}
-
-//export _gotk4_gtk4_PrintOperationClass_draw_page
-func _gotk4_gtk4_PrintOperationClass_draw_page(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DrawPage(context *PrintContext, pageNr int)
-	})
-
-	var _context *PrintContext // out
-	var _pageNr int            // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int(arg2)
-
-	iface.DrawPage(_context, _pageNr)
-}
-
-//export _gotk4_gtk4_PrintOperationClass_end_print
-func _gotk4_gtk4_PrintOperationClass_end_print(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ EndPrint(context *PrintContext) })
-
-	var _context *PrintContext // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.EndPrint(_context)
-}
-
-//export _gotk4_gtk4_PrintOperationClass_paginate
-func _gotk4_gtk4_PrintOperationClass_paginate(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Paginate(context *PrintContext) bool
-	})
-
-	var _context *PrintContext // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-
-	ok := iface.Paginate(_context)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_PrintOperationClass_preview
-func _gotk4_gtk4_PrintOperationClass_preview(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
-	})
-
-	var _preview PrintOperationPreviewer // out
-	var _context *PrintContext           // out
-	var _parent *Window                  // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.PrintOperationPreviewer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(PrintOperationPreviewer)
-			return ok
-		})
-		rv, ok := casted.(PrintOperationPreviewer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.PrintOperationPreviewer")
-		}
-		_preview = rv
-	}
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg2)))
-	_parent = wrapWindow(coreglib.Take(unsafe.Pointer(arg3)))
-
-	ok := iface.Preview(_preview, _context, _parent)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_PrintOperationClass_request_page_setup
-func _gotk4_gtk4_PrintOperationClass_request_page_setup(arg0 *C.GtkPrintOperation, arg1 *C.GtkPrintContext, arg2 C.int, arg3 *C.GtkPageSetup) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup)
-	})
-
-	var _context *PrintContext // out
-	var _pageNr int            // out
-	var _setup *PageSetup      // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int(arg2)
-	_setup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg3)))
-
-	iface.RequestPageSetup(_context, _pageNr, _setup)
-}
-
-//export _gotk4_gtk4_PrintOperationClass_status_changed
-func _gotk4_gtk4_PrintOperationClass_status_changed(arg0 *C.GtkPrintOperation) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ StatusChanged() })
-
-	iface.StatusChanged()
-}
-
-//export _gotk4_gtk4_PrintOperationClass_update_custom_widget
-func _gotk4_gtk4_PrintOperationClass_update_custom_widget(arg0 *C.GtkPrintOperation, arg1 *C.GtkWidget, arg2 *C.GtkPageSetup, arg3 *C.GtkPrintSettings) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
-	})
-
-	var _widget Widgetter        // out
-	var _setup *PageSetup        // out
-	var _settings *PrintSettings // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_setup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg2)))
-	_settings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(arg3)))
-
-	iface.UpdateCustomWidget(_widget, _setup, _settings)
 }
 
 func wrapPrintOperation(obj *coreglib.Object) *PrintOperation {
@@ -772,26 +578,6 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 	return wrapPrintOperation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_PrintOperation_ConnectBeginPrint
-func _gotk4_gtk4_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
-	var f func(context *PrintContext)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(context *PrintContext))
-	}
-
-	var _context *PrintContext // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_context)
-}
-
 // ConnectBeginPrint is emitted after the user has finished changing print
 // settings in the dialog, before the actual rendering starts.
 //
@@ -800,26 +586,6 @@ func _gotk4_gtk4_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPr
 // number of pages with gtk.PrintOperation.SetNPages().
 func (op *PrintOperation) ConnectBeginPrint(f func(context *PrintContext)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "begin-print", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectBeginPrint), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget
-func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret C.GObject) {
-	var f func() (object *coreglib.Object)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (object *coreglib.Object))
-	}
-
-	object := f()
-
-	cret = *(*C.GObject)(unsafe.Pointer(object.Native()))
-
-	return cret
 }
 
 // ConnectCreateCustomWidget is emitted when displaying the print dialog.
@@ -836,42 +602,6 @@ func (op *PrintOperation) ConnectCreateCustomWidget(f func() (object *coreglib.O
 	return coreglib.ConnectGeneratedClosure(op, "create-custom-widget", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget), f)
 }
 
-//export _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply
-func _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(widget Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(widget Widgetter))
-	}
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	f(_widget)
-}
-
 // ConnectCustomWidgetApply is emitted right before ::begin-print if you added a
 // custom widget in the ::create-custom-widget handler.
 //
@@ -879,26 +609,6 @@ func _gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply(arg0 C.gpointer, arg1 *
 // widgets, as the widgets are not guaranteed to be around at a later time.
 func (op *PrintOperation) ConnectCustomWidgetApply(f func(widget Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "custom-widget-apply", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectCustomWidgetApply), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectDone
-func _gotk4_gtk4_PrintOperation_ConnectDone(arg0 C.gpointer, arg1 C.GtkPrintOperationResult, arg2 C.guintptr) {
-	var f func(result PrintOperationResult)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(result PrintOperationResult))
-	}
-
-	var _result PrintOperationResult // out
-
-	_result = PrintOperationResult(arg1)
-
-	f(_result)
 }
 
 // ConnectDone is emitted when the print operation run has finished doing
@@ -912,28 +622,6 @@ func _gotk4_gtk4_PrintOperation_ConnectDone(arg0 C.gpointer, arg1 C.GtkPrintOper
 // still return FALSE after the ::done signal was emitted.
 func (op *PrintOperation) ConnectDone(f func(result PrintOperationResult)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "done", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectDone), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectDrawPage
-func _gotk4_gtk4_PrintOperation_ConnectDrawPage(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 C.guintptr) {
-	var f func(context *PrintContext, pageNr int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(context *PrintContext, pageNr int))
-	}
-
-	var _context *PrintContext // out
-	var _pageNr int            // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int(arg2)
-
-	f(_context, _pageNr)
 }
 
 // ConnectDrawPage is emitted for every page that is printed.
@@ -988,58 +676,12 @@ func (op *PrintOperation) ConnectDrawPage(f func(context *PrintContext, pageNr i
 	return coreglib.ConnectGeneratedClosure(op, "draw-page", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectDrawPage), f)
 }
 
-//export _gotk4_gtk4_PrintOperation_ConnectEndPrint
-func _gotk4_gtk4_PrintOperation_ConnectEndPrint(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) {
-	var f func(context *PrintContext)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(context *PrintContext))
-	}
-
-	var _context *PrintContext // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_context)
-}
-
 // ConnectEndPrint is emitted after all pages have been rendered.
 //
 // A handler for this signal can clean up any resources that have been allocated
 // in the gtk.PrintOperation::begin-print handler.
 func (op *PrintOperation) ConnectEndPrint(f func(context *PrintContext)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "end-print", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectEndPrint), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectPaginate
-func _gotk4_gtk4_PrintOperation_ConnectPaginate(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(context *PrintContext) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(context *PrintContext) (ok bool))
-	}
-
-	var _context *PrintContext // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-
-	ok := f(_context)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectPaginate is emitted after the ::begin-print signal, but before the
@@ -1057,54 +699,6 @@ func _gotk4_gtk4_PrintOperation_ConnectPaginate(arg0 C.gpointer, arg1 *C.GtkPrin
 // ::begin-print handler, and set the number of pages from there.
 func (op *PrintOperation) ConnectPaginate(f func(context *PrintContext) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "paginate", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectPaginate), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectPreview
-func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrintOperationPreview, arg2 *C.GtkPrintContext, arg3 *C.GtkWindow, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) (ok bool))
-	}
-
-	var _preview PrintOperationPreviewer // out
-	var _context *PrintContext           // out
-	var _parent *Window                  // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.PrintOperationPreviewer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(PrintOperationPreviewer)
-			return ok
-		})
-		rv, ok := casted.(PrintOperationPreviewer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.PrintOperationPreviewer")
-		}
-		_preview = rv
-	}
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg2)))
-	if arg3 != nil {
-		_parent = wrapWindow(coreglib.Take(unsafe.Pointer(arg3)))
-	}
-
-	ok := f(_preview, _context, _parent)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectPreview gets emitted when a preview is requested from the native
@@ -1128,52 +722,12 @@ func (op *PrintOperation) ConnectPreview(f func(preview PrintOperationPreviewer,
 	return coreglib.ConnectGeneratedClosure(op, "preview", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectPreview), f)
 }
 
-//export _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup
-func _gotk4_gtk4_PrintOperation_ConnectRequestPageSetup(arg0 C.gpointer, arg1 *C.GtkPrintContext, arg2 C.gint, arg3 *C.GtkPageSetup, arg4 C.guintptr) {
-	var f func(context *PrintContext, pageNr int, setup *PageSetup)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(context *PrintContext, pageNr int, setup *PageSetup))
-	}
-
-	var _context *PrintContext // out
-	var _pageNr int            // out
-	var _setup *PageSetup      // out
-
-	_context = wrapPrintContext(coreglib.Take(unsafe.Pointer(arg1)))
-	_pageNr = int(arg2)
-	_setup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg3)))
-
-	f(_context, _pageNr, _setup)
-}
-
 // ConnectRequestPageSetup is emitted once for every page that is printed.
 //
 // This gives the application a chance to modify the page setup. Any changes
 // done to setup will be in force only for printing this page.
 func (op *PrintOperation) ConnectRequestPageSetup(f func(context *PrintContext, pageNr int, setup *PageSetup)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "request-page-setup", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectRequestPageSetup), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectStatusChanged
-func _gotk4_gtk4_PrintOperation_ConnectStatusChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectStatusChanged is emitted at between the various phases of the print
@@ -1183,46 +737,6 @@ func _gotk4_gtk4_PrintOperation_ConnectStatusChanged(arg0 C.gpointer, arg1 C.gui
 // gtk.PrintOperation.GetStatus() to find out the current status.
 func (op *PrintOperation) ConnectStatusChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "status-changed", false, unsafe.Pointer(C._gotk4_gtk4_PrintOperation_ConnectStatusChanged), f)
-}
-
-//export _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget
-func _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 *C.GtkPageSetup, arg3 *C.GtkPrintSettings, arg4 C.guintptr) {
-	var f func(widget Widgetter, setup *PageSetup, settings *PrintSettings)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(widget Widgetter, setup *PageSetup, settings *PrintSettings))
-	}
-
-	var _widget Widgetter        // out
-	var _setup *PageSetup        // out
-	var _settings *PrintSettings // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_setup = wrapPageSetup(coreglib.Take(unsafe.Pointer(arg2)))
-	_settings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(arg3)))
-
-	f(_widget, _setup, _settings)
 }
 
 // ConnectUpdateCustomWidget is emitted after change of selected printer.
@@ -2006,6 +1520,229 @@ func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	C.gtk_print_operation_set_use_full_page(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(fullPage)
+}
+
+// The function takes the following parameters:
+//
+func (operation *PrintOperation) beginPrint(context *PrintContext) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.begin_print
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkPrintContext   // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	C._gotk4_gtk4_PrintOperation_virtual_begin_print(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(context)
+}
+
+// The function takes the following parameters:
+//
+func (operation *PrintOperation) customWidgetApply(widget Widgetter) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.custom_widget_apply
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkWidget         // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_PrintOperation_virtual_custom_widget_apply(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(widget)
+}
+
+// The function takes the following parameters:
+//
+func (operation *PrintOperation) done(result PrintOperationResult) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.done
+
+	var _arg0 *C.GtkPrintOperation      // out
+	var _arg1 C.GtkPrintOperationResult // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = C.GtkPrintOperationResult(result)
+
+	C._gotk4_gtk4_PrintOperation_virtual_done(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(result)
+}
+
+// The function takes the following parameters:
+//
+//    - context
+//    - pageNr
+//
+func (operation *PrintOperation) drawPage(context *PrintContext, pageNr int) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.draw_page
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkPrintContext   // out
+	var _arg2 C.int                // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.int(pageNr)
+
+	C._gotk4_gtk4_PrintOperation_virtual_draw_page(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(pageNr)
+}
+
+// The function takes the following parameters:
+//
+func (operation *PrintOperation) endPrint(context *PrintContext) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.end_print
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkPrintContext   // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	C._gotk4_gtk4_PrintOperation_virtual_end_print(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(context)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (operation *PrintOperation) paginate(context *PrintContext) bool {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.paginate
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkPrintContext   // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C._gotk4_gtk4_PrintOperation_virtual_paginate(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(context)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - preview
+//    - context
+//    - parent
+//
+// The function returns the following values:
+//
+func (operation *PrintOperation) preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.preview
+
+	var _arg0 *C.GtkPrintOperation        // out
+	var _arg1 *C.GtkPrintOperationPreview // out
+	var _arg2 *C.GtkPrintContext          // out
+	var _arg3 *C.GtkWindow                // out
+	var _cret C.gboolean                  // in
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
+	_arg2 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg3 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+
+	_cret = C._gotk4_gtk4_PrintOperation_virtual_preview(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(preview)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(parent)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - context
+//    - pageNr
+//    - setup
+//
+func (operation *PrintOperation) requestPageSetup(context *PrintContext, pageNr int, setup *PageSetup) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.request_page_setup
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkPrintContext   // out
+	var _arg2 C.int                // out
+	var _arg3 *C.GtkPageSetup      // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg2 = C.int(pageNr)
+	_arg3 = (*C.GtkPageSetup)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+
+	C._gotk4_gtk4_PrintOperation_virtual_request_page_setup(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(pageNr)
+	runtime.KeepAlive(setup)
+}
+
+func (operation *PrintOperation) statusChanged() {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.status_changed
+
+	var _arg0 *C.GtkPrintOperation // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+
+	C._gotk4_gtk4_PrintOperation_virtual_status_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(operation)
+}
+
+// The function takes the following parameters:
+//
+//    - widget
+//    - setup
+//    - settings
+//
+func (operation *PrintOperation) updateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings) {
+	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
+	fnarg := gclass.update_custom_widget
+
+	var _arg0 *C.GtkPrintOperation // out
+	var _arg1 *C.GtkWidget         // out
+	var _arg2 *C.GtkPageSetup      // out
+	var _arg3 *C.GtkPrintSettings  // out
+
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+
+	C._gotk4_gtk4_PrintOperation_virtual_update_custom_widget(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(operation)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(setup)
+	runtime.KeepAlive(settings)
 }
 
 // PrintOperationClass: instance of this type is always passed by reference.

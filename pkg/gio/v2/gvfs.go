@@ -8,7 +8,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -18,17 +17,42 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GFile* _gotk4_gio2_VFSFileLookupFunc(GVfs*, char*, gpointer);
-// extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(GVfs*, char*);
-// extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(GVfs*, char*);
-// extern GFile* _gotk4_gio2_VfsClass_parse_name(GVfs*, char*);
-// extern gboolean _gotk4_gio2_VfsClass_is_active(GVfs*);
-// extern gboolean _gotk4_gio2_VfsClass_local_file_set_attributes(GVfs*, char*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
-// extern gchar** _gotk4_gio2_VfsClass_get_supported_uri_schemes(GVfs*);
-// extern void _gotk4_gio2_VfsClass_add_writable_namespaces(GVfs*, GFileAttributeInfoList*);
-// extern void _gotk4_gio2_VfsClass_local_file_moved(GVfs*, char*, char*);
 // extern void _gotk4_gio2_VfsClass_local_file_removed(GVfs*, char*);
-// extern void callbackDelete(gpointer);
+// extern void _gotk4_gio2_VfsClass_local_file_moved(GVfs*, char*, char*);
+// extern void _gotk4_gio2_VfsClass_add_writable_namespaces(GVfs*, GFileAttributeInfoList*);
+// extern gchar** _gotk4_gio2_VfsClass_get_supported_uri_schemes(GVfs*);
+// extern gboolean _gotk4_gio2_VfsClass_local_file_set_attributes(GVfs*, char*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_VfsClass_is_active(GVfs*);
+// extern GFile* _gotk4_gio2_VfsClass_parse_name(GVfs*, char*);
+// extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(GVfs*, char*);
+// extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(GVfs*, char*);
+// GFile* _gotk4_gio2_VFS_virtual_get_file_for_path(void* fnptr, GVfs* arg0, char* arg1) {
+//   return ((GFile* (*)(GVfs*, char*))(fnptr))(arg0, arg1);
+// };
+// GFile* _gotk4_gio2_VFS_virtual_get_file_for_uri(void* fnptr, GVfs* arg0, char* arg1) {
+//   return ((GFile* (*)(GVfs*, char*))(fnptr))(arg0, arg1);
+// };
+// GFile* _gotk4_gio2_VFS_virtual_parse_name(void* fnptr, GVfs* arg0, char* arg1) {
+//   return ((GFile* (*)(GVfs*, char*))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gio2_VFS_virtual_is_active(void* fnptr, GVfs* arg0) {
+//   return ((gboolean (*)(GVfs*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_VFS_virtual_local_file_set_attributes(void* fnptr, GVfs* arg0, char* arg1, GFileInfo* arg2, GFileQueryInfoFlags arg3, GCancellable* arg4, GError** arg5) {
+//   return ((gboolean (*)(GVfs*, char*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// gchar** _gotk4_gio2_VFS_virtual_get_supported_uri_schemes(void* fnptr, GVfs* arg0) {
+//   return ((gchar** (*)(GVfs*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_VFS_virtual_add_writable_namespaces(void* fnptr, GVfs* arg0, GFileAttributeInfoList* arg1) {
+//   ((void (*)(GVfs*, GFileAttributeInfoList*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_VFS_virtual_local_file_moved(void* fnptr, GVfs* arg0, char* arg1, char* arg2) {
+//   ((void (*)(GVfs*, char*, char*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gio2_VFS_virtual_local_file_removed(void* fnptr, GVfs* arg0, char* arg1) {
+//   ((void (*)(GVfs*, char*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -46,44 +70,11 @@ func init() {
 // [Extending GIO][extending-gio].
 const VFS_EXTENSION_POINT_NAME = "gio-vfs"
 
-// VFSFileLookupFunc: this function type is used by g_vfs_register_uri_scheme()
-// to make it possible for a client to associate an URI scheme to a different
-// #GFile implementation.
-//
-// The client should return a reference to the new file that has been created
-// for uri, or NULL to continue with the default implementation.
-type VFSFileLookupFunc func(vfs *VFS, identifier string) (file *File)
-
-//export _gotk4_gio2_VFSFileLookupFunc
-func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.GVfs, arg2 *C.char, arg3 C.gpointer) (cret *C.GFile) {
-	var fn VFSFileLookupFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(VFSFileLookupFunc)
-	}
-
-	var _vfs *VFS          // out
-	var _identifier string // out
-
-	_vfs = wrapVFS(coreglib.Take(unsafe.Pointer(arg1)))
-	_identifier = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	file := fn(_vfs, _identifier)
-
-	cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
-
-	return cret
-}
-
-// VFSOverrider contains methods that are overridable.
-type VFSOverrider interface {
+// VFSOverrides contains methods that are overridable.
+type VFSOverrides struct {
 	// The function takes the following parameters:
 	//
-	AddWritableNamespaces(list *FileAttributeInfoList)
+	AddWritableNamespaces func(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for path.
 	//
 	// The function takes the following parameters:
@@ -94,7 +85,7 @@ type VFSOverrider interface {
 	//
 	//    - file: #GFile. Free the returned object with g_object_unref().
 	//
-	FileForPath(path string) *File
+	FileForPath func(path string) *File
 	// FileForURI gets a #GFile for uri.
 	//
 	// This operation never fails, but the returned object might not support any
@@ -109,7 +100,7 @@ type VFSOverrider interface {
 	//
 	//    - file: #GFile. Free the returned object with g_object_unref().
 	//
-	FileForURI(uri string) *File
+	FileForURI func(uri string) *File
 	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	//
 	// The function returns the following values:
@@ -117,7 +108,7 @@ type VFSOverrider interface {
 	//    - utf8s: NULL-terminated array of strings. The returned array belongs
 	//      to GIO and must not be freed or modified.
 	//
-	SupportedURISchemes() []string
+	SupportedURISchemes func() []string
 	// IsActive checks if the VFS is active.
 	//
 	// The function returns the following values:
@@ -125,16 +116,16 @@ type VFSOverrider interface {
 	//    - ok: TRUE if construction of the vfs was successful and it is now
 	//      active.
 	//
-	IsActive() bool
+	IsActive func() bool
 	// The function takes the following parameters:
 	//
 	//    - source
 	//    - dest
 	//
-	LocalFileMoved(source, dest string)
+	LocalFileMoved func(source, dest string)
 	// The function takes the following parameters:
 	//
-	LocalFileRemoved(filename string)
+	LocalFileRemoved func(filename string)
 	// The function takes the following parameters:
 	//
 	//    - ctx (optional)
@@ -142,7 +133,7 @@ type VFSOverrider interface {
 	//    - info
 	//    - flags
 	//
-	LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
+	LocalFileSetAttributes func(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
 	// ParseName: this operation never fails, but the returned object might not
 	// support any I/O operations if the parse_name cannot be parsed by the
 	// #GVfs module.
@@ -156,7 +147,21 @@ type VFSOverrider interface {
 	//    - file for the given parse_name. Free the returned object with
 	//      g_object_unref().
 	//
-	ParseName(parseName string) *File
+	ParseName func(parseName string) *File
+}
+
+func defaultVFSOverrides(v *VFS) VFSOverrides {
+	return VFSOverrides{
+		AddWritableNamespaces:  v.addWritableNamespaces,
+		FileForPath:            v.fileForPath,
+		FileForURI:             v.fileForURI,
+		SupportedURISchemes:    v.supportedURISchemes,
+		IsActive:               v.isActive,
+		LocalFileMoved:         v.localFileMoved,
+		LocalFileRemoved:       v.localFileRemoved,
+		LocalFileSetAttributes: v.localFileSetAttributes,
+		ParseName:              v.parseName,
+	}
 }
 
 // VFS: entry point for using GIO functionality.
@@ -170,232 +175,57 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVFS,
-		GoType:        reflect.TypeOf((*VFS)(nil)),
-		InitClass:     initClassVFS,
-		FinalizeClass: finalizeClassVFS,
-	})
+	coreglib.RegisterClassInfo[*VFS, *VFSClass, VFSOverrides](
+		GTypeVFS,
+		initVFSClass,
+		wrapVFS,
+		defaultVFSOverrides,
+	)
 }
 
-func initClassVFS(gclass unsafe.Pointer, goval any) {
+func initVFSClass(gclass unsafe.Pointer, overrides VFSOverrides, classInitFunc func(*VFSClass)) {
+	pclass := (*C.GVfsClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeVFS))))
 
-	pclass := (*C.GVfsClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		AddWritableNamespaces(list *FileAttributeInfoList)
-	}); ok {
+	if overrides.AddWritableNamespaces != nil {
 		pclass.add_writable_namespaces = (*[0]byte)(C._gotk4_gio2_VfsClass_add_writable_namespaces)
 	}
 
-	if _, ok := goval.(interface{ FileForPath(path string) *File }); ok {
+	if overrides.FileForPath != nil {
 		pclass.get_file_for_path = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_path)
 	}
 
-	if _, ok := goval.(interface{ FileForURI(uri string) *File }); ok {
+	if overrides.FileForURI != nil {
 		pclass.get_file_for_uri = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_uri)
 	}
 
-	if _, ok := goval.(interface{ SupportedURISchemes() []string }); ok {
+	if overrides.SupportedURISchemes != nil {
 		pclass.get_supported_uri_schemes = (*[0]byte)(C._gotk4_gio2_VfsClass_get_supported_uri_schemes)
 	}
 
-	if _, ok := goval.(interface{ IsActive() bool }); ok {
+	if overrides.IsActive != nil {
 		pclass.is_active = (*[0]byte)(C._gotk4_gio2_VfsClass_is_active)
 	}
 
-	if _, ok := goval.(interface{ LocalFileMoved(source, dest string) }); ok {
+	if overrides.LocalFileMoved != nil {
 		pclass.local_file_moved = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_moved)
 	}
 
-	if _, ok := goval.(interface{ LocalFileRemoved(filename string) }); ok {
+	if overrides.LocalFileRemoved != nil {
 		pclass.local_file_removed = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_removed)
 	}
 
-	if _, ok := goval.(interface {
-		LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
-	}); ok {
+	if overrides.LocalFileSetAttributes != nil {
 		pclass.local_file_set_attributes = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_set_attributes)
 	}
 
-	if _, ok := goval.(interface{ ParseName(parseName string) *File }); ok {
+	if overrides.ParseName != nil {
 		pclass.parse_name = (*[0]byte)(C._gotk4_gio2_VfsClass_parse_name)
 	}
-	if goval, ok := goval.(interface{ InitVFS(*VFSClass) }); ok {
-		klass := (*VFSClass)(gextras.NewStructNative(gclass))
-		goval.InitVFS(klass)
+
+	if classInitFunc != nil {
+		class := (*VFSClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassVFS(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVFS(*VFSClass) }); ok {
-		klass := (*VFSClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVFS(klass)
-	}
-}
-
-//export _gotk4_gio2_VfsClass_add_writable_namespaces
-func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAttributeInfoList) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		AddWritableNamespaces(list *FileAttributeInfoList)
-	})
-
-	var _list *FileAttributeInfoList // out
-
-	_list = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.g_file_attribute_info_list_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_list)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
-		},
-	)
-
-	iface.AddWritableNamespaces(_list)
-}
-
-//export _gotk4_gio2_VfsClass_get_file_for_path
-func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ FileForPath(path string) *File })
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	file := iface.FileForPath(_path)
-
-	cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_VfsClass_get_file_for_uri
-func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ FileForURI(uri string) *File })
-
-	var _uri string // out
-
-	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	file := iface.FileForURI(_uri)
-
-	cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_VfsClass_get_supported_uri_schemes
-func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.GVfs) (cret **C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SupportedURISchemes() []string })
-
-	utf8s := iface.SupportedURISchemes()
-
-	{
-		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(cret))
-		{
-			out := unsafe.Slice(cret, len(utf8s)+1)
-			var zero *C.gchar
-			out[len(utf8s)] = zero
-			for i := range utf8s {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(utf8s[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_VfsClass_is_active
-func _gotk4_gio2_VfsClass_is_active(arg0 *C.GVfs) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ IsActive() bool })
-
-	ok := iface.IsActive()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_VfsClass_local_file_moved
-func _gotk4_gio2_VfsClass_local_file_moved(arg0 *C.GVfs, arg1 *C.char, arg2 *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LocalFileMoved(source, dest string) })
-
-	var _source string // out
-	var _dest string   // out
-
-	_source = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_dest = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	iface.LocalFileMoved(_source, _dest)
-}
-
-//export _gotk4_gio2_VfsClass_local_file_removed
-func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.GVfs, arg1 *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LocalFileRemoved(filename string) })
-
-	var _filename string // out
-
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.LocalFileRemoved(_filename)
-}
-
-//export _gotk4_gio2_VfsClass_local_file_set_attributes
-func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, arg2 *C.GFileInfo, arg3 C.GFileQueryInfoFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		LocalFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
-	})
-
-	var _cancellable context.Context // out
-	var _filename string             // out
-	var _info *FileInfo              // out
-	var _flags FileQueryInfoFlags    // out
-
-	if arg4 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg4))
-	}
-	_filename = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_info = wrapFileInfo(coreglib.Take(unsafe.Pointer(arg2)))
-	_flags = FileQueryInfoFlags(arg3)
-
-	_goerr := iface.LocalFileSetAttributes(_cancellable, _filename, _info, _flags)
-
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_VfsClass_parse_name
-func _gotk4_gio2_VfsClass_parse_name(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ParseName(parseName string) *File })
-
-	var _parseName string // out
-
-	_parseName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	file := iface.ParseName(_parseName)
-
-	cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
-
-	return cret
 }
 
 func wrapVFS(obj *coreglib.Object) *VFS {
@@ -563,68 +393,147 @@ func (vfs *VFS) ParseName(parseName string) *File {
 	return _file
 }
 
-// RegisterURIScheme registers uri_func and parse_name_func as the #GFile URI
-// and parse name lookup functions for URIs with a scheme matching scheme. Note
-// that scheme is registered only within the running application, as opposed to
-// desktop-wide as it happens with GVfs backends.
+// The function takes the following parameters:
 //
-// When a #GFile is requested with an URI containing scheme (e.g. through
-// g_file_new_for_uri()), uri_func will be called to allow a custom constructor.
-// The implementation of uri_func should not be blocking, and must not call
-// g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
-//
-// When g_file_parse_name() is called with a parse name obtained from such file,
-// parse_name_func will be called to allow the #GFile to be created again. In
-// that case, it's responsibility of parse_name_func to make sure the parse name
-// matches what the custom #GFile implementation returned when
-// g_file_get_parse_name() was previously called. The implementation of
-// parse_name_func should not be blocking, and must not call
-// g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
-//
-// It's an error to call this function twice with the same scheme. To unregister
-// a custom URI scheme, use g_vfs_unregister_uri_scheme().
+func (vfs *VFS) addWritableNamespaces(list *FileAttributeInfoList) {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.add_writable_namespaces
+
+	var _arg0 *C.GVfs                   // out
+	var _arg1 *C.GFileAttributeInfoList // out
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.GFileAttributeInfoList)(gextras.StructNative(unsafe.Pointer(list)))
+
+	C._gotk4_gio2_VFS_virtual_add_writable_namespaces(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(list)
+}
+
+// fileForPath gets a #GFile for path.
 //
 // The function takes the following parameters:
 //
-//    - scheme: URI scheme, e.g. "http".
-//    - uriFunc (optional): FileLookupFunc.
-//    - parseNameFunc (optional): FileLookupFunc.
+//    - path: string containing a VFS path.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if scheme was successfully registered, or FALSE if a handler for
-//      scheme already exists.
+//    - file: #GFile. Free the returned object with g_object_unref().
 //
-func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileLookupFunc) bool {
-	var _arg0 *C.GVfs              // out
-	var _arg1 *C.char              // out
-	var _arg2 C.GVfsFileLookupFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-	var _arg5 C.GVfsFileLookupFunc // out
-	var _arg6 C.gpointer
-	var _arg7 C.GDestroyNotify
+func (vfs *VFS) fileForPath(path string) *File {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.get_file_for_path
+
+	var _arg0 *C.GVfs  // out
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_gio2_VFS_virtual_get_file_for_path(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(path)
+
+	var _file *File // out
+
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _file
+}
+
+// fileForURI gets a #GFile for uri.
+//
+// This operation never fails, but the returned object might not support any I/O
+// operation if the URI is malformed or if the URI scheme is not supported.
+//
+// The function takes the following parameters:
+//
+//    - uri: string containing a URI.
+//
+// The function returns the following values:
+//
+//    - file: #GFile. Free the returned object with g_object_unref().
+//
+func (vfs *VFS) fileForURI(uri string) *File {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.get_file_for_uri
+
+	var _arg0 *C.GVfs  // out
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_gio2_VFS_virtual_get_file_for_uri(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(uri)
+
+	var _file *File // out
+
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _file
+}
+
+// supportedURISchemes gets a list of URI schemes supported by vfs.
+//
+// The function returns the following values:
+//
+//    - utf8s: NULL-terminated array of strings. The returned array belongs to
+//      GIO and must not be freed or modified.
+//
+func (vfs *VFS) supportedURISchemes() []string {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.get_supported_uri_schemes
+
+	var _arg0 *C.GVfs   // out
+	var _cret **C.gchar // in
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+
+	_cret = C._gotk4_gio2_VFS_virtual_get_supported_uri_schemes(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(vfs)
+
+	var _utf8s []string // out
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// isActive checks if the VFS is active.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if construction of the vfs was successful and it is now active.
+//
+func (vfs *VFS) isActive() bool {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.is_active
+
+	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if uriFunc != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
-		_arg3 = C.gpointer(gbox.Assign(uriFunc))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-	if parseNameFunc != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
-		_arg6 = C.gpointer(gbox.Assign(parseNameFunc))
-		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
 
-	_cret = C.g_vfs_register_uri_scheme(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	_cret = C._gotk4_gio2_VFS_virtual_is_active(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(vfs)
-	runtime.KeepAlive(scheme)
-	runtime.KeepAlive(uriFunc)
-	runtime.KeepAlive(parseNameFunc)
 
 	var _ok bool // out
 
@@ -635,38 +544,128 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileL
 	return _ok
 }
 
-// UnregisterURIScheme unregisters the URI handler for scheme previously
-// registered with g_vfs_register_uri_scheme().
+// The function takes the following parameters:
+//
+//    - source
+//    - dest
+//
+func (vfs *VFS) localFileMoved(source, dest string) {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.local_file_moved
+
+	var _arg0 *C.GVfs // out
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(source)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(dest)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_gio2_VFS_virtual_local_file_moved(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(dest)
+}
+
+// The function takes the following parameters:
+//
+func (vfs *VFS) localFileRemoved(filename string) {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.local_file_removed
+
+	var _arg0 *C.GVfs // out
+	var _arg1 *C.char // out
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_VFS_virtual_local_file_removed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(filename)
+}
+
+// The function takes the following parameters:
+//
+//    - ctx (optional)
+//    - filename
+//    - info
+//    - flags
+//
+func (vfs *VFS) localFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.local_file_set_attributes
+
+	var _arg0 *C.GVfs               // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GFileInfo          // out
+	var _arg3 C.GFileQueryInfoFlags // out
+	var _cerr *C.GError             // in
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg3 = C.GFileQueryInfoFlags(flags)
+
+	C._gotk4_gio2_VFS_virtual_local_file_set_attributes(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// parseName: this operation never fails, but the returned object might not
+// support any I/O operations if the parse_name cannot be parsed by the #GVfs
+// module.
 //
 // The function takes the following parameters:
 //
-//    - scheme: URI scheme, e.g. "http".
+//    - parseName: string to be parsed by the VFS module.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if scheme was successfully unregistered, or FALSE if a handler
-//      for scheme does not exist.
+//    - file for the given parse_name. Free the returned object with
+//      g_object_unref().
 //
-func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
-	var _arg0 *C.GVfs    // out
-	var _arg1 *C.char    // out
-	var _cret C.gboolean // in
+func (vfs *VFS) parseName(parseName string) *File {
+	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
+	fnarg := gclass.parse_name
+
+	var _arg0 *C.GVfs  // out
+	var _arg1 *C.char  // out
+	var _cret *C.GFile // in
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(parseName)))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
+	_cret = C._gotk4_gio2_VFS_virtual_parse_name(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(vfs)
-	runtime.KeepAlive(scheme)
+	runtime.KeepAlive(parseName)
 
-	var _ok bool // out
+	var _file *File // out
 
-	if _cret != 0 {
-		_ok = true
-	}
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
-	return _ok
+	return _file
 }
 
 // VFSGetDefault gets the default #GVfs for the system.

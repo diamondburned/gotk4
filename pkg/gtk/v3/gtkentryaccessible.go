@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// EntryAccessibleOverrider contains methods that are overridable.
-type EntryAccessibleOverrider interface {
+// EntryAccessibleOverrides contains methods that are overridable.
+type EntryAccessibleOverrides struct {
+}
+
+func defaultEntryAccessibleOverrides(v *EntryAccessible) EntryAccessibleOverrides {
+	return EntryAccessibleOverrides{}
 }
 
 type EntryAccessible struct {
@@ -48,25 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeEntryAccessible,
-		GoType:        reflect.TypeOf((*EntryAccessible)(nil)),
-		InitClass:     initClassEntryAccessible,
-		FinalizeClass: finalizeClassEntryAccessible,
-	})
+	coreglib.RegisterClassInfo[*EntryAccessible, *EntryAccessibleClass, EntryAccessibleOverrides](
+		GTypeEntryAccessible,
+		initEntryAccessibleClass,
+		wrapEntryAccessible,
+		defaultEntryAccessibleOverrides,
+	)
 }
 
-func initClassEntryAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitEntryAccessible(*EntryAccessibleClass) }); ok {
-		klass := (*EntryAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitEntryAccessible(klass)
-	}
-}
-
-func finalizeClassEntryAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeEntryAccessible(*EntryAccessibleClass) }); ok {
-		klass := (*EntryAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeEntryAccessible(klass)
+func initEntryAccessibleClass(gclass unsafe.Pointer, overrides EntryAccessibleOverrides, classInitFunc func(*EntryAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*EntryAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

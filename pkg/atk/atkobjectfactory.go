@@ -15,6 +15,9 @@ import (
 // #include <atk/atk.h>
 // #include <glib-object.h>
 // extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
+// void _gotk4_atk1_ObjectFactory_virtual_invalidate(void* fnptr, AtkObjectFactory* arg0) {
+//   ((void (*)(AtkObjectFactory*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -28,13 +31,19 @@ func init() {
 	})
 }
 
-// ObjectFactoryOverrider contains methods that are overridable.
-type ObjectFactoryOverrider interface {
+// ObjectFactoryOverrides contains methods that are overridable.
+type ObjectFactoryOverrides struct {
 	// Invalidate: inform factory that it is no longer being used to create
 	// accessibles. When called, factory may need to inform Objects which it has
 	// created that they need to be re-instantiated. Note: primarily used for
 	// runtime replacement of ObjectFactorys in object registries.
-	Invalidate()
+	Invalidate func()
+}
+
+func defaultObjectFactoryOverrides(v *ObjectFactory) ObjectFactoryOverrides {
+	return ObjectFactoryOverrides{
+		Invalidate: v.invalidate,
+	}
 }
 
 // ObjectFactory: this class is the base object class for a factory used to
@@ -51,40 +60,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeObjectFactory,
-		GoType:        reflect.TypeOf((*ObjectFactory)(nil)),
-		InitClass:     initClassObjectFactory,
-		FinalizeClass: finalizeClassObjectFactory,
-	})
+	coreglib.RegisterClassInfo[*ObjectFactory, *ObjectFactoryClass, ObjectFactoryOverrides](
+		GTypeObjectFactory,
+		initObjectFactoryClass,
+		wrapObjectFactory,
+		defaultObjectFactoryOverrides,
+	)
 }
 
-func initClassObjectFactory(gclass unsafe.Pointer, goval any) {
+func initObjectFactoryClass(gclass unsafe.Pointer, overrides ObjectFactoryOverrides, classInitFunc func(*ObjectFactoryClass)) {
+	pclass := (*C.AtkObjectFactoryClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeObjectFactory))))
 
-	pclass := (*C.AtkObjectFactoryClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Invalidate() }); ok {
+	if overrides.Invalidate != nil {
 		pclass.invalidate = (*[0]byte)(C._gotk4_atk1_ObjectFactoryClass_invalidate)
 	}
-	if goval, ok := goval.(interface{ InitObjectFactory(*ObjectFactoryClass) }); ok {
-		klass := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
-		goval.InitObjectFactory(klass)
+
+	if classInitFunc != nil {
+		class := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassObjectFactory(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeObjectFactory(*ObjectFactoryClass) }); ok {
-		klass := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeObjectFactory(klass)
-	}
-}
-
-//export _gotk4_atk1_ObjectFactoryClass_invalidate
-func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Invalidate() })
-
-	iface.Invalidate()
 }
 
 func wrapObjectFactory(obj *coreglib.Object) *ObjectFactory {
@@ -161,6 +155,22 @@ func (factory *ObjectFactory) Invalidate() {
 	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
 	C.atk_object_factory_invalidate(_arg0)
+	runtime.KeepAlive(factory)
+}
+
+// Invalidate: inform factory that it is no longer being used to create
+// accessibles. When called, factory may need to inform Objects which it has
+// created that they need to be re-instantiated. Note: primarily used for
+// runtime replacement of ObjectFactorys in object registries.
+func (factory *ObjectFactory) invalidate() {
+	gclass := (*C.AtkObjectFactoryClass)(coreglib.PeekParentClass(factory))
+	fnarg := gclass.invalidate
+
+	var _arg0 *C.AtkObjectFactory // out
+
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+
+	C._gotk4_atk1_ObjectFactory_virtual_invalidate(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(factory)
 }
 

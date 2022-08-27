@@ -18,15 +18,27 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_SettingsClass_change_event(GSettings*, GQuark*, gint);
-// extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(GSettings*, GQuark);
-// extern gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
-// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, gpointer, gint, guintptr);
-// extern gboolean _gotk4_gio2_Settings_ConnectWritableChangeEvent(gpointer, guint, guintptr);
-// extern void _gotk4_gio2_SettingsClass_changed(GSettings*, gchar*);
-// extern void _gotk4_gio2_SettingsClass_writable_changed(GSettings*, gchar*);
-// extern void _gotk4_gio2_Settings_ConnectChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gio2_Settings_ConnectWritableChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_Settings_ConnectChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_SettingsClass_writable_changed(GSettings*, gchar*);
+// extern void _gotk4_gio2_SettingsClass_changed(GSettings*, gchar*);
+// extern gboolean _gotk4_gio2_Settings_ConnectWritableChangeEvent(gpointer, guint, guintptr);
+// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, gpointer, gint, guintptr);
+// extern gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
+// extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(GSettings*, GQuark);
+// extern gboolean _gotk4_gio2_SettingsClass_change_event(GSettings*, GQuark*, gint);
+// gboolean _gotk4_gio2_Settings_virtual_change_event(void* fnptr, GSettings* arg0, GQuark* arg1, gint arg2) {
+//   return ((gboolean (*)(GSettings*, GQuark*, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Settings_virtual_writable_change_event(void* fnptr, GSettings* arg0, GQuark arg1) {
+//   return ((gboolean (*)(GSettings*, GQuark))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_Settings_virtual_changed(void* fnptr, GSettings* arg0, gchar* arg1) {
+//   ((void (*)(GSettings*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_Settings_virtual_writable_changed(void* fnptr, GSettings* arg0, gchar* arg1) {
+//   ((void (*)(GSettings*, gchar*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -121,66 +133,9 @@ func (s SettingsBindFlags) Has(other SettingsBindFlags) bool {
 // values of the appropriate type.
 type SettingsBindGetMapping func(value *coreglib.Value, variant *glib.Variant) (ok bool)
 
-//export _gotk4_gio2_SettingsBindGetMapping
-func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
-	var fn SettingsBindGetMapping
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SettingsBindGetMapping)
-	}
-
-	var _value *coreglib.Value // out
-	var _variant *glib.Variant // out
-
-	_value = coreglib.ValueFromNative(unsafe.Pointer(arg1))
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	ok := fn(_value, _variant)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // SettingsBindSetMapping: type for the function that is used to convert an
 // object property value to a #GVariant for storing it in #GSettings.
 type SettingsBindSetMapping func(value *coreglib.Value, expectedType *glib.VariantType) (variant *glib.Variant)
-
-//export _gotk4_gio2_SettingsBindSetMapping
-func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, arg3 C.gpointer) (cret *C.GVariant) {
-	var fn SettingsBindSetMapping
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SettingsBindSetMapping)
-	}
-
-	var _value *coreglib.Value          // out
-	var _expectedType *glib.VariantType // out
-
-	_value = coreglib.ValueFromNative(unsafe.Pointer(arg1))
-	_expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	variant := fn(_value, _expectedType)
-
-	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
-
-	return cret
-}
 
 // SettingsGetMapping: type of the function that is used to convert from a value
 // stored in a #GSettings to a value that is useful to the application.
@@ -194,40 +149,8 @@ func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, ar
 // this case.
 type SettingsGetMapping func(value *glib.Variant) (result unsafe.Pointer, ok bool)
 
-//export _gotk4_gio2_SettingsGetMapping
-func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.gpointer) (cret C.gboolean) {
-	var fn SettingsGetMapping
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SettingsGetMapping)
-	}
-
-	var _value *glib.Variant // out
-
-	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_value)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	result, ok := fn(_value)
-
-	*arg2 = (C.gpointer)(unsafe.Pointer(result))
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// SettingsOverrider contains methods that are overridable.
-type SettingsOverrider interface {
+// SettingsOverrides contains methods that are overridable.
+type SettingsOverrides struct {
 	// The function takes the following parameters:
 	//
 	//    - keys
@@ -235,18 +158,27 @@ type SettingsOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	ChangeEvent(keys *glib.Quark, nKeys int) bool
+	ChangeEvent func(keys *glib.Quark, nKeys int) bool
 	// The function takes the following parameters:
 	//
-	Changed(key string)
+	Changed func(key string)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	WritableChangeEvent(key glib.Quark) bool
+	WritableChangeEvent func(key glib.Quark) bool
 	// The function takes the following parameters:
 	//
-	WritableChanged(key string)
+	WritableChanged func(key string)
+}
+
+func defaultSettingsOverrides(v *Settings) SettingsOverrides {
+	return SettingsOverrides{
+		ChangeEvent:         v.changeEvent,
+		Changed:             v.changed,
+		WritableChangeEvent: v.writableChangeEvent,
+		WritableChanged:     v.writableChanged,
+	}
 }
 
 // Settings class provides a convenient API for storing and retrieving
@@ -532,110 +464,37 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSettings,
-		GoType:        reflect.TypeOf((*Settings)(nil)),
-		InitClass:     initClassSettings,
-		FinalizeClass: finalizeClassSettings,
-	})
+	coreglib.RegisterClassInfo[*Settings, *SettingsClass, SettingsOverrides](
+		GTypeSettings,
+		initSettingsClass,
+		wrapSettings,
+		defaultSettingsOverrides,
+	)
 }
 
-func initClassSettings(gclass unsafe.Pointer, goval any) {
+func initSettingsClass(gclass unsafe.Pointer, overrides SettingsOverrides, classInitFunc func(*SettingsClass)) {
+	pclass := (*C.GSettingsClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSettings))))
 
-	pclass := (*C.GSettingsClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		ChangeEvent(keys *glib.Quark, nKeys int) bool
-	}); ok {
+	if overrides.ChangeEvent != nil {
 		pclass.change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_change_event)
 	}
 
-	if _, ok := goval.(interface{ Changed(key string) }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_changed)
 	}
 
-	if _, ok := goval.(interface{ WritableChangeEvent(key glib.Quark) bool }); ok {
+	if overrides.WritableChangeEvent != nil {
 		pclass.writable_change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_change_event)
 	}
 
-	if _, ok := goval.(interface{ WritableChanged(key string) }); ok {
+	if overrides.WritableChanged != nil {
 		pclass.writable_changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_changed)
 	}
-	if goval, ok := goval.(interface{ InitSettings(*SettingsClass) }); ok {
-		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
-		goval.InitSettings(klass)
+
+	if classInitFunc != nil {
+		class := (*SettingsClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassSettings(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSettings(*SettingsClass) }); ok {
-		klass := (*SettingsClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSettings(klass)
-	}
-}
-
-//export _gotk4_gio2_SettingsClass_change_event
-func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ChangeEvent(keys *glib.Quark, nKeys int) bool
-	})
-
-	var _keys *glib.Quark // out
-	var _nKeys int        // out
-
-	_keys = (*uint32)(unsafe.Pointer(arg1))
-	_nKeys = int(arg2)
-
-	ok := iface.ChangeEvent(_keys, _nKeys)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_SettingsClass_changed
-func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed(key string) })
-
-	var _key string // out
-
-	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.Changed(_key)
-}
-
-//export _gotk4_gio2_SettingsClass_writable_change_event
-func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.GQuark) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ WritableChangeEvent(key glib.Quark) bool })
-
-	var _key glib.Quark // out
-
-	_key = uint32(arg1)
-
-	ok := iface.WritableChangeEvent(_key)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_SettingsClass_writable_changed
-func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.GSettings, arg1 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ WritableChanged(key string) })
-
-	var _key string // out
-
-	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.WritableChanged(_key)
 }
 
 func wrapSettings(obj *coreglib.Object) *Settings {
@@ -646,38 +505,6 @@ func wrapSettings(obj *coreglib.Object) *Settings {
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	return wrapSettings(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gio2_Settings_ConnectChangeEvent
-func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(keys []glib.Quark) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(keys []glib.Quark) (ok bool))
-	}
-
-	var _keys []glib.Quark // out
-
-	{
-		src := unsafe.Slice((*C.GQuark)(arg1), arg2)
-		_keys = make([]glib.Quark, arg2)
-		for i := 0; i < int(arg2); i++ {
-			_keys[i] = uint32(src[i])
-		}
-	}
-
-	ok := f(_keys)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectChangeEvent: "change-event" signal is emitted once per change event
@@ -698,26 +525,6 @@ func (settings *Settings) ConnectChangeEvent(f func(keys []glib.Quark) (ok bool)
 	return coreglib.ConnectGeneratedClosure(settings, "change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectChangeEvent), f)
 }
 
-//export _gotk4_gio2_Settings_ConnectChanged
-func _gotk4_gio2_Settings_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(key string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(key string))
-	}
-
-	var _key string // out
-
-	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_key)
-}
-
 // ConnectChanged: "changed" signal is emitted when a key has potentially
 // changed. You should call one of the g_settings_get() calls to check the new
 // value.
@@ -729,32 +536,6 @@ func _gotk4_gio2_Settings_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.
 // while a signal handler was already connected for key.
 func (settings *Settings) ConnectChanged(f func(key string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(settings, "changed", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectChanged), f)
-}
-
-//export _gotk4_gio2_Settings_ConnectWritableChangeEvent
-func _gotk4_gio2_Settings_ConnectWritableChangeEvent(arg0 C.gpointer, arg1 C.guint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(key uint) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(key uint) (ok bool))
-	}
-
-	var _key uint // out
-
-	_key = uint(arg1)
-
-	ok := f(_key)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
@@ -777,26 +558,6 @@ func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) (ok bool))
 	return coreglib.ConnectGeneratedClosure(settings, "writable-change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectWritableChangeEvent), f)
 }
 
-//export _gotk4_gio2_Settings_ConnectWritableChanged
-func _gotk4_gio2_Settings_ConnectWritableChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(key string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(key string))
-	}
-
-	var _key string // out
-
-	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_key)
-}
-
 // ConnectWritableChanged: "writable-changed" signal is emitted when the
 // writability of a key has potentially changed. You should call
 // g_settings_is_writable() in order to determine the new status.
@@ -806,88 +567,6 @@ func _gotk4_gio2_Settings_ConnectWritableChanged(arg0 C.gpointer, arg1 *C.gchar,
 // writability of "x" changes.
 func (settings *Settings) ConnectWritableChanged(f func(key string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(settings, "writable-changed", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectWritableChanged), f)
-}
-
-// NewSettings creates a new #GSettings object with the schema specified by
-// schema_id.
-//
-// It is an error for the schema to not exist: schemas are an essential part of
-// a program, as they provide type information. If schemas need to be
-// dynamically loaded (for example, from an optional runtime dependency),
-// g_settings_schema_source_lookup() can be used to test for their existence
-// before loading them.
-//
-// Signals on the newly created #GSettings object will be dispatched via the
-// thread-default Context in effect at the time of the call to g_settings_new().
-// The new #GSettings will hold a reference on the context. See
-// g_main_context_push_thread_default().
-//
-// The function takes the following parameters:
-//
-//    - schemaId: id of the schema.
-//
-// The function returns the following values:
-//
-//    - settings: new #GSettings object.
-//
-func NewSettings(schemaId string) *Settings {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GSettings // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_new(_arg1)
-	runtime.KeepAlive(schemaId)
-
-	var _settings *Settings // out
-
-	_settings = wrapSettings(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _settings
-}
-
-// NewSettingsWithPath creates a new #GSettings object with the relocatable
-// schema specified by schema_id and a given path.
-//
-// You only need to do this if you want to directly create a settings object
-// with a schema that doesn't have a specified path of its own. That's quite
-// rare.
-//
-// It is a programmer error to call this function for a schema that has an
-// explicitly specified path.
-//
-// It is a programmer error if path is not a valid path. A valid path begins and
-// ends with '/' and does not contain two consecutive '/' characters.
-//
-// The function takes the following parameters:
-//
-//    - schemaId: id of the schema.
-//    - path to use.
-//
-// The function returns the following values:
-//
-//    - settings: new #GSettings object.
-//
-func NewSettingsWithPath(schemaId, path string) *Settings {
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.gchar     // out
-	var _cret *C.GSettings // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(schemaId)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_settings_new_with_path(_arg1, _arg2)
-	runtime.KeepAlive(schemaId)
-	runtime.KeepAlive(path)
-
-	var _settings *Settings // out
-
-	_settings = wrapSettings(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _settings
 }
 
 // Apply applies any changes that have been made to the settings. This function
@@ -901,493 +580,6 @@ func (settings *Settings) Apply() {
 
 	C.g_settings_apply(_arg0)
 	runtime.KeepAlive(settings)
-}
-
-// Bind: create a binding between the key in the settings object and the
-// property property of object.
-//
-// The binding uses the default GIO mapping functions to map between the
-// settings and property values. These functions handle booleans, numeric types
-// and string types in a straightforward way. Use g_settings_bind_with_mapping()
-// if you need a custom mapping, or map between types that are not supported by
-// the default mapping functions.
-//
-// Unless the flags include G_SETTINGS_BIND_NO_SENSITIVITY, this function also
-// establishes a binding between the writability of key and the "sensitive"
-// property of object (if object has a boolean property by that name). See
-// g_settings_bind_writable() for more details about writable bindings.
-//
-// Note that the lifecycle of the binding is tied to object, and that you can
-// have only one binding per object property. If you bind the same property
-// twice on the same object, the second binding overrides the first one.
-//
-// The function takes the following parameters:
-//
-//    - key to bind.
-//    - object: #GObject.
-//    - property: name of the property to bind.
-//    - flags for the binding.
-//
-func (settings *Settings) Bind(key string, object *coreglib.Object, property string, flags SettingsBindFlags) {
-	var _arg0 *C.GSettings         // out
-	var _arg1 *C.gchar             // out
-	var _arg2 C.gpointer           // out
-	var _arg3 *C.gchar             // out
-	var _arg4 C.GSettingsBindFlags // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.GSettingsBindFlags(flags)
-
-	C.g_settings_bind(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(property)
-	runtime.KeepAlive(flags)
-}
-
-// BindWritable: create a binding between the writability of key in the settings
-// object and the property property of object. The property must be boolean;
-// "sensitive" or "visible" properties of widgets are the most likely
-// candidates.
-//
-// Writable bindings are always uni-directional; changes of the writability of
-// the setting will be propagated to the object property, not the other way.
-//
-// When the inverted argument is TRUE, the binding inverts the value as it
-// passes from the setting to the object, i.e. property will be set to TRUE if
-// the key is not writable.
-//
-// Note that the lifecycle of the binding is tied to object, and that you can
-// have only one binding per object property. If you bind the same property
-// twice on the same object, the second binding overrides the first one.
-//
-// The function takes the following parameters:
-//
-//    - key to bind.
-//    - object: #GObject.
-//    - property: name of a boolean property to bind.
-//    - inverted: whether to 'invert' the value.
-//
-func (settings *Settings) BindWritable(key string, object *coreglib.Object, property string, inverted bool) {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gpointer   // out
-	var _arg3 *C.gchar     // out
-	var _arg4 C.gboolean   // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gpointer(unsafe.Pointer(object.Native()))
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg3))
-	if inverted {
-		_arg4 = C.TRUE
-	}
-
-	C.g_settings_bind_writable(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(property)
-	runtime.KeepAlive(inverted)
-}
-
-// CreateAction creates a #GAction corresponding to a given #GSettings key.
-//
-// The action has the same name as the key.
-//
-// The value of the key becomes the state of the action and the action is
-// enabled when the key is writable. Changing the state of the action results in
-// the key being written to. Changes to the value or writability of the key
-// cause appropriate change notifications to be emitted for the action.
-//
-// For boolean-valued keys, action activations take no parameter and result in
-// the toggling of the value. For all other types, activations take the new
-// value for the key (which must have the correct type).
-//
-// The function takes the following parameters:
-//
-//    - key: name of a key in settings.
-//
-// The function returns the following values:
-//
-//    - action: new #GAction.
-//
-func (settings *Settings) CreateAction(key string) *Action {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GAction   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_create_action(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _action
-}
-
-// Delay changes the #GSettings object into 'delay-apply' mode. In this mode,
-// changes to settings are not immediately propagated to the backend, but kept
-// locally until g_settings_apply() is called.
-func (settings *Settings) Delay() {
-	var _arg0 *C.GSettings // out
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-
-	C.g_settings_delay(_arg0)
-	runtime.KeepAlive(settings)
-}
-
-// Boolean gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for booleans.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// boolean type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - ok: boolean.
-//
-func (settings *Settings) Boolean(key string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_boolean(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Child creates a child settings object which has a base path of
-// base-path/name, where base-path is the base path of settings.
-//
-// The schema for the child settings object must have been declared in the
-// schema of settings using a <child> element.
-//
-// The function takes the following parameters:
-//
-//    - name of the child schema.
-//
-// The function returns the following values:
-//
-//    - ret: 'child' settings object.
-//
-func (settings *Settings) Child(name string) *Settings {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GSettings // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_child(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(name)
-
-	var _ret *Settings // out
-
-	_ret = wrapSettings(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _ret
-}
-
-// DefaultValue gets the "default value" of a key.
-//
-// This is the value that would be read if g_settings_reset() were to be called
-// on the key.
-//
-// Note that this may be a different value than returned by
-// g_settings_schema_key_get_default_value() if the system administrator has
-// provided a default value.
-//
-// Comparing the return values of g_settings_get_default_value() and
-// g_settings_get_value() is not sufficient for determining if a value has been
-// set because the user may have explicitly set the value to something that
-// happens to be equal to the default. The difference here is that if the
-// default changes in the future, the user's key will still be set.
-//
-// This function may be useful for adding an indication to a UI of what the
-// default value was before the user set it.
-//
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the default value for.
-//
-// The function returns the following values:
-//
-//    - variant (optional): default value.
-//
-func (settings *Settings) DefaultValue(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_default_value(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _variant *glib.Variant // out
-
-	if _cret != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-
-	return _variant
-}
-
-// Double gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for doubles.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// 'double' type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - gdouble: double.
-//
-func (settings *Settings) Double(key string) float64 {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gdouble    // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_double(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// Enum gets the value that is stored in settings for key and converts it to the
-// enum value that it represents.
-//
-// In order to use this function the type of the value must be a string and it
-// must be marked in the schema file as an enumerated type.
-//
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings or is not marked as an enumerated type.
-//
-// If the value stored in the configuration database is not a valid value for
-// the enumerated type then this function will return the default value.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - gint: enum value.
-//
-func (settings *Settings) Enum(key string) int {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_enum(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Flags gets the value that is stored in settings for key and converts it to
-// the flags value that it represents.
-//
-// In order to use this function the type of the value must be an array of
-// strings and it must be marked in the schema file as a flags type.
-//
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings or is not marked as a flags type.
-//
-// If the value stored in the configuration database is not a valid value for
-// the flags type then this function will return the default value.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - guint flags value.
-//
-func (settings *Settings) Flags(key string) uint {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.guint      // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_flags(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// HasUnapplied returns whether the #GSettings object has any unapplied changes.
-// This can only be the case if it is in 'delayed-apply' mode.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if settings has unapplied changes.
-//
-func (settings *Settings) HasUnapplied() bool {
-	var _arg0 *C.GSettings // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-
-	_cret = C.g_settings_get_has_unapplied(_arg0)
-	runtime.KeepAlive(settings)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Int gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for 32-bit integers.
-//
-// It is a programmer error to give a key that isn't specified as having a int32
-// type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - gint: integer.
-//
-func (settings *Settings) Int(key string) int {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_int(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Int64 gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for 64-bit integers.
-//
-// It is a programmer error to give a key that isn't specified as having a int64
-// type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - gint64: 64-bit integer.
-//
-func (settings *Settings) Int64(key string) int64 {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gint64     // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_int64(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _gint64 int64 // out
-
-	_gint64 = int64(_cret)
-
-	return _gint64
 }
 
 // Mapped gets the value that is stored at key in settings, subject to
@@ -1451,321 +643,6 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.
 	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
 
 	return _gpointer
-}
-
-// Range queries the range of a key.
-//
-// Deprecated: Use g_settings_schema_key_get_range() instead.
-//
-// The function takes the following parameters:
-//
-//    - key to query the range of.
-//
-// The function returns the following values:
-//
-func (settings *Settings) Range(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_range(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	return _variant
-}
-
-// String gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for strings.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// string type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - utf8: newly-allocated string.
-//
-func (settings *Settings) String(key string) string {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_string(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-// Strv: convenience variant of g_settings_get() for string arrays.
-//
-// It is a programmer error to give a key that isn't specified as having an
-// array of strings type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - utf8s: a newly-allocated, NULL-terminated array of strings, the value
-//      that is stored at key in settings.
-//
-func (settings *Settings) Strv(key string) []string {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret **C.gchar    // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_strv(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _utf8s []string // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _utf8s
-}
-
-// Uint gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for 32-bit unsigned integers.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// uint32 type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - guint: unsigned integer.
-//
-func (settings *Settings) Uint(key string) uint {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.guint      // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_uint(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// Uint64 gets the value that is stored at key in settings.
-//
-// A convenience variant of g_settings_get() for 64-bit unsigned integers.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// uint64 type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - guint64: 64-bit unsigned integer.
-//
-func (settings *Settings) Uint64(key string) uint64 {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.guint64    // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_uint64(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _guint64 uint64 // out
-
-	_guint64 = uint64(_cret)
-
-	return _guint64
-}
-
-// UserValue checks the "user value" of a key, if there is one.
-//
-// The user value of a key is the last value that was set by the user.
-//
-// After calling g_settings_reset() this function should always return NULL
-// (assuming something is not wrong with the system configuration).
-//
-// It is possible that g_settings_get_value() will return a different value than
-// this function. This can happen in the case that the user set a value for a
-// key that was subsequently locked down by the system administrator -- this
-// function will return the user's old value.
-//
-// This function may be useful for adding a "reset" option to a UI or for
-// providing indication that a particular value has been changed.
-//
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the user value for.
-//
-// The function returns the following values:
-//
-//    - variant (optional) user's value, if set.
-//
-func (settings *Settings) UserValue(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_user_value(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _variant *glib.Variant // out
-
-	if _cret != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-
-	return _variant
-}
-
-// Value gets the value that is stored in settings for key.
-//
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings.
-//
-// The function takes the following parameters:
-//
-//    - key to get the value for.
-//
-// The function returns the following values:
-//
-//    - variant: new #GVariant.
-//
-func (settings *Settings) Value(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_value(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	return _variant
-}
-
-// IsWritable finds out if a key can be written or not.
-//
-// The function takes the following parameters:
-//
-//    - name of a key.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the key name is writable.
-//
-func (settings *Settings) IsWritable(name string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_is_writable(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(name)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // ListChildren gets the list of children on settings.
@@ -1857,45 +734,6 @@ func (settings *Settings) ListKeys() []string {
 	return _utf8s
 }
 
-// RangeCheck checks if the given value is of the correct type and within the
-// permitted range for key.
-//
-// Deprecated: Use g_settings_schema_key_range_check() instead.
-//
-// The function takes the following parameters:
-//
-//    - key to check.
-//    - value to check.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if value is valid for key.
-//
-func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Reset resets key to its default value.
 //
 // This call resets the key, as much as possible, to its default value. That
@@ -1931,90 +769,6 @@ func (settings *Settings) Revert() {
 
 	C.g_settings_revert(_arg0)
 	runtime.KeepAlive(settings)
-}
-
-// SetBoolean sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for booleans.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// boolean type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key: name of the key to set.
-//    - value to set it to.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetBoolean(key string, value bool) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gboolean   // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if value {
-		_arg2 = C.TRUE
-	}
-
-	_cret = C.g_settings_set_boolean(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetDouble sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for doubles.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// 'double' type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key: name of the key to set.
-//    - value to set it to.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetDouble(key string, value float64) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.gdouble    // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(value)
-
-	_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SetEnum looks up the enumerated type nick for value and writes it to key,
@@ -2105,37 +859,30 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 	return _ok
 }
 
-// SetInt sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for 32-bit integers.
-//
-// It is a programmer error to give a key that isn't specified as having a int32
-// type in the schema for settings.
-//
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//    - keys
+//    - nKeys
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetInt(key string, value int) bool {
+func (settings *Settings) changeEvent(keys *glib.Quark, nKeys int) bool {
+	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
+	fnarg := gclass.change_event
+
 	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
+	var _arg1 *C.GQuark    // out
 	var _arg2 C.gint       // out
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(value)
+	_arg1 = (*C.guint32)(unsafe.Pointer(keys))
+	_arg2 = C.gint(nKeys)
 
-	_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
+	_cret = C._gotk4_gio2_Settings_virtual_change_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
+	runtime.KeepAlive(keys)
+	runtime.KeepAlive(nKeys)
 
 	var _ok bool // out
 
@@ -2146,37 +893,42 @@ func (settings *Settings) SetInt(key string, value int) bool {
 	return _ok
 }
 
-// SetInt64 sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for 64-bit integers.
-//
-// It is a programmer error to give a key that isn't specified as having a int64
-// type in the schema for settings.
-//
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetInt64(key string, value int64) bool {
+func (settings *Settings) changed(key string) {
+	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
+	fnarg := gclass.changed
+
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
-	var _arg2 C.gint64     // out
-	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint64(value)
 
-	_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
+	C._gotk4_gio2_Settings_virtual_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (settings *Settings) writableChangeEvent(key glib.Quark) bool {
+	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
+	fnarg := gclass.writable_change_event
+
+	var _arg0 *C.GSettings // out
+	var _arg1 C.GQuark     // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = C.guint32(key)
+
+	_cret = C._gotk4_gio2_Settings_virtual_writable_change_event(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(key)
 
 	var _ok bool // out
 
@@ -2187,291 +939,22 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 	return _ok
 }
 
-// SetString sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for strings.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// string type in the schema for settings.
-//
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetString(key, value string) bool {
+func (settings *Settings) writableChanged(key string) {
+	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
+	fnarg := gclass.writable_changed
+
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
-	var _arg2 *C.gchar     // out
-	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
 
-	_cret = C.g_settings_set_string(_arg0, _arg1, _arg2)
+	C._gotk4_gio2_Settings_virtual_writable_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetStrv sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for string arrays. If value is
-// NULL, then key is set to be the empty array.
-//
-// It is a programmer error to give a key that isn't specified as having an
-// array of strings type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key: name of the key to set.
-//    - value (optional) to set it to, or NULL.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetStrv(key string, value []string) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 **C.gchar    // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	{
-		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(value) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg2))
-		{
-			out := unsafe.Slice(_arg2, len(value)+1)
-			var zero *C.gchar
-			out[len(value)] = zero
-			for i := range value {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(value[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-
-	_cret = C.g_settings_set_strv(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetUint sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for 32-bit unsigned integers.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// uint32 type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key: name of the key to set.
-//    - value to set it to.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetUint(key string, value uint) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.guint      // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint(value)
-
-	_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetUint64 sets key in settings to value.
-//
-// A convenience variant of g_settings_set() for 64-bit unsigned integers.
-//
-// It is a programmer error to give a key that isn't specified as having a
-// uint64 type in the schema for settings.
-//
-// The function takes the following parameters:
-//
-//    - key: name of the key to set.
-//    - value to set it to.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetUint64(key string, value uint64) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 C.guint64    // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint64(value)
-
-	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetValue sets key in settings to value.
-//
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings or for value to have the incorrect type, per the schema.
-//
-// If value is floating then this function consumes the reference.
-//
-// The function takes the following parameters:
-//
-//    - key: name of the key to set.
-//    - value of the correct type.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
-func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SettingsListRelocatableSchemas: deprecated.
-//
-// Deprecated: Use g_settings_schema_source_list_schemas() instead.
-//
-// The function returns the following values:
-//
-//    - utf8s: list of relocatable #GSettings schemas that are available, in no
-//      defined order. The list must not be modified or freed.
-//
-func SettingsListRelocatableSchemas() []string {
-	var _cret **C.gchar // in
-
-	_cret = C.g_settings_list_relocatable_schemas()
-
-	var _utf8s []string // out
-
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-
-	return _utf8s
-}
-
-// SettingsListSchemas: deprecated.
-//
-// Deprecated: Use g_settings_schema_source_list_schemas() instead. If you used
-// g_settings_list_schemas() to check for the presence of a particular schema,
-// use g_settings_schema_source_lookup() instead of your whole loop.
-//
-// The function returns the following values:
-//
-//    - utf8s: list of #GSettings schemas that are available, in no defined
-//      order. The list must not be modified or freed.
-//
-func SettingsListSchemas() []string {
-	var _cret **C.gchar // in
-
-	_cret = C.g_settings_list_schemas()
-
-	var _utf8s []string // out
-
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-
-	return _utf8s
 }
 
 // SettingsSync ensures that all pending operations are complete for the default
@@ -2486,29 +969,6 @@ func SettingsListSchemas() []string {
 // during this call (but some may be queued by the time the call is done).
 func SettingsSync() {
 	C.g_settings_sync()
-}
-
-// SettingsUnbind removes an existing binding for property on object.
-//
-// Note that bindings are automatically removed when the object is finalized, so
-// it is rarely necessary to call this function.
-//
-// The function takes the following parameters:
-//
-//    - object: object.
-//    - property whose binding is removed.
-//
-func SettingsUnbind(object *coreglib.Object, property string) {
-	var _arg1 C.gpointer // out
-	var _arg2 *C.gchar   // out
-
-	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.g_settings_unbind(_arg1, _arg2)
-	runtime.KeepAlive(object)
-	runtime.KeepAlive(property)
 }
 
 // SettingsClass: instance of this type is always passed by reference.

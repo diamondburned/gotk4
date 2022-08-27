@@ -8,7 +8,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -103,28 +102,6 @@ func (k KeyEventType) String() string {
 // below.
 type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 
-//export _gotk4_atk1_KeySnoopFunc
-func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret C.gint) {
-	var fn KeySnoopFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(KeySnoopFunc)
-	}
-
-	var _event *KeyEventStruct // out
-
-	_event = (*KeyEventStruct)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-
-	gint := fn(_event)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
 // FocusTrackerNotify: cause the focus tracker functions which have been
 // specified to be executed for the object.
 //
@@ -144,24 +121,6 @@ func FocusTrackerNotify(object *AtkObject) {
 
 	C.atk_focus_tracker_notify(_arg1)
 	runtime.KeepAlive(object)
-}
-
-// GetFocusObject gets the currently focused object.
-//
-// The function returns the following values:
-//
-//    - object: currently focused object for the current application.
-//
-func GetFocusObject() *AtkObject {
-	var _cret *C.AtkObject // in
-
-	_cret = C.atk_get_focus_object()
-
-	var _object *AtkObject // out
-
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _object
 }
 
 // GetRoot gets the root accessible container for the current application.
@@ -214,24 +173,6 @@ func GetToolkitVersion() string {
 	var _cret *C.gchar // in
 
 	_cret = C.atk_get_toolkit_version()
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// GetVersion gets the current version for ATK.
-//
-// The function returns the following values:
-//
-//    - utf8: version string for ATK.
-//
-func GetVersion() string {
-	var _cret *C.gchar // in
-
-	_cret = C.atk_get_version()
 
 	var _utf8 string // out
 
@@ -303,8 +244,12 @@ func RemoveKeyEventListener(listenerId uint) {
 	runtime.KeepAlive(listenerId)
 }
 
-// UtilOverrider contains methods that are overridable.
-type UtilOverrider interface {
+// UtilOverrides contains methods that are overridable.
+type UtilOverrides struct {
+}
+
+func defaultUtilOverrides(v *Util) UtilOverrides {
+	return UtilOverrides{}
 }
 
 // Util: set of ATK utility functions which are used to support event
@@ -321,25 +266,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeUtil,
-		GoType:        reflect.TypeOf((*Util)(nil)),
-		InitClass:     initClassUtil,
-		FinalizeClass: finalizeClassUtil,
-	})
+	coreglib.RegisterClassInfo[*Util, *UtilClass, UtilOverrides](
+		GTypeUtil,
+		initUtilClass,
+		wrapUtil,
+		defaultUtilOverrides,
+	)
 }
 
-func initClassUtil(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitUtil(*UtilClass) }); ok {
-		klass := (*UtilClass)(gextras.NewStructNative(gclass))
-		goval.InitUtil(klass)
-	}
-}
-
-func finalizeClassUtil(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeUtil(*UtilClass) }); ok {
-		klass := (*UtilClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeUtil(klass)
+func initUtilClass(gclass unsafe.Pointer, overrides UtilOverrides, classInitFunc func(*UtilClass)) {
+	if classInitFunc != nil {
+		class := (*UtilClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

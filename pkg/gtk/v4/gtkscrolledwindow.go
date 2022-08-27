@@ -13,10 +13,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_ScrolledWindow_ConnectScrollChild(gpointer, GtkScrollType, gboolean, guintptr);
-// extern void _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot(gpointer, GtkPositionType, guintptr);
-// extern void _gotk4_gtk4_ScrolledWindow_ConnectEdgeReached(gpointer, GtkPositionType, guintptr);
 // extern void _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
+// extern void _gotk4_gtk4_ScrolledWindow_ConnectEdgeReached(gpointer, GtkPositionType, guintptr);
+// extern void _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot(gpointer, GtkPositionType, guintptr);
+// extern gboolean _gotk4_gtk4_ScrolledWindow_ConnectScrollChild(gpointer, GtkScrollType, gboolean, guintptr);
 import "C"
 
 // GType values.
@@ -232,26 +232,6 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return wrapScrolledWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot
-func _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot(arg0 C.gpointer, arg1 C.GtkPositionType, arg2 C.guintptr) {
-	var f func(pos PositionType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(pos PositionType))
-	}
-
-	var _pos PositionType // out
-
-	_pos = PositionType(arg1)
-
-	f(_pos)
-}
-
 // ConnectEdgeOvershot is emitted whenever user initiated scrolling makes the
 // scrolled window firmly surpass the limits defined by the adjustment in that
 // orientation.
@@ -263,26 +243,6 @@ func _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot(arg0 C.gpointer, arg1 C.GtkP
 // intending to provide behavior on horizontal edges.
 func (scrolledWindow *ScrolledWindow) ConnectEdgeOvershot(f func(pos PositionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(scrolledWindow, "edge-overshot", false, unsafe.Pointer(C._gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot), f)
-}
-
-//export _gotk4_gtk4_ScrolledWindow_ConnectEdgeReached
-func _gotk4_gtk4_ScrolledWindow_ConnectEdgeReached(arg0 C.gpointer, arg1 C.GtkPositionType, arg2 C.guintptr) {
-	var f func(pos PositionType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(pos PositionType))
-	}
-
-	var _pos PositionType // out
-
-	_pos = PositionType(arg1)
-
-	f(_pos)
 }
 
 // ConnectEdgeReached is emitted whenever user-initiated scrolling makes the
@@ -298,26 +258,6 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType
 	return coreglib.ConnectGeneratedClosure(scrolledWindow, "edge-reached", false, unsafe.Pointer(C._gotk4_gtk4_ScrolledWindow_ConnectEdgeReached), f)
 }
 
-//export _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut
-func _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
-	var f func(directionType DirectionType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(directionType DirectionType))
-	}
-
-	var _directionType DirectionType // out
-
-	_directionType = DirectionType(arg1)
-
-	f(_directionType)
-}
-
 // ConnectMoveFocusOut is emitted when focus is moved away from the scrolled
 // window by a keybinding.
 //
@@ -327,36 +267,6 @@ func _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkD
 // + Shift + Tab to move backward.
 func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(scrolledWindow, "move-focus-out", false, unsafe.Pointer(C._gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut), f)
-}
-
-//export _gotk4_gtk4_ScrolledWindow_ConnectScrollChild
-func _gotk4_gtk4_ScrolledWindow_ConnectScrollChild(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.gboolean, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(scroll ScrollType, horizontal bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scroll ScrollType, horizontal bool) (ok bool))
-	}
-
-	var _scroll ScrollType // out
-	var _horizontal bool   // out
-
-	_scroll = ScrollType(arg1)
-	if arg2 != 0 {
-		_horizontal = true
-	}
-
-	ok := f(_scroll, _horizontal)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectScrollChild is emitted when a keybinding that scrolls is pressed.

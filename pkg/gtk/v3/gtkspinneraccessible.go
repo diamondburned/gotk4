@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// SpinnerAccessibleOverrider contains methods that are overridable.
-type SpinnerAccessibleOverrider interface {
+// SpinnerAccessibleOverrides contains methods that are overridable.
+type SpinnerAccessibleOverrides struct {
+}
+
+func defaultSpinnerAccessibleOverrides(v *SpinnerAccessible) SpinnerAccessibleOverrides {
+	return SpinnerAccessibleOverrides{}
 }
 
 type SpinnerAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSpinnerAccessible,
-		GoType:        reflect.TypeOf((*SpinnerAccessible)(nil)),
-		InitClass:     initClassSpinnerAccessible,
-		FinalizeClass: finalizeClassSpinnerAccessible,
-	})
+	coreglib.RegisterClassInfo[*SpinnerAccessible, *SpinnerAccessibleClass, SpinnerAccessibleOverrides](
+		GTypeSpinnerAccessible,
+		initSpinnerAccessibleClass,
+		wrapSpinnerAccessible,
+		defaultSpinnerAccessibleOverrides,
+	)
 }
 
-func initClassSpinnerAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSpinnerAccessible(*SpinnerAccessibleClass) }); ok {
-		klass := (*SpinnerAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitSpinnerAccessible(klass)
-	}
-}
-
-func finalizeClassSpinnerAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSpinnerAccessible(*SpinnerAccessibleClass) }); ok {
-		klass := (*SpinnerAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSpinnerAccessible(klass)
+func initSpinnerAccessibleClass(gclass unsafe.Pointer, overrides SpinnerAccessibleOverrides, classInitFunc func(*SpinnerAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*SpinnerAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

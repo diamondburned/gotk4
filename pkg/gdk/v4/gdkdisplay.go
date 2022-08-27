@@ -14,11 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_Display_ConnectClosed(gpointer, gboolean, guintptr);
-// extern void _gotk4_gdk4_Display_ConnectOpened(gpointer, guintptr);
-// extern void _gotk4_gdk4_Display_ConnectSeatAdded(gpointer, GdkSeat*, guintptr);
-// extern void _gotk4_gdk4_Display_ConnectSeatRemoved(gpointer, GdkSeat*, guintptr);
 // extern void _gotk4_gdk4_Display_ConnectSettingChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectSeatRemoved(gpointer, GdkSeat*, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectSeatAdded(gpointer, GdkSeat*, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectOpened(gpointer, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectClosed(gpointer, gboolean, guintptr);
 import "C"
 
 // GType values.
@@ -67,48 +67,10 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 	return wrapDisplay(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdk4_Display_ConnectClosed
-func _gotk4_gdk4_Display_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
-	var f func(isError bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(isError bool))
-	}
-
-	var _isError bool // out
-
-	if arg1 != 0 {
-		_isError = true
-	}
-
-	f(_isError)
-}
-
 // ConnectClosed is emitted when the connection to the windowing system for
 // display is closed.
 func (display *Display) ConnectClosed(f func(isError bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(display, "closed", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectClosed), f)
-}
-
-//export _gotk4_gdk4_Display_ConnectOpened
-func _gotk4_gdk4_Display_ConnectOpened(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectOpened is emitted when the connection to the windowing system for
@@ -117,108 +79,16 @@ func (display *Display) ConnectOpened(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(display, "opened", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectOpened), f)
 }
 
-//export _gotk4_gdk4_Display_ConnectSeatAdded
-func _gotk4_gdk4_Display_ConnectSeatAdded(arg0 C.gpointer, arg1 *C.GdkSeat, arg2 C.guintptr) {
-	var f func(seat Seater)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(seat Seater))
-	}
-
-	var _seat Seater // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Seater is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Seater)
-			return ok
-		})
-		rv, ok := casted.(Seater)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
-		}
-		_seat = rv
-	}
-
-	f(_seat)
-}
-
 // ConnectSeatAdded is emitted whenever a new seat is made known to the
 // windowing system.
 func (display *Display) ConnectSeatAdded(f func(seat Seater)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(display, "seat-added", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectSeatAdded), f)
 }
 
-//export _gotk4_gdk4_Display_ConnectSeatRemoved
-func _gotk4_gdk4_Display_ConnectSeatRemoved(arg0 C.gpointer, arg1 *C.GdkSeat, arg2 C.guintptr) {
-	var f func(seat Seater)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(seat Seater))
-	}
-
-	var _seat Seater // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Seater is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Seater)
-			return ok
-		})
-		rv, ok := casted.(Seater)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Seater")
-		}
-		_seat = rv
-	}
-
-	f(_seat)
-}
-
 // ConnectSeatRemoved is emitted whenever a seat is removed by the windowing
 // system.
 func (display *Display) ConnectSeatRemoved(f func(seat Seater)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(display, "seat-removed", false, unsafe.Pointer(C._gotk4_gdk4_Display_ConnectSeatRemoved), f)
-}
-
-//export _gotk4_gdk4_Display_ConnectSettingChanged
-func _gotk4_gdk4_Display_ConnectSettingChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(setting string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(setting string))
-	}
-
-	var _setting string // out
-
-	_setting = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_setting)
 }
 
 // ConnectSettingChanged is emitted whenever a setting changes its value.

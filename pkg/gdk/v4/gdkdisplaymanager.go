@@ -132,26 +132,6 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 	return wrapDisplayManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdk4_DisplayManager_ConnectDisplayOpened
-func _gotk4_gdk4_DisplayManager_ConnectDisplayOpened(arg0 C.gpointer, arg1 *C.GdkDisplay, arg2 C.guintptr) {
-	var f func(display *Display)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(display *Display))
-	}
-
-	var _display *Display // out
-
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_display)
-}
-
 // ConnectDisplayOpened is emitted when a display is opened.
 func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(manager, "display-opened", false, unsafe.Pointer(C._gotk4_gdk4_DisplayManager_ConnectDisplayOpened), f)

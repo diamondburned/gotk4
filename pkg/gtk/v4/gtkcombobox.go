@@ -16,15 +16,21 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(GtkComboBox*, char*);
-// extern gboolean _gotk4_gtk4_ComboBox_ConnectPopdown(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
-// extern gchar* _gotk4_gtk4_ComboBox_ConnectFormatEntryText(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_ComboBoxClass_changed(GtkComboBox*);
-// extern void _gotk4_gtk4_ComboBox_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_ComboBox_ConnectMoveActive(gpointer, GtkScrollType, guintptr);
-// extern void _gotk4_gtk4_ComboBox_ConnectPopup(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_ComboBox_ConnectPopup(gpointer, guintptr);
+// extern void _gotk4_gtk4_ComboBox_ConnectMoveActive(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk4_ComboBox_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_ComboBoxClass_changed(GtkComboBox*);
+// extern gchar* _gotk4_gtk4_ComboBox_ConnectFormatEntryText(gpointer, gchar*, guintptr);
+// extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
+// extern gboolean _gotk4_gtk4_ComboBox_ConnectPopdown(gpointer, guintptr);
+// extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(GtkComboBox*, char*);
+// char* _gotk4_gtk4_ComboBox_virtual_format_entry_text(void* fnptr, GtkComboBox* arg0, char* arg1) {
+//   return ((char* (*)(GtkComboBox*, char*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_ComboBox_virtual_changed(void* fnptr, GtkComboBox* arg0) {
+//   ((void (*)(GtkComboBox*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -38,14 +44,21 @@ func init() {
 	})
 }
 
-// ComboBoxOverrider contains methods that are overridable.
-type ComboBoxOverrider interface {
-	Changed()
+// ComboBoxOverrides contains methods that are overridable.
+type ComboBoxOverrides struct {
+	Changed func()
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	FormatEntryText(path string) string
+	FormatEntryText func(path string) string
+}
+
+func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
+	return ComboBoxOverrides{
+		Changed:         v.changed,
+		FormatEntryText: v.formatEntryText,
+	}
 }
 
 // ComboBox: GtkComboBox is a widget that allows the user to choose from a list
@@ -120,60 +133,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeComboBox,
-		GoType:        reflect.TypeOf((*ComboBox)(nil)),
-		InitClass:     initClassComboBox,
-		FinalizeClass: finalizeClassComboBox,
-	})
+	coreglib.RegisterClassInfo[*ComboBox, *ComboBoxClass, ComboBoxOverrides](
+		GTypeComboBox,
+		initComboBoxClass,
+		wrapComboBox,
+		defaultComboBoxOverrides,
+	)
 }
 
-func initClassComboBox(gclass unsafe.Pointer, goval any) {
+func initComboBoxClass(gclass unsafe.Pointer, overrides ComboBoxOverrides, classInitFunc func(*ComboBoxClass)) {
+	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeComboBox))))
 
-	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Changed() }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_changed)
 	}
 
-	if _, ok := goval.(interface{ FormatEntryText(path string) string }); ok {
+	if overrides.FormatEntryText != nil {
 		pclass.format_entry_text = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_format_entry_text)
 	}
-	if goval, ok := goval.(interface{ InitComboBox(*ComboBoxClass) }); ok {
-		klass := (*ComboBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitComboBox(klass)
+
+	if classInitFunc != nil {
+		class := (*ComboBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassComboBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeComboBox(*ComboBoxClass) }); ok {
-		klass := (*ComboBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeComboBox(klass)
-	}
-}
-
-//export _gotk4_gtk4_ComboBoxClass_changed
-func _gotk4_gtk4_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed() })
-
-	iface.Changed()
-}
-
-//export _gotk4_gtk4_ComboBoxClass_format_entry_text
-func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.GtkComboBox, arg1 *C.char) (cret *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ FormatEntryText(path string) string })
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	utf8 := iface.FormatEntryText(_path)
-
-	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
 }
 
 func wrapComboBox(obj *coreglib.Object) *ComboBox {
@@ -221,22 +203,6 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return wrapComboBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_ComboBox_ConnectChanged
-func _gotk4_gtk4_ComboBox_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted when the active item is changed.
 //
 // The can be due to the user selecting a different item from the list, or due
@@ -244,30 +210,6 @@ func _gotk4_gtk4_ComboBox_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 // typing into the entry of a combo box with an entry.
 func (comboBox *ComboBox) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(comboBox, "changed", false, unsafe.Pointer(C._gotk4_gtk4_ComboBox_ConnectChanged), f)
-}
-
-//export _gotk4_gtk4_ComboBox_ConnectFormatEntryText
-func _gotk4_gtk4_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret *C.gchar) {
-	var f func(path string) (utf8 string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(path string) (utf8 string))
-	}
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	utf8 := f(_path)
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
 }
 
 // ConnectFormatEntryText is emitted to allow changing how the text in a combo
@@ -305,53 +247,11 @@ func (comboBox *ComboBox) ConnectFormatEntryText(f func(path string) (utf8 strin
 	return coreglib.ConnectGeneratedClosure(comboBox, "format-entry-text", false, unsafe.Pointer(C._gotk4_gtk4_ComboBox_ConnectFormatEntryText), f)
 }
 
-//export _gotk4_gtk4_ComboBox_ConnectMoveActive
-func _gotk4_gtk4_ComboBox_ConnectMoveActive(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
-	var f func(scrollType ScrollType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scrollType ScrollType))
-	}
-
-	var _scrollType ScrollType // out
-
-	_scrollType = ScrollType(arg1)
-
-	f(_scrollType)
-}
-
 // ConnectMoveActive is emitted to move the active selection.
 //
 // This is an keybinding signal (class.SignalAction.html).
 func (comboBox *ComboBox) ConnectMoveActive(f func(scrollType ScrollType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(comboBox, "move-active", false, unsafe.Pointer(C._gotk4_gtk4_ComboBox_ConnectMoveActive), f)
-}
-
-//export _gotk4_gtk4_ComboBox_ConnectPopdown
-func _gotk4_gtk4_ComboBox_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectPopdown is emitted to popdown the combo box list.
@@ -361,22 +261,6 @@ func _gotk4_gtk4_ComboBox_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) (cret
 // The default bindings for this signal are Alt+Up and Escape.
 func (comboBox *ComboBox) ConnectPopdown(f func() (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(comboBox, "popdown", false, unsafe.Pointer(C._gotk4_gtk4_ComboBox_ConnectPopdown), f)
-}
-
-//export _gotk4_gtk4_ComboBox_ConnectPopup
-func _gotk4_gtk4_ComboBox_ConnectPopup(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectPopup is emitted to popup the combo box list.
@@ -1046,6 +930,46 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 	C.gtk_combo_box_set_row_separator_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(fn)
+}
+
+func (comboBox *ComboBox) changed() {
+	gclass := (*C.GtkComboBoxClass)(coreglib.PeekParentClass(comboBox))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkComboBox // out
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+
+	C._gotk4_gtk4_ComboBox_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(comboBox)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (comboBox *ComboBox) formatEntryText(path string) string {
+	gclass := (*C.GtkComboBoxClass)(coreglib.PeekParentClass(comboBox))
+	fnarg := gclass.format_entry_text
+
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 *C.char        // out
+	var _cret *C.char        // in
+
+	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_gtk4_ComboBox_virtual_format_entry_text(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(comboBox)
+	runtime.KeepAlive(path)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }
 
 // ComboBoxClass: instance of this type is always passed by reference.

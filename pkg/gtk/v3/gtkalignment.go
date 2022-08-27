@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// AlignmentOverrider contains methods that are overridable.
-type AlignmentOverrider interface {
+// AlignmentOverrides contains methods that are overridable.
+type AlignmentOverrides struct {
+}
+
+func defaultAlignmentOverrides(v *Alignment) AlignmentOverrides {
+	return AlignmentOverrides{}
 }
 
 // Alignment widget controls the alignment and size of its child widget. It has
@@ -61,25 +65,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeAlignment,
-		GoType:        reflect.TypeOf((*Alignment)(nil)),
-		InitClass:     initClassAlignment,
-		FinalizeClass: finalizeClassAlignment,
-	})
+	coreglib.RegisterClassInfo[*Alignment, *AlignmentClass, AlignmentOverrides](
+		GTypeAlignment,
+		initAlignmentClass,
+		wrapAlignment,
+		defaultAlignmentOverrides,
+	)
 }
 
-func initClassAlignment(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitAlignment(*AlignmentClass) }); ok {
-		klass := (*AlignmentClass)(gextras.NewStructNative(gclass))
-		goval.InitAlignment(klass)
-	}
-}
-
-func finalizeClassAlignment(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeAlignment(*AlignmentClass) }); ok {
-		klass := (*AlignmentClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeAlignment(klass)
+func initAlignmentClass(gclass unsafe.Pointer, overrides AlignmentOverrides, classInitFunc func(*AlignmentClass)) {
+	if classInitFunc != nil {
+		class := (*AlignmentClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -154,47 +151,6 @@ func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 	return _alignment
 }
 
-// Padding gets the padding on the different sides of the widget. See
-// gtk_alignment_set_padding ().
-//
-// Deprecated: Use Widget alignment and margin properties.
-//
-// The function returns the following values:
-//
-//    - paddingTop (optional): location to store the padding for the top of the
-//      widget, or NULL.
-//    - paddingBottom (optional): location to store the padding for the bottom of
-//      the widget, or NULL.
-//    - paddingLeft (optional): location to store the padding for the left of the
-//      widget, or NULL.
-//    - paddingRight (optional): location to store the padding for the right of
-//      the widget, or NULL.
-//
-func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
-	var _arg0 *C.GtkAlignment // out
-	var _arg1 C.guint         // in
-	var _arg2 C.guint         // in
-	var _arg3 C.guint         // in
-	var _arg4 C.guint         // in
-
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
-
-	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(alignment)
-
-	var _paddingTop uint    // out
-	var _paddingBottom uint // out
-	var _paddingLeft uint   // out
-	var _paddingRight uint  // out
-
-	_paddingTop = uint(_arg1)
-	_paddingBottom = uint(_arg2)
-	_paddingLeft = uint(_arg3)
-	_paddingRight = uint(_arg4)
-
-	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
-}
-
 // Set sets the Alignment values.
 //
 // Deprecated: Use Widget alignment and margin properties.
@@ -231,40 +187,6 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 	runtime.KeepAlive(yalign)
 	runtime.KeepAlive(xscale)
 	runtime.KeepAlive(yscale)
-}
-
-// SetPadding sets the padding on the different sides of the widget. The padding
-// adds blank space to the sides of the widget. For instance, this can be used
-// to indent the child widget towards the right by adding padding on the left.
-//
-// Deprecated: Use Widget alignment and margin properties.
-//
-// The function takes the following parameters:
-//
-//    - paddingTop: padding at the top of the widget.
-//    - paddingBottom: padding at the bottom of the widget.
-//    - paddingLeft: padding at the left of the widget.
-//    - paddingRight: padding at the right of the widget.
-//
-func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
-	var _arg0 *C.GtkAlignment // out
-	var _arg1 C.guint         // out
-	var _arg2 C.guint         // out
-	var _arg3 C.guint         // out
-	var _arg4 C.guint         // out
-
-	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
-	_arg1 = C.guint(paddingTop)
-	_arg2 = C.guint(paddingBottom)
-	_arg3 = C.guint(paddingLeft)
-	_arg4 = C.guint(paddingRight)
-
-	C.gtk_alignment_set_padding(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(alignment)
-	runtime.KeepAlive(paddingTop)
-	runtime.KeepAlive(paddingBottom)
-	runtime.KeepAlive(paddingLeft)
-	runtime.KeepAlive(paddingRight)
 }
 
 // AlignmentClass: instance of this type is always passed by reference.

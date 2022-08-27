@@ -32,8 +32,12 @@ func init() {
 	})
 }
 
-// GLShaderOverrider contains methods that are overridable.
-type GLShaderOverrider interface {
+// GLShaderOverrides contains methods that are overridable.
+type GLShaderOverrides struct {
+}
+
+func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
+	return GLShaderOverrides{}
 }
 
 // GLShader: GskGLShader is a snippet of GLSL that is meant to run in the
@@ -148,25 +152,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGLShader,
-		GoType:        reflect.TypeOf((*GLShader)(nil)),
-		InitClass:     initClassGLShader,
-		FinalizeClass: finalizeClassGLShader,
-	})
+	coreglib.RegisterClassInfo[*GLShader, *GLShaderClass, GLShaderOverrides](
+		GTypeGLShader,
+		initGLShaderClass,
+		wrapGLShader,
+		defaultGLShaderOverrides,
+	)
 }
 
-func initClassGLShader(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitGLShader(*GLShaderClass) }); ok {
-		klass := (*GLShaderClass)(gextras.NewStructNative(gclass))
-		goval.InitGLShader(klass)
-	}
-}
-
-func finalizeClassGLShader(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGLShader(*GLShaderClass) }); ok {
-		klass := (*GLShaderClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGLShader(klass)
+func initGLShaderClass(gclass unsafe.Pointer, overrides GLShaderOverrides, classInitFunc func(*GLShaderClass)) {
+	if classInitFunc != nil {
+		class := (*GLShaderClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

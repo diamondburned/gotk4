@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// StatusbarAccessibleOverrider contains methods that are overridable.
-type StatusbarAccessibleOverrider interface {
+// StatusbarAccessibleOverrides contains methods that are overridable.
+type StatusbarAccessibleOverrides struct {
+}
+
+func defaultStatusbarAccessibleOverrides(v *StatusbarAccessible) StatusbarAccessibleOverrides {
+	return StatusbarAccessibleOverrides{}
 }
 
 type StatusbarAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStatusbarAccessible,
-		GoType:        reflect.TypeOf((*StatusbarAccessible)(nil)),
-		InitClass:     initClassStatusbarAccessible,
-		FinalizeClass: finalizeClassStatusbarAccessible,
-	})
+	coreglib.RegisterClassInfo[*StatusbarAccessible, *StatusbarAccessibleClass, StatusbarAccessibleOverrides](
+		GTypeStatusbarAccessible,
+		initStatusbarAccessibleClass,
+		wrapStatusbarAccessible,
+		defaultStatusbarAccessibleOverrides,
+	)
 }
 
-func initClassStatusbarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitStatusbarAccessible(*StatusbarAccessibleClass)
-	}); ok {
-		klass := (*StatusbarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitStatusbarAccessible(klass)
-	}
-}
-
-func finalizeClassStatusbarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeStatusbarAccessible(*StatusbarAccessibleClass)
-	}); ok {
-		klass := (*StatusbarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStatusbarAccessible(klass)
+func initStatusbarAccessibleClass(gclass unsafe.Pointer, overrides StatusbarAccessibleOverrides, classInitFunc func(*StatusbarAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*StatusbarAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

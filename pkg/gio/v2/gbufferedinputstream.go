@@ -18,9 +18,18 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill(GBufferedInputStream*, gssize, GCancellable*, GError**);
-// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill_finish(GBufferedInputStream*, GAsyncResult*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill_finish(GBufferedInputStream*, GAsyncResult*, GError**);
+// extern gssize _gotk4_gio2_BufferedInputStreamClass_fill(GBufferedInputStream*, gssize, GCancellable*, GError**);
+// gssize _gotk4_gio2_BufferedInputStream_virtual_fill(void* fnptr, GBufferedInputStream* arg0, gssize arg1, GCancellable* arg2, GError** arg3) {
+//   return ((gssize (*)(GBufferedInputStream*, gssize, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gssize _gotk4_gio2_BufferedInputStream_virtual_fill_finish(void* fnptr, GBufferedInputStream* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gssize (*)(GBufferedInputStream*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gio2_BufferedInputStream_virtual_fill_async(void* fnptr, GBufferedInputStream* arg0, gssize arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GBufferedInputStream*, gssize, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 import "C"
 
 // GType values.
@@ -34,8 +43,8 @@ func init() {
 	})
 }
 
-// BufferedInputStreamOverrider contains methods that are overridable.
-type BufferedInputStreamOverrider interface {
+// BufferedInputStreamOverrides contains methods that are overridable.
+type BufferedInputStreamOverrides struct {
 	// Fill tries to read count bytes from the stream into the buffer. Will
 	// block during this read.
 	//
@@ -71,7 +80,7 @@ type BufferedInputStreamOverrider interface {
 	//    - gssize: number of bytes read into stream's buffer, up to count, or -1
 	//      on error.
 	//
-	Fill(ctx context.Context, count int) (int, error)
+	Fill func(ctx context.Context, count int) (int, error)
 	// FillFinish finishes an asynchronous read.
 	//
 	// The function takes the following parameters:
@@ -82,7 +91,14 @@ type BufferedInputStreamOverrider interface {
 	//
 	//    - gssize of the read stream, or -1 on an error.
 	//
-	FillFinish(result AsyncResulter) (int, error)
+	FillFinish func(result AsyncResulter) (int, error)
+}
+
+func defaultBufferedInputStreamOverrides(v *BufferedInputStream) BufferedInputStreamOverrides {
+	return BufferedInputStreamOverrides{
+		Fill:       v.fill,
+		FillFinish: v.fillFinish,
+	}
 }
 
 // BufferedInputStream: buffered input stream implements InputStream and
@@ -111,106 +127,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBufferedInputStream,
-		GoType:        reflect.TypeOf((*BufferedInputStream)(nil)),
-		InitClass:     initClassBufferedInputStream,
-		FinalizeClass: finalizeClassBufferedInputStream,
-	})
+	coreglib.RegisterClassInfo[*BufferedInputStream, *BufferedInputStreamClass, BufferedInputStreamOverrides](
+		GTypeBufferedInputStream,
+		initBufferedInputStreamClass,
+		wrapBufferedInputStream,
+		defaultBufferedInputStreamOverrides,
+	)
 }
 
-func initClassBufferedInputStream(gclass unsafe.Pointer, goval any) {
+func initBufferedInputStreamClass(gclass unsafe.Pointer, overrides BufferedInputStreamOverrides, classInitFunc func(*BufferedInputStreamClass)) {
+	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeBufferedInputStream))))
 
-	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Fill(ctx context.Context, count int) (int, error)
-	}); ok {
+	if overrides.Fill != nil {
 		pclass.fill = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill)
 	}
 
-	if _, ok := goval.(interface {
-		FillFinish(result AsyncResulter) (int, error)
-	}); ok {
+	if overrides.FillFinish != nil {
 		pclass.fill_finish = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
 	}
-	if goval, ok := goval.(interface {
-		InitBufferedInputStream(*BufferedInputStreamClass)
-	}); ok {
-		klass := (*BufferedInputStreamClass)(gextras.NewStructNative(gclass))
-		goval.InitBufferedInputStream(klass)
+
+	if classInitFunc != nil {
+		class := (*BufferedInputStreamClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassBufferedInputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeBufferedInputStream(*BufferedInputStreamClass)
-	}); ok {
-		klass := (*BufferedInputStreamClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBufferedInputStream(klass)
-	}
-}
-
-//export _gotk4_gio2_BufferedInputStreamClass_fill
-func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg1 C.gssize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Fill(ctx context.Context, count int) (int, error)
-	})
-
-	var _cancellable context.Context // out
-	var _count int                   // out
-
-	if arg2 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg2))
-	}
-	_count = int(arg1)
-
-	gssize, _goerr := iface.Fill(_cancellable, _count)
-
-	cret = C.gssize(gssize)
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_BufferedInputStreamClass_fill_finish
-func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		FillFinish(result AsyncResulter) (int, error)
-	})
-
-	var _result AsyncResulter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
-			return ok
-		})
-		rv, ok := casted.(AsyncResulter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_result = rv
-	}
-
-	gssize, _goerr := iface.FillFinish(_result)
-
-	cret = C.gssize(gssize)
-	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.GError)(gerror.New(_goerr))
-	}
-
-	return cret
 }
 
 func wrapBufferedInputStream(obj *coreglib.Object) *BufferedInputStream {
@@ -607,6 +546,158 @@ func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	C.g_buffered_input_stream_set_buffer_size(_arg0, _arg1)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)
+}
+
+// Fill tries to read count bytes from the stream into the buffer. Will block
+// during this read.
+//
+// If count is zero, returns zero and does nothing. A value of count larger than
+// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer is returned. It is not
+// an error if this is not the same as the requested size, as it can happen e.g.
+// near the end of a file. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// If count is -1 then the attempted read size is equal to the number of bytes
+// that are required to fill the buffer.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// On error -1 is returned and error is set accordingly.
+//
+// For the asynchronous, non-blocking, version of this function, see
+// g_buffered_input_stream_fill_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - count: number of bytes that will be read from the stream.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read into stream's buffer, up to count, or -1 on
+//      error.
+//
+func (stream *BufferedInputStream) fill(ctx context.Context, count int) (int, error) {
+	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.fill
+
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg2 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
+	var _cret C.gssize                // in
+	var _cerr *C.GError               // in
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gssize(count)
+
+	_cret = C._gotk4_gio2_BufferedInputStream_virtual_fill(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
+}
+
+// fillAsync reads data into stream's buffer asynchronously, up to count size.
+// io_priority can be used to prioritize reads. For the synchronous version of
+// this function, see g_buffered_input_stream_fill().
+//
+// If count is -1 then the attempted read size is equal to the number of bytes
+// that are required to fill the buffer.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object.
+//    - count: number of bytes that will be read from the stream.
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional): ReadyCallback.
+//
+func (stream *BufferedInputStream) fillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.fill_async
+
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
+	var _arg2 C.int                   // out
+	var _arg4 C.GAsyncReadyCallback   // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gssize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_BufferedInputStream_virtual_fill_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// fillFinish finishes an asynchronous read.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+// The function returns the following values:
+//
+//    - gssize of the read stream, or -1 on an error.
+//
+func (stream *BufferedInputStream) fillFinish(result AsyncResulter) (int, error) {
+	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.fill_finish
+
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg1 *C.GAsyncResult         // out
+	var _cret C.gssize                // in
+	var _cerr *C.GError               // in
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_cret = C._gotk4_gio2_BufferedInputStream_virtual_fill_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(result)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
 }
 
 // BufferedInputStreamClass: instance of this type is always passed by

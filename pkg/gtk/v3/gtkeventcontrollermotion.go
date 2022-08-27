@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -14,9 +13,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk3_EventControllerMotion_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_EventControllerMotion_ConnectLeave(gpointer, guintptr);
+// extern void _gotk4_gtk3_EventControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -55,47 +54,9 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return wrapEventControllerMotion(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_EventControllerMotion_ConnectEnter
-func _gotk4_gtk3_EventControllerMotion_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
-}
-
 // ConnectEnter signals that the pointer has entered the widget.
 func (v *EventControllerMotion) ConnectEnter(f func(x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "enter", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectEnter), f)
-}
-
-//export _gotk4_gtk3_EventControllerMotion_ConnectLeave
-func _gotk4_gtk3_EventControllerMotion_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectLeave signals that pointer has left the widget.
@@ -103,56 +64,7 @@ func (v *EventControllerMotion) ConnectLeave(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "leave", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectLeave), f)
 }
 
-//export _gotk4_gtk3_EventControllerMotion_ConnectMotion
-func _gotk4_gtk3_EventControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	f(_x, _y)
-}
-
 // ConnectMotion is emitted when the pointer moves inside the widget.
 func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "motion", false, unsafe.Pointer(C._gotk4_gtk3_EventControllerMotion_ConnectMotion), f)
-}
-
-// NewEventControllerMotion creates a new event controller that will handle
-// motion events for the given widget.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//
-// The function returns the following values:
-//
-//    - eventControllerMotion: new EventControllerMotion.
-//
-func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
-	var _arg1 *C.GtkWidget          // out
-	var _cret *C.GtkEventController // in
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_event_controller_motion_new(_arg1)
-	runtime.KeepAlive(widget)
-
-	var _eventControllerMotion *EventControllerMotion // out
-
-	_eventControllerMotion = wrapEventControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _eventControllerMotion
 }

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// VolumeButtonOverrider contains methods that are overridable.
-type VolumeButtonOverrider interface {
+// VolumeButtonOverrides contains methods that are overridable.
+type VolumeButtonOverrides struct {
+}
+
+func defaultVolumeButtonOverrides(v *VolumeButton) VolumeButtonOverrides {
+	return VolumeButtonOverrides{}
 }
 
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
@@ -46,25 +50,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVolumeButton,
-		GoType:        reflect.TypeOf((*VolumeButton)(nil)),
-		InitClass:     initClassVolumeButton,
-		FinalizeClass: finalizeClassVolumeButton,
-	})
+	coreglib.RegisterClassInfo[*VolumeButton, *VolumeButtonClass, VolumeButtonOverrides](
+		GTypeVolumeButton,
+		initVolumeButtonClass,
+		wrapVolumeButton,
+		defaultVolumeButtonOverrides,
+	)
 }
 
-func initClassVolumeButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVolumeButton(*VolumeButtonClass) }); ok {
-		klass := (*VolumeButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitVolumeButton(klass)
-	}
-}
-
-func finalizeClassVolumeButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVolumeButton(*VolumeButtonClass) }); ok {
-		klass := (*VolumeButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVolumeButton(klass)
+func initVolumeButtonClass(gclass unsafe.Pointer, overrides VolumeButtonOverrides, classInitFunc func(*VolumeButtonClass)) {
+	if classInitFunc != nil {
+		class := (*VolumeButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -117,26 +114,6 @@ func wrapVolumeButton(obj *coreglib.Object) *VolumeButton {
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return wrapVolumeButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewVolumeButton creates a VolumeButton, with a range between 0.0 and 1.0,
-// with a stepping of 0.02. Volume values can be obtained and modified using the
-// functions from ScaleButton.
-//
-// The function returns the following values:
-//
-//    - volumeButton: new VolumeButton.
-//
-func NewVolumeButton() *VolumeButton {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_volume_button_new()
-
-	var _volumeButton *VolumeButton // out
-
-	_volumeButton = wrapVolumeButton(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _volumeButton
 }
 
 // VolumeButtonClass: instance of this type is always passed by reference.

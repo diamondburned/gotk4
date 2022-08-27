@@ -12,49 +12,121 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
-// extern AtkObject* _gotk4_atk1_TableIface_get_caption(AtkTable*);
-// extern AtkObject* _gotk4_atk1_TableIface_get_column_header(AtkTable*, gint);
-// extern AtkObject* _gotk4_atk1_TableIface_get_row_header(AtkTable*, gint);
-// extern AtkObject* _gotk4_atk1_TableIface_get_summary(AtkTable*);
-// extern AtkObject* _gotk4_atk1_TableIface_ref_at(AtkTable*, gint, gint);
-// extern gboolean _gotk4_atk1_TableIface_add_column_selection(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_add_row_selection(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_is_column_selected(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_is_row_selected(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_is_selected(AtkTable*, gint, gint);
-// extern gboolean _gotk4_atk1_TableIface_remove_column_selection(AtkTable*, gint);
-// extern gboolean _gotk4_atk1_TableIface_remove_row_selection(AtkTable*, gint);
-// extern gchar* _gotk4_atk1_TableIface_get_column_description(AtkTable*, gint);
-// extern gchar* _gotk4_atk1_TableIface_get_row_description(AtkTable*, gint);
-// extern gint _gotk4_atk1_TableIface_get_column_at_index(AtkTable*, gint);
-// extern gint _gotk4_atk1_TableIface_get_column_extent_at(AtkTable*, gint, gint);
-// extern gint _gotk4_atk1_TableIface_get_index_at(AtkTable*, gint, gint);
-// extern gint _gotk4_atk1_TableIface_get_n_columns(AtkTable*);
-// extern gint _gotk4_atk1_TableIface_get_n_rows(AtkTable*);
-// extern gint _gotk4_atk1_TableIface_get_row_at_index(AtkTable*, gint);
-// extern gint _gotk4_atk1_TableIface_get_row_extent_at(AtkTable*, gint, gint);
-// extern gint _gotk4_atk1_TableIface_get_selected_columns(AtkTable*, gint**);
-// extern gint _gotk4_atk1_TableIface_get_selected_rows(AtkTable*, gint**);
-// extern void _gotk4_atk1_TableIface_column_deleted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_column_inserted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_column_reordered(AtkTable*);
-// extern void _gotk4_atk1_TableIface_model_changed(AtkTable*);
-// extern void _gotk4_atk1_TableIface_row_deleted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_row_inserted(AtkTable*, gint, gint);
-// extern void _gotk4_atk1_TableIface_row_reordered(AtkTable*);
-// extern void _gotk4_atk1_TableIface_set_caption(AtkTable*, AtkObject*);
-// extern void _gotk4_atk1_TableIface_set_column_description(AtkTable*, gint, gchar*);
-// extern void _gotk4_atk1_TableIface_set_column_header(AtkTable*, gint, AtkObject*);
-// extern void _gotk4_atk1_TableIface_set_row_description(AtkTable*, gint, gchar*);
-// extern void _gotk4_atk1_TableIface_set_row_header(AtkTable*, gint, AtkObject*);
-// extern void _gotk4_atk1_TableIface_set_summary(AtkTable*, AtkObject*);
-// extern void _gotk4_atk1_Table_ConnectColumnDeleted(gpointer, gint, gint, guintptr);
-// extern void _gotk4_atk1_Table_ConnectColumnInserted(gpointer, gint, gint, guintptr);
-// extern void _gotk4_atk1_Table_ConnectColumnReordered(gpointer, guintptr);
-// extern void _gotk4_atk1_Table_ConnectModelChanged(gpointer, guintptr);
-// extern void _gotk4_atk1_Table_ConnectRowDeleted(gpointer, gint, gint, guintptr);
-// extern void _gotk4_atk1_Table_ConnectRowInserted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowInserted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowDeleted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectModelChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnReordered(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnInserted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnDeleted(gpointer, gint, gint, guintptr);
+// AtkObject* _gotk4_atk1_Table_virtual_get_caption(void* fnptr, AtkTable* arg0) {
+//   return ((AtkObject* (*)(AtkTable*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_column_header(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_row_header(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_summary(void* fnptr, AtkTable* arg0) {
+//   return ((AtkObject* (*)(AtkTable*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_ref_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((AtkObject* (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Table_virtual_add_column_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_add_row_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_is_column_selected(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_is_row_selected(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_is_selected(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gboolean (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Table_virtual_remove_column_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_remove_row_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Table_virtual_get_column_description(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Table_virtual_get_row_description(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_column_at_index(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gint (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_column_extent_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gint (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_atk1_Table_virtual_get_index_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gint (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_atk1_Table_virtual_get_n_columns(void* fnptr, AtkTable* arg0) {
+//   return ((gint (*)(AtkTable*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Table_virtual_get_n_rows(void* fnptr, AtkTable* arg0) {
+//   return ((gint (*)(AtkTable*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Table_virtual_get_row_at_index(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gint (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_row_extent_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gint (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_atk1_Table_virtual_get_selected_columns(void* fnptr, AtkTable* arg0, gint** arg1) {
+//   return ((gint (*)(AtkTable*, gint**))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_selected_rows(void* fnptr, AtkTable* arg0, gint** arg1) {
+//   return ((gint (*)(AtkTable*, gint**))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Table_virtual_column_deleted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_column_inserted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_column_reordered(void* fnptr, AtkTable* arg0) {
+//   ((void (*)(AtkTable*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Table_virtual_model_changed(void* fnptr, AtkTable* arg0) {
+//   ((void (*)(AtkTable*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Table_virtual_row_deleted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_row_inserted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_row_reordered(void* fnptr, AtkTable* arg0) {
+//   ((void (*)(AtkTable*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Table_virtual_set_caption(void* fnptr, AtkTable* arg0, AtkObject* arg1) {
+//   ((void (*)(AtkTable*, AtkObject*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Table_virtual_set_column_description(void* fnptr, AtkTable* arg0, gint arg1, gchar* arg2) {
+//   ((void (*)(AtkTable*, gint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_column_header(void* fnptr, AtkTable* arg0, gint arg1, AtkObject* arg2) {
+//   ((void (*)(AtkTable*, gint, AtkObject*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_row_description(void* fnptr, AtkTable* arg0, gint arg1, gchar* arg2) {
+//   ((void (*)(AtkTable*, gint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_row_header(void* fnptr, AtkTable* arg0, gint arg1, AtkObject* arg2) {
+//   ((void (*)(AtkTable*, gint, AtkObject*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_summary(void* fnptr, AtkTable* arg0, AtkObject* arg1) {
+//   ((void (*)(AtkTable*, AtkObject*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -66,374 +138,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeTable, F: marshalTable},
 	})
-}
-
-// TableOverrider contains methods that are overridable.
-type TableOverrider interface {
-	// AddColumnSelection adds the specified column to the selection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the column was successfully added to the
-	//      selection, or 0 if value does not implement this interface.
-	//
-	AddColumnSelection(column int) bool
-	// AddRowSelection adds the specified row to the selection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if row was successfully added to selection,
-	//      or 0 if value does not implement this interface.
-	//
-	AddRowSelection(row int) bool
-	// The function takes the following parameters:
-	//
-	//    - column
-	//    - numDeleted
-	//
-	ColumnDeleted(column, numDeleted int)
-	// The function takes the following parameters:
-	//
-	//    - column
-	//    - numInserted
-	//
-	ColumnInserted(column, numInserted int)
-	ColumnReordered()
-	// Caption gets the caption for the table.
-	//
-	// The function returns the following values:
-	//
-	//    - object (optional): atkObject* representing the table caption, or NULL
-	//      if value does not implement this interface.
-	//
-	Caption() *AtkObject
-	// ColumnAtIndex gets a #gint representing the column at the specified
-	// index_.
-	//
-	// Deprecated: Since 2.12.
-	//
-	// The function takes the following parameters:
-	//
-	//    - index_ representing an index in table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the column at the specified index, or -1 if the
-	//      table does not implement this method.
-	//
-	ColumnAtIndex(index_ int) int
-	// ColumnDescription gets the description text of the specified column in
-	// the table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: gchar* representing the column description, or NULL if value
-	//      does not implement this interface.
-	//
-	ColumnDescription(column int) string
-	// ColumnExtentAt gets the number of columns occupied by the accessible
-	// object at the specified row and column in the table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the column extent at specified position, or 0 if
-	//      value does not implement this interface.
-	//
-	ColumnExtentAt(row, column int) int
-	// ColumnHeader gets the column header of a specified column in an
-	// accessible table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in the table.
-	//
-	// The function returns the following values:
-	//
-	//    - object (optional): atkObject* representing the specified column
-	//      header, or NULL if value does not implement this interface.
-	//
-	ColumnHeader(column int) *AtkObject
-	// IndexAt gets a #gint representing the index at the specified row and
-	// column.
-	//
-	// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the
-	// accessible that represents the cell at (row, column).
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the index at specified position. The value -1 is
-	//      returned if the object at row,column is not a child of table or table
-	//      does not implement this interface.
-	//
-	IndexAt(row, column int) int
-	// NColumns gets the number of columns in the table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the number of columns, or 0 if value does not
-	//      implement this interface.
-	//
-	NColumns() int
-	// NRows gets the number of rows in the table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the number of rows, or 0 if value does not
-	//      implement this interface.
-	//
-	NRows() int
-	// RowAtIndex gets a #gint representing the row at the specified index_.
-	//
-	// Deprecated: since 2.12.
-	//
-	// The function takes the following parameters:
-	//
-	//    - index_ representing an index in table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the row at the specified index, or -1 if the table
-	//      does not implement this method.
-	//
-	RowAtIndex(index_ int) int
-	// RowDescription gets the description text of the specified row in the
-	// table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): gchar* representing the row description, or NULL if
-	//      value does not implement this interface.
-	//
-	RowDescription(row int) string
-	// RowExtentAt gets the number of rows occupied by the accessible object at
-	// a specified row and column in the table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the row extent at specified position, or 0 if value
-	//      does not implement this interface.
-	//
-	RowExtentAt(row, column int) int
-	// RowHeader gets the row header of a specified row in an accessible table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in the table.
-	//
-	// The function returns the following values:
-	//
-	//    - object (optional): atkObject* representing the specified row header,
-	//      or NULL if value does not implement this interface.
-	//
-	RowHeader(row int) *AtkObject
-	// SelectedColumns gets the selected columns of the table by initializing
-	// **selected with the selected column numbers. This array should be freed
-	// by the caller.
-	//
-	// The function takes the following parameters:
-	//
-	//    - selected that is to contain the selected columns numbers.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the number of selected columns, or 0 if value does
-	//      not implement this interface.
-	//
-	SelectedColumns(selected **int) int
-	// SelectedRows gets the selected rows of the table by initializing
-	// **selected with the selected row numbers. This array should be freed by
-	// the caller.
-	//
-	// The function takes the following parameters:
-	//
-	//    - selected that is to contain the selected row numbers.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the number of selected rows, or zero if value does
-	//      not implement this interface.
-	//
-	SelectedRows(selected **int) int
-	// Summary gets the summary description of the table.
-	//
-	// The function returns the following values:
-	//
-	//    - object: atkObject* representing a summary description of the table,
-	//      or zero if value does not implement this interface.
-	//
-	Summary() *AtkObject
-	// IsColumnSelected gets a boolean value indicating whether the specified
-	// column is selected.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the column is selected, or 0 if value
-	//      does not implement this interface.
-	//
-	IsColumnSelected(column int) bool
-	// IsRowSelected gets a boolean value indicating whether the specified row
-	// is selected.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the row is selected, or 0 if value does
-	//      not implement this interface.
-	//
-	IsRowSelected(row int) bool
-	// IsSelected gets a boolean value indicating whether the accessible object
-	// at the specified row and column is selected.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the cell is selected, or 0 if value does
-	//      not implement this interface.
-	//
-	IsSelected(row, column int) bool
-	ModelChanged()
-	// RefAt: get a reference to the table cell at row, column. This cell should
-	// implement the interface TableCell.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - object representing the referred to accessible.
-	//
-	RefAt(row, column int) *AtkObject
-	// RemoveColumnSelection adds the specified column to the selection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the column was successfully removed from
-	//      the selection, or 0 if value does not implement this interface.
-	//
-	RemoveColumnSelection(column int) bool
-	// RemoveRowSelection removes the specified row from the selection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the row was successfully removed from
-	//      the selection, or 0 if value does not implement this interface.
-	//
-	RemoveRowSelection(row int) bool
-	// The function takes the following parameters:
-	//
-	//    - row
-	//    - numDeleted
-	//
-	RowDeleted(row, numDeleted int)
-	// The function takes the following parameters:
-	//
-	//    - row
-	//    - numInserted
-	//
-	RowInserted(row, numInserted int)
-	RowReordered()
-	// SetCaption sets the caption for the table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - caption representing the caption to set for table.
-	//
-	SetCaption(caption *AtkObject)
-	// SetColumnDescription sets the description text for the specified column
-	// of the table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in table.
-	//    - description representing the description text to set for the
-	//      specified column of the table.
-	//
-	SetColumnDescription(column int, description string)
-	// SetColumnHeader sets the specified column header to header.
-	//
-	// The function takes the following parameters:
-	//
-	//    - column representing a column in table.
-	//    - header: Table.
-	//
-	SetColumnHeader(column int, header *AtkObject)
-	// SetRowDescription sets the description text for the specified row of
-	// table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - description representing the description text to set for the
-	//      specified row of table.
-	//
-	SetRowDescription(row int, description string)
-	// SetRowHeader sets the specified row header to header.
-	//
-	// The function takes the following parameters:
-	//
-	//    - row representing a row in table.
-	//    - header: Table.
-	//
-	SetRowHeader(row int, header *AtkObject)
-	// SetSummary sets the summary description of the table.
-	//
-	// The function takes the following parameters:
-	//
-	//    - accessible representing the summary description to set for table.
-	//
-	SetSummary(accessible *AtkObject)
 }
 
 // Table should be implemented by components which present elements ordered via
@@ -575,594 +279,6 @@ type Tabler interface {
 
 var _ Tabler = (*Table)(nil)
 
-func ifaceInitTabler(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkTableIface)(unsafe.Pointer(gifacePtr))
-	iface.add_column_selection = (*[0]byte)(C._gotk4_atk1_TableIface_add_column_selection)
-	iface.add_row_selection = (*[0]byte)(C._gotk4_atk1_TableIface_add_row_selection)
-	iface.column_deleted = (*[0]byte)(C._gotk4_atk1_TableIface_column_deleted)
-	iface.column_inserted = (*[0]byte)(C._gotk4_atk1_TableIface_column_inserted)
-	iface.column_reordered = (*[0]byte)(C._gotk4_atk1_TableIface_column_reordered)
-	iface.get_caption = (*[0]byte)(C._gotk4_atk1_TableIface_get_caption)
-	iface.get_column_at_index = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_at_index)
-	iface.get_column_description = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_description)
-	iface.get_column_extent_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_extent_at)
-	iface.get_column_header = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_header)
-	iface.get_index_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_index_at)
-	iface.get_n_columns = (*[0]byte)(C._gotk4_atk1_TableIface_get_n_columns)
-	iface.get_n_rows = (*[0]byte)(C._gotk4_atk1_TableIface_get_n_rows)
-	iface.get_row_at_index = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_at_index)
-	iface.get_row_description = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_description)
-	iface.get_row_extent_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_extent_at)
-	iface.get_row_header = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_header)
-	iface.get_selected_columns = (*[0]byte)(C._gotk4_atk1_TableIface_get_selected_columns)
-	iface.get_selected_rows = (*[0]byte)(C._gotk4_atk1_TableIface_get_selected_rows)
-	iface.get_summary = (*[0]byte)(C._gotk4_atk1_TableIface_get_summary)
-	iface.is_column_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_column_selected)
-	iface.is_row_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_row_selected)
-	iface.is_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_selected)
-	iface.model_changed = (*[0]byte)(C._gotk4_atk1_TableIface_model_changed)
-	iface.ref_at = (*[0]byte)(C._gotk4_atk1_TableIface_ref_at)
-	iface.remove_column_selection = (*[0]byte)(C._gotk4_atk1_TableIface_remove_column_selection)
-	iface.remove_row_selection = (*[0]byte)(C._gotk4_atk1_TableIface_remove_row_selection)
-	iface.row_deleted = (*[0]byte)(C._gotk4_atk1_TableIface_row_deleted)
-	iface.row_inserted = (*[0]byte)(C._gotk4_atk1_TableIface_row_inserted)
-	iface.row_reordered = (*[0]byte)(C._gotk4_atk1_TableIface_row_reordered)
-	iface.set_caption = (*[0]byte)(C._gotk4_atk1_TableIface_set_caption)
-	iface.set_column_description = (*[0]byte)(C._gotk4_atk1_TableIface_set_column_description)
-	iface.set_column_header = (*[0]byte)(C._gotk4_atk1_TableIface_set_column_header)
-	iface.set_row_description = (*[0]byte)(C._gotk4_atk1_TableIface_set_row_description)
-	iface.set_row_header = (*[0]byte)(C._gotk4_atk1_TableIface_set_row_header)
-	iface.set_summary = (*[0]byte)(C._gotk4_atk1_TableIface_set_summary)
-}
-
-//export _gotk4_atk1_TableIface_add_column_selection
-func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int // out
-
-	_column = int(arg1)
-
-	ok := iface.AddColumnSelection(_column)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_add_row_selection
-func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int // out
-
-	_row = int(arg1)
-
-	ok := iface.AddRowSelection(_row)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_column_deleted
-func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int     // out
-	var _numDeleted int // out
-
-	_column = int(arg1)
-	_numDeleted = int(arg2)
-
-	iface.ColumnDeleted(_column, _numDeleted)
-}
-
-//export _gotk4_atk1_TableIface_column_inserted
-func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int      // out
-	var _numInserted int // out
-
-	_column = int(arg1)
-	_numInserted = int(arg2)
-
-	iface.ColumnInserted(_column, _numInserted)
-}
-
-//export _gotk4_atk1_TableIface_column_reordered
-func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	iface.ColumnReordered()
-}
-
-//export _gotk4_atk1_TableIface_get_caption
-func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	object := iface.Caption()
-
-	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_column_at_index
-func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _index_ int // out
-
-	_index_ = int(arg1)
-
-	gint := iface.ColumnAtIndex(_index_)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_column_description
-func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int // out
-
-	_column = int(arg1)
-
-	utf8 := iface.ColumnDescription(_column)
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-	defer C.free(unsafe.Pointer(cret))
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_column_extent_at
-func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int    // out
-	var _column int // out
-
-	_row = int(arg1)
-	_column = int(arg2)
-
-	gint := iface.ColumnExtentAt(_row, _column)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_column_header
-func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int // out
-
-	_column = int(arg1)
-
-	object := iface.ColumnHeader(_column)
-
-	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_index_at
-func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int    // out
-	var _column int // out
-
-	_row = int(arg1)
-	_column = int(arg2)
-
-	gint := iface.IndexAt(_row, _column)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_n_columns
-func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	gint := iface.NColumns()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_n_rows
-func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	gint := iface.NRows()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_row_at_index
-func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _index_ int // out
-
-	_index_ = int(arg1)
-
-	gint := iface.RowAtIndex(_index_)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_row_description
-func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int // out
-
-	_row = int(arg1)
-
-	utf8 := iface.RowDescription(_row)
-
-	if utf8 != "" {
-		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_row_extent_at
-func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int    // out
-	var _column int // out
-
-	_row = int(arg1)
-	_column = int(arg2)
-
-	gint := iface.RowExtentAt(_row, _column)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_row_header
-func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int // out
-
-	_row = int(arg1)
-
-	object := iface.RowHeader(_row)
-
-	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_selected_columns
-func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _selected **int // out
-
-	_selected = (**int)(unsafe.Pointer(arg1))
-
-	gint := iface.SelectedColumns(_selected)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_selected_rows
-func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _selected **int // out
-
-	_selected = (**int)(unsafe.Pointer(arg1))
-
-	gint := iface.SelectedRows(_selected)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_get_summary
-func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	object := iface.Summary()
-
-	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_is_column_selected
-func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int // out
-
-	_column = int(arg1)
-
-	ok := iface.IsColumnSelected(_column)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_is_row_selected
-func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int // out
-
-	_row = int(arg1)
-
-	ok := iface.IsRowSelected(_row)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_is_selected
-func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int    // out
-	var _column int // out
-
-	_row = int(arg1)
-	_column = int(arg2)
-
-	ok := iface.IsSelected(_row, _column)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_model_changed
-func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	iface.ModelChanged()
-}
-
-//export _gotk4_atk1_TableIface_ref_at
-func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int    // out
-	var _column int // out
-
-	_row = int(arg1)
-	_column = int(arg2)
-
-	object := iface.RefAt(_row, _column)
-
-	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_remove_column_selection
-func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int // out
-
-	_column = int(arg1)
-
-	ok := iface.RemoveColumnSelection(_column)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_remove_row_selection
-func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int // out
-
-	_row = int(arg1)
-
-	ok := iface.RemoveRowSelection(_row)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_TableIface_row_deleted
-func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int        // out
-	var _numDeleted int // out
-
-	_row = int(arg1)
-	_numDeleted = int(arg2)
-
-	iface.RowDeleted(_row, _numDeleted)
-}
-
-//export _gotk4_atk1_TableIface_row_inserted
-func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int         // out
-	var _numInserted int // out
-
-	_row = int(arg1)
-	_numInserted = int(arg2)
-
-	iface.RowInserted(_row, _numInserted)
-}
-
-//export _gotk4_atk1_TableIface_row_reordered
-func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	iface.RowReordered()
-}
-
-//export _gotk4_atk1_TableIface_set_caption
-func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _caption *AtkObject // out
-
-	_caption = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.SetCaption(_caption)
-}
-
-//export _gotk4_atk1_TableIface_set_column_description
-func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int         // out
-	var _description string // out
-
-	_column = int(arg1)
-	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	iface.SetColumnDescription(_column, _description)
-}
-
-//export _gotk4_atk1_TableIface_set_column_header
-func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _column int        // out
-	var _header *AtkObject // out
-
-	_column = int(arg1)
-	_header = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
-
-	iface.SetColumnHeader(_column, _header)
-}
-
-//export _gotk4_atk1_TableIface_set_row_description
-func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int            // out
-	var _description string // out
-
-	_row = int(arg1)
-	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	iface.SetRowDescription(_row, _description)
-}
-
-//export _gotk4_atk1_TableIface_set_row_header
-func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _row int           // out
-	var _header *AtkObject // out
-
-	_row = int(arg1)
-	_header = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
-
-	iface.SetRowHeader(_row, _header)
-}
-
-//export _gotk4_atk1_TableIface_set_summary
-func _gotk4_atk1_TableIface_set_summary(arg0 *C.AtkTable, arg1 *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(TableOverrider)
-
-	var _accessible *AtkObject // out
-
-	_accessible = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.SetSummary(_accessible)
-}
-
 func wrapTable(obj *coreglib.Object) *Table {
 	return &Table{
 		Object: obj,
@@ -1173,54 +289,10 @@ func marshalTable(p uintptr) (interface{}, error) {
 	return wrapTable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_atk1_Table_ConnectColumnDeleted
-func _gotk4_atk1_Table_ConnectColumnDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(arg1, arg2 int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(arg1, arg2 int))
-	}
-
-	var _arg1 int // out
-	var _arg2 int // out
-
-	_arg1 = int(arg1)
-	_arg2 = int(arg2)
-
-	f(_arg1, _arg2)
-}
-
 // ConnectColumnDeleted: "column-deleted" signal is emitted by an object which
 // implements the AtkTable interface when a column is deleted.
 func (table *Table) ConnectColumnDeleted(f func(arg1, arg2 int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "column-deleted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnDeleted), f)
-}
-
-//export _gotk4_atk1_Table_ConnectColumnInserted
-func _gotk4_atk1_Table_ConnectColumnInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(arg1, arg2 int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(arg1, arg2 int))
-	}
-
-	var _arg1 int // out
-	var _arg2 int // out
-
-	_arg1 = int(arg1)
-	_arg2 = int(arg2)
-
-	f(_arg1, _arg2)
 }
 
 // ConnectColumnInserted: "column-inserted" signal is emitted by an object which
@@ -1229,42 +301,10 @@ func (table *Table) ConnectColumnInserted(f func(arg1, arg2 int)) coreglib.Signa
 	return coreglib.ConnectGeneratedClosure(table, "column-inserted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnInserted), f)
 }
 
-//export _gotk4_atk1_Table_ConnectColumnReordered
-func _gotk4_atk1_Table_ConnectColumnReordered(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectColumnReordered: "column-reordered" signal is emitted by an object
 // which implements the AtkTable interface when the columns are reordered.
 func (table *Table) ConnectColumnReordered(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "column-reordered", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnReordered), f)
-}
-
-//export _gotk4_atk1_Table_ConnectModelChanged
-func _gotk4_atk1_Table_ConnectModelChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectModelChanged: "model-changed" signal is emitted by an object which
@@ -1274,76 +314,16 @@ func (table *Table) ConnectModelChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "model-changed", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectModelChanged), f)
 }
 
-//export _gotk4_atk1_Table_ConnectRowDeleted
-func _gotk4_atk1_Table_ConnectRowDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(arg1, arg2 int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(arg1, arg2 int))
-	}
-
-	var _arg1 int // out
-	var _arg2 int // out
-
-	_arg1 = int(arg1)
-	_arg2 = int(arg2)
-
-	f(_arg1, _arg2)
-}
-
 // ConnectRowDeleted: "row-deleted" signal is emitted by an object which
 // implements the AtkTable interface when a row is deleted.
 func (table *Table) ConnectRowDeleted(f func(arg1, arg2 int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "row-deleted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowDeleted), f)
 }
 
-//export _gotk4_atk1_Table_ConnectRowInserted
-func _gotk4_atk1_Table_ConnectRowInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(arg1, arg2 int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(arg1, arg2 int))
-	}
-
-	var _arg1 int // out
-	var _arg2 int // out
-
-	_arg1 = int(arg1)
-	_arg2 = int(arg2)
-
-	f(_arg1, _arg2)
-}
-
 // ConnectRowInserted: "row-inserted" signal is emitted by an object which
 // implements the AtkTable interface when a row is inserted.
 func (table *Table) ConnectRowInserted(f func(arg1, arg2 int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "row-inserted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowInserted), f)
-}
-
-//export _gotk4_atk1_Table_ConnectRowReordered
-func _gotk4_atk1_Table_ConnectRowReordered(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectRowReordered: "row-reordered" signal is emitted by an object which
@@ -2199,6 +1179,1072 @@ func (table *Table) SetSummary(accessible *AtkObject) {
 	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	C.atk_table_set_summary(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(accessible)
+}
+
+// addColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the column was successfully added to the
+//      selection, or 0 if value does not implement this interface.
+//
+func (table *Table) addColumnSelection(column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.add_column_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_add_column_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// addRowSelection adds the specified row to the selection.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if row was successfully added to selection, or
+//      0 if value does not implement this interface.
+//
+func (table *Table) addRowSelection(row int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.add_row_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_add_row_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - column
+//    - numDeleted
+//
+func (table *Table) columnDeleted(column, numDeleted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.column_deleted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = C.gint(numDeleted)
+
+	C._gotk4_atk1_Table_virtual_column_deleted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(numDeleted)
+}
+
+// The function takes the following parameters:
+//
+//    - column
+//    - numInserted
+//
+func (table *Table) columnInserted(column, numInserted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.column_inserted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = C.gint(numInserted)
+
+	C._gotk4_atk1_Table_virtual_column_inserted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(numInserted)
+}
+
+func (table *Table) columnReordered() {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.column_reordered
+
+	var _arg0 *C.AtkTable // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C._gotk4_atk1_Table_virtual_column_reordered(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+}
+
+// Caption gets the caption for the table.
+//
+// The function returns the following values:
+//
+//    - object (optional): atkObject* representing the table caption, or NULL if
+//      value does not implement this interface.
+//
+func (table *Table) caption() *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_caption
+
+	var _arg0 *C.AtkTable  // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_caption(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// columnAtIndex gets a #gint representing the column at the specified index_.
+//
+// Deprecated: Since 2.12.
+//
+// The function takes the following parameters:
+//
+//    - index_ representing an index in table.
+//
+// The function returns the following values:
+//
+//    - gint representing the column at the specified index, or -1 if the table
+//      does not implement this method.
+//
+func (table *Table) columnAtIndex(index_ int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_at_index
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_at_index(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// columnDescription gets the description text of the specified column in the
+// table.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - utf8: gchar* representing the column description, or NULL if value does
+//      not implement this interface.
+//
+func (table *Table) columnDescription(column int) string {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// columnExtentAt gets the number of columns occupied by the accessible object
+// at the specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - gint representing the column extent at specified position, or 0 if value
+//      does not implement this interface.
+//
+func (table *Table) columnExtentAt(row, column int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_extent_at
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_extent_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// columnHeader gets the column header of a specified column in an accessible
+// table.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in the table.
+//
+// The function returns the following values:
+//
+//    - object (optional): atkObject* representing the specified column header,
+//      or NULL if value does not implement this interface.
+//
+func (table *Table) columnHeader(column int) *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_header(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// indexAt gets a #gint representing the index at the specified row and column.
+//
+// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
+// that represents the cell at (row, column).
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - gint representing the index at specified position. The value -1 is
+//      returned if the object at row,column is not a child of table or table
+//      does not implement this interface.
+//
+func (table *Table) indexAt(row, column int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_index_at
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_index_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nColumns gets the number of columns in the table.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of columns, or 0 if value does not implement
+//      this interface.
+//
+func (table *Table) nColumns() int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_n_columns
+
+	var _arg0 *C.AtkTable // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_n_columns(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nRows gets the number of rows in the table.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of rows, or 0 if value does not implement
+//      this interface.
+//
+func (table *Table) nRows() int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_n_rows
+
+	var _arg0 *C.AtkTable // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_n_rows(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rowAtIndex gets a #gint representing the row at the specified index_.
+//
+// Deprecated: since 2.12.
+//
+// The function takes the following parameters:
+//
+//    - index_ representing an index in table.
+//
+// The function returns the following values:
+//
+//    - gint representing the row at the specified index, or -1 if the table does
+//      not implement this method.
+//
+func (table *Table) rowAtIndex(index_ int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_at_index
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_at_index(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rowDescription gets the description text of the specified row in the table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): gchar* representing the row description, or NULL if
+//      value does not implement this interface.
+//
+func (table *Table) rowDescription(row int) string {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// rowExtentAt gets the number of rows occupied by the accessible object at a
+// specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - gint representing the row extent at specified position, or 0 if value
+//      does not implement this interface.
+//
+func (table *Table) rowExtentAt(row, column int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_extent_at
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_extent_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rowHeader gets the row header of a specified row in an accessible table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in the table.
+//
+// The function returns the following values:
+//
+//    - object (optional): atkObject* representing the specified row header, or
+//      NULL if value does not implement this interface.
+//
+func (table *Table) rowHeader(row int) *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_header(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// selectedColumns gets the selected columns of the table by initializing
+// **selected with the selected column numbers. This array should be freed by
+// the caller.
+//
+// The function takes the following parameters:
+//
+//    - selected that is to contain the selected columns numbers.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of selected columns, or 0 if value does not
+//      implement this interface.
+//
+func (table *Table) selectedColumns(selected **int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_selected_columns
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 **C.gint    // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (**C.gint)(unsafe.Pointer(selected))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_selected_columns(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// selectedRows gets the selected rows of the table by initializing **selected
+// with the selected row numbers. This array should be freed by the caller.
+//
+// The function takes the following parameters:
+//
+//    - selected that is to contain the selected row numbers.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of selected rows, or zero if value does not
+//      implement this interface.
+//
+func (table *Table) selectedRows(selected **int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_selected_rows
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 **C.gint    // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (**C.gint)(unsafe.Pointer(selected))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_selected_rows(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Summary gets the summary description of the table.
+//
+// The function returns the following values:
+//
+//    - object: atkObject* representing a summary description of the table, or
+//      zero if value does not implement this interface.
+//
+func (table *Table) summary() *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_summary
+
+	var _arg0 *C.AtkTable  // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_summary(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// isColumnSelected gets a boolean value indicating whether the specified column
+// is selected.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the column is selected, or 0 if value does
+//      not implement this interface.
+//
+func (table *Table) isColumnSelected(column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.is_column_selected
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_is_column_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// isRowSelected gets a boolean value indicating whether the specified row is
+// selected.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the row is selected, or 0 if value does not
+//      implement this interface.
+//
+func (table *Table) isRowSelected(row int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.is_row_selected
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_is_row_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// isSelected gets a boolean value indicating whether the accessible object at
+// the specified row and column is selected.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the cell is selected, or 0 if value does not
+//      implement this interface.
+//
+func (table *Table) isSelected(row, column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.is_selected
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_is_selected(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (table *Table) modelChanged() {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.model_changed
+
+	var _arg0 *C.AtkTable // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C._gotk4_atk1_Table_virtual_model_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+}
+
+// refAt: get a reference to the table cell at row, column. This cell should
+// implement the interface TableCell.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - object representing the referred to accessible.
+//
+func (table *Table) refAt(row, column int) *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.ref_at
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_ref_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// removeColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the column was successfully removed from the
+//      selection, or 0 if value does not implement this interface.
+//
+func (table *Table) removeColumnSelection(column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.remove_column_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_remove_column_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// removeRowSelection removes the specified row from the selection.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the row was successfully removed from the
+//      selection, or 0 if value does not implement this interface.
+//
+func (table *Table) removeRowSelection(row int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.remove_row_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_remove_row_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - row
+//    - numDeleted
+//
+func (table *Table) rowDeleted(row, numDeleted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.row_deleted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(numDeleted)
+
+	C._gotk4_atk1_Table_virtual_row_deleted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(numDeleted)
+}
+
+// The function takes the following parameters:
+//
+//    - row
+//    - numInserted
+//
+func (table *Table) rowInserted(row, numInserted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.row_inserted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(numInserted)
+
+	C._gotk4_atk1_Table_virtual_row_inserted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(numInserted)
+}
+
+func (table *Table) rowReordered() {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.row_reordered
+
+	var _arg0 *C.AtkTable // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C._gotk4_atk1_Table_virtual_row_reordered(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+}
+
+// setCaption sets the caption for the table.
+//
+// The function takes the following parameters:
+//
+//    - caption representing the caption to set for table.
+//
+func (table *Table) setCaption(caption *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_caption
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_caption(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(caption)
+}
+
+// setColumnDescription sets the description text for the specified column of
+// the table.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//    - description representing the description text to set for the specified
+//      column of the table.
+//
+func (table *Table) setColumnDescription(column int, description string) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_column_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 *C.gchar    // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_atk1_Table_virtual_set_column_description(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(description)
+}
+
+// setColumnHeader sets the specified column header to header.
+//
+// The function takes the following parameters:
+//
+//    - column representing a column in table.
+//    - header: Table.
+//
+func (table *Table) setColumnHeader(column int, header *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_column_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_column_header(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(header)
+}
+
+// setRowDescription sets the description text for the specified row of table.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - description representing the description text to set for the specified
+//      row of table.
+//
+func (table *Table) setRowDescription(row int, description string) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_row_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 *C.gchar    // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_atk1_Table_virtual_set_row_description(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(description)
+}
+
+// setRowHeader sets the specified row header to header.
+//
+// The function takes the following parameters:
+//
+//    - row representing a row in table.
+//    - header: Table.
+//
+func (table *Table) setRowHeader(row int, header *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_row_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_row_header(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(header)
+}
+
+// setSummary sets the summary description of the table.
+//
+// The function takes the following parameters:
+//
+//    - accessible representing the summary description to set for table.
+//
+func (table *Table) setSummary(accessible *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_summary
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_summary(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(accessible)
 }

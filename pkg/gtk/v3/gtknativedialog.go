@@ -16,10 +16,13 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_NativeDialogClass_hide(GtkNativeDialog*);
-// extern void _gotk4_gtk3_NativeDialogClass_response(GtkNativeDialog*, gint);
-// extern void _gotk4_gtk3_NativeDialogClass_show(GtkNativeDialog*);
 // extern void _gotk4_gtk3_NativeDialog_ConnectResponse(gpointer, gint, guintptr);
+// extern void _gotk4_gtk3_NativeDialogClass_show(GtkNativeDialog*);
+// extern void _gotk4_gtk3_NativeDialogClass_response(GtkNativeDialog*, gint);
+// extern void _gotk4_gtk3_NativeDialogClass_hide(GtkNativeDialog*);
+// void _gotk4_gtk3_NativeDialog_virtual_response(void* fnptr, GtkNativeDialog* arg0, gint arg1) {
+//   ((void (*)(GtkNativeDialog*, gint))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -33,24 +36,32 @@ func init() {
 	})
 }
 
-// NativeDialogOverrider contains methods that are overridable.
-type NativeDialogOverrider interface {
+// NativeDialogOverrides contains methods that are overridable.
+type NativeDialogOverrides struct {
 	// Hide hides the dialog if it is visilbe, aborting any interaction. Once
 	// this is called the NativeDialog::response signal will not be emitted
 	// until after the next call to gtk_native_dialog_show().
 	//
 	// If the dialog is not visible this does nothing.
-	Hide()
+	Hide func()
 	// The function takes the following parameters:
 	//
-	Response(responseId int)
+	Response func(responseId int)
 	// Show shows the dialog on the display, allowing the user to interact with
 	// it. When the user accepts the state of the dialog the dialog will be
 	// automatically hidden and the NativeDialog::response signal will be
 	// emitted.
 	//
 	// Multiple calls while the dialog is visible will be ignored.
-	Show()
+	Show func()
+}
+
+func defaultNativeDialogOverrides(v *NativeDialog) NativeDialogOverrides {
+	return NativeDialogOverrides{
+		Hide:     v.hide,
+		Response: v.response,
+		Show:     v.show,
+	}
 }
 
 // NativeDialog: native dialogs are platform dialogs that don't use Dialog or
@@ -88,68 +99,33 @@ type NativeDialogger interface {
 var _ NativeDialogger = (*NativeDialog)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNativeDialog,
-		GoType:        reflect.TypeOf((*NativeDialog)(nil)),
-		InitClass:     initClassNativeDialog,
-		FinalizeClass: finalizeClassNativeDialog,
-	})
+	coreglib.RegisterClassInfo[*NativeDialog, *NativeDialogClass, NativeDialogOverrides](
+		GTypeNativeDialog,
+		initNativeDialogClass,
+		wrapNativeDialog,
+		defaultNativeDialogOverrides,
+	)
 }
 
-func initClassNativeDialog(gclass unsafe.Pointer, goval any) {
+func initNativeDialogClass(gclass unsafe.Pointer, overrides NativeDialogOverrides, classInitFunc func(*NativeDialogClass)) {
+	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeNativeDialog))))
 
-	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Hide() }); ok {
+	if overrides.Hide != nil {
 		pclass.hide = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_hide)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+	if overrides.Response != nil {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_response)
 	}
 
-	if _, ok := goval.(interface{ Show() }); ok {
+	if overrides.Show != nil {
 		pclass.show = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_show)
 	}
-	if goval, ok := goval.(interface{ InitNativeDialog(*NativeDialogClass) }); ok {
-		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitNativeDialog(klass)
+
+	if classInitFunc != nil {
+		class := (*NativeDialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassNativeDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeNativeDialog(*NativeDialogClass) }); ok {
-		klass := (*NativeDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNativeDialog(klass)
-	}
-}
-
-//export _gotk4_gtk3_NativeDialogClass_hide
-func _gotk4_gtk3_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Hide() })
-
-	iface.Hide()
-}
-
-//export _gotk4_gtk3_NativeDialogClass_response
-func _gotk4_gtk3_NativeDialogClass_response(arg0 *C.GtkNativeDialog, arg1 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int) })
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	iface.Response(_responseId)
-}
-
-//export _gotk4_gtk3_NativeDialogClass_show
-func _gotk4_gtk3_NativeDialogClass_show(arg0 *C.GtkNativeDialog) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Show() })
-
-	iface.Show()
 }
 
 func wrapNativeDialog(obj *coreglib.Object) *NativeDialog {
@@ -171,26 +147,6 @@ func BaseNativeDialog(obj NativeDialogger) *NativeDialog {
 	return obj.baseNativeDialog()
 }
 
-//export _gotk4_gtk3_NativeDialog_ConnectResponse
-func _gotk4_gtk3_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(responseId int))
-	}
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	f(_responseId)
-}
-
 // ConnectResponse is emitted when the user responds to the dialog.
 //
 // When this is called the dialog has been hidden.
@@ -201,267 +157,21 @@ func (self *NativeDialog) ConnectResponse(f func(responseId int)) coreglib.Signa
 	return coreglib.ConnectGeneratedClosure(self, "response", false, unsafe.Pointer(C._gotk4_gtk3_NativeDialog_ConnectResponse), f)
 }
 
-// Destroy destroys a dialog.
-//
-// When a dialog is destroyed, it will break any references it holds to other
-// objects. If it is visible it will be hidden and any underlying window system
-// resources will be destroyed.
-//
-// Note that this does not release any reference to the object (as opposed to
-// destroying a GtkWindow) because there is no reference from the windowing
-// system to the NativeDialog.
-func (self *NativeDialog) Destroy() {
-	var _arg0 *C.GtkNativeDialog // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C.gtk_native_dialog_destroy(_arg0)
-	runtime.KeepAlive(self)
-}
-
-// Modal returns whether the dialog is modal. See gtk_native_dialog_set_modal().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the dialog is set to be modal.
-//
-func (self *NativeDialog) Modal() bool {
-	var _arg0 *C.GtkNativeDialog // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_native_dialog_get_modal(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Title gets the title of the NativeDialog.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): title of the dialog, or NULL if none has been set
-//      explicitly. The returned string is owned by the widget and must not be
-//      modified or freed.
-//
-func (self *NativeDialog) Title() string {
-	var _arg0 *C.GtkNativeDialog // out
-	var _cret *C.char            // in
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_native_dialog_get_title(_arg0)
-	runtime.KeepAlive(self)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// TransientFor fetches the transient parent for this window. See
-// gtk_native_dialog_set_transient_for().
-//
-// The function returns the following values:
-//
-//    - window (optional): transient parent for this window, or NULL if no
-//      transient parent has been set.
-//
-func (self *NativeDialog) TransientFor() *Window {
-	var _arg0 *C.GtkNativeDialog // out
-	var _cret *C.GtkWindow       // in
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_native_dialog_get_transient_for(_arg0)
-	runtime.KeepAlive(self)
-
-	var _window *Window // out
-
-	if _cret != nil {
-		_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _window
-}
-
-// Visible determines whether the dialog is visible.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the dialog is visible.
-//
-func (self *NativeDialog) Visible() bool {
-	var _arg0 *C.GtkNativeDialog // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_native_dialog_get_visible(_arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Hide hides the dialog if it is visilbe, aborting any interaction. Once this
-// is called the NativeDialog::response signal will not be emitted until after
-// the next call to gtk_native_dialog_show().
-//
-// If the dialog is not visible this does nothing.
-func (self *NativeDialog) Hide() {
-	var _arg0 *C.GtkNativeDialog // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C.gtk_native_dialog_hide(_arg0)
-	runtime.KeepAlive(self)
-}
-
-// Run blocks in a recursive main loop until self emits the
-// NativeDialog::response signal. It then returns the response ID from the
-// ::response signal emission.
-//
-// Before entering the recursive main loop, gtk_native_dialog_run() calls
-// gtk_native_dialog_show() on the dialog for you.
-//
-// After gtk_native_dialog_run() returns, then dialog will be hidden.
-//
-// Typical usage of this function might be:
-//
-//    gint result = gtk_native_dialog_run (GTK_NATIVE_DIALOG (dialog));
-//    switch (result)
-//      {
-//        case GTK_RESPONSE_ACCEPT:
-//           do_application_specific_something ();
-//           break;
-//        default:
-//           do_nothing_since_dialog_was_cancelled ();
-//           break;
-//      }
-//    g_object_unref (dialog);
-//
-// Note that even though the recursive main loop gives the effect of a modal
-// dialog (it prevents the user from interacting with other windows in the same
-// window group while the dialog is run), callbacks such as timeouts, IO channel
-// watches, DND drops, etc, will be triggered during a gtk_native_dialog_run()
-// call.
-//
-// The function returns the following values:
-//
-//    - gint: response ID.
-//
-func (self *NativeDialog) Run() int {
-	var _arg0 *C.GtkNativeDialog // out
-	var _cret C.gint             // in
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_native_dialog_run(_arg0)
-	runtime.KeepAlive(self)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// SetModal sets a dialog modal or non-modal. Modal dialogs prevent interaction
-// with other windows in the same application. To keep modal dialogs on top of
-// main application windows, use gtk_native_dialog_set_transient_for() to make
-// the dialog transient for the parent; most [window managers][gtk-X11-arch]
-// will then disallow lowering the dialog below the parent.
-//
 // The function takes the following parameters:
 //
-//    - modal: whether the window is modal.
-//
-func (self *NativeDialog) SetModal(modal bool) {
+func (self *NativeDialog) response(responseId int) {
+	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.response
+
 	var _arg0 *C.GtkNativeDialog // out
-	var _arg1 C.gboolean         // out
+	var _arg1 C.gint             // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	if modal {
-		_arg1 = C.TRUE
-	}
+	_arg1 = C.gint(responseId)
 
-	C.gtk_native_dialog_set_modal(_arg0, _arg1)
+	C._gotk4_gtk3_NativeDialog_virtual_response(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(modal)
-}
-
-// SetTitle sets the title of the NativeDialog.
-//
-// The function takes the following parameters:
-//
-//    - title of the dialog.
-//
-func (self *NativeDialog) SetTitle(title string) {
-	var _arg0 *C.GtkNativeDialog // out
-	var _arg1 *C.char            // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_native_dialog_set_title(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(title)
-}
-
-// SetTransientFor: dialog windows should be set transient for the main
-// application window they were spawned from. This allows [window
-// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main window, or
-// center the dialog over the main window.
-//
-// Passing NULL for parent unsets the current transient window.
-//
-// The function takes the following parameters:
-//
-//    - parent (optional) window, or NULL.
-//
-func (self *NativeDialog) SetTransientFor(parent *Window) {
-	var _arg0 *C.GtkNativeDialog // out
-	var _arg1 *C.GtkWindow       // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-
-	C.gtk_native_dialog_set_transient_for(_arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(parent)
-}
-
-// Show shows the dialog on the display, allowing the user to interact with it.
-// When the user accepts the state of the dialog the dialog will be
-// automatically hidden and the NativeDialog::response signal will be emitted.
-//
-// Multiple calls while the dialog is visible will be ignored.
-func (self *NativeDialog) Show() {
-	var _arg0 *C.GtkNativeDialog // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C.gtk_native_dialog_show(_arg0)
-	runtime.KeepAlive(self)
+	runtime.KeepAlive(responseId)
 }
 
 // NativeDialogClass: instance of this type is always passed by reference.

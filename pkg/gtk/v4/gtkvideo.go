@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// VideoOverrider contains methods that are overridable.
-type VideoOverrider interface {
+// VideoOverrides contains methods that are overridable.
+type VideoOverrides struct {
+}
+
+func defaultVideoOverrides(v *Video) VideoOverrides {
+	return VideoOverrides{}
 }
 
 // Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
@@ -55,25 +59,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVideo,
-		GoType:        reflect.TypeOf((*Video)(nil)),
-		InitClass:     initClassVideo,
-		FinalizeClass: finalizeClassVideo,
-	})
+	coreglib.RegisterClassInfo[*Video, *VideoClass, VideoOverrides](
+		GTypeVideo,
+		initVideoClass,
+		wrapVideo,
+		defaultVideoOverrides,
+	)
 }
 
-func initClassVideo(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVideo(*VideoClass) }); ok {
-		klass := (*VideoClass)(gextras.NewStructNative(gclass))
-		goval.InitVideo(klass)
-	}
-}
-
-func finalizeClassVideo(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVideo(*VideoClass) }); ok {
-		klass := (*VideoClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVideo(klass)
+func initVideoClass(gclass unsafe.Pointer, overrides VideoOverrides, classInitFunc func(*VideoClass)) {
+	if classInitFunc != nil {
+		class := (*VideoClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

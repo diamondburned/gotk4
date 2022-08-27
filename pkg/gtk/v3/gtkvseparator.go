@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// VSeparatorOverrider contains methods that are overridable.
-type VSeparatorOverrider interface {
+// VSeparatorOverrides contains methods that are overridable.
+type VSeparatorOverrides struct {
+}
+
+func defaultVSeparatorOverrides(v *VSeparator) VSeparatorOverrides {
+	return VSeparatorOverrides{}
 }
 
 // VSeparator widget is a vertical separator, used to group the widgets within a
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVSeparator,
-		GoType:        reflect.TypeOf((*VSeparator)(nil)),
-		InitClass:     initClassVSeparator,
-		FinalizeClass: finalizeClassVSeparator,
-	})
+	coreglib.RegisterClassInfo[*VSeparator, *VSeparatorClass, VSeparatorOverrides](
+		GTypeVSeparator,
+		initVSeparatorClass,
+		wrapVSeparator,
+		defaultVSeparatorOverrides,
+	)
 }
 
-func initClassVSeparator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVSeparator(*VSeparatorClass) }); ok {
-		klass := (*VSeparatorClass)(gextras.NewStructNative(gclass))
-		goval.InitVSeparator(klass)
-	}
-}
-
-func finalizeClassVSeparator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVSeparator(*VSeparatorClass) }); ok {
-		klass := (*VSeparatorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVSeparator(klass)
+func initVSeparatorClass(gclass unsafe.Pointer, overrides VSeparatorOverrides, classInitFunc func(*VSeparatorClass)) {
+	if classInitFunc != nil {
+		class := (*VSeparatorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

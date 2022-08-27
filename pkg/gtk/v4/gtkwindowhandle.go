@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// WindowHandleOverrider contains methods that are overridable.
-type WindowHandleOverrider interface {
+// WindowHandleOverrides contains methods that are overridable.
+type WindowHandleOverrides struct {
+}
+
+func defaultWindowHandleOverrides(v *WindowHandle) WindowHandleOverrides {
+	return WindowHandleOverrides{}
 }
 
 // WindowHandle: GtkWindowHandle is a titlebar area widget.
@@ -55,25 +59,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWindowHandle,
-		GoType:        reflect.TypeOf((*WindowHandle)(nil)),
-		InitClass:     initClassWindowHandle,
-		FinalizeClass: finalizeClassWindowHandle,
-	})
+	coreglib.RegisterClassInfo[*WindowHandle, *WindowHandleClass, WindowHandleOverrides](
+		GTypeWindowHandle,
+		initWindowHandleClass,
+		wrapWindowHandle,
+		defaultWindowHandleOverrides,
+	)
 }
 
-func initClassWindowHandle(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitWindowHandle(*WindowHandleClass) }); ok {
-		klass := (*WindowHandleClass)(gextras.NewStructNative(gclass))
-		goval.InitWindowHandle(klass)
-	}
-}
-
-func finalizeClassWindowHandle(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWindowHandle(*WindowHandleClass) }); ok {
-		klass := (*WindowHandleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWindowHandle(klass)
+func initWindowHandleClass(gclass unsafe.Pointer, overrides WindowHandleOverrides, classInitFunc func(*WindowHandleClass)) {
+	if classInitFunc != nil {
+		class := (*WindowHandleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

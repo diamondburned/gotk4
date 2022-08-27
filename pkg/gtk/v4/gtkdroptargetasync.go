@@ -14,11 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
-// extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
-// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, GdkDrop*, guintptr);
-// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
+// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
+// extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, GdkDrop*, guintptr);
+// extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
+// extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -85,48 +85,6 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	return wrapDropTargetAsync(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_DropTargetAsync_ConnectAccept
-func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(drop gdk.Dropper) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper) (ok bool))
-	}
-
-	var _drop gdk.Dropper // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-
-	ok := f(_drop)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectAccept is emitted on the drop site when a drop operation is about to
 // begin.
 //
@@ -146,92 +104,12 @@ func (self *DropTargetAsync) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) c
 	return coreglib.ConnectGeneratedClosure(self, "accept", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectAccept), f)
 }
 
-//export _gotk4_gtk4_DropTargetAsync_ConnectDragEnter
-func _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.GdkDragAction) {
-	var f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction))
-	}
-
-	var _drop gdk.Dropper // out
-	var _x float64        // out
-	var _y float64        // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	dragAction := f(_drop, _x, _y)
-
-	cret = C.GdkDragAction(dragAction)
-
-	return cret
-}
-
 // ConnectDragEnter is emitted on the drop site when the pointer enters the
 // widget.
 //
 // It can be used to set up custom highlighting.
 func (self *DropTargetAsync) ConnectDragEnter(f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "drag-enter", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragEnter), f)
-}
-
-//export _gotk4_gtk4_DropTargetAsync_ConnectDragLeave
-func _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.guintptr) {
-	var f func(drop gdk.Dropper)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper))
-	}
-
-	var _drop gdk.Dropper // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-
-	f(_drop)
 }
 
 // ConnectDragLeave is emitted on the drop site when the pointer leaves the
@@ -242,100 +120,10 @@ func (self *DropTargetAsync) ConnectDragLeave(f func(drop gdk.Dropper)) coreglib
 	return coreglib.ConnectGeneratedClosure(self, "drag-leave", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragLeave), f)
 }
 
-//export _gotk4_gtk4_DropTargetAsync_ConnectDragMotion
-func _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.GdkDragAction) {
-	var f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction))
-	}
-
-	var _drop gdk.Dropper // out
-	var _x float64        // out
-	var _y float64        // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	dragAction := f(_drop, _x, _y)
-
-	cret = C.GdkDragAction(dragAction)
-
-	return cret
-}
-
 // ConnectDragMotion is emitted while the pointer is moving over the drop
 // target.
 func (self *DropTargetAsync) ConnectDragMotion(f func(drop gdk.Dropper, x, y float64) (dragAction gdk.DragAction)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "drag-motion", false, unsafe.Pointer(C._gotk4_gtk4_DropTargetAsync_ConnectDragMotion), f)
-}
-
-//export _gotk4_gtk4_DropTargetAsync_ConnectDrop
-func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(drop gdk.Dropper, x, y float64) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drop gdk.Dropper, x, y float64) (ok bool))
-	}
-
-	var _drop gdk.Dropper // out
-	var _x float64        // out
-	var _y float64        // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dropper is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dropper)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dropper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dropper")
-		}
-		_drop = rv
-	}
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	ok := f(_drop, _x, _y)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectDrop is emitted on the drop site when the user drops the data onto the

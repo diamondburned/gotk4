@@ -3,232 +3,31 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// #include <glib-object.h>
-// extern gsize _gotk4_gio2_SocketControlMessageClass_get_size(GSocketControlMessage*);
-// extern int _gotk4_gio2_SocketControlMessageClass_get_level(GSocketControlMessage*);
-// extern int _gotk4_gio2_SocketControlMessageClass_get_type(GSocketControlMessage*);
-// extern void _gotk4_gio2_SocketControlMessageClass_serialize(GSocketControlMessage*, gpointer);
+// int _gotk4_gio2_SocketControlMessage_virtual_get_type(void* fnptr, GSocketControlMessage* arg0) {
+//   return ((int (*)(GSocketControlMessage*))(fnptr))(arg0);
+// };
 import "C"
 
-// GType values.
-var (
-	GTypeSocketControlMessage = coreglib.Type(C.g_socket_control_message_get_type())
-)
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		coreglib.TypeMarshaler{T: GTypeSocketControlMessage, F: marshalSocketControlMessage},
-	})
-}
-
-// SocketControlMessageOverrider contains methods that are overridable.
-type SocketControlMessageOverrider interface {
-	// Level returns the "level" (i.e. the originating protocol) of the control
-	// message. This is often SOL_SOCKET.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: integer describing the level.
-	//
-	Level() int
-	// Size returns the space required for the control message, not including
-	// headers or alignment.
-	//
-	// The function returns the following values:
-	//
-	//    - gsize: number of bytes required.
-	//
-	Size() uint
-	// The function returns the following values:
-	//
-	Type() int
-	// Serialize converts the data in the message to bytes placed in the
-	// message.
-	//
-	// data is guaranteed to have enough space to fit the size returned by
-	// g_socket_control_message_get_size() on this object.
-	//
-	// The function takes the following parameters:
-	//
-	//    - data: buffer to write data to.
-	//
-	Serialize(data unsafe.Pointer)
-}
-
-// SocketControlMessage is a special-purpose utility message that can be sent to
-// or received from a #GSocket. These types of messages are often called
-// "ancillary data".
-//
-// The message can represent some sort of special instruction to or information
-// from the socket or can represent a special kind of transfer to the peer (for
-// example, sending a file descriptor over a UNIX socket).
-//
-// These messages are sent with g_socket_send_message() and received with
-// g_socket_receive_message().
-//
-// To extend the set of control message that can be sent, subclass this class
-// and override the get_size, get_level, get_type and serialize methods.
-//
-// To extend the set of control messages that can be received, subclass this
-// class and implement the deserialize method. Also, make sure your class is
-// registered with the GType typesystem before calling
-// g_socket_receive_message() to read such a message.
-type SocketControlMessage struct {
-	_ [0]func() // equal guard
-	*coreglib.Object
-}
-
-var (
-	_ coreglib.Objector = (*SocketControlMessage)(nil)
-)
-
-// SocketControlMessager describes types inherited from class SocketControlMessage.
-//
-// To get the original type, the caller must assert this to an interface or
-// another type.
-type SocketControlMessager interface {
-	coreglib.Objector
-	baseSocketControlMessage() *SocketControlMessage
-}
-
-var _ SocketControlMessager = (*SocketControlMessage)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSocketControlMessage,
-		GoType:        reflect.TypeOf((*SocketControlMessage)(nil)),
-		InitClass:     initClassSocketControlMessage,
-		FinalizeClass: finalizeClassSocketControlMessage,
-	})
-}
-
-func initClassSocketControlMessage(gclass unsafe.Pointer, goval any) {
-
-	pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Level() int }); ok {
-		pclass.get_level = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_level)
-	}
-
-	if _, ok := goval.(interface{ Size() uint }); ok {
-		pclass.get_size = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_size)
-	}
-
-	if _, ok := goval.(interface{ Type() int }); ok {
-		pclass.get_type = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_type)
-	}
-
-	if _, ok := goval.(interface{ Serialize(data unsafe.Pointer) }); ok {
-		pclass.serialize = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_serialize)
-	}
-	if goval, ok := goval.(interface {
-		InitSocketControlMessage(*SocketControlMessageClass)
-	}); ok {
-		klass := (*SocketControlMessageClass)(gextras.NewStructNative(gclass))
-		goval.InitSocketControlMessage(klass)
-	}
-}
-
-func finalizeClassSocketControlMessage(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeSocketControlMessage(*SocketControlMessageClass)
-	}); ok {
-		klass := (*SocketControlMessageClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSocketControlMessage(klass)
-	}
-}
-
-//export _gotk4_gio2_SocketControlMessageClass_get_level
-func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessage) (cret C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Level() int })
-
-	gint := iface.Level()
-
-	cret = C.int(gint)
-
-	return cret
-}
-
-//export _gotk4_gio2_SocketControlMessageClass_get_size
-func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessage) (cret C.gsize) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Size() uint })
-
-	gsize := iface.Size()
-
-	cret = C.gsize(gsize)
-
-	return cret
-}
-
-//export _gotk4_gio2_SocketControlMessageClass_get_type
-func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessage) (cret C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Type() int })
-
-	gint := iface.Type()
-
-	cret = C.int(gint)
-
-	return cret
-}
-
-//export _gotk4_gio2_SocketControlMessageClass_serialize
-func _gotk4_gio2_SocketControlMessageClass_serialize(arg0 *C.GSocketControlMessage, arg1 C.gpointer) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Serialize(data unsafe.Pointer) })
-
-	var _data unsafe.Pointer // out
-
-	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
-
-	iface.Serialize(_data)
-}
-
-func wrapSocketControlMessage(obj *coreglib.Object) *SocketControlMessage {
-	return &SocketControlMessage{
-		Object: obj,
-	}
-}
-
-func marshalSocketControlMessage(p uintptr) (interface{}, error) {
-	return wrapSocketControlMessage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-func (message *SocketControlMessage) baseSocketControlMessage() *SocketControlMessage {
-	return message
-}
-
-// BaseSocketControlMessage returns the underlying base object.
-func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
-	return obj.baseSocketControlMessage()
-}
-
-// Level returns the "level" (i.e. the originating protocol) of the control
-// message. This is often SOL_SOCKET.
-//
 // The function returns the following values:
 //
-//    - gint: integer describing the level.
-//
-func (message *SocketControlMessage) Level() int {
+func (message *SocketControlMessage) typ() int {
+	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
+	fnarg := gclass.get_type
+
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
 
 	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
-	_cret = C.g_socket_control_message_get_level(_arg0)
+	_cret = C._gotk4_gio2_SocketControlMessage_virtual_get_type(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(message)
 
 	var _gint int // out
@@ -236,133 +35,6 @@ func (message *SocketControlMessage) Level() int {
 	_gint = int(_cret)
 
 	return _gint
-}
-
-// MsgType returns the protocol specific type of the control message. For
-// instance, for UNIX fd passing this would be SCM_RIGHTS.
-//
-// The function returns the following values:
-//
-//    - gint: integer describing the type of control message.
-//
-func (message *SocketControlMessage) MsgType() int {
-	var _arg0 *C.GSocketControlMessage // out
-	var _cret C.int                    // in
-
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-
-	_cret = C.g_socket_control_message_get_msg_type(_arg0)
-	runtime.KeepAlive(message)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Size returns the space required for the control message, not including
-// headers or alignment.
-//
-// The function returns the following values:
-//
-//    - gsize: number of bytes required.
-//
-func (message *SocketControlMessage) Size() uint {
-	var _arg0 *C.GSocketControlMessage // out
-	var _cret C.gsize                  // in
-
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-
-	_cret = C.g_socket_control_message_get_size(_arg0)
-	runtime.KeepAlive(message)
-
-	var _gsize uint // out
-
-	_gsize = uint(_cret)
-
-	return _gsize
-}
-
-// Serialize converts the data in the message to bytes placed in the message.
-//
-// data is guaranteed to have enough space to fit the size returned by
-// g_socket_control_message_get_size() on this object.
-//
-// The function takes the following parameters:
-//
-//    - data: buffer to write data to.
-//
-func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
-	var _arg0 *C.GSocketControlMessage // out
-	var _arg1 C.gpointer               // out
-
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(data))
-
-	C.g_socket_control_message_serialize(_arg0, _arg1)
-	runtime.KeepAlive(message)
-	runtime.KeepAlive(data)
-}
-
-// SocketControlMessageDeserialize tries to deserialize a socket control message
-// of a given level and type. This will ask all known (to GType) subclasses of
-// ControlMessage if they can understand this kind of message and if so
-// deserialize it into a ControlMessage.
-//
-// If there is no implementation for this kind of control message, NULL will be
-// returned.
-//
-// The function takes the following parameters:
-//
-//    - level: socket level.
-//    - typ: socket control message type for the given level.
-//    - data: pointer to the message data.
-//
-// The function returns the following values:
-//
-//    - socketControlMessage: deserialized message or NULL.
-//
-func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlMessager {
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-	var _arg4 C.gpointer // out
-	var _arg3 C.gsize
-	var _cret *C.GSocketControlMessage // in
-
-	_arg1 = C.int(level)
-	_arg2 = C.int(typ)
-	_arg3 = (C.gsize)(len(data))
-	if len(data) > 0 {
-		_arg4 = (C.gpointer)(unsafe.Pointer(&data[0]))
-	}
-
-	_cret = C.g_socket_control_message_deserialize(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(level)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(data)
-
-	var _socketControlMessage SocketControlMessager // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.SocketControlMessager is nil")
-		}
-
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(SocketControlMessager)
-			return ok
-		})
-		rv, ok := casted.(SocketControlMessager)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketControlMessager")
-		}
-		_socketControlMessage = rv
-	}
-
-	return _socketControlMessage
 }
 
 // SocketControlMessageClass class structure for ControlMessage.

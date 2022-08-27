@@ -12,8 +12,8 @@ import (
 
 // #include <stdlib.h>
 // #include <gdk/wayland/gdkwayland.h>
-// extern void _gotk4_gdkwayland4_WaylandToplevelExported(GdkToplevel*, char*, gpointer);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gdkwayland4_WaylandToplevelExported(GdkToplevel*, char*, gpointer);
 import "C"
 
 // WaylandToplevelExported: callback that gets called when the handle for a
@@ -24,26 +24,6 @@ import "C"
 // The handle can be passed to other processes, for the purpose of marking
 // surfaces as transient for out-of-process surfaces.
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string)
-
-//export _gotk4_gdkwayland4_WaylandToplevelExported
-func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.GdkToplevel, arg2 *C.char, arg3 C.gpointer) {
-	var fn WaylandToplevelExported
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(WaylandToplevelExported)
-	}
-
-	var _toplevel *WaylandToplevel // out
-	var _handle string             // out
-
-	_toplevel = wrapWaylandToplevel(coreglib.Take(unsafe.Pointer(arg1)))
-	_handle = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	fn(_toplevel, _handle)
-}
 
 // ExportHandle: asynchronously obtains a handle for a surface that can be
 // passed to other processes.

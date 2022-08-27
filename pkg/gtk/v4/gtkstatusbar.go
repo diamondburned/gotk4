@@ -12,8 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
 // extern void _gotk4_gtk4_Statusbar_ConnectTextPushed(gpointer, guint, gchar*, guintptr);
+// extern void _gotk4_gtk4_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
 import "C"
 
 // GType values.
@@ -96,54 +96,10 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return wrapStatusbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Statusbar_ConnectTextPopped
-func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(contextId uint, text string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(contextId uint, text string))
-	}
-
-	var _contextId uint // out
-	var _text string    // out
-
-	_contextId = uint(arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	f(_contextId, _text)
-}
-
 // ConnectTextPopped is emitted whenever a new message is popped off a
 // statusbar's stack.
 func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusbar, "text-popped", false, unsafe.Pointer(C._gotk4_gtk4_Statusbar_ConnectTextPopped), f)
-}
-
-//export _gotk4_gtk4_Statusbar_ConnectTextPushed
-func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(contextId uint, text string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(contextId uint, text string))
-	}
-
-	var _contextId uint // out
-	var _text string    // out
-
-	_contextId = uint(arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	f(_contextId, _text)
 }
 
 // ConnectTextPushed is emitted whenever a new message gets pushed onto a

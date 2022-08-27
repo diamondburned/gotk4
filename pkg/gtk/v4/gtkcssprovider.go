@@ -6,8 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -78,35 +76,6 @@ func wrapCSSProvider(obj *coreglib.Object) *CSSProvider {
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return wrapCSSProvider(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_CssProvider_ConnectParsingError
-func _gotk4_gtk4_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCssSection, arg2 *C.GError, arg3 C.guintptr) {
-	var f func(section *CSSSection, err error)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(section *CSSSection, err error))
-	}
-
-	var _section *CSSSection // out
-	var _err error           // out
-
-	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.gtk_css_section_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_section)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
-	)
-	_err = gerror.Take(unsafe.Pointer(arg2))
-
-	f(_section, _err)
 }
 
 // ConnectParsingError signals that a parsing error occurred.

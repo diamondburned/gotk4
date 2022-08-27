@@ -14,10 +14,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ButtonClass_activate(GtkButton*);
-// extern void _gotk4_gtk4_ButtonClass_clicked(GtkButton*);
-// extern void _gotk4_gtk4_Button_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_Button_ConnectClicked(gpointer, guintptr);
+// extern void _gotk4_gtk4_Button_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_ButtonClass_clicked(GtkButton*);
+// extern void _gotk4_gtk4_ButtonClass_activate(GtkButton*);
+// void _gotk4_gtk4_Button_virtual_activate(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Button_virtual_clicked(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -31,10 +37,17 @@ func init() {
 	})
 }
 
-// ButtonOverrider contains methods that are overridable.
-type ButtonOverrider interface {
-	Activate()
-	Clicked()
+// ButtonOverrides contains methods that are overridable.
+type ButtonOverrides struct {
+	Activate func()
+	Clicked  func()
+}
+
+func defaultButtonOverrides(v *Button) ButtonOverrides {
+	return ButtonOverrides{
+		Activate: v.activate,
+		Clicked:  v.clicked,
+	}
 }
 
 // Button: GtkButton widget is generally used to trigger a callback function
@@ -82,52 +95,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeButton,
-		GoType:        reflect.TypeOf((*Button)(nil)),
-		InitClass:     initClassButton,
-		FinalizeClass: finalizeClassButton,
-	})
+	coreglib.RegisterClassInfo[*Button, *ButtonClass, ButtonOverrides](
+		GTypeButton,
+		initButtonClass,
+		wrapButton,
+		defaultButtonOverrides,
+	)
 }
 
-func initClassButton(gclass unsafe.Pointer, goval any) {
+func initButtonClass(gclass unsafe.Pointer, overrides ButtonOverrides, classInitFunc func(*ButtonClass)) {
+	pclass := (*C.GtkButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeButton))))
 
-	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Activate() }); ok {
+	if overrides.Activate != nil {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ButtonClass_activate)
 	}
 
-	if _, ok := goval.(interface{ Clicked() }); ok {
+	if overrides.Clicked != nil {
 		pclass.clicked = (*[0]byte)(C._gotk4_gtk4_ButtonClass_clicked)
 	}
-	if goval, ok := goval.(interface{ InitButton(*ButtonClass) }); ok {
-		klass := (*ButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitButton(klass)
+
+	if classInitFunc != nil {
+		class := (*ButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeButton(*ButtonClass) }); ok {
-		klass := (*ButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeButton(klass)
-	}
-}
-
-//export _gotk4_gtk4_ButtonClass_activate
-func _gotk4_gtk4_ButtonClass_activate(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Activate() })
-
-	iface.Activate()
-}
-
-//export _gotk4_gtk4_ButtonClass_clicked
-func _gotk4_gtk4_ButtonClass_clicked(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Clicked() })
-
-	iface.Clicked()
 }
 
 func wrapButton(obj *coreglib.Object) *Button {
@@ -172,44 +162,12 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return wrapButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Button_ConnectActivate
-func _gotk4_gtk4_Button_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted to animate press then release.
 //
 // This is an action signal. Applications should never connect to this signal,
 // but use the gtk.Button::clicked signal.
 func (button *Button) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Button_ConnectActivate), f)
-}
-
-//export _gotk4_gtk4_Button_ConnectClicked
-func _gotk4_gtk4_Button_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectClicked is emitted when the button has been activated (pressed and
@@ -584,6 +542,30 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
+}
+
+func (button *Button) activate() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.activate
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk4_Button_virtual_activate(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
+}
+
+func (button *Button) clicked() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.clicked
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk4_Button_virtual_clicked(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
 }
 
 // ButtonClass: instance of this type is always passed by reference.

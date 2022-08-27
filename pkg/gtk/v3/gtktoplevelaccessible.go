@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// ToplevelAccessibleOverrider contains methods that are overridable.
-type ToplevelAccessibleOverrider interface {
+// ToplevelAccessibleOverrides contains methods that are overridable.
+type ToplevelAccessibleOverrides struct {
+}
+
+func defaultToplevelAccessibleOverrides(v *ToplevelAccessible) ToplevelAccessibleOverrides {
+	return ToplevelAccessibleOverrides{}
 }
 
 type ToplevelAccessible struct {
@@ -44,29 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeToplevelAccessible,
-		GoType:        reflect.TypeOf((*ToplevelAccessible)(nil)),
-		InitClass:     initClassToplevelAccessible,
-		FinalizeClass: finalizeClassToplevelAccessible,
-	})
+	coreglib.RegisterClassInfo[*ToplevelAccessible, *ToplevelAccessibleClass, ToplevelAccessibleOverrides](
+		GTypeToplevelAccessible,
+		initToplevelAccessibleClass,
+		wrapToplevelAccessible,
+		defaultToplevelAccessibleOverrides,
+	)
 }
 
-func initClassToplevelAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitToplevelAccessible(*ToplevelAccessibleClass)
-	}); ok {
-		klass := (*ToplevelAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitToplevelAccessible(klass)
-	}
-}
-
-func finalizeClassToplevelAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeToplevelAccessible(*ToplevelAccessibleClass)
-	}); ok {
-		klass := (*ToplevelAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeToplevelAccessible(klass)
+func initToplevelAccessibleClass(gclass unsafe.Pointer, overrides ToplevelAccessibleOverrides, classInitFunc func(*ToplevelAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ToplevelAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

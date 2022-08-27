@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// TextViewAccessibleOverrider contains methods that are overridable.
-type TextViewAccessibleOverrider interface {
+// TextViewAccessibleOverrides contains methods that are overridable.
+type TextViewAccessibleOverrides struct {
+}
+
+func defaultTextViewAccessibleOverrides(v *TextViewAccessible) TextViewAccessibleOverrides {
+	return TextViewAccessibleOverrides{}
 }
 
 type TextViewAccessible struct {
@@ -48,29 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextViewAccessible,
-		GoType:        reflect.TypeOf((*TextViewAccessible)(nil)),
-		InitClass:     initClassTextViewAccessible,
-		FinalizeClass: finalizeClassTextViewAccessible,
-	})
+	coreglib.RegisterClassInfo[*TextViewAccessible, *TextViewAccessibleClass, TextViewAccessibleOverrides](
+		GTypeTextViewAccessible,
+		initTextViewAccessibleClass,
+		wrapTextViewAccessible,
+		defaultTextViewAccessibleOverrides,
+	)
 }
 
-func initClassTextViewAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitTextViewAccessible(*TextViewAccessibleClass)
-	}); ok {
-		klass := (*TextViewAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitTextViewAccessible(klass)
-	}
-}
-
-func finalizeClassTextViewAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeTextViewAccessible(*TextViewAccessibleClass)
-	}); ok {
-		klass := (*TextViewAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextViewAccessible(klass)
+func initTextViewAccessibleClass(gclass unsafe.Pointer, overrides TextViewAccessibleOverrides, classInitFunc func(*TextViewAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*TextViewAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

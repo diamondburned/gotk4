@@ -16,10 +16,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_DialogClass_close(GtkDialog*);
-// extern void _gotk4_gtk4_DialogClass_response(GtkDialog*, int);
-// extern void _gotk4_gtk4_Dialog_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk4_Dialog_ConnectResponse(gpointer, gint, guintptr);
+// extern void _gotk4_gtk4_Dialog_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_DialogClass_response(GtkDialog*, int);
+// extern void _gotk4_gtk4_DialogClass_close(GtkDialog*);
+// void _gotk4_gtk4_Dialog_virtual_close(void* fnptr, GtkDialog* arg0) {
+//   ((void (*)(GtkDialog*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Dialog_virtual_response(void* fnptr, GtkDialog* arg0, int arg1) {
+//   ((void (*)(GtkDialog*, int))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -156,9 +162,9 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 	return (d & other) == other
 }
 
-// DialogOverrider contains methods that are overridable.
-type DialogOverrider interface {
-	Close()
+// DialogOverrides contains methods that are overridable.
+type DialogOverrides struct {
+	Close func()
 	// Response emits the ::response signal with the given response ID.
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
@@ -167,7 +173,14 @@ type DialogOverrider interface {
 	//
 	//    - responseId: response ID.
 	//
-	Response(responseId int)
+	Response func(responseId int)
+}
+
+func defaultDialogOverrides(v *Dialog) DialogOverrides {
+	return DialogOverrides{
+		Close:    v.close,
+		Response: v.response,
+	}
 }
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
@@ -298,56 +311,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDialog,
-		GoType:        reflect.TypeOf((*Dialog)(nil)),
-		InitClass:     initClassDialog,
-		FinalizeClass: finalizeClassDialog,
-	})
+	coreglib.RegisterClassInfo[*Dialog, *DialogClass, DialogOverrides](
+		GTypeDialog,
+		initDialogClass,
+		wrapDialog,
+		defaultDialogOverrides,
+	)
 }
 
-func initClassDialog(gclass unsafe.Pointer, goval any) {
+func initDialogClass(gclass unsafe.Pointer, overrides DialogOverrides, classInitFunc func(*DialogClass)) {
+	pclass := (*C.GtkDialogClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeDialog))))
 
-	pclass := (*C.GtkDialogClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Close() }); ok {
+	if overrides.Close != nil {
 		pclass.close = (*[0]byte)(C._gotk4_gtk4_DialogClass_close)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+	if overrides.Response != nil {
 		pclass.response = (*[0]byte)(C._gotk4_gtk4_DialogClass_response)
 	}
-	if goval, ok := goval.(interface{ InitDialog(*DialogClass) }); ok {
-		klass := (*DialogClass)(gextras.NewStructNative(gclass))
-		goval.InitDialog(klass)
+
+	if classInitFunc != nil {
+		class := (*DialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDialog(*DialogClass) }); ok {
-		klass := (*DialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDialog(klass)
-	}
-}
-
-//export _gotk4_gtk4_DialogClass_close
-func _gotk4_gtk4_DialogClass_close(arg0 *C.GtkDialog) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Close() })
-
-	iface.Close()
-}
-
-//export _gotk4_gtk4_DialogClass_response
-func _gotk4_gtk4_DialogClass_response(arg0 *C.GtkDialog, arg1 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int) })
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	iface.Response(_responseId)
 }
 
 func wrapDialog(obj *coreglib.Object) *Dialog {
@@ -399,22 +385,6 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return wrapDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Dialog_ConnectClose
-func _gotk4_gtk4_Dialog_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectClose is emitted when the user uses a keybinding to close the dialog.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -422,26 +392,6 @@ func _gotk4_gtk4_Dialog_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
 // The default binding for this signal is the Escape key.
 func (dialog *Dialog) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(dialog, "close", false, unsafe.Pointer(C._gotk4_gtk4_Dialog_ConnectClose), f)
-}
-
-//export _gotk4_gtk4_Dialog_ConnectResponse
-func _gotk4_gtk4_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(responseId int))
-	}
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	f(_responseId)
 }
 
 // ConnectResponse is emitted when an action widget is clicked.
@@ -748,6 +698,41 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
+}
+
+func (dialog *Dialog) close() {
+	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))
+	fnarg := gclass.close
+
+	var _arg0 *C.GtkDialog // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+
+	C._gotk4_gtk4_Dialog_virtual_close(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(dialog)
+}
+
+// Response emits the ::response signal with the given response ID.
+//
+// Used to indicate that the user has responded to the dialog in some way.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
+func (dialog *Dialog) response(responseId int) {
+	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))
+	fnarg := gclass.response
+
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.int        // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.int(responseId)
+
+	C._gotk4_gtk4_Dialog_virtual_response(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 }
 
 // DialogClass: instance of this type is always passed by reference.

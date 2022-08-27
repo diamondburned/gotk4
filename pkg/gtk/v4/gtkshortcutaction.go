@@ -17,8 +17,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
 // extern void callbackDelete(gpointer);
+// extern gboolean _gotk4_gtk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
 import "C"
 
 // GType values.
@@ -95,57 +95,6 @@ func (s ShortcutActionFlags) Has(other ShortcutActionFlags) bool {
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
 type ShortcutFunc func(widget Widgetter, args *glib.Variant) (ok bool)
-
-//export _gotk4_gtk4_ShortcutFunc
-func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
-	var fn ShortcutFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ShortcutFunc)
-	}
-
-	var _widget Widgetter   // out
-	var _args *glib.Variant // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	if arg2 != nil {
-		_args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-		C.g_variant_ref(arg2)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_args)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-
-	ok := fn(_widget, _args)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {

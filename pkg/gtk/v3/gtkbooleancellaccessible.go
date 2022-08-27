@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// BooleanCellAccessibleOverrider contains methods that are overridable.
-type BooleanCellAccessibleOverrider interface {
+// BooleanCellAccessibleOverrides contains methods that are overridable.
+type BooleanCellAccessibleOverrides struct {
+}
+
+func defaultBooleanCellAccessibleOverrides(v *BooleanCellAccessible) BooleanCellAccessibleOverrides {
+	return BooleanCellAccessibleOverrides{}
 }
 
 type BooleanCellAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBooleanCellAccessible,
-		GoType:        reflect.TypeOf((*BooleanCellAccessible)(nil)),
-		InitClass:     initClassBooleanCellAccessible,
-		FinalizeClass: finalizeClassBooleanCellAccessible,
-	})
+	coreglib.RegisterClassInfo[*BooleanCellAccessible, *BooleanCellAccessibleClass, BooleanCellAccessibleOverrides](
+		GTypeBooleanCellAccessible,
+		initBooleanCellAccessibleClass,
+		wrapBooleanCellAccessible,
+		defaultBooleanCellAccessibleOverrides,
+	)
 }
 
-func initClassBooleanCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitBooleanCellAccessible(*BooleanCellAccessibleClass)
-	}); ok {
-		klass := (*BooleanCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitBooleanCellAccessible(klass)
-	}
-}
-
-func finalizeClassBooleanCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeBooleanCellAccessible(*BooleanCellAccessibleClass)
-	}); ok {
-		klass := (*BooleanCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBooleanCellAccessible(klass)
+func initBooleanCellAccessibleClass(gclass unsafe.Pointer, overrides BooleanCellAccessibleOverrides, classInitFunc func(*BooleanCellAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*BooleanCellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

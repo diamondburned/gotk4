@@ -29,8 +29,12 @@ func init() {
 
 const MAX_COMPOSE_LEN = 7
 
-// IMContextSimpleOverrider contains methods that are overridable.
-type IMContextSimpleOverrider interface {
+// IMContextSimpleOverrides contains methods that are overridable.
+type IMContextSimpleOverrides struct {
+}
+
+func defaultIMContextSimpleOverrides(v *IMContextSimple) IMContextSimpleOverrides {
+	return IMContextSimpleOverrides{}
 }
 
 // IMContextSimple: GtkIMContextSimple is an input method supporting table-based
@@ -67,25 +71,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeIMContextSimple,
-		GoType:        reflect.TypeOf((*IMContextSimple)(nil)),
-		InitClass:     initClassIMContextSimple,
-		FinalizeClass: finalizeClassIMContextSimple,
-	})
+	coreglib.RegisterClassInfo[*IMContextSimple, *IMContextSimpleClass, IMContextSimpleOverrides](
+		GTypeIMContextSimple,
+		initIMContextSimpleClass,
+		wrapIMContextSimple,
+		defaultIMContextSimpleOverrides,
+	)
 }
 
-func initClassIMContextSimple(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitIMContextSimple(*IMContextSimpleClass) }); ok {
-		klass := (*IMContextSimpleClass)(gextras.NewStructNative(gclass))
-		goval.InitIMContextSimple(klass)
-	}
-}
-
-func finalizeClassIMContextSimple(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeIMContextSimple(*IMContextSimpleClass) }); ok {
-		klass := (*IMContextSimpleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeIMContextSimple(klass)
+func initIMContextSimpleClass(gclass unsafe.Pointer, overrides IMContextSimpleOverrides, classInitFunc func(*IMContextSimpleClass)) {
+	if classInitFunc != nil {
+		class := (*IMContextSimpleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

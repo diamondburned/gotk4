@@ -16,11 +16,17 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
-// extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
-// extern void _gotk4_gtk4_GLAreaClass_resize(GtkGLArea*, int, int);
 // extern void _gotk4_gtk4_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
+// extern void _gotk4_gtk4_GLAreaClass_resize(GtkGLArea*, int, int);
+// extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
+// extern gboolean _gotk4_gtk4_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
+// extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
+// gboolean _gotk4_gtk4_GLArea_virtual_render(void* fnptr, GtkGLArea* arg0, GdkGLContext* arg1) {
+//   return ((gboolean (*)(GtkGLArea*, GdkGLContext*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_GLArea_virtual_resize(void* fnptr, GtkGLArea* arg0, int arg1, int arg2) {
+//   ((void (*)(GtkGLArea*, int, int))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -34,19 +40,26 @@ func init() {
 	})
 }
 
-// GLAreaOverrider contains methods that are overridable.
-type GLAreaOverrider interface {
+// GLAreaOverrides contains methods that are overridable.
+type GLAreaOverrides struct {
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	Render(context gdk.GLContexter) bool
+	Render func(context gdk.GLContexter) bool
 	// The function takes the following parameters:
 	//
 	//    - width
 	//    - height
 	//
-	Resize(width, height int)
+	Resize func(width, height int)
+}
+
+func defaultGLAreaOverrides(v *GLArea) GLAreaOverrides {
+	return GLAreaOverrides{
+		Render: v.render,
+		Resize: v.resize,
+	}
 }
 
 // GLArea: GtkGLArea is a widget that allows drawing with OpenGL.
@@ -159,88 +172,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGLArea,
-		GoType:        reflect.TypeOf((*GLArea)(nil)),
-		InitClass:     initClassGLArea,
-		FinalizeClass: finalizeClassGLArea,
-	})
+	coreglib.RegisterClassInfo[*GLArea, *GLAreaClass, GLAreaOverrides](
+		GTypeGLArea,
+		initGLAreaClass,
+		wrapGLArea,
+		defaultGLAreaOverrides,
+	)
 }
 
-func initClassGLArea(gclass unsafe.Pointer, goval any) {
+func initGLAreaClass(gclass unsafe.Pointer, overrides GLAreaOverrides, classInitFunc func(*GLAreaClass)) {
+	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeGLArea))))
 
-	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Render(context gdk.GLContexter) bool
-	}); ok {
+	if overrides.Render != nil {
 		pclass.render = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_render)
 	}
 
-	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
+	if overrides.Resize != nil {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_resize)
 	}
-	if goval, ok := goval.(interface{ InitGLArea(*GLAreaClass) }); ok {
-		klass := (*GLAreaClass)(gextras.NewStructNative(gclass))
-		goval.InitGLArea(klass)
+
+	if classInitFunc != nil {
+		class := (*GLAreaClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassGLArea(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGLArea(*GLAreaClass) }); ok {
-		klass := (*GLAreaClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGLArea(klass)
-	}
-}
-
-//export _gotk4_gtk4_GLAreaClass_render
-func _gotk4_gtk4_GLAreaClass_render(arg0 *C.GtkGLArea, arg1 *C.GdkGLContext) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Render(context gdk.GLContexter) bool
-	})
-
-	var _context gdk.GLContexter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.GLContexter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.GLContexter)
-			return ok
-		})
-		rv, ok := casted.(gdk.GLContexter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
-		}
-		_context = rv
-	}
-
-	ok := iface.Render(_context)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_GLAreaClass_resize
-func _gotk4_gtk4_GLAreaClass_resize(arg0 *C.GtkGLArea, arg1 C.int, arg2 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Resize(width, height int) })
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	iface.Resize(_width, _height)
 }
 
 func wrapGLArea(obj *coreglib.Object) *GLArea {
@@ -267,27 +221,6 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return wrapGLArea(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_GLArea_ConnectCreateContext
-func _gotk4_gtk4_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GdkGLContext) {
-	var f func() (glContext gdk.GLContexter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (glContext gdk.GLContexter))
-	}
-
-	glContext := f()
-
-	cret = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(glContext).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(glContext).Native()))
-
-	return cret
-}
-
 // ConnectCreateContext is emitted when the widget is being realized.
 //
 // This allows you to override how the GL context is created. This is useful
@@ -301,48 +234,6 @@ func (area *GLArea) ConnectCreateContext(f func() (glContext gdk.GLContexter)) c
 	return coreglib.ConnectGeneratedClosure(area, "create-context", false, unsafe.Pointer(C._gotk4_gtk4_GLArea_ConnectCreateContext), f)
 }
 
-//export _gotk4_gtk4_GLArea_ConnectRender
-func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(context gdk.GLContexter) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(context gdk.GLContexter) (ok bool))
-	}
-
-	var _context gdk.GLContexter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.GLContexter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.GLContexter)
-			return ok
-		})
-		rv, ok := casted.(gdk.GLContexter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
-		}
-		_context = rv
-	}
-
-	ok := f(_context)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectRender is emitted every time the contents of the GtkGLArea should be
 // redrawn.
 //
@@ -350,28 +241,6 @@ func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg
 // buffers are painted to the window once the emission terminates.
 func (area *GLArea) ConnectRender(f func(context gdk.GLContexter) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(area, "render", false, unsafe.Pointer(C._gotk4_gtk4_GLArea_ConnectRender), f)
-}
-
-//export _gotk4_gtk4_GLArea_ConnectResize
-func _gotk4_gtk4_GLArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(width, height int))
-	}
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	f(_width, _height)
 }
 
 // ConnectResize is emitted once when the widget is realized, and then each time
@@ -791,6 +660,57 @@ func (area *GLArea) SetUseES(useEs bool) {
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (area *GLArea) render(context gdk.GLContexter) bool {
+	gclass := (*C.GtkGLAreaClass)(coreglib.PeekParentClass(area))
+	fnarg := gclass.render
+
+	var _arg0 *C.GtkGLArea    // out
+	var _arg1 *C.GdkGLContext // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C._gotk4_gtk4_GLArea_virtual_render(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(context)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - width
+//    - height
+//
+func (area *GLArea) resize(width, height int) {
+	gclass := (*C.GtkGLAreaClass)(coreglib.PeekParentClass(area))
+	fnarg := gclass.resize
+
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+
+	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+
+	C._gotk4_gtk4_GLArea_virtual_resize(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // GLAreaClass: GtkGLAreaClass structure contains only private data.

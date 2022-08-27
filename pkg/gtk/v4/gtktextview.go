@@ -18,33 +18,69 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_TextViewClass_extend_selection(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*);
-// extern gboolean _gotk4_gtk4_TextView_ConnectExtendSelection(gpointer, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*, guintptr);
-// extern void _gotk4_gtk4_TextViewClass_backspace(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_copy_clipboard(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_cut_clipboard(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_delete_from_cursor(GtkTextView*, GtkDeleteType, int);
-// extern void _gotk4_gtk4_TextViewClass_insert_at_cursor(GtkTextView*, char*);
-// extern void _gotk4_gtk4_TextViewClass_insert_emoji(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_move_cursor(GtkTextView*, GtkMovementStep, int, gboolean);
-// extern void _gotk4_gtk4_TextViewClass_paste_clipboard(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_set_anchor(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_snapshot_layer(GtkTextView*, GtkTextViewLayer, GtkSnapshot*);
-// extern void _gotk4_gtk4_TextViewClass_toggle_overwrite(GtkTextView*);
-// extern void _gotk4_gtk4_TextView_ConnectBackspace(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectCopyClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectCutClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectInsertEmoji(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectMoveViewport(gpointer, GtkScrollStep, gint, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectPasteClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectPreeditChanged(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectSelectAll(gpointer, gboolean, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectSetAnchor(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextView_ConnectToggleCursorVisible(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextView_ConnectToggleOverwrite(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectToggleCursorVisible(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectSetAnchor(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectSelectAll(gpointer, gboolean, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectPreeditChanged(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectPasteClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectMoveViewport(gpointer, GtkScrollStep, gint, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectInsertEmoji(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectDeleteFromCursor(gpointer, GtkDeleteType, gint, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectCutClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectCopyClipboard(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextView_ConnectBackspace(gpointer, guintptr);
+// extern void _gotk4_gtk4_TextViewClass_toggle_overwrite(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_snapshot_layer(GtkTextView*, GtkTextViewLayer, GtkSnapshot*);
+// extern void _gotk4_gtk4_TextViewClass_set_anchor(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_paste_clipboard(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_move_cursor(GtkTextView*, GtkMovementStep, int, gboolean);
+// extern void _gotk4_gtk4_TextViewClass_insert_emoji(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_insert_at_cursor(GtkTextView*, char*);
+// extern void _gotk4_gtk4_TextViewClass_delete_from_cursor(GtkTextView*, GtkDeleteType, int);
+// extern void _gotk4_gtk4_TextViewClass_cut_clipboard(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_copy_clipboard(GtkTextView*);
+// extern void _gotk4_gtk4_TextViewClass_backspace(GtkTextView*);
+// extern gboolean _gotk4_gtk4_TextView_ConnectExtendSelection(gpointer, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*, guintptr);
+// extern gboolean _gotk4_gtk4_TextViewClass_extend_selection(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*);
+// gboolean _gotk4_gtk4_TextView_virtual_extend_selection(void* fnptr, GtkTextView* arg0, GtkTextExtendSelection arg1, GtkTextIter* arg2, GtkTextIter* arg3, GtkTextIter* arg4) {
+//   return ((gboolean (*)(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gtk4_TextView_virtual_backspace(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_TextView_virtual_copy_clipboard(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_TextView_virtual_cut_clipboard(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_TextView_virtual_delete_from_cursor(void* fnptr, GtkTextView* arg0, GtkDeleteType arg1, int arg2) {
+//   ((void (*)(GtkTextView*, GtkDeleteType, int))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk4_TextView_virtual_insert_at_cursor(void* fnptr, GtkTextView* arg0, char* arg1) {
+//   ((void (*)(GtkTextView*, char*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_TextView_virtual_insert_emoji(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_TextView_virtual_move_cursor(void* fnptr, GtkTextView* arg0, GtkMovementStep arg1, int arg2, gboolean arg3) {
+//   ((void (*)(GtkTextView*, GtkMovementStep, int, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_TextView_virtual_paste_clipboard(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_TextView_virtual_set_anchor(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_TextView_virtual_snapshot_layer(void* fnptr, GtkTextView* arg0, GtkTextViewLayer arg1, GtkSnapshot* arg2) {
+//   ((void (*)(GtkTextView*, GtkTextViewLayer, GtkSnapshot*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk4_TextView_virtual_toggle_overwrite(void* fnptr, GtkTextView* arg0) {
+//   ((void (*)(GtkTextView*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -167,17 +203,17 @@ func (t TextWindowType) String() string {
 	}
 }
 
-// TextViewOverrider contains methods that are overridable.
-type TextViewOverrider interface {
-	Backspace()
-	CopyClipboard()
-	CutClipboard()
+// TextViewOverrides contains methods that are overridable.
+type TextViewOverrides struct {
+	Backspace     func()
+	CopyClipboard func()
+	CutClipboard  func()
 	// The function takes the following parameters:
 	//
 	//    - typ
 	//    - count
 	//
-	DeleteFromCursor(typ DeleteType, count int)
+	DeleteFromCursor func(typ DeleteType, count int)
 	// The function takes the following parameters:
 	//
 	//    - granularity
@@ -187,27 +223,44 @@ type TextViewOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
+	ExtendSelection func(granularity TextExtendSelection, location, start, end *TextIter) bool
 	// The function takes the following parameters:
 	//
-	InsertAtCursor(str string)
-	InsertEmoji()
+	InsertAtCursor func(str string)
+	InsertEmoji    func()
 	// The function takes the following parameters:
 	//
 	//    - step
 	//    - count
 	//    - extendSelection
 	//
-	MoveCursor(step MovementStep, count int, extendSelection bool)
-	PasteClipboard()
-	SetAnchor()
+	MoveCursor     func(step MovementStep, count int, extendSelection bool)
+	PasteClipboard func()
+	SetAnchor      func()
 	// The function takes the following parameters:
 	//
 	//    - layer
 	//    - snapshot
 	//
-	SnapshotLayer(layer TextViewLayer, snapshot *Snapshot)
-	ToggleOverwrite()
+	SnapshotLayer   func(layer TextViewLayer, snapshot *Snapshot)
+	ToggleOverwrite func()
+}
+
+func defaultTextViewOverrides(v *TextView) TextViewOverrides {
+	return TextViewOverrides{
+		Backspace:        v.backspace,
+		CopyClipboard:    v.copyClipboard,
+		CutClipboard:     v.cutClipboard,
+		DeleteFromCursor: v.deleteFromCursor,
+		ExtendSelection:  v.extendSelection,
+		InsertAtCursor:   v.insertAtCursor,
+		InsertEmoji:      v.insertEmoji,
+		MoveCursor:       v.moveCursor,
+		PasteClipboard:   v.pasteClipboard,
+		SetAnchor:        v.setAnchor,
+		SnapshotLayer:    v.snapshotLayer,
+		ToggleOverwrite:  v.toggleOverwrite,
+	}
 }
 
 // TextView: widget that displays the contents of a gtk.TextBuffer.
@@ -258,230 +311,69 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextView,
-		GoType:        reflect.TypeOf((*TextView)(nil)),
-		InitClass:     initClassTextView,
-		FinalizeClass: finalizeClassTextView,
-	})
+	coreglib.RegisterClassInfo[*TextView, *TextViewClass, TextViewOverrides](
+		GTypeTextView,
+		initTextViewClass,
+		wrapTextView,
+		defaultTextViewOverrides,
+	)
 }
 
-func initClassTextView(gclass unsafe.Pointer, goval any) {
+func initTextViewClass(gclass unsafe.Pointer, overrides TextViewOverrides, classInitFunc func(*TextViewClass)) {
+	pclass := (*C.GtkTextViewClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTextView))))
 
-	pclass := (*C.GtkTextViewClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Backspace() }); ok {
+	if overrides.Backspace != nil {
 		pclass.backspace = (*[0]byte)(C._gotk4_gtk4_TextViewClass_backspace)
 	}
 
-	if _, ok := goval.(interface{ CopyClipboard() }); ok {
+	if overrides.CopyClipboard != nil {
 		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_copy_clipboard)
 	}
 
-	if _, ok := goval.(interface{ CutClipboard() }); ok {
+	if overrides.CutClipboard != nil {
 		pclass.cut_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_cut_clipboard)
 	}
 
-	if _, ok := goval.(interface {
-		DeleteFromCursor(typ DeleteType, count int)
-	}); ok {
+	if overrides.DeleteFromCursor != nil {
 		pclass.delete_from_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_delete_from_cursor)
 	}
 
-	if _, ok := goval.(interface {
-		ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
-	}); ok {
+	if overrides.ExtendSelection != nil {
 		pclass.extend_selection = (*[0]byte)(C._gotk4_gtk4_TextViewClass_extend_selection)
 	}
 
-	if _, ok := goval.(interface{ InsertAtCursor(str string) }); ok {
+	if overrides.InsertAtCursor != nil {
 		pclass.insert_at_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_insert_at_cursor)
 	}
 
-	if _, ok := goval.(interface{ InsertEmoji() }); ok {
+	if overrides.InsertEmoji != nil {
 		pclass.insert_emoji = (*[0]byte)(C._gotk4_gtk4_TextViewClass_insert_emoji)
 	}
 
-	if _, ok := goval.(interface {
-		MoveCursor(step MovementStep, count int, extendSelection bool)
-	}); ok {
+	if overrides.MoveCursor != nil {
 		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_move_cursor)
 	}
 
-	if _, ok := goval.(interface{ PasteClipboard() }); ok {
+	if overrides.PasteClipboard != nil {
 		pclass.paste_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_paste_clipboard)
 	}
 
-	if _, ok := goval.(interface{ SetAnchor() }); ok {
+	if overrides.SetAnchor != nil {
 		pclass.set_anchor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_set_anchor)
 	}
 
-	if _, ok := goval.(interface {
-		SnapshotLayer(layer TextViewLayer, snapshot *Snapshot)
-	}); ok {
+	if overrides.SnapshotLayer != nil {
 		pclass.snapshot_layer = (*[0]byte)(C._gotk4_gtk4_TextViewClass_snapshot_layer)
 	}
 
-	if _, ok := goval.(interface{ ToggleOverwrite() }); ok {
+	if overrides.ToggleOverwrite != nil {
 		pclass.toggle_overwrite = (*[0]byte)(C._gotk4_gtk4_TextViewClass_toggle_overwrite)
 	}
-	if goval, ok := goval.(interface{ InitTextView(*TextViewClass) }); ok {
-		klass := (*TextViewClass)(gextras.NewStructNative(gclass))
-		goval.InitTextView(klass)
+
+	if classInitFunc != nil {
+		class := (*TextViewClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassTextView(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextView(*TextViewClass) }); ok {
-		klass := (*TextViewClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextView(klass)
-	}
-}
-
-//export _gotk4_gtk4_TextViewClass_backspace
-func _gotk4_gtk4_TextViewClass_backspace(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Backspace() })
-
-	iface.Backspace()
-}
-
-//export _gotk4_gtk4_TextViewClass_copy_clipboard
-func _gotk4_gtk4_TextViewClass_copy_clipboard(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CopyClipboard() })
-
-	iface.CopyClipboard()
-}
-
-//export _gotk4_gtk4_TextViewClass_cut_clipboard
-func _gotk4_gtk4_TextViewClass_cut_clipboard(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CutClipboard() })
-
-	iface.CutClipboard()
-}
-
-//export _gotk4_gtk4_TextViewClass_delete_from_cursor
-func _gotk4_gtk4_TextViewClass_delete_from_cursor(arg0 *C.GtkTextView, arg1 C.GtkDeleteType, arg2 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DeleteFromCursor(typ DeleteType, count int)
-	})
-
-	var _typ DeleteType // out
-	var _count int      // out
-
-	_typ = DeleteType(arg1)
-	_count = int(arg2)
-
-	iface.DeleteFromCursor(_typ, _count)
-}
-
-//export _gotk4_gtk4_TextViewClass_extend_selection
-func _gotk4_gtk4_TextViewClass_extend_selection(arg0 *C.GtkTextView, arg1 C.GtkTextExtendSelection, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.GtkTextIter) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ExtendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool
-	})
-
-	var _granularity TextExtendSelection // out
-	var _location *TextIter              // out
-	var _start *TextIter                 // out
-	var _end *TextIter                   // out
-
-	_granularity = TextExtendSelection(arg1)
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
-
-	ok := iface.ExtendSelection(_granularity, _location, _start, _end)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_TextViewClass_insert_at_cursor
-func _gotk4_gtk4_TextViewClass_insert_at_cursor(arg0 *C.GtkTextView, arg1 *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ InsertAtCursor(str string) })
-
-	var _str string // out
-
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.InsertAtCursor(_str)
-}
-
-//export _gotk4_gtk4_TextViewClass_insert_emoji
-func _gotk4_gtk4_TextViewClass_insert_emoji(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ InsertEmoji() })
-
-	iface.InsertEmoji()
-}
-
-//export _gotk4_gtk4_TextViewClass_move_cursor
-func _gotk4_gtk4_TextViewClass_move_cursor(arg0 *C.GtkTextView, arg1 C.GtkMovementStep, arg2 C.int, arg3 C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		MoveCursor(step MovementStep, count int, extendSelection bool)
-	})
-
-	var _step MovementStep    // out
-	var _count int            // out
-	var _extendSelection bool // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extendSelection = true
-	}
-
-	iface.MoveCursor(_step, _count, _extendSelection)
-}
-
-//export _gotk4_gtk4_TextViewClass_paste_clipboard
-func _gotk4_gtk4_TextViewClass_paste_clipboard(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PasteClipboard() })
-
-	iface.PasteClipboard()
-}
-
-//export _gotk4_gtk4_TextViewClass_set_anchor
-func _gotk4_gtk4_TextViewClass_set_anchor(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SetAnchor() })
-
-	iface.SetAnchor()
-}
-
-//export _gotk4_gtk4_TextViewClass_snapshot_layer
-func _gotk4_gtk4_TextViewClass_snapshot_layer(arg0 *C.GtkTextView, arg1 C.GtkTextViewLayer, arg2 *C.GtkSnapshot) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		SnapshotLayer(layer TextViewLayer, snapshot *Snapshot)
-	})
-
-	var _layer TextViewLayer // out
-	var _snapshot *Snapshot  // out
-
-	_layer = TextViewLayer(arg1)
-	_snapshot = wrapSnapshot(coreglib.Take(unsafe.Pointer(arg2)))
-
-	iface.SnapshotLayer(_layer, _snapshot)
-}
-
-//export _gotk4_gtk4_TextViewClass_toggle_overwrite
-func _gotk4_gtk4_TextViewClass_toggle_overwrite(arg0 *C.GtkTextView) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ToggleOverwrite() })
-
-	iface.ToggleOverwrite()
 }
 
 func wrapTextView(obj *coreglib.Object) *TextView {
@@ -512,22 +404,6 @@ func marshalTextView(p uintptr) (interface{}, error) {
 	return wrapTextView(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_TextView_ConnectBackspace
-func _gotk4_gtk4_TextView_ConnectBackspace(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectBackspace gets emitted when the user asks for it.
 //
 // The ::backspace signal is a keybinding signal (class.SignalAction.html).
@@ -536,22 +412,6 @@ func _gotk4_gtk4_TextView_ConnectBackspace(arg0 C.gpointer, arg1 C.guintptr) {
 // <kbd>Shift</kbd>-<kbd>Backspace</kbd>.
 func (textView *TextView) ConnectBackspace(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "backspace", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectBackspace), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectCopyClipboard
-func _gotk4_gtk4_TextView_ConnectCopyClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectCopyClipboard gets emitted to copy the selection to the clipboard.
@@ -564,22 +424,6 @@ func (textView *TextView) ConnectCopyClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "copy-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectCopyClipboard), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectCutClipboard
-func _gotk4_gtk4_TextView_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectCutClipboard gets emitted to cut the selection to the clipboard.
 //
 // The ::cut-clipboard signal is a keybinding signal (class.SignalAction.html).
@@ -588,28 +432,6 @@ func _gotk4_gtk4_TextView_ConnectCutClipboard(arg0 C.gpointer, arg1 C.guintptr) 
 // <kbd>Shift</kbd>-<kbd>Delete</kbd>.
 func (textView *TextView) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "cut-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectCutClipboard), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectDeleteFromCursor
-func _gotk4_gtk4_TextView_ConnectDeleteFromCursor(arg0 C.gpointer, arg1 C.GtkDeleteType, arg2 C.gint, arg3 C.guintptr) {
-	var f func(typ DeleteType, count int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(typ DeleteType, count int))
-	}
-
-	var _typ DeleteType // out
-	var _count int      // out
-
-	_typ = DeleteType(arg1)
-	_count = int(arg2)
-
-	f(_typ, _count)
 }
 
 // ConnectDeleteFromCursor gets emitted when the user initiates a text deletion.
@@ -627,62 +449,10 @@ func (textView *TextView) ConnectDeleteFromCursor(f func(typ DeleteType, count i
 	return coreglib.ConnectGeneratedClosure(textView, "delete-from-cursor", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectDeleteFromCursor), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectExtendSelection
-func _gotk4_gtk4_TextView_ConnectExtendSelection(arg0 C.gpointer, arg1 C.GtkTextExtendSelection, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.GtkTextIter, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool))
-	}
-
-	var _granularity TextExtendSelection // out
-	var _location *TextIter              // out
-	var _start *TextIter                 // out
-	var _end *TextIter                   // out
-
-	_granularity = TextExtendSelection(arg1)
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
-
-	ok := f(_granularity, _location, _start, _end)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectExtendSelection is emitted when the selection needs to be extended at
 // location.
 func (textView *TextView) ConnectExtendSelection(f func(granularity TextExtendSelection, location, start, end *TextIter) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "extend-selection", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectExtendSelection), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectInsertAtCursor
-func _gotk4_gtk4_TextView_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(str string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(str string))
-	}
-
-	var _str string // out
-
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_str)
 }
 
 // ConnectInsertAtCursor gets emitted when the user initiates the insertion of a
@@ -696,22 +466,6 @@ func (textView *TextView) ConnectInsertAtCursor(f func(str string)) coreglib.Sig
 	return coreglib.ConnectGeneratedClosure(textView, "insert-at-cursor", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectInsertAtCursor), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectInsertEmoji
-func _gotk4_gtk4_TextView_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectInsertEmoji gets emitted to present the Emoji chooser for the
 // text_view.
 //
@@ -721,32 +475,6 @@ func _gotk4_gtk4_TextView_ConnectInsertEmoji(arg0 C.gpointer, arg1 C.guintptr) {
 // <kbd>Ctrl</kbd>-<kbd>;</kbd>.
 func (textView *TextView) ConnectInsertEmoji(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "insert-emoji", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectInsertEmoji), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectMoveCursor
-func _gotk4_gtk4_TextView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.guintptr) {
-	var f func(step MovementStep, count int, extendSelection bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step MovementStep, count int, extendSelection bool))
-	}
-
-	var _step MovementStep    // out
-	var _count int            // out
-	var _extendSelection bool // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extendSelection = true
-	}
-
-	f(_step, _count, _extendSelection)
 }
 
 // ConnectMoveCursor gets emitted when the user initiates a cursor movement.
@@ -775,28 +503,6 @@ func (textView *TextView) ConnectMoveCursor(f func(step MovementStep, count int,
 	return coreglib.ConnectGeneratedClosure(textView, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectMoveCursor), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectMoveViewport
-func _gotk4_gtk4_TextView_ConnectMoveViewport(arg0 C.gpointer, arg1 C.GtkScrollStep, arg2 C.gint, arg3 C.guintptr) {
-	var f func(step ScrollStep, count int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step ScrollStep, count int))
-	}
-
-	var _step ScrollStep // out
-	var _count int       // out
-
-	_step = ScrollStep(arg1)
-	_count = int(arg2)
-
-	f(_step, _count)
-}
-
 // ConnectMoveViewport gets emitted to move the viewport.
 //
 // The ::move-viewport signal is a keybinding signal (class.SignalAction.html),
@@ -807,22 +513,6 @@ func _gotk4_gtk4_TextView_ConnectMoveViewport(arg0 C.gpointer, arg1 C.GtkScrollS
 // There are no default bindings for this signal.
 func (textView *TextView) ConnectMoveViewport(f func(step ScrollStep, count int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "move-viewport", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectMoveViewport), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectPasteClipboard
-func _gotk4_gtk4_TextView_ConnectPasteClipboard(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectPasteClipboard gets emitted to paste the contents of the clipboard
@@ -837,26 +527,6 @@ func (textView *TextView) ConnectPasteClipboard(f func()) coreglib.SignalHandle 
 	return coreglib.ConnectGeneratedClosure(textView, "paste-clipboard", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectPasteClipboard), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectPreeditChanged
-func _gotk4_gtk4_TextView_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(preedit string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(preedit string))
-	}
-
-	var _preedit string // out
-
-	_preedit = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_preedit)
-}
-
 // ConnectPreeditChanged is emitted when preedit text of the active IM changes.
 //
 // If an input method is used, the typed text will not immediately be committed
@@ -866,28 +536,6 @@ func _gotk4_gtk4_TextView_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, 
 // editable.
 func (textView *TextView) ConnectPreeditChanged(f func(preedit string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectPreeditChanged), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectSelectAll
-func _gotk4_gtk4_TextView_ConnectSelectAll(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
-	var f func(sel bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(sel bool))
-	}
-
-	var _sel bool // out
-
-	if arg1 != 0 {
-		_sel = true
-	}
-
-	f(_sel)
 }
 
 // ConnectSelectAll gets emitted to select or unselect the complete contents of
@@ -903,22 +551,6 @@ func (textView *TextView) ConnectSelectAll(f func(sel bool)) coreglib.SignalHand
 	return coreglib.ConnectGeneratedClosure(textView, "select-all", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectSelectAll), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectSetAnchor
-func _gotk4_gtk4_TextView_ConnectSetAnchor(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectSetAnchor gets emitted when the user initiates settings the "anchor"
 // mark.
 //
@@ -931,22 +563,6 @@ func (textView *TextView) ConnectSetAnchor(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "set-anchor", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectSetAnchor), f)
 }
 
-//export _gotk4_gtk4_TextView_ConnectToggleCursorVisible
-func _gotk4_gtk4_TextView_ConnectToggleCursorVisible(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectToggleCursorVisible gets emitted to toggle the cursor-visible
 // property.
 //
@@ -956,22 +572,6 @@ func _gotk4_gtk4_TextView_ConnectToggleCursorVisible(arg0 C.gpointer, arg1 C.gui
 // The default binding for this signal is <kbd>F7</kbd>.
 func (textView *TextView) ConnectToggleCursorVisible(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(textView, "toggle-cursor-visible", false, unsafe.Pointer(C._gotk4_gtk4_TextView_ConnectToggleCursorVisible), f)
-}
-
-//export _gotk4_gtk4_TextView_ConnectToggleOverwrite
-func _gotk4_gtk4_TextView_ConnectToggleOverwrite(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectToggleOverwrite gets emitted to toggle the overwrite mode of the text
@@ -3024,6 +2624,225 @@ func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, wind
 	_bufferY = int(_arg5)
 
 	return _bufferX, _bufferY
+}
+
+func (textView *TextView) backspace() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.backspace
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_backspace(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
+}
+
+func (textView *TextView) copyClipboard() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.copy_clipboard
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_copy_clipboard(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
+}
+
+func (textView *TextView) cutClipboard() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.cut_clipboard
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_cut_clipboard(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
+}
+
+// The function takes the following parameters:
+//
+//    - typ
+//    - count
+//
+func (textView *TextView) deleteFromCursor(typ DeleteType, count int) {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.delete_from_cursor
+
+	var _arg0 *C.GtkTextView  // out
+	var _arg1 C.GtkDeleteType // out
+	var _arg2 C.int           // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.GtkDeleteType(typ)
+	_arg2 = C.int(count)
+
+	C._gotk4_gtk4_TextView_virtual_delete_from_cursor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(count)
+}
+
+// The function takes the following parameters:
+//
+//    - granularity
+//    - location
+//    - start
+//    - end
+//
+// The function returns the following values:
+//
+func (textView *TextView) extendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.extend_selection
+
+	var _arg0 *C.GtkTextView           // out
+	var _arg1 C.GtkTextExtendSelection // out
+	var _arg2 *C.GtkTextIter           // out
+	var _arg3 *C.GtkTextIter           // out
+	var _arg4 *C.GtkTextIter           // out
+	var _cret C.gboolean               // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.GtkTextExtendSelection(granularity)
+	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(location)))
+	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg4 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
+
+	_cret = C._gotk4_gtk4_TextView_virtual_extend_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(granularity)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+func (textView *TextView) insertAtCursor(str string) {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.insert_at_cursor
+
+	var _arg0 *C.GtkTextView // out
+	var _arg1 *C.char        // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk4_TextView_virtual_insert_at_cursor(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(str)
+}
+
+func (textView *TextView) insertEmoji() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.insert_emoji
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_insert_emoji(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
+}
+
+// The function takes the following parameters:
+//
+//    - step
+//    - count
+//    - extendSelection
+//
+func (textView *TextView) moveCursor(step MovementStep, count int, extendSelection bool) {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.move_cursor
+
+	var _arg0 *C.GtkTextView    // out
+	var _arg1 C.GtkMovementStep // out
+	var _arg2 C.int             // out
+	var _arg3 C.gboolean        // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.GtkMovementStep(step)
+	_arg2 = C.int(count)
+	if extendSelection {
+		_arg3 = C.TRUE
+	}
+
+	C._gotk4_gtk4_TextView_virtual_move_cursor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(extendSelection)
+}
+
+func (textView *TextView) pasteClipboard() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.paste_clipboard
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_paste_clipboard(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
+}
+
+func (textView *TextView) setAnchor() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.set_anchor
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_set_anchor(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
+}
+
+// The function takes the following parameters:
+//
+//    - layer
+//    - snapshot
+//
+func (textView *TextView) snapshotLayer(layer TextViewLayer, snapshot *Snapshot) {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.snapshot_layer
+
+	var _arg0 *C.GtkTextView     // out
+	var _arg1 C.GtkTextViewLayer // out
+	var _arg2 *C.GtkSnapshot     // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.GtkTextViewLayer(layer)
+	_arg2 = (*C.GtkSnapshot)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_snapshot_layer(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(layer)
+	runtime.KeepAlive(snapshot)
+}
+
+func (textView *TextView) toggleOverwrite() {
+	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
+	fnarg := gclass.toggle_overwrite
+
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C._gotk4_gtk4_TextView_virtual_toggle_overwrite(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(textView)
 }
 
 // TextViewClass: instance of this type is always passed by reference.

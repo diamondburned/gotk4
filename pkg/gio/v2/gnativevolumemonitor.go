@@ -28,8 +28,12 @@ func init() {
 
 const NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-native-volume-monitor"
 
-// NativeVolumeMonitorOverrider contains methods that are overridable.
-type NativeVolumeMonitorOverrider interface {
+// NativeVolumeMonitorOverrides contains methods that are overridable.
+type NativeVolumeMonitorOverrides struct {
+}
+
+func defaultNativeVolumeMonitorOverrides(v *NativeVolumeMonitor) NativeVolumeMonitorOverrides {
+	return NativeVolumeMonitorOverrides{}
 }
 
 type NativeVolumeMonitor struct {
@@ -53,29 +57,18 @@ type NativeVolumeMonitorrer interface {
 var _ NativeVolumeMonitorrer = (*NativeVolumeMonitor)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNativeVolumeMonitor,
-		GoType:        reflect.TypeOf((*NativeVolumeMonitor)(nil)),
-		InitClass:     initClassNativeVolumeMonitor,
-		FinalizeClass: finalizeClassNativeVolumeMonitor,
-	})
+	coreglib.RegisterClassInfo[*NativeVolumeMonitor, *NativeVolumeMonitorClass, NativeVolumeMonitorOverrides](
+		GTypeNativeVolumeMonitor,
+		initNativeVolumeMonitorClass,
+		wrapNativeVolumeMonitor,
+		defaultNativeVolumeMonitorOverrides,
+	)
 }
 
-func initClassNativeVolumeMonitor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitNativeVolumeMonitor(*NativeVolumeMonitorClass)
-	}); ok {
-		klass := (*NativeVolumeMonitorClass)(gextras.NewStructNative(gclass))
-		goval.InitNativeVolumeMonitor(klass)
-	}
-}
-
-func finalizeClassNativeVolumeMonitor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeNativeVolumeMonitor(*NativeVolumeMonitorClass)
-	}); ok {
-		klass := (*NativeVolumeMonitorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNativeVolumeMonitor(klass)
+func initNativeVolumeMonitorClass(gclass unsafe.Pointer, overrides NativeVolumeMonitorOverrides, classInitFunc func(*NativeVolumeMonitorClass)) {
+	if classInitFunc != nil {
+		class := (*NativeVolumeMonitorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

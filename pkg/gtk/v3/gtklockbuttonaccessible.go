@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// LockButtonAccessibleOverrider contains methods that are overridable.
-type LockButtonAccessibleOverrider interface {
+// LockButtonAccessibleOverrides contains methods that are overridable.
+type LockButtonAccessibleOverrides struct {
+}
+
+func defaultLockButtonAccessibleOverrides(v *LockButtonAccessible) LockButtonAccessibleOverrides {
+	return LockButtonAccessibleOverrides{}
 }
 
 type LockButtonAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLockButtonAccessible,
-		GoType:        reflect.TypeOf((*LockButtonAccessible)(nil)),
-		InitClass:     initClassLockButtonAccessible,
-		FinalizeClass: finalizeClassLockButtonAccessible,
-	})
+	coreglib.RegisterClassInfo[*LockButtonAccessible, *LockButtonAccessibleClass, LockButtonAccessibleOverrides](
+		GTypeLockButtonAccessible,
+		initLockButtonAccessibleClass,
+		wrapLockButtonAccessible,
+		defaultLockButtonAccessibleOverrides,
+	)
 }
 
-func initClassLockButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitLockButtonAccessible(*LockButtonAccessibleClass)
-	}); ok {
-		klass := (*LockButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitLockButtonAccessible(klass)
-	}
-}
-
-func finalizeClassLockButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeLockButtonAccessible(*LockButtonAccessibleClass)
-	}); ok {
-		klass := (*LockButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLockButtonAccessible(klass)
+func initLockButtonAccessibleClass(gclass unsafe.Pointer, overrides LockButtonAccessibleOverrides, classInitFunc func(*LockButtonAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*LockButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

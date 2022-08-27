@@ -105,30 +105,6 @@ func marshalAccelMap(p uintptr) (interface{}, error) {
 	return wrapAccelMap(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_AccelMap_ConnectChanged
-func _gotk4_gtk3_AccelMap_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) {
-	var f func(accelPath string, accelKey uint, accelMods gdk.ModifierType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(accelPath string, accelKey uint, accelMods gdk.ModifierType))
-	}
-
-	var _accelPath string           // out
-	var _accelKey uint              // out
-	var _accelMods gdk.ModifierType // out
-
-	_accelPath = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_accelKey = uint(arg2)
-	_accelMods = gdk.ModifierType(arg3)
-
-	f(_accelPath, _accelKey, _accelMods)
-}
-
 // ConnectChanged notifies of a change in the global accelerator map. The path
 // is also used as the detail for the signal, so it is possible to connect to
 // changed::accel_path.
@@ -243,26 +219,6 @@ func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.Modifier
 	return _ok
 }
 
-// AccelMapGet gets the singleton global AccelMap object. This object is useful
-// only for notification of changes to the accelerator map via the ::changed
-// signal; it isn’t a parameter to the other accelerator map functions.
-//
-// The function returns the following values:
-//
-//    - accelMap: global AccelMap object.
-//
-func AccelMapGet() *AccelMap {
-	var _cret *C.GtkAccelMap // in
-
-	_cret = C.gtk_accel_map_get()
-
-	var _accelMap *AccelMap // out
-
-	_accelMap = wrapAccelMap(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _accelMap
-}
-
 // AccelMapLoad parses a file previously saved with gtk_accel_map_save() for
 // accelerator specifications, and propagates them accordingly.
 //
@@ -311,35 +267,6 @@ func AccelMapLoadScanner(scanner *glib.Scanner) {
 
 	C.gtk_accel_map_load_scanner(_arg1)
 	runtime.KeepAlive(scanner)
-}
-
-// AccelMapLockPath locks the given accelerator path. If the accelerator map
-// doesn’t yet contain an entry for accel_path, a new one is created.
-//
-// Locking an accelerator path prevents its accelerator from being changed
-// during runtime. A locked accelerator path can be unlocked by
-// gtk_accel_map_unlock_path(). Refer to gtk_accel_map_change_entry() for
-// information about runtime accelerator changes.
-//
-// If called more than once, accel_path remains locked until
-// gtk_accel_map_unlock_path() has been called an equivalent number of times.
-//
-// Note that locking of individual accelerator paths is independent from locking
-// the AccelGroup containing them. For runtime accelerator changes to be
-// possible, both the accelerator path and its AccelGroup have to be unlocked.
-//
-// The function takes the following parameters:
-//
-//    - accelPath: valid accelerator path.
-//
-func AccelMapLockPath(accelPath string) {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_accel_map_lock_path(_arg1)
-	runtime.KeepAlive(accelPath)
 }
 
 // AccelMapLookupEntry looks up the accelerator entry for accel_path and fills
@@ -410,22 +337,4 @@ func AccelMapSaveFd(fd int) {
 
 	C.gtk_accel_map_save_fd(_arg1)
 	runtime.KeepAlive(fd)
-}
-
-// AccelMapUnlockPath undoes the last call to gtk_accel_map_lock_path() on this
-// accel_path. Refer to gtk_accel_map_lock_path() for information about
-// accelerator path locking.
-//
-// The function takes the following parameters:
-//
-//    - accelPath: valid accelerator path.
-//
-func AccelMapUnlockPath(accelPath string) {
-	var _arg1 *C.gchar // out
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_accel_map_unlock_path(_arg1)
-	runtime.KeepAlive(accelPath)
 }

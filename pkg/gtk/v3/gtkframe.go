@@ -19,6 +19,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
+// void _gotk4_gtk3_Frame_virtual_compute_child_allocation(void* fnptr, GtkFrame* arg0, GtkAllocation* arg1) {
+//   ((void (*)(GtkFrame*, GtkAllocation*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -32,11 +35,17 @@ func init() {
 	})
 }
 
-// FrameOverrider contains methods that are overridable.
-type FrameOverrider interface {
+// FrameOverrides contains methods that are overridable.
+type FrameOverrides struct {
 	// The function takes the following parameters:
 	//
-	ComputeChildAllocation(allocation *Allocation)
+	ComputeChildAllocation func(allocation *Allocation)
+}
+
+func defaultFrameOverrides(v *Frame) FrameOverrides {
+	return FrameOverrides{
+		ComputeChildAllocation: v.computeChildAllocation,
+	}
 }
 
 // Frame: frame widget is a bin that surrounds its child with a decorative frame
@@ -88,44 +97,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFrame,
-		GoType:        reflect.TypeOf((*Frame)(nil)),
-		InitClass:     initClassFrame,
-		FinalizeClass: finalizeClassFrame,
-	})
+	coreglib.RegisterClassInfo[*Frame, *FrameClass, FrameOverrides](
+		GTypeFrame,
+		initFrameClass,
+		wrapFrame,
+		defaultFrameOverrides,
+	)
 }
 
-func initClassFrame(gclass unsafe.Pointer, goval any) {
+func initFrameClass(gclass unsafe.Pointer, overrides FrameOverrides, classInitFunc func(*FrameClass)) {
+	pclass := (*C.GtkFrameClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFrame))))
 
-	pclass := (*C.GtkFrameClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ComputeChildAllocation(allocation *Allocation) }); ok {
+	if overrides.ComputeChildAllocation != nil {
 		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk3_FrameClass_compute_child_allocation)
 	}
-	if goval, ok := goval.(interface{ InitFrame(*FrameClass) }); ok {
-		klass := (*FrameClass)(gextras.NewStructNative(gclass))
-		goval.InitFrame(klass)
+
+	if classInitFunc != nil {
+		class := (*FrameClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassFrame(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFrame(*FrameClass) }); ok {
-		klass := (*FrameClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFrame(klass)
-	}
-}
-
-//export _gotk4_gtk3_FrameClass_compute_child_allocation
-func _gotk4_gtk3_FrameClass_compute_child_allocation(arg0 *C.GtkFrame, arg1 *C.GtkAllocation) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ComputeChildAllocation(allocation *Allocation) })
-
-	var _allocation *Allocation // out
-
-	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-
-	iface.ComputeChildAllocation(_allocation)
 }
 
 func wrapFrame(obj *coreglib.Object) *Frame {
@@ -391,6 +381,23 @@ func (frame *Frame) SetShadowType(typ ShadowType) {
 	C.gtk_frame_set_shadow_type(_arg0, _arg1)
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(typ)
+}
+
+// The function takes the following parameters:
+//
+func (frame *Frame) computeChildAllocation(allocation *Allocation) {
+	gclass := (*C.GtkFrameClass)(coreglib.PeekParentClass(frame))
+	fnarg := gclass.compute_child_allocation
+
+	var _arg0 *C.GtkFrame      // out
+	var _arg1 *C.GtkAllocation // out
+
+	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+
+	C._gotk4_gtk3_Frame_virtual_compute_child_allocation(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(frame)
+	runtime.KeepAlive(allocation)
 }
 
 // FrameClass: instance of this type is always passed by reference.

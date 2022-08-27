@@ -13,7 +13,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_ScrollableInterface_get_border(GtkScrollable*, GtkBorder*);
+// gboolean _gotk4_gtk4_Scrollable_virtual_get_border(void* fnptr, GtkScrollable* arg0, GtkBorder* arg1) {
+//   return ((gboolean (*)(GtkScrollable*, GtkBorder*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -25,23 +27,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeScrollable, F: marshalScrollable},
 	})
-}
-
-// ScrollableOverrider contains methods that are overridable.
-type ScrollableOverrider interface {
-	// Border returns the size of a non-scrolling border around the outside of
-	// the scrollable.
-	//
-	// An example for this would be treeview headers. GTK can use this
-	// information to display overlaid graphics, like the overshoot indication,
-	// at the right position.
-	//
-	// The function returns the following values:
-	//
-	//    - border: return location for the results.
-	//    - ok: TRUE if border has been set.
-	//
-	Border() (*Border, bool)
 }
 
 // Scrollable: GtkScrollable is an interface for widgets with native scrolling
@@ -109,26 +94,6 @@ type Scrollabler interface {
 }
 
 var _ Scrollabler = (*Scrollable)(nil)
-
-func ifaceInitScrollabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkScrollableInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_border = (*[0]byte)(C._gotk4_gtk4_ScrollableInterface_get_border)
-}
-
-//export _gotk4_gtk4_ScrollableInterface_get_border
-func _gotk4_gtk4_ScrollableInterface_get_border(arg0 *C.GtkScrollable, arg1 *C.GtkBorder) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ScrollableOverrider)
-
-	border, ok := iface.Border()
-
-	*arg1 = *(*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 func wrapScrollable(obj *coreglib.Object) *Scrollable {
 	return &Scrollable{
@@ -341,6 +306,42 @@ func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(policy)
+}
+
+// Border returns the size of a non-scrolling border around the outside of the
+// scrollable.
+//
+// An example for this would be treeview headers. GTK can use this information
+// to display overlaid graphics, like the overshoot indication, at the right
+// position.
+//
+// The function returns the following values:
+//
+//    - border: return location for the results.
+//    - ok: TRUE if border has been set.
+//
+func (scrollable *Scrollable) border() (*Border, bool) {
+	gclass := (*C.GtkScrollableInterface)(coreglib.PeekParentClass(scrollable))
+	fnarg := gclass.get_border
+
+	var _arg0 *C.GtkScrollable // out
+	var _arg1 C.GtkBorder      // in
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+
+	_cret = C._gotk4_gtk4_Scrollable_virtual_get_border(unsafe.Pointer(fnarg), _arg0, &_arg1)
+	runtime.KeepAlive(scrollable)
+
+	var _border *Border // out
+	var _ok bool        // out
+
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _border, _ok
 }
 
 // ScrollableInterface: instance of this type is always passed by reference.

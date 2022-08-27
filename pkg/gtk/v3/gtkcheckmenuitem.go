@@ -18,9 +18,15 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(GtkCheckMenuItem*, cairo_t*);
-// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(GtkCheckMenuItem*);
 // extern void _gotk4_gtk3_CheckMenuItem_ConnectToggled(gpointer, guintptr);
+// extern void _gotk4_gtk3_CheckMenuItemClass_toggled(GtkCheckMenuItem*);
+// extern void _gotk4_gtk3_CheckMenuItemClass_draw_indicator(GtkCheckMenuItem*, cairo_t*);
+// void _gotk4_gtk3_CheckMenuItem_virtual_draw_indicator(void* fnptr, GtkCheckMenuItem* arg0, cairo_t* arg1) {
+//   ((void (*)(GtkCheckMenuItem*, cairo_t*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_CheckMenuItem_virtual_toggled(void* fnptr, GtkCheckMenuItem* arg0) {
+//   ((void (*)(GtkCheckMenuItem*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -34,13 +40,20 @@ func init() {
 	})
 }
 
-// CheckMenuItemOverrider contains methods that are overridable.
-type CheckMenuItemOverrider interface {
+// CheckMenuItemOverrides contains methods that are overridable.
+type CheckMenuItemOverrides struct {
 	// The function takes the following parameters:
 	//
-	DrawIndicator(cr *cairo.Context)
+	DrawIndicator func(cr *cairo.Context)
 	// Toggled emits the CheckMenuItem::toggled signal.
-	Toggled()
+	Toggled func()
+}
+
+func defaultCheckMenuItemOverrides(v *CheckMenuItem) CheckMenuItemOverrides {
+	return CheckMenuItemOverrides{
+		DrawIndicator: v.drawIndicator,
+		Toggled:       v.toggled,
+	}
 }
 
 // CheckMenuItem is a menu item that maintains the state of a boolean value in
@@ -68,60 +81,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCheckMenuItem,
-		GoType:        reflect.TypeOf((*CheckMenuItem)(nil)),
-		InitClass:     initClassCheckMenuItem,
-		FinalizeClass: finalizeClassCheckMenuItem,
-	})
+	coreglib.RegisterClassInfo[*CheckMenuItem, *CheckMenuItemClass, CheckMenuItemOverrides](
+		GTypeCheckMenuItem,
+		initCheckMenuItemClass,
+		wrapCheckMenuItem,
+		defaultCheckMenuItemOverrides,
+	)
 }
 
-func initClassCheckMenuItem(gclass unsafe.Pointer, goval any) {
+func initCheckMenuItemClass(gclass unsafe.Pointer, overrides CheckMenuItemOverrides, classInitFunc func(*CheckMenuItemClass)) {
+	pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCheckMenuItem))))
 
-	pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
+	if overrides.DrawIndicator != nil {
 		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_draw_indicator)
 	}
 
-	if _, ok := goval.(interface{ Toggled() }); ok {
+	if overrides.Toggled != nil {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_toggled)
 	}
-	if goval, ok := goval.(interface{ InitCheckMenuItem(*CheckMenuItemClass) }); ok {
-		klass := (*CheckMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.InitCheckMenuItem(klass)
+
+	if classInitFunc != nil {
+		class := (*CheckMenuItemClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCheckMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCheckMenuItem(*CheckMenuItemClass) }); ok {
-		klass := (*CheckMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCheckMenuItem(klass)
-	}
-}
-
-//export _gotk4_gtk3_CheckMenuItemClass_draw_indicator
-func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.GtkCheckMenuItem, arg1 *C.cairo_t) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DrawIndicator(cr *cairo.Context) })
-
-	var _cr *cairo.Context // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-
-	iface.DrawIndicator(_cr)
-}
-
-//export _gotk4_gtk3_CheckMenuItemClass_toggled
-func _gotk4_gtk3_CheckMenuItemClass_toggled(arg0 *C.GtkCheckMenuItem) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Toggled() })
-
-	iface.Toggled()
 }
 
 func wrapCheckMenuItem(obj *coreglib.Object) *CheckMenuItem {
@@ -167,22 +149,6 @@ func wrapCheckMenuItem(obj *coreglib.Object) *CheckMenuItem {
 
 func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 	return wrapCheckMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_CheckMenuItem_ConnectToggled
-func _gotk4_gtk3_CheckMenuItem_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectToggled: this signal is emitted when the state of the check box is
@@ -293,30 +259,6 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 	return _ok
 }
 
-// DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem.
-//
-// The function returns the following values:
-//
-//    - ok: whether check_menu_item looks like a RadioMenuItem.
-//
-func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
-	var _arg0 *C.GtkCheckMenuItem // out
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
-
-	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
-	runtime.KeepAlive(checkMenuItem)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
 //
@@ -362,26 +304,6 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	runtime.KeepAlive(isActive)
 }
 
-// SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem.
-//
-// The function takes the following parameters:
-//
-//    - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
-//
-func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
-	var _arg0 *C.GtkCheckMenuItem // out
-	var _arg1 C.gboolean          // out
-
-	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
-	if drawAsRadio {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
-	runtime.KeepAlive(checkMenuItem)
-	runtime.KeepAlive(drawAsRadio)
-}
-
 // SetInconsistent: if the user has selected a range of elements (such as some
 // text or spreadsheet cells) that are affected by a boolean setting, and the
 // current values in that range are inconsistent, you may want to display the
@@ -416,6 +338,36 @@ func (checkMenuItem *CheckMenuItem) Toggled() {
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
 
 	C.gtk_check_menu_item_toggled(_arg0)
+	runtime.KeepAlive(checkMenuItem)
+}
+
+// The function takes the following parameters:
+//
+func (checkMenuItem *CheckMenuItem) drawIndicator(cr *cairo.Context) {
+	gclass := (*C.GtkCheckMenuItemClass)(coreglib.PeekParentClass(checkMenuItem))
+	fnarg := gclass.draw_indicator
+
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 *C.cairo_t          // out
+
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C._gotk4_gtk3_CheckMenuItem_virtual_draw_indicator(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(checkMenuItem)
+	runtime.KeepAlive(cr)
+}
+
+// Toggled emits the CheckMenuItem::toggled signal.
+func (checkMenuItem *CheckMenuItem) toggled() {
+	gclass := (*C.GtkCheckMenuItemClass)(coreglib.PeekParentClass(checkMenuItem))
+	fnarg := gclass.toggled
+
+	var _arg0 *C.GtkCheckMenuItem // out
+
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+
+	C._gotk4_gtk3_CheckMenuItem_virtual_toggled(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(checkMenuItem)
 }
 

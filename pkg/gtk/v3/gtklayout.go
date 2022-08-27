@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -31,8 +30,12 @@ func init() {
 	})
 }
 
-// LayoutOverrider contains methods that are overridable.
-type LayoutOverrider interface {
+// LayoutOverrides contains methods that are overridable.
+type LayoutOverrides struct {
+}
+
+func defaultLayoutOverrides(v *Layout) LayoutOverrides {
+	return LayoutOverrides{}
 }
 
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do
@@ -61,25 +64,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLayout,
-		GoType:        reflect.TypeOf((*Layout)(nil)),
-		InitClass:     initClassLayout,
-		FinalizeClass: finalizeClassLayout,
-	})
+	coreglib.RegisterClassInfo[*Layout, *LayoutClass, LayoutOverrides](
+		GTypeLayout,
+		initLayoutClass,
+		wrapLayout,
+		defaultLayoutOverrides,
+	)
 }
 
-func initClassLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitLayout(*LayoutClass) }); ok {
-		klass := (*LayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitLayout(klass)
-	}
-}
-
-func finalizeClassLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeLayout(*LayoutClass) }); ok {
-		klass := (*LayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLayout(klass)
+func initLayoutClass(gclass unsafe.Pointer, overrides LayoutOverrides, classInitFunc func(*LayoutClass)) {
+	if classInitFunc != nil {
+		class := (*LayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -144,44 +140,6 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _layout
-}
-
-// BinWindow: retrieve the bin window of the layout used for drawing operations.
-//
-// The function returns the following values:
-//
-//    - window: Window.
-//
-func (layout *Layout) BinWindow() gdk.Windower {
-	var _arg0 *C.GtkLayout // out
-	var _cret *C.GdkWindow // in
-
-	_arg0 = (*C.GtkLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.gtk_layout_get_bin_window(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _window gdk.Windower // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Windower)
-			return ok
-		})
-		rv, ok := casted.(gdk.Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_window = rv
-	}
-
-	return _window
 }
 
 // HAdjustment: this function should only be called after the layout has been

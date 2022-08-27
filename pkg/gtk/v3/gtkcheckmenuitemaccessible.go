@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// CheckMenuItemAccessibleOverrider contains methods that are overridable.
-type CheckMenuItemAccessibleOverrider interface {
+// CheckMenuItemAccessibleOverrides contains methods that are overridable.
+type CheckMenuItemAccessibleOverrides struct {
+}
+
+func defaultCheckMenuItemAccessibleOverrides(v *CheckMenuItemAccessible) CheckMenuItemAccessibleOverrides {
+	return CheckMenuItemAccessibleOverrides{}
 }
 
 type CheckMenuItemAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCheckMenuItemAccessible,
-		GoType:        reflect.TypeOf((*CheckMenuItemAccessible)(nil)),
-		InitClass:     initClassCheckMenuItemAccessible,
-		FinalizeClass: finalizeClassCheckMenuItemAccessible,
-	})
+	coreglib.RegisterClassInfo[*CheckMenuItemAccessible, *CheckMenuItemAccessibleClass, CheckMenuItemAccessibleOverrides](
+		GTypeCheckMenuItemAccessible,
+		initCheckMenuItemAccessibleClass,
+		wrapCheckMenuItemAccessible,
+		defaultCheckMenuItemAccessibleOverrides,
+	)
 }
 
-func initClassCheckMenuItemAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitCheckMenuItemAccessible(*CheckMenuItemAccessibleClass)
-	}); ok {
-		klass := (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitCheckMenuItemAccessible(klass)
-	}
-}
-
-func finalizeClassCheckMenuItemAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeCheckMenuItemAccessible(*CheckMenuItemAccessibleClass)
-	}); ok {
-		klass := (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCheckMenuItemAccessible(klass)
+func initCheckMenuItemAccessibleClass(gclass unsafe.Pointer, overrides CheckMenuItemAccessibleOverrides, classInitFunc func(*CheckMenuItemAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*CheckMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

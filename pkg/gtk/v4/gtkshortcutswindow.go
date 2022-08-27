@@ -11,8 +11,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ShortcutsWindow_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk4_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
+// extern void _gotk4_gtk4_ShortcutsWindow_ConnectClose(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -129,22 +129,6 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_ShortcutsWindow_ConnectClose
-func _gotk4_gtk4_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectClose is emitted when the user uses a keybinding to close the window.
 //
 // This is a keybinding signal (class.SignalAction.html).
@@ -152,22 +136,6 @@ func _gotk4_gtk4_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) 
 // The default binding for this signal is the Escape key.
 func (v *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "close", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectClose), f)
-}
-
-//export _gotk4_gtk4_ShortcutsWindow_ConnectSearch
-func _gotk4_gtk4_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectSearch is emitted when the user uses a keybinding to start a search.

@@ -13,10 +13,10 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
-// extern gboolean _gotk4_gtk4_DragSource_ConnectDragCancel(gpointer, GdkDrag*, GdkDragCancelReason, guintptr);
-// extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, GdkDrag*, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, GdkDrag*, gboolean, guintptr);
+// extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, GdkDrag*, guintptr);
+// extern gboolean _gotk4_gtk4_DragSource_ConnectDragCancel(gpointer, GdkDrag*, GdkDragCancelReason, guintptr);
+// extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -125,91 +125,11 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 	return wrapDragSource(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_DragSource_ConnectDragBegin
-func _gotk4_gtk4_DragSource_ConnectDragBegin(arg0 C.gpointer, arg1 *C.GdkDrag, arg2 C.guintptr) {
-	var f func(drag gdk.Dragger)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drag gdk.Dragger))
-	}
-
-	var _drag gdk.Dragger // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dragger is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dragger)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dragger)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
-		}
-		_drag = rv
-	}
-
-	f(_drag)
-}
-
 // ConnectDragBegin is emitted on the drag source when a drag is started.
 //
 // It can be used to e.g. set a custom drag icon with gtk.DragSource.SetIcon().
 func (source *DragSource) ConnectDragBegin(f func(drag gdk.Dragger)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(source, "drag-begin", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectDragBegin), f)
-}
-
-//export _gotk4_gtk4_DragSource_ConnectDragCancel
-func _gotk4_gtk4_DragSource_ConnectDragCancel(arg0 C.gpointer, arg1 *C.GdkDrag, arg2 C.GdkDragCancelReason, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(drag gdk.Dragger, reason gdk.DragCancelReason) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drag gdk.Dragger, reason gdk.DragCancelReason) (ok bool))
-	}
-
-	var _drag gdk.Dragger            // out
-	var _reason gdk.DragCancelReason // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dragger is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dragger)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dragger)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
-		}
-		_drag = rv
-	}
-	_reason = gdk.DragCancelReason(arg2)
-
-	ok := f(_drag, _reason)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectDragCancel is emitted on the drag source when a drag has failed.
@@ -221,81 +141,12 @@ func (source *DragSource) ConnectDragCancel(f func(drag gdk.Dragger, reason gdk.
 	return coreglib.ConnectGeneratedClosure(source, "drag-cancel", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectDragCancel), f)
 }
 
-//export _gotk4_gtk4_DragSource_ConnectDragEnd
-func _gotk4_gtk4_DragSource_ConnectDragEnd(arg0 C.gpointer, arg1 *C.GdkDrag, arg2 C.gboolean, arg3 C.guintptr) {
-	var f func(drag gdk.Dragger, deleteData bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(drag gdk.Dragger, deleteData bool))
-	}
-
-	var _drag gdk.Dragger // out
-	var _deleteData bool  // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Dragger is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Dragger)
-			return ok
-		})
-		rv, ok := casted.(gdk.Dragger)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Dragger")
-		}
-		_drag = rv
-	}
-	if arg2 != 0 {
-		_deleteData = true
-	}
-
-	f(_drag, _deleteData)
-}
-
 // ConnectDragEnd is emitted on the drag source when a drag is finished.
 //
 // A typical reason to connect to this signal is to undo things done in
 // gtk.DragSource::prepare or gtk.DragSource::drag-begin handlers.
 func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(source, "drag-end", false, unsafe.Pointer(C._gotk4_gtk4_DragSource_ConnectDragEnd), f)
-}
-
-//export _gotk4_gtk4_DragSource_ConnectPrepare
-func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkContentProvider) {
-	var f func(x, y float64) (contentProvider *gdk.ContentProvider)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y float64) (contentProvider *gdk.ContentProvider))
-	}
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	contentProvider := f(_x, _y)
-
-	if contentProvider != nil {
-		cret = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(contentProvider).Native()))
-		C.g_object_ref(C.gpointer(coreglib.InternObject(contentProvider).Native()))
-	}
-
-	return cret
 }
 
 // ConnectPrepare is emitted when a drag is about to be initiated.

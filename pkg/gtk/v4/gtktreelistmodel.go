@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
+// extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 import "C"
 
 // GType values.
@@ -42,33 +42,12 @@ func init() {
 // children arrive.
 type TreeListModelCreateModelFunc func(item *coreglib.Object) (listModel *gio.ListModel)
 
-//export _gotk4_gtk4_TreeListModelCreateModelFunc
-func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GListModel) {
-	var fn TreeListModelCreateModelFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TreeListModelCreateModelFunc)
-	}
-
-	var _item *coreglib.Object // out
-
-	_item = coreglib.Take(unsafe.Pointer(arg1))
-
-	listModel := fn(_item)
-
-	if listModel != nil {
-		cret = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(listModel).Native()))
-		C.g_object_ref(C.gpointer(coreglib.InternObject(listModel).Native()))
-	}
-
-	return cret
+// TreeListModelOverrides contains methods that are overridable.
+type TreeListModelOverrides struct {
 }
 
-// TreeListModelOverrider contains methods that are overridable.
-type TreeListModelOverrider interface {
+func defaultTreeListModelOverrides(v *TreeListModel) TreeListModelOverrides {
+	return TreeListModelOverrides{}
 }
 
 // TreeListModel: GtkTreeListModel is a list model that can create child models
@@ -85,25 +64,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeListModel,
-		GoType:        reflect.TypeOf((*TreeListModel)(nil)),
-		InitClass:     initClassTreeListModel,
-		FinalizeClass: finalizeClassTreeListModel,
-	})
+	coreglib.RegisterClassInfo[*TreeListModel, *TreeListModelClass, TreeListModelOverrides](
+		GTypeTreeListModel,
+		initTreeListModelClass,
+		wrapTreeListModel,
+		defaultTreeListModelOverrides,
+	)
 }
 
-func initClassTreeListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTreeListModel(*TreeListModelClass) }); ok {
-		klass := (*TreeListModelClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeListModel(klass)
-	}
-}
-
-func finalizeClassTreeListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeListModel(*TreeListModelClass) }); ok {
-		klass := (*TreeListModelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeListModel(klass)
+func initTreeListModelClass(gclass unsafe.Pointer, overrides TreeListModelOverrides, classInitFunc func(*TreeListModelClass)) {
+	if classInitFunc != nil {
+		class := (*TreeListModelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -362,8 +334,12 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	runtime.KeepAlive(autoexpand)
 }
 
-// TreeListRowOverrider contains methods that are overridable.
-type TreeListRowOverrider interface {
+// TreeListRowOverrides contains methods that are overridable.
+type TreeListRowOverrides struct {
+}
+
+func defaultTreeListRowOverrides(v *TreeListRow) TreeListRowOverrides {
+	return TreeListRowOverrides{}
 }
 
 // TreeListRow: GtkTreeListRow is used by GtkTreeListModel to represent items.
@@ -387,25 +363,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeListRow,
-		GoType:        reflect.TypeOf((*TreeListRow)(nil)),
-		InitClass:     initClassTreeListRow,
-		FinalizeClass: finalizeClassTreeListRow,
-	})
+	coreglib.RegisterClassInfo[*TreeListRow, *TreeListRowClass, TreeListRowOverrides](
+		GTypeTreeListRow,
+		initTreeListRowClass,
+		wrapTreeListRow,
+		defaultTreeListRowOverrides,
+	)
 }
 
-func initClassTreeListRow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTreeListRow(*TreeListRowClass) }); ok {
-		klass := (*TreeListRowClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeListRow(klass)
-	}
-}
-
-func finalizeClassTreeListRow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTreeListRow(*TreeListRowClass) }); ok {
-		klass := (*TreeListRowClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeListRow(klass)
+func initTreeListRowClass(gclass unsafe.Pointer, overrides TreeListRowOverrides, classInitFunc func(*TreeListRowClass)) {
+	if classInitFunc != nil {
+		class := (*TreeListRowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

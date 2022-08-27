@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// IconViewAccessibleOverrider contains methods that are overridable.
-type IconViewAccessibleOverrider interface {
+// IconViewAccessibleOverrides contains methods that are overridable.
+type IconViewAccessibleOverrides struct {
+}
+
+func defaultIconViewAccessibleOverrides(v *IconViewAccessible) IconViewAccessibleOverrides {
+	return IconViewAccessibleOverrides{}
 }
 
 type IconViewAccessible struct {
@@ -45,29 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeIconViewAccessible,
-		GoType:        reflect.TypeOf((*IconViewAccessible)(nil)),
-		InitClass:     initClassIconViewAccessible,
-		FinalizeClass: finalizeClassIconViewAccessible,
-	})
+	coreglib.RegisterClassInfo[*IconViewAccessible, *IconViewAccessibleClass, IconViewAccessibleOverrides](
+		GTypeIconViewAccessible,
+		initIconViewAccessibleClass,
+		wrapIconViewAccessible,
+		defaultIconViewAccessibleOverrides,
+	)
 }
 
-func initClassIconViewAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitIconViewAccessible(*IconViewAccessibleClass)
-	}); ok {
-		klass := (*IconViewAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitIconViewAccessible(klass)
-	}
-}
-
-func finalizeClassIconViewAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeIconViewAccessible(*IconViewAccessibleClass)
-	}); ok {
-		klass := (*IconViewAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeIconViewAccessible(klass)
+func initIconViewAccessibleClass(gclass unsafe.Pointer, overrides IconViewAccessibleOverrides, classInitFunc func(*IconViewAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*IconViewAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

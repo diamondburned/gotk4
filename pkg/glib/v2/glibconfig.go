@@ -26,26 +26,9 @@ const DIR_SEPARATOR_S = "/"
 //    g_print ("%" G_GINT32_FORMAT, out);.
 const GINT16_FORMAT = "hi"
 
-// GINT16_MODIFIER: platform dependent length modifier for conversion specifiers
-// for scanning and printing values of type #gint16 or #guint16. It is a string
-// literal, but doesn't include the percent-sign, such that you can add
-// precision and length modifiers between percent-sign and conversion specifier
-// and append a conversion specifier.
-//
-// The following example prints "0x7b";
-//
-//    gint16 value = 123;
-//    g_print ("%#" G_GINT16_MODIFIER "x", value);.
-const GINT16_MODIFIER = "h"
-
 // GINT32_FORMAT: this is the platform dependent conversion specifier for
 // scanning and printing values of type #gint32. See also GINT16_FORMAT.
 const GINT32_FORMAT = "i"
-
-// GINT32_MODIFIER: platform dependent length modifier for conversion specifiers
-// for scanning and printing values of type #gint32 or #guint32. It is a string
-// literal. See also GINT16_MODIFIER.
-const GINT32_MODIFIER = ""
 
 // GINT64_FORMAT: this is the platform dependent conversion specifier for
 // scanning and printing values of type #gint64. See also GINT16_FORMAT.
@@ -56,39 +39,6 @@ const GINT32_MODIFIER = ""
 // G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not
 // recommended for parsing anyway; consider using g_ascii_strtoull() instead.
 const GINT64_FORMAT = "li"
-
-// GINT64_MODIFIER: platform dependent length modifier for conversion specifiers
-// for scanning and printing values of type #gint64 or #guint64. It is a string
-// literal.
-//
-// Some platforms do not support printing 64-bit integers, even though the types
-// are supported. On such platforms G_GINT64_MODIFIER is not defined.
-const GINT64_MODIFIER = "l"
-
-// GINTPTR_FORMAT: this is the platform dependent conversion specifier for
-// scanning and printing values of type #gintptr.
-const GINTPTR_FORMAT = "li"
-
-// GINTPTR_MODIFIER: platform dependent length modifier for conversion
-// specifiers for scanning and printing values of type #gintptr or #guintptr. It
-// is a string literal.
-const GINTPTR_MODIFIER = "l"
-
-// GSIZE_FORMAT: this is the platform dependent conversion specifier for
-// scanning and printing values of type #gsize. See also GINT16_FORMAT.
-const GSIZE_FORMAT = "lu"
-
-// GSIZE_MODIFIER: platform dependent length modifier for conversion specifiers
-// for scanning and printing values of type #gsize. It is a string literal.
-const GSIZE_MODIFIER = "l"
-
-// GSSIZE_FORMAT: this is the platform dependent conversion specifier for
-// scanning and printing values of type #gssize. See also GINT16_FORMAT.
-const GSSIZE_FORMAT = "li"
-
-// GSSIZE_MODIFIER: platform dependent length modifier for conversion specifiers
-// for scanning and printing values of type #gssize. It is a string literal.
-const GSSIZE_MODIFIER = "l"
 
 // GUINT16_FORMAT: this is the platform dependent conversion specifier for
 // scanning and printing values of type #guint16. See also GINT16_FORMAT.
@@ -107,10 +57,6 @@ const GUINT32_FORMAT = "u"
 // G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not
 // recommended for parsing anyway; consider using g_ascii_strtoull() instead.
 const GUINT64_FORMAT = "lu"
-
-// GUINTPTR_FORMAT: this is the platform dependent conversion specifier for
-// scanning and printing values of type #guintptr.
-const GUINTPTR_FORMAT = "lu"
 const HAVE_GINT64 = 1
 const HAVE_GNUC_VARARGS = 1
 
@@ -138,10 +84,6 @@ const MICRO_VERSION = 2
 // time, rather than from the library linked against at application run time.
 const MINOR_VERSION = 68
 const MODULE_SUFFIX = "so"
-
-// PID_FORMAT: format specifier that can be used in printf()-style format
-// strings when printing a #GPid.
-const PID_FORMAT = "i"
 
 // POLLFD_FORMAT: format specifier that can be used in printf()-style format
 // strings when printing the fd member of a FD.

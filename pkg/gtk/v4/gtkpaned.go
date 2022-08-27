@@ -12,12 +12,12 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_Paned_ConnectAcceptPosition(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_Paned_ConnectCancelPosition(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_Paned_ConnectCycleChildFocus(gpointer, gboolean, guintptr);
-// extern gboolean _gotk4_gtk4_Paned_ConnectCycleHandleFocus(gpointer, gboolean, guintptr);
-// extern gboolean _gotk4_gtk4_Paned_ConnectMoveHandle(gpointer, GtkScrollType, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_Paned_ConnectMoveHandle(gpointer, GtkScrollType, guintptr);
+// extern gboolean _gotk4_gtk4_Paned_ConnectCycleHandleFocus(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Paned_ConnectCycleChildFocus(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Paned_ConnectCancelPosition(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_Paned_ConnectAcceptPosition(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -134,28 +134,6 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return wrapPaned(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Paned_ConnectAcceptPosition
-func _gotk4_gtk4_Paned_ConnectAcceptPosition(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectAcceptPosition is emitted to accept the current position of the handle
 // when moving it using key bindings.
 //
@@ -164,28 +142,6 @@ func _gotk4_gtk4_Paned_ConnectAcceptPosition(arg0 C.gpointer, arg1 C.guintptr) (
 // The default binding for this signal is Return or Space.
 func (paned *Paned) ConnectAcceptPosition(f func() (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(paned, "accept-position", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectAcceptPosition), f)
-}
-
-//export _gotk4_gtk4_Paned_ConnectCancelPosition
-func _gotk4_gtk4_Paned_ConnectCancelPosition(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectCancelPosition is emitted to cancel moving the position of the handle
@@ -200,34 +156,6 @@ func (paned *Paned) ConnectCancelPosition(f func() (ok bool)) coreglib.SignalHan
 	return coreglib.ConnectGeneratedClosure(paned, "cancel-position", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectCancelPosition), f)
 }
 
-//export _gotk4_gtk4_Paned_ConnectCycleChildFocus
-func _gotk4_gtk4_Paned_ConnectCycleChildFocus(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(reversed bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(reversed bool) (ok bool))
-	}
-
-	var _reversed bool // out
-
-	if arg1 != 0 {
-		_reversed = true
-	}
-
-	ok := f(_reversed)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectCycleChildFocus is emitted to cycle the focus between the children of
 // the paned.
 //
@@ -236,34 +164,6 @@ func _gotk4_gtk4_Paned_ConnectCycleChildFocus(arg0 C.gpointer, arg1 C.gboolean, 
 // The default binding is F6.
 func (paned *Paned) ConnectCycleChildFocus(f func(reversed bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(paned, "cycle-child-focus", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectCycleChildFocus), f)
-}
-
-//export _gotk4_gtk4_Paned_ConnectCycleHandleFocus
-func _gotk4_gtk4_Paned_ConnectCycleHandleFocus(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(reversed bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(reversed bool) (ok bool))
-	}
-
-	var _reversed bool // out
-
-	if arg1 != 0 {
-		_reversed = true
-	}
-
-	ok := f(_reversed)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectCycleHandleFocus is emitted to cycle whether the paned should grab
@@ -277,59 +177,11 @@ func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) (ok bool)) cor
 	return coreglib.ConnectGeneratedClosure(paned, "cycle-handle-focus", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectCycleHandleFocus), f)
 }
 
-//export _gotk4_gtk4_Paned_ConnectMoveHandle
-func _gotk4_gtk4_Paned_ConnectMoveHandle(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(scrollType ScrollType) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scrollType ScrollType) (ok bool))
-	}
-
-	var _scrollType ScrollType // out
-
-	_scrollType = ScrollType(arg1)
-
-	ok := f(_scrollType)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectMoveHandle is emitted to move the handle with key bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(paned, "move-handle", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectMoveHandle), f)
-}
-
-//export _gotk4_gtk4_Paned_ConnectToggleHandleFocus
-func _gotk4_gtk4_Paned_ConnectToggleHandleFocus(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectToggleHandleFocus is emitted to accept the current position of the

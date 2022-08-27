@@ -7,14 +7,13 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(gpointer, GAppInfo*, guintptr);
 // extern void _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(gpointer, GAppInfo*, guintptr);
+// extern void _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(gpointer, GAppInfo*, guintptr);
 import "C"
 
 // GType values.
@@ -104,42 +103,6 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return wrapAppChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated
-func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
-	var f func(application gio.AppInfor)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(application gio.AppInfor))
-	}
-
-	var _application gio.AppInfor // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gio.AppInfor)
-			return ok
-		})
-		rv, ok := casted.(gio.AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_application = rv
-	}
-
-	f(_application)
-}
-
 // ConnectApplicationActivated is emitted when an application item is activated
 // from the widget's list.
 //
@@ -148,42 +111,6 @@ func _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(arg0 C.gpointer, a
 // Enter.
 func (self *AppChooserWidget) ConnectApplicationActivated(f func(application gio.AppInfor)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "application-activated", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated), f)
-}
-
-//export _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected
-func _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 C.guintptr) {
-	var f func(application gio.AppInfor)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(application gio.AppInfor))
-	}
-
-	var _application gio.AppInfor // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gio.AppInfor)
-			return ok
-		})
-		rv, ok := casted.(gio.AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_application = rv
-	}
-
-	f(_application)
 }
 
 // ConnectApplicationSelected is emitted when an application item is selected

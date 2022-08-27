@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// SwitchAccessibleOverrider contains methods that are overridable.
-type SwitchAccessibleOverrider interface {
+// SwitchAccessibleOverrides contains methods that are overridable.
+type SwitchAccessibleOverrides struct {
+}
+
+func defaultSwitchAccessibleOverrides(v *SwitchAccessible) SwitchAccessibleOverrides {
+	return SwitchAccessibleOverrides{}
 }
 
 type SwitchAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSwitchAccessible,
-		GoType:        reflect.TypeOf((*SwitchAccessible)(nil)),
-		InitClass:     initClassSwitchAccessible,
-		FinalizeClass: finalizeClassSwitchAccessible,
-	})
+	coreglib.RegisterClassInfo[*SwitchAccessible, *SwitchAccessibleClass, SwitchAccessibleOverrides](
+		GTypeSwitchAccessible,
+		initSwitchAccessibleClass,
+		wrapSwitchAccessible,
+		defaultSwitchAccessibleOverrides,
+	)
 }
 
-func initClassSwitchAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSwitchAccessible(*SwitchAccessibleClass) }); ok {
-		klass := (*SwitchAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitSwitchAccessible(klass)
-	}
-}
-
-func finalizeClassSwitchAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSwitchAccessible(*SwitchAccessibleClass) }); ok {
-		klass := (*SwitchAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSwitchAccessible(klass)
+func initSwitchAccessibleClass(gclass unsafe.Pointer, overrides SwitchAccessibleOverrides, classInitFunc func(*SwitchAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*SwitchAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

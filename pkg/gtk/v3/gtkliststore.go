@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ListStoreOverrider contains methods that are overridable.
-type ListStoreOverrider interface {
+// ListStoreOverrides contains methods that are overridable.
+type ListStoreOverrides struct {
+}
+
+func defaultListStoreOverrides(v *ListStore) ListStoreOverrides {
+	return ListStoreOverrides{}
 }
 
 // ListStore object is a list model for use with a TreeView widget. It
@@ -84,25 +88,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeListStore,
-		GoType:        reflect.TypeOf((*ListStore)(nil)),
-		InitClass:     initClassListStore,
-		FinalizeClass: finalizeClassListStore,
-	})
+	coreglib.RegisterClassInfo[*ListStore, *ListStoreClass, ListStoreOverrides](
+		GTypeListStore,
+		initListStoreClass,
+		wrapListStore,
+		defaultListStoreOverrides,
+	)
 }
 
-func initClassListStore(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitListStore(*ListStoreClass) }); ok {
-		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
-		goval.InitListStore(klass)
-	}
-}
-
-func finalizeClassListStore(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeListStore(*ListStoreClass) }); ok {
-		klass := (*ListStoreClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeListStore(klass)
+func initListStoreClass(gclass unsafe.Pointer, overrides ListStoreOverrides, classInitFunc func(*ListStoreClass)) {
+	if classInitFunc != nil {
+		class := (*ListStoreClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -302,148 +299,6 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 	return _iter
 }
 
-// InsertWithValuesv: variant of gtk_list_store_insert_with_values() which takes
-// the columns and values as two arrays, instead of varargs. This function is
-// mainly intended for language-bindings.
-//
-// The function takes the following parameters:
-//
-//    - position to insert the new row, or -1 for last.
-//    - columns: array of column numbers.
-//    - values: array of GValues.
-//
-// The function returns the following values:
-//
-//    - iter (optional): unset TreeIter to set to the new row, or NULL.
-//
-func (listStore *ListStore) InsertWithValuesv(position int, columns []int, values []coreglib.Value) *TreeIter {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 C.gint          // out
-	var _arg3 *C.gint         // out
-	var _arg5 C.gint
-	var _arg4 *C.GValue // out
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg2 = C.gint(position)
-	_arg5 = (C.gint)(len(columns))
-	_arg3 = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_arg3))
-	{
-		out := unsafe.Slice((*C.gint)(_arg3), len(columns))
-		for i := range columns {
-			out[i] = C.gint(columns[i])
-		}
-	}
-	_arg5 = (C.gint)(len(values))
-	_arg4 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg4))
-	{
-		out := unsafe.Slice((*C.GValue)(_arg4), len(values))
-		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
-		}
-	}
-
-	C.gtk_list_store_insert_with_valuesv(_arg0, &_arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(listStore)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(columns)
-	runtime.KeepAlive(values)
-
-	var _iter *TreeIter // out
-
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _iter
-}
-
-// IterIsValid: > This function is slow. Only use it for debugging and/or
-// testing > purposes.
-//
-// Checks if the given iter is a valid iter for this ListStore.
-//
-// The function takes the following parameters:
-//
-//    - iter: TreeIter.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the iter is valid, FALSE if the iter is invalid.
-//
-func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	_cret = C.gtk_list_store_iter_is_valid(_arg0, _arg1)
-	runtime.KeepAlive(listStore)
-	runtime.KeepAlive(iter)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// MoveAfter moves iter in store to the position after position. Note that this
-// function only works with unsorted stores. If position is NULL, iter will be
-// moved to the start of the list.
-//
-// The function takes the following parameters:
-//
-//    - iter: TreeIter.
-//    - position (optional) or NULL.
-//
-func (store *ListStore) MoveAfter(iter, position *TreeIter) {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	if position != nil {
-		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(position)))
-	}
-
-	C.gtk_list_store_move_after(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(store)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(position)
-}
-
-// MoveBefore moves iter in store to the position before position. Note that
-// this function only works with unsorted stores. If position is NULL, iter will
-// be moved to the end of the list.
-//
-// The function takes the following parameters:
-//
-//    - iter: TreeIter.
-//    - position (optional) or NULL.
-//
-func (store *ListStore) MoveBefore(iter, position *TreeIter) {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	if position != nil {
-		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(position)))
-	}
-
-	C.gtk_list_store_move_before(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(store)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(position)
-}
-
 // Prepend prepends a new row to list_store. iter will be changed to point to
 // this new row. The row will be empty after this function is called. To fill in
 // values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
@@ -501,38 +356,6 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 	return _ok
 }
 
-// Reorder reorders store to follow the order indicated by new_order. Note that
-// this function only works with unsorted stores.
-//
-// The function takes the following parameters:
-//
-//    - newOrder: array of integers mapping the new position of each child to its
-//      old position before the re-ordering, i.e. new_order[newpos] = oldpos. It
-//      must have exactly as many items as the list store’s length.
-//
-func (store *ListStore) Reorder(newOrder []int) {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.gint         // out
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	{
-		_arg1 = (*C.gint)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_gint)))
-		defer C.free(unsafe.Pointer(_arg1))
-		{
-			out := unsafe.Slice(_arg1, len(newOrder)+1)
-			var zero C.gint
-			out[len(newOrder)] = zero
-			for i := range newOrder {
-				out[i] = C.gint(newOrder[i])
-			}
-		}
-	}
-
-	C.gtk_list_store_reorder(_arg0, _arg1)
-	runtime.KeepAlive(store)
-	runtime.KeepAlive(newOrder)
-}
-
 // SetColumnTypes: this function is meant primarily for #GObjects that inherit
 // from ListStore, and should only be used when constructing a new ListStore. It
 // will not function after a row has been added, or a method on the TreeModel
@@ -588,75 +411,6 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int, value *coreglib
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(value)
-}
-
-// Set: variant of gtk_list_store_set_valist() which takes the columns and
-// values as two arrays, instead of varargs. This function is mainly intended
-// for language-bindings and in case the number of columns to change is not
-// known until run-time.
-//
-// The function takes the following parameters:
-//
-//    - iter: valid TreeIter for the row being modified.
-//    - columns: array of column numbers.
-//    - values: array of GValues.
-//
-func (listStore *ListStore) Set(iter *TreeIter, columns []int, values []coreglib.Value) {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 *C.gint         // out
-	var _arg4 C.gint
-	var _arg3 *C.GValue // out
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg4 = (C.gint)(len(columns))
-	_arg2 = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.gint)(_arg2), len(columns))
-		for i := range columns {
-			out[i] = C.gint(columns[i])
-		}
-	}
-	_arg4 = (C.gint)(len(values))
-	_arg3 = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
-	defer C.free(unsafe.Pointer(_arg3))
-	{
-		out := unsafe.Slice((*C.GValue)(_arg3), len(values))
-		for i := range values {
-			out[i] = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
-		}
-	}
-
-	C.gtk_list_store_set_valuesv(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(listStore)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(columns)
-	runtime.KeepAlive(values)
-}
-
-// Swap swaps a and b in store. Note that this function only works with unsorted
-// stores.
-//
-// The function takes the following parameters:
-//
-//    - a: TreeIter.
-//    - b: another TreeIter.
-//
-func (store *ListStore) Swap(a, b *TreeIter) {
-	var _arg0 *C.GtkListStore // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkListStore)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(a)))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(b)))
-
-	C.gtk_list_store_swap(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(store)
-	runtime.KeepAlive(a)
-	runtime.KeepAlive(b)
 }
 
 // ListStoreClass: instance of this type is always passed by reference.

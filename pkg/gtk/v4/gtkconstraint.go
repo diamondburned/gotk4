@@ -73,8 +73,12 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 	return obj.baseConstraintTarget()
 }
 
-// ConstraintOverrider contains methods that are overridable.
-type ConstraintOverrider interface {
+// ConstraintOverrides contains methods that are overridable.
+type ConstraintOverrides struct {
+}
+
+func defaultConstraintOverrides(v *Constraint) ConstraintOverrides {
+	return ConstraintOverrides{}
 }
 
 // Constraint: GtkConstraint describes a constraint between attributes of two
@@ -101,25 +105,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeConstraint,
-		GoType:        reflect.TypeOf((*Constraint)(nil)),
-		InitClass:     initClassConstraint,
-		FinalizeClass: finalizeClassConstraint,
-	})
+	coreglib.RegisterClassInfo[*Constraint, *ConstraintClass, ConstraintOverrides](
+		GTypeConstraint,
+		initConstraintClass,
+		wrapConstraint,
+		defaultConstraintOverrides,
+	)
 }
 
-func initClassConstraint(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitConstraint(*ConstraintClass) }); ok {
-		klass := (*ConstraintClass)(gextras.NewStructNative(gclass))
-		goval.InitConstraint(klass)
-	}
-}
-
-func finalizeClassConstraint(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeConstraint(*ConstraintClass) }); ok {
-		klass := (*ConstraintClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeConstraint(klass)
+func initConstraintClass(gclass unsafe.Pointer, overrides ConstraintOverrides, classInitFunc func(*ConstraintClass)) {
+	if classInitFunc != nil {
+		class := (*ConstraintClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

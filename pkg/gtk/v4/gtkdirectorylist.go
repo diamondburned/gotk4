@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// DirectoryListOverrider contains methods that are overridable.
-type DirectoryListOverrider interface {
+// DirectoryListOverrides contains methods that are overridable.
+type DirectoryListOverrides struct {
+}
+
+func defaultDirectoryListOverrides(v *DirectoryList) DirectoryListOverrides {
+	return DirectoryListOverrides{}
 }
 
 // DirectoryList: GtkDirectoryList is a list model that wraps
@@ -67,25 +71,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDirectoryList,
-		GoType:        reflect.TypeOf((*DirectoryList)(nil)),
-		InitClass:     initClassDirectoryList,
-		FinalizeClass: finalizeClassDirectoryList,
-	})
+	coreglib.RegisterClassInfo[*DirectoryList, *DirectoryListClass, DirectoryListOverrides](
+		GTypeDirectoryList,
+		initDirectoryListClass,
+		wrapDirectoryList,
+		defaultDirectoryListOverrides,
+	)
 }
 
-func initClassDirectoryList(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitDirectoryList(*DirectoryListClass) }); ok {
-		klass := (*DirectoryListClass)(gextras.NewStructNative(gclass))
-		goval.InitDirectoryList(klass)
-	}
-}
-
-func finalizeClassDirectoryList(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDirectoryList(*DirectoryListClass) }); ok {
-		klass := (*DirectoryListClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDirectoryList(klass)
+func initDirectoryListClass(gclass unsafe.Pointer, overrides DirectoryListOverrides, classInitFunc func(*DirectoryListClass)) {
+	if classInitFunc != nil {
+		class := (*DirectoryListClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

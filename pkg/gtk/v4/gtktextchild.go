@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TextChildAnchorOverrider contains methods that are overridable.
-type TextChildAnchorOverrider interface {
+// TextChildAnchorOverrides contains methods that are overridable.
+type TextChildAnchorOverrides struct {
+}
+
+func defaultTextChildAnchorOverrides(v *TextChildAnchor) TextChildAnchorOverrides {
+	return TextChildAnchorOverrides{}
 }
 
 // TextChildAnchor: GtkTextChildAnchor is a spot in a GtkTextBuffer where child
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextChildAnchor,
-		GoType:        reflect.TypeOf((*TextChildAnchor)(nil)),
-		InitClass:     initClassTextChildAnchor,
-		FinalizeClass: finalizeClassTextChildAnchor,
-	})
+	coreglib.RegisterClassInfo[*TextChildAnchor, *TextChildAnchorClass, TextChildAnchorOverrides](
+		GTypeTextChildAnchor,
+		initTextChildAnchorClass,
+		wrapTextChildAnchor,
+		defaultTextChildAnchorOverrides,
+	)
 }
 
-func initClassTextChildAnchor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTextChildAnchor(*TextChildAnchorClass) }); ok {
-		klass := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
-		goval.InitTextChildAnchor(klass)
-	}
-}
-
-func finalizeClassTextChildAnchor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextChildAnchor(*TextChildAnchorClass) }); ok {
-		klass := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextChildAnchor(klass)
+func initTextChildAnchorClass(gclass unsafe.Pointer, overrides TextChildAnchorOverrides, classInitFunc func(*TextChildAnchorClass)) {
+	if classInitFunc != nil {
+		class := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -14,16 +14,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GtkNotebook* _gotk4_gtk4_Notebook_ConnectCreateWindow(gpointer, GtkWidget*, guintptr);
-// extern gboolean _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(gpointer, gint, guintptr);
-// extern gboolean _gotk4_gtk4_Notebook_ConnectFocusTab(gpointer, GtkNotebookTab, guintptr);
-// extern gboolean _gotk4_gtk4_Notebook_ConnectReorderTab(gpointer, GtkDirectionType, gboolean, guintptr);
-// extern gboolean _gotk4_gtk4_Notebook_ConnectSelectPage(gpointer, gboolean, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectPageAdded(gpointer, GtkWidget*, guint, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectPageRemoved(gpointer, GtkWidget*, guint, guintptr);
-// extern void _gotk4_gtk4_Notebook_ConnectPageReordered(gpointer, GtkWidget*, guint, guintptr);
 // extern void _gotk4_gtk4_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectPageReordered(gpointer, GtkWidget*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectPageRemoved(gpointer, GtkWidget*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectPageAdded(gpointer, GtkWidget*, guint, guintptr);
+// extern void _gotk4_gtk4_Notebook_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
+// extern gboolean _gotk4_gtk4_Notebook_ConnectSelectPage(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Notebook_ConnectReorderTab(gpointer, GtkDirectionType, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Notebook_ConnectFocusTab(gpointer, GtkNotebookTab, guintptr);
+// extern gboolean _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(gpointer, gint, guintptr);
+// extern GtkNotebook* _gotk4_gtk4_Notebook_ConnectCreateWindow(gpointer, GtkWidget*, guintptr);
 import "C"
 
 // GType values.
@@ -190,74 +190,8 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return wrapNotebook(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Notebook_ConnectChangeCurrentPage
-func _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object int) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object int) (ok bool))
-	}
-
-	var _object int // out
-
-	_object = int(arg1)
-
-	ok := f(_object)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectChangeCurrentPage), f)
-}
-
-//export _gotk4_gtk4_Notebook_ConnectCreateWindow
-func _gotk4_gtk4_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) (cret *C.GtkNotebook) {
-	var f func(page Widgetter) (notebook *Notebook)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page Widgetter) (notebook *Notebook))
-	}
-
-	var _page Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_page = rv
-	}
-
-	notebook := f(_page)
-
-	cret = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-
-	return cret
 }
 
 // ConnectCreateWindow signal is emitted when a detachable tab is dropped on the
@@ -271,96 +205,12 @@ func (notebook *Notebook) ConnectCreateWindow(f func(page Widgetter) (notebook *
 	return coreglib.ConnectGeneratedClosure(notebook, "create-window", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectCreateWindow), f)
 }
 
-//export _gotk4_gtk4_Notebook_ConnectFocusTab
-func _gotk4_gtk4_Notebook_ConnectFocusTab(arg0 C.gpointer, arg1 C.GtkNotebookTab, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object NotebookTab) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object NotebookTab) (ok bool))
-	}
-
-	var _object NotebookTab // out
-
-	_object = NotebookTab(arg1)
-
-	ok := f(_object)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 func (notebook *Notebook) ConnectFocusTab(f func(object NotebookTab) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "focus-tab", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectFocusTab), f)
 }
 
-//export _gotk4_gtk4_Notebook_ConnectMoveFocusOut
-func _gotk4_gtk4_Notebook_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
-	var f func(object DirectionType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object DirectionType))
-	}
-
-	var _object DirectionType // out
-
-	_object = DirectionType(arg1)
-
-	f(_object)
-}
-
 func (notebook *Notebook) ConnectMoveFocusOut(f func(object DirectionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "move-focus-out", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectMoveFocusOut), f)
-}
-
-//export _gotk4_gtk4_Notebook_ConnectPageAdded
-func _gotk4_gtk4_Notebook_ConnectPageAdded(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(child Widgetter, pageNum uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(child Widgetter, pageNum uint))
-	}
-
-	var _child Widgetter // out
-	var _pageNum uint    // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-	_pageNum = uint(arg2)
-
-	f(_child, _pageNum)
 }
 
 // ConnectPageAdded signal is emitted in the notebook right after a page is
@@ -369,86 +219,10 @@ func (notebook *Notebook) ConnectPageAdded(f func(child Widgetter, pageNum uint)
 	return coreglib.ConnectGeneratedClosure(notebook, "page-added", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageAdded), f)
 }
 
-//export _gotk4_gtk4_Notebook_ConnectPageRemoved
-func _gotk4_gtk4_Notebook_ConnectPageRemoved(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(child Widgetter, pageNum uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(child Widgetter, pageNum uint))
-	}
-
-	var _child Widgetter // out
-	var _pageNum uint    // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-	_pageNum = uint(arg2)
-
-	f(_child, _pageNum)
-}
-
 // ConnectPageRemoved signal is emitted in the notebook right after a page is
 // removed from the notebook.
 func (notebook *Notebook) ConnectPageRemoved(f func(child Widgetter, pageNum uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "page-removed", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageRemoved), f)
-}
-
-//export _gotk4_gtk4_Notebook_ConnectPageReordered
-func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(child Widgetter, pageNum uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(child Widgetter, pageNum uint))
-	}
-
-	var _child Widgetter // out
-	var _pageNum uint    // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-	_pageNum = uint(arg2)
-
-	f(_child, _pageNum)
 }
 
 // ConnectPageReordered signal is emitted in the notebook right after a page has
@@ -457,108 +231,12 @@ func (notebook *Notebook) ConnectPageReordered(f func(child Widgetter, pageNum u
 	return coreglib.ConnectGeneratedClosure(notebook, "page-reordered", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageReordered), f)
 }
 
-//export _gotk4_gtk4_Notebook_ConnectReorderTab
-func _gotk4_gtk4_Notebook_ConnectReorderTab(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.gboolean, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(object DirectionType, p0 bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object DirectionType, p0 bool) (ok bool))
-	}
-
-	var _object DirectionType // out
-	var _p0 bool              // out
-
-	_object = DirectionType(arg1)
-	if arg2 != 0 {
-		_p0 = true
-	}
-
-	ok := f(_object, _p0)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 func (notebook *Notebook) ConnectReorderTab(f func(object DirectionType, p0 bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "reorder-tab", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectReorderTab), f)
 }
 
-//export _gotk4_gtk4_Notebook_ConnectSelectPage
-func _gotk4_gtk4_Notebook_ConnectSelectPage(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object bool) (ok bool))
-	}
-
-	var _object bool // out
-
-	if arg1 != 0 {
-		_object = true
-	}
-
-	ok := f(_object)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 func (notebook *Notebook) ConnectSelectPage(f func(object bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "select-page", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectSelectPage), f)
-}
-
-//export _gotk4_gtk4_Notebook_ConnectSwitchPage
-func _gotk4_gtk4_Notebook_ConnectSwitchPage(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guint, arg3 C.guintptr) {
-	var f func(page Widgetter, pageNum uint)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(page Widgetter, pageNum uint))
-	}
-
-	var _page Widgetter // out
-	var _pageNum uint   // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_page = rv
-	}
-	_pageNum = uint(arg2)
-
-	f(_page, _pageNum)
 }
 
 // ConnectSwitchPage is emitted when the user or a function changes the current

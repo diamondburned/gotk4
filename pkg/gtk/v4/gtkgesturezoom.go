@@ -53,26 +53,6 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return wrapGestureZoom(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_GestureZoom_ConnectScaleChanged
-func _gotk4_gtk4_GestureZoom_ConnectScaleChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
-	var f func(scale float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scale float64))
-	}
-
-	var _scale float64 // out
-
-	_scale = float64(arg1)
-
-	f(_scale)
-}
-
 // ConnectScaleChanged is emitted whenever the distance between both tracked
 // sequences changes.
 func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.SignalHandle {

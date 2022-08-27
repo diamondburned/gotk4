@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// BoxOverrider contains methods that are overridable.
-type BoxOverrider interface {
+// BoxOverrides contains methods that are overridable.
+type BoxOverrides struct {
+}
+
+func defaultBoxOverrides(v *Box) BoxOverrides {
+	return BoxOverrides{}
 }
 
 // Box: GtkBox widget arranges child widgets into a single row or column.
@@ -79,25 +83,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBox,
-		GoType:        reflect.TypeOf((*Box)(nil)),
-		InitClass:     initClassBox,
-		FinalizeClass: finalizeClassBox,
-	})
+	coreglib.RegisterClassInfo[*Box, *BoxClass, BoxOverrides](
+		GTypeBox,
+		initBoxClass,
+		wrapBox,
+		defaultBoxOverrides,
+	)
 }
 
-func initClassBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBox(*BoxClass) }); ok {
-		klass := (*BoxClass)(gextras.NewStructNative(gclass))
-		goval.InitBox(klass)
-	}
-}
-
-func finalizeClassBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBox(*BoxClass) }); ok {
-		klass := (*BoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBox(klass)
+func initBoxClass(gclass unsafe.Pointer, overrides BoxOverrides, classInitFunc func(*BoxClass)) {
+	if classInitFunc != nil {
+		class := (*BoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

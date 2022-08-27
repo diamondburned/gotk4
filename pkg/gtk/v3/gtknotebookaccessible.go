@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// NotebookAccessibleOverrider contains methods that are overridable.
-type NotebookAccessibleOverrider interface {
+// NotebookAccessibleOverrides contains methods that are overridable.
+type NotebookAccessibleOverrides struct {
+}
+
+func defaultNotebookAccessibleOverrides(v *NotebookAccessible) NotebookAccessibleOverrides {
+	return NotebookAccessibleOverrides{}
 }
 
 type NotebookAccessible struct {
@@ -45,29 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNotebookAccessible,
-		GoType:        reflect.TypeOf((*NotebookAccessible)(nil)),
-		InitClass:     initClassNotebookAccessible,
-		FinalizeClass: finalizeClassNotebookAccessible,
-	})
+	coreglib.RegisterClassInfo[*NotebookAccessible, *NotebookAccessibleClass, NotebookAccessibleOverrides](
+		GTypeNotebookAccessible,
+		initNotebookAccessibleClass,
+		wrapNotebookAccessible,
+		defaultNotebookAccessibleOverrides,
+	)
 }
 
-func initClassNotebookAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitNotebookAccessible(*NotebookAccessibleClass)
-	}); ok {
-		klass := (*NotebookAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitNotebookAccessible(klass)
-	}
-}
-
-func finalizeClassNotebookAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeNotebookAccessible(*NotebookAccessibleClass)
-	}); ok {
-		klass := (*NotebookAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNotebookAccessible(klass)
+func initNotebookAccessibleClass(gclass unsafe.Pointer, overrides NotebookAccessibleOverrides, classInitFunc func(*NotebookAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*NotebookAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

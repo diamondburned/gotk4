@@ -17,10 +17,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_StatusbarClass_text_popped(GtkStatusbar*, guint, gchar*);
-// extern void _gotk4_gtk3_StatusbarClass_text_pushed(GtkStatusbar*, guint, gchar*);
-// extern void _gotk4_gtk3_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
 // extern void _gotk4_gtk3_Statusbar_ConnectTextPushed(gpointer, guint, gchar*, guintptr);
+// extern void _gotk4_gtk3_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
+// extern void _gotk4_gtk3_StatusbarClass_text_pushed(GtkStatusbar*, guint, gchar*);
+// extern void _gotk4_gtk3_StatusbarClass_text_popped(GtkStatusbar*, guint, gchar*);
+// void _gotk4_gtk3_Statusbar_virtual_text_popped(void* fnptr, GtkStatusbar* arg0, guint arg1, gchar* arg2) {
+//   ((void (*)(GtkStatusbar*, guint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_Statusbar_virtual_text_pushed(void* fnptr, GtkStatusbar* arg0, guint arg1, gchar* arg2) {
+//   ((void (*)(GtkStatusbar*, guint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -34,20 +40,27 @@ func init() {
 	})
 }
 
-// StatusbarOverrider contains methods that are overridable.
-type StatusbarOverrider interface {
+// StatusbarOverrides contains methods that are overridable.
+type StatusbarOverrides struct {
 	// The function takes the following parameters:
 	//
 	//    - contextId
 	//    - text
 	//
-	TextPopped(contextId uint, text string)
+	TextPopped func(contextId uint, text string)
 	// The function takes the following parameters:
 	//
 	//    - contextId
 	//    - text
 	//
-	TextPushed(contextId uint, text string)
+	TextPushed func(contextId uint, text string)
+}
+
+func defaultStatusbarOverrides(v *Statusbar) StatusbarOverrides {
+	return StatusbarOverrides{
+		TextPopped: v.textPopped,
+		TextPushed: v.textPushed,
+	}
 }
 
 // Statusbar is usually placed along the bottom of an application's main Window.
@@ -93,72 +106,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStatusbar,
-		GoType:        reflect.TypeOf((*Statusbar)(nil)),
-		InitClass:     initClassStatusbar,
-		FinalizeClass: finalizeClassStatusbar,
-	})
+	coreglib.RegisterClassInfo[*Statusbar, *StatusbarClass, StatusbarOverrides](
+		GTypeStatusbar,
+		initStatusbarClass,
+		wrapStatusbar,
+		defaultStatusbarOverrides,
+	)
 }
 
-func initClassStatusbar(gclass unsafe.Pointer, goval any) {
+func initStatusbarClass(gclass unsafe.Pointer, overrides StatusbarOverrides, classInitFunc func(*StatusbarClass)) {
+	pclass := (*C.GtkStatusbarClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeStatusbar))))
 
-	pclass := (*C.GtkStatusbarClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		TextPopped(contextId uint, text string)
-	}); ok {
+	if overrides.TextPopped != nil {
 		pclass.text_popped = (*[0]byte)(C._gotk4_gtk3_StatusbarClass_text_popped)
 	}
 
-	if _, ok := goval.(interface {
-		TextPushed(contextId uint, text string)
-	}); ok {
+	if overrides.TextPushed != nil {
 		pclass.text_pushed = (*[0]byte)(C._gotk4_gtk3_StatusbarClass_text_pushed)
 	}
-	if goval, ok := goval.(interface{ InitStatusbar(*StatusbarClass) }); ok {
-		klass := (*StatusbarClass)(gextras.NewStructNative(gclass))
-		goval.InitStatusbar(klass)
+
+	if classInitFunc != nil {
+		class := (*StatusbarClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassStatusbar(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeStatusbar(*StatusbarClass) }); ok {
-		klass := (*StatusbarClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStatusbar(klass)
-	}
-}
-
-//export _gotk4_gtk3_StatusbarClass_text_popped
-func _gotk4_gtk3_StatusbarClass_text_popped(arg0 *C.GtkStatusbar, arg1 C.guint, arg2 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		TextPopped(contextId uint, text string)
-	})
-
-	var _contextId uint // out
-	var _text string    // out
-
-	_contextId = uint(arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	iface.TextPopped(_contextId, _text)
-}
-
-//export _gotk4_gtk3_StatusbarClass_text_pushed
-func _gotk4_gtk3_StatusbarClass_text_pushed(arg0 *C.GtkStatusbar, arg1 C.guint, arg2 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		TextPushed(contextId uint, text string)
-	})
-
-	var _contextId uint // out
-	var _text string    // out
-
-	_contextId = uint(arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	iface.TextPushed(_contextId, _text)
 }
 
 func wrapStatusbar(obj *coreglib.Object) *Statusbar {
@@ -190,54 +160,10 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return wrapStatusbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Statusbar_ConnectTextPopped
-func _gotk4_gtk3_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(contextId uint, text string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(contextId uint, text string))
-	}
-
-	var _contextId uint // out
-	var _text string    // out
-
-	_contextId = uint(arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	f(_contextId, _text)
-}
-
 // ConnectTextPopped is emitted whenever a new message is popped off a
 // statusbar's stack.
 func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint, text string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(statusbar, "text-popped", false, unsafe.Pointer(C._gotk4_gtk3_Statusbar_ConnectTextPopped), f)
-}
-
-//export _gotk4_gtk3_Statusbar_ConnectTextPushed
-func _gotk4_gtk3_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
-	var f func(contextId uint, text string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(contextId uint, text string))
-	}
-
-	var _contextId uint // out
-	var _text string    // out
-
-	_contextId = uint(arg1)
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	f(_contextId, _text)
 }
 
 // ConnectTextPushed is emitted whenever a new message gets pushed onto a
@@ -294,28 +220,6 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// MessageArea retrieves the box containing the label widget.
-//
-// The function returns the following values:
-//
-//    - box: Box.
-//
-func (statusbar *Statusbar) MessageArea() *Box {
-	var _arg0 *C.GtkStatusbar // out
-	var _cret *C.GtkWidget    // in
-
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-
-	_cret = C.gtk_statusbar_get_message_area(_arg0)
-	runtime.KeepAlive(statusbar)
-
-	var _box *Box // out
-
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _box
 }
 
 // Pop removes the first message in the Statusbar’s stack with the given context
@@ -398,23 +302,52 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 	runtime.KeepAlive(messageId)
 }
 
-// RemoveAll forces the removal of all messages from a statusbar's stack with
-// the exact context_id.
-//
 // The function takes the following parameters:
 //
-//    - contextId: context identifier.
+//    - contextId
+//    - text
 //
-func (statusbar *Statusbar) RemoveAll(contextId uint) {
+func (statusbar *Statusbar) textPopped(contextId uint, text string) {
+	gclass := (*C.GtkStatusbarClass)(coreglib.PeekParentClass(statusbar))
+	fnarg := gclass.text_popped
+
 	var _arg0 *C.GtkStatusbar // out
 	var _arg1 C.guint         // out
+	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	_arg1 = C.guint(contextId)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_statusbar_remove_all(_arg0, _arg1)
+	C._gotk4_gtk3_Statusbar_virtual_text_popped(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
+	runtime.KeepAlive(text)
+}
+
+// The function takes the following parameters:
+//
+//    - contextId
+//    - text
+//
+func (statusbar *Statusbar) textPushed(contextId uint, text string) {
+	gclass := (*C.GtkStatusbarClass)(coreglib.PeekParentClass(statusbar))
+	fnarg := gclass.text_pushed
+
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	_arg1 = C.guint(contextId)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_gtk3_Statusbar_virtual_text_pushed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextId)
+	runtime.KeepAlive(text)
 }
 
 // StatusbarClass: instance of this type is always passed by reference.

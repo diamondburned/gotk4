@@ -18,8 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_RecentManagerClass_changed(GtkRecentManager*);
 // extern void _gotk4_gtk4_RecentManager_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_RecentManagerClass_changed(GtkRecentManager*);
+// void _gotk4_gtk4_RecentManager_virtual_changed(void* fnptr, GtkRecentManager* arg0) {
+//   ((void (*)(GtkRecentManager*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -87,9 +90,15 @@ func (r RecentManagerError) String() string {
 	}
 }
 
-// RecentManagerOverrider contains methods that are overridable.
-type RecentManagerOverrider interface {
-	Changed()
+// RecentManagerOverrides contains methods that are overridable.
+type RecentManagerOverrides struct {
+	Changed func()
+}
+
+func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
+	return RecentManagerOverrides{
+		Changed: v.changed,
+	}
 }
 
 // RecentManager: GtkRecentManager manages and looks up recently used files.
@@ -153,40 +162,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRecentManager,
-		GoType:        reflect.TypeOf((*RecentManager)(nil)),
-		InitClass:     initClassRecentManager,
-		FinalizeClass: finalizeClassRecentManager,
-	})
+	coreglib.RegisterClassInfo[*RecentManager, *RecentManagerClass, RecentManagerOverrides](
+		GTypeRecentManager,
+		initRecentManagerClass,
+		wrapRecentManager,
+		defaultRecentManagerOverrides,
+	)
 }
 
-func initClassRecentManager(gclass unsafe.Pointer, goval any) {
+func initRecentManagerClass(gclass unsafe.Pointer, overrides RecentManagerOverrides, classInitFunc func(*RecentManagerClass)) {
+	pclass := (*C.GtkRecentManagerClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRecentManager))))
 
-	pclass := (*C.GtkRecentManagerClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Changed() }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_RecentManagerClass_changed)
 	}
-	if goval, ok := goval.(interface{ InitRecentManager(*RecentManagerClass) }); ok {
-		klass := (*RecentManagerClass)(gextras.NewStructNative(gclass))
-		goval.InitRecentManager(klass)
+
+	if classInitFunc != nil {
+		class := (*RecentManagerClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassRecentManager(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRecentManager(*RecentManagerClass) }); ok {
-		klass := (*RecentManagerClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRecentManager(klass)
-	}
-}
-
-//export _gotk4_gtk4_RecentManagerClass_changed
-func _gotk4_gtk4_RecentManagerClass_changed(arg0 *C.GtkRecentManager) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed() })
-
-	iface.Changed()
 }
 
 func wrapRecentManager(obj *coreglib.Object) *RecentManager {
@@ -197,22 +191,6 @@ func wrapRecentManager(obj *coreglib.Object) *RecentManager {
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
 	return wrapRecentManager(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_RecentManager_ConnectChanged
-func _gotk4_gtk4_RecentManager_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectChanged is emitted when the current recently used resources manager
@@ -554,6 +532,18 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	}
 
 	return _goerr
+}
+
+func (manager *RecentManager) changed() {
+	gclass := (*C.GtkRecentManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkRecentManager // out
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	C._gotk4_gtk4_RecentManager_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(manager)
 }
 
 // RecentManagerGetDefault gets a unique instance of GtkRecentManager that you

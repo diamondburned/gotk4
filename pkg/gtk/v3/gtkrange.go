@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -18,16 +17,34 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_RangeClass_change_value(GtkRange*, GtkScrollType, gdouble);
-// extern gboolean _gotk4_gtk3_Range_ConnectChangeValue(gpointer, GtkScrollType, gdouble, guintptr);
-// extern void _gotk4_gtk3_RangeClass_adjust_bounds(GtkRange*, gdouble);
-// extern void _gotk4_gtk3_RangeClass_get_range_border(GtkRange*, GtkBorder*);
-// extern void _gotk4_gtk3_RangeClass_get_range_size_request(GtkRange*, GtkOrientation, gint*, gint*);
-// extern void _gotk4_gtk3_RangeClass_move_slider(GtkRange*, GtkScrollType);
-// extern void _gotk4_gtk3_RangeClass_value_changed(GtkRange*);
-// extern void _gotk4_gtk3_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
-// extern void _gotk4_gtk3_Range_ConnectMoveSlider(gpointer, GtkScrollType, guintptr);
 // extern void _gotk4_gtk3_Range_ConnectValueChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_Range_ConnectMoveSlider(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk3_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
+// extern void _gotk4_gtk3_RangeClass_value_changed(GtkRange*);
+// extern void _gotk4_gtk3_RangeClass_move_slider(GtkRange*, GtkScrollType);
+// extern void _gotk4_gtk3_RangeClass_get_range_size_request(GtkRange*, GtkOrientation, gint*, gint*);
+// extern void _gotk4_gtk3_RangeClass_get_range_border(GtkRange*, GtkBorder*);
+// extern void _gotk4_gtk3_RangeClass_adjust_bounds(GtkRange*, gdouble);
+// extern gboolean _gotk4_gtk3_Range_ConnectChangeValue(gpointer, GtkScrollType, gdouble, guintptr);
+// extern gboolean _gotk4_gtk3_RangeClass_change_value(GtkRange*, GtkScrollType, gdouble);
+// gboolean _gotk4_gtk3_Range_virtual_change_value(void* fnptr, GtkRange* arg0, GtkScrollType arg1, gdouble arg2) {
+//   return ((gboolean (*)(GtkRange*, GtkScrollType, gdouble))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_Range_virtual_adjust_bounds(void* fnptr, GtkRange* arg0, gdouble arg1) {
+//   ((void (*)(GtkRange*, gdouble))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Range_virtual_get_range_border(void* fnptr, GtkRange* arg0, GtkBorder* arg1) {
+//   ((void (*)(GtkRange*, GtkBorder*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Range_virtual_get_range_size_request(void* fnptr, GtkRange* arg0, GtkOrientation arg1, gint* arg2, gint* arg3) {
+//   ((void (*)(GtkRange*, GtkOrientation, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_Range_virtual_move_slider(void* fnptr, GtkRange* arg0, GtkScrollType arg1) {
+//   ((void (*)(GtkRange*, GtkScrollType))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Range_virtual_value_changed(void* fnptr, GtkRange* arg0) {
+//   ((void (*)(GtkRange*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -41,11 +58,11 @@ func init() {
 	})
 }
 
-// RangeOverrider contains methods that are overridable.
-type RangeOverrider interface {
+// RangeOverrides contains methods that are overridable.
+type RangeOverrides struct {
 	// The function takes the following parameters:
 	//
-	AdjustBounds(newValue float64)
+	AdjustBounds func(newValue float64)
 	// The function takes the following parameters:
 	//
 	//    - scroll
@@ -53,21 +70,32 @@ type RangeOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	ChangeValue(scroll ScrollType, newValue float64) bool
+	ChangeValue func(scroll ScrollType, newValue float64) bool
 	// The function takes the following parameters:
 	//
-	RangeBorder(border_ *Border)
+	RangeBorder func(border_ *Border)
 	// The function takes the following parameters:
 	//
 	//    - orientation
 	//    - minimum
 	//    - natural
 	//
-	RangeSizeRequest(orientation Orientation, minimum, natural *int)
+	RangeSizeRequest func(orientation Orientation, minimum, natural *int)
 	// The function takes the following parameters:
 	//
-	MoveSlider(scroll ScrollType)
-	ValueChanged()
+	MoveSlider   func(scroll ScrollType)
+	ValueChanged func()
+}
+
+func defaultRangeOverrides(v *Range) RangeOverrides {
+	return RangeOverrides{
+		AdjustBounds:     v.adjustBounds,
+		ChangeValue:      v.changeValue,
+		RangeBorder:      v.rangeBorder,
+		RangeSizeRequest: v.rangeSizeRequest,
+		MoveSlider:       v.moveSlider,
+		ValueChanged:     v.valueChanged,
+	}
 }
 
 // Range is the common base class for widgets which visualize an adjustment, e.g
@@ -102,140 +130,45 @@ type Ranger interface {
 var _ Ranger = (*Range)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRange,
-		GoType:        reflect.TypeOf((*Range)(nil)),
-		InitClass:     initClassRange,
-		FinalizeClass: finalizeClassRange,
-	})
+	coreglib.RegisterClassInfo[*Range, *RangeClass, RangeOverrides](
+		GTypeRange,
+		initRangeClass,
+		wrapRange,
+		defaultRangeOverrides,
+	)
 }
 
-func initClassRange(gclass unsafe.Pointer, goval any) {
+func initRangeClass(gclass unsafe.Pointer, overrides RangeOverrides, classInitFunc func(*RangeClass)) {
+	pclass := (*C.GtkRangeClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRange))))
 
-	pclass := (*C.GtkRangeClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ AdjustBounds(newValue float64) }); ok {
+	if overrides.AdjustBounds != nil {
 		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk3_RangeClass_adjust_bounds)
 	}
 
-	if _, ok := goval.(interface {
-		ChangeValue(scroll ScrollType, newValue float64) bool
-	}); ok {
+	if overrides.ChangeValue != nil {
 		pclass.change_value = (*[0]byte)(C._gotk4_gtk3_RangeClass_change_value)
 	}
 
-	if _, ok := goval.(interface{ RangeBorder(border_ *Border) }); ok {
+	if overrides.RangeBorder != nil {
 		pclass.get_range_border = (*[0]byte)(C._gotk4_gtk3_RangeClass_get_range_border)
 	}
 
-	if _, ok := goval.(interface {
-		RangeSizeRequest(orientation Orientation, minimum, natural *int)
-	}); ok {
+	if overrides.RangeSizeRequest != nil {
 		pclass.get_range_size_request = (*[0]byte)(C._gotk4_gtk3_RangeClass_get_range_size_request)
 	}
 
-	if _, ok := goval.(interface{ MoveSlider(scroll ScrollType) }); ok {
+	if overrides.MoveSlider != nil {
 		pclass.move_slider = (*[0]byte)(C._gotk4_gtk3_RangeClass_move_slider)
 	}
 
-	if _, ok := goval.(interface{ ValueChanged() }); ok {
+	if overrides.ValueChanged != nil {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_RangeClass_value_changed)
 	}
-	if goval, ok := goval.(interface{ InitRange(*RangeClass) }); ok {
-		klass := (*RangeClass)(gextras.NewStructNative(gclass))
-		goval.InitRange(klass)
+
+	if classInitFunc != nil {
+		class := (*RangeClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassRange(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRange(*RangeClass) }); ok {
-		klass := (*RangeClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRange(klass)
-	}
-}
-
-//export _gotk4_gtk3_RangeClass_adjust_bounds
-func _gotk4_gtk3_RangeClass_adjust_bounds(arg0 *C.GtkRange, arg1 C.gdouble) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ AdjustBounds(newValue float64) })
-
-	var _newValue float64 // out
-
-	_newValue = float64(arg1)
-
-	iface.AdjustBounds(_newValue)
-}
-
-//export _gotk4_gtk3_RangeClass_change_value
-func _gotk4_gtk3_RangeClass_change_value(arg0 *C.GtkRange, arg1 C.GtkScrollType, arg2 C.gdouble) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ChangeValue(scroll ScrollType, newValue float64) bool
-	})
-
-	var _scroll ScrollType // out
-	var _newValue float64  // out
-
-	_scroll = ScrollType(arg1)
-	_newValue = float64(arg2)
-
-	ok := iface.ChangeValue(_scroll, _newValue)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk3_RangeClass_get_range_border
-func _gotk4_gtk3_RangeClass_get_range_border(arg0 *C.GtkRange, arg1 *C.GtkBorder) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ RangeBorder(border_ *Border) })
-
-	var _border_ *Border // out
-
-	_border_ = (*Border)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-
-	iface.RangeBorder(_border_)
-}
-
-//export _gotk4_gtk3_RangeClass_get_range_size_request
-func _gotk4_gtk3_RangeClass_get_range_size_request(arg0 *C.GtkRange, arg1 C.GtkOrientation, arg2 *C.gint, arg3 *C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RangeSizeRequest(orientation Orientation, minimum, natural *int)
-	})
-
-	var _orientation Orientation // out
-	var _minimum *int            // out
-	var _natural *int            // out
-
-	_orientation = Orientation(arg1)
-	_minimum = (*int)(unsafe.Pointer(arg2))
-	_natural = (*int)(unsafe.Pointer(arg3))
-
-	iface.RangeSizeRequest(_orientation, _minimum, _natural)
-}
-
-//export _gotk4_gtk3_RangeClass_move_slider
-func _gotk4_gtk3_RangeClass_move_slider(arg0 *C.GtkRange, arg1 C.GtkScrollType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MoveSlider(scroll ScrollType) })
-
-	var _scroll ScrollType // out
-
-	_scroll = ScrollType(arg1)
-
-	iface.MoveSlider(_scroll)
-}
-
-//export _gotk4_gtk3_RangeClass_value_changed
-func _gotk4_gtk3_RangeClass_value_changed(arg0 *C.GtkRange) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ValueChanged() })
-
-	iface.ValueChanged()
 }
 
 func wrapRange(obj *coreglib.Object) *Range {
@@ -272,58 +205,10 @@ func BaseRange(obj Ranger) *Range {
 	return obj.baseRange()
 }
 
-//export _gotk4_gtk3_Range_ConnectAdjustBounds
-func _gotk4_gtk3_Range_ConnectAdjustBounds(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) {
-	var f func(value float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(value float64))
-	}
-
-	var _value float64 // out
-
-	_value = float64(arg1)
-
-	f(_value)
-}
-
 // ConnectAdjustBounds is emitted before clamping a value, to give the
 // application a chance to adjust the bounds.
 func (_range *Range) ConnectAdjustBounds(f func(value float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(_range, "adjust-bounds", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectAdjustBounds), f)
-}
-
-//export _gotk4_gtk3_Range_ConnectChangeValue
-func _gotk4_gtk3_Range_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.gdouble, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(scroll ScrollType, value float64) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scroll ScrollType, value float64) (ok bool))
-	}
-
-	var _scroll ScrollType // out
-	var _value float64     // out
-
-	_scroll = ScrollType(arg1)
-	_value = float64(arg2)
-
-	ok := f(_scroll, _value)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectChangeValue signal is emitted when a scroll action is performed on a
@@ -341,46 +226,10 @@ func (_range *Range) ConnectChangeValue(f func(scroll ScrollType, value float64)
 	return coreglib.ConnectGeneratedClosure(_range, "change-value", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectChangeValue), f)
 }
 
-//export _gotk4_gtk3_Range_ConnectMoveSlider
-func _gotk4_gtk3_Range_ConnectMoveSlider(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
-	var f func(step ScrollType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step ScrollType))
-	}
-
-	var _step ScrollType // out
-
-	_step = ScrollType(arg1)
-
-	f(_step)
-}
-
 // ConnectMoveSlider: virtual function that moves the slider. Used for
 // keybindings.
 func (_range *Range) ConnectMoveSlider(f func(step ScrollType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(_range, "move-slider", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectMoveSlider), f)
-}
-
-//export _gotk4_gtk3_Range_ConnectValueChanged
-func _gotk4_gtk3_Range_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectValueChanged is emitted when the range value changes.
@@ -412,52 +261,6 @@ func (_range *Range) Adjustment() *Adjustment {
 	return _adjustment
 }
 
-// FillLevel gets the current position of the fill level indicator.
-//
-// The function returns the following values:
-//
-//    - gdouble: current fill level.
-//
-func (_range *Range) FillLevel() float64 {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gdouble   // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_fill_level(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _gdouble float64 // out
-
-	_gdouble = float64(_cret)
-
-	return _gdouble
-}
-
-// Flippable gets the value set by gtk_range_set_flippable().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the range is flippable.
-//
-func (_range *Range) Flippable() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_flippable(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Inverted gets the value set by gtk_range_set_inverted().
 //
 // The function returns the following values:
@@ -480,229 +283,6 @@ func (_range *Range) Inverted() bool {
 	}
 
 	return _ok
-}
-
-// LowerStepperSensitivity gets the sensitivity policy for the stepper that
-// points to the 'lower' end of the GtkRange’s adjustment.
-//
-// The function returns the following values:
-//
-//    - sensitivityType: lower stepper’s sensitivity policy.
-//
-func (_range *Range) LowerStepperSensitivity() SensitivityType {
-	var _arg0 *C.GtkRange          // out
-	var _cret C.GtkSensitivityType // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_lower_stepper_sensitivity(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _sensitivityType SensitivityType // out
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
-}
-
-// MinSliderSize: this function is useful mainly for Range subclasses.
-//
-// See gtk_range_set_min_slider_size().
-//
-// Deprecated: Use the min-height/min-width CSS properties on the slider node.
-//
-// The function returns the following values:
-//
-//    - gint: minimum size of the range’s slider.
-//
-func (_range *Range) MinSliderSize() int {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gint      // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_min_slider_size(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// RangeRect: this function returns the area that contains the range’s trough
-// and its steppers, in widget->window coordinates.
-//
-// This function is useful mainly for Range subclasses.
-//
-// The function returns the following values:
-//
-//    - rangeRect: return location for the range rectangle.
-//
-func (_range *Range) RangeRect() *gdk.Rectangle {
-	var _arg0 *C.GtkRange    // out
-	var _arg1 C.GdkRectangle // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	C.gtk_range_get_range_rect(_arg0, &_arg1)
-	runtime.KeepAlive(_range)
-
-	var _rangeRect *gdk.Rectangle // out
-
-	_rangeRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _rangeRect
-}
-
-// RestrictToFillLevel gets whether the range is restricted to the fill level.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if range is restricted to the fill level.
-//
-func (_range *Range) RestrictToFillLevel() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// RoundDigits gets the number of digits to round the value to when it changes.
-// See Range::change-value.
-//
-// The function returns the following values:
-//
-//    - gint: number of digits to round to.
-//
-func (_range *Range) RoundDigits() int {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gint      // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_round_digits(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// ShowFillLevel gets whether the range displays the fill level graphically.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if range shows the fill level.
-//
-func (_range *Range) ShowFillLevel() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_show_fill_level(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SliderRange: this function returns sliders range along the long dimension, in
-// widget->window coordinates.
-//
-// This function is useful mainly for Range subclasses.
-//
-// The function returns the following values:
-//
-//    - sliderStart (optional): return location for the slider's start, or NULL.
-//    - sliderEnd (optional): return location for the slider's end, or NULL.
-//
-func (_range *Range) SliderRange() (sliderStart, sliderEnd int) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gint      // in
-	var _arg2 C.gint      // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(_range)
-
-	var _sliderStart int // out
-	var _sliderEnd int   // out
-
-	_sliderStart = int(_arg1)
-	_sliderEnd = int(_arg2)
-
-	return _sliderStart, _sliderEnd
-}
-
-// SliderSizeFixed: this function is useful mainly for Range subclasses.
-//
-// See gtk_range_set_slider_size_fixed().
-//
-// The function returns the following values:
-//
-//    - ok: whether the range’s slider has a fixed size.
-//
-func (_range *Range) SliderSizeFixed() bool {
-	var _arg0 *C.GtkRange // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// UpperStepperSensitivity gets the sensitivity policy for the stepper that
-// points to the 'upper' end of the GtkRange’s adjustment.
-//
-// The function returns the following values:
-//
-//    - sensitivityType: upper stepper’s sensitivity policy.
-//
-func (_range *Range) UpperStepperSensitivity() SensitivityType {
-	var _arg0 *C.GtkRange          // out
-	var _cret C.GtkSensitivityType // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	_cret = C.gtk_range_get_upper_stepper_sensitivity(_arg0)
-	runtime.KeepAlive(_range)
-
-	var _sensitivityType SensitivityType // out
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
 }
 
 // Value gets the current value of the range.
@@ -751,62 +331,6 @@ func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 	runtime.KeepAlive(adjustment)
 }
 
-// SetFillLevel: set the new position of the fill level indicator.
-//
-// The “fill level” is probably best described by its most prominent use case,
-// which is an indicator for the amount of pre-buffering in a streaming media
-// player. In that use case, the value of the range would indicate the current
-// play position, and the fill level would be the position up to which the
-// file/stream has been downloaded.
-//
-// This amount of prebuffering can be displayed on the range’s trough and is
-// themeable separately from the trough. To enable fill level display, use
-// gtk_range_set_show_fill_level(). The range defaults to not showing the fill
-// level.
-//
-// Additionally, it’s possible to restrict the range’s slider position to values
-// which are smaller than the fill level. This is controller by
-// gtk_range_set_restrict_to_fill_level() and is by default enabled.
-//
-// The function takes the following parameters:
-//
-//    - fillLevel: new position of the fill level indicator.
-//
-func (_range *Range) SetFillLevel(fillLevel float64) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gdouble   // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.gdouble(fillLevel)
-
-	C.gtk_range_set_fill_level(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(fillLevel)
-}
-
-// SetFlippable: if a range is flippable, it will switch its direction if it is
-// horizontal and its direction is GTK_TEXT_DIR_RTL.
-//
-// See gtk_widget_get_direction().
-//
-// The function takes the following parameters:
-//
-//    - flippable: TRUE to make the range flippable.
-//
-func (_range *Range) SetFlippable(flippable bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	if flippable {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_range_set_flippable(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(flippable)
-}
-
 // SetIncrements sets the step and page sizes for the range. The step size is
 // used when the user clicks the Scrollbar arrows or moves Scale via arrow keys.
 // The page size is used for example when moving via Page Up or Page Down keys.
@@ -853,47 +377,6 @@ func (_range *Range) SetInverted(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetLowerStepperSensitivity sets the sensitivity policy for the stepper that
-// points to the 'lower' end of the GtkRange’s adjustment.
-//
-// The function takes the following parameters:
-//
-//    - sensitivity: lower stepper’s sensitivity policy.
-//
-func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkRange          // out
-	var _arg1 C.GtkSensitivityType // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.GtkSensitivityType(sensitivity)
-
-	C.gtk_range_set_lower_stepper_sensitivity(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(sensitivity)
-}
-
-// SetMinSliderSize sets the minimum size of the range’s slider.
-//
-// This function is useful mainly for Range subclasses.
-//
-// Deprecated: Use the min-height/min-width CSS properties on the slider node.
-//
-// The function takes the following parameters:
-//
-//    - minSize slider’s minimum size.
-//
-func (_range *Range) SetMinSliderSize(minSize int) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gint      // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.gint(minSize)
-
-	C.gtk_range_set_min_slider_size(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(minSize)
-}
-
 // SetRange sets the allowable values in the Range, and clamps the range value
 // to be between min and max. (If the range has a non-zero page size, it is
 // clamped between min and max - page-size.).
@@ -918,111 +401,6 @@ func (_range *Range) SetRange(min, max float64) {
 	runtime.KeepAlive(max)
 }
 
-// SetRestrictToFillLevel sets whether the slider is restricted to the fill
-// level. See gtk_range_set_fill_level() for a general description of the fill
-// level concept.
-//
-// The function takes the following parameters:
-//
-//    - restrictToFillLevel: whether the fill level restricts slider movement.
-//
-func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	if restrictToFillLevel {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_range_set_restrict_to_fill_level(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(restrictToFillLevel)
-}
-
-// SetRoundDigits sets the number of digits to round the value to when it
-// changes. See Range::change-value.
-//
-// The function takes the following parameters:
-//
-//    - roundDigits: precision in digits, or -1.
-//
-func (_range *Range) SetRoundDigits(roundDigits int) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gint      // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.gint(roundDigits)
-
-	C.gtk_range_set_round_digits(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(roundDigits)
-}
-
-// SetShowFillLevel sets whether a graphical fill level is show on the trough.
-// See gtk_range_set_fill_level() for a general description of the fill level
-// concept.
-//
-// The function takes the following parameters:
-//
-//    - showFillLevel: whether a fill level indicator graphics is shown.
-//
-func (_range *Range) SetShowFillLevel(showFillLevel bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	if showFillLevel {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_range_set_show_fill_level(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(showFillLevel)
-}
-
-// SetSliderSizeFixed sets whether the range’s slider has a fixed size, or a
-// size that depends on its adjustment’s page size.
-//
-// This function is useful mainly for Range subclasses.
-//
-// The function takes the following parameters:
-//
-//    - sizeFixed: TRUE to make the slider size constant.
-//
-func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.gboolean  // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	if sizeFixed {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_range_set_slider_size_fixed(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(sizeFixed)
-}
-
-// SetUpperStepperSensitivity sets the sensitivity policy for the stepper that
-// points to the 'upper' end of the GtkRange’s adjustment.
-//
-// The function takes the following parameters:
-//
-//    - sensitivity: upper stepper’s sensitivity policy.
-//
-func (_range *Range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkRange          // out
-	var _arg1 C.GtkSensitivityType // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.GtkSensitivityType(sensitivity)
-
-	C.gtk_range_set_upper_stepper_sensitivity(_arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(sensitivity)
-}
-
 // SetValue sets the current value of the range; if the value is outside the
 // minimum or maximum range values, it will be clamped to fit inside them. The
 // range emits the Range::value-changed signal if the value changes.
@@ -1041,6 +419,130 @@ func (_range *Range) SetValue(value float64) {
 	C.gtk_range_set_value(_arg0, _arg1)
 	runtime.KeepAlive(_range)
 	runtime.KeepAlive(value)
+}
+
+// The function takes the following parameters:
+//
+func (_range *Range) adjustBounds(newValue float64) {
+	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
+	fnarg := gclass.adjust_bounds
+
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.gdouble(newValue)
+
+	C._gotk4_gtk3_Range_virtual_adjust_bounds(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(newValue)
+}
+
+// The function takes the following parameters:
+//
+//    - scroll
+//    - newValue
+//
+// The function returns the following values:
+//
+func (_range *Range) changeValue(scroll ScrollType, newValue float64) bool {
+	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
+	fnarg := gclass.change_value
+
+	var _arg0 *C.GtkRange     // out
+	var _arg1 C.GtkScrollType // out
+	var _arg2 C.gdouble       // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.GtkScrollType(scroll)
+	_arg2 = C.gdouble(newValue)
+
+	_cret = C._gotk4_gtk3_Range_virtual_change_value(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(scroll)
+	runtime.KeepAlive(newValue)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+func (_range *Range) rangeBorder(border_ *Border) {
+	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
+	fnarg := gclass.get_range_border
+
+	var _arg0 *C.GtkRange  // out
+	var _arg1 *C.GtkBorder // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
+
+	C._gotk4_gtk3_Range_virtual_get_range_border(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(border_)
+}
+
+// The function takes the following parameters:
+//
+//    - orientation
+//    - minimum
+//    - natural
+//
+func (_range *Range) rangeSizeRequest(orientation Orientation, minimum, natural *int) {
+	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
+	fnarg := gclass.get_range_size_request
+
+	var _arg0 *C.GtkRange      // out
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.gint          // out
+	var _arg3 *C.gint          // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = (*C.gint)(unsafe.Pointer(minimum))
+	_arg3 = (*C.gint)(unsafe.Pointer(natural))
+
+	C._gotk4_gtk3_Range_virtual_get_range_size_request(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(minimum)
+	runtime.KeepAlive(natural)
+}
+
+// The function takes the following parameters:
+//
+func (_range *Range) moveSlider(scroll ScrollType) {
+	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
+	fnarg := gclass.move_slider
+
+	var _arg0 *C.GtkRange     // out
+	var _arg1 C.GtkScrollType // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+	_arg1 = C.GtkScrollType(scroll)
+
+	C._gotk4_gtk3_Range_virtual_move_slider(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(_range)
+	runtime.KeepAlive(scroll)
+}
+
+func (_range *Range) valueChanged() {
+	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
+	fnarg := gclass.value_changed
+
+	var _arg0 *C.GtkRange // out
+
+	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
+
+	C._gotk4_gtk3_Range_virtual_value_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(_range)
 }
 
 // RangeClass: instance of this type is always passed by reference.

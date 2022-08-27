@@ -99,45 +99,6 @@ func (d DestDefaults) Has(other DestDefaults) bool {
 	return (d & other) == other
 }
 
-// DragDestAddImageTargets: add the image targets supported by SelectionData to
-// the target list of the drag destination. The targets are added with info = 0.
-// If you need another value, use gtk_target_list_add_image_targets() and
-// gtk_drag_dest_set_target_list().
-func (widget *Widget) DragDestAddImageTargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_drag_dest_add_image_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragDestAddTextTargets: add the text targets supported by SelectionData to
-// the target list of the drag destination. The targets are added with info = 0.
-// If you need another value, use gtk_target_list_add_text_targets() and
-// gtk_drag_dest_set_target_list().
-func (widget *Widget) DragDestAddTextTargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_drag_dest_add_text_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// DragDestAddURITargets: add the URI targets supported by SelectionData to the
-// target list of the drag destination. The targets are added with info = 0. If
-// you need another value, use gtk_target_list_add_uri_targets() and
-// gtk_drag_dest_set_target_list().
-func (widget *Widget) DragDestAddURITargets() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_drag_dest_add_uri_targets(_arg0)
-	runtime.KeepAlive(widget)
-}
-
 // DragDestGetTargetList returns the list of targets this widget can accept from
 // drag-and-drop.
 //
@@ -168,31 +129,6 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 	}
 
 	return _targetList
-}
-
-// DragDestGetTrackMotion returns whether the widget has been configured to
-// always emit Widget::drag-motion signals.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the widget always emits Widget::drag-motion events.
-//
-func (widget *Widget) DragDestGetTrackMotion() bool {
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_drag_dest_get_track_motion(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // DragDestSet sets a widget as a potential drop destination, and adds default
@@ -323,31 +259,6 @@ func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
 	C.gtk_drag_dest_set_target_list(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(targetList)
-}
-
-// DragDestSetTrackMotion tells the widget to emit Widget::drag-motion and
-// Widget::drag-leave events regardless of the targets and the
-// GTK_DEST_DEFAULT_MOTION flag.
-//
-// This may be used when a widget wants to do generic actions regardless of the
-// targets that the source offers.
-//
-// The function takes the following parameters:
-//
-//    - trackMotion: whether to accept all targets.
-//
-func (widget *Widget) DragDestSetTrackMotion(trackMotion bool) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	if trackMotion {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_drag_dest_set_track_motion(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(trackMotion)
 }
 
 // DragDestUnset clears information about a drop destination set with

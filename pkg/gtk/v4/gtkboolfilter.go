@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// BoolFilterOverrider contains methods that are overridable.
-type BoolFilterOverrider interface {
+// BoolFilterOverrides contains methods that are overridable.
+type BoolFilterOverrides struct {
+}
+
+func defaultBoolFilterOverrides(v *BoolFilter) BoolFilterOverrides {
+	return BoolFilterOverrides{}
 }
 
 // BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine
@@ -43,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBoolFilter,
-		GoType:        reflect.TypeOf((*BoolFilter)(nil)),
-		InitClass:     initClassBoolFilter,
-		FinalizeClass: finalizeClassBoolFilter,
-	})
+	coreglib.RegisterClassInfo[*BoolFilter, *BoolFilterClass, BoolFilterOverrides](
+		GTypeBoolFilter,
+		initBoolFilterClass,
+		wrapBoolFilter,
+		defaultBoolFilterOverrides,
+	)
 }
 
-func initClassBoolFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBoolFilter(*BoolFilterClass) }); ok {
-		klass := (*BoolFilterClass)(gextras.NewStructNative(gclass))
-		goval.InitBoolFilter(klass)
-	}
-}
-
-func finalizeClassBoolFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBoolFilter(*BoolFilterClass) }); ok {
-		klass := (*BoolFilterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBoolFilter(klass)
+func initBoolFilterClass(gclass unsafe.Pointer, overrides BoolFilterOverrides, classInitFunc func(*BoolFilterClass)) {
+	if classInitFunc != nil {
+		class := (*BoolFilterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

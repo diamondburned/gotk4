@@ -77,32 +77,6 @@ func marshalShortcutsSection(p uintptr) (interface{}, error) {
 	return wrapShortcutsSection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage
-func _gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object int) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object int) (ok bool))
-	}
-
-	var _object int // out
-
-	_object = int(arg1)
-
-	ok := f(_object)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 func (v *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsSection_ConnectChangeCurrentPage), f)
 }

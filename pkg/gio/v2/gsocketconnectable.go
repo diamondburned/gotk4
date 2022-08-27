@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -12,9 +11,6 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(GSocketConnectable*);
-// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(GSocketConnectable*);
-// extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
 import "C"
 
 // GType values.
@@ -26,42 +22,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeSocketConnectable, F: marshalSocketConnectable},
 	})
-}
-
-// SocketConnectableOverrider contains methods that are overridable.
-type SocketConnectableOverrider interface {
-	// Enumerate creates a AddressEnumerator for connectable.
-	//
-	// The function returns the following values:
-	//
-	//    - socketAddressEnumerator: new AddressEnumerator.
-	//
-	Enumerate() SocketAddressEnumeratorrer
-	// ProxyEnumerate creates a AddressEnumerator for connectable that will
-	// return a Address for each of its addresses that you must connect to via a
-	// proxy.
-	//
-	// If connectable does not implement g_socket_connectable_proxy_enumerate(),
-	// this will fall back to calling g_socket_connectable_enumerate().
-	//
-	// The function returns the following values:
-	//
-	//    - socketAddressEnumerator: new AddressEnumerator.
-	//
-	ProxyEnumerate() SocketAddressEnumeratorrer
-	// String: format a Connectable as a string. This is a human-readable format
-	// for use in debugging output, and is not a stable serialization format. It
-	// is not suitable for use in user interfaces as it exposes too much
-	// information for a user.
-	//
-	// If the Connectable implementation does not support string formatting, the
-	// implementation’s type name will be returned as a fallback.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8: formatted string.
-	//
-	String() string
 }
 
 // SocketConnectable objects that describe one or more potential socket
@@ -146,51 +106,6 @@ type SocketConnectabler interface {
 
 var _ SocketConnectabler = (*SocketConnectable)(nil)
 
-func ifaceInitSocketConnectabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GSocketConnectableIface)(unsafe.Pointer(gifacePtr))
-	iface.enumerate = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_enumerate)
-	iface.proxy_enumerate = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_proxy_enumerate)
-	iface.to_string = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_to_string)
-}
-
-//export _gotk4_gio2_SocketConnectableIface_enumerate
-func _gotk4_gio2_SocketConnectableIface_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SocketConnectableOverrider)
-
-	socketAddressEnumerator := iface.Enumerate()
-
-	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(coreglib.InternObject(socketAddressEnumerator).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddressEnumerator).Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_SocketConnectableIface_proxy_enumerate
-func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.GSocketConnectable) (cret *C.GSocketAddressEnumerator) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SocketConnectableOverrider)
-
-	socketAddressEnumerator := iface.ProxyEnumerate()
-
-	cret = (*C.GSocketAddressEnumerator)(unsafe.Pointer(coreglib.InternObject(socketAddressEnumerator).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddressEnumerator).Native()))
-
-	return cret
-}
-
-//export _gotk4_gio2_SocketConnectableIface_to_string
-func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.GSocketConnectable) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SocketConnectableOverrider)
-
-	utf8 := iface.String()
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
-
 func wrapSocketConnectable(obj *coreglib.Object) *SocketConnectable {
 	return &SocketConnectable{
 		Object: obj,
@@ -199,115 +114,6 @@ func wrapSocketConnectable(obj *coreglib.Object) *SocketConnectable {
 
 func marshalSocketConnectable(p uintptr) (interface{}, error) {
 	return wrapSocketConnectable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Enumerate creates a AddressEnumerator for connectable.
-//
-// The function returns the following values:
-//
-//    - socketAddressEnumerator: new AddressEnumerator.
-//
-func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
-	var _arg0 *C.GSocketConnectable       // out
-	var _cret *C.GSocketAddressEnumerator // in
-
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	_cret = C.g_socket_connectable_enumerate(_arg0)
-	runtime.KeepAlive(connectable)
-
-	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.SocketAddressEnumeratorrer is nil")
-		}
-
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(SocketAddressEnumeratorrer)
-			return ok
-		})
-		rv, ok := casted.(SocketAddressEnumeratorrer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddressEnumeratorrer")
-		}
-		_socketAddressEnumerator = rv
-	}
-
-	return _socketAddressEnumerator
-}
-
-// ProxyEnumerate creates a AddressEnumerator for connectable that will return a
-// Address for each of its addresses that you must connect to via a proxy.
-//
-// If connectable does not implement g_socket_connectable_proxy_enumerate(),
-// this will fall back to calling g_socket_connectable_enumerate().
-//
-// The function returns the following values:
-//
-//    - socketAddressEnumerator: new AddressEnumerator.
-//
-func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
-	var _arg0 *C.GSocketConnectable       // out
-	var _cret *C.GSocketAddressEnumerator // in
-
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	_cret = C.g_socket_connectable_proxy_enumerate(_arg0)
-	runtime.KeepAlive(connectable)
-
-	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.SocketAddressEnumeratorrer is nil")
-		}
-
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(SocketAddressEnumeratorrer)
-			return ok
-		})
-		rv, ok := casted.(SocketAddressEnumeratorrer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SocketAddressEnumeratorrer")
-		}
-		_socketAddressEnumerator = rv
-	}
-
-	return _socketAddressEnumerator
-}
-
-// String: format a Connectable as a string. This is a human-readable format for
-// use in debugging output, and is not a stable serialization format. It is not
-// suitable for use in user interfaces as it exposes too much information for a
-// user.
-//
-// If the Connectable implementation does not support string formatting, the
-// implementation’s type name will be returned as a fallback.
-//
-// The function returns the following values:
-//
-//    - utf8: formatted string.
-//
-func (connectable *SocketConnectable) String() string {
-	var _arg0 *C.GSocketConnectable // out
-	var _cret *C.gchar              // in
-
-	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	_cret = C.g_socket_connectable_to_string(_arg0)
-	runtime.KeepAlive(connectable)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
 }
 
 // SocketConnectableIface provides an interface for returning a

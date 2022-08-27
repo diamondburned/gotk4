@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// IMMulticontextOverrider contains methods that are overridable.
-type IMMulticontextOverrider interface {
+// IMMulticontextOverrides contains methods that are overridable.
+type IMMulticontextOverrides struct {
+}
+
+func defaultIMMulticontextOverrides(v *IMMulticontext) IMMulticontextOverrides {
+	return IMMulticontextOverrides{}
 }
 
 // IMMulticontext: GtkIMMulticontext is input method supporting multiple,
@@ -47,25 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeIMMulticontext,
-		GoType:        reflect.TypeOf((*IMMulticontext)(nil)),
-		InitClass:     initClassIMMulticontext,
-		FinalizeClass: finalizeClassIMMulticontext,
-	})
+	coreglib.RegisterClassInfo[*IMMulticontext, *IMMulticontextClass, IMMulticontextOverrides](
+		GTypeIMMulticontext,
+		initIMMulticontextClass,
+		wrapIMMulticontext,
+		defaultIMMulticontextOverrides,
+	)
 }
 
-func initClassIMMulticontext(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitIMMulticontext(*IMMulticontextClass) }); ok {
-		klass := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
-		goval.InitIMMulticontext(klass)
-	}
-}
-
-func finalizeClassIMMulticontext(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeIMMulticontext(*IMMulticontextClass) }); ok {
-		klass := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeIMMulticontext(klass)
+func initIMMulticontextClass(gclass unsafe.Pointer, overrides IMMulticontextOverrides, classInitFunc func(*IMMulticontextClass)) {
+	if classInitFunc != nil {
+		class := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

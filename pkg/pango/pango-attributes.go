@@ -12,7 +12,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -24,7 +23,6 @@ import "C"
 // GType values.
 var (
 	GTypeAttrType     = coreglib.Type(C.pango_attr_type_get_type())
-	GTypeOverline     = coreglib.Type(C.pango_overline_get_type())
 	GTypeUnderline    = coreglib.Type(C.pango_underline_get_type())
 	GTypeShowFlags    = coreglib.Type(C.pango_show_flags_get_type())
 	GTypeAttrIterator = coreglib.Type(C.pango_attr_iterator_get_type())
@@ -36,7 +34,6 @@ var (
 func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeAttrType, F: marshalAttrType},
-		coreglib.TypeMarshaler{T: GTypeOverline, F: marshalOverline},
 		coreglib.TypeMarshaler{T: GTypeUnderline, F: marshalUnderline},
 		coreglib.TypeMarshaler{T: GTypeShowFlags, F: marshalShowFlags},
 		coreglib.TypeMarshaler{T: GTypeAttrIterator, F: marshalAttrIterator},
@@ -45,14 +42,6 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeColor, F: marshalColor},
 	})
 }
-
-// ATTR_INDEX_FROM_TEXT_BEGINNING: value for start_index in PangoAttribute that
-// indicates the beginning of the text.
-const ATTR_INDEX_FROM_TEXT_BEGINNING = 0
-
-// ATTR_INDEX_TO_TEXT_END: value for end_index in PangoAttribute that indicates
-// the end of the text.
-const ATTR_INDEX_TO_TEXT_END = 4294967295
 
 // AttrType: PangoAttrType distinguishes between different types of attributes.
 //
@@ -208,41 +197,6 @@ func (a AttrType) String() string {
 	}
 }
 
-// AttrTypeGetName fetches the attribute type name.
-//
-// The attribute type name is the string passed in when registering the type
-// using attr_type_register.
-//
-// The returned value is an interned string (see g_intern_string() for what that
-// means) that should not be modified or freed.
-//
-// The function takes the following parameters:
-//
-//    - typ: attribute type ID to fetch the name for.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): type ID name (which may be NULL), or NULL if type is a
-//      built-in Pango attribute type or invalid.
-//
-func AttrTypeGetName(typ AttrType) string {
-	var _arg1 C.PangoAttrType // out
-	var _cret *C.char         // in
-
-	_arg1 = C.PangoAttrType(typ)
-
-	_cret = C.pango_attr_type_get_name(_arg1)
-	runtime.KeepAlive(typ)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
 // AttrTypeRegister: allocate a new attribute type ID.
 //
 // The attribute type name can be accessed later by using
@@ -271,34 +225,6 @@ func AttrTypeRegister(name string) AttrType {
 	_attrType = AttrType(_cret)
 
 	return _attrType
-}
-
-// Overline: PangoOverline enumeration is used to specify whether text should be
-// overlined, and if so, the type of line.
-type Overline C.gint
-
-const (
-	// OverlineNone: no overline should be drawn.
-	OverlineNone Overline = iota
-	// OverlineSingle: draw a single line above the ink extents of the text
-	// being underlined.
-	OverlineSingle
-)
-
-func marshalOverline(p uintptr) (interface{}, error) {
-	return Overline(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for Overline.
-func (o Overline) String() string {
-	switch o {
-	case OverlineNone:
-		return "None"
-	case OverlineSingle:
-		return "Single"
-	default:
-		return fmt.Sprintf("Overline(%d)", o)
-	}
 }
 
 // Underline: PangoUnderline enumeration is used to specify whether text should
@@ -424,121 +350,8 @@ func (s ShowFlags) Has(other ShowFlags) bool {
 // attribute.
 type AttrDataCopyFunc func() (gpointer unsafe.Pointer)
 
-//export _gotk4_pango1_AttrDataCopyFunc
-func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
-	var fn AttrDataCopyFunc
-	{
-		v := gbox.Get(uintptr(arg1))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(AttrDataCopyFunc)
-	}
-
-	gpointer := fn()
-
-	cret = (C.gpointer)(unsafe.Pointer(gpointer))
-
-	return cret
-}
-
 // AttrFilterFunc: type of a function filtering a list of attributes.
 type AttrFilterFunc func(attribute *Attribute) (ok bool)
-
-//export _gotk4_pango1_AttrFilterFunc
-func _gotk4_pango1_AttrFilterFunc(arg1 *C.PangoAttribute, arg2 C.gpointer) (cret C.gboolean) {
-	var fn AttrFilterFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(AttrFilterFunc)
-	}
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-
-	ok := fn(_attribute)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// NewAttrAllowBreaks: create a new allow-breaks attribute.
-//
-// If breaks are disabled, the range will be kept in a single run, as far as
-// possible.
-//
-// The function takes the following parameters:
-//
-//    - allowBreaks: TRUE if we line breaks are allowed.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
-
-	if allowBreaks {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C.pango_attr_allow_breaks_new(_arg1)
-	runtime.KeepAlive(allowBreaks)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrBackgroundAlpha: create a new background alpha attribute.
-//
-// The function takes the following parameters:
-//
-//    - alpha value, between 1 and 65536.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.guint16(alpha)
-
-	_cret = C.pango_attr_background_alpha_new(_arg1)
-	runtime.KeepAlive(alpha)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
 
 // NewAttrBackground: create a new background color attribute.
 //
@@ -567,46 +380,6 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrFallback: create a new font fallback attribute.
-//
-// If fallback is disabled, characters will only be used from the closest
-// matching font on the system. No fallback will be done to other fonts on the
-// system that might contain the characters in the text.
-//
-// The function takes the following parameters:
-//
-//    - enableFallback: TRUE if we should fall back on other fonts for characters
-//      the active font is missing.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrFallback(enableFallback bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
-
-	if enableFallback {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C.pango_attr_fallback_new(_arg1)
-	runtime.KeepAlive(enableFallback)
 
 	var _attribute *Attribute // out
 
@@ -655,39 +428,6 @@ func NewAttrFamily(family string) *Attribute {
 	return _attribute
 }
 
-// NewAttrForegroundAlpha: create a new foreground alpha attribute.
-//
-// The function takes the following parameters:
-//
-//    - alpha value, between 1 and 65536.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrForegroundAlpha(alpha uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.guint16(alpha)
-
-	_cret = C.pango_attr_foreground_alpha_new(_arg1)
-	runtime.KeepAlive(alpha)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
 // NewAttrForeground: create a new foreground color attribute.
 //
 // The function takes the following parameters:
@@ -715,221 +455,6 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrGravityHint: create a new gravity hint attribute.
-//
-// The function takes the following parameters:
-//
-//    - hint: gravity hint value.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrGravityHint(hint GravityHint) *Attribute {
-	var _arg1 C.PangoGravityHint // out
-	var _cret *C.PangoAttribute  // in
-
-	_arg1 = C.PangoGravityHint(hint)
-
-	_cret = C.pango_attr_gravity_hint_new(_arg1)
-	runtime.KeepAlive(hint)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrGravity: create a new gravity attribute.
-//
-// The function takes the following parameters:
-//
-//    - gravity value; should not be PANGO_GRAVITY_AUTO.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrGravity(gravity Gravity) *Attribute {
-	var _arg1 C.PangoGravity    // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoGravity(gravity)
-
-	_cret = C.pango_attr_gravity_new(_arg1)
-	runtime.KeepAlive(gravity)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrInsertHyphens: create a new insert-hyphens attribute.
-//
-// Pango will insert hyphens when breaking lines in the middle of a word. This
-// attribute can be used to suppress the hyphen.
-//
-// The function takes the following parameters:
-//
-//    - insertHyphens: TRUE if hyphens should be inserted.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
-
-	if insertHyphens {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C.pango_attr_insert_hyphens_new(_arg1)
-	runtime.KeepAlive(insertHyphens)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrLetterSpacing: create a new letter-spacing attribute.
-//
-// The function takes the following parameters:
-//
-//    - letterSpacing: amount of extra space to add between graphemes of the
-//      text, in Pango units.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrLetterSpacing(letterSpacing int) *Attribute {
-	var _arg1 C.int             // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.int(letterSpacing)
-
-	_cret = C.pango_attr_letter_spacing_new(_arg1)
-	runtime.KeepAlive(letterSpacing)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrOverlineColor: create a new overline color attribute.
-//
-// This attribute modifies the color of overlines. If not set, overlines will
-// use the foreground color.
-//
-// The function takes the following parameters:
-//
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
-
-	_cret = C.pango_attr_overline_color_new(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(red)
-	runtime.KeepAlive(green)
-	runtime.KeepAlive(blue)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrOverline: create a new overline-style attribute.
-//
-// The function takes the following parameters:
-//
-//    - overline style.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrOverline(overline Overline) *Attribute {
-	var _arg1 C.PangoOverline   // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoOverline(overline)
-
-	_cret = C.pango_attr_overline_new(_arg1)
-	runtime.KeepAlive(overline)
 
 	var _attribute *Attribute // out
 
@@ -1014,40 +539,6 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 	return _attribute
 }
 
-// NewAttrShow: create a new attribute that influences how invisible characters
-// are rendered.
-//
-// The function takes the following parameters:
-//
-//    - flags: PangoShowFlags to apply.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrShow(flags ShowFlags) *Attribute {
-	var _arg1 C.PangoShowFlags  // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoShowFlags(flags)
-
-	_cret = C.pango_attr_show_new(_arg1)
-	runtime.KeepAlive(flags)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
 // NewAttrStretch: create a new font stretch attribute.
 //
 // The function takes the following parameters:
@@ -1067,50 +558,6 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 
 	_cret = C.pango_attr_stretch_new(_arg1)
 	runtime.KeepAlive(stretch)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrStrikethroughColor: create a new strikethrough color attribute.
-//
-// This attribute modifies the color of strikethrough lines. If not set,
-// strikethrough lines will use the foreground color.
-//
-// The function takes the following parameters:
-//
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
-
-	_cret = C.pango_attr_strikethrough_color_new(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(red)
-	runtime.KeepAlive(green)
-	runtime.KeepAlive(blue)
 
 	var _attribute *Attribute // out
 
@@ -1179,50 +626,6 @@ func NewAttrStyle(style Style) *Attribute {
 
 	_cret = C.pango_attr_style_new(_arg1)
 	runtime.KeepAlive(style)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrUnderlineColor: create a new underline color attribute.
-//
-// This attribute modifies the color of underlines. If not set, underlines will
-// use the foreground color.
-//
-// The function takes the following parameters:
-//
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
-
-	_cret = C.pango_attr_underline_color_new(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(red)
-	runtime.KeepAlive(green)
-	runtime.KeepAlive(blue)
 
 	var _attribute *Attribute // out
 
@@ -1334,119 +737,6 @@ func NewAttrWeight(weight Weight) *Attribute {
 	)
 
 	return _attribute
-}
-
-// MarkupParserFinish finishes parsing markup.
-//
-// After feeding a Pango markup parser some data with
-// g_markup_parse_context_parse(), use this function to get the list of
-// attributes and text out of the markup. This function will not free context,
-// use g_markup_parse_context_free() to do so.
-//
-// The function takes the following parameters:
-//
-//    - context: valid parse context that was returned from markup_parser_new.
-//
-// The function returns the following values:
-//
-//    - attrList (optional) address of return location for a PangoAttrList, or
-//      NULL.
-//    - text (optional) address of return location for text with tags stripped,
-//      or NULL.
-//    - accelChar (optional) address of return location for accelerator char, or
-//      NULL.
-//
-func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
-	var _arg1 *C.GMarkupParseContext // out
-	var _arg2 *C.PangoAttrList       // in
-	var _arg3 *C.char                // in
-	var _arg4 C.gunichar             // in
-	var _cerr *C.GError              // in
-
-	_arg1 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
-
-	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
-	runtime.KeepAlive(context)
-
-	var _attrList *AttrList // out
-	var _text string        // out
-	var _accelChar uint32   // out
-	var _goerr error        // out
-
-	if _arg2 != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
-		)
-	}
-	if _arg3 != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-	_accelChar = uint32(_arg4)
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _attrList, _text, _accelChar, _goerr
-}
-
-// NewMarkupParser: incrementally parses marked-up text to create a plain-text
-// string and an attribute list.
-//
-// See the Pango Markup (pango_markup.html) docs for details about the supported
-// markup.
-//
-// If accel_marker is nonzero, the given character will mark the character
-// following it as an accelerator. For example, accel_marker might be an
-// ampersand or underscore. All characters marked as an accelerator will receive
-// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
-// returned in accel_char, when calling markup_parser_finish. Two accel_marker
-// characters following each other produce a single literal accel_marker
-// character.
-//
-// To feed markup to the parser, use g_markup_parse_context_parse() on the
-// returned GMarkupParseContext. When done with feeding markup to the parser,
-// use markup_parser_finish to get the data out of it, and then use
-// g_markup_parse_context_free() to free it.
-//
-// This function is designed for applications that read Pango markup from
-// streams. To simply parse a string containing Pango markup, the parse_markup
-// API is recommended instead.
-//
-// The function takes the following parameters:
-//
-//    - accelMarker: character that precedes an accelerator, or 0 for none.
-//
-// The function returns the following values:
-//
-//    - markupParseContext: GMarkupParseContext that should be destroyed with
-//      g_markup_parse_context_free().
-//
-func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
-	var _arg1 C.gunichar             // out
-	var _cret *C.GMarkupParseContext // in
-
-	_arg1 = C.gunichar(accelMarker)
-
-	_cret = C.pango_markup_parser_new(_arg1)
-	runtime.KeepAlive(accelMarker)
-
-	var _markupParseContext *glib.MarkupParseContext // out
-
-	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_markup_parse_context_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_markupParseContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_markup_parse_context_unref((*C.GMarkupParseContext)(intern.C))
-		},
-	)
-
-	return _markupParseContext
 }
 
 // ParseMarkup parses marked-up text to create a plain-text string and an
@@ -1666,69 +956,6 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 
 	_cret = C.pango_attr_font_desc_new(_arg1)
 	runtime.KeepAlive(desc)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// AttrFontFeatures: PangoAttrFontFeatures structure is used to represent
-// OpenType font features as an attribute.
-//
-// An instance of this type is always passed by reference.
-type AttrFontFeatures struct {
-	*attrFontFeatures
-}
-
-// attrFontFeatures is the struct that's finalized.
-type attrFontFeatures struct {
-	native *C.PangoAttrFontFeatures
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrFontFeatures) Attr() *Attribute {
-	valptr := &a.native.attr
-	var _v *Attribute // out
-	_v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(valptr)))
-	return _v
-}
-
-// Features: featues, as a string in CSS syntax.
-func (a *AttrFontFeatures) Features() string {
-	valptr := &a.native.features
-	var _v string // out
-	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
-	return _v
-}
-
-// NewAttrFontFeatures: create a new font features tag attribute.
-//
-// The function takes the following parameters:
-//
-//    - features: string with OpenType font features, in CSS syntax.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrFontFeatures(features string) *Attribute {
-	var _arg1 *C.gchar          // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(features)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.pango_attr_font_features_new(_arg1)
-	runtime.KeepAlive(features)
 
 	var _attribute *Attribute // out
 
@@ -2500,39 +1727,6 @@ func NewAttrSize(size int) *Attribute {
 	_arg1 = C.int(size)
 
 	_cret = C.pango_attr_size_new(_arg1)
-	runtime.KeepAlive(size)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrSizeAbsolute: create a new font-size attribute in device units.
-//
-// The function takes the following parameters:
-//
-//    - size: font size, in PANGO_SCALEths of a device unit.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrSizeAbsolute(size int) *Attribute {
-	var _arg1 C.int             // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.int(size)
-
-	_cret = C.pango_attr_size_new_absolute(_arg1)
 	runtime.KeepAlive(size)
 
 	var _attribute *Attribute // out

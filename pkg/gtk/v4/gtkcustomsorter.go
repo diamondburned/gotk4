@@ -16,9 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
-// extern gint _gotk4_gtk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern void callbackDelete(gpointer);
+// extern gint _gotk4_gtk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
+// extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
 // GType values.
@@ -32,8 +32,12 @@ func init() {
 	})
 }
 
-// CustomSorterOverrider contains methods that are overridable.
-type CustomSorterOverrider interface {
+// CustomSorterOverrides contains methods that are overridable.
+type CustomSorterOverrides struct {
+}
+
+func defaultCustomSorterOverrides(v *CustomSorter) CustomSorterOverrides {
+	return CustomSorterOverrides{}
 }
 
 // CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a
@@ -48,25 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCustomSorter,
-		GoType:        reflect.TypeOf((*CustomSorter)(nil)),
-		InitClass:     initClassCustomSorter,
-		FinalizeClass: finalizeClassCustomSorter,
-	})
+	coreglib.RegisterClassInfo[*CustomSorter, *CustomSorterClass, CustomSorterOverrides](
+		GTypeCustomSorter,
+		initCustomSorterClass,
+		wrapCustomSorter,
+		defaultCustomSorterOverrides,
+	)
 }
 
-func initClassCustomSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitCustomSorter(*CustomSorterClass) }); ok {
-		klass := (*CustomSorterClass)(gextras.NewStructNative(gclass))
-		goval.InitCustomSorter(klass)
-	}
-}
-
-func finalizeClassCustomSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCustomSorter(*CustomSorterClass) }); ok {
-		klass := (*CustomSorterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCustomSorter(klass)
+func initCustomSorterClass(gclass unsafe.Pointer, overrides CustomSorterOverrides, classInitFunc func(*CustomSorterClass)) {
+	if classInitFunc != nil {
+		class := (*CustomSorterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -16,16 +16,31 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_WindowClass_close_request(GtkWindow*);
-// extern gboolean _gotk4_gtk4_WindowClass_enable_debugging(GtkWindow*, gboolean);
-// extern gboolean _gotk4_gtk4_Window_ConnectCloseRequest(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
-// extern void _gotk4_gtk4_WindowClass_activate_default(GtkWindow*);
-// extern void _gotk4_gtk4_WindowClass_activate_focus(GtkWindow*);
-// extern void _gotk4_gtk4_WindowClass_keys_changed(GtkWindow*);
-// extern void _gotk4_gtk4_Window_ConnectActivateDefault(gpointer, guintptr);
-// extern void _gotk4_gtk4_Window_ConnectActivateFocus(gpointer, guintptr);
 // extern void _gotk4_gtk4_Window_ConnectKeysChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_Window_ConnectActivateFocus(gpointer, guintptr);
+// extern void _gotk4_gtk4_Window_ConnectActivateDefault(gpointer, guintptr);
+// extern void _gotk4_gtk4_WindowClass_keys_changed(GtkWindow*);
+// extern void _gotk4_gtk4_WindowClass_activate_focus(GtkWindow*);
+// extern void _gotk4_gtk4_WindowClass_activate_default(GtkWindow*);
+// extern gboolean _gotk4_gtk4_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Window_ConnectCloseRequest(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_WindowClass_enable_debugging(GtkWindow*, gboolean);
+// extern gboolean _gotk4_gtk4_WindowClass_close_request(GtkWindow*);
+// gboolean _gotk4_gtk4_Window_virtual_close_request(void* fnptr, GtkWindow* arg0) {
+//   return ((gboolean (*)(GtkWindow*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk4_Window_virtual_enable_debugging(void* fnptr, GtkWindow* arg0, gboolean arg1) {
+//   return ((gboolean (*)(GtkWindow*, gboolean))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Window_virtual_activate_default(void* fnptr, GtkWindow* arg0) {
+//   ((void (*)(GtkWindow*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Window_virtual_activate_focus(void* fnptr, GtkWindow* arg0) {
+//   ((void (*)(GtkWindow*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Window_virtual_keys_changed(void* fnptr, GtkWindow* arg0) {
+//   ((void (*)(GtkWindow*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -39,19 +54,29 @@ func init() {
 	})
 }
 
-// WindowOverrider contains methods that are overridable.
-type WindowOverrider interface {
-	ActivateDefault()
-	ActivateFocus()
+// WindowOverrides contains methods that are overridable.
+type WindowOverrides struct {
+	ActivateDefault func()
+	ActivateFocus   func()
 	// The function returns the following values:
 	//
-	CloseRequest() bool
+	CloseRequest func() bool
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	EnableDebugging(toggle bool) bool
-	KeysChanged()
+	EnableDebugging func(toggle bool) bool
+	KeysChanged     func()
+}
+
+func defaultWindowOverrides(v *Window) WindowOverrides {
+	return WindowOverrides{
+		ActivateDefault: v.activateDefault,
+		ActivateFocus:   v.activateFocus,
+		CloseRequest:    v.closeRequest,
+		EnableDebugging: v.enableDebugging,
+		KeysChanged:     v.keysChanged,
+	}
 }
 
 // Window: GtkWindow is a toplevel window which can contain other widgets.
@@ -117,106 +142,41 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWindow,
-		GoType:        reflect.TypeOf((*Window)(nil)),
-		InitClass:     initClassWindow,
-		FinalizeClass: finalizeClassWindow,
-	})
+	coreglib.RegisterClassInfo[*Window, *WindowClass, WindowOverrides](
+		GTypeWindow,
+		initWindowClass,
+		wrapWindow,
+		defaultWindowOverrides,
+	)
 }
 
-func initClassWindow(gclass unsafe.Pointer, goval any) {
+func initWindowClass(gclass unsafe.Pointer, overrides WindowOverrides, classInitFunc func(*WindowClass)) {
+	pclass := (*C.GtkWindowClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeWindow))))
 
-	pclass := (*C.GtkWindowClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ActivateDefault() }); ok {
+	if overrides.ActivateDefault != nil {
 		pclass.activate_default = (*[0]byte)(C._gotk4_gtk4_WindowClass_activate_default)
 	}
 
-	if _, ok := goval.(interface{ ActivateFocus() }); ok {
+	if overrides.ActivateFocus != nil {
 		pclass.activate_focus = (*[0]byte)(C._gotk4_gtk4_WindowClass_activate_focus)
 	}
 
-	if _, ok := goval.(interface{ CloseRequest() bool }); ok {
+	if overrides.CloseRequest != nil {
 		pclass.close_request = (*[0]byte)(C._gotk4_gtk4_WindowClass_close_request)
 	}
 
-	if _, ok := goval.(interface{ EnableDebugging(toggle bool) bool }); ok {
+	if overrides.EnableDebugging != nil {
 		pclass.enable_debugging = (*[0]byte)(C._gotk4_gtk4_WindowClass_enable_debugging)
 	}
 
-	if _, ok := goval.(interface{ KeysChanged() }); ok {
+	if overrides.KeysChanged != nil {
 		pclass.keys_changed = (*[0]byte)(C._gotk4_gtk4_WindowClass_keys_changed)
 	}
-	if goval, ok := goval.(interface{ InitWindow(*WindowClass) }); ok {
-		klass := (*WindowClass)(gextras.NewStructNative(gclass))
-		goval.InitWindow(klass)
+
+	if classInitFunc != nil {
+		class := (*WindowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassWindow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWindow(*WindowClass) }); ok {
-		klass := (*WindowClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWindow(klass)
-	}
-}
-
-//export _gotk4_gtk4_WindowClass_activate_default
-func _gotk4_gtk4_WindowClass_activate_default(arg0 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateDefault() })
-
-	iface.ActivateDefault()
-}
-
-//export _gotk4_gtk4_WindowClass_activate_focus
-func _gotk4_gtk4_WindowClass_activate_focus(arg0 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ActivateFocus() })
-
-	iface.ActivateFocus()
-}
-
-//export _gotk4_gtk4_WindowClass_close_request
-func _gotk4_gtk4_WindowClass_close_request(arg0 *C.GtkWindow) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CloseRequest() bool })
-
-	ok := iface.CloseRequest()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WindowClass_enable_debugging
-func _gotk4_gtk4_WindowClass_enable_debugging(arg0 *C.GtkWindow, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ EnableDebugging(toggle bool) bool })
-
-	var _toggle bool // out
-
-	if arg1 != 0 {
-		_toggle = true
-	}
-
-	ok := iface.EnableDebugging(_toggle)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WindowClass_keys_changed
-func _gotk4_gtk4_WindowClass_keys_changed(arg0 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ KeysChanged() })
-
-	iface.KeysChanged()
 }
 
 func wrapWindow(obj *coreglib.Object) *Window {
@@ -266,44 +226,12 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Window_ConnectActivateDefault
-func _gotk4_gtk4_Window_ConnectActivateDefault(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivateDefault is emitted when the user activates the default widget
 // of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
 func (window *Window) ConnectActivateDefault(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateDefault), f)
-}
-
-//export _gotk4_gtk4_Window_ConnectActivateFocus
-func _gotk4_gtk4_Window_ConnectActivateFocus(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectActivateFocus is emitted when the user activates the currently focused
@@ -314,60 +242,10 @@ func (window *Window) ConnectActivateFocus(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateFocus), f)
 }
 
-//export _gotk4_gtk4_Window_ConnectCloseRequest
-func _gotk4_gtk4_Window_ConnectCloseRequest(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectCloseRequest is emitted when the user clicks on the close button of
 // the window.
 func (window *Window) ConnectCloseRequest(f func() (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "close-request", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectCloseRequest), f)
-}
-
-//export _gotk4_gtk4_Window_ConnectEnableDebugging
-func _gotk4_gtk4_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(toggle bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(toggle bool) (ok bool))
-	}
-
-	var _toggle bool // out
-
-	if arg1 != 0 {
-		_toggle = true
-	}
-
-	ok := f(_toggle)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectEnableDebugging is emitted when the user enables or disables
@@ -381,22 +259,6 @@ func _gotk4_gtk4_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean,
 // The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
 func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectEnableDebugging), f)
-}
-
-//export _gotk4_gtk4_Window_ConnectKeysChanged
-func _gotk4_gtk4_Window_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectKeysChanged is emitted when the set of accelerators or mnemonics that
@@ -792,31 +654,6 @@ func (window *Window) Group() *WindowGroup {
 	_windowGroup = wrapWindowGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _windowGroup
-}
-
-// HandleMenubarAccel returns whether this window reacts to F10 key presses by
-// activating a menubar it contains.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the window handles F10.
-//
-func (window *Window) HandleMenubarAccel() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_handle_menubar_accel(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // HideOnClose returns whether the window will be hidden when the close button
@@ -1512,27 +1349,6 @@ func (window *Window) SetFocusVisible(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetHandleMenubarAccel sets whether this window should react to F10 key
-// presses by activating a menubar it contains.
-//
-// The function takes the following parameters:
-//
-//    - handleMenubarAccel: TRUE to make window handle F10.
-//
-func (window *Window) SetHandleMenubarAccel(handleMenubarAccel bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if handleMenubarAccel {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_handle_menubar_accel(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(handleMenubarAccel)
-}
-
 // SetHideOnClose: if setting is TRUE, then clicking the close button on the
 // window will not destroy it, but only hide it.
 //
@@ -1819,6 +1635,95 @@ func (window *Window) Unminimize() {
 	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	C.gtk_window_unminimize(_arg0)
+	runtime.KeepAlive(window)
+}
+
+func (window *Window) activateDefault() {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.activate_default
+
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk4_Window_virtual_activate_default(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(window)
+}
+
+func (window *Window) activateFocus() {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.activate_focus
+
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk4_Window_virtual_activate_focus(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(window)
+}
+
+// The function returns the following values:
+//
+func (window *Window) closeRequest() bool {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.close_request
+
+	var _arg0 *C.GtkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C._gotk4_gtk4_Window_virtual_close_request(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (window *Window) enableDebugging(toggle bool) bool {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.enable_debugging
+
+	var _arg0 *C.GtkWindow // out
+	var _arg1 C.gboolean   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if toggle {
+		_arg1 = C.TRUE
+	}
+
+	_cret = C._gotk4_gtk4_Window_virtual_enable_debugging(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(toggle)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (window *Window) keysChanged() {
+	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
+	fnarg := gclass.keys_changed
+
+	var _arg0 *C.GtkWindow // out
+
+	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk4_Window_virtual_keys_changed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(window)
 }
 

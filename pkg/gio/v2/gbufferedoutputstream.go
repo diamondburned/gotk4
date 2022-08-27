@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// BufferedOutputStreamOverrider contains methods that are overridable.
-type BufferedOutputStreamOverrider interface {
+// BufferedOutputStreamOverrides contains methods that are overridable.
+type BufferedOutputStreamOverrides struct {
+}
+
+func defaultBufferedOutputStreamOverrides(v *BufferedOutputStream) BufferedOutputStreamOverrides {
+	return BufferedOutputStreamOverrides{}
 }
 
 // BufferedOutputStream: buffered output stream implements OutputStream and
@@ -57,29 +61,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBufferedOutputStream,
-		GoType:        reflect.TypeOf((*BufferedOutputStream)(nil)),
-		InitClass:     initClassBufferedOutputStream,
-		FinalizeClass: finalizeClassBufferedOutputStream,
-	})
+	coreglib.RegisterClassInfo[*BufferedOutputStream, *BufferedOutputStreamClass, BufferedOutputStreamOverrides](
+		GTypeBufferedOutputStream,
+		initBufferedOutputStreamClass,
+		wrapBufferedOutputStream,
+		defaultBufferedOutputStreamOverrides,
+	)
 }
 
-func initClassBufferedOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitBufferedOutputStream(*BufferedOutputStreamClass)
-	}); ok {
-		klass := (*BufferedOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.InitBufferedOutputStream(klass)
-	}
-}
-
-func finalizeClassBufferedOutputStream(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeBufferedOutputStream(*BufferedOutputStreamClass)
-	}); ok {
-		klass := (*BufferedOutputStreamClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBufferedOutputStream(klass)
+func initBufferedOutputStreamClass(gclass unsafe.Pointer, overrides BufferedOutputStreamOverrides, classInitFunc func(*BufferedOutputStreamClass)) {
+	if classInitFunc != nil {
+		class := (*BufferedOutputStreamClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

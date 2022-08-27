@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// VButtonBoxOverrider contains methods that are overridable.
-type VButtonBoxOverrider interface {
+// VButtonBoxOverrides contains methods that are overridable.
+type VButtonBoxOverrides struct {
+}
+
+func defaultVButtonBoxOverrides(v *VButtonBox) VButtonBoxOverrides {
+	return VButtonBoxOverrides{}
 }
 
 type VButtonBox struct {
@@ -44,25 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVButtonBox,
-		GoType:        reflect.TypeOf((*VButtonBox)(nil)),
-		InitClass:     initClassVButtonBox,
-		FinalizeClass: finalizeClassVButtonBox,
-	})
+	coreglib.RegisterClassInfo[*VButtonBox, *VButtonBoxClass, VButtonBoxOverrides](
+		GTypeVButtonBox,
+		initVButtonBoxClass,
+		wrapVButtonBox,
+		defaultVButtonBoxOverrides,
+	)
 }
 
-func initClassVButtonBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVButtonBox(*VButtonBoxClass) }); ok {
-		klass := (*VButtonBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitVButtonBox(klass)
-	}
-}
-
-func finalizeClassVButtonBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVButtonBox(*VButtonBoxClass) }); ok {
-		klass := (*VButtonBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVButtonBox(klass)
+func initVButtonBoxClass(gclass unsafe.Pointer, overrides VButtonBoxOverrides, classInitFunc func(*VButtonBoxClass)) {
+	if classInitFunc != nil {
+		class := (*VButtonBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

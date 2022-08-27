@@ -4,7 +4,6 @@ package atk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -28,8 +27,8 @@ func init() {
 	})
 }
 
-// SocketOverrider contains methods that are overridable.
-type SocketOverrider interface {
+// SocketOverrides contains methods that are overridable.
+type SocketOverrides struct {
 	// Embed embeds the children of an Plug as the children of the Socket. The
 	// plug may be in the same process or in a different process.
 	//
@@ -43,7 +42,13 @@ type SocketOverrider interface {
 	//
 	//    - plugId: ID of an Plug.
 	//
-	Embed(plugId string)
+	Embed func(plugId string)
+}
+
+func defaultSocketOverrides(v *Socket) SocketOverrides {
+	return SocketOverrides{
+		Embed: v.embed,
+	}
 }
 
 // Socket: together with Plug, Socket provides the ability to embed accessibles
@@ -79,44 +84,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSocket,
-		GoType:        reflect.TypeOf((*Socket)(nil)),
-		InitClass:     initClassSocket,
-		FinalizeClass: finalizeClassSocket,
-	})
+	coreglib.RegisterClassInfo[*Socket, *SocketClass, SocketOverrides](
+		GTypeSocket,
+		initSocketClass,
+		wrapSocket,
+		defaultSocketOverrides,
+	)
 }
 
-func initClassSocket(gclass unsafe.Pointer, goval any) {
+func initSocketClass(gclass unsafe.Pointer, overrides SocketOverrides, classInitFunc func(*SocketClass)) {
+	pclass := (*C.AtkSocketClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSocket))))
 
-	pclass := (*C.AtkSocketClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Embed(plugId string) }); ok {
+	if overrides.Embed != nil {
 		pclass.embed = (*[0]byte)(C._gotk4_atk1_SocketClass_embed)
 	}
-	if goval, ok := goval.(interface{ InitSocket(*SocketClass) }); ok {
-		klass := (*SocketClass)(gextras.NewStructNative(gclass))
-		goval.InitSocket(klass)
+
+	if classInitFunc != nil {
+		class := (*SocketClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassSocket(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSocket(*SocketClass) }); ok {
-		klass := (*SocketClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSocket(klass)
-	}
-}
-
-//export _gotk4_atk1_SocketClass_embed
-func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Embed(plugId string) })
-
-	var _plugId string // out
-
-	_plugId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.Embed(_plugId)
 }
 
 func wrapSocket(obj *coreglib.Object) *Socket {
@@ -151,56 +137,6 @@ func NewSocket() *Socket {
 	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socket
-}
-
-// Embed embeds the children of an Plug as the children of the Socket. The plug
-// may be in the same process or in a different process.
-//
-// The class item used by this function should be filled in by the IPC layer
-// (usually at-spi2-atk). The implementor of the AtkSocket should call this
-// function and pass the id for the plug as returned by atk_plug_get_id(). It is
-// the responsibility of the application to pass the plug id on to the process
-// implementing the Socket as needed.
-//
-// The function takes the following parameters:
-//
-//    - plugId: ID of an Plug.
-//
-func (obj *Socket) Embed(plugId string) {
-	var _arg0 *C.AtkSocket // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.atk_socket_embed(_arg0, _arg1)
-	runtime.KeepAlive(obj)
-	runtime.KeepAlive(plugId)
-}
-
-// IsOccupied determines whether or not the socket has an embedded plug.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if a plug is embedded in the socket.
-//
-func (obj *Socket) IsOccupied() bool {
-	var _arg0 *C.AtkSocket // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	_cret = C.atk_socket_is_occupied(_arg0)
-	runtime.KeepAlive(obj)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SocketClass: instance of this type is always passed by reference.

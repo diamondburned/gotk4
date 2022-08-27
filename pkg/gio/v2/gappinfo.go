@@ -3,13 +3,10 @@
 package gio
 
 import (
-	"context"
 	"reflect"
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -19,36 +16,78 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GAppInfo* _gotk4_gio2_AppInfoIface_dup(GAppInfo*);
-// extern GIcon* _gotk4_gio2_AppInfoIface_get_icon(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_commandline(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_description(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_display_name(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_executable(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_id(GAppInfo*);
-// extern char* _gotk4_gio2_AppInfoIface_get_name(GAppInfo*);
-// extern char* _gotk4_gio2_AppLaunchContextClass_get_display(GAppLaunchContext*, GAppInfo*, GList*);
-// extern char* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(GAppLaunchContext*, GAppInfo*, GList*);
-// extern char** _gotk4_gio2_AppInfoIface_get_supported_types(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_add_supports_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_can_delete(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_can_remove_supports_type(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_equal(GAppInfo*, GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_launch(GAppInfo*, GList*, GAppLaunchContext*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris(GAppInfo*, GList*, GAppLaunchContext*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris_finish(GAppInfo*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_remove_supports_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_extension(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_set_as_last_used_for_type(GAppInfo*, char*, GError**);
-// extern gboolean _gotk4_gio2_AppInfoIface_should_show(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_supports_files(GAppInfo*);
-// extern gboolean _gotk4_gio2_AppInfoIface_supports_uris(GAppInfo*);
-// extern void _gotk4_gio2_AppLaunchContextClass_launch_failed(GAppLaunchContext*, char*);
-// extern void _gotk4_gio2_AppLaunchContextClass_launched(GAppLaunchContext*, GAppInfo*, GVariant*);
-// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(gpointer, gchar*, guintptr);
 // extern void _gotk4_gio2_AppLaunchContext_ConnectLaunched(gpointer, GAppInfo*, GVariant*, guintptr);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern void _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_AppLaunchContextClass_launched(GAppLaunchContext*, GAppInfo*, GVariant*);
+// extern void _gotk4_gio2_AppLaunchContextClass_launch_failed(GAppLaunchContext*, char*);
+// extern char* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(GAppLaunchContext*, GAppInfo*, GList*);
+// extern char* _gotk4_gio2_AppLaunchContextClass_get_display(GAppLaunchContext*, GAppInfo*, GList*);
+// GAppInfo* _gotk4_gio2_AppInfo_virtual_dup(void* fnptr, GAppInfo* arg0) {
+//   return ((GAppInfo* (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// GIcon* _gotk4_gio2_AppInfo_virtual_get_icon(void* fnptr, GAppInfo* arg0) {
+//   return ((GIcon* (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_AppInfo_virtual_get_description(void* fnptr, GAppInfo* arg0) {
+//   return ((char* (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_AppInfo_virtual_get_executable(void* fnptr, GAppInfo* arg0) {
+//   return ((char* (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_AppInfo_virtual_get_id(void* fnptr, GAppInfo* arg0) {
+//   return ((char* (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_AppInfo_virtual_get_name(void* fnptr, GAppInfo* arg0) {
+//   return ((char* (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_AppLaunchContext_virtual_get_display(void* fnptr, GAppLaunchContext* arg0, GAppInfo* arg1, GList* arg2) {
+//   return ((char* (*)(GAppLaunchContext*, GAppInfo*, GList*))(fnptr))(arg0, arg1, arg2);
+// };
+// char* _gotk4_gio2_AppLaunchContext_virtual_get_startup_notify_id(void* fnptr, GAppLaunchContext* arg0, GAppInfo* arg1, GList* arg2) {
+//   return ((char* (*)(GAppLaunchContext*, GAppInfo*, GList*))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_add_supports_type(void* fnptr, GAppInfo* arg0, char* arg1, GError** arg2) {
+//   return ((gboolean (*)(GAppInfo*, char*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_can_remove_supports_type(void* fnptr, GAppInfo* arg0) {
+//   return ((gboolean (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_equal(void* fnptr, GAppInfo* arg0, GAppInfo* arg1) {
+//   return ((gboolean (*)(GAppInfo*, GAppInfo*))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_launch(void* fnptr, GAppInfo* arg0, GList* arg1, GAppLaunchContext* arg2, GError** arg3) {
+//   return ((gboolean (*)(GAppInfo*, GList*, GAppLaunchContext*, GError**))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_launch_uris(void* fnptr, GAppInfo* arg0, GList* arg1, GAppLaunchContext* arg2, GError** arg3) {
+//   return ((gboolean (*)(GAppInfo*, GList*, GAppLaunchContext*, GError**))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_remove_supports_type(void* fnptr, GAppInfo* arg0, char* arg1, GError** arg2) {
+//   return ((gboolean (*)(GAppInfo*, char*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_set_as_default_for_extension(void* fnptr, GAppInfo* arg0, char* arg1, GError** arg2) {
+//   return ((gboolean (*)(GAppInfo*, char*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_set_as_default_for_type(void* fnptr, GAppInfo* arg0, char* arg1, GError** arg2) {
+//   return ((gboolean (*)(GAppInfo*, char*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_set_as_last_used_for_type(void* fnptr, GAppInfo* arg0, char* arg1, GError** arg2) {
+//   return ((gboolean (*)(GAppInfo*, char*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_should_show(void* fnptr, GAppInfo* arg0) {
+//   return ((gboolean (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_supports_files(void* fnptr, GAppInfo* arg0) {
+//   return ((gboolean (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_AppInfo_virtual_supports_uris(void* fnptr, GAppInfo* arg0) {
+//   return ((gboolean (*)(GAppInfo*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_AppLaunchContext_virtual_launch_failed(void* fnptr, GAppLaunchContext* arg0, char* arg1) {
+//   ((void (*)(GAppLaunchContext*, char*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_AppLaunchContext_virtual_launched(void* fnptr, GAppLaunchContext* arg0, GAppInfo* arg1, GVariant* arg2) {
+//   ((void (*)(GAppLaunchContext*, GAppInfo*, GVariant*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -228,31 +267,6 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	return _goerr
 }
 
-// CanDelete obtains the information whether the Info can be deleted. See
-// g_app_info_delete().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if appinfo can be deleted.
-//
-func (appinfo *AppInfo) CanDelete() bool {
-	var _arg0 *C.GAppInfo // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-
-	_cret = C.g_app_info_can_delete(_arg0)
-	runtime.KeepAlive(appinfo)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // CanRemoveSupportsType checks if a supported content type can be removed from
 // an application.
 //
@@ -268,34 +282,6 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
 	_cret = C.g_app_info_can_remove_supports_type(_arg0)
-	runtime.KeepAlive(appinfo)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Delete tries to delete a Info.
-//
-// On some platforms, there may be a difference between user-defined Infos which
-// can be deleted, and system-wide ones which cannot. See
-// g_app_info_can_delete().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if appinfo has been deleted.
-//
-func (appinfo *AppInfo) Delete() bool {
-	var _arg0 *C.GAppInfo // out
-	var _cret C.gboolean  // in
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-
-	_cret = C.g_app_info_delete(_arg0)
 	runtime.KeepAlive(appinfo)
 
 	var _ok bool // out
@@ -364,31 +350,6 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	return _ok
 }
 
-// Commandline gets the commandline with which the application will be started.
-//
-// The function returns the following values:
-//
-//    - filename (optional): string containing the appinfo's commandline, or NULL
-//      if this information is not available.
-//
-func (appinfo *AppInfo) Commandline() string {
-	var _arg0 *C.GAppInfo // out
-	var _cret *C.char     // in
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-
-	_cret = C.g_app_info_get_commandline(_arg0)
-	runtime.KeepAlive(appinfo)
-
-	var _filename string // out
-
-	if _cret != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _filename
-}
-
 // Description gets a human-readable description of an installed application.
 //
 // The function returns the following values:
@@ -410,30 +371,6 @@ func (appinfo *AppInfo) Description() string {
 	if _cret != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
-
-	return _utf8
-}
-
-// DisplayName gets the display name of the application. The display name is
-// often more descriptive to the user than the name itself.
-//
-// The function returns the following values:
-//
-//    - utf8: display name of the application for appinfo, or the name if no
-//      display name is available.
-//
-func (appinfo *AppInfo) DisplayName() string {
-	var _arg0 *C.GAppInfo // out
-	var _cret *C.char     // in
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-
-	_cret = C.g_app_info_get_display_name(_arg0)
-	runtime.KeepAlive(appinfo)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
 }
@@ -534,44 +471,6 @@ func (appinfo *AppInfo) Name() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// SupportedTypes retrieves the list of content types that app_info claims to
-// support. If this information is not provided by the environment, this
-// function will return NULL. This function does not take in consideration
-// associations added with g_app_info_add_supports_type(), but only those
-// exported directly by the application.
-//
-// The function returns the following values:
-//
-//    - utf8s: a list of content types.
-//
-func (appinfo *AppInfo) SupportedTypes() []string {
-	var _arg0 *C.GAppInfo // out
-	var _cret **C.char    // in
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-
-	_cret = C.g_app_info_get_supported_types(_arg0)
-	runtime.KeepAlive(appinfo)
-
-	var _utf8s []string // out
-
-	{
-		var i int
-		var z *C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-
-	return _utf8s
 }
 
 // Launch launches the application. Passes files to the launched application as
@@ -681,87 +580,6 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(uris)
 	runtime.KeepAlive(context)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
-// LaunchURIsAsync: async version of g_app_info_launch_uris().
-//
-// The callback is invoked immediately after the application launch, but it
-// waits for activation in case of D-Bus–activated applications and also
-// provides extended error information for sandboxed applications, see notes for
-// g_app_info_launch_default_for_uri_async().
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): #GCancellable.
-//    - uris (optional) containing URIs to launch.
-//    - context (optional) or NULL.
-//    - callback (optional) to call when the request is done.
-//
-func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
-	var _arg0 *C.GAppInfo           // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 *C.GList              // out
-	var _arg2 *C.GAppLaunchContext  // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if uris != nil {
-		for i := len(uris) - 1; i >= 0; i-- {
-			src := uris[i]
-			var dst *C.gchar // out
-			dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
-			defer C.free(unsafe.Pointer(dst))
-			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
-		}
-		defer C.g_list_free(_arg1)
-	}
-	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	}
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_app_info_launch_uris_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(appinfo)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(uris)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(callback)
-}
-
-// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
-//
-// The function takes the following parameters:
-//
-//    - result: Result.
-//
-func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
-	var _arg0 *C.GAppInfo     // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	C.g_app_info_launch_uris_finish(_arg0, _arg1, &_cerr)
-	runtime.KeepAlive(appinfo)
-	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
@@ -963,6 +781,604 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 	return _ok
 }
 
+// addSupportsType adds a content type to the application information to
+// indicate the application is capable of opening files with the given content
+// type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: string.
+//
+func (appinfo *AppInfo) addSupportsType(contentType string) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.add_supports_type
+
+	var _arg0 *C.GAppInfo // out
+	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_AppInfo_virtual_add_supports_type(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// canRemoveSupportsType checks if a supported content type can be removed from
+// an application.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if it is possible to remove supported content types from a given
+//      appinfo, FALSE if not.
+//
+func (appinfo *AppInfo) canRemoveSupportsType() bool {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.can_remove_supports_type
+
+	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_can_remove_supports_type(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Dup creates a duplicate of a Info.
+//
+// The function returns the following values:
+//
+//    - appInfo: duplicate of appinfo.
+//
+func (appinfo *AppInfo) dup() *AppInfo {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.dup
+
+	var _arg0 *C.GAppInfo // out
+	var _cret *C.GAppInfo // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_dup(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _appInfo *AppInfo // out
+
+	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _appInfo
+}
+
+// Equal checks if two Infos are equal.
+//
+// Note that the check *may not* compare each individual field, and only does an
+// identity check. In case detecting changes in the contents is needed, program
+// code must additionally compare relevant fields.
+//
+// The function takes the following parameters:
+//
+//    - appinfo2: second Info.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
+//
+func (appinfo1 *AppInfo) equal(appinfo2 AppInfor) bool {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo1))
+	fnarg := gclass.equal
+
+	var _arg0 *C.GAppInfo // out
+	var _arg1 *C.GAppInfo // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo1).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo2).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_equal(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(appinfo1)
+	runtime.KeepAlive(appinfo2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Description gets a human-readable description of an installed application.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing a description of the application
+//      appinfo, or NULL if none.
+//
+func (appinfo *AppInfo) description() string {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.get_description
+
+	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_get_description(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Executable gets the executable's name for the installed application.
+//
+// The function returns the following values:
+//
+//    - filename: string containing the appinfo's application binaries name.
+//
+func (appinfo *AppInfo) executable() string {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.get_executable
+
+	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_get_executable(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _filename string // out
+
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _filename
+}
+
+// Icon gets the icon for the application.
+//
+// The function returns the following values:
+//
+//    - icon (optional): default #GIcon for appinfo or NULL if there is no
+//      default icon.
+//
+func (appinfo *AppInfo) icon() *Icon {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.get_icon
+
+	var _arg0 *C.GAppInfo // out
+	var _cret *C.GIcon    // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_get_icon(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _icon *Icon // out
+
+	if _cret != nil {
+		_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _icon
+}
+
+// iD gets the ID of an application. An id is a string that identifies the
+// application. The exact format of the id is platform dependent. For instance,
+// on Unix this is the desktop file id from the xdg menu specification.
+//
+// Note that the returned ID may be NULL, depending on how the appinfo has been
+// constructed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string containing the application's ID.
+//
+func (appinfo *AppInfo) iD() string {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.get_id
+
+	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_get_id(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Name gets the installed name of the application.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the application for appinfo.
+//
+func (appinfo *AppInfo) name() string {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.get_name
+
+	var _arg0 *C.GAppInfo // out
+	var _cret *C.char     // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_get_name(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Launch launches the application. Passes files to the launched application as
+// arguments, using the optional context to get information about the details of
+// the launcher (like what screen it is on). On error, error will be set
+// accordingly.
+//
+// To launch the application without arguments pass a NULL files list.
+//
+// Note that even if the launch is successful the application launched can fail
+// to start if it runs into problems during startup. There is no way to detect
+// this.
+//
+// Some URIs can be changed when passed through a GFile (for instance
+// unsupported URIs with strange formats like mailto:), so if you have a textual
+// URI you want to pass in as argument, consider using g_app_info_launch_uris()
+// instead.
+//
+// The launched application inherits the environment of the launching process,
+// but it can be modified with g_app_launch_context_setenv() and
+// g_app_launch_context_unsetenv().
+//
+// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE environment
+// variable with the path of the launched desktop file and
+// GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process. This
+// can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be inherited by
+// further processes. The DISPLAY and DESKTOP_STARTUP_ID environment variables
+// are also set, based on information provided in context.
+//
+// The function takes the following parameters:
+//
+//    - files (optional) of #GFile objects.
+//    - context (optional) or NULL.
+//
+func (appinfo *AppInfo) launch(files []Filer, context *AppLaunchContext) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.launch
+
+	var _arg0 *C.GAppInfo          // out
+	var _arg1 *C.GList             // out
+	var _arg2 *C.GAppLaunchContext // out
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	if files != nil {
+		for i := len(files) - 1; i >= 0; i-- {
+			src := files[i]
+			var dst *C.GFile // out
+			dst = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
+	}
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+
+	C._gotk4_gio2_AppInfo_virtual_launch(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(files)
+	runtime.KeepAlive(context)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// launchURIs launches the application. This passes the uris to the launched
+// application as arguments, using the optional context to get information about
+// the details of the launcher (like what screen it is on). On error, error will
+// be set accordingly.
+//
+// To launch the application without arguments pass a NULL uris list.
+//
+// Note that even if the launch is successful the application launched can fail
+// to start if it runs into problems during startup. There is no way to detect
+// this.
+//
+// The function takes the following parameters:
+//
+//    - uris (optional) containing URIs to launch.
+//    - context (optional) or NULL.
+//
+func (appinfo *AppInfo) launchURIs(uris []string, context *AppLaunchContext) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.launch_uris
+
+	var _arg0 *C.GAppInfo          // out
+	var _arg1 *C.GList             // out
+	var _arg2 *C.GAppLaunchContext // out
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	if uris != nil {
+		for i := len(uris) - 1; i >= 0; i-- {
+			src := uris[i]
+			var dst *C.gchar // out
+			dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+			defer C.free(unsafe.Pointer(dst))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
+	}
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+
+	C._gotk4_gio2_AppInfo_virtual_launch_uris(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(uris)
+	runtime.KeepAlive(context)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// removeSupportsType removes a supported type from an application, if possible.
+//
+// The function takes the following parameters:
+//
+//    - contentType: string.
+//
+func (appinfo *AppInfo) removeSupportsType(contentType string) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.remove_supports_type
+
+	var _arg0 *C.GAppInfo // out
+	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_AppInfo_virtual_remove_supports_type(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// setAsDefaultForExtension sets the application as the default handler for the
+// given file extension.
+//
+// The function takes the following parameters:
+//
+//    - extension: string containing the file extension (without the dot).
+//
+func (appinfo *AppInfo) setAsDefaultForExtension(extension string) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.set_as_default_for_extension
+
+	var _arg0 *C.GAppInfo // out
+	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(extension)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_AppInfo_virtual_set_as_default_for_extension(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(extension)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// setAsDefaultForType sets the application as the default handler for a given
+// type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type.
+//
+func (appinfo *AppInfo) setAsDefaultForType(contentType string) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.set_as_default_for_type
+
+	var _arg0 *C.GAppInfo // out
+	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_AppInfo_virtual_set_as_default_for_type(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// setAsLastUsedForType sets the application as the last used application for a
+// given type. This will make the application appear as first in the list
+// returned by g_app_info_get_recommended_for_type(), regardless of the default
+// application for that content type.
+//
+// The function takes the following parameters:
+//
+//    - contentType: content type.
+//
+func (appinfo *AppInfo) setAsLastUsedForType(contentType string) error {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.set_as_last_used_for_type
+
+	var _arg0 *C.GAppInfo // out
+	var _arg1 *C.char     // out
+	var _cerr *C.GError   // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_AppInfo_virtual_set_as_last_used_for_type(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(contentType)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// shouldShow checks if the application info should be shown in menus that list
+// available applications.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the appinfo should be shown, FALSE otherwise.
+//
+func (appinfo *AppInfo) shouldShow() bool {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.should_show
+
+	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_should_show(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// supportsFiles checks if the application accepts files as arguments.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the appinfo supports files.
+//
+func (appinfo *AppInfo) supportsFiles() bool {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.supports_files
+
+	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_supports_files(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// supportsURIs checks if the application supports reading files and directories
+// from URIs.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the appinfo supports URIs.
+//
+func (appinfo *AppInfo) supportsURIs() bool {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.supports_uris
+
+	var _arg0 *C.GAppInfo // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+
+	_cret = C._gotk4_gio2_AppInfo_virtual_supports_uris(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(appinfo)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // AppInfoCreateFromCommandline creates a new Info from the given information.
 //
 // Note that for commandline, the quoting rules of the Exec key of the
@@ -1144,78 +1560,6 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	return _appInfo
 }
 
-// AppInfoGetFallbackForType gets a list of fallback Infos for a given content
-// type, i.e. those applications which claim to support the given content type
-// by MIME type subclassing and not directly.
-//
-// The function takes the following parameters:
-//
-//    - contentType: content type to find a Info for.
-//
-// The function returns the following values:
-//
-//    - list of Infos for given content_type or NULL on error.
-//
-func AppInfoGetFallbackForType(contentType string) []*AppInfo {
-	var _arg1 *C.gchar // out
-	var _cret *C.GList // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_app_info_get_fallback_for_type(_arg1)
-	runtime.KeepAlive(contentType)
-
-	var _list []*AppInfo // out
-
-	_list = make([]*AppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GAppInfo)(v)
-		var dst *AppInfo // out
-		dst = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
-// AppInfoGetRecommendedForType gets a list of recommended Infos for a given
-// content type, i.e. those applications which claim to support the given
-// content type exactly, and not by MIME type subclassing. Note that the first
-// application of the list is the last used one, i.e. the last one for which
-// g_app_info_set_as_last_used_for_type() has been called.
-//
-// The function takes the following parameters:
-//
-//    - contentType: content type to find a Info for.
-//
-// The function returns the following values:
-//
-//    - list of Infos for given content_type or NULL on error.
-//
-func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
-	var _arg1 *C.gchar // out
-	var _cret *C.GList // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_app_info_get_recommended_for_type(_arg1)
-	runtime.KeepAlive(contentType)
-
-	var _list []*AppInfo // out
-
-	_list = make([]*AppInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GAppInfo)(v)
-		var dst *AppInfo // out
-		dst = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
 // AppInfoLaunchDefaultForURI: utility function that launches the default
 // application registered to handle the specified uri. Synchronous I/O is done
 // on the uri to detect the type of the file if required.
@@ -1253,125 +1597,8 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	return _goerr
 }
 
-// AppInfoLaunchDefaultForURIAsync: async version of
-// g_app_info_launch_default_for_uri().
-//
-// This version is useful if you are interested in receiving error information
-// in the case where the application is sandboxed and the portal may present an
-// application chooser dialog to the user.
-//
-// This is also useful if you want to be sure that the D-Bus–activated
-// applications are really started before termination and if you are interested
-// in receiving error information from their activation.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): #GCancellable.
-//    - uri to show.
-//    - context (optional): optional LaunchContext.
-//    - callback (optional) to call when the request is done.
-//
-func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
-	var _arg3 *C.GCancellable       // out
-	var _arg1 *C.char               // out
-	var _arg2 *C.GAppLaunchContext  // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if context != nil {
-		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	}
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_app_info_launch_default_for_uri_async(_arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(uri)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(callback)
-}
-
-// AppInfoLaunchDefaultForURIFinish finishes an asynchronous
-// launch-default-for-uri operation.
-//
-// The function takes the following parameters:
-//
-//    - result: Result.
-//
-func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	C.g_app_info_launch_default_for_uri_finish(_arg1, &_cerr)
-	runtime.KeepAlive(result)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
-// AppInfoResetTypeAssociations removes all changes to the type associations
-// done by g_app_info_set_as_default_for_type(),
-// g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
-// g_app_info_remove_supports_type().
-//
-// The function takes the following parameters:
-//
-//    - contentType: content type.
-//
-func AppInfoResetTypeAssociations(contentType string) {
-	var _arg1 *C.char // out
-
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.g_app_info_reset_type_associations(_arg1)
-	runtime.KeepAlive(contentType)
-}
-
-// AppInfoMonitorGet gets the InfoMonitor for the current thread-default main
-// context.
-//
-// The InfoMonitor will emit a "changed" signal in the thread-default main
-// context whenever the list of installed applications (as reported by
-// g_app_info_get_all()) may have changed.
-//
-// You must only call g_object_unref() on the return value from under the same
-// main context as you created it.
-//
-// The function returns the following values:
-//
-//    - appInfoMonitor: reference to a InfoMonitor.
-//
-func AppInfoMonitorGet() *AppInfoMonitor {
-	var _cret *C.GAppInfoMonitor // in
-
-	_cret = C.g_app_info_monitor_get()
-
-	var _appInfoMonitor *AppInfoMonitor // out
-
-	_appInfoMonitor = wrapAppInfoMonitor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _appInfoMonitor
-}
-
-// AppLaunchContextOverrider contains methods that are overridable.
-type AppLaunchContextOverrider interface {
+// AppLaunchContextOverrides contains methods that are overridable.
+type AppLaunchContextOverrides struct {
 	// Display gets the display string for the context. This is used to ensure
 	// new applications are started on the same display as the launching
 	// application, by setting the DISPLAY environment variable.
@@ -1385,7 +1612,7 @@ type AppLaunchContextOverrider interface {
 	//
 	//    - utf8 (optional): display string for the display.
 	//
-	Display(info AppInfor, files []Filer) string
+	Display func(info AppInfor, files []Filer) string
 	// StartupNotifyID initiates startup notification for the application and
 	// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
 	//
@@ -1403,7 +1630,7 @@ type AppLaunchContextOverrider interface {
 	//    - utf8 (optional): startup notification ID for the application, or NULL
 	//      if not supported.
 	//
-	StartupNotifyID(info AppInfor, files []Filer) string
+	StartupNotifyID func(info AppInfor, files []Filer) string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
@@ -1413,13 +1640,22 @@ type AppLaunchContextOverrider interface {
 	//    - startupNotifyId: startup notification id that was returned by
 	//      g_app_launch_context_get_startup_notify_id().
 	//
-	LaunchFailed(startupNotifyId string)
+	LaunchFailed func(startupNotifyId string)
 	// The function takes the following parameters:
 	//
 	//    - info
 	//    - platformData
 	//
-	Launched(info AppInfor, platformData *glib.Variant)
+	Launched func(info AppInfor, platformData *glib.Variant)
+}
+
+func defaultAppLaunchContextOverrides(v *AppLaunchContext) AppLaunchContextOverrides {
+	return AppLaunchContextOverrides{
+		Display:         v.display,
+		StartupNotifyID: v.startupNotifyID,
+		LaunchFailed:    v.launchFailed,
+		Launched:        v.launched,
+	}
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This
@@ -1435,221 +1671,37 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeAppLaunchContext,
-		GoType:        reflect.TypeOf((*AppLaunchContext)(nil)),
-		InitClass:     initClassAppLaunchContext,
-		FinalizeClass: finalizeClassAppLaunchContext,
-	})
+	coreglib.RegisterClassInfo[*AppLaunchContext, *AppLaunchContextClass, AppLaunchContextOverrides](
+		GTypeAppLaunchContext,
+		initAppLaunchContextClass,
+		wrapAppLaunchContext,
+		defaultAppLaunchContextOverrides,
+	)
 }
 
-func initClassAppLaunchContext(gclass unsafe.Pointer, goval any) {
+func initAppLaunchContextClass(gclass unsafe.Pointer, overrides AppLaunchContextOverrides, classInitFunc func(*AppLaunchContextClass)) {
+	pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeAppLaunchContext))))
 
-	pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Display(info AppInfor, files []Filer) string
-	}); ok {
+	if overrides.Display != nil {
 		pclass.get_display = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_get_display)
 	}
 
-	if _, ok := goval.(interface {
-		StartupNotifyID(info AppInfor, files []Filer) string
-	}); ok {
+	if overrides.StartupNotifyID != nil {
 		pclass.get_startup_notify_id = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_get_startup_notify_id)
 	}
 
-	if _, ok := goval.(interface{ LaunchFailed(startupNotifyId string) }); ok {
+	if overrides.LaunchFailed != nil {
 		pclass.launch_failed = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_launch_failed)
 	}
 
-	if _, ok := goval.(interface {
-		Launched(info AppInfor, platformData *glib.Variant)
-	}); ok {
+	if overrides.Launched != nil {
 		pclass.launched = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_launched)
 	}
-	if goval, ok := goval.(interface{ InitAppLaunchContext(*AppLaunchContextClass) }); ok {
-		klass := (*AppLaunchContextClass)(gextras.NewStructNative(gclass))
-		goval.InitAppLaunchContext(klass)
+
+	if classInitFunc != nil {
+		class := (*AppLaunchContextClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassAppLaunchContext(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeAppLaunchContext(*AppLaunchContextClass) }); ok {
-		klass := (*AppLaunchContextClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeAppLaunchContext(klass)
-	}
-}
-
-//export _gotk4_gio2_AppLaunchContextClass_get_display
-func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Display(info AppInfor, files []Filer) string
-	})
-
-	var _info AppInfor // out
-	var _files []Filer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_info = rv
-	}
-	_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
-	gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
-		src := (*C.GFile)(v)
-		var dst Filer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
-			}
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Filer)
-				return ok
-			})
-			rv, ok := casted.(Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			dst = rv
-		}
-		_files = append(_files, dst)
-	})
-
-	utf8 := iface.Display(_info, _files)
-
-	if utf8 != "" {
-		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id
-func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		StartupNotifyID(info AppInfor, files []Filer) string
-	})
-
-	var _info AppInfor // out
-	var _files []Filer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_info = rv
-	}
-	_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
-	gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
-		src := (*C.GFile)(v)
-		var dst Filer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
-			}
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Filer)
-				return ok
-			})
-			rv, ok := casted.(Filer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
-			}
-			dst = rv
-		}
-		_files = append(_files, dst)
-	})
-
-	utf8 := iface.StartupNotifyID(_info, _files)
-
-	if utf8 != "" {
-		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_AppLaunchContextClass_launch_failed
-func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, arg1 *C.char) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LaunchFailed(startupNotifyId string) })
-
-	var _startupNotifyId string // out
-
-	_startupNotifyId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.LaunchFailed(_startupNotifyId)
-}
-
-//export _gotk4_gio2_AppLaunchContextClass_launched
-func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Launched(info AppInfor, platformData *glib.Variant)
-	})
-
-	var _info AppInfor              // out
-	var _platformData *glib.Variant // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_info = rv
-	}
-	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	iface.Launched(_info, _platformData)
 }
 
 func wrapAppLaunchContext(obj *coreglib.Object) *AppLaunchContext {
@@ -1662,76 +1714,11 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return wrapAppLaunchContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed
-func _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(startupNotifyId string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(startupNotifyId string))
-	}
-
-	var _startupNotifyId string // out
-
-	_startupNotifyId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_startupNotifyId)
-}
-
 // ConnectLaunchFailed signal is emitted when a Info launch fails. The startup
 // notification id is provided, so that the launcher can cancel the startup
 // notification.
 func (context *AppLaunchContext) ConnectLaunchFailed(f func(startupNotifyId string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "launch-failed", false, unsafe.Pointer(C._gotk4_gio2_AppLaunchContext_ConnectLaunchFailed), f)
-}
-
-//export _gotk4_gio2_AppLaunchContext_ConnectLaunched
-func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 *C.GVariant, arg3 C.guintptr) {
-	var f func(info AppInfor, platformData *glib.Variant)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(info AppInfor, platformData *glib.Variant))
-	}
-
-	var _info AppInfor              // out
-	var _platformData *glib.Variant // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_info = rv
-	}
-	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	f(_info, _platformData)
 }
 
 // ConnectLaunched signal is emitted when a Info is successfully launched. The
@@ -1807,44 +1794,6 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	return _utf8
 }
 
-// Environment gets the complete environment variable list to be passed to the
-// child process when context is used to launch an application. This is a
-// NULL-terminated array of strings, where each string has the form KEY=VALUE.
-//
-// The function returns the following values:
-//
-//    - filenames: the child's environment.
-//
-func (context *AppLaunchContext) Environment() []string {
-	var _arg0 *C.GAppLaunchContext // out
-	var _cret **C.char             // in
-
-	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.g_app_launch_context_get_environment(_arg0)
-	runtime.KeepAlive(context)
-
-	var _filenames []string // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.char
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_filenames = make([]string, i)
-		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _filenames
-}
-
 // StartupNotifyID initiates startup notification for the application and
 // returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
 //
@@ -1915,49 +1864,150 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	runtime.KeepAlive(startupNotifyId)
 }
 
-// Setenv arranges for variable to be set to value in the child's environment
-// when context is used to launch an application.
+// Display gets the display string for the context. This is used to ensure new
+// applications are started on the same display as the launching application, by
+// setting the DISPLAY environment variable.
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to set.
-//    - value for to set the variable to.
+//    - info: Info.
+//    - files of #GFile objects.
 //
-func (context *AppLaunchContext) Setenv(variable, value string) {
+// The function returns the following values:
+//
+//    - utf8 (optional): display string for the display.
+//
+func (context *AppLaunchContext) display(info AppInfor, files []Filer) string {
+	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.get_display
+
 	var _arg0 *C.GAppLaunchContext // out
-	var _arg1 *C.char              // out
-	var _arg2 *C.char              // out
+	var _arg1 *C.GAppInfo          // out
+	var _arg2 *C.GList             // out
+	var _cret *C.char              // in
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(value)))
-	defer C.free(unsafe.Pointer(_arg2))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	for i := len(files) - 1; i >= 0; i-- {
+		src := files[i]
+		var dst *C.GFile // out
+		dst = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg2)
 
-	C.g_app_launch_context_setenv(_arg0, _arg1, _arg2)
+	_cret = C._gotk4_gio2_AppLaunchContext_virtual_get_display(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(context)
-	runtime.KeepAlive(variable)
-	runtime.KeepAlive(value)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(files)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
 }
 
-// Unsetenv arranges for variable to be unset in the child's environment when
-// context is used to launch an application.
+// startupNotifyID initiates startup notification for the application and
+// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
+//
+// Startup notification IDs are defined in the FreeDesktop.Org Startup
+// Notifications standard
+// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to remove.
+//    - info: Info.
+//    - files of of #GFile objects.
 //
-func (context *AppLaunchContext) Unsetenv(variable string) {
+// The function returns the following values:
+//
+//    - utf8 (optional): startup notification ID for the application, or NULL if
+//      not supported.
+//
+func (context *AppLaunchContext) startupNotifyID(info AppInfor, files []Filer) string {
+	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.get_startup_notify_id
+
+	var _arg0 *C.GAppLaunchContext // out
+	var _arg1 *C.GAppInfo          // out
+	var _arg2 *C.GList             // out
+	var _cret *C.char              // in
+
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	for i := len(files) - 1; i >= 0; i-- {
+		src := files[i]
+		var dst *C.GFile // out
+		dst = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		_arg2 = C.g_list_prepend(_arg2, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_list_free(_arg2)
+
+	_cret = C._gotk4_gio2_AppLaunchContext_virtual_get_startup_notify_id(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(files)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// launchFailed: called when an application has failed to launch, so that it can
+// cancel the application startup notification started in
+// g_app_launch_context_get_startup_notify_id().
+//
+// The function takes the following parameters:
+//
+//    - startupNotifyId: startup notification id that was returned by
+//      g_app_launch_context_get_startup_notify_id().
+//
+func (context *AppLaunchContext) launchFailed(startupNotifyId string) {
+	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.launch_failed
+
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(variable)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(startupNotifyId)))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_app_launch_context_unsetenv(_arg0, _arg1)
+	C._gotk4_gio2_AppLaunchContext_virtual_launch_failed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(context)
-	runtime.KeepAlive(variable)
+	runtime.KeepAlive(startupNotifyId)
+}
+
+// The function takes the following parameters:
+//
+//    - info
+//    - platformData
+//
+func (context *AppLaunchContext) launched(info AppInfor, platformData *glib.Variant) {
+	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.launched
+
+	var _arg0 *C.GAppLaunchContext // out
+	var _arg1 *C.GAppInfo          // out
+	var _arg2 *C.GVariant          // out
+
+	_arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
+
+	C._gotk4_gio2_AppLaunchContext_virtual_launched(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(platformData)
 }
 
 // AppInfoIface: application Information interface, for operating system

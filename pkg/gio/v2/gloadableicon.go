@@ -16,9 +16,16 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GInputStream* _gotk4_gio2_LoadableIconIface_load(GLoadableIcon*, int, char**, GCancellable*, GError**);
-// extern GInputStream* _gotk4_gio2_LoadableIconIface_load_finish(GLoadableIcon*, GAsyncResult*, char**, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// GInputStream* _gotk4_gio2_LoadableIcon_virtual_load(void* fnptr, GLoadableIcon* arg0, int arg1, char** arg2, GCancellable* arg3, GError** arg4) {
+//   return ((GInputStream* (*)(GLoadableIcon*, int, char**, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// GInputStream* _gotk4_gio2_LoadableIcon_virtual_load_finish(void* fnptr, GLoadableIcon* arg0, GAsyncResult* arg1, char** arg2, GError** arg3) {
+//   return ((GInputStream* (*)(GLoadableIcon*, GAsyncResult*, char**, GError**))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_LoadableIcon_virtual_load_async(void* fnptr, GLoadableIcon* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GLoadableIcon*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
 import "C"
 
 // GType values.
@@ -198,6 +205,177 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(res)
+
+	var _typ string                // out
+	var _inputStream InputStreamer // out
+	var _goerr error               // out
+
+	if _arg2 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(InputStreamer)
+			return ok
+		})
+		rv, ok := casted.(InputStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _typ, _inputStream, _goerr
+}
+
+// Load loads a loadable icon. For the asynchronous version of this function,
+// see g_loadable_icon_load_async().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - size: integer.
+//
+// The function returns the following values:
+//
+//    - typ (optional): location to store the type of the loaded icon, NULL to
+//      ignore.
+//    - inputStream to read the icon from.
+//
+func (icon *LoadableIcon) load(ctx context.Context, size int) (string, InputStreamer, error) {
+	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
+	fnarg := gclass.load
+
+	var _arg0 *C.GLoadableIcon // out
+	var _arg3 *C.GCancellable  // out
+	var _arg1 C.int            // out
+	var _arg2 *C.char          // in
+	var _cret *C.GInputStream  // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(size)
+
+	_cret = C._gotk4_gio2_LoadableIcon_virtual_load(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, _arg3, &_cerr)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+
+	var _typ string                // out
+	var _inputStream InputStreamer // out
+	var _goerr error               // out
+
+	if _arg2 != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.InputStreamer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(InputStreamer)
+			return ok
+		})
+		rv, ok := casted.(InputStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.InputStreamer")
+		}
+		_inputStream = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _typ, _inputStream, _goerr
+}
+
+// loadAsync loads an icon asynchronously. To finish this function, see
+// g_loadable_icon_load_finish(). For the synchronous, blocking version of this
+// function, see g_loadable_icon_load().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - size: integer.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (icon *LoadableIcon) loadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
+	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
+	fnarg := gclass.load_async
+
+	var _arg0 *C.GLoadableIcon      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(size)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_LoadableIcon_virtual_load_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(callback)
+}
+
+// loadFinish finishes an asynchronous icon load started in
+// g_loadable_icon_load_async().
+//
+// The function takes the following parameters:
+//
+//    - res: Result.
+//
+// The function returns the following values:
+//
+//    - typ (optional): location to store the type of the loaded icon, NULL to
+//      ignore.
+//    - inputStream to read the icon from.
+//
+func (icon *LoadableIcon) loadFinish(res AsyncResulter) (string, InputStreamer, error) {
+	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
+	fnarg := gclass.load_finish
+
+	var _arg0 *C.GLoadableIcon // out
+	var _arg1 *C.GAsyncResult  // out
+	var _arg2 *C.char          // in
+	var _cret *C.GInputStream  // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	_cret = C._gotk4_gio2_LoadableIcon_virtual_load_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(res)
 

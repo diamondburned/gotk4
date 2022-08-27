@@ -13,11 +13,17 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_CellEditableIface_editing_done(GtkCellEditable*);
-// extern void _gotk4_gtk4_CellEditableIface_remove_widget(GtkCellEditable*);
-// extern void _gotk4_gtk4_CellEditableIface_start_editing(GtkCellEditable*, GdkEvent*);
-// extern void _gotk4_gtk4_CellEditable_ConnectEditingDone(gpointer, guintptr);
 // extern void _gotk4_gtk4_CellEditable_ConnectRemoveWidget(gpointer, guintptr);
+// extern void _gotk4_gtk4_CellEditable_ConnectEditingDone(gpointer, guintptr);
+// void _gotk4_gtk4_CellEditable_virtual_editing_done(void* fnptr, GtkCellEditable* arg0) {
+//   ((void (*)(GtkCellEditable*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_CellEditable_virtual_remove_widget(void* fnptr, GtkCellEditable* arg0) {
+//   ((void (*)(GtkCellEditable*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_CellEditable_virtual_start_editing(void* fnptr, GtkCellEditable* arg0, GdkEvent* arg1) {
+//   ((void (*)(GtkCellEditable*, GdkEvent*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -29,33 +35,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeCellEditable, F: marshalCellEditable},
 	})
-}
-
-// CellEditableOverrider contains methods that are overridable.
-type CellEditableOverrider interface {
-	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone()
-	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget()
-	// StartEditing begins editing on a cell_editable.
-	//
-	// The CellRenderer for the cell creates and returns a CellEditable from
-	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-	//
-	// gtk_cell_editable_start_editing() can then set up cell_editable suitably
-	// for editing a cell, e.g. making the Esc key emit
-	// CellEditable::editing-done.
-	//
-	// Note that the cell_editable is created on-demand for the current edit;
-	// its lifetime is temporary and does not persist across other edits and/or
-	// cells.
-	//
-	// The function takes the following parameters:
-	//
-	//    - event (optional) that began the editing process, or NULL if editing
-	//      was initiated programmatically.
-	//
-	StartEditing(event gdk.Eventer)
 }
 
 // CellEditable: interface for widgets that can be used for editing cells
@@ -97,56 +76,6 @@ type CellEditabler interface {
 
 var _ CellEditabler = (*CellEditable)(nil)
 
-func ifaceInitCellEditabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkCellEditableIface)(unsafe.Pointer(gifacePtr))
-	iface.editing_done = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_editing_done)
-	iface.remove_widget = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_remove_widget)
-	iface.start_editing = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_start_editing)
-}
-
-//export _gotk4_gtk4_CellEditableIface_editing_done
-func _gotk4_gtk4_CellEditableIface_editing_done(arg0 *C.GtkCellEditable) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellEditableOverrider)
-
-	iface.EditingDone()
-}
-
-//export _gotk4_gtk4_CellEditableIface_remove_widget
-func _gotk4_gtk4_CellEditableIface_remove_widget(arg0 *C.GtkCellEditable) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellEditableOverrider)
-
-	iface.RemoveWidget()
-}
-
-//export _gotk4_gtk4_CellEditableIface_start_editing
-func _gotk4_gtk4_CellEditableIface_start_editing(arg0 *C.GtkCellEditable, arg1 *C.GdkEvent) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellEditableOverrider)
-
-	var _event gdk.Eventer // out
-
-	if arg1 != nil {
-		{
-			objptr := unsafe.Pointer(arg1)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(gdk.Eventer)
-				return ok
-			})
-			rv, ok := casted.(gdk.Eventer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
-			}
-			_event = rv
-		}
-	}
-
-	iface.StartEditing(_event)
-}
-
 func wrapCellEditable(obj *coreglib.Object) *CellEditable {
 	return &CellEditable{
 		Widget: Widget{
@@ -171,22 +100,6 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 	return wrapCellEditable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_CellEditable_ConnectEditingDone
-func _gotk4_gtk4_CellEditable_ConnectEditingDone(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectEditingDone: this signal is a sign for the cell renderer to update its
 // value from the cell_editable.
 //
@@ -200,22 +113,6 @@ func _gotk4_gtk4_CellEditable_ConnectEditingDone(arg0 C.gpointer, arg1 C.guintpt
 // CellEditable::editing-done.
 func (cellEditable *CellEditable) ConnectEditingDone(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(cellEditable, "editing-done", false, unsafe.Pointer(C._gotk4_gtk4_CellEditable_ConnectEditingDone), f)
-}
-
-//export _gotk4_gtk4_CellEditable_ConnectRemoveWidget
-func _gotk4_gtk4_CellEditable_ConnectRemoveWidget(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectRemoveWidget: this signal is meant to indicate that the cell is
@@ -279,6 +176,65 @@ func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	}
 
 	C.gtk_cell_editable_start_editing(_arg0, _arg1)
+	runtime.KeepAlive(cellEditable)
+	runtime.KeepAlive(event)
+}
+
+// editingDone emits the CellEditable::editing-done signal.
+func (cellEditable *CellEditable) editingDone() {
+	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))
+	fnarg := gclass.editing_done
+
+	var _arg0 *C.GtkCellEditable // out
+
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+
+	C._gotk4_gtk4_CellEditable_virtual_editing_done(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cellEditable)
+}
+
+// removeWidget emits the CellEditable::remove-widget signal.
+func (cellEditable *CellEditable) removeWidget() {
+	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))
+	fnarg := gclass.remove_widget
+
+	var _arg0 *C.GtkCellEditable // out
+
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+
+	C._gotk4_gtk4_CellEditable_virtual_remove_widget(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cellEditable)
+}
+
+// startEditing begins editing on a cell_editable.
+//
+// The CellRenderer for the cell creates and returns a CellEditable from
+// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
+//
+// gtk_cell_editable_start_editing() can then set up cell_editable suitably for
+// editing a cell, e.g. making the Esc key emit CellEditable::editing-done.
+//
+// Note that the cell_editable is created on-demand for the current edit; its
+// lifetime is temporary and does not persist across other edits and/or cells.
+//
+// The function takes the following parameters:
+//
+//    - event (optional) that began the editing process, or NULL if editing was
+//      initiated programmatically.
+//
+func (cellEditable *CellEditable) startEditing(event gdk.Eventer) {
+	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))
+	fnarg := gclass.start_editing
+
+	var _arg0 *C.GtkCellEditable // out
+	var _arg1 *C.GdkEvent        // out
+
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	if event != nil {
+		_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+	}
+
+	C._gotk4_gtk4_CellEditable_virtual_start_editing(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)
 }

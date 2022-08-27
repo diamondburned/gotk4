@@ -4,7 +4,6 @@ package gio
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -27,8 +26,12 @@ func init() {
 	})
 }
 
-// ZlibDecompressorOverrider contains methods that are overridable.
-type ZlibDecompressorOverrider interface {
+// ZlibDecompressorOverrides contains methods that are overridable.
+type ZlibDecompressorOverrides struct {
+}
+
+func defaultZlibDecompressorOverrides(v *ZlibDecompressor) ZlibDecompressorOverrides {
+	return ZlibDecompressorOverrides{}
 }
 
 // ZlibDecompressor: zlib decompression.
@@ -44,25 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeZlibDecompressor,
-		GoType:        reflect.TypeOf((*ZlibDecompressor)(nil)),
-		InitClass:     initClassZlibDecompressor,
-		FinalizeClass: finalizeClassZlibDecompressor,
-	})
+	coreglib.RegisterClassInfo[*ZlibDecompressor, *ZlibDecompressorClass, ZlibDecompressorOverrides](
+		GTypeZlibDecompressor,
+		initZlibDecompressorClass,
+		wrapZlibDecompressor,
+		defaultZlibDecompressorOverrides,
+	)
 }
 
-func initClassZlibDecompressor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitZlibDecompressor(*ZlibDecompressorClass) }); ok {
-		klass := (*ZlibDecompressorClass)(gextras.NewStructNative(gclass))
-		goval.InitZlibDecompressor(klass)
-	}
-}
-
-func finalizeClassZlibDecompressor(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeZlibDecompressor(*ZlibDecompressorClass) }); ok {
-		klass := (*ZlibDecompressorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeZlibDecompressor(klass)
+func initZlibDecompressorClass(gclass unsafe.Pointer, overrides ZlibDecompressorOverrides, classInitFunc func(*ZlibDecompressorClass)) {
+	if classInitFunc != nil {
+		class := (*ZlibDecompressorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -77,60 +73,6 @@ func wrapZlibDecompressor(obj *coreglib.Object) *ZlibDecompressor {
 
 func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	return wrapZlibDecompressor(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewZlibDecompressor creates a new Decompressor.
-//
-// The function takes the following parameters:
-//
-//    - format to use for the compressed data.
-//
-// The function returns the following values:
-//
-//    - zlibDecompressor: new Decompressor.
-//
-func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
-	var _arg1 C.GZlibCompressorFormat // out
-	var _cret *C.GZlibDecompressor    // in
-
-	_arg1 = C.GZlibCompressorFormat(format)
-
-	_cret = C.g_zlib_decompressor_new(_arg1)
-	runtime.KeepAlive(format)
-
-	var _zlibDecompressor *ZlibDecompressor // out
-
-	_zlibDecompressor = wrapZlibDecompressor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _zlibDecompressor
-}
-
-// FileInfo retrieves the Info constructed from the GZIP header data of
-// compressed data processed by compressor, or NULL if decompressor's
-// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
-// header data was not fully processed yet, or it not present in the data stream
-// at all.
-//
-// The function returns the following values:
-//
-//    - fileInfo (optional) or NULL.
-//
-func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
-	var _arg0 *C.GZlibDecompressor // out
-	var _cret *C.GFileInfo         // in
-
-	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(coreglib.InternObject(decompressor).Native()))
-
-	_cret = C.g_zlib_decompressor_get_file_info(_arg0)
-	runtime.KeepAlive(decompressor)
-
-	var _fileInfo *FileInfo // out
-
-	if _cret != nil {
-		_fileInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _fileInfo
 }
 
 // ZlibDecompressorClass: instance of this type is always passed by reference.

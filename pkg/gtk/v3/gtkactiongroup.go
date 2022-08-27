@@ -4,10 +4,8 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -17,13 +15,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern GtkAction* _gotk4_gtk3_ActionGroupClass_get_action(GtkActionGroup*, gchar*);
-// extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
-// extern void _gotk4_gtk3_ActionGroup_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_ActionGroup_ConnectPostActivate(gpointer, GtkAction*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectPreActivate(gpointer, GtkAction*, guintptr);
-// extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk3_ActionGroup_ConnectPostActivate(gpointer, GtkAction*, guintptr);
+// extern void _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_ActionGroup_ConnectConnectProxy(gpointer, GtkAction*, GtkWidget*, guintptr);
+// extern GtkAction* _gotk4_gtk3_ActionGroupClass_get_action(GtkActionGroup*, gchar*);
 import "C"
 
 // GType values.
@@ -37,8 +33,8 @@ func init() {
 	})
 }
 
-// ActionGroupOverrider contains methods that are overridable.
-type ActionGroupOverrider interface {
+// ActionGroupOverrides contains methods that are overridable.
+type ActionGroupOverrides struct {
 	// Action looks up an action in the action group by name.
 	//
 	// Deprecated: since version 3.10.
@@ -51,7 +47,13 @@ type ActionGroupOverrider interface {
 	//
 	//    - action: action, or NULL if no action by that name exists.
 	//
-	Action(actionName string) *Action
+	Action func(actionName string) *Action
+}
+
+func defaultActionGroupOverrides(v *ActionGroup) ActionGroupOverrides {
+	return ActionGroupOverrides{
+		Action: v.action,
+	}
 }
 
 // ActionGroup actions are organised into groups. An action group is essentially
@@ -115,52 +117,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeActionGroup,
-		GoType:        reflect.TypeOf((*ActionGroup)(nil)),
-		InitClass:     initClassActionGroup,
-		FinalizeClass: finalizeClassActionGroup,
-	})
+	coreglib.RegisterClassInfo[*ActionGroup, *ActionGroupClass, ActionGroupOverrides](
+		GTypeActionGroup,
+		initActionGroupClass,
+		wrapActionGroup,
+		defaultActionGroupOverrides,
+	)
 }
 
-func initClassActionGroup(gclass unsafe.Pointer, goval any) {
+func initActionGroupClass(gclass unsafe.Pointer, overrides ActionGroupOverrides, classInitFunc func(*ActionGroupClass)) {
+	pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeActionGroup))))
 
-	pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Action(actionName string) *Action
-	}); ok {
+	if overrides.Action != nil {
 		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_ActionGroupClass_get_action)
 	}
-	if goval, ok := goval.(interface{ InitActionGroup(*ActionGroupClass) }); ok {
-		klass := (*ActionGroupClass)(gextras.NewStructNative(gclass))
-		goval.InitActionGroup(klass)
+
+	if classInitFunc != nil {
+		class := (*ActionGroupClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassActionGroup(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeActionGroup(*ActionGroupClass) }); ok {
-		klass := (*ActionGroupClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeActionGroup(klass)
-	}
-}
-
-//export _gotk4_gtk3_ActionGroupClass_get_action
-func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.GtkActionGroup, arg1 *C.gchar) (cret *C.GtkAction) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Action(actionName string) *Action
-	})
-
-	var _actionName string // out
-
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	action := iface.Action(_actionName)
-
-	cret = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	return cret
 }
 
 func wrapActionGroup(obj *coreglib.Object) *ActionGroup {
@@ -176,44 +151,6 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 	return wrapActionGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_ActionGroup_ConnectConnectProxy
-func _gotk4_gtk3_ActionGroup_ConnectConnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
-	var f func(action *Action, proxy Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action, proxy Widgetter))
-	}
-
-	var _action *Action  // out
-	var _proxy Widgetter // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_proxy = rv
-	}
-
-	f(_action, _proxy)
-}
-
 // ConnectConnectProxy signal is emitted after connecting a proxy to an action
 // in the group. Note that the proxy may have been connected to a different
 // action before.
@@ -227,44 +164,6 @@ func (actionGroup *ActionGroup) ConnectConnectProxy(f func(action *Action, proxy
 	return coreglib.ConnectGeneratedClosure(actionGroup, "connect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectConnectProxy), f)
 }
 
-//export _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy
-func _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.GtkAction, arg2 *C.GtkWidget, arg3 C.guintptr) {
-	var f func(action *Action, proxy Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action, proxy Widgetter))
-	}
-
-	var _action *Action  // out
-	var _proxy Widgetter // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_proxy = rv
-	}
-
-	f(_action, _proxy)
-}
-
 // ConnectDisconnectProxy signal is emitted after disconnecting a proxy from an
 // action in the group.
 //
@@ -272,26 +171,6 @@ func _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(arg0 C.gpointer, arg1 *C.Gtk
 // action is connected to a proxy, which is probably more convenient to use.
 func (actionGroup *ActionGroup) ConnectDisconnectProxy(f func(action *Action, proxy Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(actionGroup, "disconnect-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectDisconnectProxy), f)
-}
-
-//export _gotk4_gtk3_ActionGroup_ConnectPostActivate
-func _gotk4_gtk3_ActionGroup_ConnectPostActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
-	var f func(action *Action)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action))
-	}
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_action)
 }
 
 // ConnectPostActivate signal is emitted just after the action in the
@@ -303,26 +182,6 @@ func (actionGroup *ActionGroup) ConnectPostActivate(f func(action *Action)) core
 	return coreglib.ConnectGeneratedClosure(actionGroup, "post-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPostActivate), f)
 }
 
-//export _gotk4_gtk3_ActionGroup_ConnectPreActivate
-func _gotk4_gtk3_ActionGroup_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkAction, arg2 C.guintptr) {
-	var f func(action *Action)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(action *Action))
-	}
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_action)
-}
-
 // ConnectPreActivate signal is emitted just before the action in the
 // action_group is activated
 //
@@ -330,441 +189,6 @@ func _gotk4_gtk3_ActionGroup_ConnectPreActivate(arg0 C.gpointer, arg1 *C.GtkActi
 // notification just before any action is activated.
 func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(actionGroup, "pre-activate", false, unsafe.Pointer(C._gotk4_gtk3_ActionGroup_ConnectPreActivate), f)
-}
-
-// NewActionGroup creates a new ActionGroup object. The name of the action group
-// is used when associating [keybindings][Action-Accel] with the actions.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - name of the action group.
-//
-// The function returns the following values:
-//
-//    - actionGroup: new ActionGroup.
-//
-func NewActionGroup(name string) *ActionGroup {
-	var _arg1 *C.gchar          // out
-	var _cret *C.GtkActionGroup // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_action_group_new(_arg1)
-	runtime.KeepAlive(name)
-
-	var _actionGroup *ActionGroup // out
-
-	_actionGroup = wrapActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _actionGroup
-}
-
-// AddAction adds an action object to the action group. Note that this function
-// does not set up the accel path of the action, which can lead to problems if a
-// user tries to modify the accelerator of a menuitem associated with the
-// action. Therefore you must either set the accel path yourself with
-// gtk_action_set_accel_path(), or use gtk_action_group_add_action_with_accel
-// (..., NULL).
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - action: action.
-//
-func (actionGroup *ActionGroup) AddAction(action *Action) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAction      // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	C.gtk_action_group_add_action(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(action)
-}
-
-// AddActionWithAccel adds an action object to the action group and sets up the
-// accelerator.
-//
-// If accelerator is NULL, attempts to use the accelerator associated with the
-// stock_id of the action.
-//
-// Accel paths are set to <Actions>/group-name/action-name.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - action to add.
-//    - accelerator (optional) for the action, in the format understood by
-//      gtk_accelerator_parse(), or "" for no accelerator, or NULL to use the
-//      stock accelerator.
-//
-func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator string) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAction      // out
-	var _arg2 *C.gchar          // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	if accelerator != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-
-	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(action)
-	runtime.KeepAlive(accelerator)
-}
-
-// AccelGroup gets the accelerator group.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - accelGroup: accelerator group associated with this action group or NULL
-//      if there is none.
-//
-func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret *C.GtkAccelGroup  // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	_cret = C.gtk_action_group_get_accel_group(_arg0)
-	runtime.KeepAlive(actionGroup)
-
-	var _accelGroup *AccelGroup // out
-
-	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _accelGroup
-}
-
-// Action looks up an action in the action group by name.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - actionName: name of the action.
-//
-// The function returns the following values:
-//
-//    - action: action, or NULL if no action by that name exists.
-//
-func (actionGroup *ActionGroup) Action(actionName string) *Action {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.gchar          // out
-	var _cret *C.GtkAction      // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_action_group_get_action(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(actionName)
-
-	var _action *Action // out
-
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _action
-}
-
-// Name gets the name of the action group.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - utf8: name of the action group.
-//
-func (actionGroup *ActionGroup) Name() string {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret *C.gchar          // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	_cret = C.gtk_action_group_get_name(_arg0)
-	runtime.KeepAlive(actionGroup)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// Sensitive returns TRUE if the group is sensitive. The constituent actions can
-// only be logically sensitive (see gtk_action_is_sensitive()) if they are
-// sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the group is sensitive.
-//
-func (actionGroup *ActionGroup) Sensitive() bool {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	_cret = C.gtk_action_group_get_sensitive(_arg0)
-	runtime.KeepAlive(actionGroup)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Visible returns TRUE if the group is visible. The constituent actions can
-// only be logically visible (see gtk_action_is_visible()) if they are visible
-// (see gtk_action_get_visible()) and their group is visible.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the group is visible.
-//
-func (actionGroup *ActionGroup) Visible() bool {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	_cret = C.gtk_action_group_get_visible(_arg0)
-	runtime.KeepAlive(actionGroup)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ListActions lists the actions in the action group.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - list: allocated list of the action objects in the action group.
-//
-func (actionGroup *ActionGroup) ListActions() []*Action {
-	var _arg0 *C.GtkActionGroup // out
-	var _cret *C.GList          // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	_cret = C.gtk_action_group_list_actions(_arg0)
-	runtime.KeepAlive(actionGroup)
-
-	var _list []*Action // out
-
-	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkAction)(v)
-		var dst *Action // out
-		dst = wrapAction(coreglib.Take(unsafe.Pointer(src)))
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
-// RemoveAction removes an action object from the action group.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - action: action.
-//
-func (actionGroup *ActionGroup) RemoveAction(action *Action) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAction      // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.GtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	C.gtk_action_group_remove_action(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(action)
-}
-
-// SetAccelGroup sets the accelerator group to be used by every action in this
-// group.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - accelGroup (optional) to set or NULL.
-//
-func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.GtkAccelGroup  // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	if accelGroup != nil {
-		_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
-	}
-
-	C.gtk_action_group_set_accel_group(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(accelGroup)
-}
-
-// SetSensitive changes the sensitivity of action_group
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - sensitive: new sensitivity.
-//
-func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 C.gboolean        // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	if sensitive {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_action_group_set_sensitive(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(sensitive)
-}
-
-// SetTranslateFunc sets a function to be used for translating the label and
-// tooltip of ActionEntrys added by gtk_action_group_add_actions().
-//
-// If you’re using gettext(), it is enough to set the translation domain with
-// gtk_action_group_set_translation_domain().
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - fn: TranslateFunc.
-//
-func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
-	var _arg0 *C.GtkActionGroup  // out
-	var _arg1 C.GtkTranslateFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.gtk_action_group_set_translate_func(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(fn)
-}
-
-// SetTranslationDomain sets the translation domain and uses g_dgettext() for
-// translating the label and tooltip of ActionEntrys added by
-// gtk_action_group_add_actions().
-//
-// If you’re not using gettext() for localization, see
-// gtk_action_group_set_translate_func().
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - domain (optional): translation domain to use for g_dgettext() calls, or
-//      NULL to use the domain set with textdomain().
-//
-func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.gchar          // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	if domain != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(domain)
-}
-
-// SetVisible changes the visible of action_group.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - visible: new visiblity.
-//
-func (actionGroup *ActionGroup) SetVisible(visible bool) {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 C.gboolean        // out
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	if visible {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_action_group_set_visible(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(visible)
-}
-
-// TranslateString translates a string using the function set with
-// gtk_action_group_set_translate_func(). This is mainly intended for language
-// bindings.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - str: string.
-//
-// The function returns the following values:
-//
-//    - utf8: translation of string.
-//
-func (actionGroup *ActionGroup) TranslateString(str string) string {
-	var _arg0 *C.GtkActionGroup // out
-	var _arg1 *C.gchar          // out
-	var _cret *C.gchar          // in
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
-	runtime.KeepAlive(actionGroup)
-	runtime.KeepAlive(str)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
 }
 
 // ActionEntry structs are used with gtk_action_group_add_actions() to construct

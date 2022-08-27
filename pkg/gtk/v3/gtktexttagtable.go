@@ -17,13 +17,22 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_TextTagTableClass_tag_added(GtkTextTagTable*, GtkTextTag*);
-// extern void _gotk4_gtk3_TextTagTableClass_tag_changed(GtkTextTagTable*, GtkTextTag*, gboolean);
-// extern void _gotk4_gtk3_TextTagTableClass_tag_removed(GtkTextTagTable*, GtkTextTag*);
-// extern void _gotk4_gtk3_TextTagTableForEach(GtkTextTag*, gpointer);
-// extern void _gotk4_gtk3_TextTagTable_ConnectTagAdded(gpointer, GtkTextTag*, guintptr);
-// extern void _gotk4_gtk3_TextTagTable_ConnectTagChanged(gpointer, GtkTextTag*, gboolean, guintptr);
 // extern void _gotk4_gtk3_TextTagTable_ConnectTagRemoved(gpointer, GtkTextTag*, guintptr);
+// extern void _gotk4_gtk3_TextTagTable_ConnectTagChanged(gpointer, GtkTextTag*, gboolean, guintptr);
+// extern void _gotk4_gtk3_TextTagTable_ConnectTagAdded(gpointer, GtkTextTag*, guintptr);
+// extern void _gotk4_gtk3_TextTagTableForEach(GtkTextTag*, gpointer);
+// extern void _gotk4_gtk3_TextTagTableClass_tag_removed(GtkTextTagTable*, GtkTextTag*);
+// extern void _gotk4_gtk3_TextTagTableClass_tag_changed(GtkTextTagTable*, GtkTextTag*, gboolean);
+// extern void _gotk4_gtk3_TextTagTableClass_tag_added(GtkTextTagTable*, GtkTextTag*);
+// void _gotk4_gtk3_TextTagTable_virtual_tag_added(void* fnptr, GtkTextTagTable* arg0, GtkTextTag* arg1) {
+//   ((void (*)(GtkTextTagTable*, GtkTextTag*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_TextTagTable_virtual_tag_changed(void* fnptr, GtkTextTagTable* arg0, GtkTextTag* arg1, gboolean arg2) {
+//   ((void (*)(GtkTextTagTable*, GtkTextTag*, gboolean))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_TextTagTable_virtual_tag_removed(void* fnptr, GtkTextTagTable* arg0, GtkTextTag* arg1) {
+//   ((void (*)(GtkTextTagTable*, GtkTextTag*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -39,38 +48,28 @@ func init() {
 
 type TextTagTableForEach func(tag *TextTag)
 
-//export _gotk4_gtk3_TextTagTableForEach
-func _gotk4_gtk3_TextTagTableForEach(arg1 *C.GtkTextTag, arg2 C.gpointer) {
-	var fn TextTagTableForEach
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TextTagTableForEach)
-	}
-
-	var _tag *TextTag // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-
-	fn(_tag)
-}
-
-// TextTagTableOverrider contains methods that are overridable.
-type TextTagTableOverrider interface {
+// TextTagTableOverrides contains methods that are overridable.
+type TextTagTableOverrides struct {
 	// The function takes the following parameters:
 	//
-	TagAdded(tag *TextTag)
+	TagAdded func(tag *TextTag)
 	// The function takes the following parameters:
 	//
 	//    - tag
 	//    - sizeChanged
 	//
-	TagChanged(tag *TextTag, sizeChanged bool)
+	TagChanged func(tag *TextTag, sizeChanged bool)
 	// The function takes the following parameters:
 	//
-	TagRemoved(tag *TextTag)
+	TagRemoved func(tag *TextTag)
+}
+
+func defaultTextTagTableOverrides(v *TextTagTable) TextTagTableOverrides {
+	return TextTagTableOverrides{
+		TagAdded:   v.tagAdded,
+		TagChanged: v.tagChanged,
+		TagRemoved: v.tagRemoved,
+	}
 }
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
@@ -102,84 +101,33 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextTagTable,
-		GoType:        reflect.TypeOf((*TextTagTable)(nil)),
-		InitClass:     initClassTextTagTable,
-		FinalizeClass: finalizeClassTextTagTable,
-	})
+	coreglib.RegisterClassInfo[*TextTagTable, *TextTagTableClass, TextTagTableOverrides](
+		GTypeTextTagTable,
+		initTextTagTableClass,
+		wrapTextTagTable,
+		defaultTextTagTableOverrides,
+	)
 }
 
-func initClassTextTagTable(gclass unsafe.Pointer, goval any) {
+func initTextTagTableClass(gclass unsafe.Pointer, overrides TextTagTableOverrides, classInitFunc func(*TextTagTableClass)) {
+	pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTextTagTable))))
 
-	pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ TagAdded(tag *TextTag) }); ok {
+	if overrides.TagAdded != nil {
 		pclass.tag_added = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_added)
 	}
 
-	if _, ok := goval.(interface {
-		TagChanged(tag *TextTag, sizeChanged bool)
-	}); ok {
+	if overrides.TagChanged != nil {
 		pclass.tag_changed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_changed)
 	}
 
-	if _, ok := goval.(interface{ TagRemoved(tag *TextTag) }); ok {
+	if overrides.TagRemoved != nil {
 		pclass.tag_removed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_removed)
 	}
-	if goval, ok := goval.(interface{ InitTextTagTable(*TextTagTableClass) }); ok {
-		klass := (*TextTagTableClass)(gextras.NewStructNative(gclass))
-		goval.InitTextTagTable(klass)
+
+	if classInitFunc != nil {
+		class := (*TextTagTableClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassTextTagTable(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextTagTable(*TextTagTableClass) }); ok {
-		klass := (*TextTagTableClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextTagTable(klass)
-	}
-}
-
-//export _gotk4_gtk3_TextTagTableClass_tag_added
-func _gotk4_gtk3_TextTagTableClass_tag_added(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ TagAdded(tag *TextTag) })
-
-	var _tag *TextTag // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.TagAdded(_tag)
-}
-
-//export _gotk4_gtk3_TextTagTableClass_tag_changed
-func _gotk4_gtk3_TextTagTableClass_tag_changed(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag, arg2 C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		TagChanged(tag *TextTag, sizeChanged bool)
-	})
-
-	var _tag *TextTag     // out
-	var _sizeChanged bool // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-	if arg2 != 0 {
-		_sizeChanged = true
-	}
-
-	iface.TagChanged(_tag, _sizeChanged)
-}
-
-//export _gotk4_gtk3_TextTagTableClass_tag_removed
-func _gotk4_gtk3_TextTagTableClass_tag_removed(arg0 *C.GtkTextTagTable, arg1 *C.GtkTextTag) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ TagRemoved(tag *TextTag) })
-
-	var _tag *TextTag // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.TagRemoved(_tag)
 }
 
 func wrapTextTagTable(obj *coreglib.Object) *TextTagTable {
@@ -195,76 +143,12 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return wrapTextTagTable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_TextTagTable_ConnectTagAdded
-func _gotk4_gtk3_TextTagTable_ConnectTagAdded(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 C.guintptr) {
-	var f func(tag *TextTag)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tag *TextTag))
-	}
-
-	var _tag *TextTag // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_tag)
-}
-
 func (table *TextTagTable) ConnectTagAdded(f func(tag *TextTag)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "tag-added", false, unsafe.Pointer(C._gotk4_gtk3_TextTagTable_ConnectTagAdded), f)
 }
 
-//export _gotk4_gtk3_TextTagTable_ConnectTagChanged
-func _gotk4_gtk3_TextTagTable_ConnectTagChanged(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 C.gboolean, arg3 C.guintptr) {
-	var f func(tag *TextTag, sizeChanged bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tag *TextTag, sizeChanged bool))
-	}
-
-	var _tag *TextTag     // out
-	var _sizeChanged bool // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-	if arg2 != 0 {
-		_sizeChanged = true
-	}
-
-	f(_tag, _sizeChanged)
-}
-
 func (table *TextTagTable) ConnectTagChanged(f func(tag *TextTag, sizeChanged bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(table, "tag-changed", false, unsafe.Pointer(C._gotk4_gtk3_TextTagTable_ConnectTagChanged), f)
-}
-
-//export _gotk4_gtk3_TextTagTable_ConnectTagRemoved
-func _gotk4_gtk3_TextTagTable_ConnectTagRemoved(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 C.guintptr) {
-	var f func(tag *TextTag)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tag *TextTag))
-	}
-
-	var _tag *TextTag // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_tag)
 }
 
 func (table *TextTagTable) ConnectTagRemoved(f func(tag *TextTag)) coreglib.SignalHandle {
@@ -418,6 +302,65 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
 	C.gtk_text_tag_table_remove(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(tag)
+}
+
+// The function takes the following parameters:
+//
+func (table *TextTagTable) tagAdded(tag *TextTag) {
+	gclass := (*C.GtkTextTagTableClass)(coreglib.PeekParentClass(table))
+	fnarg := gclass.tag_added
+
+	var _arg0 *C.GtkTextTagTable // out
+	var _arg1 *C.GtkTextTag      // out
+
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+
+	C._gotk4_gtk3_TextTagTable_virtual_tag_added(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(tag)
+}
+
+// The function takes the following parameters:
+//
+//    - tag
+//    - sizeChanged
+//
+func (table *TextTagTable) tagChanged(tag *TextTag, sizeChanged bool) {
+	gclass := (*C.GtkTextTagTableClass)(coreglib.PeekParentClass(table))
+	fnarg := gclass.tag_changed
+
+	var _arg0 *C.GtkTextTagTable // out
+	var _arg1 *C.GtkTextTag      // out
+	var _arg2 C.gboolean         // out
+
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	if sizeChanged {
+		_arg2 = C.TRUE
+	}
+
+	C._gotk4_gtk3_TextTagTable_virtual_tag_changed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(sizeChanged)
+}
+
+// The function takes the following parameters:
+//
+func (table *TextTagTable) tagRemoved(tag *TextTag) {
+	gclass := (*C.GtkTextTagTableClass)(coreglib.PeekParentClass(table))
+	fnarg := gclass.tag_removed
+
+	var _arg0 *C.GtkTextTagTable // out
+	var _arg1 *C.GtkTextTag      // out
+
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+
+	C._gotk4_gtk3_TextTagTable_virtual_tag_removed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)
 }

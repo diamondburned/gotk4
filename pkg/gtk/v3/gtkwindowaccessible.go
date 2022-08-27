@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// WindowAccessibleOverrider contains methods that are overridable.
-type WindowAccessibleOverrider interface {
+// WindowAccessibleOverrides contains methods that are overridable.
+type WindowAccessibleOverrides struct {
+}
+
+func defaultWindowAccessibleOverrides(v *WindowAccessible) WindowAccessibleOverrides {
+	return WindowAccessibleOverrides{}
 }
 
 type WindowAccessible struct {
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWindowAccessible,
-		GoType:        reflect.TypeOf((*WindowAccessible)(nil)),
-		InitClass:     initClassWindowAccessible,
-		FinalizeClass: finalizeClassWindowAccessible,
-	})
+	coreglib.RegisterClassInfo[*WindowAccessible, *WindowAccessibleClass, WindowAccessibleOverrides](
+		GTypeWindowAccessible,
+		initWindowAccessibleClass,
+		wrapWindowAccessible,
+		defaultWindowAccessibleOverrides,
+	)
 }
 
-func initClassWindowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitWindowAccessible(*WindowAccessibleClass) }); ok {
-		klass := (*WindowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitWindowAccessible(klass)
-	}
-}
-
-func finalizeClassWindowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWindowAccessible(*WindowAccessibleClass) }); ok {
-		klass := (*WindowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWindowAccessible(klass)
+func initWindowAccessibleClass(gclass unsafe.Pointer, overrides WindowAccessibleOverrides, classInitFunc func(*WindowAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*WindowAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

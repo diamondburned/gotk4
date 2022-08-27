@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// MultiSorterOverrider contains methods that are overridable.
-type MultiSorterOverrider interface {
+// MultiSorterOverrides contains methods that are overridable.
+type MultiSorterOverrides struct {
+}
+
+func defaultMultiSorterOverrides(v *MultiSorter) MultiSorterOverrides {
+	return MultiSorterOverrides{}
 }
 
 // MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.
@@ -50,25 +54,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMultiSorter,
-		GoType:        reflect.TypeOf((*MultiSorter)(nil)),
-		InitClass:     initClassMultiSorter,
-		FinalizeClass: finalizeClassMultiSorter,
-	})
+	coreglib.RegisterClassInfo[*MultiSorter, *MultiSorterClass, MultiSorterOverrides](
+		GTypeMultiSorter,
+		initMultiSorterClass,
+		wrapMultiSorter,
+		defaultMultiSorterOverrides,
+	)
 }
 
-func initClassMultiSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMultiSorter(*MultiSorterClass) }); ok {
-		klass := (*MultiSorterClass)(gextras.NewStructNative(gclass))
-		goval.InitMultiSorter(klass)
-	}
-}
-
-func finalizeClassMultiSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMultiSorter(*MultiSorterClass) }); ok {
-		klass := (*MultiSorterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMultiSorter(klass)
+func initMultiSorterClass(gclass unsafe.Pointer, overrides MultiSorterOverrides, classInitFunc func(*MultiSorterClass)) {
+	if classInitFunc != nil {
+		class := (*MultiSorterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

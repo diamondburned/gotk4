@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// NumericSorterOverrider contains methods that are overridable.
-type NumericSorterOverrider interface {
+// NumericSorterOverrides contains methods that are overridable.
+type NumericSorterOverrides struct {
+}
+
+func defaultNumericSorterOverrides(v *NumericSorter) NumericSorterOverrides {
+	return NumericSorterOverrides{}
 }
 
 // NumericSorter: GtkNumericSorter is a GtkSorter that compares numbers.
@@ -44,25 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNumericSorter,
-		GoType:        reflect.TypeOf((*NumericSorter)(nil)),
-		InitClass:     initClassNumericSorter,
-		FinalizeClass: finalizeClassNumericSorter,
-	})
+	coreglib.RegisterClassInfo[*NumericSorter, *NumericSorterClass, NumericSorterOverrides](
+		GTypeNumericSorter,
+		initNumericSorterClass,
+		wrapNumericSorter,
+		defaultNumericSorterOverrides,
+	)
 }
 
-func initClassNumericSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitNumericSorter(*NumericSorterClass) }); ok {
-		klass := (*NumericSorterClass)(gextras.NewStructNative(gclass))
-		goval.InitNumericSorter(klass)
-	}
-}
-
-func finalizeClassNumericSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeNumericSorter(*NumericSorterClass) }); ok {
-		klass := (*NumericSorterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNumericSorter(klass)
+func initNumericSorterClass(gclass unsafe.Pointer, overrides NumericSorterOverrides, classInitFunc func(*NumericSorterClass)) {
+	if classInitFunc != nil {
+		class := (*NumericSorterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

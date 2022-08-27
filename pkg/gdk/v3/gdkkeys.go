@@ -14,9 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk3_Keymap_ConnectDirectionChanged(gpointer, guintptr);
-// extern void _gotk4_gdk3_Keymap_ConnectKeysChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Keymap_ConnectKeysChanged(gpointer, guintptr);
+// extern void _gotk4_gdk3_Keymap_ConnectDirectionChanged(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -316,42 +316,10 @@ func marshalKeymap(p uintptr) (interface{}, error) {
 	return wrapKeymap(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdk3_Keymap_ConnectDirectionChanged
-func _gotk4_gdk3_Keymap_ConnectDirectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectDirectionChanged signal gets emitted when the direction of the keymap
 // changes.
 func (keymap *Keymap) ConnectDirectionChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(keymap, "direction-changed", false, unsafe.Pointer(C._gotk4_gdk3_Keymap_ConnectDirectionChanged), f)
-}
-
-//export _gotk4_gdk3_Keymap_ConnectKeysChanged
-func _gotk4_gdk3_Keymap_ConnectKeysChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectKeysChanged signal is emitted when the mapping represented by keymap
@@ -360,50 +328,10 @@ func (keymap *Keymap) ConnectKeysChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(keymap, "keys-changed", false, unsafe.Pointer(C._gotk4_gdk3_Keymap_ConnectKeysChanged), f)
 }
 
-//export _gotk4_gdk3_Keymap_ConnectStateChanged
-func _gotk4_gdk3_Keymap_ConnectStateChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectStateChanged signal is emitted when the state of the keyboard changes,
 // e.g when Caps Lock is turned on or off. See gdk_keymap_get_caps_lock_state().
 func (keymap *Keymap) ConnectStateChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(keymap, "state-changed", false, unsafe.Pointer(C._gotk4_gdk3_Keymap_ConnectStateChanged), f)
-}
-
-// CapsLockState returns whether the Caps Lock modifer is locked.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if Caps Lock is on.
-//
-func (keymap *Keymap) CapsLockState() bool {
-	var _arg0 *C.GdkKeymap // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-
-	_cret = C.gdk_keymap_get_caps_lock_state(_arg0)
-	runtime.KeepAlive(keymap)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Direction returns the direction of effective layout of the keymap.
@@ -554,137 +482,6 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	return _keys, _ok
 }
 
-// ModifierMask returns the modifier mask the keymap’s windowing system backend
-// uses for a particular purpose.
-//
-// Note that this function always returns real hardware modifiers, not virtual
-// ones (e.g. it will return K_MOD1_MASK rather than K_META_MASK if the backend
-// maps MOD1 to META), so there are use cases where the return value of this
-// function has to be transformed by gdk_keymap_add_virtual_modifiers() in order
-// to contain the expected result.
-//
-// The function takes the following parameters:
-//
-//    - intent: use case for the modifier mask.
-//
-// The function returns the following values:
-//
-//    - modifierType: modifier mask used for intent.
-//
-func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
-	var _arg0 *C.GdkKeymap        // out
-	var _arg1 C.GdkModifierIntent // out
-	var _cret C.GdkModifierType   // in
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	_arg1 = C.GdkModifierIntent(intent)
-
-	_cret = C.gdk_keymap_get_modifier_mask(_arg0, _arg1)
-	runtime.KeepAlive(keymap)
-	runtime.KeepAlive(intent)
-
-	var _modifierType ModifierType // out
-
-	_modifierType = ModifierType(_cret)
-
-	return _modifierType
-}
-
-// ModifierState returns the current modifier state.
-//
-// The function returns the following values:
-//
-//    - guint: current modifier state.
-//
-func (keymap *Keymap) ModifierState() uint {
-	var _arg0 *C.GdkKeymap // out
-	var _cret C.guint      // in
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-
-	_cret = C.gdk_keymap_get_modifier_state(_arg0)
-	runtime.KeepAlive(keymap)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// NumLockState returns whether the Num Lock modifer is locked.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if Num Lock is on.
-//
-func (keymap *Keymap) NumLockState() bool {
-	var _arg0 *C.GdkKeymap // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-
-	_cret = C.gdk_keymap_get_num_lock_state(_arg0)
-	runtime.KeepAlive(keymap)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ScrollLockState returns whether the Scroll Lock modifer is locked.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if Scroll Lock is on.
-//
-func (keymap *Keymap) ScrollLockState() bool {
-	var _arg0 *C.GdkKeymap // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-
-	_cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
-	runtime.KeepAlive(keymap)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HaveBidiLayouts determines if keyboard layouts for both right-to-left and
-// left-to-right languages are in use.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if there are layouts in both directions, FALSE otherwise.
-//
-func (keymap *Keymap) HaveBidiLayouts() bool {
-	var _arg0 *C.GdkKeymap // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-
-	_cret = C.gdk_keymap_have_bidi_layouts(_arg0)
-	runtime.KeepAlive(keymap)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // LookupKey looks up the keyval mapped to a keycode/group/level triplet. If no
 // keyval is bound to key, returns 0. For normal user input, you want to use
 // gdk_keymap_translate_keyboard_state() instead of this function, since the
@@ -811,32 +608,6 @@ func KeymapGetDefault() *Keymap {
 	var _cret *C.GdkKeymap // in
 
 	_cret = C.gdk_keymap_get_default()
-
-	var _keymap *Keymap // out
-
-	_keymap = wrapKeymap(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _keymap
-}
-
-// KeymapGetForDisplay returns the Keymap attached to display.
-//
-// The function takes the following parameters:
-//
-//    - display: Display.
-//
-// The function returns the following values:
-//
-//    - keymap attached to display.
-//
-func KeymapGetForDisplay(display *Display) *Keymap {
-	var _arg1 *C.GdkDisplay // out
-	var _cret *C.GdkKeymap  // in
-
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	_cret = C.gdk_keymap_get_for_display(_arg1)
-	runtime.KeepAlive(display)
 
 	var _keymap *Keymap // out
 

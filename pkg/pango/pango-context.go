@@ -100,79 +100,6 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 	return _list
 }
 
-// ItemizeWithBaseDir: like pango_itemize(), but with an explicitly specified
-// base direction.
-//
-// The base direction is used when computing bidirectional levels. (see
-// pango.Context.SetBaseDir()). itemize gets the base direction from the
-// PangoContext.
-//
-// The function takes the following parameters:
-//
-//    - context: structure holding information that affects the itemization
-//      process.
-//    - baseDir: base direction to use for bidirectional processing.
-//    - text to itemize.
-//    - startIndex: first byte in text to process.
-//    - length: number of bytes (not characters) to process after start_index.
-//      This must be >= 0.
-//    - attrs: set of attributes that apply to text.
-//    - cachedIter (optional): cached attribute iterator, or NULL.
-//
-// The function returns the following values:
-//
-//    - list: GList of pango.Item structures. The items should be freed using
-//      pango.Item.Free() probably in combination with g_list_free_full().
-//
-func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
-	var _arg1 *C.PangoContext      // out
-	var _arg2 C.PangoDirection     // out
-	var _arg3 *C.char              // out
-	var _arg4 C.int                // out
-	var _arg5 C.int                // out
-	var _arg6 *C.PangoAttrList     // out
-	var _arg7 *C.PangoAttrIterator // out
-	var _cret *C.GList             // in
-
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.PangoDirection(baseDir)
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = C.int(startIndex)
-	_arg5 = C.int(length)
-	_arg6 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
-	if cachedIter != nil {
-		_arg7 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(cachedIter)))
-	}
-
-	_cret = C.pango_itemize_with_base_dir(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(baseDir)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(startIndex)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(attrs)
-	runtime.KeepAlive(cachedIter)
-
-	var _list []*Item // out
-
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoItem)(v)
-		var dst *Item // out
-		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
-			},
-		)
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
 // Context: PangoContext stores global information used to control the
 // itemization process.
 //
@@ -228,21 +155,6 @@ func NewContext() *Context {
 	return _context
 }
 
-// Changed forces a change in the context, which will cause any PangoLayout
-// using this context to re-layout.
-//
-// This function is only useful when implementing a new backend for Pango,
-// something applications won't do. Backends should call this function if they
-// have attached extra data to the context and such data is changed.
-func (context *Context) Changed() {
-	var _arg0 *C.PangoContext // out
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C.pango_context_changed(_arg0)
-	runtime.KeepAlive(context)
-}
-
 // BaseDir retrieves the base direction for the context.
 //
 // See pango.Context.SetBaseDir().
@@ -267,30 +179,6 @@ func (context *Context) BaseDir() Direction {
 	return _direction
 }
 
-// BaseGravity retrieves the base gravity for the context.
-//
-// See pango.Context.SetBaseGravity().
-//
-// The function returns the following values:
-//
-//    - gravity: base gravity for the context.
-//
-func (context *Context) BaseGravity() Gravity {
-	var _arg0 *C.PangoContext // out
-	var _cret C.PangoGravity  // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_base_gravity(_arg0)
-	runtime.KeepAlive(context)
-
-	var _gravity Gravity // out
-
-	_gravity = Gravity(_cret)
-
-	return _gravity
-}
-
 // FontDescription: retrieve the default font description for the context.
 //
 // The function returns the following values:
@@ -312,95 +200,6 @@ func (context *Context) FontDescription() *FontDescription {
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 
 	return _fontDescription
-}
-
-// FontMap gets the PangoFontMap used to look up fonts for this context.
-//
-// The function returns the following values:
-//
-//    - fontMap: font map for the PangoContext. This value is owned by Pango and
-//      should not be unreferenced.
-//
-func (context *Context) FontMap() FontMapper {
-	var _arg0 *C.PangoContext // out
-	var _cret *C.PangoFontMap // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_font_map(_arg0)
-	runtime.KeepAlive(context)
-
-	var _fontMap FontMapper // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type pango.FontMapper is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(FontMapper)
-			return ok
-		})
-		rv, ok := casted.(FontMapper)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
-		}
-		_fontMap = rv
-	}
-
-	return _fontMap
-}
-
-// Gravity retrieves the gravity for the context.
-//
-// This is similar to pango.Context.GetBaseGravity(), except for when the base
-// gravity is PANGO_GRAVITY_AUTO for which pango.Gravity.GetForMatrix is used to
-// return the gravity from the current context matrix.
-//
-// The function returns the following values:
-//
-//    - gravity: resolved gravity for the context.
-//
-func (context *Context) Gravity() Gravity {
-	var _arg0 *C.PangoContext // out
-	var _cret C.PangoGravity  // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_gravity(_arg0)
-	runtime.KeepAlive(context)
-
-	var _gravity Gravity // out
-
-	_gravity = Gravity(_cret)
-
-	return _gravity
-}
-
-// GravityHint retrieves the gravity hint for the context.
-//
-// See pango.Context.SetGravityHint() for details.
-//
-// The function returns the following values:
-//
-//    - gravityHint: gravity hint for the context.
-//
-func (context *Context) GravityHint() GravityHint {
-	var _arg0 *C.PangoContext    // out
-	var _cret C.PangoGravityHint // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_gravity_hint(_arg0)
-	runtime.KeepAlive(context)
-
-	var _gravityHint GravityHint // out
-
-	_gravityHint = GravityHint(_cret)
-
-	return _gravityHint
 }
 
 // Language retrieves the global language tag for the context.
@@ -429,35 +228,6 @@ func (context *Context) Language() *Language {
 	)
 
 	return _language
-}
-
-// Matrix gets the transformation matrix that will be applied when rendering
-// with this context.
-//
-// See pango.Context.SetMatrix().
-//
-// The function returns the following values:
-//
-//    - matrix (optional): matrix, or NULL if no matrix has been set (which is
-//      the same as the identity matrix). The returned matrix is owned by Pango
-//      and must not be modified or freed.
-//
-func (context *Context) Matrix() *Matrix {
-	var _arg0 *C.PangoContext // out
-	var _cret *C.PangoMatrix  // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_matrix(_arg0)
-	runtime.KeepAlive(context)
-
-	var _matrix *Matrix // out
-
-	if _cret != nil {
-		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	}
-
-	return _matrix
 }
 
 // Metrics: get overall metric information for a particular font description.
@@ -516,61 +286,6 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	)
 
 	return _fontMetrics
-}
-
-// RoundGlyphPositions returns whether font rendering with this context should
-// round glyph positions and widths.
-//
-// The function returns the following values:
-//
-func (context *Context) RoundGlyphPositions() bool {
-	var _arg0 *C.PangoContext // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_round_glyph_positions(_arg0)
-	runtime.KeepAlive(context)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Serial returns the current serial number of context.
-//
-// The serial number is initialized to an small number larger than zero when a
-// new context is created and is increased whenever the context is changed using
-// any of the setter functions, or the PangoFontMap it uses to find fonts has
-// changed. The serial may wrap, but will never have the value 0. Since it can
-// wrap, never compare it with "less than", always use "not equals".
-//
-// This can be used to automatically detect changes to a PangoContext, and is
-// only useful when implementing objects that need update when their
-// PangoContext changes, like PangoLayout.
-//
-// The function returns the following values:
-//
-//    - guint: current serial number of context.
-//
-func (context *Context) Serial() uint {
-	var _arg0 *C.PangoContext // out
-	var _cret C.guint         // in
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C.pango_context_get_serial(_arg0)
-	runtime.KeepAlive(context)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
 }
 
 // ListFamilies: list all families for a context.
@@ -741,26 +456,6 @@ func (context *Context) SetBaseDir(direction Direction) {
 	runtime.KeepAlive(direction)
 }
 
-// SetBaseGravity sets the base gravity for the context.
-//
-// The base gravity is used in laying vertical text out.
-//
-// The function takes the following parameters:
-//
-//    - gravity: new base gravity.
-//
-func (context *Context) SetBaseGravity(gravity Gravity) {
-	var _arg0 *C.PangoContext // out
-	var _arg1 C.PangoGravity  // out
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.PangoGravity(gravity)
-
-	C.pango_context_set_base_gravity(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(gravity)
-}
-
 // SetFontDescription: set the default font description for the context.
 //
 // The function takes the following parameters:
@@ -801,28 +496,6 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 	runtime.KeepAlive(fontMap)
 }
 
-// SetGravityHint sets the gravity hint for the context.
-//
-// The gravity hint is used in laying vertical text out, and is only relevant if
-// gravity of the context as returned by pango.Context.GetGravity() is set to
-// PANGO_GRAVITY_EAST or PANGO_GRAVITY_WEST.
-//
-// The function takes the following parameters:
-//
-//    - hint: new gravity hint.
-//
-func (context *Context) SetGravityHint(hint GravityHint) {
-	var _arg0 *C.PangoContext    // out
-	var _arg1 C.PangoGravityHint // out
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.PangoGravityHint(hint)
-
-	C.pango_context_set_gravity_hint(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(hint)
-}
-
 // SetLanguage sets the global language tag for the context.
 //
 // The default language for the locale of the running process can be found using
@@ -842,58 +515,4 @@ func (context *Context) SetLanguage(language *Language) {
 	C.pango_context_set_language(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(language)
-}
-
-// SetMatrix sets the transformation matrix that will be applied when rendering
-// with this context.
-//
-// Note that reported metrics are in the user space coordinates before the
-// application of the matrix, not device-space coordinates after the application
-// of the matrix. So, they don't scale with the matrix, though they may change
-// slightly for different matrices, depending on how the text is fit to the
-// pixel grid.
-//
-// The function takes the following parameters:
-//
-//    - matrix (optional): PangoMatrix, or NULL to unset any existing matrix. (No
-//      matrix set is the same as setting the identity matrix.).
-//
-func (context *Context) SetMatrix(matrix *Matrix) {
-	var _arg0 *C.PangoContext // out
-	var _arg1 *C.PangoMatrix  // out
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	if matrix != nil {
-		_arg1 = (*C.PangoMatrix)(gextras.StructNative(unsafe.Pointer(matrix)))
-	}
-
-	C.pango_context_set_matrix(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(matrix)
-}
-
-// SetRoundGlyphPositions sets whether font rendering with this context should
-// round glyph positions and widths to integral positions, in device units.
-//
-// This is useful when the renderer can't handle subpixel positioning of glyphs.
-//
-// The default value is to round glyph positions, to remain compatible with
-// previous Pango behavior.
-//
-// The function takes the following parameters:
-//
-//    - roundPositions: whether to round glyph positions.
-//
-func (context *Context) SetRoundGlyphPositions(roundPositions bool) {
-	var _arg0 *C.PangoContext // out
-	var _arg1 C.gboolean      // out
-
-	_arg0 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	if roundPositions {
-		_arg1 = C.TRUE
-	}
-
-	C.pango_context_set_round_glyph_positions(_arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(roundPositions)
 }

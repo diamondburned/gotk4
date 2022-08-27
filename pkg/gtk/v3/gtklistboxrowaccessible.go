@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ListBoxRowAccessibleOverrider contains methods that are overridable.
-type ListBoxRowAccessibleOverrider interface {
+// ListBoxRowAccessibleOverrides contains methods that are overridable.
+type ListBoxRowAccessibleOverrides struct {
+}
+
+func defaultListBoxRowAccessibleOverrides(v *ListBoxRowAccessible) ListBoxRowAccessibleOverrides {
+	return ListBoxRowAccessibleOverrides{}
 }
 
 type ListBoxRowAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeListBoxRowAccessible,
-		GoType:        reflect.TypeOf((*ListBoxRowAccessible)(nil)),
-		InitClass:     initClassListBoxRowAccessible,
-		FinalizeClass: finalizeClassListBoxRowAccessible,
-	})
+	coreglib.RegisterClassInfo[*ListBoxRowAccessible, *ListBoxRowAccessibleClass, ListBoxRowAccessibleOverrides](
+		GTypeListBoxRowAccessible,
+		initListBoxRowAccessibleClass,
+		wrapListBoxRowAccessible,
+		defaultListBoxRowAccessibleOverrides,
+	)
 }
 
-func initClassListBoxRowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitListBoxRowAccessible(*ListBoxRowAccessibleClass)
-	}); ok {
-		klass := (*ListBoxRowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitListBoxRowAccessible(klass)
-	}
-}
-
-func finalizeClassListBoxRowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeListBoxRowAccessible(*ListBoxRowAccessibleClass)
-	}); ok {
-		klass := (*ListBoxRowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeListBoxRowAccessible(klass)
+func initListBoxRowAccessibleClass(gclass unsafe.Pointer, overrides ListBoxRowAccessibleOverrides, classInitFunc func(*ListBoxRowAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ListBoxRowAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

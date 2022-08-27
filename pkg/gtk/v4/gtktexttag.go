@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TextTagOverrider contains methods that are overridable.
-type TextTagOverrider interface {
+// TextTagOverrides contains methods that are overridable.
+type TextTagOverrides struct {
+}
+
+func defaultTextTagOverrides(v *TextTag) TextTagOverrides {
+	return TextTagOverrides{}
 }
 
 // TextTag: tag that can be applied to text contained in a GtkTextBuffer.
@@ -58,25 +62,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextTag,
-		GoType:        reflect.TypeOf((*TextTag)(nil)),
-		InitClass:     initClassTextTag,
-		FinalizeClass: finalizeClassTextTag,
-	})
+	coreglib.RegisterClassInfo[*TextTag, *TextTagClass, TextTagOverrides](
+		GTypeTextTag,
+		initTextTagClass,
+		wrapTextTag,
+		defaultTextTagOverrides,
+	)
 }
 
-func initClassTextTag(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTextTag(*TextTagClass) }); ok {
-		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
-		goval.InitTextTag(klass)
-	}
-}
-
-func finalizeClassTextTag(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextTag(*TextTagClass) }); ok {
-		klass := (*TextTagClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextTag(klass)
+func initTextTagClass(gclass unsafe.Pointer, overrides TextTagOverrides, classInitFunc func(*TextTagClass)) {
+	if classInitFunc != nil {
+		class := (*TextTagClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

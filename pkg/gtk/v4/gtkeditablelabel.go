@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// EditableLabelOverrider contains methods that are overridable.
-type EditableLabelOverrider interface {
+// EditableLabelOverrides contains methods that are overridable.
+type EditableLabelOverrides struct {
+}
+
+func defaultEditableLabelOverrides(v *EditableLabel) EditableLabelOverrides {
+	return EditableLabelOverrides{}
 }
 
 // EditableLabel: GtkEditableLabel is a label that allows users to edit the text
@@ -70,25 +74,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeEditableLabel,
-		GoType:        reflect.TypeOf((*EditableLabel)(nil)),
-		InitClass:     initClassEditableLabel,
-		FinalizeClass: finalizeClassEditableLabel,
-	})
+	coreglib.RegisterClassInfo[*EditableLabel, *EditableLabelClass, EditableLabelOverrides](
+		GTypeEditableLabel,
+		initEditableLabelClass,
+		wrapEditableLabel,
+		defaultEditableLabelOverrides,
+	)
 }
 
-func initClassEditableLabel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitEditableLabel(*EditableLabelClass) }); ok {
-		klass := (*EditableLabelClass)(gextras.NewStructNative(gclass))
-		goval.InitEditableLabel(klass)
-	}
-}
-
-func finalizeClassEditableLabel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeEditableLabel(*EditableLabelClass) }); ok {
-		klass := (*EditableLabelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeEditableLabel(klass)
+func initEditableLabelClass(gclass unsafe.Pointer, overrides EditableLabelOverrides, classInitFunc func(*EditableLabelClass)) {
+	if classInitFunc != nil {
+		class := (*EditableLabelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -12,13 +12,27 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_ActionIface_do_action(AtkAction*, gint);
-// extern gboolean _gotk4_atk1_ActionIface_set_description(AtkAction*, gint, gchar*);
-// extern gchar* _gotk4_atk1_ActionIface_get_description(AtkAction*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(AtkAction*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(AtkAction*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_name(AtkAction*, gint);
-// extern gint _gotk4_atk1_ActionIface_get_n_actions(AtkAction*);
+// gboolean _gotk4_atk1_Action_virtual_do_action(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Action_virtual_set_description(void* fnptr, AtkAction* arg0, gint arg1, gchar* arg2) {
+//   return ((gboolean (*)(AtkAction*, gint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_description(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_keybinding(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_localized_name(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_name(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Action_virtual_get_n_actions(void* fnptr, AtkAction* arg0) {
+//   return ((gint (*)(AtkAction*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -30,127 +44,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeAction, F: marshalAction},
 	})
-}
-
-// ActionOverrider contains methods that are overridable.
-type ActionOverrider interface {
-	// DoAction: perform the specified action on the object.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i: action index corresponding to the action to be performed.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if success, FALSE otherwise.
-	//
-	DoAction(i int) bool
-	// Description returns a description of the specified action of the object.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i: action index corresponding to the action to be performed.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): description string, or NULL if action does not
-	//      implement this interface.
-	//
-	Description(i int) string
-	// Keybinding gets the keybinding which can be used to activate this action,
-	// if one exists. The string returned should contain localized,
-	// human-readable, key sequences as they would appear when displayed on
-	// screen. It must be in the format "mnemonic;sequence;shortcut".
-	//
-	// - The mnemonic key activates the object if it is presently enabled
-	// onscreen. This typically corresponds to the underlined letter within the
-	// widget. Example: "n" in a traditional "New..." menu item or the "a" in
-	// "Apply" for a button.
-	//
-	// - The sequence is the full list of keys which invoke the action even if
-	// the relevant element is not currently shown on screen. For instance, for
-	// a menu item the sequence is the keybindings used to open the parent menus
-	// before invoking. The sequence string is colon-delimited. Example:
-	// "Alt+F:N" in a traditional "New..." menu item.
-	//
-	// - The shortcut, if it exists, will invoke the same action without showing
-	// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
-	// traditional "New..." menu item.
-	//
-	// Example: For a traditional "New..." menu item, the expected return value
-	// would be: "N;Alt+F:N;Ctrl+N" for the English locale and
-	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this menu
-	// item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
-	// ";;Strg+N" respectively.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i: action index corresponding to the action to be performed.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): keybinding which can be used to activate this
-	//      action, or NULL if there is no keybinding for this action.
-	//
-	Keybinding(i int) string
-	// LocalizedName returns the localized name of the specified action of the
-	// object.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i: action index corresponding to the action to be performed.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): name string, or NULL if action does not implement
-	//      this interface.
-	//
-	LocalizedName(i int) string
-	// NActions gets the number of accessible actions available on the object.
-	// If there are more than one, the first one is considered the "default"
-	// action of the object.
-	//
-	// The function returns the following values:
-	//
-	//    - gint: the number of actions, or 0 if action does not implement this
-	//      interface.
-	//
-	NActions() int
-	// Name returns a non-localized string naming the specified action of the
-	// object. This name is generally not descriptive of the end result of the
-	// action, but instead names the 'interaction type' which the object
-	// supports. By convention, the above strings should be used to represent
-	// the actions which correspond to the common point-and-click interaction
-	// techniques of the same name: i.e. "click", "press", "release", "drag",
-	// "drop", "popup", etc. The "popup" action should be used to pop up a
-	// context menu for the object, if one exists.
-	//
-	// For technical reasons, some toolkits cannot guarantee that the reported
-	// action is actually 'bound' to a nontrivial user event; i.e. the result of
-	// some actions via atk_action_do_action() may be NIL.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i: action index corresponding to the action to be performed.
-	//
-	// The function returns the following values:
-	//
-	//    - utf8 (optional): name string, or NULL if action does not implement
-	//      this interface.
-	//
-	Name(i int) string
-	// SetDescription sets a description of the specified action of the object.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i: action index corresponding to the action to be performed.
-	//    - desc: description to be assigned to this action.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing if the description was successfully set;.
-	//
-	SetDescription(i int, desc string) bool
 }
 
 // Action should be implemented by instances of Object classes with which the
@@ -203,143 +96,6 @@ type Actioner interface {
 }
 
 var _ Actioner = (*Action)(nil)
-
-func ifaceInitActioner(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkActionIface)(unsafe.Pointer(gifacePtr))
-	iface.do_action = (*[0]byte)(C._gotk4_atk1_ActionIface_do_action)
-	iface.get_description = (*[0]byte)(C._gotk4_atk1_ActionIface_get_description)
-	iface.get_keybinding = (*[0]byte)(C._gotk4_atk1_ActionIface_get_keybinding)
-	iface.get_localized_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_localized_name)
-	iface.get_n_actions = (*[0]byte)(C._gotk4_atk1_ActionIface_get_n_actions)
-	iface.get_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_name)
-	iface.set_description = (*[0]byte)(C._gotk4_atk1_ActionIface_set_description)
-}
-
-//export _gotk4_atk1_ActionIface_do_action
-func _gotk4_atk1_ActionIface_do_action(arg0 *C.AtkAction, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	ok := iface.DoAction(_i)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ActionIface_get_description
-func _gotk4_atk1_ActionIface_get_description(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	utf8 := iface.Description(_i)
-
-	if utf8 != "" {
-		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ActionIface_get_keybinding
-func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	utf8 := iface.Keybinding(_i)
-
-	if utf8 != "" {
-		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ActionIface_get_localized_name
-func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	utf8 := iface.LocalizedName(_i)
-
-	if utf8 != "" {
-		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ActionIface_get_n_actions
-func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.AtkAction) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	gint := iface.NActions()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_ActionIface_get_name
-func _gotk4_atk1_ActionIface_get_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	utf8 := iface.Name(_i)
-
-	if utf8 != "" {
-		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-		defer C.free(unsafe.Pointer(cret))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_ActionIface_set_description
-func _gotk4_atk1_ActionIface_set_description(arg0 *C.AtkAction, arg1 C.gint, arg2 *C.gchar) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ActionOverrider)
-
-	var _i int       // out
-	var _desc string // out
-
-	_i = int(arg1)
-	_desc = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	ok := iface.SetDescription(_i, _desc)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 func wrapAction(obj *coreglib.Object) *Action {
 	return &Action{
@@ -593,6 +349,282 @@ func (action *Action) SetDescription(i int, desc string) bool {
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.atk_action_set_description(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+	runtime.KeepAlive(desc)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// doAction: perform the specified action on the object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
+func (action *Action) doAction(i int) bool {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.do_action
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_do_action(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Description returns a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): description string, or NULL if action does not implement
+//      this interface.
+//
+func (action *Action) description(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_description
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Keybinding gets the keybinding which can be used to activate this action, if
+// one exists. The string returned should contain localized, human-readable, key
+// sequences as they would appear when displayed on screen. It must be in the
+// format "mnemonic;sequence;shortcut".
+//
+// - The mnemonic key activates the object if it is presently enabled onscreen.
+// This typically corresponds to the underlined letter within the widget.
+// Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for a
+// button.
+//
+// - The sequence is the full list of keys which invoke the action even if the
+// relevant element is not currently shown on screen. For instance, for a menu
+// item the sequence is the keybindings used to open the parent menus before
+// invoking. The sequence string is colon-delimited. Example: "Alt+F:N" in a
+// traditional "New..." menu item.
+//
+// - The shortcut, if it exists, will invoke the same action without showing the
+// component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+// traditional "New..." menu item.
+//
+// Example: For a traditional "New..." menu item, the expected return value
+// would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
+// for the German locale. If, hypothetically, this menu item lacked a mnemonic,
+// it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): keybinding which can be used to activate this action, or
+//      NULL if there is no keybinding for this action.
+//
+func (action *Action) keybinding(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_keybinding
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_keybinding(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// localizedName returns the localized name of the specified action of the
+// object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name string, or NULL if action does not implement this
+//      interface.
+//
+func (action *Action) localizedName(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_localized_name
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_localized_name(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// nActions gets the number of accessible actions available on the object. If
+// there are more than one, the first one is considered the "default" action of
+// the object.
+//
+// The function returns the following values:
+//
+//    - gint: the number of actions, or 0 if action does not implement this
+//      interface.
+//
+func (action *Action) nActions() int {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_n_actions
+
+	var _arg0 *C.AtkAction // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+
+	_cret = C._gotk4_atk1_Action_virtual_get_n_actions(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(action)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Name returns a non-localized string naming the specified action of the
+// object. This name is generally not descriptive of the end result of the
+// action, but instead names the 'interaction type' which the object supports.
+// By convention, the above strings should be used to represent the actions
+// which correspond to the common point-and-click interaction techniques of the
+// same name: i.e. "click", "press", "release", "drag", "drop", "popup", etc.
+// The "popup" action should be used to pop up a context menu for the object, if
+// one exists.
+//
+// For technical reasons, some toolkits cannot guarantee that the reported
+// action is actually 'bound' to a nontrivial user event; i.e. the result of
+// some actions via atk_action_do_action() may be NIL.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): name string, or NULL if action does not implement this
+//      interface.
+//
+func (action *Action) name(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_name
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_name(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// setDescription sets a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//    - i: action index corresponding to the action to be performed.
+//    - desc: description to be assigned to this action.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing if the description was successfully set;.
+//
+func (action *Action) setDescription(i int, desc string) bool {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.set_description
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.gchar     // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C._gotk4_atk1_Action_virtual_set_description(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 	runtime.KeepAlive(desc)

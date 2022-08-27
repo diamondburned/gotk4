@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// VPanedOverrider contains methods that are overridable.
-type VPanedOverrider interface {
+// VPanedOverrides contains methods that are overridable.
+type VPanedOverrides struct {
+}
+
+func defaultVPanedOverrides(v *VPaned) VPanedOverrides {
+	return VPanedOverrides{}
 }
 
 // VPaned widget is a container widget with two children arranged vertically.
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVPaned,
-		GoType:        reflect.TypeOf((*VPaned)(nil)),
-		InitClass:     initClassVPaned,
-		FinalizeClass: finalizeClassVPaned,
-	})
+	coreglib.RegisterClassInfo[*VPaned, *VPanedClass, VPanedOverrides](
+		GTypeVPaned,
+		initVPanedClass,
+		wrapVPaned,
+		defaultVPanedOverrides,
+	)
 }
 
-func initClassVPaned(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVPaned(*VPanedClass) }); ok {
-		klass := (*VPanedClass)(gextras.NewStructNative(gclass))
-		goval.InitVPaned(klass)
-	}
-}
-
-func finalizeClassVPaned(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVPaned(*VPanedClass) }); ok {
-		klass := (*VPanedClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVPaned(klass)
+func initVPanedClass(gclass unsafe.Pointer, overrides VPanedOverrides, classInitFunc func(*VPanedClass)) {
+	if classInitFunc != nil {
+		class := (*VPanedClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -33,32 +32,6 @@ func init() {
 // g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
 // should be removed from the Table.
 type HRFunc func(key, value unsafe.Pointer) (ok bool)
-
-//export _gotk4_glib2_HRFunc
-func _gotk4_glib2_HRFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) (cret C.gboolean) {
-	var fn HRFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(HRFunc)
-	}
-
-	var _key unsafe.Pointer   // out
-	var _value unsafe.Pointer // out
-
-	_key = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_value = (unsafe.Pointer)(unsafe.Pointer(arg2))
-
-	ok := fn(_key, _value)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 // DirectEqual compares two #gpointer arguments and returns TRUE if they are
 // equal. It can be passed to g_hash_table_new() as the key_equal_func
@@ -120,134 +93,6 @@ func DirectHash(v unsafe.Pointer) uint {
 	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
 
 	_cret = C.g_direct_hash(_arg1)
-	runtime.KeepAlive(v)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// DoubleEqual compares the two #gdouble values being pointed to and returns
-// TRUE if they are equal. It can be passed to g_hash_table_new() as the
-// key_equal_func parameter, when using non-NULL pointers to doubles as keys in
-// a Table.
-//
-// The function takes the following parameters:
-//
-//    - v1: pointer to a #gdouble key.
-//    - v2: pointer to a #gdouble key to compare with v1.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the two keys match.
-//
-func DoubleEqual(v1, v2 unsafe.Pointer) bool {
-	var _arg1 C.gconstpointer // out
-	var _arg2 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
-	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
-
-	_cret = C.g_double_equal(_arg1, _arg2)
-	runtime.KeepAlive(v1)
-	runtime.KeepAlive(v2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DoubleHash converts a pointer to a #gdouble to a hash value. It can be passed
-// to g_hash_table_new() as the hash_func parameter, It can be passed to
-// g_hash_table_new() as the hash_func parameter, when using non-NULL pointers
-// to doubles as keys in a Table.
-//
-// The function takes the following parameters:
-//
-//    - v: pointer to a #gdouble key.
-//
-// The function returns the following values:
-//
-//    - guint: hash value corresponding to the key.
-//
-func DoubleHash(v unsafe.Pointer) uint {
-	var _arg1 C.gconstpointer // out
-	var _cret C.guint         // in
-
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
-
-	_cret = C.g_double_hash(_arg1)
-	runtime.KeepAlive(v)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// Int64Equal compares the two #gint64 values being pointed to and returns TRUE
-// if they are equal. It can be passed to g_hash_table_new() as the
-// key_equal_func parameter, when using non-NULL pointers to 64-bit integers as
-// keys in a Table.
-//
-// The function takes the following parameters:
-//
-//    - v1: pointer to a #gint64 key.
-//    - v2: pointer to a #gint64 key to compare with v1.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the two keys match.
-//
-func Int64Equal(v1, v2 unsafe.Pointer) bool {
-	var _arg1 C.gconstpointer // out
-	var _arg2 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(v1))
-	_arg2 = (C.gconstpointer)(unsafe.Pointer(v2))
-
-	_cret = C.g_int64_equal(_arg1, _arg2)
-	runtime.KeepAlive(v1)
-	runtime.KeepAlive(v2)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Int64Hash converts a pointer to a #gint64 to a hash value.
-//
-// It can be passed to g_hash_table_new() as the hash_func parameter, when using
-// non-NULL pointers to 64-bit integer values as keys in a Table.
-//
-// The function takes the following parameters:
-//
-//    - v: pointer to a #gint64 key.
-//
-// The function returns the following values:
-//
-//    - guint: hash value corresponding to the key.
-//
-func Int64Hash(v unsafe.Pointer) uint {
-	var _arg1 C.gconstpointer // out
-	var _cret C.guint         // in
-
-	_arg1 = (C.gconstpointer)(unsafe.Pointer(v))
-
-	_cret = C.g_int64_hash(_arg1)
 	runtime.KeepAlive(v)
 
 	var _guint uint // out
@@ -419,99 +264,6 @@ type hashTable struct {
 func marshalHashTable(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &HashTable{&hashTable{(*C.GHashTable)(b)}}, nil
-}
-
-// HashTableAdd: this is a convenience function for using a Table as a set. It
-// is equivalent to calling g_hash_table_replace() with key as both the key and
-// the value.
-//
-// In particular, this means that if key already exists in the hash table, then
-// the old copy of key in the hash table is freed and key replaces it in the
-// table.
-//
-// When a hash table only ever contains keys that have themselves as the
-// corresponding value it is able to be stored more efficiently. See the
-// discussion in the section description.
-//
-// Starting from GLib 2.40, this function returns a boolean value to indicate
-// whether the newly added value was already in the hash table or not.
-//
-// The function takes the following parameters:
-//
-//    - hashTable: Table.
-//    - key (optional) to insert.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the key did not exist yet.
-//
-func HashTableAdd(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
-	var _arg1 *C.GHashTable // out
-	var _arg2 C.gpointer    // out
-	var _cret C.gboolean    // in
-
-	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
-	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
-		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
-	}
-	defer C.g_hash_table_unref(_arg1)
-	_arg2 = (C.gpointer)(unsafe.Pointer(key))
-
-	_cret = C.g_hash_table_add(_arg1, _arg2)
-	runtime.KeepAlive(hashTable)
-	runtime.KeepAlive(key)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// HashTableContains checks if key is in hash_table.
-//
-// The function takes the following parameters:
-//
-//    - hashTable: Table.
-//    - key (optional) to check.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if key is in hash_table, FALSE otherwise.
-//
-func HashTableContains(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
-	var _arg1 *C.GHashTable   // out
-	var _arg2 C.gconstpointer // out
-	var _cret C.gboolean      // in
-
-	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
-	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
-		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
-	}
-	defer C.g_hash_table_unref(_arg1)
-	_arg2 = (C.gconstpointer)(unsafe.Pointer(key))
-
-	_cret = C.g_hash_table_contains(_arg1, _arg2)
-	runtime.KeepAlive(hashTable)
-	runtime.KeepAlive(key)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // HashTableDestroy destroys all keys and values in the Table and decrements its
@@ -732,33 +484,6 @@ func HashTableRemove(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 	return _ok
 }
 
-// HashTableRemoveAll removes all keys and their associated values from a Table.
-//
-// If the Table was created using g_hash_table_new_full(), the keys and values
-// are freed using the supplied destroy functions, otherwise you have to make
-// sure that any dynamically allocated values are freed yourself.
-//
-// The function takes the following parameters:
-//
-//    - hashTable: Table.
-//
-func HashTableRemoveAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
-	var _arg1 *C.GHashTable // out
-
-	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
-	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
-		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
-	}
-	defer C.g_hash_table_unref(_arg1)
-
-	C.g_hash_table_remove_all(_arg1)
-	runtime.KeepAlive(hashTable)
-}
-
 // HashTableReplace inserts a new key and value into a Table similar to
 // g_hash_table_insert(). The difference is that if the key already exists in
 // the Table, it gets replaced by the new key. If you supplied a
@@ -884,88 +609,6 @@ func HashTableSteal(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poin
 	}
 
 	return _ok
-}
-
-// HashTableStealAll removes all keys and their associated values from a Table
-// without calling the key and value destroy functions.
-//
-// The function takes the following parameters:
-//
-//    - hashTable: Table.
-//
-func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
-	var _arg1 *C.GHashTable // out
-
-	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
-	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
-		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
-	}
-	defer C.g_hash_table_unref(_arg1)
-
-	C.g_hash_table_steal_all(_arg1)
-	runtime.KeepAlive(hashTable)
-}
-
-// HashTableStealExtended looks up a key in the Table, stealing the original key
-// and the associated value and returning TRUE if the key was found. If the key
-// was not found, FALSE is returned.
-//
-// If found, the stolen key and value are removed from the hash table without
-// calling the key and value destroy functions, and ownership is transferred to
-// the caller of this method; as with g_hash_table_steal().
-//
-// You can pass NULL for lookup_key, provided the hash and equal functions of
-// hash_table are NULL-safe.
-//
-// The function takes the following parameters:
-//
-//    - hashTable: Table.
-//    - lookupKey (optional): key to look up.
-//
-// The function returns the following values:
-//
-//    - stolenKey (optional): return location for the original key.
-//    - stolenValue (optional): return location for the value associated with the
-//      key.
-//    - ok: TRUE if the key was found in the Table.
-//
-func HashTableStealExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (stolenKey, stolenValue unsafe.Pointer, ok bool) {
-	var _arg1 *C.GHashTable   // out
-	var _arg2 C.gconstpointer // out
-	var _arg3 C.gpointer      // in
-	var _arg4 C.gpointer      // in
-	var _cret C.gboolean      // in
-
-	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
-	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
-		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
-	}
-	defer C.g_hash_table_unref(_arg1)
-	_arg2 = (C.gconstpointer)(unsafe.Pointer(lookupKey))
-
-	_cret = C.g_hash_table_steal_extended(_arg1, _arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(hashTable)
-	runtime.KeepAlive(lookupKey)
-
-	var _stolenKey unsafe.Pointer   // out
-	var _stolenValue unsafe.Pointer // out
-	var _ok bool                    // out
-
-	_stolenKey = (unsafe.Pointer)(unsafe.Pointer(_arg3))
-	_stolenValue = (unsafe.Pointer)(unsafe.Pointer(_arg4))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _stolenKey, _stolenValue, _ok
 }
 
 // HashTableIter structure represents an iterator that can be used to iterate

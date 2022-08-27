@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// GObjectAccessibleOverrider contains methods that are overridable.
-type GObjectAccessibleOverrider interface {
+// GObjectAccessibleOverrides contains methods that are overridable.
+type GObjectAccessibleOverrides struct {
+}
+
+func defaultGObjectAccessibleOverrides(v *GObjectAccessible) GObjectAccessibleOverrides {
+	return GObjectAccessibleOverrides{}
 }
 
 // GObjectAccessible: this object class is derived from AtkObject. It can be
@@ -45,25 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGObjectAccessible,
-		GoType:        reflect.TypeOf((*GObjectAccessible)(nil)),
-		InitClass:     initClassGObjectAccessible,
-		FinalizeClass: finalizeClassGObjectAccessible,
-	})
+	coreglib.RegisterClassInfo[*GObjectAccessible, *GObjectAccessibleClass, GObjectAccessibleOverrides](
+		GTypeGObjectAccessible,
+		initGObjectAccessibleClass,
+		wrapGObjectAccessible,
+		defaultGObjectAccessibleOverrides,
+	)
 }
 
-func initClassGObjectAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitGObjectAccessible(*GObjectAccessibleClass) }); ok {
-		klass := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitGObjectAccessible(klass)
-	}
-}
-
-func finalizeClassGObjectAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGObjectAccessible(*GObjectAccessibleClass) }); ok {
-		klass := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGObjectAccessible(klass)
+func initGObjectAccessibleClass(gclass unsafe.Pointer, overrides GObjectAccessibleOverrides, classInitFunc func(*GObjectAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

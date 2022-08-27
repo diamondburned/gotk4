@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// VScaleOverrider contains methods that are overridable.
-type VScaleOverrider interface {
+// VScaleOverrides contains methods that are overridable.
+type VScaleOverrides struct {
+}
+
+func defaultVScaleOverrides(v *VScale) VScaleOverrides {
+	return VScaleOverrides{}
 }
 
 // VScale widget is used to allow the user to select a value using a vertical
@@ -51,25 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVScale,
-		GoType:        reflect.TypeOf((*VScale)(nil)),
-		InitClass:     initClassVScale,
-		FinalizeClass: finalizeClassVScale,
-	})
+	coreglib.RegisterClassInfo[*VScale, *VScaleClass, VScaleOverrides](
+		GTypeVScale,
+		initVScaleClass,
+		wrapVScale,
+		defaultVScaleOverrides,
+	)
 }
 
-func initClassVScale(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVScale(*VScaleClass) }); ok {
-		klass := (*VScaleClass)(gextras.NewStructNative(gclass))
-		goval.InitVScale(klass)
-	}
-}
-
-func finalizeClassVScale(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVScale(*VScaleClass) }); ok {
-		klass := (*VScaleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVScale(klass)
+func initVScaleClass(gclass unsafe.Pointer, overrides VScaleOverrides, classInitFunc func(*VScaleClass)) {
+	if classInitFunc != nil {
+		class := (*VScaleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

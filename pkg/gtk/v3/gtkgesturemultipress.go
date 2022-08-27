@@ -3,12 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -16,9 +13,9 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_GestureMultiPress_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk3_GestureMultiPress_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectStopped(gpointer, guintptr);
+// extern void _gotk4_gtk3_GestureMultiPress_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureMultiPress_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -66,58 +63,10 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 	return wrapGestureMultiPress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_GestureMultiPress_ConnectPressed
-func _gotk4_gtk3_GestureMultiPress_ConnectPressed(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
-	var f func(nPress int, x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(nPress int, x, y float64))
-	}
-
-	var _nPress int // out
-	var _x float64  // out
-	var _y float64  // out
-
-	_nPress = int(arg1)
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	f(_nPress, _x, _y)
-}
-
 // ConnectPressed: this signal is emitted whenever a button or touch press
 // happens.
 func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectPressed), f)
-}
-
-//export _gotk4_gtk3_GestureMultiPress_ConnectReleased
-func _gotk4_gtk3_GestureMultiPress_ConnectReleased(arg0 C.gpointer, arg1 C.gint, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) {
-	var f func(nPress int, x, y float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(nPress int, x, y float64))
-	}
-
-	var _nPress int // out
-	var _x float64  // out
-	var _y float64  // out
-
-	_nPress = int(arg1)
-	_x = float64(arg2)
-	_y = float64(arg3)
-
-	f(_nPress, _x, _y)
 }
 
 // ConnectReleased: this signal is emitted when a button or touch is released.
@@ -128,108 +77,8 @@ func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float6
 	return coreglib.ConnectGeneratedClosure(gesture, "released", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectReleased), f)
 }
 
-//export _gotk4_gtk3_GestureMultiPress_ConnectStopped
-func _gotk4_gtk3_GestureMultiPress_ConnectStopped(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectStopped: this signal is emitted whenever any time/distance threshold
 // has been exceeded.
 func (gesture *GestureMultiPress) ConnectStopped(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "stopped", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectStopped), f)
-}
-
-// NewGestureMultiPress returns a newly created Gesture that recognizes single
-// and multiple presses.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//
-// The function returns the following values:
-//
-//    - gestureMultiPress: newly created GestureMultiPress.
-//
-func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.GtkGesture // in
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_gesture_multi_press_new(_arg1)
-	runtime.KeepAlive(widget)
-
-	var _gestureMultiPress *GestureMultiPress // out
-
-	_gestureMultiPress = wrapGestureMultiPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _gestureMultiPress
-}
-
-// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
-// function will return TRUE and fill in rect with the press area. See
-// gtk_gesture_multi_press_set_area() for more details on what the press area
-// represents.
-//
-// The function returns the following values:
-//
-//    - rect: return location for the press area.
-//    - ok: TRUE if rect was filled with the press area.
-//
-func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGestureMultiPress // out
-	var _arg1 C.GdkRectangle          // in
-	var _cret C.gboolean              // in
-
-	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	_cret = C.gtk_gesture_multi_press_get_area(_arg0, &_arg1)
-	runtime.KeepAlive(gesture)
-
-	var _rect *gdk.Rectangle // out
-	var _ok bool             // out
-
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _rect, _ok
-}
-
-// SetArea: if rect is non-NULL, the press area will be checked to be confined
-// within the rectangle, otherwise the button count will be reset so the press
-// is seen as being the first one. If rect is NULL, the area will be reset to an
-// unrestricted state.
-//
-// Note: The rectangle is only used to determine whether any non-first click
-// falls within the expected area. This is not akin to an input shape.
-//
-// The function takes the following parameters:
-//
-//    - rect (optional): rectangle to receive coordinates on.
-//
-func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkGestureMultiPress // out
-	var _arg1 *C.GdkRectangle         // out
-
-	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	if rect != nil {
-		_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
-	}
-
-	C.gtk_gesture_multi_press_set_area(_arg0, _arg1)
-	runtime.KeepAlive(gesture)
-	runtime.KeepAlive(rect)
 }

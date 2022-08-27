@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ExpressionNotify(gpointer);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_ExpressionNotify(gpointer);
 import "C"
 
 // GType values.
@@ -44,20 +44,6 @@ func init() {
 // ExpressionNotify: callback called by gtk_expression_watch() when the
 // expression value changes.
 type ExpressionNotify func()
-
-//export _gotk4_gtk4_ExpressionNotify
-func _gotk4_gtk4_ExpressionNotify(arg1 C.gpointer) {
-	var fn ExpressionNotify
-	{
-		v := gbox.Get(uintptr(arg1))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ExpressionNotify)
-	}
-
-	fn()
-}
 
 // ValueDupExpression retrieves the GtkExpression stored inside the given value,
 // and acquires a reference to it.

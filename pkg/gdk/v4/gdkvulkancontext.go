@@ -84,22 +84,6 @@ func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
 	return obj.baseVulkanContext()
 }
 
-//export _gotk4_gdk4_VulkanContext_ConnectImagesUpdated
-func _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectImagesUpdated is emitted when the images managed by this context have
 // changed.
 //

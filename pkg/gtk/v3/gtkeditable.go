@@ -14,14 +14,32 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_EditableInterface_get_selection_bounds(GtkEditable*, gint*, gint*);
-// extern gchar* _gotk4_gtk3_EditableInterface_get_chars(GtkEditable*, gint, gint);
-// extern gint _gotk4_gtk3_EditableInterface_get_position(GtkEditable*);
-// extern void _gotk4_gtk3_EditableInterface_changed(GtkEditable*);
-// extern void _gotk4_gtk3_EditableInterface_delete_text(GtkEditable*, gint, gint);
-// extern void _gotk4_gtk3_EditableInterface_set_position(GtkEditable*, gint);
-// extern void _gotk4_gtk3_Editable_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
+// extern void _gotk4_gtk3_Editable_ConnectChanged(gpointer, guintptr);
+// gboolean _gotk4_gtk3_Editable_virtual_get_selection_bounds(void* fnptr, GtkEditable* arg0, gint* arg1, gint* arg2) {
+//   return ((gboolean (*)(GtkEditable*, gint*, gint*))(fnptr))(arg0, arg1, arg2);
+// };
+// gchar* _gotk4_gtk3_Editable_virtual_get_chars(void* fnptr, GtkEditable* arg0, gint arg1, gint arg2) {
+//   return ((gchar* (*)(GtkEditable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_gtk3_Editable_virtual_get_position(void* fnptr, GtkEditable* arg0) {
+//   return ((gint (*)(GtkEditable*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Editable_virtual_changed(void* fnptr, GtkEditable* arg0) {
+//   ((void (*)(GtkEditable*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Editable_virtual_delete_text(void* fnptr, GtkEditable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(GtkEditable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_Editable_virtual_do_delete_text(void* fnptr, GtkEditable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(GtkEditable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_Editable_virtual_set_position(void* fnptr, GtkEditable* arg0, gint arg1) {
+//   ((void (*)(GtkEditable*, gint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Editable_virtual_set_selection_bounds(void* fnptr, GtkEditable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(GtkEditable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -134,22 +152,6 @@ func marshalEditable(p uintptr) (interface{}, error) {
 	return wrapEditable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Editable_ConnectChanged
-func _gotk4_gtk3_Editable_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged signal is emitted at the end of a single user-visible
 // operation on the contents of the Editable.
 //
@@ -159,28 +161,6 @@ func _gotk4_gtk3_Editable_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 // multiple ::notify::text signals to be emitted).
 func (editable *Editable) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(editable, "changed", false, unsafe.Pointer(C._gotk4_gtk3_Editable_ConnectChanged), f)
-}
-
-//export _gotk4_gtk3_Editable_ConnectDeleteText
-func _gotk4_gtk3_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(startPos, endPos int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(startPos, endPos int))
-	}
-
-	var _startPos int // out
-	var _endPos int   // out
-
-	_startPos = int(arg1)
-	_endPos = int(arg2)
-
-	f(_startPos, _endPos)
 }
 
 // ConnectDeleteText: this signal is emitted when text is deleted from the
@@ -462,6 +442,246 @@ func (editable *Editable) SetPosition(position int) {
 	C.gtk_editable_set_position(_arg0, _arg1)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(position)
+}
+
+func (editable *Editable) changed() {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkEditable // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+
+	C._gotk4_gtk3_Editable_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(editable)
+}
+
+// deleteText deletes a sequence of characters. The characters that are deleted
+// are those characters at positions from start_pos up to, but not including
+// end_pos. If end_pos is negative, then the characters deleted are those from
+// start_pos to the end of the text.
+//
+// Note that the positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
+func (editable *Editable) deleteText(startPos, endPos int) {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.delete_text
+
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C._gotk4_gtk3_Editable_virtual_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// doDeleteText deletes a sequence of characters. The characters that are
+// deleted are those characters at positions from start_pos up to, but not
+// including end_pos. If end_pos is negative, then the characters deleted are
+// those from start_pos to the end of the text.
+//
+// Note that the positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start position.
+//    - endPos: end position.
+//
+func (editable *Editable) doDeleteText(startPos, endPos int) {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.do_delete_text
+
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C._gotk4_gtk3_Editable_virtual_do_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// Chars retrieves a sequence of characters. The characters that are retrieved
+// are those characters at positions from start_pos up to, but not including
+// end_pos. If end_pos is negative, then the characters retrieved are those
+// characters from start_pos to the end of the text.
+//
+// Note that positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start of text.
+//    - endPos: end of text.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the contents of the widget as a string. This string is
+//      allocated by the Editable implementation and should be freed by the
+//      caller.
+//
+func (editable *Editable) chars(startPos, endPos int) string {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.get_chars
+
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	_cret = C._gotk4_gtk3_Editable_virtual_get_chars(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Position retrieves the current position of the cursor relative to the start
+// of the content of the editable.
+//
+// Note that this position is in characters, not in bytes.
+//
+// The function returns the following values:
+//
+//    - gint: cursor position.
+//
+func (editable *Editable) position() int {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.get_position
+
+	var _arg0 *C.GtkEditable // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+
+	_cret = C._gotk4_gtk3_Editable_virtual_get_position(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(editable)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// selectionBounds retrieves the selection bound of the editable. start_pos will
+// be filled with the start of the selection and end_pos with end. If no text
+// was selected both will be identical and FALSE will be returned.
+//
+// Note that positions are specified in characters, not bytes.
+//
+// The function returns the following values:
+//
+//    - startPos (optional): location to store the starting position, or NULL.
+//    - endPos (optional): location to store the end position, or NULL.
+//    - ok: TRUE if an area is selected, FALSE otherwise.
+//
+func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.get_selection_bounds
+
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+
+	_cret = C._gotk4_gtk3_Editable_virtual_get_selection_bounds(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(editable)
+
+	var _startPos int // out
+	var _endPos int   // out
+	var _ok bool      // out
+
+	_startPos = int(_arg1)
+	_endPos = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _startPos, _endPos, _ok
+}
+
+// setPosition sets the cursor position in the editable to the given value.
+//
+// The cursor is displayed before the character with the given (base 0) index in
+// the contents of the editable. The value must be less than or equal to the
+// number of characters in the editable. A value of -1 indicates that the
+// position should be set after the last character of the editable. Note that
+// position is in characters, not in bytes.
+//
+// The function takes the following parameters:
+//
+//    - position of the cursor.
+//
+func (editable *Editable) setPosition(position int) {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.set_position
+
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(position)
+
+	C._gotk4_gtk3_Editable_virtual_set_position(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(position)
+}
+
+// setSelectionBounds selects a region of text. The characters that are selected
+// are those characters at positions from start_pos up to, but not including
+// end_pos. If end_pos is negative, then the characters selected are those
+// characters from start_pos to the end of the text.
+//
+// Note that positions are specified in characters, not bytes.
+//
+// The function takes the following parameters:
+//
+//    - startPos: start of region.
+//    - endPos: end of region.
+//
+func (editable *Editable) setSelectionBounds(startPos, endPos int) {
+	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
+	fnarg := gclass.set_selection_bounds
+
+	var _arg0 *C.GtkEditable // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C._gotk4_gtk3_Editable_virtual_set_selection_bounds(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(editable)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
 }
 
 // EditableInterface: instance of this type is always passed by reference.

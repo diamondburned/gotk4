@@ -107,26 +107,6 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	return wrapEmojiChooser(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked
-func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(text string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(text string))
-	}
-
-	var _text string // out
-
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_text)
-}
-
 // ConnectEmojiPicked is emitted when the user selects an Emoji.
 func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "emoji-picked", false, unsafe.Pointer(C._gotk4_gtk4_EmojiChooser_ConnectEmojiPicked), f)

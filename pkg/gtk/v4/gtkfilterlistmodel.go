@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// FilterListModelOverrider contains methods that are overridable.
-type FilterListModelOverrider interface {
+// FilterListModelOverrides contains methods that are overridable.
+type FilterListModelOverrides struct {
+}
+
+func defaultFilterListModelOverrides(v *FilterListModel) FilterListModelOverrides {
+	return FilterListModelOverrides{}
 }
 
 // FilterListModel: GtkFilterListModel is a list model that filters the elements
@@ -53,25 +57,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFilterListModel,
-		GoType:        reflect.TypeOf((*FilterListModel)(nil)),
-		InitClass:     initClassFilterListModel,
-		FinalizeClass: finalizeClassFilterListModel,
-	})
+	coreglib.RegisterClassInfo[*FilterListModel, *FilterListModelClass, FilterListModelOverrides](
+		GTypeFilterListModel,
+		initFilterListModelClass,
+		wrapFilterListModel,
+		defaultFilterListModelOverrides,
+	)
 }
 
-func initClassFilterListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFilterListModel(*FilterListModelClass) }); ok {
-		klass := (*FilterListModelClass)(gextras.NewStructNative(gclass))
-		goval.InitFilterListModel(klass)
-	}
-}
-
-func finalizeClassFilterListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFilterListModel(*FilterListModelClass) }); ok {
-		klass := (*FilterListModelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFilterListModel(klass)
+func initFilterListModelClass(gclass unsafe.Pointer, overrides FilterListModelOverrides, classInitFunc func(*FilterListModelClass)) {
+	if classInitFunc != nil {
+		class := (*FilterListModelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

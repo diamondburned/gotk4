@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// HSeparatorOverrider contains methods that are overridable.
-type HSeparatorOverrider interface {
+// HSeparatorOverrides contains methods that are overridable.
+type HSeparatorOverrides struct {
+}
+
+func defaultHSeparatorOverrides(v *HSeparator) HSeparatorOverrides {
+	return HSeparatorOverrides{}
 }
 
 // HSeparator widget is a horizontal separator, used to group the widgets within
@@ -54,25 +58,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHSeparator,
-		GoType:        reflect.TypeOf((*HSeparator)(nil)),
-		InitClass:     initClassHSeparator,
-		FinalizeClass: finalizeClassHSeparator,
-	})
+	coreglib.RegisterClassInfo[*HSeparator, *HSeparatorClass, HSeparatorOverrides](
+		GTypeHSeparator,
+		initHSeparatorClass,
+		wrapHSeparator,
+		defaultHSeparatorOverrides,
+	)
 }
 
-func initClassHSeparator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitHSeparator(*HSeparatorClass) }); ok {
-		klass := (*HSeparatorClass)(gextras.NewStructNative(gclass))
-		goval.InitHSeparator(klass)
-	}
-}
-
-func finalizeClassHSeparator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHSeparator(*HSeparatorClass) }); ok {
-		klass := (*HSeparatorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHSeparator(klass)
+func initHSeparatorClass(gclass unsafe.Pointer, overrides HSeparatorOverrides, classInitFunc func(*HSeparatorClass)) {
+	if classInitFunc != nil {
+		class := (*HSeparatorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

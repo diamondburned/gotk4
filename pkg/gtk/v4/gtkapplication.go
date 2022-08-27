@@ -17,11 +17,17 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ApplicationClass_window_added(GtkApplication*, GtkWindow*);
-// extern void _gotk4_gtk4_ApplicationClass_window_removed(GtkApplication*, GtkWindow*);
-// extern void _gotk4_gtk4_Application_ConnectQueryEnd(gpointer, guintptr);
-// extern void _gotk4_gtk4_Application_ConnectWindowAdded(gpointer, GtkWindow*, guintptr);
 // extern void _gotk4_gtk4_Application_ConnectWindowRemoved(gpointer, GtkWindow*, guintptr);
+// extern void _gotk4_gtk4_Application_ConnectWindowAdded(gpointer, GtkWindow*, guintptr);
+// extern void _gotk4_gtk4_Application_ConnectQueryEnd(gpointer, guintptr);
+// extern void _gotk4_gtk4_ApplicationClass_window_removed(GtkApplication*, GtkWindow*);
+// extern void _gotk4_gtk4_ApplicationClass_window_added(GtkApplication*, GtkWindow*);
+// void _gotk4_gtk4_Application_virtual_window_added(void* fnptr, GtkApplication* arg0, GtkWindow* arg1) {
+//   ((void (*)(GtkApplication*, GtkWindow*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Application_virtual_window_removed(void* fnptr, GtkApplication* arg0, GtkWindow* arg1) {
+//   ((void (*)(GtkApplication*, GtkWindow*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -97,14 +103,21 @@ func (a ApplicationInhibitFlags) Has(other ApplicationInhibitFlags) bool {
 	return (a & other) == other
 }
 
-// ApplicationOverrider contains methods that are overridable.
-type ApplicationOverrider interface {
+// ApplicationOverrides contains methods that are overridable.
+type ApplicationOverrides struct {
 	// The function takes the following parameters:
 	//
-	WindowAdded(window *Window)
+	WindowAdded func(window *Window)
 	// The function takes the following parameters:
 	//
-	WindowRemoved(window *Window)
+	WindowRemoved func(window *Window)
+}
+
+func defaultApplicationOverrides(v *Application) ApplicationOverrides {
+	return ApplicationOverrides{
+		WindowAdded:   v.windowAdded,
+		WindowRemoved: v.windowRemoved,
+	}
 }
 
 // Application: GtkApplication is a high-level API for writing applications.
@@ -179,60 +192,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeApplication,
-		GoType:        reflect.TypeOf((*Application)(nil)),
-		InitClass:     initClassApplication,
-		FinalizeClass: finalizeClassApplication,
-	})
+	coreglib.RegisterClassInfo[*Application, *ApplicationClass, ApplicationOverrides](
+		GTypeApplication,
+		initApplicationClass,
+		wrapApplication,
+		defaultApplicationOverrides,
+	)
 }
 
-func initClassApplication(gclass unsafe.Pointer, goval any) {
+func initApplicationClass(gclass unsafe.Pointer, overrides ApplicationOverrides, classInitFunc func(*ApplicationClass)) {
+	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeApplication))))
 
-	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ WindowAdded(window *Window) }); ok {
+	if overrides.WindowAdded != nil {
 		pclass.window_added = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_added)
 	}
 
-	if _, ok := goval.(interface{ WindowRemoved(window *Window) }); ok {
+	if overrides.WindowRemoved != nil {
 		pclass.window_removed = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_removed)
 	}
-	if goval, ok := goval.(interface{ InitApplication(*ApplicationClass) }); ok {
-		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
-		goval.InitApplication(klass)
+
+	if classInitFunc != nil {
+		class := (*ApplicationClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassApplication(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeApplication(*ApplicationClass) }); ok {
-		klass := (*ApplicationClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeApplication(klass)
-	}
-}
-
-//export _gotk4_gtk4_ApplicationClass_window_added
-func _gotk4_gtk4_ApplicationClass_window_added(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ WindowAdded(window *Window) })
-
-	var _window *Window // out
-
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.WindowAdded(_window)
-}
-
-//export _gotk4_gtk4_ApplicationClass_window_removed
-func _gotk4_gtk4_ApplicationClass_window_removed(arg0 *C.GtkApplication, arg1 *C.GtkWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ WindowRemoved(window *Window) })
-
-	var _window *Window // out
-
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.WindowRemoved(_window)
 }
 
 func wrapApplication(obj *coreglib.Object) *Application {
@@ -253,22 +235,6 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return wrapApplication(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Application_ConnectQueryEnd
-func _gotk4_gtk4_Application_ConnectQueryEnd(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectQueryEnd is emitted when the session manager is about to end the
 // session.
 //
@@ -280,50 +246,10 @@ func (application *Application) ConnectQueryEnd(f func()) coreglib.SignalHandle 
 	return coreglib.ConnectGeneratedClosure(application, "query-end", false, unsafe.Pointer(C._gotk4_gtk4_Application_ConnectQueryEnd), f)
 }
 
-//export _gotk4_gtk4_Application_ConnectWindowAdded
-func _gotk4_gtk4_Application_ConnectWindowAdded(arg0 C.gpointer, arg1 *C.GtkWindow, arg2 C.guintptr) {
-	var f func(window *Window)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(window *Window))
-	}
-
-	var _window *Window // out
-
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_window)
-}
-
 // ConnectWindowAdded is emitted when a gtk.Window is added to application
 // through gtk.Application.AddWindow().
 func (application *Application) ConnectWindowAdded(f func(window *Window)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(application, "window-added", false, unsafe.Pointer(C._gotk4_gtk4_Application_ConnectWindowAdded), f)
-}
-
-//export _gotk4_gtk4_Application_ConnectWindowRemoved
-func _gotk4_gtk4_Application_ConnectWindowRemoved(arg0 C.gpointer, arg1 *C.GtkWindow, arg2 C.guintptr) {
-	var f func(window *Window)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(window *Window))
-	}
-
-	var _window *Window // out
-
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_window)
 }
 
 // ConnectWindowRemoved is emitted when a gtk.Window is removed from
@@ -933,6 +859,40 @@ func (application *Application) Uninhibit(cookie uint) {
 	C.gtk_application_uninhibit(_arg0, _arg1)
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(cookie)
+}
+
+// The function takes the following parameters:
+//
+func (application *Application) windowAdded(window *Window) {
+	gclass := (*C.GtkApplicationClass)(coreglib.PeekParentClass(application))
+	fnarg := gclass.window_added
+
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.GtkWindow      // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk4_Application_virtual_window_added(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(window)
+}
+
+// The function takes the following parameters:
+//
+func (application *Application) windowRemoved(window *Window) {
+	gclass := (*C.GtkApplicationClass)(coreglib.PeekParentClass(application))
+	fnarg := gclass.window_removed
+
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.GtkWindow      // out
+
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C._gotk4_gtk4_Application_virtual_window_removed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(window)
 }
 
 // ApplicationClass: instance of this type is always passed by reference.

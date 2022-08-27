@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ContainerAccessibleOverrider contains methods that are overridable.
-type ContainerAccessibleOverrider interface {
+// ContainerAccessibleOverrides contains methods that are overridable.
+type ContainerAccessibleOverrides struct {
+}
+
+func defaultContainerAccessibleOverrides(v *ContainerAccessible) ContainerAccessibleOverrides {
+	return ContainerAccessibleOverrides{}
 }
 
 type ContainerAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeContainerAccessible,
-		GoType:        reflect.TypeOf((*ContainerAccessible)(nil)),
-		InitClass:     initClassContainerAccessible,
-		FinalizeClass: finalizeClassContainerAccessible,
-	})
+	coreglib.RegisterClassInfo[*ContainerAccessible, *ContainerAccessibleClass, ContainerAccessibleOverrides](
+		GTypeContainerAccessible,
+		initContainerAccessibleClass,
+		wrapContainerAccessible,
+		defaultContainerAccessibleOverrides,
+	)
 }
 
-func initClassContainerAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitContainerAccessible(*ContainerAccessibleClass)
-	}); ok {
-		klass := (*ContainerAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitContainerAccessible(klass)
-	}
-}
-
-func finalizeClassContainerAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeContainerAccessible(*ContainerAccessibleClass)
-	}); ok {
-		klass := (*ContainerAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeContainerAccessible(klass)
+func initContainerAccessibleClass(gclass unsafe.Pointer, overrides ContainerAccessibleOverrides, classInitFunc func(*ContainerAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ContainerAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

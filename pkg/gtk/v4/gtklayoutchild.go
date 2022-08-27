@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// LayoutChildOverrider contains methods that are overridable.
-type LayoutChildOverrider interface {
+// LayoutChildOverrides contains methods that are overridable.
+type LayoutChildOverrides struct {
+}
+
+func defaultLayoutChildOverrides(v *LayoutChild) LayoutChildOverrides {
+	return LayoutChildOverrides{}
 }
 
 // LayoutChild: GtkLayoutChild is the base class for objects that are meant to
@@ -61,25 +65,18 @@ type LayoutChilder interface {
 var _ LayoutChilder = (*LayoutChild)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLayoutChild,
-		GoType:        reflect.TypeOf((*LayoutChild)(nil)),
-		InitClass:     initClassLayoutChild,
-		FinalizeClass: finalizeClassLayoutChild,
-	})
+	coreglib.RegisterClassInfo[*LayoutChild, *LayoutChildClass, LayoutChildOverrides](
+		GTypeLayoutChild,
+		initLayoutChildClass,
+		wrapLayoutChild,
+		defaultLayoutChildOverrides,
+	)
 }
 
-func initClassLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitLayoutChild(*LayoutChildClass) }); ok {
-		klass := (*LayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.InitLayoutChild(klass)
-	}
-}
-
-func finalizeClassLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeLayoutChild(*LayoutChildClass) }); ok {
-		klass := (*LayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLayoutChild(klass)
+func initLayoutChildClass(gclass unsafe.Pointer, overrides LayoutChildOverrides, classInitFunc func(*LayoutChildClass)) {
+	if classInitFunc != nil {
+		class := (*LayoutChildClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

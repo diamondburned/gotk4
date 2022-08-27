@@ -16,31 +16,64 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
-// extern GDrive* _gotk4_gio2_MountIface_get_drive(GMount*);
-// extern GFile* _gotk4_gio2_MountIface_get_default_location(GMount*);
-// extern GFile* _gotk4_gio2_MountIface_get_root(GMount*);
-// extern GIcon* _gotk4_gio2_MountIface_get_icon(GMount*);
-// extern GIcon* _gotk4_gio2_MountIface_get_symbolic_icon(GMount*);
-// extern GVolume* _gotk4_gio2_MountIface_get_volume(GMount*);
-// extern char* _gotk4_gio2_MountIface_get_name(GMount*);
-// extern char* _gotk4_gio2_MountIface_get_uuid(GMount*);
-// extern gboolean _gotk4_gio2_MountIface_can_eject(GMount*);
-// extern gboolean _gotk4_gio2_MountIface_can_unmount(GMount*);
-// extern gboolean _gotk4_gio2_MountIface_eject_finish(GMount*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_MountIface_eject_with_operation_finish(GMount*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_MountIface_remount_finish(GMount*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_MountIface_unmount_finish(GMount*, GAsyncResult*, GError**);
-// extern gboolean _gotk4_gio2_MountIface_unmount_with_operation_finish(GMount*, GAsyncResult*, GError**);
-// extern gchar* _gotk4_gio2_MountIface_get_sort_key(GMount*);
-// extern gchar** _gotk4_gio2_MountIface_guess_content_type_finish(GMount*, GAsyncResult*, GError**);
-// extern gchar** _gotk4_gio2_MountIface_guess_content_type_sync(GMount*, gboolean, GCancellable*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
-// extern void _gotk4_gio2_MountIface_changed(GMount*);
-// extern void _gotk4_gio2_MountIface_pre_unmount(GMount*);
-// extern void _gotk4_gio2_MountIface_unmounted(GMount*);
-// extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectUnmounted(gpointer, guintptr);
+// extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
+// extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// GDrive* _gotk4_gio2_Mount_virtual_get_drive(void* fnptr, GMount* arg0) {
+//   return ((GDrive* (*)(GMount*))(fnptr))(arg0);
+// };
+// GFile* _gotk4_gio2_Mount_virtual_get_default_location(void* fnptr, GMount* arg0) {
+//   return ((GFile* (*)(GMount*))(fnptr))(arg0);
+// };
+// GFile* _gotk4_gio2_Mount_virtual_get_root(void* fnptr, GMount* arg0) {
+//   return ((GFile* (*)(GMount*))(fnptr))(arg0);
+// };
+// GIcon* _gotk4_gio2_Mount_virtual_get_icon(void* fnptr, GMount* arg0) {
+//   return ((GIcon* (*)(GMount*))(fnptr))(arg0);
+// };
+// GVolume* _gotk4_gio2_Mount_virtual_get_volume(void* fnptr, GMount* arg0) {
+//   return ((GVolume* (*)(GMount*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_Mount_virtual_get_name(void* fnptr, GMount* arg0) {
+//   return ((char* (*)(GMount*))(fnptr))(arg0);
+// };
+// char* _gotk4_gio2_Mount_virtual_get_uuid(void* fnptr, GMount* arg0) {
+//   return ((char* (*)(GMount*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Mount_virtual_can_eject(void* fnptr, GMount* arg0) {
+//   return ((gboolean (*)(GMount*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Mount_virtual_can_unmount(void* fnptr, GMount* arg0) {
+//   return ((gboolean (*)(GMount*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Mount_virtual_eject_finish(void* fnptr, GMount* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GMount*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Mount_virtual_remount_finish(void* fnptr, GMount* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GMount*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Mount_virtual_unmount_finish(void* fnptr, GMount* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GMount*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gio2_Mount_virtual_changed(void* fnptr, GMount* arg0) {
+//   ((void (*)(GMount*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Mount_virtual_eject(void* fnptr, GMount* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GMount*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Mount_virtual_pre_unmount(void* fnptr, GMount* arg0) {
+//   ((void (*)(GMount*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Mount_virtual_remount(void* fnptr, GMount* arg0, GMountMountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GMount*, GMountMountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Mount_virtual_unmount(void* fnptr, GMount* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GMount*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Mount_virtual_unmounted(void* fnptr, GMount* arg0) {
+//   ((void (*)(GMount*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -164,41 +197,9 @@ func marshalMount(p uintptr) (interface{}, error) {
 	return wrapMount(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gio2_Mount_ConnectChanged
-func _gotk4_gio2_Mount_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted when the mount has been changed.
 func (mount *Mount) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(mount, "changed", false, unsafe.Pointer(C._gotk4_gio2_Mount_ConnectChanged), f)
-}
-
-//export _gotk4_gio2_Mount_ConnectPreUnmount
-func _gotk4_gio2_Mount_ConnectPreUnmount(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectPreUnmount: this signal may be emitted when the #GMount is about to be
@@ -208,22 +209,6 @@ func _gotk4_gio2_Mount_ConnectPreUnmount(arg0 C.gpointer, arg1 C.guintptr) {
 // unmount.
 func (mount *Mount) ConnectPreUnmount(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(mount, "pre-unmount", false, unsafe.Pointer(C._gotk4_gio2_Mount_ConnectPreUnmount), f)
-}
-
-//export _gotk4_gio2_Mount_ConnectUnmounted
-func _gotk4_gio2_Mount_ConnectUnmounted(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectUnmounted: this signal is emitted when the #GMount have been
@@ -338,77 +323,6 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	C.g_mount_eject_finish(_arg0, _arg1, &_cerr)
-	runtime.KeepAlive(mount)
-	runtime.KeepAlive(result)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
-
-// EjectWithOperation ejects a mount. This is an asynchronous operation, and is
-// finished by calling g_mount_eject_with_operation_finish() with the mount and
-// Result data returned in the callback.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
-//
-func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GMountUnmountFlags(flags)
-	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
-	}
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_mount_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(mount)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(mountOperation)
-	runtime.KeepAlive(callback)
-}
-
-// EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
-// during the operation, error will be set to contain the errors and FALSE will
-// be returned.
-//
-// The function takes the following parameters:
-//
-//    - result: Result.
-//
-func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
-	var _arg0 *C.GMount       // out
-	var _arg1 *C.GAsyncResult // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	C.g_mount_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
 
@@ -545,54 +459,6 @@ func (mount *Mount) Root() *File {
 	return _file
 }
 
-// SortKey gets the sort key for mount, if any.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): sorting key for mount or NULL if no such key is
-//      available.
-//
-func (mount *Mount) SortKey() string {
-	var _arg0 *C.GMount // out
-	var _cret *C.gchar  // in
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-
-	_cret = C.g_mount_get_sort_key(_arg0)
-	runtime.KeepAlive(mount)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// SymbolicIcon gets the symbolic icon for mount.
-//
-// The function returns the following values:
-//
-//    - icon: #GIcon. The returned object should be unreffed with
-//      g_object_unref() when no longer needed.
-//
-func (mount *Mount) SymbolicIcon() *Icon {
-	var _arg0 *C.GMount // out
-	var _cret *C.GIcon  // in
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-
-	_cret = C.g_mount_get_symbolic_icon(_arg0)
-	runtime.KeepAlive(mount)
-
-	var _icon *Icon // out
-
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _icon
-}
-
 // UUID gets the UUID for the mount. The reference is typically based on the
 // file system UUID for the mount in question and should be considered an opaque
 // string. Returns NULL if there is no UUID available.
@@ -645,216 +511,6 @@ func (mount *Mount) Volume() *Volume {
 	}
 
 	return _volume
-}
-
-// GuessContentType tries to guess the type of content stored on mount. Returns
-// one or more textual identifiers of well-known content types (typically
-// prefixed with "x-content/"), e.g. x-content/image-dcf for camera memory
-// cards. See the shared-mime-info
-// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-// specification for more on x-content types.
-//
-// This is an asynchronous operation (see g_mount_guess_content_type_sync() for
-// the synchronous version), and is finished by calling
-// g_mount_guess_content_type_finish() with the mount and Result data returned
-// in the callback.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - forceRescan: whether to force a rescan of the content. Otherwise a cached
-//      result will be used if available.
-//    - callback (optional): ReadyCallback.
-//
-func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
-	var _arg0 *C.GMount             // out
-	var _arg2 *C.GCancellable       // out
-	var _arg1 C.gboolean            // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if forceRescan {
-		_arg1 = C.TRUE
-	}
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(mount)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(forceRescan)
-	runtime.KeepAlive(callback)
-}
-
-// GuessContentTypeFinish finishes guessing content types of mount. If any
-// errors occurred during the operation, error will be set to contain the errors
-// and FALSE will be returned. In particular, you may get an
-// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
-//
-// The function takes the following parameters:
-//
-//    - result: Result.
-//
-// The function returns the following values:
-//
-//    - utf8s: NULL-terminated array of content types or NULL on error. Caller
-//      should free this array with g_strfreev() when done with it.
-//
-func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
-	var _arg0 *C.GMount       // out
-	var _arg1 *C.GAsyncResult // out
-	var _cret **C.gchar       // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	_cret = C.g_mount_guess_content_type_finish(_arg0, _arg1, &_cerr)
-	runtime.KeepAlive(mount)
-	runtime.KeepAlive(result)
-
-	var _utf8s []string // out
-	var _goerr error    // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _utf8s, _goerr
-}
-
-// GuessContentTypeSync tries to guess the type of content stored on mount.
-// Returns one or more textual identifiers of well-known content types
-// (typically prefixed with "x-content/"), e.g. x-content/image-dcf for camera
-// memory cards. See the shared-mime-info
-// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-// specification for more on x-content types.
-//
-// This is a synchronous operation and as such may block doing IO; see
-// g_mount_guess_content_type() for the asynchronous version.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - forceRescan: whether to force a rescan of the content. Otherwise a cached
-//      result will be used if available.
-//
-// The function returns the following values:
-//
-//    - utf8s: NULL-terminated array of content types or NULL on error. Caller
-//      should free this array with g_strfreev() when done with it.
-//
-func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error) {
-	var _arg0 *C.GMount       // out
-	var _arg2 *C.GCancellable // out
-	var _arg1 C.gboolean      // out
-	var _cret **C.gchar       // in
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if forceRescan {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C.g_mount_guess_content_type_sync(_arg0, _arg1, _arg2, &_cerr)
-	runtime.KeepAlive(mount)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(forceRescan)
-
-	var _utf8s []string // out
-	var _goerr error    // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _utf8s, _goerr
-}
-
-// IsShadowed determines if mount is shadowed. Applications or libraries should
-// avoid displaying mount in the user interface if it is shadowed.
-//
-// A mount is said to be shadowed if there exists one or more user visible
-// objects (currently #GMount objects) with a root that is inside the root of
-// mount.
-//
-// One application of shadow mounts is when exposing a single file system that
-// is used to address several logical volumes. In this situation, a Monitor
-// implementation would create two #GVolume objects (for example, one for the
-// camera functionality of the device and one for a SD card reader on the
-// device) with activation URIs gphoto2://[usb:001,002]/store1/ and
-// gphoto2://[usb:001,002]/store2/. When the underlying mount (with root
-// gphoto2://[usb:001,002]/) is mounted, said Monitor implementation would
-// create two #GMount objects (each with their root matching the corresponding
-// volume activation root) that would shadow the original mount.
-//
-// The proxy monitor in GVfs 2.26 and later, automatically creates and manage
-// shadow mounts (and shadows the underlying mount) if the activation root on a
-// #GVolume is set.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if mount is shadowed.
-//
-func (mount *Mount) IsShadowed() bool {
-	var _arg0 *C.GMount  // out
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-
-	_cret = C.g_mount_is_shadowed(_arg0)
-	runtime.KeepAlive(mount)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Remount remounts a mount. This is an asynchronous operation, and is finished
@@ -933,19 +589,6 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// Shadow increments the shadow count on mount. Usually used by Monitor
-// implementations when creating a shadow mount for mount, see
-// g_mount_is_shadowed() for more information. The caller will need to emit the
-// #GMount::changed signal on mount manually.
-func (mount *Mount) Shadow() {
-	var _arg0 *C.GMount // out
-
-	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-
-	C.g_mount_shadow(_arg0)
-	runtime.KeepAlive(mount)
-}
-
 // Unmount unmounts a mount. This is an asynchronous operation, and is finished
 // by calling g_mount_unmount_finish() with the mount and Result data returned
 // in the callback.
@@ -1015,57 +658,127 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// UnmountWithOperation unmounts a mount. This is an asynchronous operation, and
-// is finished by calling g_mount_unmount_with_operation_finish() with the mount
-// and Result data returned in the callback.
+// canEject checks if mount can be ejected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mount can be ejected.
+//
+func (mount *Mount) canEject() bool {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.can_eject
+
+	var _arg0 *C.GMount  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_can_eject(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// canUnmount checks if mount can be unmounted.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the mount can be unmounted.
+//
+func (mount *Mount) canUnmount() bool {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.can_unmount
+
+	var _arg0 *C.GMount  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_can_unmount(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (mount *Mount) changed() {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GMount // out
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	C._gotk4_gio2_Mount_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+}
+
+// Eject ejects a mount. This is an asynchronous operation, and is finished by
+// calling g_mount_eject_finish() with the mount and Result data returned in the
+// callback.
+//
+// Deprecated: Use g_mount_eject_with_operation() instead.
 //
 // The function takes the following parameters:
 //
 //    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the operation.
-//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - flags affecting the unmount if required for eject.
 //    - callback (optional) or NULL.
 //
-func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+func (mount *Mount) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.eject
+
 	var _arg0 *C.GMount             // out
-	var _arg3 *C.GCancellable       // out
+	var _arg2 *C.GCancellable       // out
 	var _arg1 C.GMountUnmountFlags  // out
-	var _arg2 *C.GMountOperation    // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	_arg1 = C.GMountUnmountFlags(flags)
-	if mountOperation != nil {
-		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
-	}
 	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	C.g_mount_unmount_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	C._gotk4_gio2_Mount_virtual_eject(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(flags)
-	runtime.KeepAlive(mountOperation)
 	runtime.KeepAlive(callback)
 }
 
-// UnmountWithOperationFinish finishes unmounting a mount. If any errors
-// occurred during the operation, error will be set to contain the errors and
-// FALSE will be returned.
+// ejectFinish finishes ejecting a mount. If any errors occurred during the
+// operation, error will be set to contain the errors and FALSE will be
+// returned.
+//
+// Deprecated: Use g_mount_eject_with_operation_finish() instead.
 //
 // The function takes the following parameters:
 //
 //    - result: Result.
 //
-func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
+func (mount *Mount) ejectFinish(result AsyncResulter) error {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.eject_finish
+
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -1073,7 +786,7 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	C.g_mount_unmount_with_operation_finish(_arg0, _arg1, &_cerr)
+	C._gotk4_gio2_Mount_virtual_eject_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
 
@@ -1086,16 +799,383 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// Unshadow decrements the shadow count on mount. Usually used by Monitor
-// implementations when destroying a shadow mount for mount, see
-// g_mount_is_shadowed() for more information. The caller will need to emit the
-// #GMount::changed signal on mount manually.
-func (mount *Mount) Unshadow() {
+// defaultLocation gets the default location of mount. The default location of
+// the given mount is a path that reflects the main entry point for the user
+// (e.g. the home directory, or the root of the volume).
+//
+// The function returns the following values:
+//
+//    - file: #GFile. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
+func (mount *Mount) defaultLocation() *File {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_default_location
+
+	var _arg0 *C.GMount // out
+	var _cret *C.GFile  // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_default_location(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _file *File // out
+
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _file
+}
+
+// Drive gets the drive for the mount.
+//
+// This is a convenience method for getting the #GVolume and then using that
+// object to get the #GDrive.
+//
+// The function returns the following values:
+//
+//    - drive (optional) or NULL if mount is not associated with a volume or a
+//      drive. The returned object should be unreffed with g_object_unref() when
+//      no longer needed.
+//
+func (mount *Mount) drive() *Drive {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_drive
+
+	var _arg0 *C.GMount // out
+	var _cret *C.GDrive // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_drive(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _drive *Drive // out
+
+	if _cret != nil {
+		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _drive
+}
+
+// Icon gets the icon for mount.
+//
+// The function returns the following values:
+//
+//    - icon: #GIcon. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
+func (mount *Mount) icon() *Icon {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_icon
+
+	var _arg0 *C.GMount // out
+	var _cret *C.GIcon  // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_icon(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _icon *Icon // out
+
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _icon
+}
+
+// Name gets the name of mount.
+//
+// The function returns the following values:
+//
+//    - utf8: name for the given mount. The returned string should be freed with
+//      g_free() when no longer needed.
+//
+func (mount *Mount) name() string {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_name
+
+	var _arg0 *C.GMount // out
+	var _cret *C.char   // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_name(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Root gets the root directory on mount.
+//
+// The function returns the following values:
+//
+//    - file: #GFile. The returned object should be unreffed with
+//      g_object_unref() when no longer needed.
+//
+func (mount *Mount) root() *File {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_root
+
+	var _arg0 *C.GMount // out
+	var _cret *C.GFile  // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_root(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _file *File // out
+
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _file
+}
+
+// uuiD gets the UUID for the mount. The reference is typically based on the
+// file system UUID for the mount in question and should be considered an opaque
+// string. Returns NULL if there is no UUID available.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): UUID for mount or NULL if no UUID can be computed. The
+//      returned string should be freed with g_free() when no longer needed.
+//
+func (mount *Mount) uuiD() string {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_uuid
+
+	var _arg0 *C.GMount // out
+	var _cret *C.char   // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_uuid(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// Volume gets the volume for the mount.
+//
+// The function returns the following values:
+//
+//    - volume (optional) or NULL if mount is not associated with a volume. The
+//      returned object should be unreffed with g_object_unref() when no longer
+//      needed.
+//
+func (mount *Mount) volume() *Volume {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.get_volume
+
+	var _arg0 *C.GMount  // out
+	var _cret *C.GVolume // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_cret = C._gotk4_gio2_Mount_virtual_get_volume(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+
+	var _volume *Volume // out
+
+	if _cret != nil {
+		_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _volume
+}
+
+func (mount *Mount) preUnmount() {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.pre_unmount
+
 	var _arg0 *C.GMount // out
 
 	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	C.g_mount_unshadow(_arg0)
+	C._gotk4_gio2_Mount_virtual_pre_unmount(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(mount)
+}
+
+// Remount remounts a mount. This is an asynchronous operation, and is finished
+// by calling g_mount_remount_finish() with the mount and Results data returned
+// in the callback.
+//
+// Remounting is useful when some setting affecting the operation of the volume
+// has been changed, as these may need a remount to take affect. While this is
+// semantically equivalent with unmounting and then remounting not all backends
+// might need to actually be unmounted.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (mount *Mount) remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.remount
+
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_remount(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+// remountFinish finishes remounting a mount. If any errors occurred during the
+// operation, error will be set to contain the errors and FALSE will be
+// returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (mount *Mount) remountFinish(result AsyncResulter) error {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.remount_finish
+
+	var _arg0 *C.GMount       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Mount_virtual_remount_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// Unmount unmounts a mount. This is an asynchronous operation, and is finished
+// by calling g_mount_unmount_finish() with the mount and Result data returned
+// in the callback.
+//
+// Deprecated: Use g_mount_unmount_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the operation.
+//    - callback (optional) or NULL.
+//
+func (mount *Mount) unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.unmount
+
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_unmount(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
+// unmountFinish finishes unmounting a mount. If any errors occurred during the
+// operation, error will be set to contain the errors and FALSE will be
+// returned.
+//
+// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (mount *Mount) unmountFinish(result AsyncResulter) error {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.unmount_finish
+
+	var _arg0 *C.GMount       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Mount_virtual_unmount_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+func (mount *Mount) unmounted() {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.unmounted
+
+	var _arg0 *C.GMount // out
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	C._gotk4_gio2_Mount_virtual_unmounted(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(mount)
 }
 

@@ -2,7 +2,7 @@ package girgen
 
 import (
 	"fmt"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -28,9 +28,12 @@ type NamespaceGenerator struct {
 
 	Files map[string]FileGenerator
 
-	postprocs  []Postprocessor
-	current    *gir.NamespaceFindResult
-	cFile      *CFileGenerator
+	postprocs []Postprocessor
+	current   *gir.NamespaceFindResult
+	c         struct {
+		h *CFileGenerator
+		c *CFileGenerator
+	}
 	canResolve map[string]bool
 	genMode    types.LinkMode
 }
@@ -157,7 +160,7 @@ func (n *NamespaceGenerator) Pkgconfig() []string {
 }
 
 // FileWriter returns the respective file writer from the given InfoFields.
-func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields) generators.FileWriter {
+func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields, export bool) generators.FileWriter {
 	if n.Generator.Opts.SingleFile || info.Elements == nil {
 		return n.MakeFile("")
 	}
@@ -173,18 +176,21 @@ func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields) generators.FileWrit
 		return n.MakeFile("")
 	}
 
-	if info.Attrs != nil && info.Attrs.Version != "" {
-		filename += info.Attrs.Version // ex: gtk3.2.go
+	filename = filepath.Base(filename)
+
+	if ext := filepath.Ext(filename); ext != "" {
+		filename = strings.TrimSuffix(filename, ext)
 	}
 
-	return n.MakeFile(swapFileExt(filename, ".go"))
-}
+	if info.Attrs != nil && info.Attrs.Version != "" {
+		filename += "_" + strings.ReplaceAll(info.Attrs.Version, ".", "_") // ex: gtk_3_2.go
+	}
 
-// extension replaced. The given file extension should contain a dot if it's not
-// empty.
-func swapFileExt(filepath, ext string) string {
-	filename := path.Base(filepath)
-	return strings.Split(filename, ".")[0] + ext
+	if export {
+		filename += "_export"
+	}
+
+	return n.MakeFile(filename + ".go")
 }
 
 // File gets an existing Go file but returns false if no such file exists. It's
@@ -232,12 +238,18 @@ func (n *NamespaceGenerator) MakeFile(filename string) *GoFileGenerator {
 	return goFile
 }
 
-// CHeaderFile returns the only C header file.
-func (n *NamespaceGenerator) CHeaderFile() generators.FileWriter {
-	if n.cFile == nil {
-		n.cFile = NewCFileGenerator(n)
+func (n *NamespaceGenerator) ch() *CFileGenerator {
+	if n.c.h == nil {
+		n.c.h = NewCFileGenerator(n, n.PkgName+".h")
 	}
-	return n.cFile
+	return n.c.h
+}
+
+func (n *NamespaceGenerator) cc() *CFileGenerator {
+	if n.c.c == nil {
+		n.c.c = NewCFileGenerator(n, n.PkgName+".c")
+	}
+	return n.c.c
 }
 
 // Generate generates everything in the current namespace into files. The
@@ -328,29 +340,28 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	files := make(map[string][]byte, len(n.Files))
 
 	var firstErr error
+	doFile := func(file FileGenerator) {
+		b, err := file.Generate()
+		files[file.Name()] = b
 
-	if !n.cFile.IsEmpty() {
-		name := n.PkgName + ".h"
-
-		b, err := n.cFile.Generate()
-		files[name] = b
-
-		if err != nil {
-			return files, errors.Wrapf(err, "cannot generate C file %s", name)
+		if err != nil && firstErr == nil {
+			firstErr = errors.Wrapf(err, "%s/v%s/%s", n.PkgName, n.PkgVersion, file.Name())
 		}
 	}
 
-	for name, file := range n.Files {
+	for _, file := range n.Files {
 		if file.IsEmpty() {
 			continue
 		}
+		doFile(file)
+	}
 
-		b, err := file.Generate()
-		files[name] = b
+	if !n.c.c.IsEmpty() {
+		doFile(n.cc())
+	}
 
-		if err != nil && firstErr == nil {
-			firstErr = errors.Wrapf(err, "%s/v%s/%s", n.PkgName, n.PkgVersion, name)
-		}
+	if !n.c.h.IsEmpty() || !n.c.c.IsEmpty() {
+		doFile(n.ch())
 	}
 
 	return files, firstErr

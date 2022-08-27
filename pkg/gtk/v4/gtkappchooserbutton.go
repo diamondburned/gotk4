@@ -13,8 +13,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_AppChooserButton_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_AppChooserButton_ConnectChanged(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -110,45 +110,9 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return wrapAppChooserButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_AppChooserButton_ConnectChanged
-func _gotk4_gtk4_AppChooserButton_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted when the active application changes.
 func (self *AppChooserButton) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "changed", false, unsafe.Pointer(C._gotk4_gtk4_AppChooserButton_ConnectChanged), f)
-}
-
-//export _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated
-func _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(itemName string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(itemName string))
-	}
-
-	var _itemName string // out
-
-	_itemName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_itemName)
 }
 
 // ConnectCustomItemActivated is emitted when a custom item is activated.

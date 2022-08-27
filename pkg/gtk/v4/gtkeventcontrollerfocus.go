@@ -12,8 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_EventControllerFocus_ConnectEnter(gpointer, guintptr);
 // extern void _gotk4_gtk4_EventControllerFocus_ConnectLeave(gpointer, guintptr);
+// extern void _gotk4_gtk4_EventControllerFocus_ConnectEnter(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -56,22 +56,6 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return wrapEventControllerFocus(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_EventControllerFocus_ConnectEnter
-func _gotk4_gtk4_EventControllerFocus_ConnectEnter(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectEnter is emitted whenever the focus enters into the widget or one of
 // its descendents.
 //
@@ -82,22 +66,6 @@ func _gotk4_gtk4_EventControllerFocus_ConnectEnter(arg0 C.gpointer, arg1 C.guint
 // property for changes.
 func (self *EventControllerFocus) ConnectEnter(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "enter", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectEnter), f)
-}
-
-//export _gotk4_gtk4_EventControllerFocus_ConnectLeave
-func _gotk4_gtk4_EventControllerFocus_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectLeave is emitted whenever the focus leaves the widget hierarchy that

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// GridLayoutOverrider contains methods that are overridable.
-type GridLayoutOverrider interface {
+// GridLayoutOverrides contains methods that are overridable.
+type GridLayoutOverrides struct {
+}
+
+func defaultGridLayoutOverrides(v *GridLayout) GridLayoutOverrides {
+	return GridLayoutOverrides{}
 }
 
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
@@ -57,25 +61,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGridLayout,
-		GoType:        reflect.TypeOf((*GridLayout)(nil)),
-		InitClass:     initClassGridLayout,
-		FinalizeClass: finalizeClassGridLayout,
-	})
+	coreglib.RegisterClassInfo[*GridLayout, *GridLayoutClass, GridLayoutOverrides](
+		GTypeGridLayout,
+		initGridLayoutClass,
+		wrapGridLayout,
+		defaultGridLayoutOverrides,
+	)
 }
 
-func initClassGridLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitGridLayout(*GridLayoutClass) }); ok {
-		klass := (*GridLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitGridLayout(klass)
-	}
-}
-
-func finalizeClassGridLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGridLayout(*GridLayoutClass) }); ok {
-		klass := (*GridLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGridLayout(klass)
+func initGridLayoutClass(gclass unsafe.Pointer, overrides GridLayoutOverrides, classInitFunc func(*GridLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*GridLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -380,8 +377,12 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 	runtime.KeepAlive(spacing)
 }
 
-// GridLayoutChildOverrider contains methods that are overridable.
-type GridLayoutChildOverrider interface {
+// GridLayoutChildOverrides contains methods that are overridable.
+type GridLayoutChildOverrides struct {
+}
+
+func defaultGridLayoutChildOverrides(v *GridLayoutChild) GridLayoutChildOverrides {
+	return GridLayoutChildOverrides{}
 }
 
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
@@ -395,25 +396,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeGridLayoutChild,
-		GoType:        reflect.TypeOf((*GridLayoutChild)(nil)),
-		InitClass:     initClassGridLayoutChild,
-		FinalizeClass: finalizeClassGridLayoutChild,
-	})
+	coreglib.RegisterClassInfo[*GridLayoutChild, *GridLayoutChildClass, GridLayoutChildOverrides](
+		GTypeGridLayoutChild,
+		initGridLayoutChildClass,
+		wrapGridLayoutChild,
+		defaultGridLayoutChildOverrides,
+	)
 }
 
-func initClassGridLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitGridLayoutChild(*GridLayoutChildClass) }); ok {
-		klass := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.InitGridLayoutChild(klass)
-	}
-}
-
-func finalizeClassGridLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeGridLayoutChild(*GridLayoutChildClass) }); ok {
-		klass := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeGridLayoutChild(klass)
+func initGridLayoutChildClass(gclass unsafe.Pointer, overrides GridLayoutChildOverrides, classInitFunc func(*GridLayoutChildClass)) {
+	if classInitFunc != nil {
+		class := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -6,11 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -31,46 +29,6 @@ const PRIORITY_RESIZE = 110
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
 type KeySnoopFunc func(grabWidget Widgetter, event *gdk.EventKey) (gint int)
-
-//export _gotk4_gtk3_KeySnoopFunc
-func _gotk4_gtk3_KeySnoopFunc(arg1 *C.GtkWidget, arg2 *C.GdkEventKey, arg3 C.gpointer) (cret C.gint) {
-	var fn KeySnoopFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(KeySnoopFunc)
-	}
-
-	var _grabWidget Widgetter // out
-	var _event *gdk.EventKey  // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_grabWidget = rv
-	}
-	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	gint := fn(_grabWidget, _event)
-
-	cret = C.gint(gint)
-
-	return cret
-}
 
 // CheckVersion checks that the GTK+ library in use is compatible with the given
 // version. Generally you would pass in the constants K_MAJOR_VERSION,
@@ -125,55 +83,6 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	}
 
 	return _utf8
-}
-
-// DeviceGrabAdd adds a GTK+ grab on device, so all the events on device and its
-// associated pointer or keyboard (if any) are delivered to widget. If the
-// block_others parameter is TRUE, any other devices will be unable to interact
-// with widget during the grab.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//    - device to grab on.
-//    - blockOthers: TRUE to prevent other devices to interact with widget.
-//
-func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.GdkDevice // out
-	var _arg3 C.gboolean   // out
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	if blockOthers {
-		_arg3 = C.TRUE
-	}
-
-	C.gtk_device_grab_add(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
-	runtime.KeepAlive(blockOthers)
-}
-
-// DeviceGrabRemove removes a device grab from the given widget.
-//
-// You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//    - device: Device.
-//
-func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
-	var _arg1 *C.GtkWidget // out
-	var _arg2 *C.GdkDevice // out
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	C.gtk_device_grab_remove(_arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(device)
 }
 
 // DisableSetlocale prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
@@ -238,26 +147,6 @@ func False() bool {
 	}
 
 	return _ok
-}
-
-// GetBinaryAge returns the binary age as passed to libtool when building the
-// GTK+ library the process is running against. If libtool means nothing to you,
-// don't worry about it.
-//
-// The function returns the following values:
-//
-//    - guint: binary age of the GTK+ library.
-//
-func GetBinaryAge() uint {
-	var _cret C.guint // in
-
-	_cret = C.gtk_get_binary_age()
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
 }
 
 // GetCurrentEvent obtains a copy of the event currently being processed by
@@ -431,173 +320,6 @@ func GetEventWidget(event *gdk.Event) Widgetter {
 	}
 
 	return _widget
-}
-
-// GetInterfaceAge returns the interface age as passed to libtool when building
-// the GTK+ library the process is running against. If libtool means nothing to
-// you, don't worry about it.
-//
-// The function returns the following values:
-//
-//    - guint: interface age of the GTK+ library.
-//
-func GetInterfaceAge() uint {
-	var _cret C.guint // in
-
-	_cret = C.gtk_get_interface_age()
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// GetLocaleDirection: get the direction of the current locale. This is the
-// expected reading direction for text and UI.
-//
-// This function depends on the current locale being set with setlocale() and
-// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
-// GTK_TEXT_DIR_NONE will never be returned.
-//
-// GTK+ sets the default text direction according to the locale during
-// gtk_init(), and you should normally use gtk_widget_get_direction() or
-// gtk_widget_get_default_direction() to obtain the current direcion.
-//
-// This function is only needed rare cases when the locale is changed after GTK+
-// has already been initialized. In this case, you can use it to update the
-// default text direction as follows:
-//
-//    setlocale (LC_ALL, new_locale);
-//    direction = gtk_get_locale_direction ();
-//    gtk_widget_set_default_direction (direction);.
-//
-// The function returns the following values:
-//
-//    - textDirection of the current locale.
-//
-func GetLocaleDirection() TextDirection {
-	var _cret C.GtkTextDirection // in
-
-	_cret = C.gtk_get_locale_direction()
-
-	var _textDirection TextDirection // out
-
-	_textDirection = TextDirection(_cret)
-
-	return _textDirection
-}
-
-// GetMajorVersion returns the major version number of the GTK+ library. (e.g.
-// in GTK+ version 3.1.5 this is 3.)
-//
-// This function is in the library, so it represents the GTK+ library your code
-// is running against. Contrast with the K_MAJOR_VERSION macro, which represents
-// the major version of the GTK+ headers you have included when compiling your
-// code.
-//
-// The function returns the following values:
-//
-//    - guint: major version number of the GTK+ library.
-//
-func GetMajorVersion() uint {
-	var _cret C.guint // in
-
-	_cret = C.gtk_get_major_version()
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// GetMicroVersion returns the micro version number of the GTK+ library. (e.g.
-// in GTK+ version 3.1.5 this is 5.)
-//
-// This function is in the library, so it represents the GTK+ library your code
-// is are running against. Contrast with the K_MICRO_VERSION macro, which
-// represents the micro version of the GTK+ headers you have included when
-// compiling your code.
-//
-// The function returns the following values:
-//
-//    - guint: micro version number of the GTK+ library.
-//
-func GetMicroVersion() uint {
-	var _cret C.guint // in
-
-	_cret = C.gtk_get_micro_version()
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// GetMinorVersion returns the minor version number of the GTK+ library. (e.g.
-// in GTK+ version 3.1.5 this is 1.)
-//
-// This function is in the library, so it represents the GTK+ library your code
-// is are running against. Contrast with the K_MINOR_VERSION macro, which
-// represents the minor version of the GTK+ headers you have included when
-// compiling your code.
-//
-// The function returns the following values:
-//
-//    - guint: minor version number of the GTK+ library.
-//
-func GetMinorVersion() uint {
-	var _cret C.guint // in
-
-	_cret = C.gtk_get_minor_version()
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// GetOptionGroup returns a Group for the commandline arguments recognized by
-// GTK+ and GDK.
-//
-// You should add this group to your Context with g_option_context_add_group(),
-// if you are using g_option_context_parse() to parse your commandline
-// arguments.
-//
-// The function takes the following parameters:
-//
-//    - openDefaultDisplay: whether to open the default display when parsing the
-//      commandline arguments.
-//
-// The function returns the following values:
-//
-//    - optionGroup for the commandline arguments recognized by GTK+.
-//
-func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
-	var _arg1 C.gboolean      // out
-	var _cret *C.GOptionGroup // in
-
-	if openDefaultDisplay {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C.gtk_get_option_group(_arg1)
-	runtime.KeepAlive(openDefaultDisplay)
-
-	var _optionGroup *glib.OptionGroup // out
-
-	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_optionGroup)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_option_group_unref((*C.GOptionGroup)(intern.C))
-		},
-	)
-
-	return _optionGroup
 }
 
 // GrabGetCurrent queries the current grab of the default window group.

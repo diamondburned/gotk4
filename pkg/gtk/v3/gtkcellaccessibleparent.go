@@ -17,16 +17,36 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern GtkCellRendererState _gotk4_gtk3_CellAccessibleParentIface_get_renderer_state(GtkCellAccessibleParent*, GtkCellAccessible*);
-// extern gboolean _gotk4_gtk3_CellAccessibleParentIface_grab_focus(GtkCellAccessibleParent*, GtkCellAccessible*);
-// extern int _gotk4_gtk3_CellAccessibleParentIface_get_child_index(GtkCellAccessibleParent*, GtkCellAccessible*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_activate(GtkCellAccessibleParent*, GtkCellAccessible*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_edit(GtkCellAccessibleParent*, GtkCellAccessible*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_expand_collapse(GtkCellAccessibleParent*, GtkCellAccessible*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_get_cell_area(GtkCellAccessibleParent*, GtkCellAccessible*, GdkRectangle*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_get_cell_extents(GtkCellAccessibleParent*, GtkCellAccessible*, gint*, gint*, gint*, gint*, AtkCoordType);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(GtkCellAccessibleParent*, GtkCellAccessible*, gint*, gint*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_update_relationset(GtkCellAccessibleParent*, GtkCellAccessible*, AtkRelationSet*);
+// GtkCellRendererState _gotk4_gtk3_CellAccessibleParent_virtual_get_renderer_state(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1) {
+//   return ((GtkCellRendererState (*)(GtkCellAccessibleParent*, GtkCellAccessible*))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk3_CellAccessibleParent_virtual_grab_focus(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1) {
+//   return ((gboolean (*)(GtkCellAccessibleParent*, GtkCellAccessible*))(fnptr))(arg0, arg1);
+// };
+// int _gotk4_gtk3_CellAccessibleParent_virtual_get_child_index(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1) {
+//   return ((int (*)(GtkCellAccessibleParent*, GtkCellAccessible*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_activate(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_edit(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_expand_collapse(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_get_cell_area(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1, GdkRectangle* arg2) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*, GdkRectangle*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_get_cell_extents(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1, gint* arg2, gint* arg3, gint* arg4, gint* arg5, AtkCoordType arg6) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*, gint*, gint*, gint*, gint*, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_get_cell_position(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1, gint* arg2, gint* arg3) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_CellAccessibleParent_virtual_update_relationset(void* fnptr, GtkCellAccessibleParent* arg0, GtkCellAccessible* arg1, AtkRelationSet* arg2) {
+//   ((void (*)(GtkCellAccessibleParent*, GtkCellAccessible*, AtkRelationSet*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -38,66 +58,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeCellAccessibleParent, F: marshalCellAccessibleParent},
 	})
-}
-
-// CellAccessibleParentOverrider contains methods that are overridable.
-type CellAccessibleParentOverrider interface {
-	// The function takes the following parameters:
-	//
-	Activate(cell *CellAccessible)
-	// The function takes the following parameters:
-	//
-	Edit(cell *CellAccessible)
-	// The function takes the following parameters:
-	//
-	ExpandCollapse(cell *CellAccessible)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	CellArea(cell *CellAccessible) *gdk.Rectangle
-	// The function takes the following parameters:
-	//
-	//    - cell
-	//    - coordType
-	//
-	// The function returns the following values:
-	//
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//
-	CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	//    - row
-	//    - column
-	//
-	CellPosition(cell *CellAccessible) (row, column int)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	ChildIndex(cell *CellAccessible) int
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	RendererState(cell *CellAccessible) CellRendererState
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	GrabFocus(cell *CellAccessible) bool
-	// The function takes the following parameters:
-	//
-	//    - cell
-	//    - relationset
-	//
-	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
 }
 
 //
@@ -129,173 +89,6 @@ type CellAccessibleParenter interface {
 }
 
 var _ CellAccessibleParenter = (*CellAccessibleParent)(nil)
-
-func ifaceInitCellAccessibleParenter(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkCellAccessibleParentIface)(unsafe.Pointer(gifacePtr))
-	iface.activate = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_activate)
-	iface.edit = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_edit)
-	iface.expand_collapse = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_expand_collapse)
-	iface.get_cell_area = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_area)
-	iface.get_cell_extents = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_extents)
-	iface.get_cell_position = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_position)
-	iface.get_child_index = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_child_index)
-	iface.get_renderer_state = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_renderer_state)
-	iface.grab_focus = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_grab_focus)
-	iface.update_relationset = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_update_relationset)
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_activate
-func _gotk4_gtk3_CellAccessibleParentIface_activate(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.Activate(_cell)
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_edit
-func _gotk4_gtk3_CellAccessibleParentIface_edit(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.Edit(_cell)
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_expand_collapse
-func _gotk4_gtk3_CellAccessibleParentIface_expand_collapse(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.ExpandCollapse(_cell)
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_get_cell_area
-func _gotk4_gtk3_CellAccessibleParentIface_get_cell_area(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.GdkRectangle) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	cellRect := iface.CellArea(_cell)
-
-	*arg2 = *(*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellRect)))
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_get_cell_extents
-func _gotk4_gtk3_CellAccessibleParentIface_get_cell_extents(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint, arg6 C.AtkCoordType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible    // out
-	var _coordType atk.CoordType // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-	_coordType = atk.CoordType(arg6)
-
-	x, y, width, height := iface.CellExtents(_cell, _coordType)
-
-	*arg2 = C.gint(x)
-	*arg3 = C.gint(y)
-	*arg4 = C.gint(width)
-	*arg5 = C.gint(height)
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_get_cell_position
-func _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.gint, arg3 *C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	row, column := iface.CellPosition(_cell)
-
-	*arg2 = C.gint(row)
-	*arg3 = C.gint(column)
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_get_child_index
-func _gotk4_gtk3_CellAccessibleParentIface_get_child_index(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) (cret C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	gint := iface.ChildIndex(_cell)
-
-	cret = C.int(gint)
-
-	return cret
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_get_renderer_state
-func _gotk4_gtk3_CellAccessibleParentIface_get_renderer_state(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) (cret C.GtkCellRendererState) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	cellRendererState := iface.RendererState(_cell)
-
-	cret = C.GtkCellRendererState(cellRendererState)
-
-	return cret
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_grab_focus
-func _gotk4_gtk3_CellAccessibleParentIface_grab_focus(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-
-	ok := iface.GrabFocus(_cell)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk3_CellAccessibleParentIface_update_relationset
-func _gotk4_gtk3_CellAccessibleParentIface_update_relationset(arg0 *C.GtkCellAccessibleParent, arg1 *C.GtkCellAccessible, arg2 *C.AtkRelationSet) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(CellAccessibleParentOverrider)
-
-	var _cell *CellAccessible         // out
-	var _relationset *atk.RelationSet // out
-
-	_cell = wrapCellAccessible(coreglib.Take(unsafe.Pointer(arg1)))
-	{
-		obj := coreglib.Take(unsafe.Pointer(arg2))
-		_relationset = &atk.RelationSet{
-			Object: obj,
-		}
-	}
-
-	iface.UpdateRelationset(_cell, _relationset)
-}
 
 func wrapCellAccessibleParent(obj *coreglib.Object) *CellAccessibleParent {
 	return &CellAccessibleParent{
@@ -530,6 +323,264 @@ func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, rela
 	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(relationset).Native()))
 
 	C.gtk_cell_accessible_parent_update_relationset(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(relationset)
+}
+
+// The function takes the following parameters:
+//
+func (parent *CellAccessibleParent) activate(cell *CellAccessible) {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.activate
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_activate(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+}
+
+// The function takes the following parameters:
+//
+func (parent *CellAccessibleParent) edit(cell *CellAccessible) {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.edit
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_edit(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+}
+
+// The function takes the following parameters:
+//
+func (parent *CellAccessibleParent) expandCollapse(cell *CellAccessible) {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.expand_collapse
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_expand_collapse(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (parent *CellAccessibleParent) cellArea(cell *CellAccessible) *gdk.Rectangle {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.get_cell_area
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _arg2 C.GdkRectangle             // in
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_get_cell_area(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
+	var _cellRect *gdk.Rectangle // out
+
+	_cellRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+
+	return _cellRect
+}
+
+// The function takes the following parameters:
+//
+//    - cell
+//    - coordType
+//
+// The function returns the following values:
+//
+//    - x
+//    - y
+//    - width
+//    - height
+//
+func (parent *CellAccessibleParent) cellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int) {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.get_cell_extents
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _arg2 C.gint                     // in
+	var _arg3 C.gint                     // in
+	var _arg4 C.gint                     // in
+	var _arg5 C.gint                     // in
+	var _arg6 C.AtkCoordType             // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg6 = C.AtkCoordType(coordType)
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_get_cell_extents(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(coordType)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg2)
+	_y = int(_arg3)
+	_width = int(_arg4)
+	_height = int(_arg5)
+
+	return _x, _y, _width, _height
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+//    - row
+//    - column
+//
+func (parent *CellAccessibleParent) cellPosition(cell *CellAccessible) (row, column int) {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.get_cell_position
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _arg2 C.gint                     // in
+	var _arg3 C.gint                     // in
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_get_cell_position(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(_arg2)
+	_column = int(_arg3)
+
+	return _row, _column
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (parent *CellAccessibleParent) childIndex(cell *CellAccessible) int {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.get_child_index
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _cret C.int                      // in
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_gtk3_CellAccessibleParent_virtual_get_child_index(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (parent *CellAccessibleParent) rendererState(cell *CellAccessible) CellRendererState {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.get_renderer_state
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _cret C.GtkCellRendererState     // in
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_gtk3_CellAccessibleParent_virtual_get_renderer_state(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
+	var _cellRendererState CellRendererState // out
+
+	_cellRendererState = CellRendererState(_cret)
+
+	return _cellRendererState
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (parent *CellAccessibleParent) grabFocus(cell *CellAccessible) bool {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.grab_focus
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _cret C.gboolean                 // in
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_gtk3_CellAccessibleParent_virtual_grab_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(cell)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - cell
+//    - relationset
+//
+func (parent *CellAccessibleParent) updateRelationset(cell *CellAccessible, relationset *atk.RelationSet) {
+	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
+	fnarg := gclass.update_relationset
+
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
+	var _arg2 *C.AtkRelationSet          // out
+
+	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(relationset).Native()))
+
+	C._gotk4_gtk3_CellAccessibleParent_virtual_update_relationset(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(relationset)

@@ -115,22 +115,6 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return wrapPasswordEntry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_PasswordEntry_ConnectActivate
-func _gotk4_gtk4_PasswordEntry_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted when the entry is activated.
 //
 // The keybindings for this signal are all forms of the Enter key.

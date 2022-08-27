@@ -21,12 +21,9 @@ import "C"
 var (
 	GTypeAxisUse        = coreglib.Type(C.gdk_axis_use_get_type())
 	GTypeByteOrder      = coreglib.Type(C.gdk_byte_order_get_type())
-	GTypeGLError        = coreglib.Type(C.gdk_gl_error_get_type())
 	GTypeGrabOwnership  = coreglib.Type(C.gdk_grab_ownership_get_type())
 	GTypeGrabStatus     = coreglib.Type(C.gdk_grab_status_get_type())
-	GTypeModifierIntent = coreglib.Type(C.gdk_modifier_intent_get_type())
 	GTypeWindowTypeHint = coreglib.Type(C.gdk_window_type_hint_get_type())
-	GTypeAxisFlags      = coreglib.Type(C.gdk_axis_flags_get_type())
 	GTypeEventMask      = coreglib.Type(C.gdk_event_mask_get_type())
 	GTypeModifierType   = coreglib.Type(C.gdk_modifier_type_get_type())
 	GTypeRectangle      = coreglib.Type(C.gdk_rectangle_get_type())
@@ -36,12 +33,9 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeAxisUse, F: marshalAxisUse},
 		coreglib.TypeMarshaler{T: GTypeByteOrder, F: marshalByteOrder},
-		coreglib.TypeMarshaler{T: GTypeGLError, F: marshalGLError},
 		coreglib.TypeMarshaler{T: GTypeGrabOwnership, F: marshalGrabOwnership},
 		coreglib.TypeMarshaler{T: GTypeGrabStatus, F: marshalGrabStatus},
-		coreglib.TypeMarshaler{T: GTypeModifierIntent, F: marshalModifierIntent},
 		coreglib.TypeMarshaler{T: GTypeWindowTypeHint, F: marshalWindowTypeHint},
-		coreglib.TypeMarshaler{T: GTypeAxisFlags, F: marshalAxisFlags},
 		coreglib.TypeMarshaler{T: GTypeEventMask, F: marshalEventMask},
 		coreglib.TypeMarshaler{T: GTypeModifierType, F: marshalModifierType},
 		coreglib.TypeMarshaler{T: GTypeRectangle, F: marshalRectangle},
@@ -155,36 +149,6 @@ func (b ByteOrder) String() string {
 	}
 }
 
-// GLError: error enumeration for GLContext.
-type GLError C.gint
-
-const (
-	// GLErrorNotAvailable: openGL support is not available.
-	GLErrorNotAvailable GLError = iota
-	// GLErrorUnsupportedFormat: requested visual format is not supported.
-	GLErrorUnsupportedFormat
-	// GLErrorUnsupportedProfile: requested profile is not supported.
-	GLErrorUnsupportedProfile
-)
-
-func marshalGLError(p uintptr) (interface{}, error) {
-	return GLError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for GLError.
-func (g GLError) String() string {
-	switch g {
-	case GLErrorNotAvailable:
-		return "NotAvailable"
-	case GLErrorUnsupportedFormat:
-		return "UnsupportedFormat"
-	case GLErrorUnsupportedProfile:
-		return "UnsupportedProfile"
-	default:
-		return fmt.Sprintf("GLError(%d)", g)
-	}
-}
-
 // GrabOwnership defines how device grabs interact with other devices.
 type GrabOwnership C.gint
 
@@ -258,71 +222,6 @@ func (g GrabStatus) String() string {
 		return "Failed"
 	default:
 		return fmt.Sprintf("GrabStatus(%d)", g)
-	}
-}
-
-// ModifierIntent: this enum is used with gdk_keymap_get_modifier_mask() in
-// order to determine what modifiers the currently used windowing system backend
-// uses for particular purposes. For example, on X11/Windows, the Control key is
-// used for invoking menu shortcuts (accelerators), whereas on Apple computers
-// it’s the Command key (which correspond to GDK_CONTROL_MASK and GDK_MOD2_MASK,
-// respectively).
-type ModifierIntent C.gint
-
-const (
-	// ModifierIntentPrimaryAccelerator: primary modifier used to invoke menu
-	// accelerators.
-	ModifierIntentPrimaryAccelerator ModifierIntent = iota
-	// ModifierIntentContextMenu: modifier used to invoke context menus. Note
-	// that mouse button 3 always triggers context menus. When this modifier is
-	// not 0, it additionally triggers context menus when used with mouse button
-	// 1.
-	ModifierIntentContextMenu
-	// ModifierIntentExtendSelection: modifier used to extend selections using
-	// modifier-click or modifier-cursor-key.
-	ModifierIntentExtendSelection
-	// ModifierIntentModifySelection: modifier used to modify selections, which
-	// in most cases means toggling the clicked item into or out of the
-	// selection.
-	ModifierIntentModifySelection
-	// ModifierIntentNoTextInput: when any of these modifiers is pressed, the
-	// key event cannot produce a symbol directly. This is meant to be used for
-	// input methods, and for use cases like typeahead search.
-	ModifierIntentNoTextInput
-	// ModifierIntentShiftGroup: modifier that switches between keyboard groups
-	// (AltGr on X11/Windows and Option/Alt on OS X).
-	ModifierIntentShiftGroup
-	// ModifierIntentDefaultModMask: set of modifier masks accepted as modifiers
-	// in accelerators. Needed because Command is mapped to MOD2 on OSX, which
-	// is widely used, but on X11 MOD2 is NumLock and using that for a mod key
-	// is problematic at best. Ref:
-	// https://bugzilla.gnome.org/show_bug.cgi?id=736125.
-	ModifierIntentDefaultModMask
-)
-
-func marshalModifierIntent(p uintptr) (interface{}, error) {
-	return ModifierIntent(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
-}
-
-// String returns the name in string for ModifierIntent.
-func (m ModifierIntent) String() string {
-	switch m {
-	case ModifierIntentPrimaryAccelerator:
-		return "PrimaryAccelerator"
-	case ModifierIntentContextMenu:
-		return "ContextMenu"
-	case ModifierIntentExtendSelection:
-		return "ExtendSelection"
-	case ModifierIntentModifySelection:
-		return "ModifySelection"
-	case ModifierIntentNoTextInput:
-		return "NoTextInput"
-	case ModifierIntentShiftGroup:
-		return "ShiftGroup"
-	case ModifierIntentDefaultModMask:
-		return "DefaultModMask"
-	default:
-		return fmt.Sprintf("ModifierIntent(%d)", m)
 	}
 }
 
@@ -410,81 +309,6 @@ func (w WindowTypeHint) String() string {
 	default:
 		return fmt.Sprintf("WindowTypeHint(%d)", w)
 	}
-}
-
-// AxisFlags flags describing the current capabilities of a device/tool.
-type AxisFlags C.guint
-
-const (
-	// AxisFlagX: x axis is present.
-	AxisFlagX AxisFlags = 0b10
-	// AxisFlagY: y axis is present.
-	AxisFlagY AxisFlags = 0b100
-	// AxisFlagPressure: pressure axis is present.
-	AxisFlagPressure AxisFlags = 0b1000
-	// AxisFlagXtilt: x tilt axis is present.
-	AxisFlagXtilt AxisFlags = 0b10000
-	// AxisFlagYtilt: y tilt axis is present.
-	AxisFlagYtilt AxisFlags = 0b100000
-	// AxisFlagWheel: wheel axis is present.
-	AxisFlagWheel AxisFlags = 0b1000000
-	// AxisFlagDistance: distance axis is present.
-	AxisFlagDistance AxisFlags = 0b10000000
-	// AxisFlagRotation z-axis rotation is present.
-	AxisFlagRotation AxisFlags = 0b100000000
-	// AxisFlagSlider: slider axis is present.
-	AxisFlagSlider AxisFlags = 0b1000000000
-)
-
-func marshalAxisFlags(p uintptr) (interface{}, error) {
-	return AxisFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
-}
-
-// String returns the names in string for AxisFlags.
-func (a AxisFlags) String() string {
-	if a == 0 {
-		return "AxisFlags(0)"
-	}
-
-	var builder strings.Builder
-	builder.Grow(127)
-
-	for a != 0 {
-		next := a & (a - 1)
-		bit := a - next
-
-		switch bit {
-		case AxisFlagX:
-			builder.WriteString("X|")
-		case AxisFlagY:
-			builder.WriteString("Y|")
-		case AxisFlagPressure:
-			builder.WriteString("Pressure|")
-		case AxisFlagXtilt:
-			builder.WriteString("Xtilt|")
-		case AxisFlagYtilt:
-			builder.WriteString("Ytilt|")
-		case AxisFlagWheel:
-			builder.WriteString("Wheel|")
-		case AxisFlagDistance:
-			builder.WriteString("Distance|")
-		case AxisFlagRotation:
-			builder.WriteString("Rotation|")
-		case AxisFlagSlider:
-			builder.WriteString("Slider|")
-		default:
-			builder.WriteString(fmt.Sprintf("AxisFlags(0b%b)|", bit))
-		}
-
-		a = next
-	}
-
-	return strings.TrimSuffix(builder.String(), "|")
-}
-
-// Has returns true if a contains other.
-func (a AxisFlags) Has(other AxisFlags) bool {
-	return (a & other) == other
 }
 
 // EventMask: set of bit-flags to indicate which events a window is to receive.

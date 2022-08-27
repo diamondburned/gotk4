@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer);
 import "C"
 
 // GType values.
@@ -36,24 +36,6 @@ func init() {
 // been provided via gtk.MenuButton.SetPopover() or
 // gtk.MenuButton.SetMenuModel().
 type MenuButtonCreatePopupFunc func(menuButton *MenuButton)
-
-//export _gotk4_gtk4_MenuButtonCreatePopupFunc
-func _gotk4_gtk4_MenuButtonCreatePopupFunc(arg1 *C.GtkMenuButton, arg2 C.gpointer) {
-	var fn MenuButtonCreatePopupFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(MenuButtonCreatePopupFunc)
-	}
-
-	var _menuButton *MenuButton // out
-
-	_menuButton = wrapMenuButton(coreglib.Take(unsafe.Pointer(arg1)))
-
-	fn(_menuButton)
-}
 
 // MenuButton: GtkMenuButton widget is used to display a popup when clicked.
 //

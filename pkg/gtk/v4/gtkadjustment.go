@@ -14,10 +14,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_AdjustmentClass_changed(GtkAdjustment*);
-// extern void _gotk4_gtk4_AdjustmentClass_value_changed(GtkAdjustment*);
-// extern void _gotk4_gtk4_Adjustment_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_Adjustment_ConnectValueChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_Adjustment_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_AdjustmentClass_value_changed(GtkAdjustment*);
+// extern void _gotk4_gtk4_AdjustmentClass_changed(GtkAdjustment*);
+// void _gotk4_gtk4_Adjustment_virtual_changed(void* fnptr, GtkAdjustment* arg0) {
+//   ((void (*)(GtkAdjustment*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Adjustment_virtual_value_changed(void* fnptr, GtkAdjustment* arg0) {
+//   ((void (*)(GtkAdjustment*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -31,10 +37,17 @@ func init() {
 	})
 }
 
-// AdjustmentOverrider contains methods that are overridable.
-type AdjustmentOverrider interface {
-	Changed()
-	ValueChanged()
+// AdjustmentOverrides contains methods that are overridable.
+type AdjustmentOverrides struct {
+	Changed      func()
+	ValueChanged func()
+}
+
+func defaultAdjustmentOverrides(v *Adjustment) AdjustmentOverrides {
+	return AdjustmentOverrides{
+		Changed:      v.changed,
+		ValueChanged: v.valueChanged,
+	}
 }
 
 // Adjustment: GtkAdjustment is a model for a numeric value.
@@ -55,52 +68,29 @@ type Adjustment struct {
 var ()
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeAdjustment,
-		GoType:        reflect.TypeOf((*Adjustment)(nil)),
-		InitClass:     initClassAdjustment,
-		FinalizeClass: finalizeClassAdjustment,
-	})
+	coreglib.RegisterClassInfo[*Adjustment, *AdjustmentClass, AdjustmentOverrides](
+		GTypeAdjustment,
+		initAdjustmentClass,
+		wrapAdjustment,
+		defaultAdjustmentOverrides,
+	)
 }
 
-func initClassAdjustment(gclass unsafe.Pointer, goval any) {
+func initAdjustmentClass(gclass unsafe.Pointer, overrides AdjustmentOverrides, classInitFunc func(*AdjustmentClass)) {
+	pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeAdjustment))))
 
-	pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Changed() }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk4_AdjustmentClass_changed)
 	}
 
-	if _, ok := goval.(interface{ ValueChanged() }); ok {
+	if overrides.ValueChanged != nil {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_AdjustmentClass_value_changed)
 	}
-	if goval, ok := goval.(interface{ InitAdjustment(*AdjustmentClass) }); ok {
-		klass := (*AdjustmentClass)(gextras.NewStructNative(gclass))
-		goval.InitAdjustment(klass)
+
+	if classInitFunc != nil {
+		class := (*AdjustmentClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassAdjustment(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeAdjustment(*AdjustmentClass) }); ok {
-		klass := (*AdjustmentClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeAdjustment(klass)
-	}
-}
-
-//export _gotk4_gtk4_AdjustmentClass_changed
-func _gotk4_gtk4_AdjustmentClass_changed(arg0 *C.GtkAdjustment) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed() })
-
-	iface.Changed()
-}
-
-//export _gotk4_gtk4_AdjustmentClass_value_changed
-func _gotk4_gtk4_AdjustmentClass_value_changed(arg0 *C.GtkAdjustment) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ValueChanged() })
-
-	iface.ValueChanged()
 }
 
 func wrapAdjustment(obj *coreglib.Object) *Adjustment {
@@ -115,22 +105,6 @@ func marshalAdjustment(p uintptr) (interface{}, error) {
 	return wrapAdjustment(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Adjustment_ConnectChanged
-func _gotk4_gtk4_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged is emitted when one or more of the GtkAdjustment properties
 // have been changed.
 //
@@ -138,22 +112,6 @@ func _gotk4_gtk4_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 // gtk.Adjustment::value-changed signal.
 func (adjustment *Adjustment) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(adjustment, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Adjustment_ConnectChanged), f)
-}
-
-//export _gotk4_gtk4_Adjustment_ConnectValueChanged
-func _gotk4_gtk4_Adjustment_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectValueChanged is emitted when the value has been changed.
@@ -570,6 +528,30 @@ func (adjustment *Adjustment) SetValue(value float64) {
 	C.gtk_adjustment_set_value(_arg0, _arg1)
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
+}
+
+func (adjustment *Adjustment) changed() {
+	gclass := (*C.GtkAdjustmentClass)(coreglib.PeekParentClass(adjustment))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+
+	C._gotk4_gtk4_Adjustment_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(adjustment)
+}
+
+func (adjustment *Adjustment) valueChanged() {
+	gclass := (*C.GtkAdjustmentClass)(coreglib.PeekParentClass(adjustment))
+	fnarg := gclass.value_changed
+
+	var _arg0 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+
+	C._gotk4_gtk4_Adjustment_virtual_value_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(adjustment)
 }
 
 // AdjustmentClass: instance of this type is always passed by reference.

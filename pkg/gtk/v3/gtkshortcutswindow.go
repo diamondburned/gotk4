@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -16,10 +17,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
-// extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
-// extern void _gotk4_gtk3_ShortcutsWindow_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
+// extern void _gotk4_gtk3_ShortcutsWindow_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk3_ShortcutsWindowClass_search(GtkShortcutsWindow*);
+// extern void _gotk4_gtk3_ShortcutsWindowClass_close(GtkShortcutsWindow*);
+// void _gotk4_gtk3_ShortcutsWindow_virtual_close(void* fnptr, GtkShortcutsWindow* arg0) {
+//   ((void (*)(GtkShortcutsWindow*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_ShortcutsWindow_virtual_search(void* fnptr, GtkShortcutsWindow* arg0) {
+//   ((void (*)(GtkShortcutsWindow*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -33,10 +40,17 @@ func init() {
 	})
 }
 
-// ShortcutsWindowOverrider contains methods that are overridable.
-type ShortcutsWindowOverrider interface {
-	Close()
-	Search()
+// ShortcutsWindowOverrides contains methods that are overridable.
+type ShortcutsWindowOverrides struct {
+	Close  func()
+	Search func()
+}
+
+func defaultShortcutsWindowOverrides(v *ShortcutsWindow) ShortcutsWindowOverrides {
+	return ShortcutsWindowOverrides{
+		Close:  v.close,
+		Search: v.search,
+	}
 }
 
 // ShortcutsWindow shows brief information about the keyboard shortcuts and
@@ -92,52 +106,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeShortcutsWindow,
-		GoType:        reflect.TypeOf((*ShortcutsWindow)(nil)),
-		InitClass:     initClassShortcutsWindow,
-		FinalizeClass: finalizeClassShortcutsWindow,
-	})
+	coreglib.RegisterClassInfo[*ShortcutsWindow, *ShortcutsWindowClass, ShortcutsWindowOverrides](
+		GTypeShortcutsWindow,
+		initShortcutsWindowClass,
+		wrapShortcutsWindow,
+		defaultShortcutsWindowOverrides,
+	)
 }
 
-func initClassShortcutsWindow(gclass unsafe.Pointer, goval any) {
+func initShortcutsWindowClass(gclass unsafe.Pointer, overrides ShortcutsWindowOverrides, classInitFunc func(*ShortcutsWindowClass)) {
+	pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeShortcutsWindow))))
 
-	pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Close() }); ok {
+	if overrides.Close != nil {
 		pclass.close = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_close)
 	}
 
-	if _, ok := goval.(interface{ Search() }); ok {
+	if overrides.Search != nil {
 		pclass.search = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_search)
 	}
-	if goval, ok := goval.(interface{ InitShortcutsWindow(*ShortcutsWindowClass) }); ok {
-		klass := (*ShortcutsWindowClass)(gextras.NewStructNative(gclass))
-		goval.InitShortcutsWindow(klass)
+
+	if classInitFunc != nil {
+		class := (*ShortcutsWindowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassShortcutsWindow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeShortcutsWindow(*ShortcutsWindowClass) }); ok {
-		klass := (*ShortcutsWindowClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeShortcutsWindow(klass)
-	}
-}
-
-//export _gotk4_gtk3_ShortcutsWindowClass_close
-func _gotk4_gtk3_ShortcutsWindowClass_close(arg0 *C.GtkShortcutsWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Close() })
-
-	iface.Close()
-}
-
-//export _gotk4_gtk3_ShortcutsWindowClass_search
-func _gotk4_gtk3_ShortcutsWindowClass_search(arg0 *C.GtkShortcutsWindow) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Search() })
-
-	iface.Search()
 }
 
 func wrapShortcutsWindow(obj *coreglib.Object) *ShortcutsWindow {
@@ -167,22 +158,6 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	return wrapShortcutsWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_ShortcutsWindow_ConnectClose
-func _gotk4_gtk3_ShortcutsWindow_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectClose signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user uses a keybinding to close the window.
 //
@@ -191,28 +166,36 @@ func (v *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "close", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectClose), f)
 }
 
-//export _gotk4_gtk3_ShortcutsWindow_ConnectSearch
-func _gotk4_gtk3_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectSearch signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user uses a keybinding to start a search.
 //
 // The default binding for this signal is Control-F.
 func (v *ShortcutsWindow) ConnectSearch(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "search", false, unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindow_ConnectSearch), f)
+}
+
+func (self *ShortcutsWindow) close() {
+	gclass := (*C.GtkShortcutsWindowClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.close
+
+	var _arg0 *C.GtkShortcutsWindow // out
+
+	_arg0 = (*C.GtkShortcutsWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk3_ShortcutsWindow_virtual_close(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
+}
+
+func (self *ShortcutsWindow) search() {
+	gclass := (*C.GtkShortcutsWindowClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.search
+
+	var _arg0 *C.GtkShortcutsWindow // out
+
+	_arg0 = (*C.GtkShortcutsWindow)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C._gotk4_gtk3_ShortcutsWindow_virtual_search(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
 }
 
 // ShortcutsWindowClass: instance of this type is always passed by reference.

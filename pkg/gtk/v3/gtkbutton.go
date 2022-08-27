@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -18,18 +17,36 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_ButtonClass_activate(GtkButton*);
-// extern void _gotk4_gtk3_ButtonClass_clicked(GtkButton*);
-// extern void _gotk4_gtk3_ButtonClass_enter(GtkButton*);
-// extern void _gotk4_gtk3_ButtonClass_leave(GtkButton*);
-// extern void _gotk4_gtk3_ButtonClass_pressed(GtkButton*);
-// extern void _gotk4_gtk3_ButtonClass_released(GtkButton*);
-// extern void _gotk4_gtk3_Button_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk3_Button_ConnectClicked(gpointer, guintptr);
-// extern void _gotk4_gtk3_Button_ConnectEnter(gpointer, guintptr);
-// extern void _gotk4_gtk3_Button_ConnectLeave(gpointer, guintptr);
-// extern void _gotk4_gtk3_Button_ConnectPressed(gpointer, guintptr);
 // extern void _gotk4_gtk3_Button_ConnectReleased(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectPressed(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectLeave(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectEnter(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectClicked(gpointer, guintptr);
+// extern void _gotk4_gtk3_Button_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk3_ButtonClass_released(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_pressed(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_leave(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_enter(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_clicked(GtkButton*);
+// extern void _gotk4_gtk3_ButtonClass_activate(GtkButton*);
+// void _gotk4_gtk3_Button_virtual_activate(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Button_virtual_clicked(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Button_virtual_enter(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Button_virtual_leave(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Button_virtual_pressed(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Button_virtual_released(void* fnptr, GtkButton* arg0) {
+//   ((void (*)(GtkButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -43,27 +60,38 @@ func init() {
 	})
 }
 
-// ButtonOverrider contains methods that are overridable.
-type ButtonOverrider interface {
-	Activate()
+// ButtonOverrides contains methods that are overridable.
+type ButtonOverrides struct {
+	Activate func()
 	// Clicked emits a Button::clicked signal to the given Button.
-	Clicked()
+	Clicked func()
 	// Enter emits a Button::enter signal to the given Button.
 	//
 	// Deprecated: Use the Widget::enter-notify-event signal.
-	Enter()
+	Enter func()
 	// Leave emits a Button::leave signal to the given Button.
 	//
 	// Deprecated: Use the Widget::leave-notify-event signal.
-	Leave()
+	Leave func()
 	// Pressed emits a Button::pressed signal to the given Button.
 	//
 	// Deprecated: Use the Widget::button-press-event signal.
-	Pressed()
+	Pressed func()
 	// Released emits a Button::released signal to the given Button.
 	//
 	// Deprecated: Use the Widget::button-release-event signal.
-	Released()
+	Released func()
+}
+
+func defaultButtonOverrides(v *Button) ButtonOverrides {
+	return ButtonOverrides{
+		Activate: v.activate,
+		Clicked:  v.clicked,
+		Enter:    v.enter,
+		Leave:    v.leave,
+		Pressed:  v.pressed,
+		Released: v.released,
+	}
 }
 
 // Button widget is generally used to trigger a callback function that is called
@@ -103,100 +131,45 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeButton,
-		GoType:        reflect.TypeOf((*Button)(nil)),
-		InitClass:     initClassButton,
-		FinalizeClass: finalizeClassButton,
-	})
+	coreglib.RegisterClassInfo[*Button, *ButtonClass, ButtonOverrides](
+		GTypeButton,
+		initButtonClass,
+		wrapButton,
+		defaultButtonOverrides,
+	)
 }
 
-func initClassButton(gclass unsafe.Pointer, goval any) {
+func initButtonClass(gclass unsafe.Pointer, overrides ButtonOverrides, classInitFunc func(*ButtonClass)) {
+	pclass := (*C.GtkButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeButton))))
 
-	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Activate() }); ok {
+	if overrides.Activate != nil {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ButtonClass_activate)
 	}
 
-	if _, ok := goval.(interface{ Clicked() }); ok {
+	if overrides.Clicked != nil {
 		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_ButtonClass_clicked)
 	}
 
-	if _, ok := goval.(interface{ Enter() }); ok {
+	if overrides.Enter != nil {
 		pclass.enter = (*[0]byte)(C._gotk4_gtk3_ButtonClass_enter)
 	}
 
-	if _, ok := goval.(interface{ Leave() }); ok {
+	if overrides.Leave != nil {
 		pclass.leave = (*[0]byte)(C._gotk4_gtk3_ButtonClass_leave)
 	}
 
-	if _, ok := goval.(interface{ Pressed() }); ok {
+	if overrides.Pressed != nil {
 		pclass.pressed = (*[0]byte)(C._gotk4_gtk3_ButtonClass_pressed)
 	}
 
-	if _, ok := goval.(interface{ Released() }); ok {
+	if overrides.Released != nil {
 		pclass.released = (*[0]byte)(C._gotk4_gtk3_ButtonClass_released)
 	}
-	if goval, ok := goval.(interface{ InitButton(*ButtonClass) }); ok {
-		klass := (*ButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitButton(klass)
+
+	if classInitFunc != nil {
+		class := (*ButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeButton(*ButtonClass) }); ok {
-		klass := (*ButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeButton(klass)
-	}
-}
-
-//export _gotk4_gtk3_ButtonClass_activate
-func _gotk4_gtk3_ButtonClass_activate(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Activate() })
-
-	iface.Activate()
-}
-
-//export _gotk4_gtk3_ButtonClass_clicked
-func _gotk4_gtk3_ButtonClass_clicked(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Clicked() })
-
-	iface.Clicked()
-}
-
-//export _gotk4_gtk3_ButtonClass_enter
-func _gotk4_gtk3_ButtonClass_enter(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Enter() })
-
-	iface.Enter()
-}
-
-//export _gotk4_gtk3_ButtonClass_leave
-func _gotk4_gtk3_ButtonClass_leave(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Leave() })
-
-	iface.Leave()
-}
-
-//export _gotk4_gtk3_ButtonClass_pressed
-func _gotk4_gtk3_ButtonClass_pressed(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Pressed() })
-
-	iface.Pressed()
-}
-
-//export _gotk4_gtk3_ButtonClass_released
-func _gotk4_gtk3_ButtonClass_released(arg0 *C.GtkButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Released() })
-
-	iface.Released()
 }
 
 func wrapButton(obj *coreglib.Object) *Button {
@@ -242,43 +215,11 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return wrapButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Button_ConnectActivate
-func _gotk4_gtk3_Button_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate signal on GtkButton is an action signal and emitting it
 // causes the button to animate press then release. Applications should never
 // connect to this signal, but use the Button::clicked signal.
 func (button *Button) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectActivate), f)
-}
-
-//export _gotk4_gtk3_Button_ConnectClicked
-func _gotk4_gtk3_Button_ConnectClicked(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectClicked is emitted when the button has been activated (pressed and
@@ -287,41 +228,9 @@ func (button *Button) ConnectClicked(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "clicked", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectClicked), f)
 }
 
-//export _gotk4_gtk3_Button_ConnectEnter
-func _gotk4_gtk3_Button_ConnectEnter(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectEnter is emitted when the pointer enters the button.
 func (button *Button) ConnectEnter(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "enter", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectEnter), f)
-}
-
-//export _gotk4_gtk3_Button_ConnectLeave
-func _gotk4_gtk3_Button_ConnectLeave(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectLeave is emitted when the pointer leaves the button.
@@ -329,41 +238,9 @@ func (button *Button) ConnectLeave(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "leave", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectLeave), f)
 }
 
-//export _gotk4_gtk3_Button_ConnectPressed
-func _gotk4_gtk3_Button_ConnectPressed(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectPressed is emitted when the button is pressed.
 func (button *Button) ConnectPressed(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "pressed", false, unsafe.Pointer(C._gotk4_gtk3_Button_ConnectPressed), f)
-}
-
-//export _gotk4_gtk3_Button_ConnectReleased
-func _gotk4_gtk3_Button_ConnectReleased(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectReleased is emitted when the button is released.
@@ -382,47 +259,6 @@ func NewButton() *Button {
 	var _cret *C.GtkWidget // in
 
 	_cret = C.gtk_button_new()
-
-	var _button *Button // out
-
-	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _button
-}
-
-// NewButtonFromIconName creates a new button containing an icon from the
-// current icon theme.
-//
-// If the icon name isn’t known, a “broken image” icon will be displayed
-// instead. If the current icon theme is changed, the icon will be updated
-// appropriately.
-//
-// This function is a convenience wrapper around gtk_button_new() and
-// gtk_button_set_image().
-//
-// The function takes the following parameters:
-//
-//    - iconName (optional): icon name or NULL.
-//    - size: icon size (IconSize).
-//
-// The function returns the following values:
-//
-//    - button: new Button displaying the themed icon.
-//
-func NewButtonFromIconName(iconName string, size int) *Button {
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GtkIconSize // out
-	var _cret *C.GtkWidget  // in
-
-	if iconName != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	_arg2 = C.GtkIconSize(size)
-
-	_cret = C.gtk_button_new_from_icon_name(_arg1, _arg2)
-	runtime.KeepAlive(iconName)
-	runtime.KeepAlive(size)
 
 	var _button *Button // out
 
@@ -546,188 +382,6 @@ func (button *Button) Enter() {
 
 	C.gtk_button_enter(_arg0)
 	runtime.KeepAlive(button)
-}
-
-// Alignment gets the alignment of the child in the button.
-//
-// Deprecated: Access the child widget directly if you need to control its
-// alignment.
-//
-// The function returns the following values:
-//
-//    - xalign: return location for horizontal alignment.
-//    - yalign: return location for vertical alignment.
-//
-func (button *Button) Alignment() (xalign, yalign float32) {
-	var _arg0 *C.GtkButton // out
-	var _arg1 C.gfloat     // in
-	var _arg2 C.gfloat     // in
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	C.gtk_button_get_alignment(_arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(button)
-
-	var _xalign float32 // out
-	var _yalign float32 // out
-
-	_xalign = float32(_arg1)
-	_yalign = float32(_arg2)
-
-	return _xalign, _yalign
-}
-
-// AlwaysShowImage returns whether the button will ignore the
-// Settings:gtk-button-images setting and always show the image, if available.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the button will always show the image.
-//
-func (button *Button) AlwaysShowImage() bool {
-	var _arg0 *C.GtkButton // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	_cret = C.gtk_button_get_always_show_image(_arg0)
-	runtime.KeepAlive(button)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// EventWindow returns the button’s event window if it is realized, NULL
-// otherwise. This function should be rarely needed.
-//
-// The function returns the following values:
-//
-//    - window button’s event window.
-//
-func (button *Button) EventWindow() gdk.Windower {
-	var _arg0 *C.GtkButton // out
-	var _cret *C.GdkWindow // in
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	_cret = C.gtk_button_get_event_window(_arg0)
-	runtime.KeepAlive(button)
-
-	var _window gdk.Windower // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Windower is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Windower)
-			return ok
-		})
-		rv, ok := casted.(gdk.Windower)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
-		}
-		_window = rv
-	}
-
-	return _window
-}
-
-// FocusOnClick returns whether the button grabs focus when it is clicked with
-// the mouse. See gtk_button_set_focus_on_click().
-//
-// Deprecated: Use gtk_widget_get_focus_on_click() instead.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
-//
-func (button *Button) FocusOnClick() bool {
-	var _arg0 *C.GtkButton // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	_cret = C.gtk_button_get_focus_on_click(_arg0)
-	runtime.KeepAlive(button)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Image gets the widget that is currenty set as the image of button. This may
-// have been explicitly set by gtk_button_set_image() or constructed by
-// gtk_button_new_from_stock().
-//
-// The function returns the following values:
-//
-//    - widget (optional) or NULL in case there is no image.
-//
-func (button *Button) Image() Widgetter {
-	var _arg0 *C.GtkButton // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	_cret = C.gtk_button_get_image(_arg0)
-	runtime.KeepAlive(button)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
-}
-
-// ImagePosition gets the position of the image relative to the text inside the
-// button.
-//
-// The function returns the following values:
-//
-//    - positionType: position.
-//
-func (button *Button) ImagePosition() PositionType {
-	var _arg0 *C.GtkButton      // out
-	var _cret C.GtkPositionType // in
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	_cret = C.gtk_button_get_image_position(_arg0)
-	runtime.KeepAlive(button)
-
-	var _positionType PositionType // out
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
 }
 
 // Label fetches the text from the label of the button, as set by
@@ -867,125 +521,6 @@ func (button *Button) Released() {
 	runtime.KeepAlive(button)
 }
 
-// SetAlignment sets the alignment of the child. This property has no effect
-// unless the child is a Misc or a Alignment.
-//
-// Deprecated: Access the child widget directly if you need to control its
-// alignment.
-//
-// The function takes the following parameters:
-//
-//    - xalign: horizontal position of the child, 0.0 is left aligned, 1.0 is
-//      right aligned.
-//    - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is bottom
-//      aligned.
-//
-func (button *Button) SetAlignment(xalign, yalign float32) {
-	var _arg0 *C.GtkButton // out
-	var _arg1 C.gfloat     // out
-	var _arg2 C.gfloat     // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-
-	C.gtk_button_set_alignment(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(xalign)
-	runtime.KeepAlive(yalign)
-}
-
-// SetAlwaysShowImage: if TRUE, the button will ignore the
-// Settings:gtk-button-images setting and always show the image, if available.
-//
-// Use this property if the button would be useless or hard to use without the
-// image.
-//
-// The function takes the following parameters:
-//
-//    - alwaysShow: TRUE if the menuitem should always show the image.
-//
-func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
-	var _arg0 *C.GtkButton // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	if alwaysShow {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_button_set_always_show_image(_arg0, _arg1)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(alwaysShow)
-}
-
-// SetFocusOnClick sets whether the button will grab focus when it is clicked
-// with the mouse. Making mouse clicks not grab focus is useful in places like
-// toolbars where you don’t want the keyboard focus removed from the main area
-// of the application.
-//
-// Deprecated: Use gtk_widget_set_focus_on_click() instead.
-//
-// The function takes the following parameters:
-//
-//    - focusOnClick: whether the button grabs focus when clicked with the mouse.
-//
-func (button *Button) SetFocusOnClick(focusOnClick bool) {
-	var _arg0 *C.GtkButton // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	if focusOnClick {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_button_set_focus_on_click(_arg0, _arg1)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(focusOnClick)
-}
-
-// SetImage: set the image of button to the given widget. The image will be
-// displayed if the label text is NULL or if Button:always-show-image is TRUE.
-// You don’t have to call gtk_widget_show() on image yourself.
-//
-// The function takes the following parameters:
-//
-//    - image (optional): widget to set as the image for the button, or NULL to
-//      unset.
-//
-func (button *Button) SetImage(image Widgetter) {
-	var _arg0 *C.GtkButton // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	if image != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	}
-
-	C.gtk_button_set_image(_arg0, _arg1)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(image)
-}
-
-// SetImagePosition sets the position of the image relative to the text inside
-// the button.
-//
-// The function takes the following parameters:
-//
-//    - position: position.
-//
-func (button *Button) SetImagePosition(position PositionType) {
-	var _arg0 *C.GtkButton      // out
-	var _arg1 C.GtkPositionType // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = C.GtkPositionType(position)
-
-	C.gtk_button_set_image_position(_arg0, _arg1)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(position)
-}
-
 // SetLabel sets the text of the label of the button to str. This text is also
 // used to select the stock item if gtk_button_set_use_stock() is used.
 //
@@ -1071,6 +606,91 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
+}
+
+func (button *Button) activate() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.activate
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk3_Button_virtual_activate(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
+}
+
+// Clicked emits a Button::clicked signal to the given Button.
+func (button *Button) clicked() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.clicked
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk3_Button_virtual_clicked(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
+}
+
+// Enter emits a Button::enter signal to the given Button.
+//
+// Deprecated: Use the Widget::enter-notify-event signal.
+func (button *Button) enter() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.enter
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk3_Button_virtual_enter(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
+}
+
+// Leave emits a Button::leave signal to the given Button.
+//
+// Deprecated: Use the Widget::leave-notify-event signal.
+func (button *Button) leave() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.leave
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk3_Button_virtual_leave(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
+}
+
+// Pressed emits a Button::pressed signal to the given Button.
+//
+// Deprecated: Use the Widget::button-press-event signal.
+func (button *Button) pressed() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.pressed
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk3_Button_virtual_pressed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
+}
+
+// Released emits a Button::released signal to the given Button.
+//
+// Deprecated: Use the Widget::button-release-event signal.
+func (button *Button) released() {
+	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
+	fnarg := gclass.released
+
+	var _arg0 *C.GtkButton // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C._gotk4_gtk3_Button_virtual_released(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(button)
 }
 
 // ButtonClass: instance of this type is always passed by reference.

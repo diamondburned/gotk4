@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// LinkButtonAccessibleOverrider contains methods that are overridable.
-type LinkButtonAccessibleOverrider interface {
+// LinkButtonAccessibleOverrides contains methods that are overridable.
+type LinkButtonAccessibleOverrides struct {
+}
+
+func defaultLinkButtonAccessibleOverrides(v *LinkButtonAccessible) LinkButtonAccessibleOverrides {
+	return LinkButtonAccessibleOverrides{}
 }
 
 type LinkButtonAccessible struct {
@@ -46,29 +50,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLinkButtonAccessible,
-		GoType:        reflect.TypeOf((*LinkButtonAccessible)(nil)),
-		InitClass:     initClassLinkButtonAccessible,
-		FinalizeClass: finalizeClassLinkButtonAccessible,
-	})
+	coreglib.RegisterClassInfo[*LinkButtonAccessible, *LinkButtonAccessibleClass, LinkButtonAccessibleOverrides](
+		GTypeLinkButtonAccessible,
+		initLinkButtonAccessibleClass,
+		wrapLinkButtonAccessible,
+		defaultLinkButtonAccessibleOverrides,
+	)
 }
 
-func initClassLinkButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitLinkButtonAccessible(*LinkButtonAccessibleClass)
-	}); ok {
-		klass := (*LinkButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitLinkButtonAccessible(klass)
-	}
-}
-
-func finalizeClassLinkButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeLinkButtonAccessible(*LinkButtonAccessibleClass)
-	}); ok {
-		klass := (*LinkButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLinkButtonAccessible(klass)
+func initLinkButtonAccessibleClass(gclass unsafe.Pointer, overrides LinkButtonAccessibleOverrides, classInitFunc func(*LinkButtonAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*LinkButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// NoSelectionOverrider contains methods that are overridable.
-type NoSelectionOverrider interface {
+// NoSelectionOverrides contains methods that are overridable.
+type NoSelectionOverrides struct {
+}
+
+func defaultNoSelectionOverrides(v *NoSelection) NoSelectionOverrides {
+	return NoSelectionOverrides{}
 }
 
 // NoSelection: GtkNoSelection is a GtkSelectionModel that does not allow
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeNoSelection,
-		GoType:        reflect.TypeOf((*NoSelection)(nil)),
-		InitClass:     initClassNoSelection,
-		FinalizeClass: finalizeClassNoSelection,
-	})
+	coreglib.RegisterClassInfo[*NoSelection, *NoSelectionClass, NoSelectionOverrides](
+		GTypeNoSelection,
+		initNoSelectionClass,
+		wrapNoSelection,
+		defaultNoSelectionOverrides,
+	)
 }
 
-func initClassNoSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitNoSelection(*NoSelectionClass) }); ok {
-		klass := (*NoSelectionClass)(gextras.NewStructNative(gclass))
-		goval.InitNoSelection(klass)
-	}
-}
-
-func finalizeClassNoSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeNoSelection(*NoSelectionClass) }); ok {
-		klass := (*NoSelectionClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeNoSelection(klass)
+func initNoSelectionClass(gclass unsafe.Pointer, overrides NoSelectionOverrides, classInitFunc func(*NoSelectionClass)) {
+	if classInitFunc != nil {
+		class := (*NoSelectionClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

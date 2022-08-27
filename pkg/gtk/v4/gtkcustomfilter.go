@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
+// extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 import "C"
 
 // GType values.
@@ -37,32 +37,12 @@ func init() {
 // should be filtered out, FALSE must be returned.
 type CustomFilterFunc func(item *coreglib.Object) (ok bool)
 
-//export _gotk4_gtk4_CustomFilterFunc
-func _gotk4_gtk4_CustomFilterFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gboolean) {
-	var fn CustomFilterFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(CustomFilterFunc)
-	}
-
-	var _item *coreglib.Object // out
-
-	_item = coreglib.Take(unsafe.Pointer(arg1))
-
-	ok := fn(_item)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
+// CustomFilterOverrides contains methods that are overridable.
+type CustomFilterOverrides struct {
 }
 
-// CustomFilterOverrider contains methods that are overridable.
-type CustomFilterOverrider interface {
+func defaultCustomFilterOverrides(v *CustomFilter) CustomFilterOverrides {
+	return CustomFilterOverrides{}
 }
 
 // CustomFilter: GtkCustomFilter determines whether to include items with a
@@ -77,25 +57,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCustomFilter,
-		GoType:        reflect.TypeOf((*CustomFilter)(nil)),
-		InitClass:     initClassCustomFilter,
-		FinalizeClass: finalizeClassCustomFilter,
-	})
+	coreglib.RegisterClassInfo[*CustomFilter, *CustomFilterClass, CustomFilterOverrides](
+		GTypeCustomFilter,
+		initCustomFilterClass,
+		wrapCustomFilter,
+		defaultCustomFilterOverrides,
+	)
 }
 
-func initClassCustomFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitCustomFilter(*CustomFilterClass) }); ok {
-		klass := (*CustomFilterClass)(gextras.NewStructNative(gclass))
-		goval.InitCustomFilter(klass)
-	}
-}
-
-func finalizeClassCustomFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCustomFilter(*CustomFilterClass) }); ok {
-		klass := (*CustomFilterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCustomFilter(klass)
+func initCustomFilterClass(gclass unsafe.Pointer, overrides CustomFilterOverrides, classInitFunc func(*CustomFilterClass)) {
+	if classInitFunc != nil {
+		class := (*CustomFilterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

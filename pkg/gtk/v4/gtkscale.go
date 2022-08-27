@@ -16,9 +16,12 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
-// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(GtkScale*, int*, int*);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(GtkScale*, int*, int*);
+// extern char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
+// void _gotk4_gtk4_Scale_virtual_get_layout_offsets(void* fnptr, GtkScale* arg0, int* arg1, int* arg2) {
+//   ((void (*)(GtkScale*, int*, int*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -34,32 +37,8 @@ func init() {
 
 type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
 
-//export _gotk4_gtk4_ScaleFormatValueFunc
-func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.GtkScale, arg2 C.double, arg3 C.gpointer) (cret *C.char) {
-	var fn ScaleFormatValueFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ScaleFormatValueFunc)
-	}
-
-	var _scale *Scale  // out
-	var _value float64 // out
-
-	_scale = wrapScale(coreglib.Take(unsafe.Pointer(arg1)))
-	_value = float64(arg2)
-
-	utf8 := fn(_scale, _value)
-
-	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
-
-// ScaleOverrider contains methods that are overridable.
-type ScaleOverrider interface {
+// ScaleOverrides contains methods that are overridable.
+type ScaleOverrides struct {
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// PangoLayout representing the text in the scale.
 	//
@@ -74,7 +53,13 @@ type ScaleOverrider interface {
 	//    - x (optional): location to store X offset of layout, or NULL.
 	//    - y (optional): location to store Y offset of layout, or NULL.
 	//
-	LayoutOffsets() (x, y int)
+	LayoutOffsets func() (x, y int)
+}
+
+func defaultScaleOverrides(v *Scale) ScaleOverrides {
+	return ScaleOverrides{
+		LayoutOffsets: v.layoutOffsets,
+	}
 }
 
 // Scale: GtkScale is a slider control used to select a numeric value.
@@ -167,43 +152,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeScale,
-		GoType:        reflect.TypeOf((*Scale)(nil)),
-		InitClass:     initClassScale,
-		FinalizeClass: finalizeClassScale,
-	})
+	coreglib.RegisterClassInfo[*Scale, *ScaleClass, ScaleOverrides](
+		GTypeScale,
+		initScaleClass,
+		wrapScale,
+		defaultScaleOverrides,
+	)
 }
 
-func initClassScale(gclass unsafe.Pointer, goval any) {
+func initScaleClass(gclass unsafe.Pointer, overrides ScaleOverrides, classInitFunc func(*ScaleClass)) {
+	pclass := (*C.GtkScaleClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeScale))))
 
-	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ LayoutOffsets() (x, y int) }); ok {
+	if overrides.LayoutOffsets != nil {
 		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk4_ScaleClass_get_layout_offsets)
 	}
-	if goval, ok := goval.(interface{ InitScale(*ScaleClass) }); ok {
-		klass := (*ScaleClass)(gextras.NewStructNative(gclass))
-		goval.InitScale(klass)
+
+	if classInitFunc != nil {
+		class := (*ScaleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassScale(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeScale(*ScaleClass) }); ok {
-		klass := (*ScaleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeScale(klass)
-	}
-}
-
-//export _gotk4_gtk4_ScaleClass_get_layout_offsets
-func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.GtkScale, arg1 *C.int, arg2 *C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LayoutOffsets() (x, y int) })
-
-	x, y := iface.LayoutOffsets()
-
-	*arg1 = C.int(x)
-	*arg2 = C.int(y)
 }
 
 func wrapScale(obj *coreglib.Object) *Scale {
@@ -648,6 +615,42 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 	C.gtk_scale_set_value_pos(_arg0, _arg1)
 	runtime.KeepAlive(scale)
 	runtime.KeepAlive(pos)
+}
+
+// layoutOffsets obtains the coordinates where the scale will draw the
+// PangoLayout representing the text in the scale.
+//
+// Remember when using the PangoLayout function you need to convert to and from
+// pixels using PANGO_PIXELS() or PANGO_SCALE.
+//
+// If the gtkscale:draw-value property is FALSE, the return values are
+// undefined.
+//
+// The function returns the following values:
+//
+//    - x (optional): location to store X offset of layout, or NULL.
+//    - y (optional): location to store Y offset of layout, or NULL.
+//
+func (scale *Scale) layoutOffsets() (x, y int) {
+	gclass := (*C.GtkScaleClass)(coreglib.PeekParentClass(scale))
+	fnarg := gclass.get_layout_offsets
+
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.int       // in
+	var _arg2 C.int       // in
+
+	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+
+	C._gotk4_gtk4_Scale_virtual_get_layout_offsets(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(scale)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
 }
 
 // ScaleClass: instance of this type is always passed by reference.

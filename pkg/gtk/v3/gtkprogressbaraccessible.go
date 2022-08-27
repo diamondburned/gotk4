@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ProgressBarAccessibleOverrider contains methods that are overridable.
-type ProgressBarAccessibleOverrider interface {
+// ProgressBarAccessibleOverrides contains methods that are overridable.
+type ProgressBarAccessibleOverrides struct {
+}
+
+func defaultProgressBarAccessibleOverrides(v *ProgressBarAccessible) ProgressBarAccessibleOverrides {
+	return ProgressBarAccessibleOverrides{}
 }
 
 type ProgressBarAccessible struct {
@@ -45,29 +49,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeProgressBarAccessible,
-		GoType:        reflect.TypeOf((*ProgressBarAccessible)(nil)),
-		InitClass:     initClassProgressBarAccessible,
-		FinalizeClass: finalizeClassProgressBarAccessible,
-	})
+	coreglib.RegisterClassInfo[*ProgressBarAccessible, *ProgressBarAccessibleClass, ProgressBarAccessibleOverrides](
+		GTypeProgressBarAccessible,
+		initProgressBarAccessibleClass,
+		wrapProgressBarAccessible,
+		defaultProgressBarAccessibleOverrides,
+	)
 }
 
-func initClassProgressBarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitProgressBarAccessible(*ProgressBarAccessibleClass)
-	}); ok {
-		klass := (*ProgressBarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitProgressBarAccessible(klass)
-	}
-}
-
-func finalizeClassProgressBarAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeProgressBarAccessible(*ProgressBarAccessibleClass)
-	}); ok {
-		klass := (*ProgressBarAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeProgressBarAccessible(klass)
+func initProgressBarAccessibleClass(gclass unsafe.Pointer, overrides ProgressBarAccessibleOverrides, classInitFunc func(*ProgressBarAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ProgressBarAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

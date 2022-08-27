@@ -16,15 +16,15 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_IconView_ConnectActivateCursorItem(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_IconView_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, gboolean, guintptr);
-// extern void _gotk4_gtk4_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
-// extern void _gotk4_gtk4_IconView_ConnectItemActivated(gpointer, GtkTreePath*, guintptr);
-// extern void _gotk4_gtk4_IconView_ConnectSelectAll(gpointer, guintptr);
-// extern void _gotk4_gtk4_IconView_ConnectSelectCursorItem(gpointer, guintptr);
-// extern void _gotk4_gtk4_IconView_ConnectSelectionChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_IconView_ConnectToggleCursorItem(gpointer, guintptr);
 // extern void _gotk4_gtk4_IconView_ConnectUnselectAll(gpointer, guintptr);
+// extern void _gotk4_gtk4_IconView_ConnectToggleCursorItem(gpointer, guintptr);
+// extern void _gotk4_gtk4_IconView_ConnectSelectionChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_IconView_ConnectSelectCursorItem(gpointer, guintptr);
+// extern void _gotk4_gtk4_IconView_ConnectSelectAll(gpointer, guintptr);
+// extern void _gotk4_gtk4_IconView_ConnectItemActivated(gpointer, GtkTreePath*, guintptr);
+// extern void _gotk4_gtk4_IconViewForEachFunc(GtkIconView*, GtkTreePath*, gpointer);
+// extern gboolean _gotk4_gtk4_IconView_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_IconView_ConnectActivateCursorItem(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -87,26 +87,6 @@ func (i IconViewDropPosition) String() string {
 //
 // It will be called on every selected row in the view.
 type IconViewForEachFunc func(iconView *IconView, path *TreePath)
-
-//export _gotk4_gtk4_IconViewForEachFunc
-func _gotk4_gtk4_IconViewForEachFunc(arg1 *C.GtkIconView, arg2 *C.GtkTreePath, arg3 C.gpointer) {
-	var fn IconViewForEachFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(IconViewForEachFunc)
-	}
-
-	var _iconView *IconView // out
-	var _path *TreePath     // out
-
-	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(arg1)))
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	fn(_iconView, _path)
-}
 
 // IconView: GtkIconView is a widget which displays data in a grid of icons.
 //
@@ -174,28 +154,6 @@ func marshalIconView(p uintptr) (interface{}, error) {
 	return wrapIconView(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_IconView_ConnectActivateCursorItem
-func _gotk4_gtk4_IconView_ConnectActivateCursorItem(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectActivateCursorItem: [keybinding signal][GtkSignalAction] which gets
 // emitted when the user activates the currently focused item.
 //
@@ -207,26 +165,6 @@ func (iconView *IconView) ConnectActivateCursorItem(f func() (ok bool)) coreglib
 	return coreglib.ConnectGeneratedClosure(iconView, "activate-cursor-item", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectActivateCursorItem), f)
 }
 
-//export _gotk4_gtk4_IconView_ConnectItemActivated
-func _gotk4_gtk4_IconView_ConnectItemActivated(arg0 C.gpointer, arg1 *C.GtkTreePath, arg2 C.guintptr) {
-	var f func(path *TreePath)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(path *TreePath))
-	}
-
-	var _path *TreePath // out
-
-	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-
-	f(_path)
-}
-
 // ConnectItemActivated signal is emitted when the method
 // gtk_icon_view_item_activated() is called, when the user double clicks an item
 // with the "activate-on-single-click" property set to FALSE, or when the user
@@ -235,42 +173,6 @@ func _gotk4_gtk4_IconView_ConnectItemActivated(arg0 C.gpointer, arg1 *C.GtkTreeP
 // keys: Space, Return or Enter is pressed.
 func (iconView *IconView) ConnectItemActivated(f func(path *TreePath)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(iconView, "item-activated", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectItemActivated), f)
-}
-
-//export _gotk4_gtk4_IconView_ConnectMoveCursor
-func _gotk4_gtk4_IconView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(step MovementStep, count int, extend, modify bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(step MovementStep, count int, extend, modify bool) (ok bool))
-	}
-
-	var _step MovementStep // out
-	var _count int         // out
-	var _extend bool       // out
-	var _modify bool       // out
-
-	_step = MovementStep(arg1)
-	_count = int(arg2)
-	if arg3 != 0 {
-		_extend = true
-	}
-	if arg4 != 0 {
-		_modify = true
-	}
-
-	ok := f(_step, _count, _extend, _modify)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectMoveCursor signal is a [keybinding signal][GtkSignalAction] which gets
@@ -292,22 +194,6 @@ func (iconView *IconView) ConnectMoveCursor(f func(step MovementStep, count int,
 	return coreglib.ConnectGeneratedClosure(iconView, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectMoveCursor), f)
 }
 
-//export _gotk4_gtk4_IconView_ConnectSelectAll
-func _gotk4_gtk4_IconView_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectSelectAll: [keybinding signal][GtkSignalAction] which gets emitted
 // when the user selects all items.
 //
@@ -317,22 +203,6 @@ func _gotk4_gtk4_IconView_ConnectSelectAll(arg0 C.gpointer, arg1 C.guintptr) {
 // The default binding for this signal is Ctrl-a.
 func (iconView *IconView) ConnectSelectAll(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(iconView, "select-all", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectSelectAll), f)
-}
-
-//export _gotk4_gtk4_IconView_ConnectSelectCursorItem
-func _gotk4_gtk4_IconView_ConnectSelectCursorItem(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectSelectCursorItem: [keybinding signal][GtkSignalAction] which gets
@@ -346,42 +216,10 @@ func (iconView *IconView) ConnectSelectCursorItem(f func()) coreglib.SignalHandl
 	return coreglib.ConnectGeneratedClosure(iconView, "select-cursor-item", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectSelectCursorItem), f)
 }
 
-//export _gotk4_gtk4_IconView_ConnectSelectionChanged
-func _gotk4_gtk4_IconView_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectSelectionChanged signal is emitted when the selection (i.e. the set of
 // selected items) changes.
 func (iconView *IconView) ConnectSelectionChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(iconView, "selection-changed", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectSelectionChanged), f)
-}
-
-//export _gotk4_gtk4_IconView_ConnectToggleCursorItem
-func _gotk4_gtk4_IconView_ConnectToggleCursorItem(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectToggleCursorItem: [keybinding signal][GtkSignalAction] which gets
@@ -394,22 +232,6 @@ func _gotk4_gtk4_IconView_ConnectToggleCursorItem(arg0 C.gpointer, arg1 C.guintp
 // There is no default binding for this signal is Ctrl-Space.
 func (iconView *IconView) ConnectToggleCursorItem(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(iconView, "toggle-cursor-item", false, unsafe.Pointer(C._gotk4_gtk4_IconView_ConnectToggleCursorItem), f)
-}
-
-//export _gotk4_gtk4_IconView_ConnectUnselectAll
-func _gotk4_gtk4_IconView_ConnectUnselectAll(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectUnselectAll: [keybinding signal][GtkSignalAction] which gets emitted

@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// CellRendererSpinnerOverrider contains methods that are overridable.
-type CellRendererSpinnerOverrider interface {
+// CellRendererSpinnerOverrides contains methods that are overridable.
+type CellRendererSpinnerOverrides struct {
+}
+
+func defaultCellRendererSpinnerOverrides(v *CellRendererSpinner) CellRendererSpinnerOverrides {
+	return CellRendererSpinnerOverrides{}
 }
 
 // CellRendererSpinner renders a spinning animation in a cell, very similar to
@@ -51,29 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellRendererSpinner,
-		GoType:        reflect.TypeOf((*CellRendererSpinner)(nil)),
-		InitClass:     initClassCellRendererSpinner,
-		FinalizeClass: finalizeClassCellRendererSpinner,
-	})
+	coreglib.RegisterClassInfo[*CellRendererSpinner, *CellRendererSpinnerClass, CellRendererSpinnerOverrides](
+		GTypeCellRendererSpinner,
+		initCellRendererSpinnerClass,
+		wrapCellRendererSpinner,
+		defaultCellRendererSpinnerOverrides,
+	)
 }
 
-func initClassCellRendererSpinner(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitCellRendererSpinner(*CellRendererSpinnerClass)
-	}); ok {
-		klass := (*CellRendererSpinnerClass)(gextras.NewStructNative(gclass))
-		goval.InitCellRendererSpinner(klass)
-	}
-}
-
-func finalizeClassCellRendererSpinner(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeCellRendererSpinner(*CellRendererSpinnerClass)
-	}); ok {
-		klass := (*CellRendererSpinnerClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellRendererSpinner(klass)
+func initCellRendererSpinnerClass(gclass unsafe.Pointer, overrides CellRendererSpinnerOverrides, classInitFunc func(*CellRendererSpinnerClass)) {
+	if classInitFunc != nil {
+		class := (*CellRendererSpinnerClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -89,25 +82,6 @@ func wrapCellRendererSpinner(obj *coreglib.Object) *CellRendererSpinner {
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	return wrapCellRendererSpinner(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewCellRendererSpinner returns a new cell renderer which will show a spinner
-// to indicate activity.
-//
-// The function returns the following values:
-//
-//    - cellRendererSpinner: new CellRenderer.
-//
-func NewCellRendererSpinner() *CellRendererSpinner {
-	var _cret *C.GtkCellRenderer // in
-
-	_cret = C.gtk_cell_renderer_spinner_new()
-
-	var _cellRendererSpinner *CellRendererSpinner // out
-
-	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _cellRendererSpinner
 }
 
 // CellRendererSpinnerClass: instance of this type is always passed by

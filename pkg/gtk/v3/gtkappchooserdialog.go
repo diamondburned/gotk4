@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -31,8 +30,12 @@ func init() {
 	})
 }
 
-// AppChooserDialogOverrider contains methods that are overridable.
-type AppChooserDialogOverrider interface {
+// AppChooserDialogOverrides contains methods that are overridable.
+type AppChooserDialogOverrides struct {
+}
+
+func defaultAppChooserDialogOverrides(v *AppChooserDialog) AppChooserDialogOverrides {
+	return AppChooserDialogOverrides{}
 }
 
 // AppChooserDialog shows a AppChooserWidget inside a Dialog.
@@ -58,25 +61,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeAppChooserDialog,
-		GoType:        reflect.TypeOf((*AppChooserDialog)(nil)),
-		InitClass:     initClassAppChooserDialog,
-		FinalizeClass: finalizeClassAppChooserDialog,
-	})
+	coreglib.RegisterClassInfo[*AppChooserDialog, *AppChooserDialogClass, AppChooserDialogOverrides](
+		GTypeAppChooserDialog,
+		initAppChooserDialogClass,
+		wrapAppChooserDialog,
+		defaultAppChooserDialogOverrides,
+	)
 }
 
-func initClassAppChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitAppChooserDialog(*AppChooserDialogClass) }); ok {
-		klass := (*AppChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitAppChooserDialog(klass)
-	}
-}
-
-func finalizeClassAppChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeAppChooserDialog(*AppChooserDialogClass) }); ok {
-		klass := (*AppChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeAppChooserDialog(klass)
+func initAppChooserDialogClass(gclass unsafe.Pointer, overrides AppChooserDialogOverrides, classInitFunc func(*AppChooserDialogClass)) {
+	if classInitFunc != nil {
+		class := (*AppChooserDialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -124,81 +120,6 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return wrapAppChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewAppChooserDialog creates a new AppChooserDialog for the provided #GFile,
-// to allow the user to select an application for it.
-//
-// The function takes the following parameters:
-//
-//    - parent (optional) or NULL.
-//    - flags for this dialog.
-//    - file: #GFile.
-//
-// The function returns the following values:
-//
-//    - appChooserDialog: newly created AppChooserDialog.
-//
-func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
-	var _arg1 *C.GtkWindow     // out
-	var _arg2 C.GtkDialogFlags // out
-	var _arg3 *C.GFile         // out
-	var _cret *C.GtkWidget     // in
-
-	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-	_arg2 = C.GtkDialogFlags(flags)
-	_arg3 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-
-	_cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(parent)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(file)
-
-	var _appChooserDialog *AppChooserDialog // out
-
-	_appChooserDialog = wrapAppChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _appChooserDialog
-}
-
-// NewAppChooserDialogForContentType creates a new AppChooserDialog for the
-// provided content type, to allow the user to select an application for it.
-//
-// The function takes the following parameters:
-//
-//    - parent (optional) or NULL.
-//    - flags for this dialog.
-//    - contentType: content type string.
-//
-// The function returns the following values:
-//
-//    - appChooserDialog: newly created AppChooserDialog.
-//
-func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog {
-	var _arg1 *C.GtkWindow     // out
-	var _arg2 C.GtkDialogFlags // out
-	var _arg3 *C.gchar         // out
-	var _cret *C.GtkWidget     // in
-
-	if parent != nil {
-		_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-	_arg2 = C.GtkDialogFlags(flags)
-	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	_cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
-	runtime.KeepAlive(parent)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(contentType)
-
-	var _appChooserDialog *AppChooserDialog // out
-
-	_appChooserDialog = wrapAppChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _appChooserDialog
-}
-
 // Heading returns the text to display at the top of the dialog.
 //
 // The function returns the following values:
@@ -222,44 +143,6 @@ func (self *AppChooserDialog) Heading() string {
 	}
 
 	return _utf8
-}
-
-// Widget returns the AppChooserWidget of this dialog.
-//
-// The function returns the following values:
-//
-//    - widget of self.
-//
-func (self *AppChooserDialog) Widget() Widgetter {
-	var _arg0 *C.GtkAppChooserDialog // out
-	var _cret *C.GtkWidget           // in
-
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
-	runtime.KeepAlive(self)
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	return _widget
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the heading

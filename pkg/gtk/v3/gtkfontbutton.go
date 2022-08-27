@@ -17,8 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_FontButtonClass_font_set(GtkFontButton*);
 // extern void _gotk4_gtk3_FontButton_ConnectFontSet(gpointer, guintptr);
+// extern void _gotk4_gtk3_FontButtonClass_font_set(GtkFontButton*);
+// void _gotk4_gtk3_FontButton_virtual_font_set(void* fnptr, GtkFontButton* arg0) {
+//   ((void (*)(GtkFontButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -32,9 +35,15 @@ func init() {
 	})
 }
 
-// FontButtonOverrider contains methods that are overridable.
-type FontButtonOverrider interface {
-	FontSet()
+// FontButtonOverrides contains methods that are overridable.
+type FontButtonOverrides struct {
+	FontSet func()
+}
+
+func defaultFontButtonOverrides(v *FontButton) FontButtonOverrides {
+	return FontButtonOverrides{
+		FontSet: v.fontSet,
+	}
 }
 
 // FontButton is a button which displays the currently selected font an allows
@@ -59,40 +68,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFontButton,
-		GoType:        reflect.TypeOf((*FontButton)(nil)),
-		InitClass:     initClassFontButton,
-		FinalizeClass: finalizeClassFontButton,
-	})
+	coreglib.RegisterClassInfo[*FontButton, *FontButtonClass, FontButtonOverrides](
+		GTypeFontButton,
+		initFontButtonClass,
+		wrapFontButton,
+		defaultFontButtonOverrides,
+	)
 }
 
-func initClassFontButton(gclass unsafe.Pointer, goval any) {
+func initFontButtonClass(gclass unsafe.Pointer, overrides FontButtonOverrides, classInitFunc func(*FontButtonClass)) {
+	pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFontButton))))
 
-	pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ FontSet() }); ok {
+	if overrides.FontSet != nil {
 		pclass.font_set = (*[0]byte)(C._gotk4_gtk3_FontButtonClass_font_set)
 	}
-	if goval, ok := goval.(interface{ InitFontButton(*FontButtonClass) }); ok {
-		klass := (*FontButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitFontButton(klass)
+
+	if classInitFunc != nil {
+		class := (*FontButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassFontButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFontButton(*FontButtonClass) }); ok {
-		klass := (*FontButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFontButton(klass)
-	}
-}
-
-//export _gotk4_gtk3_FontButtonClass_font_set
-func _gotk4_gtk3_FontButtonClass_font_set(arg0 *C.GtkFontButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ FontSet() })
-
-	iface.FontSet()
 }
 
 func wrapFontButton(obj *coreglib.Object) *FontButton {
@@ -144,22 +138,6 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return wrapFontButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_FontButton_ConnectFontSet
-func _gotk4_gtk3_FontButton_ConnectFontSet(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectFontSet signal is emitted when the user selects a font. When handling
 // this signal, use gtk_font_chooser_get_font() to find out which font was just
 // selected.
@@ -171,334 +149,16 @@ func (fontButton *FontButton) ConnectFontSet(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(fontButton, "font-set", false, unsafe.Pointer(C._gotk4_gtk3_FontButton_ConnectFontSet), f)
 }
 
-// NewFontButton creates a new font picker widget.
-//
-// The function returns the following values:
-//
-//    - fontButton: new font picker widget.
-//
-func NewFontButton() *FontButton {
-	var _cret *C.GtkWidget // in
+func (gfp *FontButton) fontSet() {
+	gclass := (*C.GtkFontButtonClass)(coreglib.PeekParentClass(gfp))
+	fnarg := gclass.font_set
 
-	_cret = C.gtk_font_button_new()
-
-	var _fontButton *FontButton // out
-
-	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _fontButton
-}
-
-// NewFontButtonWithFont creates a new font picker widget.
-//
-// The function takes the following parameters:
-//
-//    - fontname: name of font to display in font chooser dialog.
-//
-// The function returns the following values:
-//
-//    - fontButton: new font picker widget.
-//
-func NewFontButtonWithFont(fontname string) *FontButton {
-	var _arg1 *C.gchar     // out
-	var _cret *C.GtkWidget // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_font_button_new_with_font(_arg1)
-	runtime.KeepAlive(fontname)
-
-	var _fontButton *FontButton // out
-
-	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _fontButton
-}
-
-// FontName retrieves the name of the currently selected font. This name
-// includes style and size information as well. If you want to render something
-// with the font, use this string with pango_font_description_from_string() . If
-// you’re interested in peeking certain values (family name, style, size,
-// weight) just query these properties from the FontDescription object.
-//
-// Deprecated: Use gtk_font_chooser_get_font() instead.
-//
-// The function returns the following values:
-//
-//    - utf8: internal copy of the font name which must not be freed.
-//
-func (fontButton *FontButton) FontName() string {
 	var _arg0 *C.GtkFontButton // out
-	var _cret *C.gchar         // in
 
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
+	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(gfp).Native()))
 
-	_cret = C.gtk_font_button_get_font_name(_arg0)
-	runtime.KeepAlive(fontButton)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// ShowSize returns whether the font size will be shown in the label.
-//
-// The function returns the following values:
-//
-//    - ok: whether the font size will be shown in the label.
-//
-func (fontButton *FontButton) ShowSize() bool {
-	var _arg0 *C.GtkFontButton // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-
-	_cret = C.gtk_font_button_get_show_size(_arg0)
-	runtime.KeepAlive(fontButton)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ShowStyle returns whether the name of the font style will be shown in the
-// label.
-//
-// The function returns the following values:
-//
-//    - ok: whether the font style will be shown in the label.
-//
-func (fontButton *FontButton) ShowStyle() bool {
-	var _arg0 *C.GtkFontButton // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-
-	_cret = C.gtk_font_button_get_show_style(_arg0)
-	runtime.KeepAlive(fontButton)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Title retrieves the title of the font chooser dialog.
-//
-// The function returns the following values:
-//
-//    - utf8: internal copy of the title string which must not be freed.
-//
-func (fontButton *FontButton) Title() string {
-	var _arg0 *C.GtkFontButton // out
-	var _cret *C.gchar         // in
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-
-	_cret = C.gtk_font_button_get_title(_arg0)
-	runtime.KeepAlive(fontButton)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// UseFont returns whether the selected font is used in the label.
-//
-// The function returns the following values:
-//
-//    - ok: whether the selected font is used in the label.
-//
-func (fontButton *FontButton) UseFont() bool {
-	var _arg0 *C.GtkFontButton // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-
-	_cret = C.gtk_font_button_get_use_font(_arg0)
-	runtime.KeepAlive(fontButton)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// UseSize returns whether the selected size is used in the label.
-//
-// The function returns the following values:
-//
-//    - ok: whether the selected size is used in the label.
-//
-func (fontButton *FontButton) UseSize() bool {
-	var _arg0 *C.GtkFontButton // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-
-	_cret = C.gtk_font_button_get_use_size(_arg0)
-	runtime.KeepAlive(fontButton)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetFontName sets or updates the currently-displayed font in font picker
-// dialog.
-//
-// Deprecated: Use gtk_font_chooser_set_font() instead.
-//
-// The function takes the following parameters:
-//
-//    - fontname: name of font to display in font chooser dialog.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE.
-//
-func (fontButton *FontButton) SetFontName(fontname string) bool {
-	var _arg0 *C.GtkFontButton // out
-	var _arg1 *C.gchar         // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
-	runtime.KeepAlive(fontButton)
-	runtime.KeepAlive(fontname)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetShowSize: if show_size is TRUE, the font size will be displayed along with
-// the name of the selected font.
-//
-// The function takes the following parameters:
-//
-//    - showSize: TRUE if font size should be displayed in dialog.
-//
-func (fontButton *FontButton) SetShowSize(showSize bool) {
-	var _arg0 *C.GtkFontButton // out
-	var _arg1 C.gboolean       // out
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	if showSize {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_font_button_set_show_size(_arg0, _arg1)
-	runtime.KeepAlive(fontButton)
-	runtime.KeepAlive(showSize)
-}
-
-// SetShowStyle: if show_style is TRUE, the font style will be displayed along
-// with name of the selected font.
-//
-// The function takes the following parameters:
-//
-//    - showStyle: TRUE if font style should be displayed in label.
-//
-func (fontButton *FontButton) SetShowStyle(showStyle bool) {
-	var _arg0 *C.GtkFontButton // out
-	var _arg1 C.gboolean       // out
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	if showStyle {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_font_button_set_show_style(_arg0, _arg1)
-	runtime.KeepAlive(fontButton)
-	runtime.KeepAlive(showStyle)
-}
-
-// SetTitle sets the title for the font chooser dialog.
-//
-// The function takes the following parameters:
-//
-//    - title: string containing the font chooser dialog title.
-//
-func (fontButton *FontButton) SetTitle(title string) {
-	var _arg0 *C.GtkFontButton // out
-	var _arg1 *C.gchar         // out
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_font_button_set_title(_arg0, _arg1)
-	runtime.KeepAlive(fontButton)
-	runtime.KeepAlive(title)
-}
-
-// SetUseFont: if use_font is TRUE, the font name will be written using the
-// selected font.
-//
-// The function takes the following parameters:
-//
-//    - useFont: if TRUE, font name will be written using font chosen.
-//
-func (fontButton *FontButton) SetUseFont(useFont bool) {
-	var _arg0 *C.GtkFontButton // out
-	var _arg1 C.gboolean       // out
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	if useFont {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_font_button_set_use_font(_arg0, _arg1)
-	runtime.KeepAlive(fontButton)
-	runtime.KeepAlive(useFont)
-}
-
-// SetUseSize: if use_size is TRUE, the font name will be written using the
-// selected size.
-//
-// The function takes the following parameters:
-//
-//    - useSize: if TRUE, font name will be written using the selected size.
-//
-func (fontButton *FontButton) SetUseSize(useSize bool) {
-	var _arg0 *C.GtkFontButton // out
-	var _arg1 C.gboolean       // out
-
-	_arg0 = (*C.GtkFontButton)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	if useSize {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_font_button_set_use_size(_arg0, _arg1)
-	runtime.KeepAlive(fontButton)
-	runtime.KeepAlive(useSize)
+	C._gotk4_gtk3_FontButton_virtual_font_set(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(gfp)
 }
 
 // FontButtonClass: instance of this type is always passed by reference.

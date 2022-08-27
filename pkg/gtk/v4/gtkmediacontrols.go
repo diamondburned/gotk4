@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// MediaControlsOverrider contains methods that are overridable.
-type MediaControlsOverrider interface {
+// MediaControlsOverrides contains methods that are overridable.
+type MediaControlsOverrides struct {
+}
+
+func defaultMediaControlsOverrides(v *MediaControls) MediaControlsOverrides {
+	return MediaControlsOverrides{}
 }
 
 // MediaControls: GtkMediaControls is a widget to show controls for a video.
@@ -46,25 +50,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMediaControls,
-		GoType:        reflect.TypeOf((*MediaControls)(nil)),
-		InitClass:     initClassMediaControls,
-		FinalizeClass: finalizeClassMediaControls,
-	})
+	coreglib.RegisterClassInfo[*MediaControls, *MediaControlsClass, MediaControlsOverrides](
+		GTypeMediaControls,
+		initMediaControlsClass,
+		wrapMediaControls,
+		defaultMediaControlsOverrides,
+	)
 }
 
-func initClassMediaControls(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMediaControls(*MediaControlsClass) }); ok {
-		klass := (*MediaControlsClass)(gextras.NewStructNative(gclass))
-		goval.InitMediaControls(klass)
-	}
-}
-
-func finalizeClassMediaControls(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMediaControls(*MediaControlsClass) }); ok {
-		klass := (*MediaControlsClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMediaControls(klass)
+func initMediaControlsClass(gclass unsafe.Pointer, overrides MediaControlsOverrides, classInitFunc func(*MediaControlsClass)) {
+	if classInitFunc != nil {
+		class := (*MediaControlsClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

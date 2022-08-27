@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// WindowGroupOverrider contains methods that are overridable.
-type WindowGroupOverrider interface {
+// WindowGroupOverrides contains methods that are overridable.
+type WindowGroupOverrides struct {
+}
+
+func defaultWindowGroupOverrides(v *WindowGroup) WindowGroupOverrides {
+	return WindowGroupOverrides{}
 }
 
 // WindowGroup: GtkWindowGroup makes group of windows behave like separate
@@ -57,25 +61,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWindowGroup,
-		GoType:        reflect.TypeOf((*WindowGroup)(nil)),
-		InitClass:     initClassWindowGroup,
-		FinalizeClass: finalizeClassWindowGroup,
-	})
+	coreglib.RegisterClassInfo[*WindowGroup, *WindowGroupClass, WindowGroupOverrides](
+		GTypeWindowGroup,
+		initWindowGroupClass,
+		wrapWindowGroup,
+		defaultWindowGroupOverrides,
+	)
 }
 
-func initClassWindowGroup(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitWindowGroup(*WindowGroupClass) }); ok {
-		klass := (*WindowGroupClass)(gextras.NewStructNative(gclass))
-		goval.InitWindowGroup(klass)
-	}
-}
-
-func finalizeClassWindowGroup(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWindowGroup(*WindowGroupClass) }); ok {
-		klass := (*WindowGroupClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWindowGroup(klass)
+func initWindowGroupClass(gclass unsafe.Pointer, overrides WindowGroupOverrides, classInitFunc func(*WindowGroupClass)) {
+	if classInitFunc != nil {
+		class := (*WindowGroupClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

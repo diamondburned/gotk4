@@ -26,19 +26,6 @@ func init() {
 	})
 }
 
-// ANALYSIS_FLAG_CENTERED_BASELINE: whether the segment should be shifted to
-// center around the baseline.
-//
-// This is mainly used in vertical writing directions.
-const ANALYSIS_FLAG_CENTERED_BASELINE = 1
-
-// ANALYSIS_FLAG_IS_ELLIPSIS: whether this run holds ellipsized text.
-const ANALYSIS_FLAG_IS_ELLIPSIS = 2
-
-// ANALYSIS_FLAG_NEED_HYPHEN: whether to add a hyphen at the end of the run
-// during shaping.
-const ANALYSIS_FLAG_NEED_HYPHEN = 4
-
 // Analysis: PangoAnalysis structure stores information about the properties of
 // a segment of text.
 //

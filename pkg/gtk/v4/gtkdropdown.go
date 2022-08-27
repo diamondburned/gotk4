@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// DropDownOverrider contains methods that are overridable.
-type DropDownOverrider interface {
+// DropDownOverrides contains methods that are overridable.
+type DropDownOverrides struct {
+}
+
+func defaultDropDownOverrides(v *DropDown) DropDownOverrides {
+	return DropDownOverrides{}
 }
 
 // DropDown: GtkDropDown is a widget that allows the user to choose an item from
@@ -71,25 +75,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDropDown,
-		GoType:        reflect.TypeOf((*DropDown)(nil)),
-		InitClass:     initClassDropDown,
-		FinalizeClass: finalizeClassDropDown,
-	})
+	coreglib.RegisterClassInfo[*DropDown, *DropDownClass, DropDownOverrides](
+		GTypeDropDown,
+		initDropDownClass,
+		wrapDropDown,
+		defaultDropDownOverrides,
+	)
 }
 
-func initClassDropDown(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitDropDown(*DropDownClass) }); ok {
-		klass := (*DropDownClass)(gextras.NewStructNative(gclass))
-		goval.InitDropDown(klass)
-	}
-}
-
-func finalizeClassDropDown(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDropDown(*DropDownClass) }); ok {
-		klass := (*DropDownClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDropDown(klass)
+func initDropDownClass(gclass unsafe.Pointer, overrides DropDownOverrides, classInitFunc func(*DropDownClass)) {
+	if classInitFunc != nil {
+		class := (*DropDownClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

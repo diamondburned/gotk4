@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// BoxLayoutOverrider contains methods that are overridable.
-type BoxLayoutOverrider interface {
+// BoxLayoutOverrides contains methods that are overridable.
+type BoxLayoutOverrides struct {
+}
+
+func defaultBoxLayoutOverrides(v *BoxLayout) BoxLayoutOverrides {
+	return BoxLayoutOverrides{}
 }
 
 // BoxLayout: GtkBoxLayout is a layout manager that arranges children in a
@@ -58,25 +62,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBoxLayout,
-		GoType:        reflect.TypeOf((*BoxLayout)(nil)),
-		InitClass:     initClassBoxLayout,
-		FinalizeClass: finalizeClassBoxLayout,
-	})
+	coreglib.RegisterClassInfo[*BoxLayout, *BoxLayoutClass, BoxLayoutOverrides](
+		GTypeBoxLayout,
+		initBoxLayoutClass,
+		wrapBoxLayout,
+		defaultBoxLayoutOverrides,
+	)
 }
 
-func initClassBoxLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBoxLayout(*BoxLayoutClass) }); ok {
-		klass := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitBoxLayout(klass)
-	}
-}
-
-func finalizeClassBoxLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBoxLayout(*BoxLayoutClass) }); ok {
-		klass := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBoxLayout(klass)
+func initBoxLayoutClass(gclass unsafe.Pointer, overrides BoxLayoutOverrides, classInitFunc func(*BoxLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

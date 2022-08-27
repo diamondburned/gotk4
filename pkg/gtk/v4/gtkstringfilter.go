@@ -61,8 +61,12 @@ func (s StringFilterMatchMode) String() string {
 	}
 }
 
-// StringFilterOverrider contains methods that are overridable.
-type StringFilterOverrider interface {
+// StringFilterOverrides contains methods that are overridable.
+type StringFilterOverrides struct {
+}
+
+func defaultStringFilterOverrides(v *StringFilter) StringFilterOverrides {
+	return StringFilterOverrides{}
 }
 
 // StringFilter: GtkStringFilter determines whether to include items by
@@ -88,25 +92,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStringFilter,
-		GoType:        reflect.TypeOf((*StringFilter)(nil)),
-		InitClass:     initClassStringFilter,
-		FinalizeClass: finalizeClassStringFilter,
-	})
+	coreglib.RegisterClassInfo[*StringFilter, *StringFilterClass, StringFilterOverrides](
+		GTypeStringFilter,
+		initStringFilterClass,
+		wrapStringFilter,
+		defaultStringFilterOverrides,
+	)
 }
 
-func initClassStringFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitStringFilter(*StringFilterClass) }); ok {
-		klass := (*StringFilterClass)(gextras.NewStructNative(gclass))
-		goval.InitStringFilter(klass)
-	}
-}
-
-func finalizeClassStringFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeStringFilter(*StringFilterClass) }); ok {
-		klass := (*StringFilterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStringFilter(klass)
+func initStringFilterClass(gclass unsafe.Pointer, overrides StringFilterOverrides, classInitFunc func(*StringFilterClass)) {
+	if classInitFunc != nil {
+		class := (*StringFilterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

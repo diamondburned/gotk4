@@ -187,54 +187,6 @@ func GetLogAttrs(text string, length, level int, language *Language, logAttrs []
 	runtime.KeepAlive(logAttrs)
 }
 
-// TailorBreak: apply language-specific tailoring to the breaks in log_attrs.
-//
-// The line breaks are assumed to have been produced by default_break.
-//
-// If offset is not -1, it is used to apply attributes from analysis that are
-// relevant to line breaking.
-//
-// The function takes the following parameters:
-//
-//    - text to process. Must be valid UTF-8.
-//    - length in bytes of text.
-//    - analysis: PangoAnalysis structure from itemize for text.
-//    - offset: byte offset of text from the beginning of the paragraph, or -1 to
-//      ignore attributes from analysis.
-//    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//      extra, to be filled in.
-//
-func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 C.int            // out
-	var _arg5 *C.PangoLogAttr  // out
-	var _arg6 C.int
-
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
-	_arg4 = C.int(offset)
-	_arg6 = (C.int)(len(logAttrs))
-	_arg5 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(logAttrs)), C.size_t(C.sizeof_PangoLogAttr)))
-	defer C.free(unsafe.Pointer(_arg5))
-	{
-		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))
-		for i := range logAttrs {
-			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&logAttrs[i]))))
-		}
-	}
-
-	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(analysis)
-	runtime.KeepAlive(offset)
-	runtime.KeepAlive(logAttrs)
-}
-
 // LogAttr: PangoLogAttr structure stores information about the attributes of a
 // single character.
 //

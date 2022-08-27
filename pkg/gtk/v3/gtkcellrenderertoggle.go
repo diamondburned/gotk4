@@ -16,8 +16,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_CellRendererToggleClass_toggled(GtkCellRendererToggle*, gchar*);
 // extern void _gotk4_gtk3_CellRendererToggle_ConnectToggled(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk3_CellRendererToggleClass_toggled(GtkCellRendererToggle*, gchar*);
+// void _gotk4_gtk3_CellRendererToggle_virtual_toggled(void* fnptr, GtkCellRendererToggle* arg0, gchar* arg1) {
+//   ((void (*)(GtkCellRendererToggle*, gchar*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -31,11 +34,17 @@ func init() {
 	})
 }
 
-// CellRendererToggleOverrider contains methods that are overridable.
-type CellRendererToggleOverrider interface {
+// CellRendererToggleOverrides contains methods that are overridable.
+type CellRendererToggleOverrides struct {
 	// The function takes the following parameters:
 	//
-	Toggled(path string)
+	Toggled func(path string)
+}
+
+func defaultCellRendererToggleOverrides(v *CellRendererToggle) CellRendererToggleOverrides {
+	return CellRendererToggleOverrides{
+		Toggled: v.toggled,
+	}
 }
 
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
@@ -51,48 +60,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellRendererToggle,
-		GoType:        reflect.TypeOf((*CellRendererToggle)(nil)),
-		InitClass:     initClassCellRendererToggle,
-		FinalizeClass: finalizeClassCellRendererToggle,
-	})
+	coreglib.RegisterClassInfo[*CellRendererToggle, *CellRendererToggleClass, CellRendererToggleOverrides](
+		GTypeCellRendererToggle,
+		initCellRendererToggleClass,
+		wrapCellRendererToggle,
+		defaultCellRendererToggleOverrides,
+	)
 }
 
-func initClassCellRendererToggle(gclass unsafe.Pointer, goval any) {
+func initCellRendererToggleClass(gclass unsafe.Pointer, overrides CellRendererToggleOverrides, classInitFunc func(*CellRendererToggleClass)) {
+	pclass := (*C.GtkCellRendererToggleClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellRendererToggle))))
 
-	pclass := (*C.GtkCellRendererToggleClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Toggled(path string) }); ok {
+	if overrides.Toggled != nil {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CellRendererToggleClass_toggled)
 	}
-	if goval, ok := goval.(interface {
-		InitCellRendererToggle(*CellRendererToggleClass)
-	}); ok {
-		klass := (*CellRendererToggleClass)(gextras.NewStructNative(gclass))
-		goval.InitCellRendererToggle(klass)
+
+	if classInitFunc != nil {
+		class := (*CellRendererToggleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCellRendererToggle(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeCellRendererToggle(*CellRendererToggleClass)
-	}); ok {
-		klass := (*CellRendererToggleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellRendererToggle(klass)
-	}
-}
-
-//export _gotk4_gtk3_CellRendererToggleClass_toggled
-func _gotk4_gtk3_CellRendererToggleClass_toggled(arg0 *C.GtkCellRendererToggle, arg1 *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Toggled(path string) })
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	iface.Toggled(_path)
 }
 
 func wrapCellRendererToggle(obj *coreglib.Object) *CellRendererToggle {
@@ -107,26 +93,6 @@ func wrapCellRendererToggle(obj *coreglib.Object) *CellRendererToggle {
 
 func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return wrapCellRendererToggle(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_CellRendererToggle_ConnectToggled
-func _gotk4_gtk3_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(path string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(path string))
-	}
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_path)
 }
 
 // ConnectToggled signal is emitted when the cell is toggled.
@@ -159,31 +125,6 @@ func NewCellRendererToggle() *CellRendererToggle {
 	_cellRendererToggle = wrapCellRendererToggle(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _cellRendererToggle
-}
-
-// Activatable returns whether the cell renderer is activatable. See
-// gtk_cell_renderer_toggle_set_activatable().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the cell renderer is activatable.
-//
-func (toggle *CellRendererToggle) Activatable() bool {
-	var _arg0 *C.GtkCellRendererToggle // out
-	var _cret C.gboolean               // in
-
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
-
-	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
-	runtime.KeepAlive(toggle)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Active returns whether the cell renderer is active. See
@@ -235,26 +176,6 @@ func (toggle *CellRendererToggle) Radio() bool {
 	return _ok
 }
 
-// SetActivatable makes the cell renderer activatable.
-//
-// The function takes the following parameters:
-//
-//    - setting: value to set.
-//
-func (toggle *CellRendererToggle) SetActivatable(setting bool) {
-	var _arg0 *C.GtkCellRendererToggle // out
-	var _arg1 C.gboolean               // out
-
-	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_cell_renderer_toggle_set_activatable(_arg0, _arg1)
-	runtime.KeepAlive(toggle)
-	runtime.KeepAlive(setting)
-}
-
 // SetActive activates or deactivates a cell renderer.
 //
 // The function takes the following parameters:
@@ -298,6 +219,24 @@ func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	C.gtk_cell_renderer_toggle_set_radio(_arg0, _arg1)
 	runtime.KeepAlive(toggle)
 	runtime.KeepAlive(radio)
+}
+
+// The function takes the following parameters:
+//
+func (cellRendererToggle *CellRendererToggle) toggled(path string) {
+	gclass := (*C.GtkCellRendererToggleClass)(coreglib.PeekParentClass(cellRendererToggle))
+	fnarg := gclass.toggled
+
+	var _arg0 *C.GtkCellRendererToggle // out
+	var _arg1 *C.gchar                 // out
+
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(coreglib.InternObject(cellRendererToggle).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk3_CellRendererToggle_virtual_toggled(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(cellRendererToggle)
+	runtime.KeepAlive(path)
 }
 
 // CellRendererToggleClass: instance of this type is always passed by reference.

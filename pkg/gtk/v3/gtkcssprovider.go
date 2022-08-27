@@ -19,8 +19,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_CssProviderClass_parsing_error(GtkCssProvider*, GtkCssSection*, GError*);
 // extern void _gotk4_gtk3_CssProvider_ConnectParsingError(gpointer, GtkCssSection*, GError*, guintptr);
+// extern void _gotk4_gtk3_CssProviderClass_parsing_error(GtkCssProvider*, GtkCssSection*, GError*);
+// void _gotk4_gtk3_CSSProvider_virtual_parsing_error(void* fnptr, GtkCssProvider* arg0, GtkCssSection* arg1, GError* arg2) {
+//   ((void (*)(GtkCssProvider*, GtkCssSection*, GError*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -78,14 +81,20 @@ func (c CSSProviderError) String() string {
 	}
 }
 
-// CSSProviderOverrider contains methods that are overridable.
-type CSSProviderOverrider interface {
+// CSSProviderOverrides contains methods that are overridable.
+type CSSProviderOverrides struct {
 	// The function takes the following parameters:
 	//
 	//    - section
 	//    - err
 	//
-	ParsingError(section *CSSSection, err error)
+	ParsingError func(section *CSSSection, err error)
+}
+
+func defaultCSSProviderOverrides(v *CSSProvider) CSSProviderOverrides {
+	return CSSProviderOverrides{
+		ParsingError: v.parsingError,
+	}
 }
 
 // CSSProvider is an object implementing the StyleProvider interface. It is able
@@ -123,57 +132,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCSSProvider,
-		GoType:        reflect.TypeOf((*CSSProvider)(nil)),
-		InitClass:     initClassCSSProvider,
-		FinalizeClass: finalizeClassCSSProvider,
-	})
+	coreglib.RegisterClassInfo[*CSSProvider, *CSSProviderClass, CSSProviderOverrides](
+		GTypeCSSProvider,
+		initCSSProviderClass,
+		wrapCSSProvider,
+		defaultCSSProviderOverrides,
+	)
 }
 
-func initClassCSSProvider(gclass unsafe.Pointer, goval any) {
+func initCSSProviderClass(gclass unsafe.Pointer, overrides CSSProviderOverrides, classInitFunc func(*CSSProviderClass)) {
+	pclass := (*C.GtkCssProviderClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCSSProvider))))
 
-	pclass := (*C.GtkCssProviderClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		ParsingError(section *CSSSection, err error)
-	}); ok {
+	if overrides.ParsingError != nil {
 		pclass.parsing_error = (*[0]byte)(C._gotk4_gtk3_CssProviderClass_parsing_error)
 	}
-	if goval, ok := goval.(interface{ InitCSSProvider(*CSSProviderClass) }); ok {
-		klass := (*CSSProviderClass)(gextras.NewStructNative(gclass))
-		goval.InitCSSProvider(klass)
+
+	if classInitFunc != nil {
+		class := (*CSSProviderClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCSSProvider(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCSSProvider(*CSSProviderClass) }); ok {
-		klass := (*CSSProviderClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCSSProvider(klass)
-	}
-}
-
-//export _gotk4_gtk3_CssProviderClass_parsing_error
-func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.GtkCssProvider, arg1 *C.GtkCssSection, arg2 *C.GError) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ParsingError(section *CSSSection, err error)
-	})
-
-	var _section *CSSSection // out
-	var _err error           // out
-
-	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.gtk_css_section_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_section)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
-	)
-	_err = gerror.Take(unsafe.Pointer(arg2))
-
-	iface.ParsingError(_section, _err)
 }
 
 func wrapCSSProvider(obj *coreglib.Object) *CSSProvider {
@@ -187,35 +164,6 @@ func wrapCSSProvider(obj *coreglib.Object) *CSSProvider {
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return wrapCSSProvider(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_CssProvider_ConnectParsingError
-func _gotk4_gtk3_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCssSection, arg2 *C.GError, arg3 C.guintptr) {
-	var f func(section *CSSSection, err error)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(section *CSSSection, err error))
-	}
-
-	var _section *CSSSection // out
-	var _err error           // out
-
-	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.gtk_css_section_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_section)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
-	)
-	_err = gerror.Take(unsafe.Pointer(arg2))
-
-	f(_section, _err)
 }
 
 // ConnectParsingError signals that a parsing error occurred. the path, line and
@@ -340,54 +288,29 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	return _goerr
 }
 
-// LoadFromResource loads the data contained in the resource at resource_path
-// into the CssProvider, clearing any previously loaded information.
-//
-// To track errors while loading CSS, connect to the CssProvider::parsing-error
-// signal.
-//
 // The function takes the following parameters:
 //
-//    - resourcePath resource path.
+//    - section
+//    - err
 //
-func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
+func (provider *CSSProvider) parsingError(section *CSSSection, err error) {
+	gclass := (*C.GtkCssProviderClass)(coreglib.PeekParentClass(provider))
+	fnarg := gclass.parsing_error
+
 	var _arg0 *C.GtkCssProvider // out
-	var _arg1 *C.gchar          // out
-
-	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(coreglib.InternObject(cssProvider).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
-	runtime.KeepAlive(cssProvider)
-	runtime.KeepAlive(resourcePath)
-}
-
-// String converts the provider into a string representation in CSS format.
-//
-// Using gtk_css_provider_load_from_data() with the return value from this
-// function on a new provider created with gtk_css_provider_new() will basically
-// create a duplicate of this provider.
-//
-// The function returns the following values:
-//
-//    - utf8: new string representing the provider.
-//
-func (provider *CSSProvider) String() string {
-	var _arg0 *C.GtkCssProvider // out
-	var _cret *C.char           // in
+	var _arg1 *C.GtkCssSection  // out
+	var _arg2 *C.GError         // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	_arg1 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+	if err != nil {
+		_arg2 = (*C.GError)(gerror.New(err))
+	}
 
-	_cret = C.gtk_css_provider_to_string(_arg0)
+	C._gotk4_gtk3_CSSProvider_virtual_parsing_error(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(provider)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
+	runtime.KeepAlive(section)
+	runtime.KeepAlive(err)
 }
 
 // CSSProviderGetDefault returns the provider containing the style settings used

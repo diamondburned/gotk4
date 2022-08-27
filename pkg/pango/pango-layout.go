@@ -311,79 +311,6 @@ func (layout *Layout) Attributes() *AttrList {
 	return _attrList
 }
 
-// AutoDir gets whether to calculate the base direction for the layout according
-// to its contents.
-//
-// See pango.Layout.SetAutoDir().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the bidirectional base direction is computed from the
-//      layout's contents, FALSE otherwise.
-//
-func (layout *Layout) AutoDir() bool {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_auto_dir(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Baseline gets the Y position of baseline of the first line in layout.
-//
-// The function returns the following values:
-//
-//    - gint: baseline of first line, from top of layout.
-//
-func (layout *Layout) Baseline() int {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.int          // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_baseline(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// CharacterCount returns the number of Unicode characters in the the text of
-// layout.
-//
-// The function returns the following values:
-//
-//    - gint: number of Unicode characters in the text of layout.
-//
-func (layout *Layout) CharacterCount() int {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.gint         // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_character_count(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // Context retrieves the PangoContext used for this layout.
 //
 // The function returns the following values:
@@ -450,62 +377,6 @@ func (layout *Layout) CursorPos(index_ int) (strongPos, weakPos *Rectangle) {
 	return _strongPos, _weakPos
 }
 
-// Direction gets the text direction at the given character position in layout.
-//
-// The function takes the following parameters:
-//
-//    - index: byte index of the char.
-//
-// The function returns the following values:
-//
-//    - direction: text direction at index.
-//
-func (layout *Layout) Direction(index int) Direction {
-	var _arg0 *C.PangoLayout   // out
-	var _arg1 C.int            // out
-	var _cret C.PangoDirection // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	_arg1 = C.int(index)
-
-	_cret = C.pango_layout_get_direction(_arg0, _arg1)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(index)
-
-	var _direction Direction // out
-
-	_direction = Direction(_cret)
-
-	return _direction
-}
-
-// Ellipsize gets the type of ellipsization being performed for layout.
-//
-// See pango.Layout.SetEllipsize().
-//
-// Use pango.Layout.IsEllipsized() to query whether any paragraphs were actually
-// ellipsized.
-//
-// The function returns the following values:
-//
-//    - ellipsizeMode: current ellipsization mode for layout.
-//
-func (layout *Layout) Ellipsize() EllipsizeMode {
-	var _arg0 *C.PangoLayout       // out
-	var _cret C.PangoEllipsizeMode // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_ellipsize(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _ellipsizeMode EllipsizeMode // out
-
-	_ellipsizeMode = EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
 // Extents computes the logical and ink extents of layout.
 //
 // Logical extents are usually what you want for positioning things. Note that
@@ -541,56 +412,6 @@ func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
 	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
 
 	return _inkRect, _logicalRect
-}
-
-// FontDescription gets the font description for the layout, if any.
-//
-// The function returns the following values:
-//
-//    - fontDescription (optional): pointer to the layout's font description, or
-//      NULL if the font description from the layout's context is inherited. This
-//      value is owned by the layout and must not be modified or freed.
-//
-func (layout *Layout) FontDescription() *FontDescription {
-	var _arg0 *C.PangoLayout          // out
-	var _cret *C.PangoFontDescription // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_font_description(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _fontDescription *FontDescription // out
-
-	if _cret != nil {
-		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	}
-
-	return _fontDescription
-}
-
-// Height gets the height of layout used for ellipsization.
-//
-// See pango.Layout.SetHeight() for details.
-//
-// The function returns the following values:
-//
-//    - gint: height, in Pango units if positive, or number of lines if negative.
-//
-func (layout *Layout) Height() int {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.int          // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_height(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
 }
 
 // Indent gets the paragraph indent width in Pango units.
@@ -737,73 +558,6 @@ func (layout *Layout) LineCount() int {
 	return _gint
 }
 
-// LineReadonly retrieves a particular line from a PangoLayout.
-//
-// This is a faster alternative to pango.Layout.GetLine(), but the user is not
-// expected to modify the contents of the line (glyphs, glyph widths, etc.).
-//
-// The function takes the following parameters:
-//
-//    - line: index of a line, which must be between 0 and
-//      pango_layout_get_line_count(layout) - 1, inclusive.
-//
-// The function returns the following values:
-//
-//    - layoutLine (optional): requested PangoLayoutLine, or NULL if the index is
-//      out of range. This layout line can be ref'ed and retained, but will
-//      become invalid if changes are made to the PangoLayout. No changes should
-//      be made to the line.
-//
-func (layout *Layout) LineReadonly(line int) *LayoutLine {
-	var _arg0 *C.PangoLayout     // out
-	var _arg1 C.int              // out
-	var _cret *C.PangoLayoutLine // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	_arg1 = C.int(line)
-
-	_cret = C.pango_layout_get_line_readonly(_arg0, _arg1)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(line)
-
-	var _layoutLine *LayoutLine // out
-
-	if _cret != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
-		)
-	}
-
-	return _layoutLine
-}
-
-// LineSpacing gets the line spacing factor of layout.
-//
-// See pango.Layout.SetLineSpacing().
-//
-// The function returns the following values:
-//
-func (layout *Layout) LineSpacing() float32 {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.float        // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_line_spacing(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _gfloat float32 // out
-
-	_gfloat = float32(_cret)
-
-	return _gfloat
-}
-
 // Lines returns the lines of the layout as a list.
 //
 // Use the faster pango.Layout.GetLinesReadonly() if you do not plan to modify
@@ -822,47 +576,6 @@ func (layout *Layout) Lines() []*LayoutLine {
 	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	_cret = C.pango_layout_get_lines(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _sList []*LayoutLine // out
-
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.PangoLayoutLine)(v)
-		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.pango_layout_line_ref(src)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
-		)
-		_sList = append(_sList, dst)
-	})
-
-	return _sList
-}
-
-// LinesReadonly returns the lines of the layout as a list.
-//
-// This is a faster alternative to pango.Layout.GetLines(), but the user is not
-// expected to modify the contents of the lines (glyphs, glyph widths, etc.).
-//
-// The function returns the following values:
-//
-//    - sList: GSList containing the lines in the layout. This points to internal
-//      data of the PangoLayout and must be used with care. It will become
-//      invalid on any change to the layout's text or properties. No changes
-//      should be made to the lines.
-//
-func (layout *Layout) LinesReadonly() []*LayoutLine {
-	var _arg0 *C.PangoLayout // out
-	var _cret *C.GSList      // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_lines_readonly(_arg0)
 	runtime.KeepAlive(layout)
 
 	var _sList []*LayoutLine // out
@@ -915,45 +628,6 @@ func (layout *Layout) LogAttrs() []LogAttr {
 	}
 
 	return _attrs
-}
-
-// LogAttrsReadonly retrieves an array of logical attributes for each character
-// in the layout.
-//
-// This is a faster alternative to pango.Layout.GetLogAttrs(). The returned
-// array is part of layout and must not be modified. Modifying the layout will
-// invalidate the returned array.
-//
-// The number of attributes returned in n_attrs will be one more than the total
-// number of characters in the layout, since there need to be attributes
-// corresponding to both the position before the first character and the
-// position after the last character.
-//
-// The function returns the following values:
-//
-//    - logAttrs: array of logical attributes.
-//
-func (layout *Layout) LogAttrsReadonly() []LogAttr {
-	var _arg0 *C.PangoLayout  // out
-	var _cret *C.PangoLogAttr // in
-	var _arg1 C.gint          // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_log_attrs_readonly(_arg0, &_arg1)
-	runtime.KeepAlive(layout)
-
-	var _logAttrs []LogAttr // out
-
-	{
-		src := unsafe.Slice((*C.PangoLogAttr)(_cret), _arg1)
-		_logAttrs = make([]LogAttr, _arg1)
-		for i := 0; i < int(_arg1); i++ {
-			_logAttrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-		}
-	}
-
-	return _logAttrs
 }
 
 // PixelExtents computes the logical and ink extents of layout in device units.
@@ -1017,38 +691,6 @@ func (layout *Layout) PixelSize() (width, height int) {
 	_height = int(_arg2)
 
 	return _width, _height
-}
-
-// Serial returns the current serial number of layout.
-//
-// The serial number is initialized to an small number larger than zero when a
-// new layout is created and is increased whenever the layout is changed using
-// any of the setter functions, or the PangoContext it uses has changed. The
-// serial may wrap, but will never have the value 0. Since it can wrap, never
-// compare it with "less than", always use "not equals".
-//
-// This can be used to automatically detect changes to a PangoLayout, and is
-// useful for example to decide whether a layout needs redrawing. To force the
-// serial to be increased, use pango.Layout.ContextChanged().
-//
-// The function returns the following values:
-//
-//    - guint: current serial number of layout.
-//
-func (layout *Layout) Serial() uint {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.guint        // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_serial(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
 }
 
 // SingleParagraphMode obtains whether layout is in single paragraph mode.
@@ -1186,33 +828,6 @@ func (layout *Layout) Text() string {
 	return _utf8
 }
 
-// UnknownGlyphsCount counts the number of unknown glyphs in layout.
-//
-// This function can be used to determine if there are any fonts available to
-// render all characters in a certain string, or when used in combination with
-// PANGO_ATTR_FALLBACK, to check if a certain font supports all the characters
-// in the string.
-//
-// The function returns the following values:
-//
-//    - gint: number of unknown glyphs in layout.
-//
-func (layout *Layout) UnknownGlyphsCount() int {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.int          // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_get_unknown_glyphs_count(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
 // Width gets the width to which the lines of the PangoLayout should wrap.
 //
 // The function returns the following values:
@@ -1341,62 +956,6 @@ func (layout *Layout) IndexToPos(index_ int) *Rectangle {
 	return _pos
 }
 
-// IsEllipsized queries whether the layout had to ellipsize any paragraphs.
-//
-// This returns TRUE if the ellipsization mode for layout is not
-// PANGO_ELLIPSIZE_NONE, a positive width is set on layout, and there are
-// paragraphs exceeding that width that have to be ellipsized.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if any paragraphs had to be ellipsized, FALSE otherwise.
-//
-func (layout *Layout) IsEllipsized() bool {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_is_ellipsized(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IsWrapped queries whether the layout had to wrap any paragraphs.
-//
-// This returns TRUE if a positive width is set on layout, ellipsization mode of
-// layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs exceeding the
-// layout width that have to be wrapped.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if any paragraphs had to be wrapped, FALSE otherwise.
-//
-func (layout *Layout) IsWrapped() bool {
-	var _arg0 *C.PangoLayout // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	_cret = C.pango_layout_is_wrapped(_arg0)
-	runtime.KeepAlive(layout)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // MoveCursorVisually computes a new cursor position from an old position and a
 // count of positions to move visually.
 //
@@ -1508,69 +1067,6 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 	runtime.KeepAlive(attrs)
 }
 
-// SetAutoDir sets whether to calculate the base direction for the layout
-// according to its contents.
-//
-// When this flag is on (the default), then paragraphs in layout that begin with
-// strong right-to-left characters (Arabic and Hebrew principally), will have
-// right-to-left layout, paragraphs with letters from other scripts will have
-// left-to-right layout. Paragraphs with only neutral characters get their
-// direction from the surrounding paragraphs.
-//
-// When FALSE, the choice between left-to-right and right-to-left layout is done
-// according to the base direction of the layout's PangoContext. (See
-// pango.Context.SetBaseDir()).
-//
-// When the auto-computed direction of a paragraph differs from the base
-// direction of the context, the interpretation of PANGO_ALIGN_LEFT and
-// PANGO_ALIGN_RIGHT are swapped.
-//
-// The function takes the following parameters:
-//
-//    - autoDir: if TRUE, compute the bidirectional base direction from the
-//      layout's contents.
-//
-func (layout *Layout) SetAutoDir(autoDir bool) {
-	var _arg0 *C.PangoLayout // out
-	var _arg1 C.gboolean     // out
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	if autoDir {
-		_arg1 = C.TRUE
-	}
-
-	C.pango_layout_set_auto_dir(_arg0, _arg1)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(autoDir)
-}
-
-// SetEllipsize sets the type of ellipsization being performed for layout.
-//
-// Depending on the ellipsization mode ellipsize text is removed from the start,
-// middle, or end of text so they fit within the width and height of layout set
-// with pango.Layout.SetWidth() and pango.Layout.SetHeight().
-//
-// If the layout contains characters such as newlines that force it to be layed
-// out in multiple paragraphs, then whether each paragraph is ellipsized
-// separately or the entire layout is ellipsized as a whole depends on the set
-// height of the layout. See pango.Layout.SetHeight() for details.
-//
-// The function takes the following parameters:
-//
-//    - ellipsize: new ellipsization mode for layout.
-//
-func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
-	var _arg0 *C.PangoLayout       // out
-	var _arg1 C.PangoEllipsizeMode // out
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	_arg1 = C.PangoEllipsizeMode(ellipsize)
-
-	C.pango_layout_set_ellipsize(_arg0, _arg1)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(ellipsize)
-}
-
 // SetFontDescription sets the default font description for the layout.
 //
 // If no font description is set on the layout, the font description from the
@@ -1593,47 +1089,6 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 	C.pango_layout_set_font_description(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(desc)
-}
-
-// SetHeight sets the height to which the PangoLayout should be ellipsized at.
-//
-// There are two different behaviors, based on whether height is positive or
-// negative.
-//
-// If height is positive, it will be the maximum height of the layout. Only
-// lines would be shown that would fit, and if there is any text omitted, an
-// ellipsis added. At least one line is included in each paragraph regardless of
-// how small the height value is. A value of zero will render exactly one line
-// for the entire layout.
-//
-// If height is negative, it will be the (negative of) maximum number of lines
-// per paragraph. That is, the total number of lines shown may well be more than
-// this value if the layout contains multiple paragraphs of text. The default
-// value of -1 means that first line of each paragraph is ellipsized. This
-// behavior may be changed in the future to act per layout instead of per
-// paragraph. File a bug against pango at https://gitlab.gnome.org/gnome/pango
-// (https://gitlab.gnome.org/gnome/pango) if your code relies on this behavior.
-//
-// Height setting only has effect if a positive width is set on layout and
-// ellipsization mode of layout is not PANGO_ELLIPSIZE_NONE. The behavior is
-// undefined if a height other than -1 is set and ellipsization mode is set to
-// PANGO_ELLIPSIZE_NONE, and may change in the future.
-//
-// The function takes the following parameters:
-//
-//    - height: desired height of the layout in Pango units if positive, or
-//      desired number of lines if negative.
-//
-func (layout *Layout) SetHeight(height int) {
-	var _arg0 *C.PangoLayout // out
-	var _arg1 C.int          // out
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	_arg1 = C.int(height)
-
-	C.pango_layout_set_height(_arg0, _arg1)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(height)
 }
 
 // SetIndent sets the width in Pango units to indent each paragraph.
@@ -1687,36 +1142,6 @@ func (layout *Layout) SetJustify(justify bool) {
 	C.pango_layout_set_justify(_arg0, _arg1)
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(justify)
-}
-
-// SetLineSpacing sets a factor for line spacing.
-//
-// Typical values are: 0, 1, 1.5, 2. The default values is 0.
-//
-// If factor is non-zero, lines are placed so that
-//
-//    baseline2 = baseline1 + factor * height2
-//
-// where height2 is the line height of the second line (as determined by the
-// font(s)). In this case, the spacing set with pango.Layout.SetSpacing() is
-// ignored.
-//
-// If factor is zero, spacing is applied as before.
-//
-// The function takes the following parameters:
-//
-//    - factor: new line spacing factor.
-//
-func (layout *Layout) SetLineSpacing(factor float32) {
-	var _arg0 *C.PangoLayout // out
-	var _arg1 C.float        // out
-
-	_arg0 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	_arg1 = C.float(factor)
-
-	C.pango_layout_set_line_spacing(_arg0, _arg1)
-	runtime.KeepAlive(layout)
-	runtime.KeepAlive(factor)
 }
 
 // SetMarkup sets the layout text and attribute list from marked-up text.

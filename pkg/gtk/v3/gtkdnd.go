@@ -11,7 +11,6 @@ import (
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -19,31 +18,6 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// DragCancel cancels an ongoing drag operation on the source side.
-//
-// If you want to be able to cancel a drag operation in this way, you need to
-// keep a pointer to the drag context, either from an explicit call to
-// gtk_drag_begin_with_coordinates(), or by connecting to Widget::drag-begin.
-//
-// If context does not refer to an ongoing drag operation, this function does
-// nothing.
-//
-// If a drag is cancelled in this way, the result argument of
-// Widget::drag-failed is set to GTK_DRAG_RESULT_ERROR.
-//
-// The function takes the following parameters:
-//
-//    - context as e.g. returned by gtk_drag_begin_with_coordinates().
-//
-func DragCancel(context *gdk.DragContext) {
-	var _arg1 *C.GdkDragContext // out
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C.gtk_drag_cancel(_arg1)
-	runtime.KeepAlive(context)
-}
 
 // DragFinish informs the drag source that the drop is finished, and that the
 // data of the drag will no longer be required.
@@ -134,68 +108,6 @@ func DragSetIconDefault(context *gdk.DragContext) {
 
 	C.gtk_drag_set_icon_default(_arg1)
 	runtime.KeepAlive(context)
-}
-
-// DragSetIconGIcon sets the icon for a given drag from the given icon. See the
-// documentation for gtk_drag_set_icon_name() for more details about using icons
-// in drag and drop.
-//
-// The function takes the following parameters:
-//
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - icon: #GIcon.
-//    - hotX: x offset of the hotspot within the icon.
-//    - hotY: y offset of the hotspot within the icon.
-//
-func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 *C.GIcon          // out
-	var _arg3 C.gint            // out
-	var _arg4 C.gint            // out
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
-
-	C.gtk_drag_set_icon_gicon(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(icon)
-	runtime.KeepAlive(hotX)
-	runtime.KeepAlive(hotY)
-}
-
-// DragSetIconName sets the icon for a given drag from a named themed icon. See
-// the docs for IconTheme for more details. Note that the size of the icon
-// depends on the icon theme (the icon is loaded at the symbolic size
-// K_ICON_SIZE_DND), thus hot_x and hot_y have to be used with care.
-//
-// The function takes the following parameters:
-//
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - iconName: name of icon to use.
-//    - hotX: x offset of the hotspot within the icon.
-//    - hotY: y offset of the hotspot within the icon.
-//
-func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int) {
-	var _arg1 *C.GdkDragContext // out
-	var _arg2 *C.gchar          // out
-	var _arg3 C.gint            // out
-	var _arg4 C.gint            // out
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.gint(hotX)
-	_arg4 = C.gint(hotY)
-
-	C.gtk_drag_set_icon_name(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(iconName)
-	runtime.KeepAlive(hotX)
-	runtime.KeepAlive(hotY)
 }
 
 // DragSetIconPixbuf sets pixbuf as the icon for a given drag.
@@ -352,91 +264,6 @@ func (widget *Widget) DragBegin(targets *TargetList, actions gdk.DragAction, but
 	runtime.KeepAlive(actions)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(event)
-
-	var _dragContext *gdk.DragContext // out
-
-	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_dragContext = &gdk.DragContext{
-			Object: obj,
-		}
-	}
-
-	return _dragContext
-}
-
-// DragBeginWithCoordinates initiates a drag on the source side. The function
-// only needs to be used when the application is starting drags itself, and is
-// not needed when gtk_drag_source_set() is used.
-//
-// The event is used to retrieve the timestamp that will be used internally to
-// grab the pointer. If event is NULL, then GDK_CURRENT_TIME will be used.
-// However, you should try to pass a real event in all cases, since that can be
-// used to get information about the drag.
-//
-// Generally there are three cases when you want to start a drag by hand by
-// calling this function:
-//
-// 1. During a Widget::button-press-event handler, if you want to start a drag
-// immediately when the user presses the mouse button. Pass the event that you
-// have in your Widget::button-press-event handler.
-//
-// 2. During a Widget::motion-notify-event handler, if you want to start a drag
-// when the mouse moves past a certain threshold distance after a button-press.
-// Pass the event that you have in your Widget::motion-notify-event handler.
-//
-// 3. During a timeout handler, if you want to start a drag after the mouse
-// button is held down for some time. Try to save the last event that you got
-// from the mouse, using gdk_event_copy(), and pass it to this function
-// (remember to free the event with gdk_event_free() when you are done). If you
-// really cannot pass a real event, pass NULL instead.
-//
-// The function takes the following parameters:
-//
-//    - targets (data formats) in which the source can provide the data.
-//    - actions: bitmask of the allowed drag actions for this drag.
-//    - button the user clicked to start the drag.
-//    - event (optional) that triggered the start of the drag, or NULL if none
-//      can be obtained.
-//    - x: initial x coordinate to start dragging from, in the coordinate space
-//      of widget. If -1 is passed, the coordinates are retrieved from event or
-//      the current pointer position.
-//    - y: initial y coordinate to start dragging from, in the coordinate space
-//      of widget. If -1 is passed, the coordinates are retrieved from event or
-//      the current pointer position.
-//
-// The function returns the following values:
-//
-//    - dragContext: context for this drag.
-//
-func (widget *Widget) DragBeginWithCoordinates(targets *TargetList, actions gdk.DragAction, button int, event *gdk.Event, x, y int) *gdk.DragContext {
-	var _arg0 *C.GtkWidget      // out
-	var _arg1 *C.GtkTargetList  // out
-	var _arg2 C.GdkDragAction   // out
-	var _arg3 C.gint            // out
-	var _arg4 *C.GdkEvent       // out
-	var _arg5 C.gint            // out
-	var _arg6 C.gint            // out
-	var _cret *C.GdkDragContext // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targets)))
-	_arg2 = C.GdkDragAction(actions)
-	_arg3 = C.gint(button)
-	if event != nil {
-		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
-	}
-	_arg5 = C.gint(x)
-	_arg6 = C.gint(y)
-
-	_cret = C.gtk_drag_begin_with_coordinates(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(targets)
-	runtime.KeepAlive(actions)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(event)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
 
 	var _dragContext *gdk.DragContext // out
 

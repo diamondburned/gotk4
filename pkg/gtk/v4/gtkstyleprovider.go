@@ -102,22 +102,6 @@ func BaseStyleProvider(obj StyleProviderer) *StyleProvider {
 	return obj.baseStyleProvider()
 }
 
-//export _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged
-func _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 func (v *StyleProvider) ConnectGTKPrivateChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "gtk-private-changed", false, unsafe.Pointer(C._gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged), f)
 }

@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// TreeViewAccessibleOverrider contains methods that are overridable.
-type TreeViewAccessibleOverrider interface {
+// TreeViewAccessibleOverrides contains methods that are overridable.
+type TreeViewAccessibleOverrides struct {
+}
+
+func defaultTreeViewAccessibleOverrides(v *TreeViewAccessible) TreeViewAccessibleOverrides {
+	return TreeViewAccessibleOverrides{}
 }
 
 type TreeViewAccessible struct {
@@ -48,29 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTreeViewAccessible,
-		GoType:        reflect.TypeOf((*TreeViewAccessible)(nil)),
-		InitClass:     initClassTreeViewAccessible,
-		FinalizeClass: finalizeClassTreeViewAccessible,
-	})
+	coreglib.RegisterClassInfo[*TreeViewAccessible, *TreeViewAccessibleClass, TreeViewAccessibleOverrides](
+		GTypeTreeViewAccessible,
+		initTreeViewAccessibleClass,
+		wrapTreeViewAccessible,
+		defaultTreeViewAccessibleOverrides,
+	)
 }
 
-func initClassTreeViewAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitTreeViewAccessible(*TreeViewAccessibleClass)
-	}); ok {
-		klass := (*TreeViewAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitTreeViewAccessible(klass)
-	}
-}
-
-func finalizeClassTreeViewAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeTreeViewAccessible(*TreeViewAccessibleClass)
-	}); ok {
-		klass := (*TreeViewAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTreeViewAccessible(klass)
+func initTreeViewAccessibleClass(gclass unsafe.Pointer, overrides TreeViewAccessibleOverrides, classInitFunc func(*TreeViewAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*TreeViewAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

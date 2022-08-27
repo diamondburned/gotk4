@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -29,8 +28,12 @@ func init() {
 	})
 }
 
-// CellAreaBoxOverrider contains methods that are overridable.
-type CellAreaBoxOverrider interface {
+// CellAreaBoxOverrides contains methods that are overridable.
+type CellAreaBoxOverrides struct {
+}
+
+func defaultCellAreaBoxOverrides(v *CellAreaBox) CellAreaBoxOverrides {
+	return CellAreaBoxOverrides{}
 }
 
 // CellAreaBox renders cell renderers into a row or a column depending on its
@@ -62,25 +65,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellAreaBox,
-		GoType:        reflect.TypeOf((*CellAreaBox)(nil)),
-		InitClass:     initClassCellAreaBox,
-		FinalizeClass: finalizeClassCellAreaBox,
-	})
+	coreglib.RegisterClassInfo[*CellAreaBox, *CellAreaBoxClass, CellAreaBoxOverrides](
+		GTypeCellAreaBox,
+		initCellAreaBoxClass,
+		wrapCellAreaBox,
+		defaultCellAreaBoxOverrides,
+	)
 }
 
-func initClassCellAreaBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitCellAreaBox(*CellAreaBoxClass) }); ok {
-		klass := (*CellAreaBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitCellAreaBox(klass)
-	}
-}
-
-func finalizeClassCellAreaBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCellAreaBox(*CellAreaBoxClass) }); ok {
-		klass := (*CellAreaBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellAreaBox(klass)
+func initCellAreaBoxClass(gclass unsafe.Pointer, overrides CellAreaBoxOverrides, classInitFunc func(*CellAreaBoxClass)) {
+	if classInitFunc != nil {
+		class := (*CellAreaBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -107,144 +103,6 @@ func wrapCellAreaBox(obj *coreglib.Object) *CellAreaBox {
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return wrapCellAreaBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewCellAreaBox creates a new CellAreaBox.
-//
-// The function returns the following values:
-//
-//    - cellAreaBox: newly created CellAreaBox.
-//
-func NewCellAreaBox() *CellAreaBox {
-	var _cret *C.GtkCellArea // in
-
-	_cret = C.gtk_cell_area_box_new()
-
-	var _cellAreaBox *CellAreaBox // out
-
-	_cellAreaBox = wrapCellAreaBox(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _cellAreaBox
-}
-
-// Spacing gets the spacing added between cell renderers.
-//
-// The function returns the following values:
-//
-//    - gint: space added between cell renderers in box.
-//
-func (box *CellAreaBox) Spacing() int {
-	var _arg0 *C.GtkCellAreaBox // out
-	var _cret C.gint            // in
-
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
-	runtime.KeepAlive(box)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// PackEnd adds renderer to box, packed with reference to the end of box.
-//
-// The renderer is packed after (away from end of) any other CellRenderer packed
-// with reference to the end of box.
-//
-// The function takes the following parameters:
-//
-//    - renderer to add.
-//    - expand: whether renderer should receive extra space when the area
-//      receives more than its natural size.
-//    - align: whether renderer should be aligned in adjacent rows.
-//    - fixed: whether renderer should have the same size in all rows.
-//
-func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bool) {
-	var _arg0 *C.GtkCellAreaBox  // out
-	var _arg1 *C.GtkCellRenderer // out
-	var _arg2 C.gboolean         // out
-	var _arg3 C.gboolean         // out
-	var _arg4 C.gboolean         // out
-
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	if expand {
-		_arg2 = C.TRUE
-	}
-	if align {
-		_arg3 = C.TRUE
-	}
-	if fixed {
-		_arg4 = C.TRUE
-	}
-
-	C.gtk_cell_area_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(renderer)
-	runtime.KeepAlive(expand)
-	runtime.KeepAlive(align)
-	runtime.KeepAlive(fixed)
-}
-
-// PackStart adds renderer to box, packed with reference to the start of box.
-//
-// The renderer is packed after any other CellRenderer packed with reference to
-// the start of box.
-//
-// The function takes the following parameters:
-//
-//    - renderer to add.
-//    - expand: whether renderer should receive extra space when the area
-//      receives more than its natural size.
-//    - align: whether renderer should be aligned in adjacent rows.
-//    - fixed: whether renderer should have the same size in all rows.
-//
-func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed bool) {
-	var _arg0 *C.GtkCellAreaBox  // out
-	var _arg1 *C.GtkCellRenderer // out
-	var _arg2 C.gboolean         // out
-	var _arg3 C.gboolean         // out
-	var _arg4 C.gboolean         // out
-
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	if expand {
-		_arg2 = C.TRUE
-	}
-	if align {
-		_arg3 = C.TRUE
-	}
-	if fixed {
-		_arg4 = C.TRUE
-	}
-
-	C.gtk_cell_area_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(renderer)
-	runtime.KeepAlive(expand)
-	runtime.KeepAlive(align)
-	runtime.KeepAlive(fixed)
-}
-
-// SetSpacing sets the spacing to add between cell renderers in box.
-//
-// The function takes the following parameters:
-//
-//    - spacing: space to add between CellRenderers.
-//
-func (box *CellAreaBox) SetSpacing(spacing int) {
-	var _arg0 *C.GtkCellAreaBox // out
-	var _arg1 C.gint            // out
-
-	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.gint(spacing)
-
-	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(spacing)
 }
 
 // CellAreaBoxClass: instance of this type is always passed by reference.

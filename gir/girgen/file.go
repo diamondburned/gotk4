@@ -23,21 +23,29 @@ type FileGenerator interface {
 	generators.FileWriter
 	Generate() ([]byte, error)
 	IsEmpty() bool
+	Name() string
 }
 
 // CFileGenerator creates a new C file generator.
 type CFileGenerator struct {
 	*NamespaceGenerator
 	pen    *pen.PaperBuffer
+	name   string
 	header file.Header
 }
 
 // NewCFileGenerator creates as new C file generator.
-func NewCFileGenerator(n *NamespaceGenerator) *CFileGenerator {
+func NewCFileGenerator(n *NamespaceGenerator, name string) *CFileGenerator {
 	return &CFileGenerator{
 		NamespaceGenerator: n,
+		name:               name,
 		pen:                pen.NewPaperBufferSize(10 * 1024), // 10KB
 	}
+}
+
+// Name returns the file's name.
+func (f *CFileGenerator) Name() string {
+	return f.name
 }
 
 // Header returns the C file generator's headers.
@@ -70,6 +78,7 @@ func (f *CFileGenerator) Generate() ([]byte, error) {
 		f.pen.EmptyLine()
 		for _, callback := range f.header.SortedCallbackHeaders() {
 			f.pen.Words(callback)
+			f.pen.EmptyLine()
 		}
 	}
 
@@ -223,7 +232,7 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 
 	if len(f.header.Callbacks) > 0 {
 		for _, callback := range f.header.SortedCallbackHeaders() {
-			fpen.Words(makeComment(callback))
+			fpen.Line(makeComment(callback))
 		}
 	}
 

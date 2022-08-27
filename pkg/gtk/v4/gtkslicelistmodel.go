@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// SliceListModelOverrider contains methods that are overridable.
-type SliceListModelOverrider interface {
+// SliceListModelOverrides contains methods that are overridable.
+type SliceListModelOverrides struct {
+}
+
+func defaultSliceListModelOverrides(v *SliceListModel) SliceListModelOverrides {
+	return SliceListModelOverrides{}
 }
 
 // SliceListModel: GtkSliceListModel is a list model that presents a slice of
@@ -50,25 +54,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSliceListModel,
-		GoType:        reflect.TypeOf((*SliceListModel)(nil)),
-		InitClass:     initClassSliceListModel,
-		FinalizeClass: finalizeClassSliceListModel,
-	})
+	coreglib.RegisterClassInfo[*SliceListModel, *SliceListModelClass, SliceListModelOverrides](
+		GTypeSliceListModel,
+		initSliceListModelClass,
+		wrapSliceListModel,
+		defaultSliceListModelOverrides,
+	)
 }
 
-func initClassSliceListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSliceListModel(*SliceListModelClass) }); ok {
-		klass := (*SliceListModelClass)(gextras.NewStructNative(gclass))
-		goval.InitSliceListModel(klass)
-	}
-}
-
-func finalizeClassSliceListModel(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSliceListModel(*SliceListModelClass) }); ok {
-		klass := (*SliceListModelClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSliceListModel(klass)
+func initSliceListModelClass(gclass unsafe.Pointer, overrides SliceListModelOverrides, classInitFunc func(*SliceListModelClass)) {
+	if classInitFunc != nil {
+		class := (*SliceListModelClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

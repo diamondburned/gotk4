@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,8 +29,12 @@ func init() {
 	})
 }
 
-// SpinnerOverrider contains methods that are overridable.
-type SpinnerOverrider interface {
+// SpinnerOverrides contains methods that are overridable.
+type SpinnerOverrides struct {
+}
+
+func defaultSpinnerOverrides(v *Spinner) SpinnerOverrides {
+	return SpinnerOverrides{}
 }
 
 // Spinner widget displays an icon-size spinning animation. It is often used as
@@ -56,25 +59,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSpinner,
-		GoType:        reflect.TypeOf((*Spinner)(nil)),
-		InitClass:     initClassSpinner,
-		FinalizeClass: finalizeClassSpinner,
-	})
+	coreglib.RegisterClassInfo[*Spinner, *SpinnerClass, SpinnerOverrides](
+		GTypeSpinner,
+		initSpinnerClass,
+		wrapSpinner,
+		defaultSpinnerOverrides,
+	)
 }
 
-func initClassSpinner(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSpinner(*SpinnerClass) }); ok {
-		klass := (*SpinnerClass)(gextras.NewStructNative(gclass))
-		goval.InitSpinner(klass)
-	}
-}
-
-func finalizeClassSpinner(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSpinner(*SpinnerClass) }); ok {
-		klass := (*SpinnerClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSpinner(klass)
+func initSpinnerClass(gclass unsafe.Pointer, overrides SpinnerOverrides, classInitFunc func(*SpinnerClass)) {
+	if classInitFunc != nil {
+		class := (*SpinnerClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -97,44 +93,6 @@ func wrapSpinner(obj *coreglib.Object) *Spinner {
 
 func marshalSpinner(p uintptr) (interface{}, error) {
 	return wrapSpinner(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewSpinner returns a new spinner widget. Not yet started.
-//
-// The function returns the following values:
-//
-//    - spinner: new Spinner.
-//
-func NewSpinner() *Spinner {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_spinner_new()
-
-	var _spinner *Spinner // out
-
-	_spinner = wrapSpinner(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _spinner
-}
-
-// Start starts the animation of the spinner.
-func (spinner *Spinner) Start() {
-	var _arg0 *C.GtkSpinner // out
-
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-
-	C.gtk_spinner_start(_arg0)
-	runtime.KeepAlive(spinner)
-}
-
-// Stop stops the animation of the spinner.
-func (spinner *Spinner) Stop() {
-	var _arg0 *C.GtkSpinner // out
-
-	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-
-	C.gtk_spinner_stop(_arg0)
-	runtime.KeepAlive(spinner)
 }
 
 // SpinnerClass: instance of this type is always passed by reference.

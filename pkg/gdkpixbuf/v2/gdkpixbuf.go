@@ -42,6 +42,66 @@ func PixbufErrorQuark() glib.Quark {
 	return _quark
 }
 
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	if overrides.AreaPrepared == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.AreaPrepared, got none")
+	}
+
+	overrides.AreaPrepared()
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	if overrides.AreaUpdated == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.AreaUpdated, got none")
+	}
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
+
+	overrides.AreaUpdated(_x, _y, _width, _height)
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_closed
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	if overrides.Closed == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.Closed, got none")
+	}
+
+	overrides.Closed()
+}
+
+//export _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared
+func _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	if overrides.SizePrepared == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.SizePrepared, got none")
+	}
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	overrides.SizePrepared(_width, _height)
+}
+
 type PixbufSimpleAnimIter struct {
 	_ [0]func() // equal guard
 	PixbufAnimationIter

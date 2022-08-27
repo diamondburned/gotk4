@@ -3,146 +3,16 @@
 package gtk
 
 import (
-	"reflect"
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// GType values.
-var (
-	GTypeColorChooserDialog = coreglib.Type(C.gtk_color_chooser_dialog_get_type())
-)
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		coreglib.TypeMarshaler{T: GTypeColorChooserDialog, F: marshalColorChooserDialog},
-	})
-}
-
-// ColorChooserDialogOverrider contains methods that are overridable.
-type ColorChooserDialogOverrider interface {
-}
-
-// ColorChooserDialog widget is a dialog for choosing a color. It implements the
-// ColorChooser interface.
-type ColorChooserDialog struct {
-	_ [0]func() // equal guard
-	Dialog
-
-	*coreglib.Object
-	ColorChooser
-}
-
-var (
-	_ coreglib.Objector = (*ColorChooserDialog)(nil)
-	_ Binner            = (*ColorChooserDialog)(nil)
-)
-
-func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeColorChooserDialog,
-		GoType:        reflect.TypeOf((*ColorChooserDialog)(nil)),
-		InitClass:     initClassColorChooserDialog,
-		FinalizeClass: finalizeClassColorChooserDialog,
-	})
-}
-
-func initClassColorChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitColorChooserDialog(*ColorChooserDialogClass)
-	}); ok {
-		klass := (*ColorChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.InitColorChooserDialog(klass)
-	}
-}
-
-func finalizeClassColorChooserDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeColorChooserDialog(*ColorChooserDialogClass)
-	}); ok {
-		klass := (*ColorChooserDialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeColorChooserDialog(klass)
-	}
-}
-
-func wrapColorChooserDialog(obj *coreglib.Object) *ColorChooserDialog {
-	return &ColorChooserDialog{
-		Dialog: Dialog{
-			Window: Window{
-				Bin: Bin{
-					Container: Container{
-						Widget: Widget{
-							InitiallyUnowned: coreglib.InitiallyUnowned{
-								Object: obj,
-							},
-							Object: obj,
-							ImplementorIface: atk.ImplementorIface{
-								Object: obj,
-							},
-							Buildable: Buildable{
-								Object: obj,
-							},
-						},
-					},
-				},
-			},
-		},
-		Object: obj,
-		ColorChooser: ColorChooser{
-			Object: obj,
-		},
-	}
-}
-
-func marshalColorChooserDialog(p uintptr) (interface{}, error) {
-	return wrapColorChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewColorChooserDialog creates a new ColorChooserDialog.
-//
-// The function takes the following parameters:
-//
-//    - title (optional): title of the dialog, or NULL.
-//    - parent (optional): transient parent of the dialog, or NULL.
-//
-// The function returns the following values:
-//
-//    - colorChooserDialog: new ColorChooserDialog.
-//
-func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GtkWindow // out
-	var _cret *C.GtkWidget // in
-
-	if title != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-	if parent != nil {
-		_arg2 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	}
-
-	_cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
-	runtime.KeepAlive(title)
-	runtime.KeepAlive(parent)
-
-	var _colorChooserDialog *ColorChooserDialog // out
-
-	_colorChooserDialog = wrapColorChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _colorChooserDialog
-}
 
 // ColorChooserDialogClass: instance of this type is always passed by reference.
 type ColorChooserDialogClass struct {

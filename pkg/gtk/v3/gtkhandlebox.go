@@ -17,10 +17,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_HandleBoxClass_child_attached(GtkHandleBox*, GtkWidget*);
-// extern void _gotk4_gtk3_HandleBoxClass_child_detached(GtkHandleBox*, GtkWidget*);
-// extern void _gotk4_gtk3_HandleBox_ConnectChildAttached(gpointer, GtkWidget*, guintptr);
 // extern void _gotk4_gtk3_HandleBox_ConnectChildDetached(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_HandleBox_ConnectChildAttached(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_HandleBoxClass_child_detached(GtkHandleBox*, GtkWidget*);
+// extern void _gotk4_gtk3_HandleBoxClass_child_attached(GtkHandleBox*, GtkWidget*);
+// void _gotk4_gtk3_HandleBox_virtual_child_attached(void* fnptr, GtkHandleBox* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkHandleBox*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_HandleBox_virtual_child_detached(void* fnptr, GtkHandleBox* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkHandleBox*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -34,14 +40,21 @@ func init() {
 	})
 }
 
-// HandleBoxOverrider contains methods that are overridable.
-type HandleBoxOverrider interface {
+// HandleBoxOverrides contains methods that are overridable.
+type HandleBoxOverrides struct {
 	// The function takes the following parameters:
 	//
-	ChildAttached(child Widgetter)
+	ChildAttached func(child Widgetter)
 	// The function takes the following parameters:
 	//
-	ChildDetached(child Widgetter)
+	ChildDetached func(child Widgetter)
+}
+
+func defaultHandleBoxOverrides(v *HandleBox) HandleBoxOverrides {
+	return HandleBoxOverrides{
+		ChildAttached: v.childAttached,
+		ChildDetached: v.childDetached,
+	}
 }
 
 // HandleBox widget allows a portion of a window to be "torn off". It is a bin
@@ -76,92 +89,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHandleBox,
-		GoType:        reflect.TypeOf((*HandleBox)(nil)),
-		InitClass:     initClassHandleBox,
-		FinalizeClass: finalizeClassHandleBox,
-	})
+	coreglib.RegisterClassInfo[*HandleBox, *HandleBoxClass, HandleBoxOverrides](
+		GTypeHandleBox,
+		initHandleBoxClass,
+		wrapHandleBox,
+		defaultHandleBoxOverrides,
+	)
 }
 
-func initClassHandleBox(gclass unsafe.Pointer, goval any) {
+func initHandleBoxClass(gclass unsafe.Pointer, overrides HandleBoxOverrides, classInitFunc func(*HandleBoxClass)) {
+	pclass := (*C.GtkHandleBoxClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeHandleBox))))
 
-	pclass := (*C.GtkHandleBoxClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ChildAttached(child Widgetter) }); ok {
+	if overrides.ChildAttached != nil {
 		pclass.child_attached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_attached)
 	}
 
-	if _, ok := goval.(interface{ ChildDetached(child Widgetter) }); ok {
+	if overrides.ChildDetached != nil {
 		pclass.child_detached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_detached)
 	}
-	if goval, ok := goval.(interface{ InitHandleBox(*HandleBoxClass) }); ok {
-		klass := (*HandleBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitHandleBox(klass)
+
+	if classInitFunc != nil {
+		class := (*HandleBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassHandleBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHandleBox(*HandleBoxClass) }); ok {
-		klass := (*HandleBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHandleBox(klass)
-	}
-}
-
-//export _gotk4_gtk3_HandleBoxClass_child_attached
-func _gotk4_gtk3_HandleBoxClass_child_attached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ChildAttached(child Widgetter) })
-
-	var _child Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-
-	iface.ChildAttached(_child)
-}
-
-//export _gotk4_gtk3_HandleBoxClass_child_detached
-func _gotk4_gtk3_HandleBoxClass_child_detached(arg0 *C.GtkHandleBox, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ChildDetached(child Widgetter) })
-
-	var _child Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-
-	iface.ChildDetached(_child)
 }
 
 func wrapHandleBox(obj *coreglib.Object) *HandleBox {
@@ -189,82 +139,10 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 	return wrapHandleBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_HandleBox_ConnectChildAttached
-func _gotk4_gtk3_HandleBox_ConnectChildAttached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(widget Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(widget Widgetter))
-	}
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	f(_widget)
-}
-
 // ConnectChildAttached: this signal is emitted when the contents of the
 // handlebox are reattached to the main window.
 func (handleBox *HandleBox) ConnectChildAttached(f func(widget Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(handleBox, "child-attached", false, unsafe.Pointer(C._gotk4_gtk3_HandleBox_ConnectChildAttached), f)
-}
-
-//export _gotk4_gtk3_HandleBox_ConnectChildDetached
-func _gotk4_gtk3_HandleBox_ConnectChildDetached(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(widget Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(widget Widgetter))
-	}
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	f(_widget)
 }
 
 // ConnectChildDetached: this signal is emitted when the contents of the
@@ -291,32 +169,6 @@ func NewHandleBox() *HandleBox {
 	_handleBox = wrapHandleBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _handleBox
-}
-
-// ChildDetached: whether the handlebox’s child is currently detached.
-//
-// Deprecated: HandleBox has been deprecated.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the child is currently detached, otherwise FALSE.
-//
-func (handleBox *HandleBox) ChildDetached() bool {
-	var _arg0 *C.GtkHandleBox // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
-
-	_cret = C.gtk_handle_box_get_child_detached(_arg0)
-	runtime.KeepAlive(handleBox)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // HandlePosition gets the handle position of the handle box. See
@@ -464,6 +316,40 @@ func (handleBox *HandleBox) SetSnapEdge(edge PositionType) {
 	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
 	runtime.KeepAlive(handleBox)
 	runtime.KeepAlive(edge)
+}
+
+// The function takes the following parameters:
+//
+func (handleBox *HandleBox) childAttached(child Widgetter) {
+	gclass := (*C.GtkHandleBoxClass)(coreglib.PeekParentClass(handleBox))
+	fnarg := gclass.child_attached
+
+	var _arg0 *C.GtkHandleBox // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C._gotk4_gtk3_HandleBox_virtual_child_attached(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(handleBox)
+	runtime.KeepAlive(child)
+}
+
+// The function takes the following parameters:
+//
+func (handleBox *HandleBox) childDetached(child Widgetter) {
+	gclass := (*C.GtkHandleBoxClass)(coreglib.PeekParentClass(handleBox))
+	fnarg := gclass.child_detached
+
+	var _arg0 *C.GtkHandleBox // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C._gotk4_gtk3_HandleBox_virtual_child_detached(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(handleBox)
+	runtime.KeepAlive(child)
 }
 
 // HandleBoxClass: instance of this type is always passed by reference.

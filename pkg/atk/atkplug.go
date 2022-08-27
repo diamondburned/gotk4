@@ -15,6 +15,9 @@ import (
 // #include <atk/atk.h>
 // #include <glib-object.h>
 // extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
+// gchar* _gotk4_atk1_Plug_virtual_get_object_id(void* fnptr, AtkPlug* arg0) {
+//   return ((gchar* (*)(AtkPlug*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -28,11 +31,17 @@ func init() {
 	})
 }
 
-// PlugOverrider contains methods that are overridable.
-type PlugOverrider interface {
+// PlugOverrides contains methods that are overridable.
+type PlugOverrides struct {
 	// The function returns the following values:
 	//
-	ObjectID() string
+	ObjectID func() string
+}
+
+func defaultPlugOverrides(v *Plug) PlugOverrides {
+	return PlugOverrides{
+		ObjectID: v.objectID,
+	}
 }
 
 // Plug: see Socket.
@@ -49,44 +58,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypePlug,
-		GoType:        reflect.TypeOf((*Plug)(nil)),
-		InitClass:     initClassPlug,
-		FinalizeClass: finalizeClassPlug,
-	})
+	coreglib.RegisterClassInfo[*Plug, *PlugClass, PlugOverrides](
+		GTypePlug,
+		initPlugClass,
+		wrapPlug,
+		defaultPlugOverrides,
+	)
 }
 
-func initClassPlug(gclass unsafe.Pointer, goval any) {
+func initPlugClass(gclass unsafe.Pointer, overrides PlugOverrides, classInitFunc func(*PlugClass)) {
+	pclass := (*C.AtkPlugClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePlug))))
 
-	pclass := (*C.AtkPlugClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ObjectID() string }); ok {
+	if overrides.ObjectID != nil {
 		pclass.get_object_id = (*[0]byte)(C._gotk4_atk1_PlugClass_get_object_id)
 	}
-	if goval, ok := goval.(interface{ InitPlug(*PlugClass) }); ok {
-		klass := (*PlugClass)(gextras.NewStructNative(gclass))
-		goval.InitPlug(klass)
+
+	if classInitFunc != nil {
+		class := (*PlugClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassPlug(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizePlug(*PlugClass) }); ok {
-		klass := (*PlugClass)(gextras.NewStructNative(gclass))
-		goval.FinalizePlug(klass)
-	}
-}
-
-//export _gotk4_atk1_PlugClass_get_object_id
-func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ObjectID() string })
-
-	utf8 := iface.ObjectID()
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
 }
 
 func wrapPlug(obj *coreglib.Object) *Plug {
@@ -105,44 +95,19 @@ func marshalPlug(p uintptr) (interface{}, error) {
 	return wrapPlug(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewPlug creates a new Plug instance.
-//
 // The function returns the following values:
 //
-//    - plug: newly created Plug.
-//
-func NewPlug() *Plug {
-	var _cret *C.AtkObject // in
+func (obj *Plug) objectID() string {
+	gclass := (*C.AtkPlugClass)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_object_id
 
-	_cret = C.atk_plug_new()
-
-	var _plug *Plug // out
-
-	_plug = wrapPlug(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _plug
-}
-
-// ID gets the unique ID of an Plug object, which can be used to embed inside of
-// an Socket using atk_socket_embed().
-//
-// Internally, this calls a class function that should be registered by the IPC
-// layer (usually at-spi2-atk). The implementor of an Plug object should call
-// this function (after atk-bridge is loaded) and pass the value to the process
-// implementing the Socket, so it could embed the plug.
-//
-// The function returns the following values:
-//
-//    - utf8: unique ID for the plug.
-//
-func (plug *Plug) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
 
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_cret = C.atk_plug_get_id(_arg0)
-	runtime.KeepAlive(plug)
+	_cret = C._gotk4_atk1_Plug_virtual_get_object_id(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
 
 	var _utf8 string // out
 
@@ -150,32 +115,6 @@ func (plug *Plug) ID() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// SetChild sets child as accessible child of plug and plug as accessible parent
-// of child. child can be NULL.
-//
-// In some cases, one can not use the AtkPlug type directly as accessible object
-// for the toplevel widget of the application. For instance in the gtk case,
-// GtkPlugAccessible can not inherit both from GtkWindowAccessible and from
-// AtkPlug. In such a case, one can create, in addition to the standard
-// accessible object for the toplevel widget, an AtkPlug object, and make the
-// former the child of the latter by calling atk_plug_set_child().
-//
-// The function takes the following parameters:
-//
-//    - child to be set as accessible child of plug.
-//
-func (plug *Plug) SetChild(child *AtkObject) {
-	var _arg0 *C.AtkPlug   // out
-	var _arg1 *C.AtkObject // out
-
-	_arg0 = (*C.AtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	C.atk_plug_set_child(_arg0, _arg1)
-	runtime.KeepAlive(plug)
-	runtime.KeepAlive(child)
 }
 
 // PlugClass: instance of this type is always passed by reference.

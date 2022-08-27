@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// FixedOverrider contains methods that are overridable.
-type FixedOverrider interface {
+// FixedOverrides contains methods that are overridable.
+type FixedOverrides struct {
+}
+
+func defaultFixedOverrides(v *Fixed) FixedOverrides {
+	return FixedOverrides{}
 }
 
 // Fixed widget is a container which can place child widgets at fixed positions
@@ -81,25 +85,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFixed,
-		GoType:        reflect.TypeOf((*Fixed)(nil)),
-		InitClass:     initClassFixed,
-		FinalizeClass: finalizeClassFixed,
-	})
+	coreglib.RegisterClassInfo[*Fixed, *FixedClass, FixedOverrides](
+		GTypeFixed,
+		initFixedClass,
+		wrapFixed,
+		defaultFixedOverrides,
+	)
 }
 
-func initClassFixed(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFixed(*FixedClass) }); ok {
-		klass := (*FixedClass)(gextras.NewStructNative(gclass))
-		goval.InitFixed(klass)
-	}
-}
-
-func finalizeClassFixed(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFixed(*FixedClass) }); ok {
-		klass := (*FixedClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFixed(klass)
+func initFixedClass(gclass unsafe.Pointer, overrides FixedOverrides, classInitFunc func(*FixedClass)) {
+	if classInitFunc != nil {
+		class := (*FixedClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -73,46 +72,6 @@ func wrapOrientable(obj *coreglib.Object) *Orientable {
 
 func marshalOrientable(p uintptr) (interface{}, error) {
 	return wrapOrientable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// Orientation retrieves the orientation of the orientable.
-//
-// The function returns the following values:
-//
-//    - orientation of the orientable.
-//
-func (orientable *Orientable) Orientation() Orientation {
-	var _arg0 *C.GtkOrientable // out
-	var _cret C.GtkOrientation // in
-
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(coreglib.InternObject(orientable).Native()))
-
-	_cret = C.gtk_orientable_get_orientation(_arg0)
-	runtime.KeepAlive(orientable)
-
-	var _orientation Orientation // out
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
-}
-
-// SetOrientation sets the orientation of the orientable.
-//
-// The function takes the following parameters:
-//
-//    - orientation orientable’s new orientation.
-//
-func (orientable *Orientable) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkOrientable // out
-	var _arg1 C.GtkOrientation // out
-
-	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(coreglib.InternObject(orientable).Native()))
-	_arg1 = C.GtkOrientation(orientation)
-
-	C.gtk_orientable_set_orientation(_arg0, _arg1)
-	runtime.KeepAlive(orientable)
-	runtime.KeepAlive(orientation)
 }
 
 // OrientableIface: instance of this type is always passed by reference.

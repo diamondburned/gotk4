@@ -15,10 +15,10 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_Seat_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
-// extern void _gotk4_gdk4_Seat_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
-// extern void _gotk4_gdk4_Seat_ConnectToolAdded(gpointer, GdkDeviceTool*, guintptr);
 // extern void _gotk4_gdk4_Seat_ConnectToolRemoved(gpointer, GdkDeviceTool*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectToolAdded(gpointer, GdkDeviceTool*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
+// extern void _gotk4_gdk4_Seat_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
 import "C"
 
 // GType values.
@@ -146,108 +146,16 @@ func BaseSeat(obj Seater) *Seat {
 	return obj.baseSeat()
 }
 
-//export _gotk4_gdk4_Seat_ConnectDeviceAdded
-func _gotk4_gdk4_Seat_ConnectDeviceAdded(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
-	var f func(device Devicer)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(device Devicer))
-	}
-
-	var _device Devicer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Devicer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Devicer)
-			return ok
-		})
-		rv, ok := casted.(Devicer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
-		}
-		_device = rv
-	}
-
-	f(_device)
-}
-
 // ConnectDeviceAdded is emitted when a new input device is related to this
 // seat.
 func (seat *Seat) ConnectDeviceAdded(f func(device Devicer)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(seat, "device-added", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectDeviceAdded), f)
 }
 
-//export _gotk4_gdk4_Seat_ConnectDeviceRemoved
-func _gotk4_gdk4_Seat_ConnectDeviceRemoved(arg0 C.gpointer, arg1 *C.GdkDevice, arg2 C.guintptr) {
-	var f func(device Devicer)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(device Devicer))
-	}
-
-	var _device Devicer // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gdk.Devicer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Devicer)
-			return ok
-		})
-		rv, ok := casted.(Devicer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
-		}
-		_device = rv
-	}
-
-	f(_device)
-}
-
 // ConnectDeviceRemoved is emitted when an input device is removed (e.g.
 // unplugged).
 func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(seat, "device-removed", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectDeviceRemoved), f)
-}
-
-//export _gotk4_gdk4_Seat_ConnectToolAdded
-func _gotk4_gdk4_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
-	var f func(tool *DeviceTool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tool *DeviceTool))
-	}
-
-	var _tool *DeviceTool // out
-
-	_tool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_tool)
 }
 
 // ConnectToolAdded is emitted whenever a new tool is made known to the seat.
@@ -258,26 +166,6 @@ func _gotk4_gdk4_Seat_ConnectToolAdded(arg0 C.gpointer, arg1 *C.GdkDeviceTool, a
 // A same tool may be used by several devices.
 func (seat *Seat) ConnectToolAdded(f func(tool *DeviceTool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(seat, "tool-added", false, unsafe.Pointer(C._gotk4_gdk4_Seat_ConnectToolAdded), f)
-}
-
-//export _gotk4_gdk4_Seat_ConnectToolRemoved
-func _gotk4_gdk4_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.GdkDeviceTool, arg2 C.guintptr) {
-	var f func(tool *DeviceTool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tool *DeviceTool))
-	}
-
-	var _tool *DeviceTool // out
-
-	_tool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_tool)
 }
 
 // ConnectToolRemoved is emitted whenever a tool is no longer known to this

@@ -11,7 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -19,32 +18,71 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_TextBufferClass_apply_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
-// extern void _gotk4_gtk3_TextBufferClass_begin_user_action(GtkTextBuffer*);
-// extern void _gotk4_gtk3_TextBufferClass_changed(GtkTextBuffer*);
-// extern void _gotk4_gtk3_TextBufferClass_delete_range(GtkTextBuffer*, GtkTextIter*, GtkTextIter*);
-// extern void _gotk4_gtk3_TextBufferClass_end_user_action(GtkTextBuffer*);
-// extern void _gotk4_gtk3_TextBufferClass_insert_child_anchor(GtkTextBuffer*, GtkTextIter*, GtkTextChildAnchor*);
-// extern void _gotk4_gtk3_TextBufferClass_insert_pixbuf(GtkTextBuffer*, GtkTextIter*, GdkPixbuf*);
-// extern void _gotk4_gtk3_TextBufferClass_insert_text(GtkTextBuffer*, GtkTextIter*, gchar*, gint);
-// extern void _gotk4_gtk3_TextBufferClass_mark_deleted(GtkTextBuffer*, GtkTextMark*);
-// extern void _gotk4_gtk3_TextBufferClass_mark_set(GtkTextBuffer*, GtkTextIter*, GtkTextMark*);
-// extern void _gotk4_gtk3_TextBufferClass_modified_changed(GtkTextBuffer*);
-// extern void _gotk4_gtk3_TextBufferClass_paste_done(GtkTextBuffer*, GtkClipboard*);
-// extern void _gotk4_gtk3_TextBufferClass_remove_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
-// extern void _gotk4_gtk3_TextBuffer_ConnectApplyTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectBeginUserAction(gpointer, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectDeleteRange(gpointer, GtkTextIter*, GtkTextIter*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectEndUserAction(gpointer, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor(gpointer, GtkTextIter*, GtkTextChildAnchor*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(gpointer, GtkTextIter*, GdkPixbuf*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectInsertText(gpointer, GtkTextIter*, gchar*, gint, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectMarkDeleted(gpointer, GtkTextMark*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectMarkSet(gpointer, GtkTextIter*, GtkTextMark*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectModifiedChanged(gpointer, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectPasteDone(gpointer, GtkClipboard*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectRemoveTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectPasteDone(gpointer, GtkClipboard*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectModifiedChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectMarkSet(gpointer, GtkTextIter*, GtkTextMark*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectMarkDeleted(gpointer, GtkTextMark*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectInsertText(gpointer, GtkTextIter*, gchar*, gint, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(gpointer, GtkTextIter*, GdkPixbuf*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor(gpointer, GtkTextIter*, GtkTextChildAnchor*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectEndUserAction(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectDeleteRange(gpointer, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectBeginUserAction(gpointer, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectApplyTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk3_TextBufferClass_remove_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
+// extern void _gotk4_gtk3_TextBufferClass_paste_done(GtkTextBuffer*, GtkClipboard*);
+// extern void _gotk4_gtk3_TextBufferClass_modified_changed(GtkTextBuffer*);
+// extern void _gotk4_gtk3_TextBufferClass_mark_set(GtkTextBuffer*, GtkTextIter*, GtkTextMark*);
+// extern void _gotk4_gtk3_TextBufferClass_mark_deleted(GtkTextBuffer*, GtkTextMark*);
+// extern void _gotk4_gtk3_TextBufferClass_insert_text(GtkTextBuffer*, GtkTextIter*, gchar*, gint);
+// extern void _gotk4_gtk3_TextBufferClass_insert_pixbuf(GtkTextBuffer*, GtkTextIter*, GdkPixbuf*);
+// extern void _gotk4_gtk3_TextBufferClass_insert_child_anchor(GtkTextBuffer*, GtkTextIter*, GtkTextChildAnchor*);
+// extern void _gotk4_gtk3_TextBufferClass_end_user_action(GtkTextBuffer*);
+// extern void _gotk4_gtk3_TextBufferClass_delete_range(GtkTextBuffer*, GtkTextIter*, GtkTextIter*);
+// extern void _gotk4_gtk3_TextBufferClass_changed(GtkTextBuffer*);
+// extern void _gotk4_gtk3_TextBufferClass_begin_user_action(GtkTextBuffer*);
+// extern void _gotk4_gtk3_TextBufferClass_apply_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
+// void _gotk4_gtk3_TextBuffer_virtual_apply_tag(void* fnptr, GtkTextBuffer* arg0, GtkTextTag* arg1, GtkTextIter* arg2, GtkTextIter* arg3) {
+//   ((void (*)(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_begin_user_action(void* fnptr, GtkTextBuffer* arg0) {
+//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_changed(void* fnptr, GtkTextBuffer* arg0) {
+//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_delete_range(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GtkTextIter* arg2) {
+//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_end_user_action(void* fnptr, GtkTextBuffer* arg0) {
+//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_insert_child_anchor(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GtkTextChildAnchor* arg2) {
+//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GtkTextChildAnchor*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_insert_pixbuf(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GdkPixbuf* arg2) {
+//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GdkPixbuf*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_insert_text(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, gchar* arg2, gint arg3) {
+//   ((void (*)(GtkTextBuffer*, GtkTextIter*, gchar*, gint))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_mark_deleted(void* fnptr, GtkTextBuffer* arg0, GtkTextMark* arg1) {
+//   ((void (*)(GtkTextBuffer*, GtkTextMark*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_mark_set(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GtkTextMark* arg2) {
+//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GtkTextMark*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_modified_changed(void* fnptr, GtkTextBuffer* arg0) {
+//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_paste_done(void* fnptr, GtkTextBuffer* arg0, GtkClipboard* arg1) {
+//   ((void (*)(GtkTextBuffer*, GtkClipboard*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_TextBuffer_virtual_remove_tag(void* fnptr, GtkTextBuffer* arg0, GtkTextTag* arg1, GtkTextIter* arg2, GtkTextIter* arg3) {
+//   ((void (*)(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -95,8 +133,8 @@ func (t TextBufferTargetInfo) String() string {
 	}
 }
 
-// TextBufferOverrider contains methods that are overridable.
-type TextBufferOverrider interface {
+// TextBufferOverrides contains methods that are overridable.
+type TextBufferOverrides struct {
 	// ApplyTag emits the “apply-tag” signal on buffer. The default handler for
 	// the signal applies tag to the given range. start and end do not have to
 	// be in order.
@@ -107,7 +145,7 @@ type TextBufferOverrider interface {
 	//    - start: one bound of range to be tagged.
 	//    - end: other bound of range to be tagged.
 	//
-	ApplyTag(tag *TextTag, start, end *TextIter)
+	ApplyTag func(tag *TextTag, start, end *TextIter)
 	// BeginUserAction: called to indicate that the buffer operations between
 	// here and a call to gtk_text_buffer_end_user_action() are part of a single
 	// user-visible operation. The operations between
@@ -124,18 +162,18 @@ type TextBufferOverrider interface {
 	// action around the buffer operations they perform, so there's no need to
 	// add extra calls if you user action consists solely of a single call to
 	// one of those functions.
-	BeginUserAction()
-	Changed()
+	BeginUserAction func()
+	Changed         func()
 	// The function takes the following parameters:
 	//
 	//    - start
 	//    - end
 	//
-	DeleteRange(start, end *TextIter)
+	DeleteRange func(start, end *TextIter)
 	// EndUserAction: should be paired with a call to
 	// gtk_text_buffer_begin_user_action(). See that function for a full
 	// explanation.
-	EndUserAction()
+	EndUserAction func()
 	// InsertChildAnchor inserts a child widget anchor into the text buffer at
 	// iter. The anchor will be counted as one character in character counts,
 	// and when obtaining the buffer contents as a string, will be represented
@@ -152,7 +190,7 @@ type TextBufferOverrider interface {
 	//    - iter: location to insert the anchor.
 	//    - anchor: TextChildAnchor.
 	//
-	InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor)
+	InsertChildAnchor func(iter *TextIter, anchor *TextChildAnchor)
 	// InsertPixbuf inserts an image into the text buffer at iter. The image
 	// will be counted as one character in character counts, and when obtaining
 	// the buffer contents as a string, will be represented by the Unicode
@@ -166,27 +204,27 @@ type TextBufferOverrider interface {
 	//    - iter: location to insert the pixbuf.
 	//    - pixbuf: Pixbuf.
 	//
-	InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
+	InsertPixbuf func(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 	// The function takes the following parameters:
 	//
 	//    - pos
 	//    - newText
 	//    - newTextLength
 	//
-	InsertText(pos *TextIter, newText string, newTextLength int)
+	InsertText func(pos *TextIter, newText string, newTextLength int)
 	// The function takes the following parameters:
 	//
-	MarkDeleted(mark *TextMark)
+	MarkDeleted func(mark *TextMark)
 	// The function takes the following parameters:
 	//
 	//    - location
 	//    - mark
 	//
-	MarkSet(location *TextIter, mark *TextMark)
-	ModifiedChanged()
+	MarkSet         func(location *TextIter, mark *TextMark)
+	ModifiedChanged func()
 	// The function takes the following parameters:
 	//
-	PasteDone(clipboard *Clipboard)
+	PasteDone func(clipboard *Clipboard)
 	// RemoveTag emits the “remove-tag” signal. The default handler for the
 	// signal removes all occurrences of tag from the given range. start and end
 	// don’t have to be in order.
@@ -197,7 +235,25 @@ type TextBufferOverrider interface {
 	//    - start: one bound of range to be untagged.
 	//    - end: other bound of range to be untagged.
 	//
-	RemoveTag(tag *TextTag, start, end *TextIter)
+	RemoveTag func(tag *TextTag, start, end *TextIter)
+}
+
+func defaultTextBufferOverrides(v *TextBuffer) TextBufferOverrides {
+	return TextBufferOverrides{
+		ApplyTag:          v.applyTag,
+		BeginUserAction:   v.beginUserAction,
+		Changed:           v.changed,
+		DeleteRange:       v.deleteRange,
+		EndUserAction:     v.endUserAction,
+		InsertChildAnchor: v.insertChildAnchor,
+		InsertPixbuf:      v.insertPixbuf,
+		InsertText:        v.insertText,
+		MarkDeleted:       v.markDeleted,
+		MarkSet:           v.markSet,
+		ModifiedChanged:   v.modifiedChanged,
+		PasteDone:         v.pasteDone,
+		RemoveTag:         v.removeTag,
+	}
 }
 
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
@@ -213,274 +269,73 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextBuffer,
-		GoType:        reflect.TypeOf((*TextBuffer)(nil)),
-		InitClass:     initClassTextBuffer,
-		FinalizeClass: finalizeClassTextBuffer,
-	})
+	coreglib.RegisterClassInfo[*TextBuffer, *TextBufferClass, TextBufferOverrides](
+		GTypeTextBuffer,
+		initTextBufferClass,
+		wrapTextBuffer,
+		defaultTextBufferOverrides,
+	)
 }
 
-func initClassTextBuffer(gclass unsafe.Pointer, goval any) {
+func initTextBufferClass(gclass unsafe.Pointer, overrides TextBufferOverrides, classInitFunc func(*TextBufferClass)) {
+	pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTextBuffer))))
 
-	pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		ApplyTag(tag *TextTag, start, end *TextIter)
-	}); ok {
+	if overrides.ApplyTag != nil {
 		pclass.apply_tag = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_apply_tag)
 	}
 
-	if _, ok := goval.(interface{ BeginUserAction() }); ok {
+	if overrides.BeginUserAction != nil {
 		pclass.begin_user_action = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_begin_user_action)
 	}
 
-	if _, ok := goval.(interface{ Changed() }); ok {
+	if overrides.Changed != nil {
 		pclass.changed = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_changed)
 	}
 
-	if _, ok := goval.(interface{ DeleteRange(start, end *TextIter) }); ok {
+	if overrides.DeleteRange != nil {
 		pclass.delete_range = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_delete_range)
 	}
 
-	if _, ok := goval.(interface{ EndUserAction() }); ok {
+	if overrides.EndUserAction != nil {
 		pclass.end_user_action = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_end_user_action)
 	}
 
-	if _, ok := goval.(interface {
-		InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor)
-	}); ok {
+	if overrides.InsertChildAnchor != nil {
 		pclass.insert_child_anchor = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_insert_child_anchor)
 	}
 
-	if _, ok := goval.(interface {
-		InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
-	}); ok {
+	if overrides.InsertPixbuf != nil {
 		pclass.insert_pixbuf = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_insert_pixbuf)
 	}
 
-	if _, ok := goval.(interface {
-		InsertText(pos *TextIter, newText string, newTextLength int)
-	}); ok {
+	if overrides.InsertText != nil {
 		pclass.insert_text = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_insert_text)
 	}
 
-	if _, ok := goval.(interface{ MarkDeleted(mark *TextMark) }); ok {
+	if overrides.MarkDeleted != nil {
 		pclass.mark_deleted = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_mark_deleted)
 	}
 
-	if _, ok := goval.(interface {
-		MarkSet(location *TextIter, mark *TextMark)
-	}); ok {
+	if overrides.MarkSet != nil {
 		pclass.mark_set = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_mark_set)
 	}
 
-	if _, ok := goval.(interface{ ModifiedChanged() }); ok {
+	if overrides.ModifiedChanged != nil {
 		pclass.modified_changed = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_modified_changed)
 	}
 
-	if _, ok := goval.(interface{ PasteDone(clipboard *Clipboard) }); ok {
+	if overrides.PasteDone != nil {
 		pclass.paste_done = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_paste_done)
 	}
 
-	if _, ok := goval.(interface {
-		RemoveTag(tag *TextTag, start, end *TextIter)
-	}); ok {
+	if overrides.RemoveTag != nil {
 		pclass.remove_tag = (*[0]byte)(C._gotk4_gtk3_TextBufferClass_remove_tag)
 	}
-	if goval, ok := goval.(interface{ InitTextBuffer(*TextBufferClass) }); ok {
-		klass := (*TextBufferClass)(gextras.NewStructNative(gclass))
-		goval.InitTextBuffer(klass)
+
+	if classInitFunc != nil {
+		class := (*TextBufferClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassTextBuffer(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextBuffer(*TextBufferClass) }); ok {
-		klass := (*TextBufferClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextBuffer(klass)
-	}
-}
-
-//export _gotk4_gtk3_TextBufferClass_apply_tag
-func _gotk4_gtk3_TextBufferClass_apply_tag(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		ApplyTag(tag *TextTag, start, end *TextIter)
-	})
-
-	var _tag *TextTag    // out
-	var _start *TextIter // out
-	var _end *TextIter   // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	iface.ApplyTag(_tag, _start, _end)
-}
-
-//export _gotk4_gtk3_TextBufferClass_begin_user_action
-func _gotk4_gtk3_TextBufferClass_begin_user_action(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ BeginUserAction() })
-
-	iface.BeginUserAction()
-}
-
-//export _gotk4_gtk3_TextBufferClass_changed
-func _gotk4_gtk3_TextBufferClass_changed(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Changed() })
-
-	iface.Changed()
-}
-
-//export _gotk4_gtk3_TextBufferClass_delete_range
-func _gotk4_gtk3_TextBufferClass_delete_range(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GtkTextIter) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ DeleteRange(start, end *TextIter) })
-
-	var _start *TextIter // out
-	var _end *TextIter   // out
-
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	iface.DeleteRange(_start, _end)
-}
-
-//export _gotk4_gtk3_TextBufferClass_end_user_action
-func _gotk4_gtk3_TextBufferClass_end_user_action(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ EndUserAction() })
-
-	iface.EndUserAction()
-}
-
-//export _gotk4_gtk3_TextBufferClass_insert_child_anchor
-func _gotk4_gtk3_TextBufferClass_insert_child_anchor(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GtkTextChildAnchor) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor)
-	})
-
-	var _iter *TextIter          // out
-	var _anchor *TextChildAnchor // out
-
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_anchor = wrapTextChildAnchor(coreglib.Take(unsafe.Pointer(arg2)))
-
-	iface.InsertChildAnchor(_iter, _anchor)
-}
-
-//export _gotk4_gtk3_TextBufferClass_insert_pixbuf
-func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GdkPixbuf) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
-	})
-
-	var _iter *TextIter           // out
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	{
-		obj := coreglib.Take(unsafe.Pointer(arg2))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
-				},
-			},
-		}
-	}
-
-	iface.InsertPixbuf(_iter, _pixbuf)
-}
-
-//export _gotk4_gtk3_TextBufferClass_insert_text
-func _gotk4_gtk3_TextBufferClass_insert_text(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		InsertText(pos *TextIter, newText string, newTextLength int)
-	})
-
-	var _pos *TextIter     // out
-	var _newText string    // out
-	var _newTextLength int // out
-
-	_pos = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_newText = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_newTextLength = int(arg3)
-
-	iface.InsertText(_pos, _newText, _newTextLength)
-}
-
-//export _gotk4_gtk3_TextBufferClass_mark_deleted
-func _gotk4_gtk3_TextBufferClass_mark_deleted(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextMark) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MarkDeleted(mark *TextMark) })
-
-	var _mark *TextMark // out
-
-	_mark = wrapTextMark(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.MarkDeleted(_mark)
-}
-
-//export _gotk4_gtk3_TextBufferClass_mark_set
-func _gotk4_gtk3_TextBufferClass_mark_set(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextIter, arg2 *C.GtkTextMark) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		MarkSet(location *TextIter, mark *TextMark)
-	})
-
-	var _location *TextIter // out
-	var _mark *TextMark     // out
-
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_mark = wrapTextMark(coreglib.Take(unsafe.Pointer(arg2)))
-
-	iface.MarkSet(_location, _mark)
-}
-
-//export _gotk4_gtk3_TextBufferClass_modified_changed
-func _gotk4_gtk3_TextBufferClass_modified_changed(arg0 *C.GtkTextBuffer) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ModifiedChanged() })
-
-	iface.ModifiedChanged()
-}
-
-//export _gotk4_gtk3_TextBufferClass_paste_done
-func _gotk4_gtk3_TextBufferClass_paste_done(arg0 *C.GtkTextBuffer, arg1 *C.GtkClipboard) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ PasteDone(clipboard *Clipboard) })
-
-	var _clipboard *Clipboard // out
-
-	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.PasteDone(_clipboard)
-}
-
-//export _gotk4_gtk3_TextBufferClass_remove_tag
-func _gotk4_gtk3_TextBufferClass_remove_tag(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RemoveTag(tag *TextTag, start, end *TextIter)
-	})
-
-	var _tag *TextTag    // out
-	var _start *TextIter // out
-	var _end *TextIter   // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	iface.RemoveTag(_tag, _start, _end)
 }
 
 func wrapTextBuffer(obj *coreglib.Object) *TextBuffer {
@@ -491,30 +346,6 @@ func wrapTextBuffer(obj *coreglib.Object) *TextBuffer {
 
 func marshalTextBuffer(p uintptr) (interface{}, error) {
 	return wrapTextBuffer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_TextBuffer_ConnectApplyTag
-func _gotk4_gtk3_TextBuffer_ConnectApplyTag(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 C.guintptr) {
-	var f func(tag *TextTag, start, end *TextIter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tag *TextTag, start, end *TextIter))
-	}
-
-	var _tag *TextTag    // out
-	var _start *TextIter // out
-	var _end *TextIter   // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	f(_tag, _start, _end)
 }
 
 // ConnectApplyTag signal is emitted to apply a tag to a range of text in a
@@ -529,22 +360,6 @@ func (buffer *TextBuffer) ConnectApplyTag(f func(tag *TextTag, start, end *TextI
 	return coreglib.ConnectGeneratedClosure(buffer, "apply-tag", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectApplyTag), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectBeginUserAction
-func _gotk4_gtk3_TextBuffer_ConnectBeginUserAction(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectBeginUserAction signal is emitted at the beginning of a single
 // user-visible operation on a TextBuffer.
 //
@@ -557,48 +372,10 @@ func (buffer *TextBuffer) ConnectBeginUserAction(f func()) coreglib.SignalHandle
 	return coreglib.ConnectGeneratedClosure(buffer, "begin-user-action", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectBeginUserAction), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectChanged
-func _gotk4_gtk3_TextBuffer_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectChanged signal is emitted when the content of a TextBuffer has
 // changed.
 func (buffer *TextBuffer) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "changed", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectChanged), f)
-}
-
-//export _gotk4_gtk3_TextBuffer_ConnectDeleteRange
-func _gotk4_gtk3_TextBuffer_ConnectDeleteRange(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GtkTextIter, arg3 C.guintptr) {
-	var f func(start, end *TextIter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(start, end *TextIter))
-	}
-
-	var _start *TextIter // out
-	var _end *TextIter   // out
-
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-
-	f(_start, _end)
 }
 
 // ConnectDeleteRange signal is emitted to delete a range from a TextBuffer.
@@ -614,22 +391,6 @@ func (buffer *TextBuffer) ConnectDeleteRange(f func(start, end *TextIter)) coreg
 	return coreglib.ConnectGeneratedClosure(buffer, "delete-range", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectDeleteRange), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectEndUserAction
-func _gotk4_gtk3_TextBuffer_ConnectEndUserAction(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectEndUserAction signal is emitted at the end of a single user-visible
 // operation on the TextBuffer.
 //
@@ -640,28 +401,6 @@ func _gotk4_gtk3_TextBuffer_ConnectEndUserAction(arg0 C.gpointer, arg1 C.guintpt
 // gtk_text_buffer_delete_selection(), gtk_text_buffer_backspace().
 func (buffer *TextBuffer) ConnectEndUserAction(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "end-user-action", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectEndUserAction), f)
-}
-
-//export _gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor
-func _gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GtkTextChildAnchor, arg3 C.guintptr) {
-	var f func(location *TextIter, anchor *TextChildAnchor)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(location *TextIter, anchor *TextChildAnchor))
-	}
-
-	var _location *TextIter      // out
-	var _anchor *TextChildAnchor // out
-
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_anchor = wrapTextChildAnchor(coreglib.Take(unsafe.Pointer(arg2)))
-
-	f(_location, _anchor)
 }
 
 // ConnectInsertChildAnchor signal is emitted to insert a TextChildAnchor in a
@@ -676,38 +415,6 @@ func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, an
 	return coreglib.ConnectGeneratedClosure(buffer, "insert-child-anchor", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf
-func _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GdkPixbuf, arg3 C.guintptr) {
-	var f func(location *TextIter, pixbuf *gdkpixbuf.Pixbuf)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(location *TextIter, pixbuf *gdkpixbuf.Pixbuf))
-	}
-
-	var _location *TextIter       // out
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	{
-		obj := coreglib.Take(unsafe.Pointer(arg2))
-		_pixbuf = &gdkpixbuf.Pixbuf{
-			Object: obj,
-			LoadableIcon: gio.LoadableIcon{
-				Icon: gio.Icon{
-					Object: obj,
-				},
-			},
-		}
-	}
-
-	f(_location, _pixbuf)
-}
-
 // ConnectInsertPixbuf signal is emitted to insert a Pixbuf in a TextBuffer.
 // Insertion actually occurs in the default handler.
 //
@@ -718,30 +425,6 @@ func _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(arg0 C.gpointer, arg1 *C.GtkText
 // See also: gtk_text_buffer_insert_pixbuf().
 func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location *TextIter, pixbuf *gdkpixbuf.Pixbuf)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "insert-pixbuf", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectInsertPixbuf), f)
-}
-
-//export _gotk4_gtk3_TextBuffer_ConnectInsertText
-func _gotk4_gtk3_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.gchar, arg3 C.gint, arg4 C.guintptr) {
-	var f func(location *TextIter, text string, len int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(location *TextIter, text string, len int))
-	}
-
-	var _location *TextIter // out
-	var _text string        // out
-	var _len int            // out
-
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	_len = int(arg3)
-
-	f(_location, _text, _len)
 }
 
 // ConnectInsertText signal is emitted to insert text in a TextBuffer. Insertion
@@ -756,26 +439,6 @@ func (buffer *TextBuffer) ConnectInsertText(f func(location *TextIter, text stri
 	return coreglib.ConnectGeneratedClosure(buffer, "insert-text", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectInsertText), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectMarkDeleted
-func _gotk4_gtk3_TextBuffer_ConnectMarkDeleted(arg0 C.gpointer, arg1 *C.GtkTextMark, arg2 C.guintptr) {
-	var f func(mark *TextMark)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(mark *TextMark))
-	}
-
-	var _mark *TextMark // out
-
-	_mark = wrapTextMark(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_mark)
-}
-
 // ConnectMarkDeleted signal is emitted as notification after a TextMark is
 // deleted.
 //
@@ -784,49 +447,11 @@ func (buffer *TextBuffer) ConnectMarkDeleted(f func(mark *TextMark)) coreglib.Si
 	return coreglib.ConnectGeneratedClosure(buffer, "mark-deleted", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectMarkDeleted), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectMarkSet
-func _gotk4_gtk3_TextBuffer_ConnectMarkSet(arg0 C.gpointer, arg1 *C.GtkTextIter, arg2 *C.GtkTextMark, arg3 C.guintptr) {
-	var f func(location *TextIter, mark *TextMark)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(location *TextIter, mark *TextMark))
-	}
-
-	var _location *TextIter // out
-	var _mark *TextMark     // out
-
-	_location = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_mark = wrapTextMark(coreglib.Take(unsafe.Pointer(arg2)))
-
-	f(_location, _mark)
-}
-
 // ConnectMarkSet signal is emitted as notification after a TextMark is set.
 //
 // See also: gtk_text_buffer_create_mark(), gtk_text_buffer_move_mark().
 func (buffer *TextBuffer) ConnectMarkSet(f func(location *TextIter, mark *TextMark)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "mark-set", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectMarkSet), f)
-}
-
-//export _gotk4_gtk3_TextBuffer_ConnectModifiedChanged
-func _gotk4_gtk3_TextBuffer_ConnectModifiedChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectModifiedChanged signal is emitted when the modified bit of a
@@ -837,55 +462,11 @@ func (buffer *TextBuffer) ConnectModifiedChanged(f func()) coreglib.SignalHandle
 	return coreglib.ConnectGeneratedClosure(buffer, "modified-changed", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectModifiedChanged), f)
 }
 
-//export _gotk4_gtk3_TextBuffer_ConnectPasteDone
-func _gotk4_gtk3_TextBuffer_ConnectPasteDone(arg0 C.gpointer, arg1 *C.GtkClipboard, arg2 C.guintptr) {
-	var f func(clipboard *Clipboard)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(clipboard *Clipboard))
-	}
-
-	var _clipboard *Clipboard // out
-
-	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(arg1)))
-
-	f(_clipboard)
-}
-
 // ConnectPasteDone signal is emitted after paste operation has been completed.
 // This is useful to properly scroll the view to the end of the pasted text. See
 // gtk_text_buffer_paste_clipboard() for more details.
 func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard *Clipboard)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "paste-done", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectPasteDone), f)
-}
-
-//export _gotk4_gtk3_TextBuffer_ConnectRemoveTag
-func _gotk4_gtk3_TextBuffer_ConnectRemoveTag(arg0 C.gpointer, arg1 *C.GtkTextTag, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 C.guintptr) {
-	var f func(tag *TextTag, start, end *TextIter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(tag *TextTag, start, end *TextIter))
-	}
-
-	var _tag *TextTag    // out
-	var _start *TextIter // out
-	var _end *TextIter   // out
-
-	_tag = wrapTextTag(coreglib.Take(unsafe.Pointer(arg1)))
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
-
-	f(_tag, _start, _end)
 }
 
 // ConnectRemoveTag signal is emitted to remove all occurrences of tag from a
@@ -926,33 +507,6 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	_textBuffer = wrapTextBuffer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textBuffer
-}
-
-// AddMark adds the mark at position where. The mark must not be added to
-// another buffer, and if its name is not NULL then there must not be another
-// mark in the buffer with the same name.
-//
-// Emits the TextBuffer::mark-set signal as notification of the mark's initial
-// placement.
-//
-// The function takes the following parameters:
-//
-//    - mark to add.
-//    - where: location to place mark.
-//
-func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextMark   // out
-	var _arg2 *C.GtkTextIter   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
-
-	C.gtk_text_buffer_add_mark(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(mark)
-	runtime.KeepAlive(where)
 }
 
 // AddSelectionClipboard adds clipboard to the list of clipboards in which the
@@ -1029,57 +583,6 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
-}
-
-// Backspace performs the appropriate action as if the user hit the delete key
-// with the cursor at the position specified by iter. In the normal case a
-// single character will be deleted, but when combining accents are involved,
-// more than one character can be deleted, and when precomposed character and
-// accent combinations are involved, less than one character will be deleted.
-//
-// Because the buffer is modified, all outstanding iterators become invalid
-// after calling this function; however, the iter will be re-initialized to
-// point to the location where text was deleted.
-//
-// The function takes the following parameters:
-//
-//    - iter: position in buffer.
-//    - interactive: whether the deletion is caused by user interaction.
-//    - defaultEditable: whether the buffer is editable by default.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the buffer was modified.
-//
-func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable bool) bool {
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 C.gboolean       // out
-	var _arg3 C.gboolean       // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	if interactive {
-		_arg2 = C.TRUE
-	}
-	if defaultEditable {
-		_arg3 = C.TRUE
-	}
-
-	_cret = C.gtk_text_buffer_backspace(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(interactive)
-	runtime.KeepAlive(defaultEditable)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // BeginUserAction: called to indicate that the buffer operations between here
@@ -1460,39 +963,6 @@ func (buffer *TextBuffer) CharCount() int {
 	return _gint
 }
 
-// CopyTargetList: this function returns the list of targets this text buffer
-// can provide for copying and as DND source. The targets in the list are added
-// with info values from the TextBufferTargetInfo enum, using
-// gtk_target_list_add_rich_text_targets() and
-// gtk_target_list_add_text_targets().
-//
-// The function returns the following values:
-//
-//    - targetList: TargetList.
-//
-func (buffer *TextBuffer) CopyTargetList() *TargetList {
-	var _arg0 *C.GtkTextBuffer // out
-	var _cret *C.GtkTargetList // in
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	_cret = C.gtk_text_buffer_get_copy_target_list(_arg0)
-	runtime.KeepAlive(buffer)
-
-	var _targetList *TargetList // out
-
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_target_list_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_targetList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
-		},
-	)
-
-	return _targetList
-}
-
 // EndIter initializes iter with the “end iterator,” one past the last valid
 // character in the text buffer. If dereferenced with gtk_text_iter_get_char(),
 // the end iterator has a character value of 0. The entire buffer lies in the
@@ -1518,30 +988,6 @@ func (buffer *TextBuffer) EndIter() *TextIter {
 	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
-}
-
-// HasSelection indicates whether the buffer has some text currently selected.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the there is text selected.
-//
-func (buffer *TextBuffer) HasSelection() bool {
-	var _arg0 *C.GtkTextBuffer // out
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	_cret = C.gtk_text_buffer_get_has_selection(_arg0)
-	runtime.KeepAlive(buffer)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // GetInsert returns the mark that represents the cursor (insertion point).
@@ -1850,39 +1296,6 @@ func (buffer *TextBuffer) Modified() bool {
 	}
 
 	return _ok
-}
-
-// PasteTargetList: this function returns the list of targets this text buffer
-// supports for pasting and as DND destination. The targets in the list are
-// added with info values from the TextBufferTargetInfo enum, using
-// gtk_target_list_add_rich_text_targets() and
-// gtk_target_list_add_text_targets().
-//
-// The function returns the following values:
-//
-//    - targetList: TargetList.
-//
-func (buffer *TextBuffer) PasteTargetList() *TargetList {
-	var _arg0 *C.GtkTextBuffer // out
-	var _cret *C.GtkTargetList // in
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	_cret = C.gtk_text_buffer_get_paste_target_list(_arg0)
-	runtime.KeepAlive(buffer)
-
-	var _targetList *TargetList // out
-
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_target_list_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_targetList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
-		},
-	)
-
-	return _targetList
 }
 
 // SelectionBound returns the mark that represents the selection bound.
@@ -2274,37 +1687,6 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 	return _ok
 }
 
-// InsertMarkup inserts the text in markup at position iter. markup will be
-// inserted in its entirety and must be nul-terminated and valid UTF-8. Emits
-// the TextBuffer::insert-text signal, possibly multiple times; insertion
-// actually occurs in the default handler for the signal. iter will point to the
-// end of the inserted text on return.
-//
-// The function takes the following parameters:
-//
-//    - iter: location to insert the markup.
-//    - markup: nul-terminated UTF-8 string containing [Pango
-//      markup][PangoMarkupFormat].
-//
-func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.char          // out
-	var _arg3 C.gint
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg3 = (C.gint)(len(markup))
-	_arg2 = (*C.char)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(markup)), markup)
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(markup)
-}
-
 // InsertPixbuf inserts an image into the text buffer at iter. The image will be
 // counted as one character in character counts, and when obtaining the buffer
 // contents as a string, will be represented by the Unicode “object replacement
@@ -2621,33 +2003,6 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	runtime.KeepAlive(end)
 }
 
-// SelectRange: this function moves the “insert” and “selection_bound” marks
-// simultaneously. If you move them in two steps with
-// gtk_text_buffer_move_mark(), you will temporarily select a region in between
-// their old and new locations, which can be pretty inefficient since the
-// temporarily-selected region will force stuff to be recalculated. This
-// function moves them as a unit, which can be optimized.
-//
-// The function takes the following parameters:
-//
-//    - ins: where to put the “insert” mark.
-//    - bound: where to put the “selection_bound” mark.
-//
-func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.GtkTextIter   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(ins)))
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(bound)))
-
-	C.gtk_text_buffer_select_range(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(ins)
-	runtime.KeepAlive(bound)
-}
-
 // SetModified: used to keep track of whether the buffer has been modified since
 // the last time it was saved. Whenever the buffer is saved to disk, call
 // gtk_text_buffer_set_modified (buffer, FALSE). When the buffer is modified, it
@@ -2693,6 +2048,307 @@ func (buffer *TextBuffer) SetText(text string) {
 	C.gtk_text_buffer_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(text)
+}
+
+// applyTag emits the “apply-tag” signal on buffer. The default handler for the
+// signal applies tag to the given range. start and end do not have to be in
+// order.
+//
+// The function takes the following parameters:
+//
+//    - tag: TextTag.
+//    - start: one bound of range to be tagged.
+//    - end: other bound of range to be tagged.
+//
+func (buffer *TextBuffer) applyTag(tag *TextTag, start, end *TextIter) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.apply_tag
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextTag    // out
+	var _arg2 *C.GtkTextIter   // out
+	var _arg3 *C.GtkTextIter   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
+
+	C._gotk4_gtk3_TextBuffer_virtual_apply_tag(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+}
+
+// beginUserAction: called to indicate that the buffer operations between here
+// and a call to gtk_text_buffer_end_user_action() are part of a single
+// user-visible operation. The operations between
+// gtk_text_buffer_begin_user_action() and gtk_text_buffer_end_user_action() can
+// then be grouped when creating an undo stack. TextBuffer maintains a count of
+// calls to gtk_text_buffer_begin_user_action() that have not been closed with a
+// call to gtk_text_buffer_end_user_action(), and emits the “begin-user-action”
+// and “end-user-action” signals only for the outermost pair of calls. This
+// allows you to build user actions from other user actions.
+//
+// The “interactive” buffer mutation functions, such as
+// gtk_text_buffer_insert_interactive(), automatically call begin/end user
+// action around the buffer operations they perform, so there's no need to add
+// extra calls if you user action consists solely of a single call to one of
+// those functions.
+func (buffer *TextBuffer) beginUserAction() {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.begin_user_action
+
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_begin_user_action(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(buffer)
+}
+
+func (buffer *TextBuffer) changed() {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(buffer)
+}
+
+// The function takes the following parameters:
+//
+//    - start
+//    - end
+//
+func (buffer *TextBuffer) deleteRange(start, end *TextIter) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.delete_range
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GtkTextIter   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
+
+	C._gotk4_gtk3_TextBuffer_virtual_delete_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+}
+
+// endUserAction: should be paired with a call to
+// gtk_text_buffer_begin_user_action(). See that function for a full
+// explanation.
+func (buffer *TextBuffer) endUserAction() {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.end_user_action
+
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_end_user_action(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(buffer)
+}
+
+// insertChildAnchor inserts a child widget anchor into the text buffer at iter.
+// The anchor will be counted as one character in character counts, and when
+// obtaining the buffer contents as a string, will be represented by the Unicode
+// “object replacement character” 0xFFFC. Note that the “slice” variants for
+// obtaining portions of the buffer as a string include this character for child
+// anchors, but the “text” variants do not. E.g. see gtk_text_buffer_get_slice()
+// and gtk_text_buffer_get_text(). Consider
+// gtk_text_buffer_create_child_anchor() as a more convenient alternative to
+// this function. The buffer will add a reference to the anchor, so you can
+// unref it after insertion.
+//
+// The function takes the following parameters:
+//
+//    - iter: location to insert the anchor.
+//    - anchor: TextChildAnchor.
+//
+func (buffer *TextBuffer) insertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.insert_child_anchor
+
+	var _arg0 *C.GtkTextBuffer      // out
+	var _arg1 *C.GtkTextIter        // out
+	var _arg2 *C.GtkTextChildAnchor // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_insert_child_anchor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(anchor)
+}
+
+// insertPixbuf inserts an image into the text buffer at iter. The image will be
+// counted as one character in character counts, and when obtaining the buffer
+// contents as a string, will be represented by the Unicode “object replacement
+// character” 0xFFFC. Note that the “slice” variants for obtaining portions of
+// the buffer as a string include this character for pixbufs, but the “text”
+// variants do not. e.g. see gtk_text_buffer_get_slice() and
+// gtk_text_buffer_get_text().
+//
+// The function takes the following parameters:
+//
+//    - iter: location to insert the pixbuf.
+//    - pixbuf: Pixbuf.
+//
+func (buffer *TextBuffer) insertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.insert_pixbuf
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GdkPixbuf     // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_insert_pixbuf(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(pixbuf)
+}
+
+// The function takes the following parameters:
+//
+//    - pos
+//    - newText
+//    - newTextLength
+//
+func (buffer *TextBuffer) insertText(pos *TextIter, newText string, newTextLength int) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.insert_text
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.gchar         // out
+	var _arg3 C.gint           // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(pos)))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(newText)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gint(newTextLength)
+
+	C._gotk4_gtk3_TextBuffer_virtual_insert_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(pos)
+	runtime.KeepAlive(newText)
+	runtime.KeepAlive(newTextLength)
+}
+
+// The function takes the following parameters:
+//
+func (buffer *TextBuffer) markDeleted(mark *TextMark) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.mark_deleted
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextMark   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_mark_deleted(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(mark)
+}
+
+// The function takes the following parameters:
+//
+//    - location
+//    - mark
+//
+func (buffer *TextBuffer) markSet(location *TextIter, mark *TextMark) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.mark_set
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GtkTextMark   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(location)))
+	_arg2 = (*C.GtkTextMark)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_mark_set(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(mark)
+}
+
+func (buffer *TextBuffer) modifiedChanged() {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.modified_changed
+
+	var _arg0 *C.GtkTextBuffer // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_modified_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(buffer)
+}
+
+// The function takes the following parameters:
+//
+func (buffer *TextBuffer) pasteDone(clipboard *Clipboard) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.paste_done
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkClipboard  // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	C._gotk4_gtk3_TextBuffer_virtual_paste_done(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(clipboard)
+}
+
+// removeTag emits the “remove-tag” signal. The default handler for the signal
+// removes all occurrences of tag from the given range. start and end don’t have
+// to be in order.
+//
+// The function takes the following parameters:
+//
+//    - tag: TextTag.
+//    - start: one bound of range to be untagged.
+//    - end: other bound of range to be untagged.
+//
+func (buffer *TextBuffer) removeTag(tag *TextTag, start, end *TextIter) {
+	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.remove_tag
+
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextTag    // out
+	var _arg2 *C.GtkTextIter   // out
+	var _arg3 *C.GtkTextIter   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
+
+	C._gotk4_gtk3_TextBuffer_virtual_remove_tag(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
 }
 
 // TextBufferClass: instance of this type is always passed by reference.

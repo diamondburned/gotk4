@@ -14,12 +14,30 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
-// extern GtkSizeRequestMode _gotk4_gtk4_LayoutManagerClass_get_request_mode(GtkLayoutManager*, GtkWidget*);
-// extern void _gotk4_gtk4_LayoutManagerClass_allocate(GtkLayoutManager*, GtkWidget*, int, int, int);
-// extern void _gotk4_gtk4_LayoutManagerClass_measure(GtkLayoutManager*, GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
-// extern void _gotk4_gtk4_LayoutManagerClass_root(GtkLayoutManager*);
 // extern void _gotk4_gtk4_LayoutManagerClass_unroot(GtkLayoutManager*);
+// extern void _gotk4_gtk4_LayoutManagerClass_root(GtkLayoutManager*);
+// extern void _gotk4_gtk4_LayoutManagerClass_measure(GtkLayoutManager*, GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
+// extern void _gotk4_gtk4_LayoutManagerClass_allocate(GtkLayoutManager*, GtkWidget*, int, int, int);
+// extern GtkSizeRequestMode _gotk4_gtk4_LayoutManagerClass_get_request_mode(GtkLayoutManager*, GtkWidget*);
+// extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
+// GtkLayoutChild* _gotk4_gtk4_LayoutManager_virtual_create_layout_child(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1, GtkWidget* arg2) {
+//   return ((GtkLayoutChild* (*)(GtkLayoutManager*, GtkWidget*, GtkWidget*))(fnptr))(arg0, arg1, arg2);
+// };
+// GtkSizeRequestMode _gotk4_gtk4_LayoutManager_virtual_get_request_mode(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1) {
+//   return ((GtkSizeRequestMode (*)(GtkLayoutManager*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_LayoutManager_virtual_allocate(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1, int arg2, int arg3, int arg4) {
+//   ((void (*)(GtkLayoutManager*, GtkWidget*, int, int, int))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gtk4_LayoutManager_virtual_measure(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1, GtkOrientation arg2, int arg3, int* arg4, int* arg5, int* arg6, int* arg7) {
+//   ((void (*)(GtkLayoutManager*, GtkWidget*, GtkOrientation, int, int*, int*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+// };
+// void _gotk4_gtk4_LayoutManager_virtual_root(void* fnptr, GtkLayoutManager* arg0) {
+//   ((void (*)(GtkLayoutManager*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_LayoutManager_virtual_unroot(void* fnptr, GtkLayoutManager* arg0) {
+//   ((void (*)(GtkLayoutManager*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -33,8 +51,8 @@ func init() {
 	})
 }
 
-// LayoutManagerOverrider contains methods that are overridable.
-type LayoutManagerOverrider interface {
+// LayoutManagerOverrides contains methods that are overridable.
+type LayoutManagerOverrides struct {
 	// Allocate assigns the given width, height, and baseline to a widget, and
 	// computes the position and sizes of the children of the widget using the
 	// layout management policy of manager.
@@ -46,7 +64,7 @@ type LayoutManagerOverrider interface {
 	//    - height: new height of the widget.
 	//    - baseline position of the widget, or -1.
 	//
-	Allocate(widget Widgetter, width, height, baseline int)
+	Allocate func(widget Widgetter, width, height, baseline int)
 	// CreateLayoutChild: create a LayoutChild instance for the given for_child
 	// widget.
 	//
@@ -59,12 +77,12 @@ type LayoutManagerOverrider interface {
 	//
 	//    - layoutChild: LayoutChild.
 	//
-	CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
+	CreateLayoutChild func(widget, forChild Widgetter) LayoutChilder
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	RequestMode(widget Widgetter) SizeRequestMode
+	RequestMode func(widget Widgetter) SizeRequestMode
 	// Measure measures the size of the widget using manager, for the given
 	// orientation and size.
 	//
@@ -89,9 +107,20 @@ type LayoutManagerOverrider interface {
 	//    - minimumBaseline (optional): baseline position for the minimum size.
 	//    - naturalBaseline (optional): baseline position for the natural size.
 	//
-	Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	Root()
-	Unroot()
+	Measure func(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
+	Root    func()
+	Unroot  func()
+}
+
+func defaultLayoutManagerOverrides(v *LayoutManager) LayoutManagerOverrides {
+	return LayoutManagerOverrides{
+		Allocate:          v.allocate,
+		CreateLayoutChild: v.createLayoutChild,
+		RequestMode:       v.requestMode,
+		Measure:           v.measure,
+		Root:              v.root,
+		Unroot:            v.unroot,
+	}
 }
 
 // LayoutManager: layout managers are delegate classes that handle the preferred
@@ -162,238 +191,45 @@ type LayoutManagerer interface {
 var _ LayoutManagerer = (*LayoutManager)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeLayoutManager,
-		GoType:        reflect.TypeOf((*LayoutManager)(nil)),
-		InitClass:     initClassLayoutManager,
-		FinalizeClass: finalizeClassLayoutManager,
-	})
+	coreglib.RegisterClassInfo[*LayoutManager, *LayoutManagerClass, LayoutManagerOverrides](
+		GTypeLayoutManager,
+		initLayoutManagerClass,
+		wrapLayoutManager,
+		defaultLayoutManagerOverrides,
+	)
 }
 
-func initClassLayoutManager(gclass unsafe.Pointer, goval any) {
+func initLayoutManagerClass(gclass unsafe.Pointer, overrides LayoutManagerOverrides, classInitFunc func(*LayoutManagerClass)) {
+	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeLayoutManager))))
 
-	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Allocate(widget Widgetter, width, height, baseline int)
-	}); ok {
+	if overrides.Allocate != nil {
 		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_allocate)
 	}
 
-	if _, ok := goval.(interface {
-		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
-	}); ok {
+	if overrides.CreateLayoutChild != nil {
 		pclass.create_layout_child = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_create_layout_child)
 	}
 
-	if _, ok := goval.(interface {
-		RequestMode(widget Widgetter) SizeRequestMode
-	}); ok {
+	if overrides.RequestMode != nil {
 		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_get_request_mode)
 	}
 
-	if _, ok := goval.(interface {
-		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	}); ok {
+	if overrides.Measure != nil {
 		pclass.measure = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_measure)
 	}
 
-	if _, ok := goval.(interface{ Root() }); ok {
+	if overrides.Root != nil {
 		pclass.root = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_root)
 	}
 
-	if _, ok := goval.(interface{ Unroot() }); ok {
+	if overrides.Unroot != nil {
 		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_unroot)
 	}
-	if goval, ok := goval.(interface{ InitLayoutManager(*LayoutManagerClass) }); ok {
-		klass := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
-		goval.InitLayoutManager(klass)
+
+	if classInitFunc != nil {
+		class := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassLayoutManager(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeLayoutManager(*LayoutManagerClass) }); ok {
-		klass := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeLayoutManager(klass)
-	}
-}
-
-//export _gotk4_gtk4_LayoutManagerClass_allocate
-func _gotk4_gtk4_LayoutManagerClass_allocate(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.int, arg3 C.int, arg4 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Allocate(widget Widgetter, width, height, baseline int)
-	})
-
-	var _widget Widgetter // out
-	var _width int        // out
-	var _height int       // out
-	var _baseline int     // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_width = int(arg2)
-	_height = int(arg3)
-	_baseline = int(arg4)
-
-	iface.Allocate(_widget, _width, _height, _baseline)
-}
-
-//export _gotk4_gtk4_LayoutManagerClass_create_layout_child
-func _gotk4_gtk4_LayoutManagerClass_create_layout_child(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 *C.GtkWidget) (cret *C.GtkLayoutChild) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
-	})
-
-	var _widget Widgetter   // out
-	var _forChild Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_forChild = rv
-	}
-
-	layoutChild := iface.CreateLayoutChild(_widget, _forChild)
-
-	cret = (*C.GtkLayoutChild)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(layoutChild).Native()))
-
-	return cret
-}
-
-//export _gotk4_gtk4_LayoutManagerClass_get_request_mode
-func _gotk4_gtk4_LayoutManagerClass_get_request_mode(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		RequestMode(widget Widgetter) SizeRequestMode
-	})
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	sizeRequestMode := iface.RequestMode(_widget)
-
-	cret = C.GtkSizeRequestMode(sizeRequestMode)
-
-	return cret
-}
-
-//export _gotk4_gtk4_LayoutManagerClass_measure
-func _gotk4_gtk4_LayoutManagerClass_measure(arg0 *C.GtkLayoutManager, arg1 *C.GtkWidget, arg2 C.GtkOrientation, arg3 C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int, arg7 *C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	})
-
-	var _widget Widgetter        // out
-	var _orientation Orientation // out
-	var _forSize int             // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	_orientation = Orientation(arg2)
-	_forSize = int(arg3)
-
-	minimum, natural, minimumBaseline, naturalBaseline := iface.Measure(_widget, _orientation, _forSize)
-
-	*arg4 = C.int(minimum)
-	*arg5 = C.int(natural)
-	*arg6 = C.int(minimumBaseline)
-	*arg7 = C.int(naturalBaseline)
-}
-
-//export _gotk4_gtk4_LayoutManagerClass_root
-func _gotk4_gtk4_LayoutManagerClass_root(arg0 *C.GtkLayoutManager) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Root() })
-
-	iface.Root()
-}
-
-//export _gotk4_gtk4_LayoutManagerClass_unroot
-func _gotk4_gtk4_LayoutManagerClass_unroot(arg0 *C.GtkLayoutManager) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Unroot() })
-
-	iface.Unroot()
 }
 
 func wrapLayoutManager(obj *coreglib.Object) *LayoutManager {
@@ -626,6 +462,204 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	_naturalBaseline = int(_arg7)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
+}
+
+// Allocate assigns the given width, height, and baseline to a widget, and
+// computes the position and sizes of the children of the widget using the
+// layout management policy of manager.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget using manager.
+//    - width: new width of the widget.
+//    - height: new height of the widget.
+//    - baseline position of the widget, or -1.
+//
+func (manager *LayoutManager) allocate(widget Widgetter, width, height, baseline int) {
+	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.allocate
+
+	var _arg0 *C.GtkLayoutManager // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _arg4 C.int               // out
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(baseline)
+
+	C._gotk4_gtk4_LayoutManager_virtual_allocate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(baseline)
+}
+
+// createLayoutChild: create a LayoutChild instance for the given for_child
+// widget.
+//
+// The function takes the following parameters:
+//
+//    - widget using the manager.
+//    - forChild: child of widget.
+//
+// The function returns the following values:
+//
+//    - layoutChild: LayoutChild.
+//
+func (manager *LayoutManager) createLayoutChild(widget, forChild Widgetter) LayoutChilder {
+	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.create_layout_child
+
+	var _arg0 *C.GtkLayoutManager // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 *C.GtkWidget        // out
+	var _cret *C.GtkLayoutChild   // in
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(forChild).Native()))
+
+	_cret = C._gotk4_gtk4_LayoutManager_virtual_create_layout_child(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(forChild)
+
+	var _layoutChild LayoutChilder // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.LayoutChilder is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(LayoutChilder)
+			return ok
+		})
+		rv, ok := casted.(LayoutChilder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.LayoutChilder")
+		}
+		_layoutChild = rv
+	}
+
+	return _layoutChild
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (manager *LayoutManager) requestMode(widget Widgetter) SizeRequestMode {
+	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.get_request_mode
+
+	var _arg0 *C.GtkLayoutManager  // out
+	var _arg1 *C.GtkWidget         // out
+	var _cret C.GtkSizeRequestMode // in
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C._gotk4_gtk4_LayoutManager_virtual_get_request_mode(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+
+	var _sizeRequestMode SizeRequestMode // out
+
+	_sizeRequestMode = SizeRequestMode(_cret)
+
+	return _sizeRequestMode
+}
+
+// Measure measures the size of the widget using manager, for the given
+// orientation and size.
+//
+// See the gtk.Widget documentation on layout management for more details.
+//
+// The function takes the following parameters:
+//
+//    - widget: GtkWidget using manager.
+//    - orientation to measure.
+//    - forSize: size for the opposite of orientation; for instance, if the
+//      orientation is GTK_ORIENTATION_HORIZONTAL, this is the height of the
+//      widget; if the orientation is GTK_ORIENTATION_VERTICAL, this is the width
+//      of the widget. This allows to measure the height for the given width, and
+//      the width for the given height. Use -1 if the size is not known.
+//
+// The function returns the following values:
+//
+//    - minimum (optional) size for the given size and orientation.
+//    - natural (optional): natural, or preferred size for the given size and
+//      orientation.
+//    - minimumBaseline (optional): baseline position for the minimum size.
+//    - naturalBaseline (optional): baseline position for the natural size.
+//
+func (manager *LayoutManager) measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) {
+	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.measure
+
+	var _arg0 *C.GtkLayoutManager // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.GtkOrientation    // out
+	var _arg3 C.int               // out
+	var _arg4 C.int               // in
+	var _arg5 C.int               // in
+	var _arg6 C.int               // in
+	var _arg7 C.int               // in
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.GtkOrientation(orientation)
+	_arg3 = C.int(forSize)
+
+	C._gotk4_gtk4_LayoutManager_virtual_measure(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(forSize)
+
+	var _minimum int         // out
+	var _natural int         // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
+
+	_minimum = int(_arg4)
+	_natural = int(_arg5)
+	_minimumBaseline = int(_arg6)
+	_naturalBaseline = int(_arg7)
+
+	return _minimum, _natural, _minimumBaseline, _naturalBaseline
+}
+
+func (manager *LayoutManager) root() {
+	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.root
+
+	var _arg0 *C.GtkLayoutManager // out
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	C._gotk4_gtk4_LayoutManager_virtual_root(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(manager)
+}
+
+func (manager *LayoutManager) unroot() {
+	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.unroot
+
+	var _arg0 *C.GtkLayoutManager // out
+
+	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	C._gotk4_gtk4_LayoutManager_virtual_unroot(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(manager)
 }
 
 // LayoutManagerClass: GtkLayoutManagerClass structure contains only private

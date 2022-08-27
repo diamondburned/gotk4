@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"reflect"
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -30,8 +29,12 @@ func init() {
 	})
 }
 
-// SeparatorOverrider contains methods that are overridable.
-type SeparatorOverrider interface {
+// SeparatorOverrides contains methods that are overridable.
+type SeparatorOverrides struct {
+}
+
+func defaultSeparatorOverrides(v *Separator) SeparatorOverrides {
+	return SeparatorOverrides{}
 }
 
 // Separator is a horizontal or vertical separator widget, depending on the
@@ -58,25 +61,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSeparator,
-		GoType:        reflect.TypeOf((*Separator)(nil)),
-		InitClass:     initClassSeparator,
-		FinalizeClass: finalizeClassSeparator,
-	})
+	coreglib.RegisterClassInfo[*Separator, *SeparatorClass, SeparatorOverrides](
+		GTypeSeparator,
+		initSeparatorClass,
+		wrapSeparator,
+		defaultSeparatorOverrides,
+	)
 }
 
-func initClassSeparator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitSeparator(*SeparatorClass) }); ok {
-		klass := (*SeparatorClass)(gextras.NewStructNative(gclass))
-		goval.InitSeparator(klass)
-	}
-}
-
-func finalizeClassSeparator(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSeparator(*SeparatorClass) }); ok {
-		klass := (*SeparatorClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSeparator(klass)
+func initSeparatorClass(gclass unsafe.Pointer, overrides SeparatorOverrides, classInitFunc func(*SeparatorClass)) {
+	if classInitFunc != nil {
+		class := (*SeparatorClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -103,32 +99,6 @@ func wrapSeparator(obj *coreglib.Object) *Separator {
 
 func marshalSeparator(p uintptr) (interface{}, error) {
 	return wrapSeparator(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewSeparator creates a new Separator with the given orientation.
-//
-// The function takes the following parameters:
-//
-//    - orientation separator’s orientation.
-//
-// The function returns the following values:
-//
-//    - separator: new Separator.
-//
-func NewSeparator(orientation Orientation) *Separator {
-	var _arg1 C.GtkOrientation // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-
-	_cret = C.gtk_separator_new(_arg1)
-	runtime.KeepAlive(orientation)
-
-	var _separator *Separator // out
-
-	_separator = wrapSeparator(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _separator
 }
 
 // SeparatorClass: instance of this type is always passed by reference.

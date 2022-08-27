@@ -15,13 +15,13 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_FrameClock_ConnectAfterPaint(gpointer, guintptr);
-// extern void _gotk4_gdk4_FrameClock_ConnectBeforePaint(gpointer, guintptr);
-// extern void _gotk4_gdk4_FrameClock_ConnectFlushEvents(gpointer, guintptr);
-// extern void _gotk4_gdk4_FrameClock_ConnectLayout(gpointer, guintptr);
-// extern void _gotk4_gdk4_FrameClock_ConnectPaint(gpointer, guintptr);
-// extern void _gotk4_gdk4_FrameClock_ConnectResumeEvents(gpointer, guintptr);
 // extern void _gotk4_gdk4_FrameClock_ConnectUpdate(gpointer, guintptr);
+// extern void _gotk4_gdk4_FrameClock_ConnectResumeEvents(gpointer, guintptr);
+// extern void _gotk4_gdk4_FrameClock_ConnectPaint(gpointer, guintptr);
+// extern void _gotk4_gdk4_FrameClock_ConnectLayout(gpointer, guintptr);
+// extern void _gotk4_gdk4_FrameClock_ConnectFlushEvents(gpointer, guintptr);
+// extern void _gotk4_gdk4_FrameClock_ConnectBeforePaint(gpointer, guintptr);
+// extern void _gotk4_gdk4_FrameClock_ConnectAfterPaint(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -187,22 +187,6 @@ func BaseFrameClock(obj FrameClocker) *FrameClock {
 	return obj.baseFrameClock()
 }
 
-//export _gotk4_gdk4_FrameClock_ConnectAfterPaint
-func _gotk4_gdk4_FrameClock_ConnectAfterPaint(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectAfterPaint: this signal ends processing of the frame.
 //
 // Applications should generally not handle this signal.
@@ -210,43 +194,11 @@ func (frameClock *FrameClock) ConnectAfterPaint(f func()) coreglib.SignalHandle 
 	return coreglib.ConnectGeneratedClosure(frameClock, "after-paint", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectAfterPaint), f)
 }
 
-//export _gotk4_gdk4_FrameClock_ConnectBeforePaint
-func _gotk4_gdk4_FrameClock_ConnectBeforePaint(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectBeforePaint begins processing of the frame.
 //
 // Applications should generally not handle this signal.
 func (frameClock *FrameClock) ConnectBeforePaint(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(frameClock, "before-paint", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectBeforePaint), f)
-}
-
-//export _gotk4_gdk4_FrameClock_ConnectFlushEvents
-func _gotk4_gdk4_FrameClock_ConnectFlushEvents(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectFlushEvents: used to flush pending motion events that are being
@@ -257,22 +209,6 @@ func (frameClock *FrameClock) ConnectFlushEvents(f func()) coreglib.SignalHandle
 	return coreglib.ConnectGeneratedClosure(frameClock, "flush-events", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectFlushEvents), f)
 }
 
-//export _gotk4_gdk4_FrameClock_ConnectLayout
-func _gotk4_gdk4_FrameClock_ConnectLayout(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectLayout is emitted as the second step of toolkit and application
 // processing of the frame.
 //
@@ -280,22 +216,6 @@ func _gotk4_gdk4_FrameClock_ConnectLayout(arg0 C.gpointer, arg1 C.guintptr) {
 // performed. GTK normally handles this internally.
 func (frameClock *FrameClock) ConnectLayout(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(frameClock, "layout", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectLayout), f)
-}
-
-//export _gotk4_gdk4_FrameClock_ConnectPaint
-func _gotk4_gdk4_FrameClock_ConnectPaint(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectPaint is emitted as the third step of toolkit and application
@@ -308,44 +228,12 @@ func (frameClock *FrameClock) ConnectPaint(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(frameClock, "paint", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectPaint), f)
 }
 
-//export _gotk4_gdk4_FrameClock_ConnectResumeEvents
-func _gotk4_gdk4_FrameClock_ConnectResumeEvents(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectResumeEvents is emitted after processing of the frame is finished.
 //
 // This signal is handled internally by GTK to resume normal event processing.
 // Applications should not handle this signal.
 func (frameClock *FrameClock) ConnectResumeEvents(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(frameClock, "resume-events", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectResumeEvents), f)
-}
-
-//export _gotk4_gdk4_FrameClock_ConnectUpdate
-func _gotk4_gdk4_FrameClock_ConnectUpdate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectUpdate is emitted as the first step of toolkit and application

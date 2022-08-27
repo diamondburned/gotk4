@@ -12,8 +12,8 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern gboolean _gotk4_gtk4_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk4_Switch_ConnectActivate(gpointer, guintptr);
+// extern gboolean _gotk4_gtk4_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
 import "C"
 
 // GType values.
@@ -108,56 +108,12 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return wrapSwitch(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Switch_ConnectActivate
-func _gotk4_gtk4_Switch_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted to animate the switch.
 //
 // Applications should never connect to this signal, but use the
 // gtk.Switch:active property.
 func (self *Switch) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_Switch_ConnectActivate), f)
-}
-
-//export _gotk4_gtk4_Switch_ConnectStateSet
-func _gotk4_gtk4_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(state bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(state bool) (ok bool))
-	}
-
-	var _state bool // out
-
-	if arg1 != 0 {
-		_state = true
-	}
-
-	ok := f(_state)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectStateSet is emitted to change the underlying state.

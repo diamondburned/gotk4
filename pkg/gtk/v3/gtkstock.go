@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
@@ -15,15 +14,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
-// extern void callbackDelete(gpointer);
 import "C"
-
-// STOCK_ABOUT: “About” item. ! (help-about.png)
-//
-// Deprecated: Use named icon &quot;help-about&quot; or the label
-// &quot;_About&quot;.
-const STOCK_ABOUT = "gtk-about"
 
 // STOCK_ADD: “Add” item and icon.
 //
@@ -46,11 +37,6 @@ const STOCK_BOLD = "gtk-bold"
 // Deprecated: Do not use an icon. Use label &quot;_Cancel&quot;.
 const STOCK_CANCEL = "gtk-cancel"
 
-// STOCK_CAPS_LOCK_WARNING “Caps Lock Warning” icon.
-//
-// Deprecated: Use named icon &quot;dialog-warning-symbolic&quot;.
-const STOCK_CAPS_LOCK_WARNING = "gtk-caps-lock-warning"
-
 // STOCK_CDROM: “CD-Rom” item and icon.
 //
 // Deprecated: Use named icon &quot;media-optical&quot;.
@@ -66,16 +52,6 @@ const STOCK_CLEAR = "gtk-clear"
 // Deprecated: Use named icon &quot;window-close&quot; or the label
 // &quot;_Close&quot;.
 const STOCK_CLOSE = "gtk-close"
-
-// STOCK_COLOR_PICKER: “Color Picker” item and icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_COLOR_PICKER = "gtk-color-picker"
-
-// STOCK_CONNECT: “Connect” icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_CONNECT = "gtk-connect"
 
 // STOCK_CONVERT: “Convert” item and icon.
 //
@@ -100,11 +76,6 @@ const STOCK_CUT = "gtk-cut"
 // &quot;_Delete&quot;.
 const STOCK_DELETE = "gtk-delete"
 
-// STOCK_DIALOG_AUTHENTICATION: “Authentication” item and icon.
-//
-// Deprecated: Use named icon &quot;dialog-password&quot;.
-const STOCK_DIALOG_AUTHENTICATION = "gtk-dialog-authentication"
-
 // STOCK_DIALOG_ERROR: “Error” item and icon.
 //
 // Deprecated: Use named icon &quot;dialog-error&quot;.
@@ -125,21 +96,6 @@ const STOCK_DIALOG_QUESTION = "gtk-dialog-question"
 // Deprecated: Use named icon &quot;dialog-warning&quot;.
 const STOCK_DIALOG_WARNING = "gtk-dialog-warning"
 
-// STOCK_DIRECTORY: “Directory” icon.
-//
-// Deprecated: Use named icon &quot;folder&quot;.
-const STOCK_DIRECTORY = "gtk-directory"
-
-// STOCK_DISCARD: “Discard” item.
-//
-// Deprecated: since version 3.10.
-const STOCK_DISCARD = "gtk-discard"
-
-// STOCK_DISCONNECT: “Disconnect” icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_DISCONNECT = "gtk-disconnect"
-
 // STOCK_DND: “Drag-And-Drop” icon.
 //
 // Deprecated: since version 3.10.
@@ -150,22 +106,10 @@ const STOCK_DND = "gtk-dnd"
 // Deprecated: since version 3.10.
 const STOCK_DND_MULTIPLE = "gtk-dnd-multiple"
 
-// STOCK_EDIT: “Edit” item and icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_EDIT = "gtk-edit"
-
 // STOCK_EXECUTE: “Execute” item and icon.
 //
 // Deprecated: Use named icon &quot;system-run&quot;.
 const STOCK_EXECUTE = "gtk-execute"
-
-// STOCK_FILE: “File” item and icon.
-//
-// Since 3.0, this item has a label, before it only had an icon.
-//
-// Deprecated: Use named icon &quot;text-x-generic&quot;.
-const STOCK_FILE = "gtk-file"
 
 // STOCK_FIND: “Find” item and icon.
 //
@@ -181,11 +125,6 @@ const STOCK_FIND_AND_REPLACE = "gtk-find-and-replace"
 //
 // Deprecated: since version 3.10.
 const STOCK_FLOPPY = "gtk-floppy"
-
-// STOCK_FULLSCREEN: “Fullscreen” item and icon.
-//
-// Deprecated: Use named icon &quot;view-fullscreen&quot;.
-const STOCK_FULLSCREEN = "gtk-fullscreen"
 
 // STOCK_GOTO_BOTTOM: “Bottom” item and icon.
 //
@@ -227,11 +166,6 @@ const STOCK_GO_FORWARD = "gtk-go-forward"
 // Deprecated: Use named icon &quot;go-up&quot;.
 const STOCK_GO_UP = "gtk-go-up"
 
-// STOCK_HARDDISK: “Harddisk” item and icon.
-//
-// Deprecated: Use named icon &quot;drive-harddisk&quot;.
-const STOCK_HARDDISK = "gtk-harddisk"
-
 // STOCK_HELP: “Help” item and icon.
 //
 // Deprecated: Use named icon &quot;help-browser&quot;.
@@ -242,20 +176,10 @@ const STOCK_HELP = "gtk-help"
 // Deprecated: Use named icon &quot;go-home&quot;.
 const STOCK_HOME = "gtk-home"
 
-// STOCK_INDENT: “Indent” item and icon. The icon has an RTL variant.
-//
-// Deprecated: Use named icon &quot;format-indent-more&quot;.
-const STOCK_INDENT = "gtk-indent"
-
 // STOCK_INDEX: “Index” item and icon.
 //
 // Deprecated: since version 3.10.
 const STOCK_INDEX = "gtk-index"
-
-// STOCK_INFO: “Info” item and icon.
-//
-// Deprecated: Use named icon &quot;dialog-information&quot;.
-const STOCK_INFO = "gtk-info"
 
 // STOCK_ITALIC: “Italic” item and icon.
 //
@@ -287,71 +211,10 @@ const STOCK_JUSTIFY_LEFT = "gtk-justify-left"
 // Deprecated: Use named icon &quot;format-justify-right&quot;.
 const STOCK_JUSTIFY_RIGHT = "gtk-justify-right"
 
-// STOCK_LEAVE_FULLSCREEN: “Leave Fullscreen” item and icon.
-//
-// Deprecated: Use named icon &quot;view-restore&quot;.
-const STOCK_LEAVE_FULLSCREEN = "gtk-leave-fullscreen"
-
-// STOCK_MEDIA_FORWARD: “Media Forward” item and icon. The icon has an RTL
-// variant.
-//
-// Deprecated: Use named icon &quot;media-seek-forward&quot; or the label
-// &quot;_Forward&quot;.
-const STOCK_MEDIA_FORWARD = "gtk-media-forward"
-
-// STOCK_MEDIA_NEXT: “Media Next” item and icon. The icon has an RTL variant.
-//
-// Deprecated: Use named icon &quot;media-skip-forward&quot; or the label
-// &quot;_Next&quot;.
-const STOCK_MEDIA_NEXT = "gtk-media-next"
-
-// STOCK_MEDIA_PAUSE: “Media Pause” item and icon.
-//
-// Deprecated: Use named icon &quot;media-playback-pause&quot; or the label
-// &quot;P_ause&quot;.
-const STOCK_MEDIA_PAUSE = "gtk-media-pause"
-
-// STOCK_MEDIA_PLAY: “Media Play” item and icon. The icon has an RTL variant.
-//
-// Deprecated: Use named icon &quot;media-playback-start&quot; or the label
-// &quot;_Play&quot;.
-const STOCK_MEDIA_PLAY = "gtk-media-play"
-
-// STOCK_MEDIA_PREVIOUS: “Media Previous” item and icon. The icon has an RTL
-// variant.
-//
-// Deprecated: Use named icon &quot;media-skip-backward&quot; or the label
-// &quot;Pre_vious&quot;.
-const STOCK_MEDIA_PREVIOUS = "gtk-media-previous"
-
-// STOCK_MEDIA_RECORD: “Media Record” item and icon.
-//
-// Deprecated: Use named icon &quot;media-record&quot; or the label
-// &quot;_Record&quot;.
-const STOCK_MEDIA_RECORD = "gtk-media-record"
-
-// STOCK_MEDIA_REWIND: “Media Rewind” item and icon. The icon has an RTL
-// variant.
-//
-// Deprecated: Use named icon &quot;media-seek-backward&quot; or the label
-// &quot;R_ewind&quot;.
-const STOCK_MEDIA_REWIND = "gtk-media-rewind"
-
-// STOCK_MEDIA_STOP: “Media Stop” item and icon.
-//
-// Deprecated: Use named icon &quot;media-playback-stop&quot; or the label
-// &quot;_Stop&quot;.
-const STOCK_MEDIA_STOP = "gtk-media-stop"
-
 // STOCK_MISSING_IMAGE: “Missing image” icon.
 //
 // Deprecated: Use named icon &quot;image-missing&quot;.
 const STOCK_MISSING_IMAGE = "gtk-missing-image"
-
-// STOCK_NETWORK: “Network” item and icon.
-//
-// Deprecated: Use named icon &quot;network-workgroup&quot;.
-const STOCK_NETWORK = "gtk-network"
 
 // STOCK_NEW: “New” item and icon.
 //
@@ -375,34 +238,6 @@ const STOCK_OK = "gtk-ok"
 // &quot;_Open&quot;.
 const STOCK_OPEN = "gtk-open"
 
-// STOCK_ORIENTATION_LANDSCAPE: “Landscape Orientation” item and icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_ORIENTATION_LANDSCAPE = "gtk-orientation-landscape"
-
-// STOCK_ORIENTATION_PORTRAIT: “Portrait Orientation” item and icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_ORIENTATION_PORTRAIT = "gtk-orientation-portrait"
-
-// STOCK_ORIENTATION_REVERSE_LANDSCAPE: “Reverse Landscape Orientation” item and
-// icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_ORIENTATION_REVERSE_LANDSCAPE = "gtk-orientation-reverse-landscape"
-
-// STOCK_ORIENTATION_REVERSE_PORTRAIT: “Reverse Portrait Orientation” item and
-// icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_ORIENTATION_REVERSE_PORTRAIT = "gtk-orientation-reverse-portrait"
-
-// STOCK_PAGE_SETUP: “Page Setup” item and icon.
-//
-// Deprecated: Use named icon &quot;document-page-setup&quot; or the label
-// &quot;Page Set_up&quot;.
-const STOCK_PAGE_SETUP = "gtk-page-setup"
-
 // STOCK_PASTE: “Paste” item and icon.
 //
 // Deprecated: Use named icon &quot;edit-paste&quot; or the label
@@ -421,30 +256,10 @@ const STOCK_PREFERENCES = "gtk-preferences"
 // &quot;_Print&quot;.
 const STOCK_PRINT = "gtk-print"
 
-// STOCK_PRINT_ERROR: “Print Error” icon.
-//
-// Deprecated: Use named icon &quot;printer-error&quot;.
-const STOCK_PRINT_ERROR = "gtk-print-error"
-
-// STOCK_PRINT_PAUSED: “Print Paused” icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_PRINT_PAUSED = "gtk-print-paused"
-
 // STOCK_PRINT_PREVIEW: “Print Preview” item and icon.
 //
 // Deprecated: Use label &quot;Pre_view&quot;.
 const STOCK_PRINT_PREVIEW = "gtk-print-preview"
-
-// STOCK_PRINT_REPORT: “Print Report” icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_PRINT_REPORT = "gtk-print-report"
-
-// STOCK_PRINT_WARNING: “Print Warning” icon.
-//
-// Deprecated: since version 3.10.
-const STOCK_PRINT_WARNING = "gtk-print-warning"
 
 // STOCK_PROPERTIES: “Properties” item and icon.
 //
@@ -493,12 +308,6 @@ const STOCK_SAVE = "gtk-save"
 // Deprecated: Use named icon &quot;document-save-as&quot; or the label
 // &quot;Save _As&quot;.
 const STOCK_SAVE_AS = "gtk-save-as"
-
-// STOCK_SELECT_ALL: “Select All” item and icon.
-//
-// Deprecated: Use named icon &quot;edit-select-all&quot; or the label
-// &quot;Select _All&quot;.
-const STOCK_SELECT_ALL = "gtk-select-all"
 
 // STOCK_SELECT_COLOR: “Color” item and icon.
 //
@@ -554,11 +363,6 @@ const STOCK_UNDERLINE = "gtk-underline"
 // &quot;_Undo&quot;.
 const STOCK_UNDO = "gtk-undo"
 
-// STOCK_UNINDENT: “Unindent” item and icon. The icon has an RTL variant.
-//
-// Deprecated: Use named icon &quot;format-indent-less&quot;.
-const STOCK_UNINDENT = "gtk-unindent"
-
 // STOCK_YES: “Yes” item and icon.
 //
 // Deprecated: since version 3.10.
@@ -595,28 +399,6 @@ type Stock = string
 //
 // Deprecated: since version 3.10.
 type TranslateFunc func(path string) (utf8 string)
-
-//export _gotk4_gtk3_TranslateFunc
-func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
-	var fn TranslateFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TranslateFunc)
-	}
-
-	var _path string // out
-
-	_path = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	utf8 := fn(_path)
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
 
 // StockAdd registers each of the stock items in items. If an item already
 // exists with the same stock ID as one of the items, the old item gets
@@ -738,61 +520,6 @@ func StockLookup(stockId string) (*StockItem, bool) {
 	}
 
 	return _item, _ok
-}
-
-// StockSetTranslateFunc sets a function to be used for translating the label of
-// a stock item.
-//
-// If no function is registered for a translation domain, g_dgettext() is used.
-//
-// The function is used for all stock items whose translation_domain matches
-// domain. Note that it is possible to use strings different from the actual
-// gettext translation domain of your application for this, as long as your
-// TranslateFunc uses the correct domain when calling dgettext(). This can be
-// useful, e.g. when dealing with message contexts:
-//
-//    GtkStockItem items[] = {
-//     { MY_ITEM1, NC_("odd items", "Item 1"), 0, 0, "odd-item-domain" },
-//     { MY_ITEM2, NC_("even items", "Item 2"), 0, 0, "even-item-domain" },
-//    };
-//
-//    gchar *
-//    my_translate_func (const gchar *msgid,
-//                       gpointer     data)
-//    {
-//      gchar *msgctxt = data;
-//
-//      return (gchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
-//    }
-//
-//    ...
-//
-//    gtk_stock_add (items, G_N_ELEMENTS (items));
-//    gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
-//    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - domain: translation domain for which func shall be used.
-//    - fn: TranslateFunc.
-//
-func StockSetTranslateFunc(domain string, fn TranslateFunc) {
-	var _arg1 *C.gchar           // out
-	var _arg2 C.GtkTranslateFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
-	_arg3 = C.gpointer(gbox.Assign(fn))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.gtk_stock_set_translate_func(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(domain)
-	runtime.KeepAlive(fn)
 }
 
 // StockItem: deprecated: since version 3.10.

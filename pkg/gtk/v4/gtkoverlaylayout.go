@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// OverlayLayoutOverrider contains methods that are overridable.
-type OverlayLayoutOverrider interface {
+// OverlayLayoutOverrides contains methods that are overridable.
+type OverlayLayoutOverrides struct {
+}
+
+func defaultOverlayLayoutOverrides(v *OverlayLayout) OverlayLayoutOverrides {
+	return OverlayLayoutOverrides{}
 }
 
 // OverlayLayout: GtkOverlayLayout is the layout manager used by GtkOverlay.
@@ -49,25 +53,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeOverlayLayout,
-		GoType:        reflect.TypeOf((*OverlayLayout)(nil)),
-		InitClass:     initClassOverlayLayout,
-		FinalizeClass: finalizeClassOverlayLayout,
-	})
+	coreglib.RegisterClassInfo[*OverlayLayout, *OverlayLayoutClass, OverlayLayoutOverrides](
+		GTypeOverlayLayout,
+		initOverlayLayoutClass,
+		wrapOverlayLayout,
+		defaultOverlayLayoutOverrides,
+	)
 }
 
-func initClassOverlayLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitOverlayLayout(*OverlayLayoutClass) }); ok {
-		klass := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitOverlayLayout(klass)
-	}
-}
-
-func finalizeClassOverlayLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeOverlayLayout(*OverlayLayoutClass) }); ok {
-		klass := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeOverlayLayout(klass)
+func initOverlayLayoutClass(gclass unsafe.Pointer, overrides OverlayLayoutOverrides, classInitFunc func(*OverlayLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -101,8 +98,12 @@ func NewOverlayLayout() *OverlayLayout {
 	return _overlayLayout
 }
 
-// OverlayLayoutChildOverrider contains methods that are overridable.
-type OverlayLayoutChildOverrider interface {
+// OverlayLayoutChildOverrides contains methods that are overridable.
+type OverlayLayoutChildOverrides struct {
+}
+
+func defaultOverlayLayoutChildOverrides(v *OverlayLayoutChild) OverlayLayoutChildOverrides {
+	return OverlayLayoutChildOverrides{}
 }
 
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
@@ -117,29 +118,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeOverlayLayoutChild,
-		GoType:        reflect.TypeOf((*OverlayLayoutChild)(nil)),
-		InitClass:     initClassOverlayLayoutChild,
-		FinalizeClass: finalizeClassOverlayLayoutChild,
-	})
+	coreglib.RegisterClassInfo[*OverlayLayoutChild, *OverlayLayoutChildClass, OverlayLayoutChildOverrides](
+		GTypeOverlayLayoutChild,
+		initOverlayLayoutChildClass,
+		wrapOverlayLayoutChild,
+		defaultOverlayLayoutChildOverrides,
+	)
 }
 
-func initClassOverlayLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitOverlayLayoutChild(*OverlayLayoutChildClass)
-	}); ok {
-		klass := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.InitOverlayLayoutChild(klass)
-	}
-}
-
-func finalizeClassOverlayLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeOverlayLayoutChild(*OverlayLayoutChildClass)
-	}); ok {
-		klass := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeOverlayLayoutChild(klass)
+func initOverlayLayoutChildClass(gclass unsafe.Pointer, overrides OverlayLayoutChildOverrides, classInitFunc func(*OverlayLayoutChildClass)) {
+	if classInitFunc != nil {
+		class := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

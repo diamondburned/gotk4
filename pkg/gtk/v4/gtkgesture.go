@@ -14,11 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_Gesture_ConnectBegin(gpointer, GdkEventSequence*, guintptr);
-// extern void _gotk4_gtk4_Gesture_ConnectCancel(gpointer, GdkEventSequence*, guintptr);
-// extern void _gotk4_gtk4_Gesture_ConnectEnd(gpointer, GdkEventSequence*, guintptr);
-// extern void _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(gpointer, GdkEventSequence*, GtkEventSequenceState, guintptr);
 // extern void _gotk4_gtk4_Gesture_ConnectUpdate(gpointer, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(gpointer, GdkEventSequence*, GtkEventSequenceState, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectEnd(gpointer, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectCancel(gpointer, GdkEventSequence*, guintptr);
+// extern void _gotk4_gtk4_Gesture_ConnectBegin(gpointer, GdkEventSequence*, guintptr);
 import "C"
 
 // GType values.
@@ -164,28 +164,6 @@ func BaseGesture(obj Gesturer) *Gesture {
 	return obj.baseGesture()
 }
 
-//export _gotk4_gtk4_Gesture_ConnectBegin
-func _gotk4_gtk4_Gesture_ConnectBegin(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
-	var f func(sequence *gdk.EventSequence)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(sequence *gdk.EventSequence))
-	}
-
-	var _sequence *gdk.EventSequence // out
-
-	if arg1 != nil {
-		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	}
-
-	f(_sequence)
-}
-
 // ConnectBegin is emitted when the gesture is recognized.
 //
 // This means the number of touch sequences matches gtk.Gesture:n-points.
@@ -197,28 +175,6 @@ func (gesture *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) coregl
 	return coreglib.ConnectGeneratedClosure(gesture, "begin", false, unsafe.Pointer(C._gotk4_gtk4_Gesture_ConnectBegin), f)
 }
 
-//export _gotk4_gtk4_Gesture_ConnectCancel
-func _gotk4_gtk4_Gesture_ConnectCancel(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
-	var f func(sequence *gdk.EventSequence)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(sequence *gdk.EventSequence))
-	}
-
-	var _sequence *gdk.EventSequence // out
-
-	if arg1 != nil {
-		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	}
-
-	f(_sequence)
-}
-
 // ConnectCancel is emitted whenever a sequence is cancelled.
 //
 // This usually happens on active touches when gtk.EventController.Reset() is
@@ -228,28 +184,6 @@ func _gotk4_gtk4_Gesture_ConnectCancel(arg0 C.gpointer, arg1 *C.GdkEventSequence
 // gesture must forget everything about sequence as in response to this signal.
 func (gesture *Gesture) ConnectCancel(f func(sequence *gdk.EventSequence)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "cancel", false, unsafe.Pointer(C._gotk4_gtk4_Gesture_ConnectCancel), f)
-}
-
-//export _gotk4_gtk4_Gesture_ConnectEnd
-func _gotk4_gtk4_Gesture_ConnectEnd(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
-	var f func(sequence *gdk.EventSequence)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(sequence *gdk.EventSequence))
-	}
-
-	var _sequence *gdk.EventSequence // out
-
-	if arg1 != nil {
-		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	}
-
-	f(_sequence)
 }
 
 // ConnectEnd is emitted when gesture either stopped recognizing the event
@@ -264,58 +198,12 @@ func (gesture *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) coreglib
 	return coreglib.ConnectGeneratedClosure(gesture, "end", false, unsafe.Pointer(C._gotk4_gtk4_Gesture_ConnectEnd), f)
 }
 
-//export _gotk4_gtk4_Gesture_ConnectSequenceStateChanged
-func _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.GtkEventSequenceState, arg3 C.guintptr) {
-	var f func(sequence *gdk.EventSequence, state EventSequenceState)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(sequence *gdk.EventSequence, state EventSequenceState))
-	}
-
-	var _sequence *gdk.EventSequence // out
-	var _state EventSequenceState    // out
-
-	if arg1 != nil {
-		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	}
-	_state = EventSequenceState(arg2)
-
-	f(_sequence, _state)
-}
-
 // ConnectSequenceStateChanged is emitted whenever a sequence state changes.
 //
 // See gtk.Gesture.SetSequenceState() to know more about the expectable sequence
 // lifetimes.
 func (gesture *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "sequence-state-changed", false, unsafe.Pointer(C._gotk4_gtk4_Gesture_ConnectSequenceStateChanged), f)
-}
-
-//export _gotk4_gtk4_Gesture_ConnectUpdate
-func _gotk4_gtk4_Gesture_ConnectUpdate(arg0 C.gpointer, arg1 *C.GdkEventSequence, arg2 C.guintptr) {
-	var f func(sequence *gdk.EventSequence)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(sequence *gdk.EventSequence))
-	}
-
-	var _sequence *gdk.EventSequence // out
-
-	if arg1 != nil {
-		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	}
-
-	f(_sequence)
 }
 
 // ConnectUpdate is emitted whenever an event is handled while the gesture is

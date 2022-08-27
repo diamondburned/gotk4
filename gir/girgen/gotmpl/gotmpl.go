@@ -86,3 +86,10 @@ func Render(w io.Writer, tmpl string, v interface{}) {
 		log.Panicln("inline render fail:", err)
 	}
 }
+
+// S calls Render onto a string.
+func S(tmpl string, v any) string {
+	var b strings.Builder
+	Render(&b, tmpl, v)
+	return b.String()
+}

@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -16,10 +15,13 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
-// extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
-// extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
+// extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
+// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
+// void _gotk4_gtk4_DrawingArea_virtual_resize(void* fnptr, GtkDrawingArea* arg0, int arg1, int arg2) {
+//   ((void (*)(GtkDrawingArea*, int, int))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -40,42 +42,20 @@ func init() {
 // must not call any widget functions that cause changes.
 type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width, height int)
 
-//export _gotk4_gtk4_DrawingAreaDrawFunc
-func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
-	var fn DrawingAreaDrawFunc
-	{
-		v := gbox.Get(uintptr(arg5))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(DrawingAreaDrawFunc)
-	}
-
-	var _drawingArea *DrawingArea // out
-	var _cr *cairo.Context        // out
-	var _width int                // out
-	var _height int               // out
-
-	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(arg1)))
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
-	C.cairo_reference(arg2)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_width = int(arg3)
-	_height = int(arg4)
-
-	fn(_drawingArea, _cr, _width, _height)
-}
-
-// DrawingAreaOverrider contains methods that are overridable.
-type DrawingAreaOverrider interface {
+// DrawingAreaOverrides contains methods that are overridable.
+type DrawingAreaOverrides struct {
 	// The function takes the following parameters:
 	//
 	//    - width
 	//    - height
 	//
-	Resize(width, height int)
+	Resize func(width, height int)
+}
+
+func defaultDrawingAreaOverrides(v *DrawingArea) DrawingAreaOverrides {
+	return DrawingAreaOverrides{
+		Resize: v.resize,
+	}
 }
 
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
@@ -165,46 +145,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDrawingArea,
-		GoType:        reflect.TypeOf((*DrawingArea)(nil)),
-		InitClass:     initClassDrawingArea,
-		FinalizeClass: finalizeClassDrawingArea,
-	})
+	coreglib.RegisterClassInfo[*DrawingArea, *DrawingAreaClass, DrawingAreaOverrides](
+		GTypeDrawingArea,
+		initDrawingAreaClass,
+		wrapDrawingArea,
+		defaultDrawingAreaOverrides,
+	)
 }
 
-func initClassDrawingArea(gclass unsafe.Pointer, goval any) {
+func initDrawingAreaClass(gclass unsafe.Pointer, overrides DrawingAreaOverrides, classInitFunc func(*DrawingAreaClass)) {
+	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeDrawingArea))))
 
-	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Resize(width, height int) }); ok {
+	if overrides.Resize != nil {
 		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
 	}
-	if goval, ok := goval.(interface{ InitDrawingArea(*DrawingAreaClass) }); ok {
-		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
-		goval.InitDrawingArea(klass)
+
+	if classInitFunc != nil {
+		class := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassDrawingArea(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDrawingArea(*DrawingAreaClass) }); ok {
-		klass := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDrawingArea(klass)
-	}
-}
-
-//export _gotk4_gtk4_DrawingAreaClass_resize
-func _gotk4_gtk4_DrawingAreaClass_resize(arg0 *C.GtkDrawingArea, arg1 C.int, arg2 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Resize(width, height int) })
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	iface.Resize(_width, _height)
 }
 
 func wrapDrawingArea(obj *coreglib.Object) *DrawingArea {
@@ -229,28 +188,6 @@ func wrapDrawingArea(obj *coreglib.Object) *DrawingArea {
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return wrapDrawingArea(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_DrawingArea_ConnectResize
-func _gotk4_gtk4_DrawingArea_ConnectResize(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(width, height int))
-	}
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	f(_width, _height)
 }
 
 // ConnectResize is emitted once when the widget is realized, and then each time
@@ -407,6 +344,29 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	C.gtk_drawing_area_set_draw_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drawFunc)
+}
+
+// The function takes the following parameters:
+//
+//    - width
+//    - height
+//
+func (area *DrawingArea) resize(width, height int) {
+	gclass := (*C.GtkDrawingAreaClass)(coreglib.PeekParentClass(area))
+	fnarg := gclass.resize
+
+	var _arg0 *C.GtkDrawingArea // out
+	var _arg1 C.int             // out
+	var _arg2 C.int             // out
+
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+
+	C._gotk4_gtk4_DrawingArea_virtual_resize(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(area)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
 }
 
 // DrawingAreaClass: instance of this type is always passed by reference.

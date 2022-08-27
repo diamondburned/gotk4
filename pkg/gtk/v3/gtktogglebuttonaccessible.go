@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ToggleButtonAccessibleOverrider contains methods that are overridable.
-type ToggleButtonAccessibleOverrider interface {
+// ToggleButtonAccessibleOverrides contains methods that are overridable.
+type ToggleButtonAccessibleOverrides struct {
+}
+
+func defaultToggleButtonAccessibleOverrides(v *ToggleButtonAccessible) ToggleButtonAccessibleOverrides {
+	return ToggleButtonAccessibleOverrides{}
 }
 
 type ToggleButtonAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeToggleButtonAccessible,
-		GoType:        reflect.TypeOf((*ToggleButtonAccessible)(nil)),
-		InitClass:     initClassToggleButtonAccessible,
-		FinalizeClass: finalizeClassToggleButtonAccessible,
-	})
+	coreglib.RegisterClassInfo[*ToggleButtonAccessible, *ToggleButtonAccessibleClass, ToggleButtonAccessibleOverrides](
+		GTypeToggleButtonAccessible,
+		initToggleButtonAccessibleClass,
+		wrapToggleButtonAccessible,
+		defaultToggleButtonAccessibleOverrides,
+	)
 }
 
-func initClassToggleButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitToggleButtonAccessible(*ToggleButtonAccessibleClass)
-	}); ok {
-		klass := (*ToggleButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitToggleButtonAccessible(klass)
-	}
-}
-
-func finalizeClassToggleButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeToggleButtonAccessible(*ToggleButtonAccessibleClass)
-	}); ok {
-		klass := (*ToggleButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeToggleButtonAccessible(klass)
+func initToggleButtonAccessibleClass(gclass unsafe.Pointer, overrides ToggleButtonAccessibleOverrides, classInitFunc func(*ToggleButtonAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ToggleButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

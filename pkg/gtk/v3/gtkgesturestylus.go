@@ -3,11 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -15,10 +13,10 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk3_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
-// extern void _gotk4_gtk3_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
+// extern void _gotk4_gtk3_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GType values.
@@ -59,201 +57,18 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return wrapGestureStylus(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_GestureStylus_ConnectDown
-func _gotk4_gtk3_GestureStylus_ConnectDown(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(object, p0 float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object, p0 float64))
-	}
-
-	var _object float64 // out
-	var _p0 float64     // out
-
-	_object = float64(arg1)
-	_p0 = float64(arg2)
-
-	f(_object, _p0)
-}
-
 func (gesture *GestureStylus) ConnectDown(f func(object, p0 float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "down", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectDown), f)
-}
-
-//export _gotk4_gtk3_GestureStylus_ConnectMotion
-func _gotk4_gtk3_GestureStylus_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(object, p0 float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object, p0 float64))
-	}
-
-	var _object float64 // out
-	var _p0 float64     // out
-
-	_object = float64(arg1)
-	_p0 = float64(arg2)
-
-	f(_object, _p0)
 }
 
 func (gesture *GestureStylus) ConnectMotion(f func(object, p0 float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "motion", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectMotion), f)
 }
 
-//export _gotk4_gtk3_GestureStylus_ConnectProximity
-func _gotk4_gtk3_GestureStylus_ConnectProximity(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(object, p0 float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object, p0 float64))
-	}
-
-	var _object float64 // out
-	var _p0 float64     // out
-
-	_object = float64(arg1)
-	_p0 = float64(arg2)
-
-	f(_object, _p0)
-}
-
 func (gesture *GestureStylus) ConnectProximity(f func(object, p0 float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "proximity", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectProximity), f)
 }
 
-//export _gotk4_gtk3_GestureStylus_ConnectUp
-func _gotk4_gtk3_GestureStylus_ConnectUp(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) {
-	var f func(object, p0 float64)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object, p0 float64))
-	}
-
-	var _object float64 // out
-	var _p0 float64     // out
-
-	_object = float64(arg1)
-	_p0 = float64(arg2)
-
-	f(_object, _p0)
-}
-
 func (gesture *GestureStylus) ConnectUp(f func(object, p0 float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "up", false, unsafe.Pointer(C._gotk4_gtk3_GestureStylus_ConnectUp), f)
-}
-
-// NewGestureStylus creates a new GestureStylus.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//
-// The function returns the following values:
-//
-//    - gestureStylus: newly created stylus gesture.
-//
-func NewGestureStylus(widget Widgetter) *GestureStylus {
-	var _arg1 *C.GtkWidget  // out
-	var _cret *C.GtkGesture // in
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_gesture_stylus_new(_arg1)
-	runtime.KeepAlive(widget)
-
-	var _gestureStylus *GestureStylus // out
-
-	_gestureStylus = wrapGestureStylus(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _gestureStylus
-}
-
-// Axis returns the current value for the requested axis. This function must be
-// called from either the GestureStylus:down, GestureStylus:motion,
-// GestureStylus:up or GestureStylus:proximity signals.
-//
-// The function takes the following parameters:
-//
-//    - axis: requested device axis.
-//
-// The function returns the following values:
-//
-//    - value: return location for the axis value.
-//    - ok if there is a current value for the axis.
-//
-func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
-	var _arg0 *C.GtkGestureStylus // out
-	var _arg1 C.GdkAxisUse        // out
-	var _arg2 C.gdouble           // in
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-	_arg1 = C.GdkAxisUse(axis)
-
-	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
-	runtime.KeepAlive(gesture)
-	runtime.KeepAlive(axis)
-
-	var _value float64 // out
-	var _ok bool       // out
-
-	_value = float64(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _value, _ok
-}
-
-// DeviceTool returns the DeviceTool currently driving input through this
-// gesture. This function must be called from either the GestureStylus::down,
-// GestureStylus::motion, GestureStylus::up or GestureStylus::proximity signal
-// handlers.
-//
-// The function returns the following values:
-//
-//    - deviceTool (optional): current stylus tool.
-//
-func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
-	var _arg0 *C.GtkGestureStylus // out
-	var _cret *C.GdkDeviceTool    // in
-
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	_cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
-	runtime.KeepAlive(gesture)
-
-	var _deviceTool *gdk.DeviceTool // out
-
-	if _cret != nil {
-		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
-			_deviceTool = &gdk.DeviceTool{
-				Object: obj,
-			}
-		}
-	}
-
-	return _deviceTool
 }

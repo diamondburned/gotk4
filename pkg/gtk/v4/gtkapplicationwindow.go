@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// ApplicationWindowOverrider contains methods that are overridable.
-type ApplicationWindowOverrider interface {
+// ApplicationWindowOverrides contains methods that are overridable.
+type ApplicationWindowOverrides struct {
+}
+
+func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOverrides {
+	return ApplicationWindowOverrides{}
 }
 
 // ApplicationWindow: GtkApplicationWindow is a GtkWindow subclass that
@@ -113,25 +117,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeApplicationWindow,
-		GoType:        reflect.TypeOf((*ApplicationWindow)(nil)),
-		InitClass:     initClassApplicationWindow,
-		FinalizeClass: finalizeClassApplicationWindow,
-	})
+	coreglib.RegisterClassInfo[*ApplicationWindow, *ApplicationWindowClass, ApplicationWindowOverrides](
+		GTypeApplicationWindow,
+		initApplicationWindowClass,
+		wrapApplicationWindow,
+		defaultApplicationWindowOverrides,
+	)
 }
 
-func initClassApplicationWindow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitApplicationWindow(*ApplicationWindowClass) }); ok {
-		klass := (*ApplicationWindowClass)(gextras.NewStructNative(gclass))
-		goval.InitApplicationWindow(klass)
-	}
-}
-
-func finalizeClassApplicationWindow(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeApplicationWindow(*ApplicationWindowClass) }); ok {
-		klass := (*ApplicationWindowClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeApplicationWindow(klass)
+func initApplicationWindowClass(gclass unsafe.Pointer, overrides ApplicationWindowOverrides, classInitFunc func(*ApplicationWindowClass)) {
+	if classInitFunc != nil {
+		class := (*ApplicationWindowClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

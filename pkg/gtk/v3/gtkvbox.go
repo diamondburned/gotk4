@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// VBoxOverrider contains methods that are overridable.
-type VBoxOverrider interface {
+// VBoxOverrides contains methods that are overridable.
+type VBoxOverrides struct {
+}
+
+func defaultVBoxOverrides(v *VBox) VBoxOverrides {
+	return VBoxOverrides{}
 }
 
 // VBox is a container that organizes child widgets into a single column.
@@ -68,25 +72,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeVBox,
-		GoType:        reflect.TypeOf((*VBox)(nil)),
-		InitClass:     initClassVBox,
-		FinalizeClass: finalizeClassVBox,
-	})
+	coreglib.RegisterClassInfo[*VBox, *VBoxClass, VBoxOverrides](
+		GTypeVBox,
+		initVBoxClass,
+		wrapVBox,
+		defaultVBoxOverrides,
+	)
 }
 
-func initClassVBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitVBox(*VBoxClass) }); ok {
-		klass := (*VBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitVBox(klass)
-	}
-}
-
-func finalizeClassVBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeVBox(*VBoxClass) }); ok {
-		klass := (*VBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeVBox(klass)
+func initVBoxClass(gclass unsafe.Pointer, overrides VBoxOverrides, classInitFunc func(*VBoxClass)) {
+	if classInitFunc != nil {
+		class := (*VBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

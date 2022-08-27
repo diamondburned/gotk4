@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// StateSetOverrider contains methods that are overridable.
-type StateSetOverrider interface {
+// StateSetOverrides contains methods that are overridable.
+type StateSetOverrides struct {
+}
+
+func defaultStateSetOverrides(v *StateSet) StateSetOverrides {
+	return StateSetOverrides{}
 }
 
 // StateSet is a read-only representation of the full set of States that apply
@@ -44,25 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStateSet,
-		GoType:        reflect.TypeOf((*StateSet)(nil)),
-		InitClass:     initClassStateSet,
-		FinalizeClass: finalizeClassStateSet,
-	})
+	coreglib.RegisterClassInfo[*StateSet, *StateSetClass, StateSetOverrides](
+		GTypeStateSet,
+		initStateSetClass,
+		wrapStateSet,
+		defaultStateSetOverrides,
+	)
 }
 
-func initClassStateSet(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitStateSet(*StateSetClass) }); ok {
-		klass := (*StateSetClass)(gextras.NewStructNative(gclass))
-		goval.InitStateSet(klass)
-	}
-}
-
-func finalizeClassStateSet(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeStateSet(*StateSetClass) }); ok {
-		klass := (*StateSetClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStateSet(klass)
+func initStateSetClass(gclass unsafe.Pointer, overrides StateSetOverrides, classInitFunc func(*StateSetClass)) {
+	if classInitFunc != nil {
+		class := (*StateSetClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

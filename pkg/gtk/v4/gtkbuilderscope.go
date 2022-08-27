@@ -5,6 +5,7 @@ package gtk
 import (
 	"fmt"
 	"reflect"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -15,8 +16,12 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(GtkBuilderScope*, GtkBuilder*, char*);
-// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
+// GType _gotk4_gtk4_BuilderScope_virtual_get_type_from_function(void* fnptr, GtkBuilderScope* arg0, GtkBuilder* arg1, char* arg2) {
+//   return ((GType (*)(GtkBuilderScope*, GtkBuilder*, char*))(fnptr))(arg0, arg1, arg2);
+// };
+// GType _gotk4_gtk4_BuilderScope_virtual_get_type_from_name(void* fnptr, GtkBuilderScope* arg0, GtkBuilder* arg1, char* arg2) {
+//   return ((GType (*)(GtkBuilderScope*, GtkBuilder*, char*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -84,26 +89,6 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 	return (b & other) == other
 }
 
-// BuilderScopeOverrider contains methods that are overridable.
-type BuilderScopeOverrider interface {
-	// The function takes the following parameters:
-	//
-	//    - builder
-	//    - functionName
-	//
-	// The function returns the following values:
-	//
-	TypeFromFunction(builder *Builder, functionName string) coreglib.Type
-	// The function takes the following parameters:
-	//
-	//    - builder
-	//    - typeName
-	//
-	// The function returns the following values:
-	//
-	TypeFromName(builder *Builder, typeName string) coreglib.Type
-}
-
 // BuilderScope: GtkBuilderScope is an interface to provide language binding
 // support to GtkBuilder.
 //
@@ -139,48 +124,6 @@ type BuilderScoper interface {
 
 var _ BuilderScoper = (*BuilderScope)(nil)
 
-func ifaceInitBuilderScoper(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkBuilderScopeInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_type_from_function = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
-	iface.get_type_from_name = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
-}
-
-//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_function
-func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(BuilderScopeOverrider)
-
-	var _builder *Builder    // out
-	var _functionName string // out
-
-	_builder = wrapBuilder(coreglib.Take(unsafe.Pointer(arg1)))
-	_functionName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	gType := iface.TypeFromFunction(_builder, _functionName)
-
-	cret = C.GType(gType)
-
-	return cret
-}
-
-//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_name
-func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.GtkBuilderScope, arg1 *C.GtkBuilder, arg2 *C.char) (cret C.GType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(BuilderScopeOverrider)
-
-	var _builder *Builder // out
-	var _typeName string  // out
-
-	_builder = wrapBuilder(coreglib.Take(unsafe.Pointer(arg1)))
-	_typeName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	gType := iface.TypeFromName(_builder, _typeName)
-
-	cret = C.GType(gType)
-
-	return cret
-}
-
 func wrapBuilderScope(obj *coreglib.Object) *BuilderScope {
 	return &BuilderScope{
 		Object: obj,
@@ -200,8 +143,78 @@ func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 	return obj.baseBuilderScope()
 }
 
-// BuilderCScopeOverrider contains methods that are overridable.
-type BuilderCScopeOverrider interface {
+// The function takes the following parameters:
+//
+//    - builder
+//    - functionName
+//
+// The function returns the following values:
+//
+func (self *BuilderScope) typeFromFunction(builder *Builder, functionName string) coreglib.Type {
+	gclass := (*C.GtkBuilderScopeInterface)(coreglib.PeekParentClass(self))
+	fnarg := gclass.get_type_from_function
+
+	var _arg0 *C.GtkBuilderScope // out
+	var _arg1 *C.GtkBuilder      // out
+	var _arg2 *C.char            // out
+	var _cret C.GType            // in
+
+	_arg0 = (*C.GtkBuilderScope)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(functionName)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C._gotk4_gtk4_BuilderScope_virtual_get_type_from_function(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(functionName)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// The function takes the following parameters:
+//
+//    - builder
+//    - typeName
+//
+// The function returns the following values:
+//
+func (self *BuilderScope) typeFromName(builder *Builder, typeName string) coreglib.Type {
+	gclass := (*C.GtkBuilderScopeInterface)(coreglib.PeekParentClass(self))
+	fnarg := gclass.get_type_from_name
+
+	var _arg0 *C.GtkBuilderScope // out
+	var _arg1 *C.GtkBuilder      // out
+	var _arg2 *C.char            // out
+	var _cret C.GType            // in
+
+	_arg0 = (*C.GtkBuilderScope)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typeName)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C._gotk4_gtk4_BuilderScope_virtual_get_type_from_name(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typeName)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// BuilderCScopeOverrides contains methods that are overridable.
+type BuilderCScopeOverrides struct {
+}
+
+func defaultBuilderCScopeOverrides(v *BuilderCScope) BuilderCScopeOverrides {
+	return BuilderCScopeOverrides{}
 }
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.
@@ -230,25 +243,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBuilderCScope,
-		GoType:        reflect.TypeOf((*BuilderCScope)(nil)),
-		InitClass:     initClassBuilderCScope,
-		FinalizeClass: finalizeClassBuilderCScope,
-	})
+	coreglib.RegisterClassInfo[*BuilderCScope, *BuilderCScopeClass, BuilderCScopeOverrides](
+		GTypeBuilderCScope,
+		initBuilderCScopeClass,
+		wrapBuilderCScope,
+		defaultBuilderCScopeOverrides,
+	)
 }
 
-func initClassBuilderCScope(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBuilderCScope(*BuilderCScopeClass) }); ok {
-		klass := (*BuilderCScopeClass)(gextras.NewStructNative(gclass))
-		goval.InitBuilderCScope(klass)
-	}
-}
-
-func finalizeClassBuilderCScope(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBuilderCScope(*BuilderCScopeClass) }); ok {
-		klass := (*BuilderCScopeClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBuilderCScope(klass)
+func initBuilderCScopeClass(gclass unsafe.Pointer, overrides BuilderCScopeOverrides, classInitFunc func(*BuilderCScopeClass)) {
+	if classInitFunc != nil {
+		class := (*BuilderCScopeClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -15,9 +15,15 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
-// extern gboolean _gotk4_gtk4_FilterClass_match(GtkFilter*, gpointer);
 // extern void _gotk4_gtk4_Filter_ConnectChanged(gpointer, GtkFilterChange, guintptr);
+// extern gboolean _gotk4_gtk4_FilterClass_match(GtkFilter*, gpointer);
+// extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
+// GtkFilterMatch _gotk4_gtk4_Filter_virtual_get_strictness(void* fnptr, GtkFilter* arg0) {
+//   return ((GtkFilterMatch (*)(GtkFilter*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk4_Filter_virtual_match(void* fnptr, GtkFilter* arg0, gpointer arg1) {
+//   return ((gboolean (*)(GtkFilter*, gpointer))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -111,8 +117,8 @@ func (f FilterMatch) String() string {
 	}
 }
 
-// FilterOverrider contains methods that are overridable.
-type FilterOverrider interface {
+// FilterOverrides contains methods that are overridable.
+type FilterOverrides struct {
 	// Strictness gets the known strictness of filters. If the strictness is not
 	// known, GTK_FILTER_MATCH_SOME is returned.
 	//
@@ -125,7 +131,7 @@ type FilterOverrider interface {
 	//
 	//    - filterMatch strictness of self.
 	//
-	Strictness() FilterMatch
+	Strictness func() FilterMatch
 	// Match checks if the given item is matched by the filter or not.
 	//
 	// The function takes the following parameters:
@@ -137,7 +143,14 @@ type FilterOverrider interface {
 	//    - ok: TRUE if the filter matches the item and a filter model should
 	//      keep it, FALSE if not.
 	//
-	Match(item *coreglib.Object) bool
+	Match func(item *coreglib.Object) bool
+}
+
+func defaultFilterOverrides(v *Filter) FilterOverrides {
+	return FilterOverrides{
+		Strictness: v.strictness,
+		Match:      v.match,
+	}
 }
 
 // Filter: GtkFilter object describes the filtering to be performed by a
@@ -168,70 +181,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFilter,
-		GoType:        reflect.TypeOf((*Filter)(nil)),
-		InitClass:     initClassFilter,
-		FinalizeClass: finalizeClassFilter,
-	})
+	coreglib.RegisterClassInfo[*Filter, *FilterClass, FilterOverrides](
+		GTypeFilter,
+		initFilterClass,
+		wrapFilter,
+		defaultFilterOverrides,
+	)
 }
 
-func initClassFilter(gclass unsafe.Pointer, goval any) {
+func initFilterClass(gclass unsafe.Pointer, overrides FilterOverrides, classInitFunc func(*FilterClass)) {
+	pclass := (*C.GtkFilterClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFilter))))
 
-	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Strictness() FilterMatch }); ok {
+	if overrides.Strictness != nil {
 		pclass.get_strictness = (*[0]byte)(C._gotk4_gtk4_FilterClass_get_strictness)
 	}
 
-	if _, ok := goval.(interface {
-		Match(item *coreglib.Object) bool
-	}); ok {
+	if overrides.Match != nil {
 		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
 	}
-	if goval, ok := goval.(interface{ InitFilter(*FilterClass) }); ok {
-		klass := (*FilterClass)(gextras.NewStructNative(gclass))
-		goval.InitFilter(klass)
+
+	if classInitFunc != nil {
+		class := (*FilterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassFilter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFilter(*FilterClass) }); ok {
-		klass := (*FilterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFilter(klass)
-	}
-}
-
-//export _gotk4_gtk4_FilterClass_get_strictness
-func _gotk4_gtk4_FilterClass_get_strictness(arg0 *C.GtkFilter) (cret C.GtkFilterMatch) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Strictness() FilterMatch })
-
-	filterMatch := iface.Strictness()
-
-	cret = C.GtkFilterMatch(filterMatch)
-
-	return cret
-}
-
-//export _gotk4_gtk4_FilterClass_match
-func _gotk4_gtk4_FilterClass_match(arg0 *C.GtkFilter, arg1 C.gpointer) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Match(item *coreglib.Object) bool
-	})
-
-	var _item *coreglib.Object // out
-
-	_item = coreglib.Take(unsafe.Pointer(arg1))
-
-	ok := iface.Match(_item)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 func wrapFilter(obj *coreglib.Object) *Filter {
@@ -242,26 +214,6 @@ func wrapFilter(obj *coreglib.Object) *Filter {
 
 func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_Filter_ConnectChanged
-func _gotk4_gtk4_Filter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkFilterChange, arg2 C.guintptr) {
-	var f func(change FilterChange)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(change FilterChange))
-	}
-
-	var _change FilterChange // out
-
-	_change = FilterChange(arg1)
-
-	f(_change)
 }
 
 // ConnectChanged is emitted whenever the filter changed.
@@ -350,6 +302,72 @@ func (self *Filter) Match(item *coreglib.Object) bool {
 	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(item)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Strictness gets the known strictness of filters. If the strictness is not
+// known, GTK_FILTER_MATCH_SOME is returned.
+//
+// This value may change after emission of the Filter::changed signal.
+//
+// This function is meant purely for optimization purposes, filters can choose
+// to omit implementing it, but FilterListModel uses it.
+//
+// The function returns the following values:
+//
+//    - filterMatch strictness of self.
+//
+func (self *Filter) strictness() FilterMatch {
+	gclass := (*C.GtkFilterClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.get_strictness
+
+	var _arg0 *C.GtkFilter     // out
+	var _cret C.GtkFilterMatch // in
+
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C._gotk4_gtk4_Filter_virtual_get_strictness(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(self)
+
+	var _filterMatch FilterMatch // out
+
+	_filterMatch = FilterMatch(_cret)
+
+	return _filterMatch
+}
+
+// Match checks if the given item is matched by the filter or not.
+//
+// The function takes the following parameters:
+//
+//    - item (optional) to check.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the filter matches the item and a filter model should keep
+//      it, FALSE if not.
+//
+func (self *Filter) match(item *coreglib.Object) bool {
+	gclass := (*C.GtkFilterClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.match
+
+	var _arg0 *C.GtkFilter // out
+	var _arg1 C.gpointer   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
+
+	_cret = C._gotk4_gtk4_Filter_virtual_match(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(item)
 

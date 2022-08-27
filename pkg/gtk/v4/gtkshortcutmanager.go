@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -11,8 +12,12 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(GtkShortcutManager*, GtkShortcutController*);
-// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
+// void _gotk4_gtk4_ShortcutManager_virtual_add_controller(void* fnptr, GtkShortcutManager* arg0, GtkShortcutController* arg1) {
+//   ((void (*)(GtkShortcutManager*, GtkShortcutController*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_ShortcutManager_virtual_remove_controller(void* fnptr, GtkShortcutManager* arg0, GtkShortcutController* arg1) {
+//   ((void (*)(GtkShortcutManager*, GtkShortcutController*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -24,16 +29,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeShortcutManager, F: marshalShortcutManager},
 	})
-}
-
-// ShortcutManagerOverrider contains methods that are overridable.
-type ShortcutManagerOverrider interface {
-	// The function takes the following parameters:
-	//
-	AddController(controller *ShortcutController)
-	// The function takes the following parameters:
-	//
-	RemoveController(controller *ShortcutController)
 }
 
 // ShortcutManager: GtkShortcutManager interface is used to implement shortcut
@@ -69,36 +64,6 @@ type ShortcutManagerer interface {
 
 var _ ShortcutManagerer = (*ShortcutManager)(nil)
 
-func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkShortcutManagerInterface)(unsafe.Pointer(gifacePtr))
-	iface.add_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
-	iface.remove_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
-}
-
-//export _gotk4_gtk4_ShortcutManagerInterface_add_controller
-func _gotk4_gtk4_ShortcutManagerInterface_add_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ShortcutManagerOverrider)
-
-	var _controller *ShortcutController // out
-
-	_controller = wrapShortcutController(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.AddController(_controller)
-}
-
-//export _gotk4_gtk4_ShortcutManagerInterface_remove_controller
-func _gotk4_gtk4_ShortcutManagerInterface_remove_controller(arg0 *C.GtkShortcutManager, arg1 *C.GtkShortcutController) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(ShortcutManagerOverrider)
-
-	var _controller *ShortcutController // out
-
-	_controller = wrapShortcutController(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.RemoveController(_controller)
-}
-
 func wrapShortcutManager(obj *coreglib.Object) *ShortcutManager {
 	return &ShortcutManager{
 		Object: obj,
@@ -116,6 +81,40 @@ func (v *ShortcutManager) baseShortcutManager() *ShortcutManager {
 // BaseShortcutManager returns the underlying base object.
 func BaseShortcutManager(obj ShortcutManagerer) *ShortcutManager {
 	return obj.baseShortcutManager()
+}
+
+// The function takes the following parameters:
+//
+func (self *ShortcutManager) addController(controller *ShortcutController) {
+	gclass := (*C.GtkShortcutManagerInterface)(coreglib.PeekParentClass(self))
+	fnarg := gclass.add_controller
+
+	var _arg0 *C.GtkShortcutManager    // out
+	var _arg1 *C.GtkShortcutController // out
+
+	_arg0 = (*C.GtkShortcutManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkShortcutController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+
+	C._gotk4_gtk4_ShortcutManager_virtual_add_controller(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(controller)
+}
+
+// The function takes the following parameters:
+//
+func (self *ShortcutManager) removeController(controller *ShortcutController) {
+	gclass := (*C.GtkShortcutManagerInterface)(coreglib.PeekParentClass(self))
+	fnarg := gclass.remove_controller
+
+	var _arg0 *C.GtkShortcutManager    // out
+	var _arg1 *C.GtkShortcutController // out
+
+	_arg0 = (*C.GtkShortcutManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GtkShortcutController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+
+	C._gotk4_gtk4_ShortcutManager_virtual_remove_controller(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(controller)
 }
 
 // ShortcutManagerInterface: list of functions that can be implemented for the

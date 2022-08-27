@@ -14,10 +14,22 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_CellAreaContextClass_allocate(GtkCellAreaContext*, int, int);
-// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width(GtkCellAreaContext*, int, int*, int*);
-// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height(GtkCellAreaContext*, int, int*, int*);
 // extern void _gotk4_gtk4_CellAreaContextClass_reset(GtkCellAreaContext*);
+// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height(GtkCellAreaContext*, int, int*, int*);
+// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width(GtkCellAreaContext*, int, int*, int*);
+// extern void _gotk4_gtk4_CellAreaContextClass_allocate(GtkCellAreaContext*, int, int);
+// void _gotk4_gtk4_CellAreaContext_virtual_allocate(void* fnptr, GtkCellAreaContext* arg0, int arg1, int arg2) {
+//   ((void (*)(GtkCellAreaContext*, int, int))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk4_CellAreaContext_virtual_get_preferred_height_for_width(void* fnptr, GtkCellAreaContext* arg0, int arg1, int* arg2, int* arg3) {
+//   ((void (*)(GtkCellAreaContext*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_CellAreaContext_virtual_get_preferred_width_for_height(void* fnptr, GtkCellAreaContext* arg0, int arg1, int* arg2, int* arg3) {
+//   ((void (*)(GtkCellAreaContext*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_CellAreaContext_virtual_reset(void* fnptr, GtkCellAreaContext* arg0) {
+//   ((void (*)(GtkCellAreaContext*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -31,8 +43,8 @@ func init() {
 	})
 }
 
-// CellAreaContextOverrider contains methods that are overridable.
-type CellAreaContextOverrider interface {
+// CellAreaContextOverrides contains methods that are overridable.
+type CellAreaContextOverrides struct {
 	// Allocate allocates a width and/or a height for all rows which are to be
 	// rendered with context.
 	//
@@ -50,7 +62,7 @@ type CellAreaContextOverrider interface {
 	//    - height: allocated height for all TreeModel rows rendered with
 	//      context, or -1.
 	//
-	Allocate(width, height int)
+	Allocate func(width, height int)
 	// PreferredHeightForWidth gets the accumulative preferred height for width
 	// for all rows which have been requested for the same said width with this
 	// context.
@@ -69,7 +81,7 @@ type CellAreaContextOverrider interface {
 	//    - naturalHeight (optional): location to store the natural height, or
 	//      NULL.
 	//
-	PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int)
 	// PreferredWidthForHeight gets the accumulative preferred width for height
 	// for all rows which have been requested for the same said height with this
 	// context.
@@ -88,7 +100,7 @@ type CellAreaContextOverrider interface {
 	//    - naturalWidth (optional): location to store the natural width, or
 	//      NULL.
 	//
-	PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int)
 	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying TreeModel data changes its important to reset the context
@@ -106,7 +118,16 @@ type CellAreaContextOverrider interface {
 	// to bottom then a change in the allocated width necessitates a
 	// recalculation of all the displayed row heights using
 	// gtk_cell_area_get_preferred_height_for_width().
-	Reset()
+	Reset func()
+}
+
+func defaultCellAreaContextOverrides(v *CellAreaContext) CellAreaContextOverrides {
+	return CellAreaContextOverrides{
+		Allocate:                v.allocate,
+		PreferredHeightForWidth: v.preferredHeightForWidth,
+		PreferredWidthForHeight: v.preferredWidthForHeight,
+		Reset:                   v.reset,
+	}
 }
 
 // CellAreaContext stores geometrical information for a series of rows in a
@@ -132,104 +153,37 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCellAreaContext,
-		GoType:        reflect.TypeOf((*CellAreaContext)(nil)),
-		InitClass:     initClassCellAreaContext,
-		FinalizeClass: finalizeClassCellAreaContext,
-	})
+	coreglib.RegisterClassInfo[*CellAreaContext, *CellAreaContextClass, CellAreaContextOverrides](
+		GTypeCellAreaContext,
+		initCellAreaContextClass,
+		wrapCellAreaContext,
+		defaultCellAreaContextOverrides,
+	)
 }
 
-func initClassCellAreaContext(gclass unsafe.Pointer, goval any) {
+func initCellAreaContextClass(gclass unsafe.Pointer, overrides CellAreaContextOverrides, classInitFunc func(*CellAreaContextClass)) {
+	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellAreaContext))))
 
-	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Allocate(width, height int) }); ok {
+	if overrides.Allocate != nil {
 		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_allocate)
 	}
 
-	if _, ok := goval.(interface {
-		PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
-	}); ok {
+	if overrides.PreferredHeightForWidth != nil {
 		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width)
 	}
 
-	if _, ok := goval.(interface {
-		PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
-	}); ok {
+	if overrides.PreferredWidthForHeight != nil {
 		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height)
 	}
 
-	if _, ok := goval.(interface{ Reset() }); ok {
+	if overrides.Reset != nil {
 		pclass.reset = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_reset)
 	}
-	if goval, ok := goval.(interface{ InitCellAreaContext(*CellAreaContextClass) }); ok {
-		klass := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
-		goval.InitCellAreaContext(klass)
+
+	if classInitFunc != nil {
+		class := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCellAreaContext(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCellAreaContext(*CellAreaContextClass) }); ok {
-		klass := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCellAreaContext(klass)
-	}
-}
-
-//export _gotk4_gtk4_CellAreaContextClass_allocate
-func _gotk4_gtk4_CellAreaContextClass_allocate(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Allocate(width, height int) })
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	iface.Allocate(_width, _height)
-}
-
-//export _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width
-func _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 *C.int, arg3 *C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		PreferredHeightForWidth(width int) (minimumHeight, naturalHeight int)
-	})
-
-	var _width int // out
-
-	_width = int(arg1)
-
-	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_width)
-
-	*arg2 = C.int(minimumHeight)
-	*arg3 = C.int(naturalHeight)
-}
-
-//export _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height
-func _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.GtkCellAreaContext, arg1 C.int, arg2 *C.int, arg3 *C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		PreferredWidthForHeight(height int) (minimumWidth, naturalWidth int)
-	})
-
-	var _height int // out
-
-	_height = int(arg1)
-
-	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_height)
-
-	*arg2 = C.int(minimumWidth)
-	*arg3 = C.int(naturalWidth)
-}
-
-//export _gotk4_gtk4_CellAreaContextClass_reset
-func _gotk4_gtk4_CellAreaContextClass_reset(arg0 *C.GtkCellAreaContext) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Reset() })
-
-	iface.Reset()
 }
 
 func wrapCellAreaContext(obj *coreglib.Object) *CellAreaContext {
@@ -561,6 +515,150 @@ func (context *CellAreaContext) Reset() {
 	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	C.gtk_cell_area_context_reset(_arg0)
+	runtime.KeepAlive(context)
+}
+
+// Allocate allocates a width and/or a height for all rows which are to be
+// rendered with context.
+//
+// Usually allocation is performed only horizontally or sometimes vertically
+// since a group of rows are usually rendered side by side vertically or
+// horizontally and share either the same width or the same height. Sometimes
+// they are allocated in both horizontal and vertical orientations producing a
+// homogeneous effect of the rows. This is generally the case for TreeView when
+// TreeView:fixed-height-mode is enabled.
+//
+// The function takes the following parameters:
+//
+//    - width: allocated width for all TreeModel rows rendered with context, or
+//      -1.
+//    - height: allocated height for all TreeModel rows rendered with context, or
+//      -1.
+//
+func (context *CellAreaContext) allocate(width, height int) {
+	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.allocate
+
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
+
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+
+	C._gotk4_gtk4_CellAreaContext_virtual_allocate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
+// preferredHeightForWidth gets the accumulative preferred height for width for
+// all rows which have been requested for the same said width with this context.
+//
+// After gtk_cell_area_context_reset() is called and/or before ever requesting
+// the size of a CellArea, the returned values are -1.
+//
+// The function takes the following parameters:
+//
+//    - width: proposed width for allocation.
+//
+// The function returns the following values:
+//
+//    - minimumHeight (optional): location to store the minimum height, or NULL.
+//    - naturalHeight (optional): location to store the natural height, or NULL.
+//
+func (context *CellAreaContext) preferredHeightForWidth(width int) (minimumHeight, naturalHeight int) {
+	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.get_preferred_height_for_width
+
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // in
+	var _arg3 C.int                 // in
+
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(width)
+
+	C._gotk4_gtk4_CellAreaContext_virtual_get_preferred_height_for_width(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(width)
+
+	var _minimumHeight int // out
+	var _naturalHeight int // out
+
+	_minimumHeight = int(_arg2)
+	_naturalHeight = int(_arg3)
+
+	return _minimumHeight, _naturalHeight
+}
+
+// preferredWidthForHeight gets the accumulative preferred width for height for
+// all rows which have been requested for the same said height with this
+// context.
+//
+// After gtk_cell_area_context_reset() is called and/or before ever requesting
+// the size of a CellArea, the returned values are -1.
+//
+// The function takes the following parameters:
+//
+//    - height: proposed height for allocation.
+//
+// The function returns the following values:
+//
+//    - minimumWidth (optional): location to store the minimum width, or NULL.
+//    - naturalWidth (optional): location to store the natural width, or NULL.
+//
+func (context *CellAreaContext) preferredWidthForHeight(height int) (minimumWidth, naturalWidth int) {
+	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.get_preferred_width_for_height
+
+	var _arg0 *C.GtkCellAreaContext // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // in
+	var _arg3 C.int                 // in
+
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.int(height)
+
+	C._gotk4_gtk4_CellAreaContext_virtual_get_preferred_width_for_height(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(height)
+
+	var _minimumWidth int // out
+	var _naturalWidth int // out
+
+	_minimumWidth = int(_arg2)
+	_naturalWidth = int(_arg3)
+
+	return _minimumWidth, _naturalWidth
+}
+
+// Reset resets any previously cached request and allocation data.
+//
+// When underlying TreeModel data changes its important to reset the context if
+// the content size is allowed to shrink. If the content size is only allowed to
+// grow (this is usually an option for views rendering large data stores as a
+// measure of optimization), then only the row that changed or was inserted
+// needs to be (re)requested with gtk_cell_area_get_preferred_width().
+//
+// When the new overall size of the context requires that the allocated size
+// changes (or whenever this allocation changes at all), the variable row sizes
+// need to be re-requested for every row.
+//
+// For instance, if the rows are displayed all with the same width from top to
+// bottom then a change in the allocated width necessitates a recalculation of
+// all the displayed row heights using
+// gtk_cell_area_get_preferred_height_for_width().
+func (context *CellAreaContext) reset() {
+	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.reset
+
+	var _arg0 *C.GtkCellAreaContext // out
+
+	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	C._gotk4_gtk4_CellAreaContext_virtual_reset(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(context)
 }
 

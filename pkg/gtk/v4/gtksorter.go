@@ -15,9 +15,15 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GtkOrdering _gotk4_gtk4_SorterClass_compare(GtkSorter*, gpointer, gpointer);
-// extern GtkSorterOrder _gotk4_gtk4_SorterClass_get_order(GtkSorter*);
 // extern void _gotk4_gtk4_Sorter_ConnectChanged(gpointer, GtkSorterChange, guintptr);
+// extern GtkSorterOrder _gotk4_gtk4_SorterClass_get_order(GtkSorter*);
+// extern GtkOrdering _gotk4_gtk4_SorterClass_compare(GtkSorter*, gpointer, gpointer);
+// GtkOrdering _gotk4_gtk4_Sorter_virtual_compare(void* fnptr, GtkSorter* arg0, gpointer arg1, gpointer arg2) {
+//   return ((GtkOrdering (*)(GtkSorter*, gpointer, gpointer))(fnptr))(arg0, arg1, arg2);
+// };
+// GtkSorterOrder _gotk4_gtk4_Sorter_virtual_get_order(void* fnptr, GtkSorter* arg0) {
+//   return ((GtkSorterOrder (*)(GtkSorter*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -108,8 +114,8 @@ func (s SorterOrder) String() string {
 	}
 }
 
-// SorterOverrider contains methods that are overridable.
-type SorterOverrider interface {
+// SorterOverrides contains methods that are overridable.
+type SorterOverrides struct {
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	//
@@ -132,7 +138,7 @@ type SorterOverrider interface {
 	//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER
 	//      if item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
 	//
-	Compare(item1, item2 *coreglib.Object) Ordering
+	Compare func(item1, item2 *coreglib.Object) Ordering
 	// Order gets the order that self conforms to.
 	//
 	// See gtk.SorterOrder for details of the possible return values.
@@ -143,7 +149,14 @@ type SorterOverrider interface {
 	//
 	//    - sorterOrder: order.
 	//
-	Order() SorterOrder
+	Order func() SorterOrder
+}
+
+func defaultSorterOverrides(v *Sorter) SorterOverrides {
+	return SorterOverrides{
+		Compare: v.compare,
+		Order:   v.order,
+	}
 }
 
 // Sorter: GtkSorter is an object to describe sorting criteria.
@@ -176,70 +189,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSorter,
-		GoType:        reflect.TypeOf((*Sorter)(nil)),
-		InitClass:     initClassSorter,
-		FinalizeClass: finalizeClassSorter,
-	})
+	coreglib.RegisterClassInfo[*Sorter, *SorterClass, SorterOverrides](
+		GTypeSorter,
+		initSorterClass,
+		wrapSorter,
+		defaultSorterOverrides,
+	)
 }
 
-func initClassSorter(gclass unsafe.Pointer, goval any) {
+func initSorterClass(gclass unsafe.Pointer, overrides SorterOverrides, classInitFunc func(*SorterClass)) {
+	pclass := (*C.GtkSorterClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSorter))))
 
-	pclass := (*C.GtkSorterClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface {
-		Compare(item1, item2 *coreglib.Object) Ordering
-	}); ok {
+	if overrides.Compare != nil {
 		pclass.compare = (*[0]byte)(C._gotk4_gtk4_SorterClass_compare)
 	}
 
-	if _, ok := goval.(interface{ Order() SorterOrder }); ok {
+	if overrides.Order != nil {
 		pclass.get_order = (*[0]byte)(C._gotk4_gtk4_SorterClass_get_order)
 	}
-	if goval, ok := goval.(interface{ InitSorter(*SorterClass) }); ok {
-		klass := (*SorterClass)(gextras.NewStructNative(gclass))
-		goval.InitSorter(klass)
+
+	if classInitFunc != nil {
+		class := (*SorterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSorter(*SorterClass) }); ok {
-		klass := (*SorterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSorter(klass)
-	}
-}
-
-//export _gotk4_gtk4_SorterClass_compare
-func _gotk4_gtk4_SorterClass_compare(arg0 *C.GtkSorter, arg1 C.gpointer, arg2 C.gpointer) (cret C.GtkOrdering) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Compare(item1, item2 *coreglib.Object) Ordering
-	})
-
-	var _item1 *coreglib.Object // out
-	var _item2 *coreglib.Object // out
-
-	_item1 = coreglib.Take(unsafe.Pointer(arg1))
-	_item2 = coreglib.Take(unsafe.Pointer(arg2))
-
-	ordering := iface.Compare(_item1, _item2)
-
-	cret = C.GtkOrdering(ordering)
-
-	return cret
-}
-
-//export _gotk4_gtk4_SorterClass_get_order
-func _gotk4_gtk4_SorterClass_get_order(arg0 *C.GtkSorter) (cret C.GtkSorterOrder) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Order() SorterOrder })
-
-	sorterOrder := iface.Order()
-
-	cret = C.GtkSorterOrder(sorterOrder)
-
-	return cret
 }
 
 func wrapSorter(obj *coreglib.Object) *Sorter {
@@ -250,26 +222,6 @@ func wrapSorter(obj *coreglib.Object) *Sorter {
 
 func marshalSorter(p uintptr) (interface{}, error) {
 	return wrapSorter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_Sorter_ConnectChanged
-func _gotk4_gtk4_Sorter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkSorterChange, arg2 C.guintptr) {
-	var f func(change SorterChange)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(change SorterChange))
-	}
-
-	var _change SorterChange // out
-
-	_change = SorterChange(arg1)
-
-	f(_change)
 }
 
 // ConnectChanged is emitted whenever the sorter changed.
@@ -376,6 +328,82 @@ func (self *Sorter) Order() SorterOrder {
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
+	runtime.KeepAlive(self)
+
+	var _sorterOrder SorterOrder // out
+
+	_sorterOrder = SorterOrder(_cret)
+
+	return _sorterOrder
+}
+
+// Compare compares two given items according to the sort order implemented by
+// the sorter.
+//
+// Sorters implement a partial order:
+//
+// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
+// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
+// then a ≤ c
+//
+// The sorter may signal it conforms to additional constraints via the return
+// value of gtk.Sorter.GetOrder().
+//
+// The function takes the following parameters:
+//
+//    - item1 (optional): first item to compare.
+//    - item2 (optional): second item to compare.
+//
+// The function returns the following values:
+//
+//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
+//      item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
+//
+func (self *Sorter) compare(item1, item2 *coreglib.Object) Ordering {
+	gclass := (*C.GtkSorterClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.compare
+
+	var _arg0 *C.GtkSorter  // out
+	var _arg1 C.gpointer    // out
+	var _arg2 C.gpointer    // out
+	var _cret C.GtkOrdering // in
+
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gpointer(unsafe.Pointer(item1.Native()))
+	_arg2 = C.gpointer(unsafe.Pointer(item2.Native()))
+
+	_cret = C._gotk4_gtk4_Sorter_virtual_compare(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(item1)
+	runtime.KeepAlive(item2)
+
+	var _ordering Ordering // out
+
+	_ordering = Ordering(_cret)
+
+	return _ordering
+}
+
+// Order gets the order that self conforms to.
+//
+// See gtk.SorterOrder for details of the possible return values.
+//
+// This function is intended to allow optimizations.
+//
+// The function returns the following values:
+//
+//    - sorterOrder: order.
+//
+func (self *Sorter) order() SorterOrder {
+	gclass := (*C.GtkSorterClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.get_order
+
+	var _arg0 *C.GtkSorter     // out
+	var _cret C.GtkSorterOrder // in
+
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C._gotk4_gtk4_Sorter_virtual_get_order(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(self)
 
 	var _sorterOrder SorterOrder // out

@@ -14,11 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_Calendar_ConnectDaySelected(gpointer, guintptr);
-// extern void _gotk4_gtk4_Calendar_ConnectNextMonth(gpointer, guintptr);
-// extern void _gotk4_gtk4_Calendar_ConnectNextYear(gpointer, guintptr);
-// extern void _gotk4_gtk4_Calendar_ConnectPrevMonth(gpointer, guintptr);
 // extern void _gotk4_gtk4_Calendar_ConnectPrevYear(gpointer, guintptr);
+// extern void _gotk4_gtk4_Calendar_ConnectPrevMonth(gpointer, guintptr);
+// extern void _gotk4_gtk4_Calendar_ConnectNextYear(gpointer, guintptr);
+// extern void _gotk4_gtk4_Calendar_ConnectNextMonth(gpointer, guintptr);
+// extern void _gotk4_gtk4_Calendar_ConnectDaySelected(gpointer, guintptr);
 import "C"
 
 // GType values.
@@ -111,41 +111,9 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return wrapCalendar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_Calendar_ConnectDaySelected
-func _gotk4_gtk4_Calendar_ConnectDaySelected(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectDaySelected is emitted when the user selects a day.
 func (calendar *Calendar) ConnectDaySelected(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(calendar, "day-selected", false, unsafe.Pointer(C._gotk4_gtk4_Calendar_ConnectDaySelected), f)
-}
-
-//export _gotk4_gtk4_Calendar_ConnectNextMonth
-func _gotk4_gtk4_Calendar_ConnectNextMonth(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectNextMonth is emitted when the user switched to the next month.
@@ -153,62 +121,14 @@ func (calendar *Calendar) ConnectNextMonth(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(calendar, "next-month", false, unsafe.Pointer(C._gotk4_gtk4_Calendar_ConnectNextMonth), f)
 }
 
-//export _gotk4_gtk4_Calendar_ConnectNextYear
-func _gotk4_gtk4_Calendar_ConnectNextYear(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectNextYear is emitted when user switched to the next year.
 func (calendar *Calendar) ConnectNextYear(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(calendar, "next-year", false, unsafe.Pointer(C._gotk4_gtk4_Calendar_ConnectNextYear), f)
 }
 
-//export _gotk4_gtk4_Calendar_ConnectPrevMonth
-func _gotk4_gtk4_Calendar_ConnectPrevMonth(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectPrevMonth is emitted when the user switched to the previous month.
 func (calendar *Calendar) ConnectPrevMonth(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(calendar, "prev-month", false, unsafe.Pointer(C._gotk4_gtk4_Calendar_ConnectPrevMonth), f)
-}
-
-//export _gotk4_gtk4_Calendar_ConnectPrevYear
-func _gotk4_gtk4_Calendar_ConnectPrevYear(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectPrevYear is emitted when user switched to the previous year.

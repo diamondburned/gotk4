@@ -18,15 +18,30 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern gboolean _gotk4_gtk3_SpinButton_ConnectOutput(gpointer, guintptr);
-// extern gint _gotk4_gtk3_SpinButtonClass_input(GtkSpinButton*, gdouble*);
-// extern gint _gotk4_gtk3_SpinButtonClass_output(GtkSpinButton*);
-// extern void _gotk4_gtk3_SpinButtonClass_change_value(GtkSpinButton*, GtkScrollType);
-// extern void _gotk4_gtk3_SpinButtonClass_value_changed(GtkSpinButton*);
-// extern void _gotk4_gtk3_SpinButtonClass_wrapped(GtkSpinButton*);
-// extern void _gotk4_gtk3_SpinButton_ConnectChangeValue(gpointer, GtkScrollType, guintptr);
-// extern void _gotk4_gtk3_SpinButton_ConnectValueChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_SpinButton_ConnectWrapped(gpointer, guintptr);
+// extern void _gotk4_gtk3_SpinButton_ConnectValueChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_SpinButton_ConnectChangeValue(gpointer, GtkScrollType, guintptr);
+// extern void _gotk4_gtk3_SpinButtonClass_wrapped(GtkSpinButton*);
+// extern void _gotk4_gtk3_SpinButtonClass_value_changed(GtkSpinButton*);
+// extern void _gotk4_gtk3_SpinButtonClass_change_value(GtkSpinButton*, GtkScrollType);
+// extern gint _gotk4_gtk3_SpinButtonClass_output(GtkSpinButton*);
+// extern gint _gotk4_gtk3_SpinButtonClass_input(GtkSpinButton*, gdouble*);
+// extern gboolean _gotk4_gtk3_SpinButton_ConnectOutput(gpointer, guintptr);
+// gint _gotk4_gtk3_SpinButton_virtual_input(void* fnptr, GtkSpinButton* arg0, gdouble* arg1) {
+//   return ((gint (*)(GtkSpinButton*, gdouble*))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_gtk3_SpinButton_virtual_output(void* fnptr, GtkSpinButton* arg0) {
+//   return ((gint (*)(GtkSpinButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_SpinButton_virtual_change_value(void* fnptr, GtkSpinButton* arg0, GtkScrollType arg1) {
+//   ((void (*)(GtkSpinButton*, GtkScrollType))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_SpinButton_virtual_value_changed(void* fnptr, GtkSpinButton* arg0) {
+//   ((void (*)(GtkSpinButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_SpinButton_virtual_wrapped(void* fnptr, GtkSpinButton* arg0) {
+//   ((void (*)(GtkSpinButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -126,21 +141,31 @@ func (s SpinType) String() string {
 	}
 }
 
-// SpinButtonOverrider contains methods that are overridable.
-type SpinButtonOverrider interface {
+// SpinButtonOverrides contains methods that are overridable.
+type SpinButtonOverrides struct {
 	// The function takes the following parameters:
 	//
-	ChangeValue(scroll ScrollType)
+	ChangeValue func(scroll ScrollType)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	Input(newValue *float64) int
+	Input func(newValue *float64) int
 	// The function returns the following values:
 	//
-	Output() int
-	ValueChanged()
-	Wrapped()
+	Output       func() int
+	ValueChanged func()
+	Wrapped      func()
+}
+
+func defaultSpinButtonOverrides(v *SpinButton) SpinButtonOverrides {
+	return SpinButtonOverrides{
+		ChangeValue:  v.changeValue,
+		Input:        v.input,
+		Output:       v.output,
+		ValueChanged: v.valueChanged,
+		Wrapped:      v.wrapped,
+	}
 }
 
 // SpinButton is an ideal way to allow the user to set the value of some
@@ -200,104 +225,41 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeSpinButton,
-		GoType:        reflect.TypeOf((*SpinButton)(nil)),
-		InitClass:     initClassSpinButton,
-		FinalizeClass: finalizeClassSpinButton,
-	})
+	coreglib.RegisterClassInfo[*SpinButton, *SpinButtonClass, SpinButtonOverrides](
+		GTypeSpinButton,
+		initSpinButtonClass,
+		wrapSpinButton,
+		defaultSpinButtonOverrides,
+	)
 }
 
-func initClassSpinButton(gclass unsafe.Pointer, goval any) {
+func initSpinButtonClass(gclass unsafe.Pointer, overrides SpinButtonOverrides, classInitFunc func(*SpinButtonClass)) {
+	pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSpinButton))))
 
-	pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ChangeValue(scroll ScrollType) }); ok {
+	if overrides.ChangeValue != nil {
 		pclass.change_value = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_change_value)
 	}
 
-	if _, ok := goval.(interface{ Input(newValue *float64) int }); ok {
+	if overrides.Input != nil {
 		pclass.input = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_input)
 	}
 
-	if _, ok := goval.(interface{ Output() int }); ok {
+	if overrides.Output != nil {
 		pclass.output = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_output)
 	}
 
-	if _, ok := goval.(interface{ ValueChanged() }); ok {
+	if overrides.ValueChanged != nil {
 		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_value_changed)
 	}
 
-	if _, ok := goval.(interface{ Wrapped() }); ok {
+	if overrides.Wrapped != nil {
 		pclass.wrapped = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_wrapped)
 	}
-	if goval, ok := goval.(interface{ InitSpinButton(*SpinButtonClass) }); ok {
-		klass := (*SpinButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitSpinButton(klass)
+
+	if classInitFunc != nil {
+		class := (*SpinButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassSpinButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeSpinButton(*SpinButtonClass) }); ok {
-		klass := (*SpinButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeSpinButton(klass)
-	}
-}
-
-//export _gotk4_gtk3_SpinButtonClass_change_value
-func _gotk4_gtk3_SpinButtonClass_change_value(arg0 *C.GtkSpinButton, arg1 C.GtkScrollType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ChangeValue(scroll ScrollType) })
-
-	var _scroll ScrollType // out
-
-	_scroll = ScrollType(arg1)
-
-	iface.ChangeValue(_scroll)
-}
-
-//export _gotk4_gtk3_SpinButtonClass_input
-func _gotk4_gtk3_SpinButtonClass_input(arg0 *C.GtkSpinButton, arg1 *C.gdouble) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Input(newValue *float64) int })
-
-	var _newValue *float64 // out
-
-	_newValue = (*float64)(unsafe.Pointer(arg1))
-
-	gint := iface.Input(_newValue)
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_gtk3_SpinButtonClass_output
-func _gotk4_gtk3_SpinButtonClass_output(arg0 *C.GtkSpinButton) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Output() int })
-
-	gint := iface.Output()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_gtk3_SpinButtonClass_value_changed
-func _gotk4_gtk3_SpinButtonClass_value_changed(arg0 *C.GtkSpinButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ValueChanged() })
-
-	iface.ValueChanged()
-}
-
-//export _gotk4_gtk3_SpinButtonClass_wrapped
-func _gotk4_gtk3_SpinButtonClass_wrapped(arg0 *C.GtkSpinButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Wrapped() })
-
-	iface.Wrapped()
 }
 
 func wrapSpinButton(obj *coreglib.Object) *SpinButton {
@@ -345,26 +307,6 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return wrapSpinButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_SpinButton_ConnectChangeValue
-func _gotk4_gtk3_SpinButton_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
-	var f func(scroll ScrollType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scroll ScrollType))
-	}
-
-	var _scroll ScrollType // out
-
-	_scroll = ScrollType(arg1)
-
-	f(_scroll)
-}
-
 // ConnectChangeValue signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user initiates a value change.
 //
@@ -374,28 +316,6 @@ func _gotk4_gtk3_SpinButton_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScroll
 // The default bindings for this signal are Up/Down and PageUp and/PageDown.
 func (spinButton *SpinButton) ConnectChangeValue(f func(scroll ScrollType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(spinButton, "change-value", false, unsafe.Pointer(C._gotk4_gtk3_SpinButton_ConnectChangeValue), f)
-}
-
-//export _gotk4_gtk3_SpinButton_ConnectOutput
-func _gotk4_gtk3_SpinButton_ConnectOutput(arg0 C.gpointer, arg1 C.guintptr) (cret C.gboolean) {
-	var f func() (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func() (ok bool))
-	}
-
-	ok := f()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectOutput signal can be used to change to formatting of the value that is
@@ -422,42 +342,10 @@ func (spinButton *SpinButton) ConnectOutput(f func() (ok bool)) coreglib.SignalH
 	return coreglib.ConnectGeneratedClosure(spinButton, "output", false, unsafe.Pointer(C._gotk4_gtk3_SpinButton_ConnectOutput), f)
 }
 
-//export _gotk4_gtk3_SpinButton_ConnectValueChanged
-func _gotk4_gtk3_SpinButton_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectValueChanged signal is emitted when the value represented by
 // spinbutton changes. Also see the SpinButton::output signal.
 func (spinButton *SpinButton) ConnectValueChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(spinButton, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_SpinButton_ConnectValueChanged), f)
-}
-
-//export _gotk4_gtk3_SpinButton_ConnectWrapped
-func _gotk4_gtk3_SpinButton_ConnectWrapped(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectWrapped signal is emitted right after the spinbutton wraps from its
@@ -1034,6 +922,94 @@ func (spinButton *SpinButton) Update() {
 	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	C.gtk_spin_button_update(_arg0)
+	runtime.KeepAlive(spinButton)
+}
+
+// The function takes the following parameters:
+//
+func (spinButton *SpinButton) changeValue(scroll ScrollType) {
+	gclass := (*C.GtkSpinButtonClass)(coreglib.PeekParentClass(spinButton))
+	fnarg := gclass.change_value
+
+	var _arg0 *C.GtkSpinButton // out
+	var _arg1 C.GtkScrollType  // out
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	_arg1 = C.GtkScrollType(scroll)
+
+	C._gotk4_gtk3_SpinButton_virtual_change_value(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(scroll)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (spinButton *SpinButton) input(newValue *float64) int {
+	gclass := (*C.GtkSpinButtonClass)(coreglib.PeekParentClass(spinButton))
+	fnarg := gclass.input
+
+	var _arg0 *C.GtkSpinButton // out
+	var _arg1 *C.gdouble       // out
+	var _cret C.gint           // in
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	_arg1 = (*C.gdouble)(unsafe.Pointer(newValue))
+
+	_cret = C._gotk4_gtk3_SpinButton_virtual_input(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(spinButton)
+	runtime.KeepAlive(newValue)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// The function returns the following values:
+//
+func (spinButton *SpinButton) output() int {
+	gclass := (*C.GtkSpinButtonClass)(coreglib.PeekParentClass(spinButton))
+	fnarg := gclass.output
+
+	var _arg0 *C.GtkSpinButton // out
+	var _cret C.gint           // in
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+
+	_cret = C._gotk4_gtk3_SpinButton_virtual_output(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(spinButton)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+func (spinButton *SpinButton) valueChanged() {
+	gclass := (*C.GtkSpinButtonClass)(coreglib.PeekParentClass(spinButton))
+	fnarg := gclass.value_changed
+
+	var _arg0 *C.GtkSpinButton // out
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+
+	C._gotk4_gtk3_SpinButton_virtual_value_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(spinButton)
+}
+
+func (spinButton *SpinButton) wrapped() {
+	gclass := (*C.GtkSpinButtonClass)(coreglib.PeekParentClass(spinButton))
+	fnarg := gclass.wrapped
+
+	var _arg0 *C.GtkSpinButton // out
+
+	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+
+	C._gotk4_gtk3_SpinButton_virtual_wrapped(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(spinButton)
 }
 

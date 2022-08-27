@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ImageCellAccessibleOverrider contains methods that are overridable.
-type ImageCellAccessibleOverrider interface {
+// ImageCellAccessibleOverrides contains methods that are overridable.
+type ImageCellAccessibleOverrides struct {
+}
+
+func defaultImageCellAccessibleOverrides(v *ImageCellAccessible) ImageCellAccessibleOverrides {
+	return ImageCellAccessibleOverrides{}
 }
 
 type ImageCellAccessible struct {
@@ -47,29 +51,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeImageCellAccessible,
-		GoType:        reflect.TypeOf((*ImageCellAccessible)(nil)),
-		InitClass:     initClassImageCellAccessible,
-		FinalizeClass: finalizeClassImageCellAccessible,
-	})
+	coreglib.RegisterClassInfo[*ImageCellAccessible, *ImageCellAccessibleClass, ImageCellAccessibleOverrides](
+		GTypeImageCellAccessible,
+		initImageCellAccessibleClass,
+		wrapImageCellAccessible,
+		defaultImageCellAccessibleOverrides,
+	)
 }
 
-func initClassImageCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitImageCellAccessible(*ImageCellAccessibleClass)
-	}); ok {
-		klass := (*ImageCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitImageCellAccessible(klass)
-	}
-}
-
-func finalizeClassImageCellAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeImageCellAccessible(*ImageCellAccessibleClass)
-	}); ok {
-		klass := (*ImageCellAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeImageCellAccessible(klass)
+func initImageCellAccessibleClass(gclass unsafe.Pointer, overrides ImageCellAccessibleOverrides, classInitFunc func(*ImageCellAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ImageCellAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

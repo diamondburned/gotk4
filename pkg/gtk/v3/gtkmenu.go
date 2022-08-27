@@ -11,8 +11,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -20,8 +18,8 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_Menu_ConnectMoveScroll(gpointer, GtkScrollType, guintptr);
 // extern void _gotk4_gtk3_Menu_ConnectPoppedUp(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
+// extern void _gotk4_gtk3_Menu_ConnectMoveScroll(gpointer, GtkScrollType, guintptr);
 import "C"
 
 // GType values.
@@ -68,8 +66,12 @@ func (a ArrowPlacement) String() string {
 	}
 }
 
-// MenuOverrider contains methods that are overridable.
-type MenuOverrider interface {
+// MenuOverrides contains methods that are overridable.
+type MenuOverrides struct {
+}
+
+func defaultMenuOverrides(v *Menu) MenuOverrides {
+	return MenuOverrides{}
 }
 
 // Menu is a MenuShell that implements a drop down menu consisting of a list of
@@ -108,25 +110,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeMenu,
-		GoType:        reflect.TypeOf((*Menu)(nil)),
-		InitClass:     initClassMenu,
-		FinalizeClass: finalizeClassMenu,
-	})
+	coreglib.RegisterClassInfo[*Menu, *MenuClass, MenuOverrides](
+		GTypeMenu,
+		initMenuClass,
+		wrapMenu,
+		defaultMenuOverrides,
+	)
 }
 
-func initClassMenu(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitMenu(*MenuClass) }); ok {
-		klass := (*MenuClass)(gextras.NewStructNative(gclass))
-		goval.InitMenu(klass)
-	}
-}
-
-func finalizeClassMenu(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeMenu(*MenuClass) }); ok {
-		klass := (*MenuClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeMenu(klass)
+func initMenuClass(gclass unsafe.Pointer, overrides MenuOverrides, classInitFunc func(*MenuClass)) {
+	if classInitFunc != nil {
+		class := (*MenuClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -155,58 +150,8 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	return wrapMenu(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Menu_ConnectMoveScroll
-func _gotk4_gtk3_Menu_ConnectMoveScroll(arg0 C.gpointer, arg1 C.GtkScrollType, arg2 C.guintptr) {
-	var f func(scrollType ScrollType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(scrollType ScrollType))
-	}
-
-	var _scrollType ScrollType // out
-
-	_scrollType = ScrollType(arg1)
-
-	f(_scrollType)
-}
-
 func (menu *Menu) ConnectMoveScroll(f func(scrollType ScrollType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(menu, "move-scroll", false, unsafe.Pointer(C._gotk4_gtk3_Menu_ConnectMoveScroll), f)
-}
-
-//export _gotk4_gtk3_Menu_ConnectPoppedUp
-func _gotk4_gtk3_Menu_ConnectPoppedUp(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
-	var f func(flippedRect, finalRect unsafe.Pointer, flippedX, flippedY bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(flippedRect, finalRect unsafe.Pointer, flippedX, flippedY bool))
-	}
-
-	var _flippedRect unsafe.Pointer // out
-	var _finalRect unsafe.Pointer   // out
-	var _flippedX bool              // out
-	var _flippedY bool              // out
-
-	_flippedRect = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_finalRect = (unsafe.Pointer)(unsafe.Pointer(arg2))
-	if arg3 != 0 {
-		_flippedX = true
-	}
-	if arg4 != 0 {
-		_flippedY = true
-	}
-
-	f(_flippedRect, _finalRect, _flippedX, _flippedY)
 }
 
 // ConnectPoppedUp is emitted when the position of menu is finalized after being
@@ -252,81 +197,6 @@ func NewMenu() *Menu {
 	return _menu
 }
 
-// NewMenuFromModel creates a Menu and populates it with menu items and submenus
-// according to model.
-//
-// The created menu items are connected to actions found in the
-// ApplicationWindow to which the menu belongs - typically by means of being
-// attached to a widget (see gtk_menu_attach_to_widget()) that is contained
-// within the ApplicationWindows widget hierarchy.
-//
-// Actions can also be added using gtk_widget_insert_action_group() on the
-// menu's attach widget or on any of its parent widgets.
-//
-// The function takes the following parameters:
-//
-//    - model: Model.
-//
-// The function returns the following values:
-//
-//    - menu: new Menu.
-//
-func NewMenuFromModel(model gio.MenuModeller) *Menu {
-	var _arg1 *C.GMenuModel // out
-	var _cret *C.GtkWidget  // in
-
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	_cret = C.gtk_menu_new_from_model(_arg1)
-	runtime.KeepAlive(model)
-
-	var _menu *Menu // out
-
-	_menu = wrapMenu(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _menu
-}
-
-// Attach adds a new MenuItem to a (table) menu. The number of “cells” that an
-// item will occupy is specified by left_attach, right_attach, top_attach and
-// bottom_attach. These each represent the leftmost, rightmost, uppermost and
-// lower column and row numbers of the table. (Columns and rows are indexed from
-// zero).
-//
-// Note that this function is not related to gtk_menu_detach().
-//
-// The function takes the following parameters:
-//
-//    - child: MenuItem.
-//    - leftAttach: column number to attach the left side of the item to.
-//    - rightAttach: column number to attach the right side of the item to.
-//    - topAttach: row number to attach the top of the item to.
-//    - bottomAttach: row number to attach the bottom of the item to.
-//
-func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bottomAttach uint) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.guint      // out
-	var _arg3 C.guint      // out
-	var _arg4 C.guint      // out
-	var _arg5 C.guint      // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	_arg2 = C.guint(leftAttach)
-	_arg3 = C.guint(rightAttach)
-	_arg4 = C.guint(topAttach)
-	_arg5 = C.guint(bottomAttach)
-
-	C.gtk_menu_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(leftAttach)
-	runtime.KeepAlive(rightAttach)
-	runtime.KeepAlive(topAttach)
-	runtime.KeepAlive(bottomAttach)
-}
-
 // Detach detaches the menu from the widget to which it had been attached. This
 // function will call the callback function, detacher, provided when the
 // gtk_menu_attach_to_widget() function was called.
@@ -360,28 +230,6 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _accelGroup
-}
-
-// AccelPath retrieves the accelerator path set on the menu.
-//
-// The function returns the following values:
-//
-//    - utf8: accelerator path set on the menu.
-//
-func (menu *Menu) AccelPath() string {
-	var _arg0 *C.GtkMenu // out
-	var _cret *C.gchar   // in
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-
-	_cret = C.gtk_menu_get_accel_path(_arg0)
-	runtime.KeepAlive(menu)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
 }
 
 // Active returns the selected menu item from the menu. This is used by the
@@ -462,54 +310,6 @@ func (menu *Menu) AttachWidget() Widgetter {
 	return _widget
 }
 
-// Monitor retrieves the number of the monitor on which to show the menu.
-//
-// The function returns the following values:
-//
-//    - gint: number of the monitor on which the menu should be popped up or -1,
-//      if no monitor has been set.
-//
-func (menu *Menu) Monitor() int {
-	var _arg0 *C.GtkMenu // out
-	var _cret C.gint     // in
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-
-	_cret = C.gtk_menu_get_monitor(_arg0)
-	runtime.KeepAlive(menu)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// ReserveToggleSize returns whether the menu reserves space for toggles and
-// icons, regardless of their actual presence.
-//
-// The function returns the following values:
-//
-//    - ok: whether the menu reserves toggle space.
-//
-func (menu *Menu) ReserveToggleSize() bool {
-	var _arg0 *C.GtkMenu // out
-	var _cret C.gboolean // in
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-
-	_cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
-	runtime.KeepAlive(menu)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // TearoffState returns whether the menu is torn off. See
 // gtk_menu_set_tearoff_state().
 //
@@ -562,24 +362,6 @@ func (menu *Menu) Title() string {
 	return _utf8
 }
 
-// PlaceOnMonitor places menu on the given monitor.
-//
-// The function takes the following parameters:
-//
-//    - monitor to place the menu on.
-//
-func (menu *Menu) PlaceOnMonitor(monitor *gdk.Monitor) {
-	var _arg0 *C.GtkMenu    // out
-	var _arg1 *C.GdkMonitor // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	_arg1 = (*C.GdkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-
-	C.gtk_menu_place_on_monitor(_arg0, _arg1)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(monitor)
-}
-
 // Popdown removes the menu from the screen.
 func (menu *Menu) Popdown() {
 	var _arg0 *C.GtkMenu // out
@@ -588,143 +370,6 @@ func (menu *Menu) Popdown() {
 
 	C.gtk_menu_popdown(_arg0)
 	runtime.KeepAlive(menu)
-}
-
-// PopupAtPointer displays menu and makes it available for selection.
-//
-// See gtk_menu_popup_at_widget () to pop up a menu at a widget.
-// gtk_menu_popup_at_rect () also allows you to position a menu at an arbitrary
-// rectangle.
-//
-// menu will be positioned at the pointer associated with trigger_event.
-//
-// Properties that influence the behaviour of this function are
-// Menu:anchor-hints, Menu:rect-anchor-dx, Menu:rect-anchor-dy, and
-// Menu:menu-type-hint. Connect to the Menu::popped-up signal to find out how it
-// was actually positioned.
-//
-// The function takes the following parameters:
-//
-//    - triggerEvent (optional) that initiated this request or NULL if it's the
-//      current event.
-//
-func (menu *Menu) PopupAtPointer(triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu  // out
-	var _arg1 *C.GdkEvent // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	if triggerEvent != nil {
-		_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
-	}
-
-	C.gtk_menu_popup_at_pointer(_arg0, _arg1)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(triggerEvent)
-}
-
-// PopupAtRect displays menu and makes it available for selection.
-//
-// See gtk_menu_popup_at_widget () and gtk_menu_popup_at_pointer (), which
-// handle more common cases for popping up menus.
-//
-// menu will be positioned at rect, aligning their anchor points. rect is
-// relative to the top-left corner of rect_window. rect_anchor and menu_anchor
-// determine anchor points on rect and menu to pin together. menu can optionally
-// be offset by Menu:rect-anchor-dx and Menu:rect-anchor-dy.
-//
-// Anchors should be specified under the assumption that the text direction is
-// left-to-right; they will be flipped horizontally automatically if the text
-// direction is right-to-left.
-//
-// Other properties that influence the behaviour of this function are
-// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-// signal to find out how it was actually positioned.
-//
-// The function takes the following parameters:
-//
-//    - rectWindow rect is relative to.
-//    - rect to align menu with.
-//    - rectAnchor: point on rect to align with menu's anchor point.
-//    - menuAnchor: point on menu to align with rect's anchor point.
-//    - triggerEvent (optional) that initiated this request or NULL if it's the
-//      current event.
-//
-func (menu *Menu) PopupAtRect(rectWindow gdk.Windower, rect *gdk.Rectangle, rectAnchor, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu      // out
-	var _arg1 *C.GdkWindow    // out
-	var _arg2 *C.GdkRectangle // out
-	var _arg3 C.GdkGravity    // out
-	var _arg4 C.GdkGravity    // out
-	var _arg5 *C.GdkEvent     // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(rectWindow).Native()))
-	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
-	_arg3 = C.GdkGravity(rectAnchor)
-	_arg4 = C.GdkGravity(menuAnchor)
-	if triggerEvent != nil {
-		_arg5 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
-	}
-
-	C.gtk_menu_popup_at_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(rectWindow)
-	runtime.KeepAlive(rect)
-	runtime.KeepAlive(rectAnchor)
-	runtime.KeepAlive(menuAnchor)
-	runtime.KeepAlive(triggerEvent)
-}
-
-// PopupAtWidget displays menu and makes it available for selection.
-//
-// See gtk_menu_popup_at_pointer () to pop up a menu at the master pointer.
-// gtk_menu_popup_at_rect () also allows you to position a menu at an arbitrary
-// rectangle.
-//
-// ! (popup-anchors.png)
-//
-// menu will be positioned at widget, aligning their anchor points.
-// widget_anchor and menu_anchor determine anchor points on widget and menu to
-// pin together. menu can optionally be offset by Menu:rect-anchor-dx and
-// Menu:rect-anchor-dy.
-//
-// Anchors should be specified under the assumption that the text direction is
-// left-to-right; they will be flipped horizontally automatically if the text
-// direction is right-to-left.
-//
-// Other properties that influence the behaviour of this function are
-// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-// signal to find out how it was actually positioned.
-//
-// The function takes the following parameters:
-//
-//    - widget to align menu with.
-//    - widgetAnchor: point on widget to align with menu's anchor point.
-//    - menuAnchor: point on menu to align with widget's anchor point.
-//    - triggerEvent (optional) that initiated this request or NULL if it's the
-//      current event.
-//
-func (menu *Menu) PopupAtWidget(widget Widgetter, widgetAnchor, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GtkWidget // out
-	var _arg2 C.GdkGravity // out
-	var _arg3 C.GdkGravity // out
-	var _arg4 *C.GdkEvent  // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.GdkGravity(widgetAnchor)
-	_arg3 = C.GdkGravity(menuAnchor)
-	if triggerEvent != nil {
-		_arg4 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
-	}
-
-	C.gtk_menu_popup_at_widget(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(widgetAnchor)
-	runtime.KeepAlive(menuAnchor)
-	runtime.KeepAlive(triggerEvent)
 }
 
 // ReorderChild moves child to a new position in the list of menu children.
@@ -843,73 +488,6 @@ func (menu *Menu) SetActive(index uint) {
 	runtime.KeepAlive(index)
 }
 
-// SetMonitor informs GTK+ on which monitor a menu should be popped up. See
-// gdk_monitor_get_geometry().
-//
-// This function should be called from a MenuPositionFunc if the menu should not
-// appear on the same monitor as the pointer. This information can’t be reliably
-// inferred from the coordinates returned by a MenuPositionFunc, since, for very
-// long menus, these coordinates may extend beyond the monitor boundaries or
-// even the screen boundaries.
-//
-// The function takes the following parameters:
-//
-//    - monitorNum: number of the monitor on which the menu should be popped up.
-//
-func (menu *Menu) SetMonitor(monitorNum int) {
-	var _arg0 *C.GtkMenu // out
-	var _arg1 C.gint     // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	_arg1 = C.gint(monitorNum)
-
-	C.gtk_menu_set_monitor(_arg0, _arg1)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(monitorNum)
-}
-
-// SetReserveToggleSize sets whether the menu should reserve space for drawing
-// toggles or icons, regardless of their actual presence.
-//
-// The function takes the following parameters:
-//
-//    - reserveToggleSize: whether to reserve size for toggles.
-//
-func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
-	var _arg0 *C.GtkMenu // out
-	var _arg1 C.gboolean // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	if reserveToggleSize {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_menu_set_reserve_toggle_size(_arg0, _arg1)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(reserveToggleSize)
-}
-
-// SetScreen sets the Screen on which the menu will be displayed.
-//
-// The function takes the following parameters:
-//
-//    - screen (optional) or NULL if the screen should be determined by the
-//      widget the menu is attached to.
-//
-func (menu *Menu) SetScreen(screen *gdk.Screen) {
-	var _arg0 *C.GtkMenu   // out
-	var _arg1 *C.GdkScreen // out
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-	if screen != nil {
-		_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	}
-
-	C.gtk_menu_set_screen(_arg0, _arg1)
-	runtime.KeepAlive(menu)
-	runtime.KeepAlive(screen)
-}
-
 // SetTearoffState changes the tearoff state of the menu. A menu is normally
 // displayed as drop down menu which persists as long as the menu is active. It
 // can also be displayed as a tearoff menu which persists until it is closed or
@@ -961,55 +539,6 @@ func (menu *Menu) SetTitle(title string) {
 	C.gtk_menu_set_title(_arg0, _arg1)
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(title)
-}
-
-// MenuGetForAttachWidget returns a list of the menus which are attached to this
-// widget. This list is owned by GTK+ and must not be modified.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//
-// The function returns the following values:
-//
-//    - list: list of menus attached to his widget.
-//
-func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
-	var _arg1 *C.GtkWidget // out
-	var _cret *C.GList     // in
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_menu_get_for_attach_widget(_arg1)
-	runtime.KeepAlive(widget)
-
-	var _list []Widgetter // out
-
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
-		src := (*C.GtkWidget)(v)
-		var dst Widgetter // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.Widgetter is nil")
-			}
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
-
-	return _list
 }
 
 // MenuClass: instance of this type is always passed by reference.

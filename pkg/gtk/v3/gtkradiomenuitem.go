@@ -17,8 +17,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_RadioMenuItemClass_group_changed(GtkRadioMenuItem*);
 // extern void _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_RadioMenuItemClass_group_changed(GtkRadioMenuItem*);
+// void _gotk4_gtk3_RadioMenuItem_virtual_group_changed(void* fnptr, GtkRadioMenuItem* arg0) {
+//   ((void (*)(GtkRadioMenuItem*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -32,9 +35,15 @@ func init() {
 	})
 }
 
-// RadioMenuItemOverrider contains methods that are overridable.
-type RadioMenuItemOverrider interface {
-	GroupChanged()
+// RadioMenuItemOverrides contains methods that are overridable.
+type RadioMenuItemOverrides struct {
+	GroupChanged func()
+}
+
+func defaultRadioMenuItemOverrides(v *RadioMenuItem) RadioMenuItemOverrides {
+	return RadioMenuItemOverrides{
+		GroupChanged: v.groupChanged,
+	}
 }
 
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
@@ -65,40 +74,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRadioMenuItem,
-		GoType:        reflect.TypeOf((*RadioMenuItem)(nil)),
-		InitClass:     initClassRadioMenuItem,
-		FinalizeClass: finalizeClassRadioMenuItem,
-	})
+	coreglib.RegisterClassInfo[*RadioMenuItem, *RadioMenuItemClass, RadioMenuItemOverrides](
+		GTypeRadioMenuItem,
+		initRadioMenuItemClass,
+		wrapRadioMenuItem,
+		defaultRadioMenuItemOverrides,
+	)
 }
 
-func initClassRadioMenuItem(gclass unsafe.Pointer, goval any) {
+func initRadioMenuItemClass(gclass unsafe.Pointer, overrides RadioMenuItemOverrides, classInitFunc func(*RadioMenuItemClass)) {
+	pclass := (*C.GtkRadioMenuItemClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRadioMenuItem))))
 
-	pclass := (*C.GtkRadioMenuItemClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ GroupChanged() }); ok {
+	if overrides.GroupChanged != nil {
 		pclass.group_changed = (*[0]byte)(C._gotk4_gtk3_RadioMenuItemClass_group_changed)
 	}
-	if goval, ok := goval.(interface{ InitRadioMenuItem(*RadioMenuItemClass) }); ok {
-		klass := (*RadioMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.InitRadioMenuItem(klass)
+
+	if classInitFunc != nil {
+		class := (*RadioMenuItemClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassRadioMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRadioMenuItem(*RadioMenuItemClass) }); ok {
-		klass := (*RadioMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRadioMenuItem(klass)
-	}
-}
-
-//export _gotk4_gtk3_RadioMenuItemClass_group_changed
-func _gotk4_gtk3_RadioMenuItemClass_group_changed(arg0 *C.GtkRadioMenuItem) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GroupChanged() })
-
-	iface.GroupChanged()
 }
 
 func wrapRadioMenuItem(obj *coreglib.Object) *RadioMenuItem {
@@ -148,22 +142,6 @@ func marshalRadioMenuItem(p uintptr) (interface{}, error) {
 	return wrapRadioMenuItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged
-func _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(radioMenuItem, "group-changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioMenuItem_ConnectGroupChanged), f)
 }
@@ -193,35 +171,6 @@ func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 	}
 
 	_cret = C.gtk_radio_menu_item_new(_arg1)
-	runtime.KeepAlive(group)
-
-	var _radioMenuItem *RadioMenuItem // out
-
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _radioMenuItem
-}
-
-// NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
-// group as group.
-//
-// The function takes the following parameters:
-//
-//    - group (optional): existing RadioMenuItem.
-//
-// The function returns the following values:
-//
-//    - radioMenuItem: new RadioMenuItem.
-//
-func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
-	var _arg1 *C.GtkRadioMenuItem // out
-	var _cret *C.GtkWidget        // in
-
-	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	}
-
-	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 	runtime.KeepAlive(group)
 
 	var _radioMenuItem *RadioMenuItem // out
@@ -261,43 +210,6 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_menu_item_new_with_label(_arg1, _arg2)
-	runtime.KeepAlive(group)
-	runtime.KeepAlive(label)
-
-	var _radioMenuItem *RadioMenuItem // out
-
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _radioMenuItem
-}
-
-// NewRadioMenuItemWithLabelFromWidget creates a new GtkRadioMenuItem whose
-// child is a simple GtkLabel. The new RadioMenuItem is added to the same group
-// as group.
-//
-// The function takes the following parameters:
-//
-//    - group (optional): existing RadioMenuItem.
-//    - label (optional): text for the label.
-//
-// The function returns the following values:
-//
-//    - radioMenuItem: new RadioMenuItem.
-//
-func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
-	var _arg1 *C.GtkRadioMenuItem // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GtkWidget        // in
-
-	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	}
-	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-
-	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
@@ -350,47 +262,6 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 	return _radioMenuItem
 }
 
-// NewRadioMenuItemWithMnemonicFromWidget creates a new GtkRadioMenuItem
-// containing a label. The label will be created using
-// gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic
-// for the menu item.
-//
-// The new RadioMenuItem is added to the same group as group.
-//
-// The function takes the following parameters:
-//
-//    - group (optional): existing RadioMenuItem.
-//    - label (optional): text of the button, with an underscore in front of the
-//      mnemonic character.
-//
-// The function returns the following values:
-//
-//    - radioMenuItem: new RadioMenuItem.
-//
-func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
-	var _arg1 *C.GtkRadioMenuItem // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GtkWidget        // in
-
-	if group != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	}
-	if label != "" {
-		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-
-	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
-	runtime.KeepAlive(group)
-	runtime.KeepAlive(label)
-
-	var _radioMenuItem *RadioMenuItem // out
-
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _radioMenuItem
-}
-
 // Group returns the group to which the radio menu item belongs, as a #GList of
 // RadioMenuItem. The list belongs to GTK+ and should not be freed.
 //
@@ -420,46 +291,6 @@ func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 	return _sList
 }
 
-// JoinGroup joins a RadioMenuItem object to the group of another RadioMenuItem
-// object.
-//
-// This function should be used by language bindings to avoid the memory
-// manangement of the opaque List of gtk_radio_menu_item_get_group() and
-// gtk_radio_menu_item_set_group().
-//
-// A common way to set up a group of RadioMenuItem instances is:
-//
-//      GtkRadioMenuItem *last_item = NULL;
-//
-//      while ( ...more items to add... )
-//        {
-//          GtkRadioMenuItem *radio_item;
-//
-//          radio_item = gtk_radio_menu_item_new (...);
-//
-//          gtk_radio_menu_item_join_group (radio_item, last_item);
-//          last_item = radio_item;
-//        }.
-//
-// The function takes the following parameters:
-//
-//    - groupSource (optional) whose group we are joining, or NULL to remove the
-//      radio_menu_item from its current group.
-//
-func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
-	var _arg0 *C.GtkRadioMenuItem // out
-	var _arg1 *C.GtkRadioMenuItem // out
-
-	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
-	if groupSource != nil {
-		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
-	}
-
-	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
-	runtime.KeepAlive(radioMenuItem)
-	runtime.KeepAlive(groupSource)
-}
-
 // SetGroup sets the group of a radio menu item, or changes it.
 //
 // The function takes the following parameters:
@@ -484,6 +315,18 @@ func (radioMenuItem *RadioMenuItem) SetGroup(group []*RadioMenuItem) {
 	C.gtk_radio_menu_item_set_group(_arg0, _arg1)
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(group)
+}
+
+func (radioMenuItem *RadioMenuItem) groupChanged() {
+	gclass := (*C.GtkRadioMenuItemClass)(coreglib.PeekParentClass(radioMenuItem))
+	fnarg := gclass.group_changed
+
+	var _arg0 *C.GtkRadioMenuItem // out
+
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
+
+	C._gotk4_gtk3_RadioMenuItem_virtual_group_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(radioMenuItem)
 }
 
 // RadioMenuItemClass: instance of this type is always passed by reference.

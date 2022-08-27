@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// StringSorterOverrider contains methods that are overridable.
-type StringSorterOverrider interface {
+// StringSorterOverrides contains methods that are overridable.
+type StringSorterOverrides struct {
+}
+
+func defaultStringSorterOverrides(v *StringSorter) StringSorterOverrides {
+	return StringSorterOverrides{}
 }
 
 // StringSorter: GtkStringSorter is a GtkSorter that compares strings.
@@ -48,25 +52,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeStringSorter,
-		GoType:        reflect.TypeOf((*StringSorter)(nil)),
-		InitClass:     initClassStringSorter,
-		FinalizeClass: finalizeClassStringSorter,
-	})
+	coreglib.RegisterClassInfo[*StringSorter, *StringSorterClass, StringSorterOverrides](
+		GTypeStringSorter,
+		initStringSorterClass,
+		wrapStringSorter,
+		defaultStringSorterOverrides,
+	)
 }
 
-func initClassStringSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitStringSorter(*StringSorterClass) }); ok {
-		klass := (*StringSorterClass)(gextras.NewStructNative(gclass))
-		goval.InitStringSorter(klass)
-	}
-}
-
-func finalizeClassStringSorter(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeStringSorter(*StringSorterClass) }); ok {
-		klass := (*StringSorterClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeStringSorter(klass)
+func initStringSorterClass(gclass unsafe.Pointer, overrides StringSorterOverrides, classInitFunc func(*StringSorterClass)) {
+	if classInitFunc != nil {
+		class := (*StringSorterClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

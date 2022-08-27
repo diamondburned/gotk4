@@ -14,10 +14,16 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern void _gotk4_gtk4_CheckButtonClass_activate(GtkCheckButton*);
-// extern void _gotk4_gtk4_CheckButtonClass_toggled(GtkCheckButton*);
-// extern void _gotk4_gtk4_CheckButton_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_CheckButton_ConnectToggled(gpointer, guintptr);
+// extern void _gotk4_gtk4_CheckButton_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_gtk4_CheckButtonClass_toggled(GtkCheckButton*);
+// extern void _gotk4_gtk4_CheckButtonClass_activate(GtkCheckButton*);
+// void _gotk4_gtk4_CheckButton_virtual_activate(void* fnptr, GtkCheckButton* arg0) {
+//   ((void (*)(GtkCheckButton*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_CheckButton_virtual_toggled(void* fnptr, GtkCheckButton* arg0) {
+//   ((void (*)(GtkCheckButton*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -31,10 +37,17 @@ func init() {
 	})
 }
 
-// CheckButtonOverrider contains methods that are overridable.
-type CheckButtonOverrider interface {
-	Activate()
-	Toggled()
+// CheckButtonOverrides contains methods that are overridable.
+type CheckButtonOverrides struct {
+	Activate func()
+	Toggled  func()
+}
+
+func defaultCheckButtonOverrides(v *CheckButton) CheckButtonOverrides {
+	return CheckButtonOverrides{
+		Activate: v.activate,
+		Toggled:  v.toggled,
+	}
 }
 
 // CheckButton: GtkCheckButton places a label next to an indicator.
@@ -103,52 +116,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeCheckButton,
-		GoType:        reflect.TypeOf((*CheckButton)(nil)),
-		InitClass:     initClassCheckButton,
-		FinalizeClass: finalizeClassCheckButton,
-	})
+	coreglib.RegisterClassInfo[*CheckButton, *CheckButtonClass, CheckButtonOverrides](
+		GTypeCheckButton,
+		initCheckButtonClass,
+		wrapCheckButton,
+		defaultCheckButtonOverrides,
+	)
 }
 
-func initClassCheckButton(gclass unsafe.Pointer, goval any) {
+func initCheckButtonClass(gclass unsafe.Pointer, overrides CheckButtonOverrides, classInitFunc func(*CheckButtonClass)) {
+	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCheckButton))))
 
-	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Activate() }); ok {
+	if overrides.Activate != nil {
 		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_activate)
 	}
 
-	if _, ok := goval.(interface{ Toggled() }); ok {
+	if overrides.Toggled != nil {
 		pclass.toggled = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_toggled)
 	}
-	if goval, ok := goval.(interface{ InitCheckButton(*CheckButtonClass) }); ok {
-		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
-		goval.InitCheckButton(klass)
+
+	if classInitFunc != nil {
+		class := (*CheckButtonClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassCheckButton(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeCheckButton(*CheckButtonClass) }); ok {
-		klass := (*CheckButtonClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeCheckButton(klass)
-	}
-}
-
-//export _gotk4_gtk4_CheckButtonClass_activate
-func _gotk4_gtk4_CheckButtonClass_activate(arg0 *C.GtkCheckButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Activate() })
-
-	iface.Activate()
-}
-
-//export _gotk4_gtk4_CheckButtonClass_toggled
-func _gotk4_gtk4_CheckButtonClass_toggled(arg0 *C.GtkCheckButton) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Toggled() })
-
-	iface.Toggled()
 }
 
 func wrapCheckButton(obj *coreglib.Object) *CheckButton {
@@ -193,22 +183,6 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return wrapCheckButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_CheckButton_ConnectActivate
-func _gotk4_gtk4_CheckButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectActivate is emitted to when the check button is activated.
 //
 // The ::activate signal on GtkCheckButton is an action signal and emitting it
@@ -218,22 +192,6 @@ func _gotk4_gtk4_CheckButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 // gtk.CheckButton::toggled signal.
 func (self *CheckButton) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_CheckButton_ConnectActivate), f)
-}
-
-//export _gotk4_gtk4_CheckButton_ConnectToggled
-func _gotk4_gtk4_CheckButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectToggled is emitted when the buttons's gtk.CheckButton:active property
@@ -542,6 +500,30 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
+}
+
+func (checkButton *CheckButton) activate() {
+	gclass := (*C.GtkCheckButtonClass)(coreglib.PeekParentClass(checkButton))
+	fnarg := gclass.activate
+
+	var _arg0 *C.GtkCheckButton // out
+
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(coreglib.InternObject(checkButton).Native()))
+
+	C._gotk4_gtk4_CheckButton_virtual_activate(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(checkButton)
+}
+
+func (checkButton *CheckButton) toggled() {
+	gclass := (*C.GtkCheckButtonClass)(coreglib.PeekParentClass(checkButton))
+	fnarg := gclass.toggled
+
+	var _arg0 *C.GtkCheckButton // out
+
+	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(coreglib.InternObject(checkButton).Native()))
+
+	C._gotk4_gtk4_CheckButton_virtual_toggled(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(checkButton)
 }
 
 // CheckButtonClass: instance of this type is always passed by reference.

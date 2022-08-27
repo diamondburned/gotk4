@@ -22,44 +22,113 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern GtkSizeRequestMode _gotk4_gtk4_WidgetClass_get_request_mode(GtkWidget*);
-// extern gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
-// extern gboolean _gotk4_gtk4_WidgetClass_contains(GtkWidget*, double, double);
-// extern gboolean _gotk4_gtk4_WidgetClass_focus(GtkWidget*, GtkDirectionType);
-// extern gboolean _gotk4_gtk4_WidgetClass_grab_focus(GtkWidget*);
-// extern gboolean _gotk4_gtk4_WidgetClass_keynav_failed(GtkWidget*, GtkDirectionType);
-// extern gboolean _gotk4_gtk4_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
-// extern gboolean _gotk4_gtk4_WidgetClass_query_tooltip(GtkWidget*, int, int, gboolean, GtkTooltip*);
-// extern gboolean _gotk4_gtk4_Widget_ConnectKeynavFailed(gpointer, GtkDirectionType, guintptr);
-// extern gboolean _gotk4_gtk4_Widget_ConnectMnemonicActivate(gpointer, gboolean, guintptr);
-// extern gboolean _gotk4_gtk4_Widget_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
-// extern void _gotk4_gtk4_WidgetClass_direction_changed(GtkWidget*, GtkTextDirection);
-// extern void _gotk4_gtk4_WidgetClass_hide(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_map(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_measure(GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
-// extern void _gotk4_gtk4_WidgetClass_move_focus(GtkWidget*, GtkDirectionType);
-// extern void _gotk4_gtk4_WidgetClass_realize(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_root(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_set_focus_child(GtkWidget*, GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_show(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_size_allocate(GtkWidget*, int, int, int);
-// extern void _gotk4_gtk4_WidgetClass_snapshot(GtkWidget*, GtkSnapshot*);
-// extern void _gotk4_gtk4_WidgetClass_state_flags_changed(GtkWidget*, GtkStateFlags);
-// extern void _gotk4_gtk4_WidgetClass_system_setting_changed(GtkWidget*, GtkSystemSetting);
-// extern void _gotk4_gtk4_WidgetClass_unmap(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_unrealize(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_unroot(GtkWidget*);
-// extern void _gotk4_gtk4_Widget_ConnectDestroy(gpointer, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectDirectionChanged(gpointer, GtkTextDirection, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectHide(gpointer, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectMap(gpointer, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectMoveFocus(gpointer, GtkDirectionType, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectRealize(gpointer, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectShow(gpointer, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectStateFlagsChanged(gpointer, GtkStateFlags, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectUnmap(gpointer, guintptr);
-// extern void _gotk4_gtk4_Widget_ConnectUnrealize(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_Widget_ConnectUnrealize(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectUnmap(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectStateFlagsChanged(gpointer, GtkStateFlags, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectShow(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectRealize(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectMoveFocus(gpointer, GtkDirectionType, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectMap(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectHide(gpointer, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectDirectionChanged(gpointer, GtkTextDirection, guintptr);
+// extern void _gotk4_gtk4_Widget_ConnectDestroy(gpointer, guintptr);
+// extern void _gotk4_gtk4_WidgetClass_unroot(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_unrealize(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_unmap(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_system_setting_changed(GtkWidget*, GtkSystemSetting);
+// extern void _gotk4_gtk4_WidgetClass_state_flags_changed(GtkWidget*, GtkStateFlags);
+// extern void _gotk4_gtk4_WidgetClass_snapshot(GtkWidget*, GtkSnapshot*);
+// extern void _gotk4_gtk4_WidgetClass_size_allocate(GtkWidget*, int, int, int);
+// extern void _gotk4_gtk4_WidgetClass_show(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_set_focus_child(GtkWidget*, GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_root(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_realize(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_move_focus(GtkWidget*, GtkDirectionType);
+// extern void _gotk4_gtk4_WidgetClass_measure(GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
+// extern void _gotk4_gtk4_WidgetClass_map(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_hide(GtkWidget*);
+// extern void _gotk4_gtk4_WidgetClass_direction_changed(GtkWidget*, GtkTextDirection);
+// extern gboolean _gotk4_gtk4_Widget_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
+// extern gboolean _gotk4_gtk4_Widget_ConnectMnemonicActivate(gpointer, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_Widget_ConnectKeynavFailed(gpointer, GtkDirectionType, guintptr);
+// extern gboolean _gotk4_gtk4_WidgetClass_query_tooltip(GtkWidget*, int, int, gboolean, GtkTooltip*);
+// extern gboolean _gotk4_gtk4_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
+// extern gboolean _gotk4_gtk4_WidgetClass_keynav_failed(GtkWidget*, GtkDirectionType);
+// extern gboolean _gotk4_gtk4_WidgetClass_grab_focus(GtkWidget*);
+// extern gboolean _gotk4_gtk4_WidgetClass_focus(GtkWidget*, GtkDirectionType);
+// extern gboolean _gotk4_gtk4_WidgetClass_contains(GtkWidget*, double, double);
+// extern gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
+// extern GtkSizeRequestMode _gotk4_gtk4_WidgetClass_get_request_mode(GtkWidget*);
+// GtkSizeRequestMode _gotk4_gtk4_Widget_virtual_get_request_mode(void* fnptr, GtkWidget* arg0) {
+//   return ((GtkSizeRequestMode (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk4_Widget_virtual_contains(void* fnptr, GtkWidget* arg0, double arg1, double arg2) {
+//   return ((gboolean (*)(GtkWidget*, double, double))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gtk4_Widget_virtual_focus(void* fnptr, GtkWidget* arg0, GtkDirectionType arg1) {
+//   return ((gboolean (*)(GtkWidget*, GtkDirectionType))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk4_Widget_virtual_grab_focus(void* fnptr, GtkWidget* arg0) {
+//   return ((gboolean (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk4_Widget_virtual_keynav_failed(void* fnptr, GtkWidget* arg0, GtkDirectionType arg1) {
+//   return ((gboolean (*)(GtkWidget*, GtkDirectionType))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk4_Widget_virtual_mnemonic_activate(void* fnptr, GtkWidget* arg0, gboolean arg1) {
+//   return ((gboolean (*)(GtkWidget*, gboolean))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gtk4_Widget_virtual_query_tooltip(void* fnptr, GtkWidget* arg0, int arg1, int arg2, gboolean arg3, GtkTooltip* arg4) {
+//   return ((gboolean (*)(GtkWidget*, int, int, gboolean, GtkTooltip*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gtk4_Widget_virtual_direction_changed(void* fnptr, GtkWidget* arg0, GtkTextDirection arg1) {
+//   ((void (*)(GtkWidget*, GtkTextDirection))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Widget_virtual_hide(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_map(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_measure(void* fnptr, GtkWidget* arg0, GtkOrientation arg1, int arg2, int* arg3, int* arg4, int* arg5, int* arg6) {
+//   ((void (*)(GtkWidget*, GtkOrientation, int, int*, int*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gtk4_Widget_virtual_move_focus(void* fnptr, GtkWidget* arg0, GtkDirectionType arg1) {
+//   ((void (*)(GtkWidget*, GtkDirectionType))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Widget_virtual_realize(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_root(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_set_focus_child(void* fnptr, GtkWidget* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkWidget*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Widget_virtual_show(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_size_allocate(void* fnptr, GtkWidget* arg0, int arg1, int arg2, int arg3) {
+//   ((void (*)(GtkWidget*, int, int, int))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_Widget_virtual_snapshot(void* fnptr, GtkWidget* arg0, GtkSnapshot* arg1) {
+//   ((void (*)(GtkWidget*, GtkSnapshot*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Widget_virtual_state_flags_changed(void* fnptr, GtkWidget* arg0, GtkStateFlags arg1) {
+//   ((void (*)(GtkWidget*, GtkStateFlags))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Widget_virtual_system_setting_changed(void* fnptr, GtkWidget* arg0, GtkSystemSetting arg1) {
+//   ((void (*)(GtkWidget*, GtkSystemSetting))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_Widget_virtual_unmap(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_unrealize(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_Widget_virtual_unroot(void* fnptr, GtkWidget* arg0) {
+//   ((void (*)(GtkWidget*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -83,66 +152,8 @@ type Allocation = gdk.Rectangle
 // gtk_widget_add_tick_callback().
 type TickCallback func(widget Widgetter, frameClock gdk.FrameClocker) (ok bool)
 
-//export _gotk4_gtk4_TickCallback
-func _gotk4_gtk4_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.gpointer) (cret C.gboolean) {
-	var fn TickCallback
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(TickCallback)
-	}
-
-	var _widget Widgetter            // out
-	var _frameClock gdk.FrameClocker // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gdk.FrameClocker is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.FrameClocker)
-			return ok
-		})
-		rv, ok := casted.(gdk.FrameClocker)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
-		}
-		_frameClock = rv
-	}
-
-	ok := fn(_widget, _frameClock)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-// WidgetOverrider contains methods that are overridable.
-type WidgetOverrider interface {
+// WidgetOverrides contains methods that are overridable.
+type WidgetOverrides struct {
 	// Contains tests if the point at (x, y) is contained in widget.
 	//
 	// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
@@ -157,15 +168,15 @@ type WidgetOverrider interface {
 	//
 	//    - ok: TRUE if widget contains (x, y).
 	//
-	Contains(x, y float64) bool
+	Contains func(x, y float64) bool
 	// The function takes the following parameters:
 	//
-	DirectionChanged(previousDirection TextDirection)
+	DirectionChanged func(previousDirection TextDirection)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	Focus(direction DirectionType) bool
+	Focus func(direction DirectionType) bool
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
 	//
@@ -177,7 +188,7 @@ type WidgetOverrider interface {
 	//
 	//    - sizeRequestMode: GtkSizeRequestMode preferred by widget.
 	//
-	RequestMode() SizeRequestMode
+	RequestMode func() SizeRequestMode
 	// GrabFocus causes widget to have the keyboard focus for the GtkWindow it's
 	// inside.
 	//
@@ -192,11 +203,11 @@ type WidgetOverrider interface {
 	//
 	//    - ok: TRUE if focus is now inside widget.
 	//
-	GrabFocus() bool
+	GrabFocus func() bool
 	// Hide reverses the effects of gtk_widget_show().
 	//
 	// This is causing the widget to be hidden (invisible to the user).
-	Hide()
+	Hide func()
 	// KeynavFailed emits the ::keynav-failed signal on the widget.
 	//
 	// This function should be called whenever keyboard navigation within a
@@ -233,11 +244,11 @@ type WidgetOverrider interface {
 	//      emitting widget should try to handle the keyboard navigation attempt
 	//      in its parent container(s).
 	//
-	KeynavFailed(direction DirectionType) bool
+	KeynavFailed func(direction DirectionType) bool
 	// Map causes a widget to be mapped if it isn’t already.
 	//
 	// This function is only for use in widget implementations.
-	Map()
+	Map func()
 	// Measure measures widget in the orientation orientation and for the given
 	// for_size.
 	//
@@ -267,7 +278,7 @@ type WidgetOverrider interface {
 	//    - naturalBaseline (optional): location to store the baseline position
 	//      for the natural size, or NULL.
 	//
-	Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
+	Measure func(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
 	// MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
 	//
 	// The function takes the following parameters:
@@ -278,10 +289,10 @@ type WidgetOverrider interface {
 	//
 	//    - ok: TRUE if the signal has been handled.
 	//
-	MnemonicActivate(groupCycling bool) bool
+	MnemonicActivate func(groupCycling bool) bool
 	// The function takes the following parameters:
 	//
-	MoveFocus(direction DirectionType)
+	MoveFocus func(direction DirectionType)
 	// The function takes the following parameters:
 	//
 	//    - x
@@ -291,7 +302,7 @@ type WidgetOverrider interface {
 	//
 	// The function returns the following values:
 	//
-	QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip func(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
 	// Realize creates the GDK resources associated with a widget.
 	//
 	// Normally realization happens implicitly; if you show a widget and all its
@@ -307,8 +318,8 @@ type WidgetOverrider interface {
 	// useful otherwise. Many times when you think you might need it, a better
 	// approach is to connect to a signal that will be called after the widget
 	// is realized automatically, such as gtk.Widget::realize.
-	Realize()
-	Root()
+	Realize func()
+	Root    func()
 	// SetFocusChild: set child as the current focus child of widget.
 	//
 	// The previous focus child will be unset.
@@ -321,7 +332,7 @@ type WidgetOverrider interface {
 	//    - child (optional): direct child widget of widget or NULL to unset the
 	//      focus child of widget.
 	//
-	SetFocusChild(child Widgetter)
+	SetFocusChild func(child Widgetter)
 	// Show flags a widget to be displayed.
 	//
 	// Any widget that isn’t shown will not appear on the screen.
@@ -332,33 +343,61 @@ type WidgetOverrider interface {
 	// When a toplevel container is shown, it is immediately realized and
 	// mapped; other shown widgets are realized and mapped when their toplevel
 	// container is realized and mapped.
-	Show()
+	Show func()
 	// The function takes the following parameters:
 	//
 	//    - width
 	//    - height
 	//    - baseline
 	//
-	SizeAllocate(width, height, baseline int)
+	SizeAllocate func(width, height, baseline int)
 	// The function takes the following parameters:
 	//
-	Snapshot(snapshot *Snapshot)
+	Snapshot func(snapshot *Snapshot)
 	// The function takes the following parameters:
 	//
-	StateFlagsChanged(previousStateFlags StateFlags)
+	StateFlagsChanged func(previousStateFlags StateFlags)
 	// The function takes the following parameters:
 	//
-	SystemSettingChanged(settings SystemSetting)
+	SystemSettingChanged func(settings SystemSetting)
 	// Unmap causes a widget to be unmapped if it’s currently mapped.
 	//
 	// This function is only for use in widget implementations.
-	Unmap()
+	Unmap func()
 	// Unrealize causes a widget to be unrealized (frees all GDK resources
 	// associated with the widget).
 	//
 	// This function is only useful in widget implementations.
-	Unrealize()
-	Unroot()
+	Unrealize func()
+	Unroot    func()
+}
+
+func defaultWidgetOverrides(v *Widget) WidgetOverrides {
+	return WidgetOverrides{
+		Contains:             v.contains,
+		DirectionChanged:     v.directionChanged,
+		Focus:                v.focus,
+		RequestMode:          v.requestMode,
+		GrabFocus:            v.grabFocus,
+		Hide:                 v.hide,
+		KeynavFailed:         v.keynavFailed,
+		Map:                  v._map,
+		Measure:              v.measure,
+		MnemonicActivate:     v.mnemonicActivate,
+		MoveFocus:            v.moveFocus,
+		QueryTooltip:         v.queryTooltip,
+		Realize:              v.realize,
+		Root:                 v.root,
+		SetFocusChild:        v.setFocusChild,
+		Show:                 v.show,
+		SizeAllocate:         v.sizeAllocate,
+		Snapshot:             v.snapshot,
+		StateFlagsChanged:    v.stateFlagsChanged,
+		SystemSettingChanged: v.systemSettingChanged,
+		Unmap:                v.unmap,
+		Unrealize:            v.unrealize,
+		Unroot:               v.unroot,
+	}
 }
 
 // Widget: base class for all widgets.
@@ -734,462 +773,113 @@ type Widgetter interface {
 var _ Widgetter = (*Widget)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeWidget,
-		GoType:        reflect.TypeOf((*Widget)(nil)),
-		InitClass:     initClassWidget,
-		FinalizeClass: finalizeClassWidget,
-	})
+	coreglib.RegisterClassInfo[*Widget, *WidgetClass, WidgetOverrides](
+		GTypeWidget,
+		initWidgetClass,
+		wrapWidget,
+		defaultWidgetOverrides,
+	)
 }
 
-func initClassWidget(gclass unsafe.Pointer, goval any) {
+func initWidgetClass(gclass unsafe.Pointer, overrides WidgetOverrides, classInitFunc func(*WidgetClass)) {
+	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeWidget))))
 
-	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Contains(x, y float64) bool }); ok {
+	if overrides.Contains != nil {
 		pclass.contains = (*[0]byte)(C._gotk4_gtk4_WidgetClass_contains)
 	}
 
-	if _, ok := goval.(interface {
-		DirectionChanged(previousDirection TextDirection)
-	}); ok {
+	if overrides.DirectionChanged != nil {
 		pclass.direction_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_direction_changed)
 	}
 
-	if _, ok := goval.(interface {
-		Focus(direction DirectionType) bool
-	}); ok {
+	if overrides.Focus != nil {
 		pclass.focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_focus)
 	}
 
-	if _, ok := goval.(interface{ RequestMode() SizeRequestMode }); ok {
+	if overrides.RequestMode != nil {
 		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_WidgetClass_get_request_mode)
 	}
 
-	if _, ok := goval.(interface{ GrabFocus() bool }); ok {
+	if overrides.GrabFocus != nil {
 		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_grab_focus)
 	}
 
-	if _, ok := goval.(interface{ Hide() }); ok {
+	if overrides.Hide != nil {
 		pclass.hide = (*[0]byte)(C._gotk4_gtk4_WidgetClass_hide)
 	}
 
-	if _, ok := goval.(interface {
-		KeynavFailed(direction DirectionType) bool
-	}); ok {
+	if overrides.KeynavFailed != nil {
 		pclass.keynav_failed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_keynav_failed)
 	}
 
-	if _, ok := goval.(interface{ Map() }); ok {
+	if overrides.Map != nil {
 		pclass._map = (*[0]byte)(C._gotk4_gtk4_WidgetClass_map)
 	}
 
-	if _, ok := goval.(interface {
-		Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	}); ok {
+	if overrides.Measure != nil {
 		pclass.measure = (*[0]byte)(C._gotk4_gtk4_WidgetClass_measure)
 	}
 
-	if _, ok := goval.(interface{ MnemonicActivate(groupCycling bool) bool }); ok {
+	if overrides.MnemonicActivate != nil {
 		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_mnemonic_activate)
 	}
 
-	if _, ok := goval.(interface{ MoveFocus(direction DirectionType) }); ok {
+	if overrides.MoveFocus != nil {
 		pclass.move_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_move_focus)
 	}
 
-	if _, ok := goval.(interface {
-		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
-	}); ok {
+	if overrides.QueryTooltip != nil {
 		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk4_WidgetClass_query_tooltip)
 	}
 
-	if _, ok := goval.(interface{ Realize() }); ok {
+	if overrides.Realize != nil {
 		pclass.realize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_realize)
 	}
 
-	if _, ok := goval.(interface{ Root() }); ok {
+	if overrides.Root != nil {
 		pclass.root = (*[0]byte)(C._gotk4_gtk4_WidgetClass_root)
 	}
 
-	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
+	if overrides.SetFocusChild != nil {
 		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk4_WidgetClass_set_focus_child)
 	}
 
-	if _, ok := goval.(interface{ Show() }); ok {
+	if overrides.Show != nil {
 		pclass.show = (*[0]byte)(C._gotk4_gtk4_WidgetClass_show)
 	}
 
-	if _, ok := goval.(interface {
-		SizeAllocate(width, height, baseline int)
-	}); ok {
+	if overrides.SizeAllocate != nil {
 		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_size_allocate)
 	}
 
-	if _, ok := goval.(interface{ Snapshot(snapshot *Snapshot) }); ok {
+	if overrides.Snapshot != nil {
 		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_snapshot)
 	}
 
-	if _, ok := goval.(interface {
-		StateFlagsChanged(previousStateFlags StateFlags)
-	}); ok {
+	if overrides.StateFlagsChanged != nil {
 		pclass.state_flags_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_state_flags_changed)
 	}
 
-	if _, ok := goval.(interface{ SystemSettingChanged(settings SystemSetting) }); ok {
+	if overrides.SystemSettingChanged != nil {
 		pclass.system_setting_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_system_setting_changed)
 	}
 
-	if _, ok := goval.(interface{ Unmap() }); ok {
+	if overrides.Unmap != nil {
 		pclass.unmap = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unmap)
 	}
 
-	if _, ok := goval.(interface{ Unrealize() }); ok {
+	if overrides.Unrealize != nil {
 		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unrealize)
 	}
 
-	if _, ok := goval.(interface{ Unroot() }); ok {
+	if overrides.Unroot != nil {
 		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unroot)
 	}
-	if goval, ok := goval.(interface{ InitWidget(*WidgetClass) }); ok {
-		klass := (*WidgetClass)(gextras.NewStructNative(gclass))
-		goval.InitWidget(klass)
+
+	if classInitFunc != nil {
+		class := (*WidgetClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassWidget(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeWidget(*WidgetClass) }); ok {
-		klass := (*WidgetClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeWidget(klass)
-	}
-}
-
-//export _gotk4_gtk4_WidgetClass_contains
-func _gotk4_gtk4_WidgetClass_contains(arg0 *C.GtkWidget, arg1 C.double, arg2 C.double) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Contains(x, y float64) bool })
-
-	var _x float64 // out
-	var _y float64 // out
-
-	_x = float64(arg1)
-	_y = float64(arg2)
-
-	ok := iface.Contains(_x, _y)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_direction_changed
-func _gotk4_gtk4_WidgetClass_direction_changed(arg0 *C.GtkWidget, arg1 C.GtkTextDirection) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		DirectionChanged(previousDirection TextDirection)
-	})
-
-	var _previousDirection TextDirection // out
-
-	_previousDirection = TextDirection(arg1)
-
-	iface.DirectionChanged(_previousDirection)
-}
-
-//export _gotk4_gtk4_WidgetClass_focus
-func _gotk4_gtk4_WidgetClass_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Focus(direction DirectionType) bool
-	})
-
-	var _direction DirectionType // out
-
-	_direction = DirectionType(arg1)
-
-	ok := iface.Focus(_direction)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_get_request_mode
-func _gotk4_gtk4_WidgetClass_get_request_mode(arg0 *C.GtkWidget) (cret C.GtkSizeRequestMode) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ RequestMode() SizeRequestMode })
-
-	sizeRequestMode := iface.RequestMode()
-
-	cret = C.GtkSizeRequestMode(sizeRequestMode)
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_grab_focus
-func _gotk4_gtk4_WidgetClass_grab_focus(arg0 *C.GtkWidget) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ GrabFocus() bool })
-
-	ok := iface.GrabFocus()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_hide
-func _gotk4_gtk4_WidgetClass_hide(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Hide() })
-
-	iface.Hide()
-}
-
-//export _gotk4_gtk4_WidgetClass_keynav_failed
-func _gotk4_gtk4_WidgetClass_keynav_failed(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		KeynavFailed(direction DirectionType) bool
-	})
-
-	var _direction DirectionType // out
-
-	_direction = DirectionType(arg1)
-
-	ok := iface.KeynavFailed(_direction)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_map
-func _gotk4_gtk4_WidgetClass_map(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Map() })
-
-	iface.Map()
-}
-
-//export _gotk4_gtk4_WidgetClass_measure
-func _gotk4_gtk4_WidgetClass_measure(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 C.int, arg3 *C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		Measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	})
-
-	var _orientation Orientation // out
-	var _forSize int             // out
-
-	_orientation = Orientation(arg1)
-	_forSize = int(arg2)
-
-	minimum, natural, minimumBaseline, naturalBaseline := iface.Measure(_orientation, _forSize)
-
-	*arg3 = C.int(minimum)
-	*arg4 = C.int(natural)
-	*arg5 = C.int(minimumBaseline)
-	*arg6 = C.int(naturalBaseline)
-}
-
-//export _gotk4_gtk4_WidgetClass_mnemonic_activate
-func _gotk4_gtk4_WidgetClass_mnemonic_activate(arg0 *C.GtkWidget, arg1 C.gboolean) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MnemonicActivate(groupCycling bool) bool })
-
-	var _groupCycling bool // out
-
-	if arg1 != 0 {
-		_groupCycling = true
-	}
-
-	ok := iface.MnemonicActivate(_groupCycling)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_move_focus
-func _gotk4_gtk4_WidgetClass_move_focus(arg0 *C.GtkWidget, arg1 C.GtkDirectionType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ MoveFocus(direction DirectionType) })
-
-	var _direction DirectionType // out
-
-	_direction = DirectionType(arg1)
-
-	iface.MoveFocus(_direction)
-}
-
-//export _gotk4_gtk4_WidgetClass_query_tooltip
-func _gotk4_gtk4_WidgetClass_query_tooltip(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.gboolean, arg4 *C.GtkTooltip) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		QueryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
-	})
-
-	var _x int                // out
-	var _y int                // out
-	var _keyboardTooltip bool // out
-	var _tooltip *Tooltip     // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	if arg3 != 0 {
-		_keyboardTooltip = true
-	}
-	_tooltip = wrapTooltip(coreglib.Take(unsafe.Pointer(arg4)))
-
-	ok := iface.QueryTooltip(_x, _y, _keyboardTooltip, _tooltip)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gtk4_WidgetClass_realize
-func _gotk4_gtk4_WidgetClass_realize(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Realize() })
-
-	iface.Realize()
-}
-
-//export _gotk4_gtk4_WidgetClass_root
-func _gotk4_gtk4_WidgetClass_root(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Root() })
-
-	iface.Root()
-}
-
-//export _gotk4_gtk4_WidgetClass_set_focus_child
-func _gotk4_gtk4_WidgetClass_set_focus_child(arg0 *C.GtkWidget, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SetFocusChild(child Widgetter) })
-
-	var _child Widgetter // out
-
-	if arg1 != nil {
-		{
-			objptr := unsafe.Pointer(arg1)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_child = rv
-		}
-	}
-
-	iface.SetFocusChild(_child)
-}
-
-//export _gotk4_gtk4_WidgetClass_show
-func _gotk4_gtk4_WidgetClass_show(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Show() })
-
-	iface.Show()
-}
-
-//export _gotk4_gtk4_WidgetClass_size_allocate
-func _gotk4_gtk4_WidgetClass_size_allocate(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.int) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		SizeAllocate(width, height, baseline int)
-	})
-
-	var _width int    // out
-	var _height int   // out
-	var _baseline int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-	_baseline = int(arg3)
-
-	iface.SizeAllocate(_width, _height, _baseline)
-}
-
-//export _gotk4_gtk4_WidgetClass_snapshot
-func _gotk4_gtk4_WidgetClass_snapshot(arg0 *C.GtkWidget, arg1 *C.GtkSnapshot) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Snapshot(snapshot *Snapshot) })
-
-	var _snapshot *Snapshot // out
-
-	_snapshot = wrapSnapshot(coreglib.Take(unsafe.Pointer(arg1)))
-
-	iface.Snapshot(_snapshot)
-}
-
-//export _gotk4_gtk4_WidgetClass_state_flags_changed
-func _gotk4_gtk4_WidgetClass_state_flags_changed(arg0 *C.GtkWidget, arg1 C.GtkStateFlags) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		StateFlagsChanged(previousStateFlags StateFlags)
-	})
-
-	var _previousStateFlags StateFlags // out
-
-	_previousStateFlags = StateFlags(arg1)
-
-	iface.StateFlagsChanged(_previousStateFlags)
-}
-
-//export _gotk4_gtk4_WidgetClass_system_setting_changed
-func _gotk4_gtk4_WidgetClass_system_setting_changed(arg0 *C.GtkWidget, arg1 C.GtkSystemSetting) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SystemSettingChanged(settings SystemSetting) })
-
-	var _settings SystemSetting // out
-
-	_settings = SystemSetting(arg1)
-
-	iface.SystemSettingChanged(_settings)
-}
-
-//export _gotk4_gtk4_WidgetClass_unmap
-func _gotk4_gtk4_WidgetClass_unmap(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Unmap() })
-
-	iface.Unmap()
-}
-
-//export _gotk4_gtk4_WidgetClass_unrealize
-func _gotk4_gtk4_WidgetClass_unrealize(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Unrealize() })
-
-	iface.Unrealize()
-}
-
-//export _gotk4_gtk4_WidgetClass_unroot
-func _gotk4_gtk4_WidgetClass_unroot(arg0 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Unroot() })
-
-	iface.Unroot()
 }
 
 func wrapWidget(obj *coreglib.Object) *Widget {
@@ -1223,22 +913,6 @@ func BaseWidget(obj Widgetter) *Widget {
 	return obj.baseWidget()
 }
 
-//export _gotk4_gtk4_Widget_ConnectDestroy
-func _gotk4_gtk4_Widget_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectDestroy signals that all holders of a reference to the widget should
 // release the reference that they hold.
 //
@@ -1249,46 +923,10 @@ func (widget *Widget) ConnectDestroy(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "destroy", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectDestroy), f)
 }
 
-//export _gotk4_gtk4_Widget_ConnectDirectionChanged
-func _gotk4_gtk4_Widget_ConnectDirectionChanged(arg0 C.gpointer, arg1 C.GtkTextDirection, arg2 C.guintptr) {
-	var f func(previousDirection TextDirection)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(previousDirection TextDirection))
-	}
-
-	var _previousDirection TextDirection // out
-
-	_previousDirection = TextDirection(arg1)
-
-	f(_previousDirection)
-}
-
 // ConnectDirectionChanged is emitted when the text direction of a widget
 // changes.
 func (widget *Widget) ConnectDirectionChanged(f func(previousDirection TextDirection)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "direction-changed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectDirectionChanged), f)
-}
-
-//export _gotk4_gtk4_Widget_ConnectHide
-func _gotk4_gtk4_Widget_ConnectHide(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectHide is emitted when widget is hidden.
@@ -1296,53 +934,11 @@ func (widget *Widget) ConnectHide(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "hide", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectHide), f)
 }
 
-//export _gotk4_gtk4_Widget_ConnectKeynavFailed
-func _gotk4_gtk4_Widget_ConnectKeynavFailed(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(direction DirectionType) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(direction DirectionType) (ok bool))
-	}
-
-	var _direction DirectionType // out
-
-	_direction = DirectionType(arg1)
-
-	ok := f(_direction)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectKeynavFailed is emitted if keyboard navigation fails.
 //
 // See gtk.Widget.KeynavFailed() for details.
 func (widget *Widget) ConnectKeynavFailed(f func(direction DirectionType) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "keynav-failed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectKeynavFailed), f)
-}
-
-//export _gotk4_gtk4_Widget_ConnectMap
-func _gotk4_gtk4_Widget_ConnectMap(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectMap is emitted when widget is going to be mapped.
@@ -1358,34 +954,6 @@ func (widget *Widget) ConnectMap(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "map", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMap), f)
 }
 
-//export _gotk4_gtk4_Widget_ConnectMnemonicActivate
-func _gotk4_gtk4_Widget_ConnectMnemonicActivate(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(groupCycling bool) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(groupCycling bool) (ok bool))
-	}
-
-	var _groupCycling bool // out
-
-	if arg1 != 0 {
-		_groupCycling = true
-	}
-
-	ok := f(_groupCycling)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectMnemonicActivate is emitted when a widget is activated via a mnemonic.
 //
 // The default handler for this signal activates widget if group_cycling is
@@ -1394,63 +962,9 @@ func (widget *Widget) ConnectMnemonicActivate(f func(groupCycling bool) (ok bool
 	return coreglib.ConnectGeneratedClosure(widget, "mnemonic-activate", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMnemonicActivate), f)
 }
 
-//export _gotk4_gtk4_Widget_ConnectMoveFocus
-func _gotk4_gtk4_Widget_ConnectMoveFocus(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
-	var f func(direction DirectionType)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(direction DirectionType))
-	}
-
-	var _direction DirectionType // out
-
-	_direction = DirectionType(arg1)
-
-	f(_direction)
-}
-
 // ConnectMoveFocus is emitted when the focus is moved.
 func (widget *Widget) ConnectMoveFocus(f func(direction DirectionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "move-focus", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectMoveFocus), f)
-}
-
-//export _gotk4_gtk4_Widget_ConnectQueryTooltip
-func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gboolean, arg4 *C.GtkTooltip, arg5 C.guintptr) (cret C.gboolean) {
-	var f func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y int, keyboardMode bool, tooltip *Tooltip) (ok bool))
-	}
-
-	var _x int             // out
-	var _y int             // out
-	var _keyboardMode bool // out
-	var _tooltip *Tooltip  // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	if arg3 != 0 {
-		_keyboardMode = true
-	}
-	_tooltip = wrapTooltip(coreglib.Take(unsafe.Pointer(arg4)))
-
-	ok := f(_x, _y, _keyboardMode, _tooltip)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 // ConnectQueryTooltip is emitted when the widgets tooltip is about to be shown.
@@ -1470,22 +984,6 @@ func (widget *Widget) ConnectQueryTooltip(f func(x, y int, keyboardMode bool, to
 	return coreglib.ConnectGeneratedClosure(widget, "query-tooltip", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectQueryTooltip), f)
 }
 
-//export _gotk4_gtk4_Widget_ConnectRealize
-func _gotk4_gtk4_Widget_ConnectRealize(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectRealize is emitted when widget is associated with a GdkSurface.
 //
 // This means that gtk.Widget.Realize() has been called or the widget has been
@@ -1494,45 +992,9 @@ func (widget *Widget) ConnectRealize(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "realize", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectRealize), f)
 }
 
-//export _gotk4_gtk4_Widget_ConnectShow
-func _gotk4_gtk4_Widget_ConnectShow(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectShow is emitted when widget is shown.
 func (widget *Widget) ConnectShow(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "show", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectShow), f)
-}
-
-//export _gotk4_gtk4_Widget_ConnectStateFlagsChanged
-func _gotk4_gtk4_Widget_ConnectStateFlagsChanged(arg0 C.gpointer, arg1 C.GtkStateFlags, arg2 C.guintptr) {
-	var f func(flags StateFlags)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(flags StateFlags))
-	}
-
-	var _flags StateFlags // out
-
-	_flags = StateFlags(arg1)
-
-	f(_flags)
 }
 
 // ConnectStateFlagsChanged is emitted when the widget state changes.
@@ -1540,22 +1002,6 @@ func _gotk4_gtk4_Widget_ConnectStateFlagsChanged(arg0 C.gpointer, arg1 C.GtkStat
 // See gtk.Widget.GetStateFlags().
 func (widget *Widget) ConnectStateFlagsChanged(f func(flags StateFlags)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "state-flags-changed", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectStateFlagsChanged), f)
-}
-
-//export _gotk4_gtk4_Widget_ConnectUnmap
-func _gotk4_gtk4_Widget_ConnectUnmap(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectUnmap is emitted when widget is going to be unmapped.
@@ -1567,22 +1013,6 @@ func _gotk4_gtk4_Widget_ConnectUnmap(arg0 C.gpointer, arg1 C.guintptr) {
 // used to, for example, stop an animation on the widget.
 func (widget *Widget) ConnectUnmap(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(widget, "unmap", false, unsafe.Pointer(C._gotk4_gtk4_Widget_ConnectUnmap), f)
-}
-
-//export _gotk4_gtk4_Widget_ConnectUnrealize
-func _gotk4_gtk4_Widget_ConnectUnrealize(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectUnrealize is emitted when the GdkSurface associated with widget is
@@ -6225,6 +5655,615 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	C.gtk_widget_unset_state_flags(_arg0, _arg1)
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(flags)
+}
+
+// Contains tests if the point at (x, y) is contained in widget.
+//
+// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
+// assumed to be the top left of widget's content area.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate to test, relative to widget's origin.
+//    - y: y coordinate to test, relative to widget's origin.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if widget contains (x, y).
+//
+func (widget *Widget) contains(x, y float64) bool {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.contains
+
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.double     // out
+	var _arg2 C.double     // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.double(x)
+	_arg2 = C.double(y)
+
+	_cret = C._gotk4_gtk4_Widget_virtual_contains(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+func (widget *Widget) directionChanged(previousDirection TextDirection) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.direction_changed
+
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkTextDirection // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkTextDirection(previousDirection)
+
+	C._gotk4_gtk4_Widget_virtual_direction_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(previousDirection)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (widget *Widget) focus(direction DirectionType) bool {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.focus
+
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C._gotk4_gtk4_Widget_virtual_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(direction)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// requestMode gets whether the widget prefers a height-for-width layout or a
+// width-for-height layout.
+//
+// Single-child widgets generally propagate the preference of their child, more
+// complex widgets need to request something either in context of their children
+// or in context of their allocation capabilities.
+//
+// The function returns the following values:
+//
+//    - sizeRequestMode: GtkSizeRequestMode preferred by widget.
+//
+func (widget *Widget) requestMode() SizeRequestMode {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.get_request_mode
+
+	var _arg0 *C.GtkWidget         // out
+	var _cret C.GtkSizeRequestMode // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C._gotk4_gtk4_Widget_virtual_get_request_mode(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+
+	var _sizeRequestMode SizeRequestMode // out
+
+	_sizeRequestMode = SizeRequestMode(_cret)
+
+	return _sizeRequestMode
+}
+
+// grabFocus causes widget to have the keyboard focus for the GtkWindow it's
+// inside.
+//
+// If widget is not focusable, or its ::grab_focus implementation cannot
+// transfer the focus to a descendant of widget that is focusable, it will not
+// take focus and FALSE will be returned.
+//
+// Calling gtk.Widget.GrabFocus() on an already focused widget is allowed,
+// should not have an effect, and return TRUE.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if focus is now inside widget.
+//
+func (widget *Widget) grabFocus() bool {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.grab_focus
+
+	var _arg0 *C.GtkWidget // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C._gotk4_gtk4_Widget_virtual_grab_focus(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Hide reverses the effects of gtk_widget_show().
+//
+// This is causing the widget to be hidden (invisible to the user).
+func (widget *Widget) hide() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.hide
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_hide(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+// keynavFailed emits the ::keynav-failed signal on the widget.
+//
+// This function should be called whenever keyboard navigation within a single
+// widget hits a boundary.
+//
+// The return value of this function should be interpreted in a way similar to
+// the return value of gtk.Widget.ChildFocus(). When TRUE is returned, stay in
+// the widget, the failed keyboard navigation is OK and/or there is nowhere we
+// can/should move the focus to. When FALSE is returned, the caller should
+// continue with keyboard navigation outside the widget, e.g. by calling
+// gtk.Widget.ChildFocus() on the widget’s toplevel.
+//
+// The default gtk.Widget::keynav-failed handler returns FALSE for
+// GTK_DIR_TAB_FORWARD and GTK_DIR_TAB_BACKWARD. For the other values of
+// DirectionType it returns TRUE.
+//
+// Whenever the default handler returns TRUE, it also calls
+// gtk.Widget.ErrorBell() to notify the user of the failed keyboard navigation.
+//
+// A use case for providing an own implementation of ::keynav-failed (either by
+// connecting to it or by overriding it) would be a row of gtk.Entry widgets
+// where the user should be able to navigate the entire row with the cursor
+// keys, as e.g. known from user interfaces that require entering license keys.
+//
+// The function takes the following parameters:
+//
+//    - direction of focus movement.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if stopping keyboard navigation is fine, FALSE if the emitting
+//      widget should try to handle the keyboard navigation attempt in its parent
+//      container(s).
+//
+func (widget *Widget) keynavFailed(direction DirectionType) bool {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.keynav_failed
+
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	_cret = C._gotk4_gtk4_Widget_virtual_keynav_failed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(direction)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Map causes a widget to be mapped if it isn’t already.
+//
+// This function is only for use in widget implementations.
+func (widget *Widget) _map() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass._map
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_map(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Measure measures widget in the orientation orientation and for the given
+// for_size.
+//
+// As an example, if orientation is GTK_ORIENTATION_HORIZONTAL and for_size is
+// 300, this functions will compute the minimum and natural width of widget if
+// it is allocated at a height of 300 pixels.
+//
+// See GtkWidget’s geometry management section
+// (class.Widget.html#height-for-width-geometry-management) for a more details
+// on implementing WidgetClass.measure().
+//
+// The function takes the following parameters:
+//
+//    - orientation to measure.
+//    - forSize: size for the opposite of orientation, i.e. if orientation is
+//      GTK_ORIENTATION_HORIZONTAL, this is the height the widget should be
+//      measured with. The GTK_ORIENTATION_VERTICAL case is analogous. This way,
+//      both height-for-width and width-for-height requests can be implemented.
+//      If no size is known, -1 can be passed.
+//
+// The function returns the following values:
+//
+//    - minimum (optional): location to store the minimum size, or NULL.
+//    - natural (optional): location to store the natural size, or NULL.
+//    - minimumBaseline (optional): location to store the baseline position for
+//      the minimum size, or NULL.
+//    - naturalBaseline (optional): location to store the baseline position for
+//      the natural size, or NULL.
+//
+func (widget *Widget) measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.measure
+
+	var _arg0 *C.GtkWidget     // out
+	var _arg1 C.GtkOrientation // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // in
+	var _arg4 C.int            // in
+	var _arg5 C.int            // in
+	var _arg6 C.int            // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkOrientation(orientation)
+	_arg2 = C.int(forSize)
+
+	C._gotk4_gtk4_Widget_virtual_measure(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(forSize)
+
+	var _minimum int         // out
+	var _natural int         // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
+
+	_minimum = int(_arg3)
+	_natural = int(_arg4)
+	_minimumBaseline = int(_arg5)
+	_naturalBaseline = int(_arg6)
+
+	return _minimum, _natural, _minimumBaseline, _naturalBaseline
+}
+
+// mnemonicActivate emits the GtkWidget::mnemonic-activate signal.
+//
+// The function takes the following parameters:
+//
+//    - groupCycling: TRUE if there are other widgets with the same mnemonic.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the signal has been handled.
+//
+func (widget *Widget) mnemonicActivate(groupCycling bool) bool {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.mnemonic_activate
+
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.gboolean   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	if groupCycling {
+		_arg1 = C.TRUE
+	}
+
+	_cret = C._gotk4_gtk4_Widget_virtual_mnemonic_activate(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(groupCycling)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+func (widget *Widget) moveFocus(direction DirectionType) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.move_focus
+
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkDirectionType // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkDirectionType(direction)
+
+	C._gotk4_gtk4_Widget_virtual_move_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(direction)
+}
+
+// The function takes the following parameters:
+//
+//    - x
+//    - y
+//    - keyboardTooltip
+//    - tooltip
+//
+// The function returns the following values:
+//
+func (widget *Widget) queryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.query_tooltip
+
+	var _arg0 *C.GtkWidget  // out
+	var _arg1 C.int         // out
+	var _arg2 C.int         // out
+	var _arg3 C.gboolean    // out
+	var _arg4 *C.GtkTooltip // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
+	if keyboardTooltip {
+		_arg3 = C.TRUE
+	}
+	_arg4 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+
+	_cret = C._gotk4_gtk4_Widget_virtual_query_tooltip(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(keyboardTooltip)
+	runtime.KeepAlive(tooltip)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Realize creates the GDK resources associated with a widget.
+//
+// Normally realization happens implicitly; if you show a widget and all its
+// parent containers, then the widget will be realized and mapped automatically.
+//
+// Realizing a widget requires all the widget’s parent widgets to be realized;
+// calling this function realizes the widget’s parents in addition to widget
+// itself. If a widget is not yet inside a toplevel window when you realize it,
+// bad things will happen.
+//
+// This function is primarily used in widget implementations, and isn’t very
+// useful otherwise. Many times when you think you might need it, a better
+// approach is to connect to a signal that will be called after the widget is
+// realized automatically, such as gtk.Widget::realize.
+func (widget *Widget) realize() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.realize
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_realize(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+func (widget *Widget) root() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.root
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_root(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+// setFocusChild: set child as the current focus child of widget.
+//
+// The previous focus child will be unset.
+//
+// This function is only suitable for widget implementations. If you want a
+// certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
+//
+// The function takes the following parameters:
+//
+//    - child (optional): direct child widget of widget or NULL to unset the
+//      focus child of widget.
+//
+func (widget *Widget) setFocusChild(child Widgetter) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.set_focus_child
+
+	var _arg0 *C.GtkWidget // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	}
+
+	C._gotk4_gtk4_Widget_virtual_set_focus_child(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+}
+
+// Show flags a widget to be displayed.
+//
+// Any widget that isn’t shown will not appear on the screen.
+//
+// Remember that you have to show the containers containing a widget, in
+// addition to the widget itself, before it will appear onscreen.
+//
+// When a toplevel container is shown, it is immediately realized and mapped;
+// other shown widgets are realized and mapped when their toplevel container is
+// realized and mapped.
+func (widget *Widget) show() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.show
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_show(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+// The function takes the following parameters:
+//
+//    - width
+//    - height
+//    - baseline
+//
+func (widget *Widget) sizeAllocate(width, height, baseline int) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.size_allocate
+
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _arg3 C.int        // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+	_arg3 = C.int(baseline)
+
+	C._gotk4_gtk4_Widget_virtual_size_allocate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(baseline)
+}
+
+// The function takes the following parameters:
+//
+func (widget *Widget) snapshot(snapshot *Snapshot) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.snapshot
+
+	var _arg0 *C.GtkWidget   // out
+	var _arg1 *C.GtkSnapshot // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkSnapshot)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_snapshot(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(snapshot)
+}
+
+// The function takes the following parameters:
+//
+func (widget *Widget) stateFlagsChanged(previousStateFlags StateFlags) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.state_flags_changed
+
+	var _arg0 *C.GtkWidget    // out
+	var _arg1 C.GtkStateFlags // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkStateFlags(previousStateFlags)
+
+	C._gotk4_gtk4_Widget_virtual_state_flags_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(previousStateFlags)
+}
+
+// The function takes the following parameters:
+//
+func (widget *Widget) systemSettingChanged(settings SystemSetting) {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.system_setting_changed
+
+	var _arg0 *C.GtkWidget       // out
+	var _arg1 C.GtkSystemSetting // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.GtkSystemSetting(settings)
+
+	C._gotk4_gtk4_Widget_virtual_system_setting_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(settings)
+}
+
+// Unmap causes a widget to be unmapped if it’s currently mapped.
+//
+// This function is only for use in widget implementations.
+func (widget *Widget) unmap() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.unmap
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_unmap(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+// Unrealize causes a widget to be unrealized (frees all GDK resources
+// associated with the widget).
+//
+// This function is only useful in widget implementations.
+func (widget *Widget) unrealize() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.unrealize
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_unrealize(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
+}
+
+func (widget *Widget) unroot() {
+	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
+	fnarg := gclass.unroot
+
+	var _arg0 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk4_Widget_virtual_unroot(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(widget)
 }
 
 // WidgetGetDefaultDirection obtains the current default reading direction.

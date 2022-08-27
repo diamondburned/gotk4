@@ -45,22 +45,6 @@ func marshalX11Screen(p uintptr) (interface{}, error) {
 	return wrapX11Screen(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged
-func _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(screen, "window-manager-changed", false, unsafe.Pointer(C._gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged), f)
 }

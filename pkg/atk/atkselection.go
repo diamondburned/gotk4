@@ -12,15 +12,31 @@ import (
 // #include <stdlib.h>
 // #include <atk/atk.h>
 // #include <glib-object.h>
-// extern AtkObject* _gotk4_atk1_SelectionIface_ref_selection(AtkSelection*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_add_selection(AtkSelection*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_clear_selection(AtkSelection*);
-// extern gboolean _gotk4_atk1_SelectionIface_is_child_selected(AtkSelection*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_remove_selection(AtkSelection*, gint);
-// extern gboolean _gotk4_atk1_SelectionIface_select_all_selection(AtkSelection*);
-// extern gint _gotk4_atk1_SelectionIface_get_selection_count(AtkSelection*);
-// extern void _gotk4_atk1_SelectionIface_selection_changed(AtkSelection*);
 // extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
+// AtkObject* _gotk4_atk1_Selection_virtual_ref_selection(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_add_selection(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_clear_selection(void* fnptr, AtkSelection* arg0) {
+//   return ((gboolean (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_is_child_selected(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_remove_selection(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_select_all_selection(void* fnptr, AtkSelection* arg0) {
+//   return ((gboolean (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Selection_virtual_get_selection_count(void* fnptr, AtkSelection* arg0) {
+//   return ((gint (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Selection_virtual_selection_changed(void* fnptr, AtkSelection* arg0) {
+//   ((void (*)(AtkSelection*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -32,97 +48,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeSelection, F: marshalSelection},
 	})
-}
-
-// SelectionOverrider contains methods that are overridable.
-type SelectionOverrider interface {
-	// AddSelection adds the specified accessible child of the object to the
-	// object's selection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i specifying the child index.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if success, FALSE otherwise.
-	//
-	AddSelection(i int) bool
-	// ClearSelection clears the selection in the object so that no children in
-	// the object are selected.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if success, FALSE otherwise.
-	//
-	ClearSelection() bool
-	// SelectionCount gets the number of accessible children currently selected.
-	// Note: callers should not rely on NULL or on a zero value for indication
-	// of whether AtkSelectionIface is implemented, they should use type
-	// checking/interface checking macros or the atk_get_accessible_value()
-	// convenience method.
-	//
-	// The function returns the following values:
-	//
-	//    - gint representing the number of items selected, or 0 if selection
-	//      does not implement this interface.
-	//
-	SelectionCount() int
-	// IsChildSelected determines if the current child of this object is
-	// selected Note: callers should not rely on NULL or on a zero value for
-	// indication of whether AtkSelectionIface is implemented, they should use
-	// type checking/interface checking macros or the atk_get_accessible_value()
-	// convenience method.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i specifying the child index.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: gboolean representing the specified child is selected, or 0 if
-	//      selection does not implement this interface.
-	//
-	IsChildSelected(i int) bool
-	// RefSelection gets a reference to the accessible object representing the
-	// specified selected child of the object. Note: callers should not rely on
-	// NULL or on a zero value for indication of whether AtkSelectionIface is
-	// implemented, they should use type checking/interface checking macros or
-	// the atk_get_accessible_value() convenience method.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i specifying the index in the selection set. (e.g. the ith selection
-	//      as opposed to the ith child).
-	//
-	// The function returns the following values:
-	//
-	//    - object (optional) representing the selected accessible, or NULL if
-	//      selection does not implement this interface.
-	//
-	RefSelection(i int) *AtkObject
-	// RemoveSelection removes the specified child of the object from the
-	// object's selection.
-	//
-	// The function takes the following parameters:
-	//
-	//    - i specifying the index in the selection set. (e.g. the ith selection
-	//      as opposed to the ith child).
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if success, FALSE otherwise.
-	//
-	RemoveSelection(i int) bool
-	// SelectAllSelection causes every child of the object to be selected if the
-	// object supports multiple selections.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if success, FALSE otherwise.
-	//
-	SelectAllSelection() bool
-	SelectionChanged()
 }
 
 // Selection should be implemented by UI components with children which are
@@ -181,139 +106,6 @@ type Selectioner interface {
 
 var _ Selectioner = (*Selection)(nil)
 
-func ifaceInitSelectioner(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkSelectionIface)(unsafe.Pointer(gifacePtr))
-	iface.add_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_add_selection)
-	iface.clear_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_clear_selection)
-	iface.get_selection_count = (*[0]byte)(C._gotk4_atk1_SelectionIface_get_selection_count)
-	iface.is_child_selected = (*[0]byte)(C._gotk4_atk1_SelectionIface_is_child_selected)
-	iface.ref_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_ref_selection)
-	iface.remove_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_remove_selection)
-	iface.select_all_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_select_all_selection)
-	iface.selection_changed = (*[0]byte)(C._gotk4_atk1_SelectionIface_selection_changed)
-}
-
-//export _gotk4_atk1_SelectionIface_add_selection
-func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	ok := iface.AddSelection(_i)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_clear_selection
-func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	ok := iface.ClearSelection()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_get_selection_count
-func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.AtkSelection) (cret C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	gint := iface.SelectionCount()
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_is_child_selected
-func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	ok := iface.IsChildSelected(_i)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_ref_selection
-func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret *C.AtkObject) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	object := iface.RefSelection(_i)
-
-	if object != nil {
-		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-		C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_remove_selection
-func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	var _i int // out
-
-	_i = int(arg1)
-
-	ok := iface.RemoveSelection(_i)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_select_all_selection
-func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	ok := iface.SelectAllSelection()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_atk1_SelectionIface_selection_changed
-func _gotk4_atk1_SelectionIface_selection_changed(arg0 *C.AtkSelection) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(SelectionOverrider)
-
-	iface.SelectionChanged()
-}
-
 func wrapSelection(obj *coreglib.Object) *Selection {
 	return &Selection{
 		Object: obj,
@@ -322,22 +114,6 @@ func wrapSelection(obj *coreglib.Object) *Selection {
 
 func marshalSelection(p uintptr) (interface{}, error) {
 	return wrapSelection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_atk1_Selection_ConnectSelectionChanged
-func _gotk4_atk1_Selection_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectSelectionChanged: "selection-changed" signal is emitted by an object
@@ -559,6 +335,254 @@ func (selection *Selection) SelectAllSelection() bool {
 	}
 
 	return _ok
+}
+
+// addSelection adds the specified accessible child of the object to the
+// object's selection.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the child index.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) addSelection(i int) bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.add_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_add_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// clearSelection clears the selection in the object so that no children in the
+// object are selected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) clearSelection() bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.clear_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C._gotk4_atk1_Selection_virtual_clear_selection(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectionCount gets the number of accessible children currently selected.
+// Note: callers should not rely on NULL or on a zero value for indication of
+// whether AtkSelectionIface is implemented, they should use type
+// checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+//
+// The function returns the following values:
+//
+//    - gint representing the number of items selected, or 0 if selection does
+//      not implement this interface.
+//
+func (selection *Selection) selectionCount() int {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.get_selection_count
+
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C._gotk4_atk1_Selection_virtual_get_selection_count(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// isChildSelected determines if the current child of this object is selected
+// Note: callers should not rely on NULL or on a zero value for indication of
+// whether AtkSelectionIface is implemented, they should use type
+// checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the child index.
+//
+// The function returns the following values:
+//
+//    - ok: gboolean representing the specified child is selected, or 0 if
+//      selection does not implement this interface.
+//
+func (selection *Selection) isChildSelected(i int) bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.is_child_selected
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_is_child_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// refSelection gets a reference to the accessible object representing the
+// specified selected child of the object. Note: callers should not rely on NULL
+// or on a zero value for indication of whether AtkSelectionIface is
+// implemented, they should use type checking/interface checking macros or the
+// atk_get_accessible_value() convenience method.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the index in the selection set. (e.g. the ith selection as
+//      opposed to the ith child).
+//
+// The function returns the following values:
+//
+//    - object (optional) representing the selected accessible, or NULL if
+//      selection does not implement this interface.
+//
+func (selection *Selection) refSelection(i int) *AtkObject {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.ref_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_ref_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// removeSelection removes the specified child of the object from the object's
+// selection.
+//
+// The function takes the following parameters:
+//
+//    - i specifying the index in the selection set. (e.g. the ith selection as
+//      opposed to the ith child).
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) removeSelection(i int) bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.remove_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_remove_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectAllSelection causes every child of the object to be selected if the
+// object supports multiple selections.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) selectAllSelection() bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.select_all_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C._gotk4_atk1_Selection_virtual_select_all_selection(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (selection *Selection) selectionChanged() {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.selection_changed
+
+	var _arg0 *C.AtkSelection // out
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	C._gotk4_atk1_Selection_virtual_selection_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
 }
 
 // SelectionIface: instance of this type is always passed by reference.

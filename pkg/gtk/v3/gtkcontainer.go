@@ -19,18 +19,42 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern GType _gotk4_gtk3_ContainerClass_child_type(GtkContainer*);
-// extern GtkWidgetPath* _gotk4_gtk3_ContainerClass_get_path_for_child(GtkContainer*, GtkWidget*);
-// extern gchar* _gotk4_gtk3_ContainerClass_composite_name(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_Callback(GtkWidget*, gpointer);
-// extern void _gotk4_gtk3_ContainerClass_add(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_ContainerClass_check_resize(GtkContainer*);
-// extern void _gotk4_gtk3_ContainerClass_remove(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_ContainerClass_set_focus_child(GtkContainer*, GtkWidget*);
-// extern void _gotk4_gtk3_Container_ConnectAdd(gpointer, GtkWidget*, guintptr);
-// extern void _gotk4_gtk3_Container_ConnectCheckResize(gpointer, guintptr);
-// extern void _gotk4_gtk3_Container_ConnectRemove(gpointer, GtkWidget*, guintptr);
 // extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectRemove(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectCheckResize(gpointer, guintptr);
+// extern void _gotk4_gtk3_Container_ConnectAdd(gpointer, GtkWidget*, guintptr);
+// extern void _gotk4_gtk3_ContainerClass_set_focus_child(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_ContainerClass_remove(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_ContainerClass_check_resize(GtkContainer*);
+// extern void _gotk4_gtk3_ContainerClass_add(GtkContainer*, GtkWidget*);
+// extern void _gotk4_gtk3_Callback(GtkWidget*, gpointer);
+// extern gchar* _gotk4_gtk3_ContainerClass_composite_name(GtkContainer*, GtkWidget*);
+// extern GtkWidgetPath* _gotk4_gtk3_ContainerClass_get_path_for_child(GtkContainer*, GtkWidget*);
+// extern GType _gotk4_gtk3_ContainerClass_child_type(GtkContainer*);
+// GType _gotk4_gtk3_Container_virtual_child_type(void* fnptr, GtkContainer* arg0) {
+//   return ((GType (*)(GtkContainer*))(fnptr))(arg0);
+// };
+// GtkWidgetPath* _gotk4_gtk3_Container_virtual_get_path_for_child(void* fnptr, GtkContainer* arg0, GtkWidget* arg1) {
+//   return ((GtkWidgetPath* (*)(GtkContainer*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_gtk3_Container_virtual_composite_name(void* fnptr, GtkContainer* arg0, GtkWidget* arg1) {
+//   return ((gchar* (*)(GtkContainer*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Container_virtual_add(void* fnptr, GtkContainer* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkContainer*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Container_virtual_check_resize(void* fnptr, GtkContainer* arg0) {
+//   ((void (*)(GtkContainer*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Container_virtual_forall(void* fnptr, GtkContainer* arg0, gboolean arg1, GtkCallback arg2, gpointer arg3) {
+//   ((void (*)(GtkContainer*, gboolean, GtkCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_Container_virtual_remove(void* fnptr, GtkContainer* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkContainer*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Container_virtual_set_focus_child(void* fnptr, GtkContainer* arg0, GtkWidget* arg1) {
+//   ((void (*)(GtkContainer*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -44,8 +68,8 @@ func init() {
 	})
 }
 
-// ContainerOverrider contains methods that are overridable.
-type ContainerOverrider interface {
+// ContainerOverrides contains methods that are overridable.
+type ContainerOverrides struct {
 	// Add adds widget to container. Typically used for simple containers such
 	// as Window, Frame, or Button; for more complicated layout containers such
 	// as Box or Grid, this function will pick default packing parameters that
@@ -61,8 +85,8 @@ type ContainerOverrider interface {
 	//
 	//    - widget to be placed inside container.
 	//
-	Add(widget Widgetter)
-	CheckResize()
+	Add         func(widget Widgetter)
+	CheckResize func()
 	// ChildType returns the type of the children supported by the container.
 	//
 	// Note that this may return G_TYPE_NONE to indicate that no more children
@@ -72,12 +96,12 @@ type ContainerOverrider interface {
 	//
 	//    - gType: #GType.
 	//
-	ChildType() coreglib.Type
+	ChildType func() coreglib.Type
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
 	//
-	CompositeName(child Widgetter) string
+	CompositeName func(child Widgetter) string
 	// PathForChild returns a newly created widget path representing all the
 	// widget hierarchy from the toplevel down to and including child.
 	//
@@ -89,7 +113,7 @@ type ContainerOverrider interface {
 	//
 	//    - widgetPath: newly created WidgetPath.
 	//
-	PathForChild(child Widgetter) *WidgetPath
+	PathForChild func(child Widgetter) *WidgetPath
 	// Remove removes widget from container. widget must be inside container.
 	// Note that container will own a reference to widget, and that this may be
 	// the last reference held; so removing a widget from its container can
@@ -104,7 +128,7 @@ type ContainerOverrider interface {
 	//
 	//    - widget: current child of container.
 	//
-	Remove(widget Widgetter)
+	Remove func(widget Widgetter)
 	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
 	// container.
 	//
@@ -120,7 +144,19 @@ type ContainerOverrider interface {
 	//
 	//    - child (optional) or NULL.
 	//
-	SetFocusChild(child Widgetter)
+	SetFocusChild func(child Widgetter)
+}
+
+func defaultContainerOverrides(v *Container) ContainerOverrides {
+	return ContainerOverrides{
+		Add:           v.add,
+		CheckResize:   v.checkResize,
+		ChildType:     v.childType,
+		CompositeName: v.compositeName,
+		PathForChild:  v.pathForChild,
+		Remove:        v.remove,
+		SetFocusChild: v.setFocusChild,
+	}
 }
 
 // Container: GTK+ user interface is constructed by nesting widgets inside
@@ -316,227 +352,49 @@ type Containerer interface {
 var _ Containerer = (*Container)(nil)
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeContainer,
-		GoType:        reflect.TypeOf((*Container)(nil)),
-		InitClass:     initClassContainer,
-		FinalizeClass: finalizeClassContainer,
-	})
+	coreglib.RegisterClassInfo[*Container, *ContainerClass, ContainerOverrides](
+		GTypeContainer,
+		initContainerClass,
+		wrapContainer,
+		defaultContainerOverrides,
+	)
 }
 
-func initClassContainer(gclass unsafe.Pointer, goval any) {
+func initContainerClass(gclass unsafe.Pointer, overrides ContainerOverrides, classInitFunc func(*ContainerClass)) {
+	pclass := (*C.GtkContainerClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeContainer))))
 
-	pclass := (*C.GtkContainerClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Add(widget Widgetter) }); ok {
+	if overrides.Add != nil {
 		pclass.add = (*[0]byte)(C._gotk4_gtk3_ContainerClass_add)
 	}
 
-	if _, ok := goval.(interface{ CheckResize() }); ok {
+	if overrides.CheckResize != nil {
 		pclass.check_resize = (*[0]byte)(C._gotk4_gtk3_ContainerClass_check_resize)
 	}
 
-	if _, ok := goval.(interface{ ChildType() coreglib.Type }); ok {
+	if overrides.ChildType != nil {
 		pclass.child_type = (*[0]byte)(C._gotk4_gtk3_ContainerClass_child_type)
 	}
 
-	if _, ok := goval.(interface{ CompositeName(child Widgetter) string }); ok {
+	if overrides.CompositeName != nil {
 		pclass.composite_name = (*[0]byte)(C._gotk4_gtk3_ContainerClass_composite_name)
 	}
 
-	if _, ok := goval.(interface {
-		PathForChild(child Widgetter) *WidgetPath
-	}); ok {
+	if overrides.PathForChild != nil {
 		pclass.get_path_for_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_get_path_for_child)
 	}
 
-	if _, ok := goval.(interface{ Remove(widget Widgetter) }); ok {
+	if overrides.Remove != nil {
 		pclass.remove = (*[0]byte)(C._gotk4_gtk3_ContainerClass_remove)
 	}
 
-	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
+	if overrides.SetFocusChild != nil {
 		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_set_focus_child)
 	}
-	if goval, ok := goval.(interface{ InitContainer(*ContainerClass) }); ok {
-		klass := (*ContainerClass)(gextras.NewStructNative(gclass))
-		goval.InitContainer(klass)
+
+	if classInitFunc != nil {
+		class := (*ContainerClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassContainer(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeContainer(*ContainerClass) }); ok {
-		klass := (*ContainerClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeContainer(klass)
-	}
-}
-
-//export _gotk4_gtk3_ContainerClass_add
-func _gotk4_gtk3_ContainerClass_add(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Add(widget Widgetter) })
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	iface.Add(_widget)
-}
-
-//export _gotk4_gtk3_ContainerClass_check_resize
-func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.GtkContainer) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CheckResize() })
-
-	iface.CheckResize()
-}
-
-//export _gotk4_gtk3_ContainerClass_child_type
-func _gotk4_gtk3_ContainerClass_child_type(arg0 *C.GtkContainer) (cret C.GType) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ChildType() coreglib.Type })
-
-	gType := iface.ChildType()
-
-	cret = C.GType(gType)
-
-	return cret
-}
-
-//export _gotk4_gtk3_ContainerClass_composite_name
-func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.gchar) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ CompositeName(child Widgetter) string })
-
-	var _child Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-
-	utf8 := iface.CompositeName(_child)
-
-	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
-
-	return cret
-}
-
-//export _gotk4_gtk3_ContainerClass_get_path_for_child
-func _gotk4_gtk3_ContainerClass_get_path_for_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) (cret *C.GtkWidgetPath) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface {
-		PathForChild(child Widgetter) *WidgetPath
-	})
-
-	var _child Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_child = rv
-	}
-
-	widgetPath := iface.PathForChild(_child)
-
-	cret = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(widgetPath)))
-
-	return cret
-}
-
-//export _gotk4_gtk3_ContainerClass_remove
-func _gotk4_gtk3_ContainerClass_remove(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Remove(widget Widgetter) })
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
-	}
-
-	iface.Remove(_widget)
-}
-
-//export _gotk4_gtk3_ContainerClass_set_focus_child
-func _gotk4_gtk3_ContainerClass_set_focus_child(arg0 *C.GtkContainer, arg1 *C.GtkWidget) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ SetFocusChild(child Widgetter) })
-
-	var _child Widgetter // out
-
-	if arg1 != nil {
-		{
-			objptr := unsafe.Pointer(arg1)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_child = rv
-		}
-	}
-
-	iface.SetFocusChild(_child)
 }
 
 func wrapContainer(obj *coreglib.Object) *Container {
@@ -569,140 +427,16 @@ func BaseContainer(obj Containerer) *Container {
 	return obj.baseContainer()
 }
 
-//export _gotk4_gtk3_Container_ConnectAdd
-func _gotk4_gtk3_Container_ConnectAdd(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(object Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object Widgetter))
-	}
-
-	var _object Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_object = rv
-	}
-
-	f(_object)
-}
-
 func (container *Container) ConnectAdd(f func(object Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(container, "add", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectAdd), f)
-}
-
-//export _gotk4_gtk3_Container_ConnectCheckResize
-func _gotk4_gtk3_Container_ConnectCheckResize(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 func (container *Container) ConnectCheckResize(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(container, "check-resize", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectCheckResize), f)
 }
 
-//export _gotk4_gtk3_Container_ConnectRemove
-func _gotk4_gtk3_Container_ConnectRemove(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(object Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object Widgetter))
-	}
-
-	var _object Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_object = rv
-	}
-
-	f(_object)
-}
-
 func (container *Container) ConnectRemove(f func(object Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(container, "remove", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectRemove), f)
-}
-
-//export _gotk4_gtk3_Container_ConnectSetFocusChild
-func _gotk4_gtk3_Container_ConnectSetFocusChild(arg0 C.gpointer, arg1 *C.GtkWidget, arg2 C.guintptr) {
-	var f func(object Widgetter)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(object Widgetter))
-	}
-
-	var _object Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_object = rv
-	}
-
-	f(_object)
 }
 
 func (container *Container) ConnectSetFocusChild(f func(object Widgetter)) coreglib.SignalHandle {
@@ -770,35 +504,6 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(propertyName)
 	runtime.KeepAlive(value)
-}
-
-// ChildNotify emits a Widget::child-notify signal for the [child
-// property][child-properties] child_property on the child.
-//
-// This is an analogue of g_object_notify() for child properties.
-//
-// Also see gtk_widget_child_notify().
-//
-// The function takes the following parameters:
-//
-//    - child widget.
-//    - childProperty: name of a child property installed on the class of
-//      container.
-//
-func (container *Container) ChildNotify(child Widgetter, childProperty string) {
-	var _arg0 *C.GtkContainer // out
-	var _arg1 *C.GtkWidget    // out
-	var _arg2 *C.gchar        // out
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(container)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(childProperty)
 }
 
 // ChildSetProperty sets a child property for child and container.
@@ -1035,46 +740,6 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	}
 
 	return _focusableWidgets, _ok
-}
-
-// FocusChild returns the current focus child widget inside container. This is
-// not the currently focused widget. That can be obtained by calling
-// gtk_window_get_focus().
-//
-// The function returns the following values:
-//
-//    - widget (optional): child widget which will receive the focus inside
-//      container when the container is focused, or NULL if none is set.
-//
-func (container *Container) FocusChild() Widgetter {
-	var _arg0 *C.GtkContainer // out
-	var _cret *C.GtkWidget    // in
-
-	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
-
-	_cret = C.gtk_container_get_focus_child(_arg0)
-	runtime.KeepAlive(container)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
 }
 
 // FocusHAdjustment retrieves the horizontal focus adjustment for the container.
@@ -1469,6 +1134,237 @@ func (container *Container) UnsetFocusChain() {
 
 	C.gtk_container_unset_focus_chain(_arg0)
 	runtime.KeepAlive(container)
+}
+
+// Add adds widget to container. Typically used for simple containers such as
+// Window, Frame, or Button; for more complicated layout containers such as Box
+// or Grid, this function will pick default packing parameters that may not be
+// correct. So consider functions such as gtk_box_pack_start() and
+// gtk_grid_attach() as an alternative to gtk_container_add() in those cases. A
+// widget may be added to only one container at a time; you can’t place the same
+// widget inside two different containers.
+//
+// Note that some containers, such as ScrolledWindow or ListBox, may add
+// intermediate children between the added widget and the container.
+//
+// The function takes the following parameters:
+//
+//    - widget to be placed inside container.
+//
+func (container *Container) add(widget Widgetter) {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.add
+
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk3_Container_virtual_add(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(widget)
+}
+
+func (container *Container) checkResize() {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.check_resize
+
+	var _arg0 *C.GtkContainer // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+
+	C._gotk4_gtk3_Container_virtual_check_resize(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(container)
+}
+
+// childType returns the type of the children supported by the container.
+//
+// Note that this may return G_TYPE_NONE to indicate that no more children can
+// be added, e.g. for a Paned which already has two children.
+//
+// The function returns the following values:
+//
+//    - gType: #GType.
+//
+func (container *Container) childType() coreglib.Type {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.child_type
+
+	var _arg0 *C.GtkContainer // out
+	var _cret C.GType         // in
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+
+	_cret = C._gotk4_gtk3_Container_virtual_child_type(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(container)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (container *Container) compositeName(child Widgetter) string {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.composite_name
+
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret *C.gchar        // in
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C._gotk4_gtk3_Container_virtual_composite_name(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Forall invokes callback on each direct child of container, including children
+// that are considered “internal” (implementation details of the container).
+// “Internal” children generally weren’t added by the user of the container, but
+// were added by the container implementation itself.
+//
+// Most applications should use gtk_container_foreach(), rather than
+// gtk_container_forall().
+//
+// The function takes the following parameters:
+//
+//    - includeInternals
+//    - callback: callback.
+//
+func (container *Container) forall(includeInternals bool, callback Callback) {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.forall
+
+	var _arg0 *C.GtkContainer // out
+	var _arg1 C.gboolean      // out
+	var _arg2 C.GtkCallback   // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	if includeInternals {
+		_arg1 = C.TRUE
+	}
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_Callback)
+	_arg3 = C.gpointer(gbox.Assign(callback))
+	defer gbox.Delete(uintptr(_arg3))
+
+	C._gotk4_gtk3_Container_virtual_forall(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(includeInternals)
+	runtime.KeepAlive(callback)
+}
+
+// pathForChild returns a newly created widget path representing all the widget
+// hierarchy from the toplevel down to and including child.
+//
+// The function takes the following parameters:
+//
+//    - child of container.
+//
+// The function returns the following values:
+//
+//    - widgetPath: newly created WidgetPath.
+//
+func (container *Container) pathForChild(child Widgetter) *WidgetPath {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.get_path_for_child
+
+	var _arg0 *C.GtkContainer  // out
+	var _arg1 *C.GtkWidget     // out
+	var _cret *C.GtkWidgetPath // in
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C._gotk4_gtk3_Container_virtual_get_path_for_child(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+
+	var _widgetPath *WidgetPath // out
+
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+		},
+	)
+
+	return _widgetPath
+}
+
+// Remove removes widget from container. widget must be inside container. Note
+// that container will own a reference to widget, and that this may be the last
+// reference held; so removing a widget from its container can destroy that
+// widget. If you want to use widget again, you need to add a reference to it
+// before removing it from a container, using g_object_ref(). If you don’t want
+// to use widget again it’s usually more efficient to simply destroy it directly
+// using gtk_widget_destroy() since this will remove it from the container and
+// help break any circular reference count cycles.
+//
+// The function takes the following parameters:
+//
+//    - widget: current child of container.
+//
+func (container *Container) remove(widget Widgetter) {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.remove
+
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C._gotk4_gtk3_Container_virtual_remove(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(widget)
+}
+
+// setFocusChild: sets, or unsets if child is NULL, the focused child of
+// container.
+//
+// This function emits the GtkContainer::set_focus_child signal of container.
+// Implementations of Container can override the default behaviour by overriding
+// the class closure of this signal.
+//
+// This is function is mostly meant to be used by widgets. Applications can use
+// gtk_widget_grab_focus() to manually set the focus to a specific widget.
+//
+// The function takes the following parameters:
+//
+//    - child (optional) or NULL.
+//
+func (container *Container) setFocusChild(child Widgetter) {
+	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
+	fnarg := gclass.set_focus_child
+
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	if child != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	}
+
+	C._gotk4_gtk3_Container_virtual_set_focus_child(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
 }
 
 // ContainerClass: base class for containers.

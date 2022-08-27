@@ -17,15 +17,30 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
-// extern PangoFontFace* _gotk4_gtk4_FontChooserIface_get_font_face(GtkFontChooser*);
-// extern PangoFontFamily* _gotk4_gtk4_FontChooserIface_get_font_family(GtkFontChooser*);
-// extern PangoFontMap* _gotk4_gtk4_FontChooserIface_get_font_map(GtkFontChooser*);
-// extern gboolean _gotk4_gtk4_FontFilterFunc(PangoFontFamily*, PangoFontFace*, gpointer);
-// extern int _gotk4_gtk4_FontChooserIface_get_font_size(GtkFontChooser*);
-// extern void _gotk4_gtk4_FontChooserIface_font_activated(GtkFontChooser*, char*);
-// extern void _gotk4_gtk4_FontChooserIface_set_font_map(GtkFontChooser*, PangoFontMap*);
-// extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
+// extern gboolean _gotk4_gtk4_FontFilterFunc(PangoFontFamily*, PangoFontFace*, gpointer);
+// PangoFontFace* _gotk4_gtk4_FontChooser_virtual_get_font_face(void* fnptr, GtkFontChooser* arg0) {
+//   return ((PangoFontFace* (*)(GtkFontChooser*))(fnptr))(arg0);
+// };
+// PangoFontFamily* _gotk4_gtk4_FontChooser_virtual_get_font_family(void* fnptr, GtkFontChooser* arg0) {
+//   return ((PangoFontFamily* (*)(GtkFontChooser*))(fnptr))(arg0);
+// };
+// PangoFontMap* _gotk4_gtk4_FontChooser_virtual_get_font_map(void* fnptr, GtkFontChooser* arg0) {
+//   return ((PangoFontMap* (*)(GtkFontChooser*))(fnptr))(arg0);
+// };
+// int _gotk4_gtk4_FontChooser_virtual_get_font_size(void* fnptr, GtkFontChooser* arg0) {
+//   return ((int (*)(GtkFontChooser*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk4_FontChooser_virtual_font_activated(void* fnptr, GtkFontChooser* arg0, char* arg1) {
+//   ((void (*)(GtkFontChooser*, char*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk4_FontChooser_virtual_set_filter_func(void* fnptr, GtkFontChooser* arg0, GtkFontFilterFunc arg1, gpointer arg2, GDestroyNotify arg3) {
+//   ((void (*)(GtkFontChooser*, GtkFontFilterFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_FontChooser_virtual_set_font_map(void* fnptr, GtkFontChooser* arg0, PangoFontMap* arg1) {
+//   ((void (*)(GtkFontChooser*, PangoFontMap*))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -111,64 +126,6 @@ func (f FontChooserLevel) Has(other FontChooserLevel) bool {
 // See gtk.FontChooser.SetFilterFunc().
 type FontFilterFunc func(family pango.FontFamilier, face pango.FontFacer) (ok bool)
 
-//export _gotk4_gtk4_FontFilterFunc
-func _gotk4_gtk4_FontFilterFunc(arg1 *C.PangoFontFamily, arg2 *C.PangoFontFace, arg3 C.gpointer) (cret C.gboolean) {
-	var fn FontFilterFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(FontFilterFunc)
-	}
-
-	var _family pango.FontFamilier // out
-	var _face pango.FontFacer      // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type pango.FontFamilier is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(pango.FontFamilier)
-			return ok
-		})
-		rv, ok := casted.(pango.FontFamilier)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
-		}
-		_family = rv
-	}
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type pango.FontFacer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(pango.FontFacer)
-			return ok
-		})
-		rv, ok := casted.(pango.FontFacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
-		}
-		_face = rv
-	}
-
-	ok := fn(_family, _face)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // FontChooser: GtkFontChooser is an interface that can be implemented by
 // widgets for choosing fonts.
 //
@@ -247,26 +204,6 @@ func wrapFontChooser(obj *coreglib.Object) *FontChooser {
 
 func marshalFontChooser(p uintptr) (interface{}, error) {
 	return wrapFontChooser(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk4_FontChooser_ConnectFontActivated
-func _gotk4_gtk4_FontChooser_ConnectFontActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
-	var f func(fontname string)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(fontname string))
-	}
-
-	var _fontname string // out
-
-	_fontname = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	f(_fontname)
 }
 
 // ConnectFontActivated is emitted when a font is activated.
@@ -791,6 +728,254 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	C.gtk_font_chooser_set_show_preview_entry(_arg0, _arg1)
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(showPreviewEntry)
+}
+
+// The function takes the following parameters:
+//
+func (chooser *FontChooser) fontActivated(fontname string) {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.font_activated
+
+	var _arg0 *C.GtkFontChooser // out
+	var _arg1 *C.char           // out
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk4_FontChooser_virtual_font_activated(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(fontname)
+}
+
+// fontFace gets the PangoFontFace representing the selected font group details
+// (i.e. family, slant, weight, width, etc).
+//
+// If the selected font is not installed, returns NULL.
+//
+// The function returns the following values:
+//
+//    - fontFace (optional): PangoFontFace representing the selected font group
+//      details, or NULL. The returned object is owned by fontchooser and must
+//      not be modified or freed.
+//
+func (fontchooser *FontChooser) fontFace() pango.FontFacer {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
+	fnarg := gclass.get_font_face
+
+	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.PangoFontFace  // in
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+
+	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_face(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(fontchooser)
+
+	var _fontFace pango.FontFacer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(pango.FontFacer)
+				return ok
+			})
+			rv, ok := casted.(pango.FontFacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
+			}
+			_fontFace = rv
+		}
+	}
+
+	return _fontFace
+}
+
+// fontFamily gets the PangoFontFamily representing the selected font family.
+//
+// Font families are a collection of font faces.
+//
+// If the selected font is not installed, returns NULL.
+//
+// The function returns the following values:
+//
+//    - fontFamily (optional): PangoFontFamily representing the selected font
+//      family, or NULL. The returned object is owned by fontchooser and must not
+//      be modified or freed.
+//
+func (fontchooser *FontChooser) fontFamily() pango.FontFamilier {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
+	fnarg := gclass.get_font_family
+
+	var _arg0 *C.GtkFontChooser  // out
+	var _cret *C.PangoFontFamily // in
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+
+	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_family(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(fontchooser)
+
+	var _fontFamily pango.FontFamilier // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(pango.FontFamilier)
+				return ok
+			})
+			rv, ok := casted.(pango.FontFamilier)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
+			}
+			_fontFamily = rv
+		}
+	}
+
+	return _fontFamily
+}
+
+// fontMap gets the custom font map of this font chooser widget, or NULL if it
+// does not have one.
+//
+// The function returns the following values:
+//
+//    - fontMap (optional): PangoFontMap, or NULL.
+//
+func (fontchooser *FontChooser) fontMap() pango.FontMapper {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
+	fnarg := gclass.get_font_map
+
+	var _arg0 *C.GtkFontChooser // out
+	var _cret *C.PangoFontMap   // in
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+
+	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_map(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(fontchooser)
+
+	var _fontMap pango.FontMapper // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(pango.FontMapper)
+				return ok
+			})
+			rv, ok := casted.(pango.FontMapper)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
+			}
+			_fontMap = rv
+		}
+	}
+
+	return _fontMap
+}
+
+// fontSize: selected font size.
+//
+// The function returns the following values:
+//
+//    - gint: n integer representing the selected font size, or -1 if no font
+//      size is selected.
+//
+func (fontchooser *FontChooser) fontSize() int {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
+	fnarg := gclass.get_font_size
+
+	var _arg0 *C.GtkFontChooser // out
+	var _cret C.int             // in
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+
+	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_size(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(fontchooser)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// setFilterFunc adds a filter function that decides which fonts to display in
+// the font chooser.
+//
+// The function takes the following parameters:
+//
+//    - filter (optional): GtkFontFilterFunc, or NULL.
+//
+func (fontchooser *FontChooser) setFilterFunc(filter FontFilterFunc) {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
+	fnarg := gclass.set_filter_func
+
+	var _arg0 *C.GtkFontChooser   // out
+	var _arg1 C.GtkFontFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	if filter != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk4_FontFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filter))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C._gotk4_gtk4_FontChooser_virtual_set_filter_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(filter)
+}
+
+// setFontMap sets a custom font map to use for this font chooser widget.
+//
+// A custom font map can be used to present application-specific fonts instead
+// of or in addition to the normal system fonts.
+//
+//    FcConfig *config;
+//    PangoFontMap *fontmap;
+//
+//    config = FcInitLoadConfigAndFonts ();
+//    FcConfigAppFontAddFile (config, my_app_font_file);
+//
+//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+//
+//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
+//
+//
+// Note that other GTK widgets will only be able to use the application-specific
+// font if it is present in the font map they use:
+//
+//    context = gtk_widget_get_pango_context (label);
+//    pango_context_set_font_map (context, fontmap);.
+//
+// The function takes the following parameters:
+//
+//    - fontmap (optional): PangoFontMap.
+//
+func (fontchooser *FontChooser) setFontMap(fontmap pango.FontMapper) {
+	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
+	fnarg := gclass.set_font_map
+
+	var _arg0 *C.GtkFontChooser // out
+	var _arg1 *C.PangoFontMap   // out
+
+	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	if fontmap != nil {
+		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	}
+
+	C._gotk4_gtk4_FontChooser_virtual_set_font_map(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(fontchooser)
+	runtime.KeepAlive(fontmap)
 }
 
 // FontChooserIface: instance of this type is always passed by reference.

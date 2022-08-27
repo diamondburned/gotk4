@@ -12,7 +12,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -20,10 +19,16 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_DialogClass_close(GtkDialog*);
-// extern void _gotk4_gtk3_DialogClass_response(GtkDialog*, gint);
-// extern void _gotk4_gtk3_Dialog_ConnectClose(gpointer, guintptr);
 // extern void _gotk4_gtk3_Dialog_ConnectResponse(gpointer, gint, guintptr);
+// extern void _gotk4_gtk3_Dialog_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk3_DialogClass_response(GtkDialog*, gint);
+// extern void _gotk4_gtk3_DialogClass_close(GtkDialog*);
+// void _gotk4_gtk3_Dialog_virtual_close(void* fnptr, GtkDialog* arg0) {
+//   ((void (*)(GtkDialog*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_Dialog_virtual_response(void* fnptr, GtkDialog* arg0, gint arg1) {
+//   ((void (*)(GtkDialog*, gint))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -160,49 +165,9 @@ func (d DialogFlags) Has(other DialogFlags) bool {
 	return (d & other) == other
 }
 
-// AlternativeDialogButtonOrder returns TRUE if dialogs are expected to use an
-// alternative button order on the screen screen. See
-// gtk_dialog_set_alternative_button_order() for more details about alternative
-// button order.
-//
-// If you need to use this function, you should probably connect to the
-// ::notify:gtk-alternative-button-order signal on the Settings object
-// associated to screen, in order to be notified if the button order setting
-// changes.
-//
-// Deprecated: Deprecated.
-//
-// The function takes the following parameters:
-//
-//    - screen (optional) or NULL to use the default screen.
-//
-// The function returns the following values:
-//
-//    - ok: whether the alternative button order should be used.
-//
-func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
-	var _arg1 *C.GdkScreen // out
-	var _cret C.gboolean   // in
-
-	if screen != nil {
-		_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	}
-
-	_cret = C.gtk_alternative_dialog_button_order(_arg1)
-	runtime.KeepAlive(screen)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DialogOverrider contains methods that are overridable.
-type DialogOverrider interface {
-	Close()
+// DialogOverrides contains methods that are overridable.
+type DialogOverrides struct {
+	Close func()
 	// Response emits the Dialog::response signal with the given response ID.
 	// Used to indicate that the user has responded to the dialog in some way;
 	// typically either you or gtk_dialog_run() will be monitoring the
@@ -212,7 +177,14 @@ type DialogOverrider interface {
 	//
 	//    - responseId: response ID.
 	//
-	Response(responseId int)
+	Response func(responseId int)
+}
+
+func defaultDialogOverrides(v *Dialog) DialogOverrides {
+	return DialogOverrides{
+		Close:    v.close,
+		Response: v.response,
+	}
 }
 
 // Dialog boxes are a convenient way to prompt the user for a small amount of
@@ -336,56 +308,29 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeDialog,
-		GoType:        reflect.TypeOf((*Dialog)(nil)),
-		InitClass:     initClassDialog,
-		FinalizeClass: finalizeClassDialog,
-	})
+	coreglib.RegisterClassInfo[*Dialog, *DialogClass, DialogOverrides](
+		GTypeDialog,
+		initDialogClass,
+		wrapDialog,
+		defaultDialogOverrides,
+	)
 }
 
-func initClassDialog(gclass unsafe.Pointer, goval any) {
+func initDialogClass(gclass unsafe.Pointer, overrides DialogOverrides, classInitFunc func(*DialogClass)) {
+	pclass := (*C.GtkDialogClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeDialog))))
 
-	pclass := (*C.GtkDialogClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ Close() }); ok {
+	if overrides.Close != nil {
 		pclass.close = (*[0]byte)(C._gotk4_gtk3_DialogClass_close)
 	}
 
-	if _, ok := goval.(interface{ Response(responseId int) }); ok {
+	if overrides.Response != nil {
 		pclass.response = (*[0]byte)(C._gotk4_gtk3_DialogClass_response)
 	}
-	if goval, ok := goval.(interface{ InitDialog(*DialogClass) }); ok {
-		klass := (*DialogClass)(gextras.NewStructNative(gclass))
-		goval.InitDialog(klass)
+
+	if classInitFunc != nil {
+		class := (*DialogClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassDialog(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeDialog(*DialogClass) }); ok {
-		klass := (*DialogClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeDialog(klass)
-	}
-}
-
-//export _gotk4_gtk3_DialogClass_close
-func _gotk4_gtk3_DialogClass_close(arg0 *C.GtkDialog) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Close() })
-
-	iface.Close()
-}
-
-//export _gotk4_gtk3_DialogClass_response
-func _gotk4_gtk3_DialogClass_response(arg0 *C.GtkDialog, arg1 C.gint) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ Response(responseId int) })
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	iface.Response(_responseId)
 }
 
 func wrapDialog(obj *coreglib.Object) *Dialog {
@@ -415,48 +360,12 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return wrapDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk3_Dialog_ConnectClose
-func _gotk4_gtk3_Dialog_ConnectClose(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 // ConnectClose signal is a [keybinding signal][GtkBindingSignal] which gets
 // emitted when the user uses a keybinding to close the dialog.
 //
 // The default binding for this signal is the Escape key.
 func (dialog *Dialog) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(dialog, "close", false, unsafe.Pointer(C._gotk4_gtk3_Dialog_ConnectClose), f)
-}
-
-//export _gotk4_gtk3_Dialog_ConnectResponse
-func _gotk4_gtk3_Dialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
-	var f func(responseId int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(responseId int))
-	}
-
-	var _responseId int // out
-
-	_responseId = int(arg1)
-
-	f(_responseId)
 }
 
 // ConnectResponse is emitted when an action widget is clicked, the dialog
@@ -568,152 +477,6 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	return _widget
 }
 
-// ActionArea returns the action area of dialog.
-//
-// Deprecated: Direct access to the action area is discouraged; use
-// gtk_dialog_add_button(), etc.
-//
-// The function returns the following values:
-//
-//    - box: action area.
-//
-func (dialog *Dialog) ActionArea() *Box {
-	var _arg0 *C.GtkDialog // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-
-	_cret = C.gtk_dialog_get_action_area(_arg0)
-	runtime.KeepAlive(dialog)
-
-	var _box *Box // out
-
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _box
-}
-
-// ContentArea returns the content area of dialog.
-//
-// The function returns the following values:
-//
-//    - box: content area Box.
-//
-func (dialog *Dialog) ContentArea() *Box {
-	var _arg0 *C.GtkDialog // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-
-	_cret = C.gtk_dialog_get_content_area(_arg0)
-	runtime.KeepAlive(dialog)
-
-	var _box *Box // out
-
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _box
-}
-
-// HeaderBar returns the header bar of dialog. Note that the headerbar is only
-// used by the dialog if the Dialog:use-header-bar property is TRUE.
-//
-// The function returns the following values:
-//
-//    - headerBar: header bar.
-//
-func (dialog *Dialog) HeaderBar() *HeaderBar {
-	var _arg0 *C.GtkDialog // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-
-	_cret = C.gtk_dialog_get_header_bar(_arg0)
-	runtime.KeepAlive(dialog)
-
-	var _headerBar *HeaderBar // out
-
-	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _headerBar
-}
-
-// ResponseForWidget gets the response id of a widget in the action area of a
-// dialog.
-//
-// The function takes the following parameters:
-//
-//    - widget in the action area of dialog.
-//
-// The function returns the following values:
-//
-//    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
-//      a response id set.
-//
-func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
-	var _arg0 *C.GtkDialog // out
-	var _arg1 *C.GtkWidget // out
-	var _cret C.gint       // in
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
-	runtime.KeepAlive(dialog)
-	runtime.KeepAlive(widget)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// WidgetForResponse gets the widget button that uses the given response ID in
-// the action area of a dialog.
-//
-// The function takes the following parameters:
-//
-//    - responseId: response ID used by the dialog widget.
-//
-// The function returns the following values:
-//
-//    - widget (optional) button that uses the given response_id, or NULL.
-//
-func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
-	var _arg0 *C.GtkDialog // out
-	var _arg1 C.gint       // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	_arg1 = C.gint(responseId)
-
-	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
-	runtime.KeepAlive(dialog)
-	runtime.KeepAlive(responseId)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
-}
-
 // Response emits the Dialog::response signal with the given response ID. Used
 // to indicate that the user has responded to the dialog in some way; typically
 // either you or gtk_dialog_run() will be monitoring the ::response signal and
@@ -798,42 +561,6 @@ func (dialog *Dialog) Run() int {
 	return _gint
 }
 
-// SetAlternativeButtonOrderFromArray sets an alternative button order. If the
-// Settings:gtk-alternative-button-order setting is set to TRUE, the dialog
-// buttons are reordered according to the order of the response ids in
-// new_order.
-//
-// See gtk_dialog_set_alternative_button_order() for more information.
-//
-// This function is for use by language bindings.
-//
-// Deprecated: Deprecated.
-//
-// The function takes the following parameters:
-//
-//    - newOrder: array of response ids of dialog’s buttons.
-//
-func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
-	var _arg0 *C.GtkDialog // out
-	var _arg2 *C.gint      // out
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	_arg1 = (C.gint)(len(newOrder))
-	_arg2 = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.gint)(_arg2), len(newOrder))
-		for i := range newOrder {
-			out[i] = C.gint(newOrder[i])
-		}
-	}
-
-	C.gtk_dialog_set_alternative_button_order_from_array(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(dialog)
-	runtime.KeepAlive(newOrder)
-}
-
 // SetDefaultResponse sets the last widget in the dialog’s action area with the
 // given response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
@@ -878,6 +605,42 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(responseId)
 	runtime.KeepAlive(setting)
+}
+
+func (dialog *Dialog) close() {
+	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))
+	fnarg := gclass.close
+
+	var _arg0 *C.GtkDialog // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+
+	C._gotk4_gtk3_Dialog_virtual_close(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(dialog)
+}
+
+// Response emits the Dialog::response signal with the given response ID. Used
+// to indicate that the user has responded to the dialog in some way; typically
+// either you or gtk_dialog_run() will be monitoring the ::response signal and
+// take appropriate action.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID.
+//
+func (dialog *Dialog) response(responseId int) {
+	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))
+	fnarg := gclass.response
+
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.gint       // out
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.gint(responseId)
+
+	C._gotk4_gtk3_Dialog_virtual_response(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
 }
 
 // DialogClass: instance of this type is always passed by reference.

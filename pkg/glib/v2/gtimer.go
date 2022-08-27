@@ -4,9 +4,6 @@ package glib
 
 import (
 	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 )
 
 // #include <stdlib.h>
@@ -34,55 +31,4 @@ func Usleep(microseconds uint32) {
 
 	C.g_usleep(_arg1)
 	runtime.KeepAlive(microseconds)
-}
-
-// TimeValFromISO8601 converts a string containing an ISO 8601 encoded date and
-// time to a Val and puts it into time_.
-//
-// iso_date must include year, month, day, hours, minutes, and seconds. It can
-// optionally include fractions of a second and a time zone indicator. (In the
-// absence of any time zone indication, the timestamp is assumed to be in local
-// time.)
-//
-// Any leading or trailing space in iso_date is ignored.
-//
-// This function was deprecated, along with Val itself, in GLib 2.62. Equivalent
-// functionality is available using code like:
-//
-//    GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
-//    gint64 time_val = g_date_time_to_unix (dt);
-//    g_date_time_unref (dt);
-//
-// Deprecated: Val is not year-2038-safe. Use g_date_time_new_from_iso8601()
-// instead.
-//
-// The function takes the following parameters:
-//
-//    - isoDate: ISO 8601 encoded date string.
-//
-// The function returns the following values:
-//
-//    - time_: Val.
-//    - ok: TRUE if the conversion was successful.
-//
-func TimeValFromISO8601(isoDate string) (*TimeVal, bool) {
-	var _arg1 *C.gchar   // out
-	var _arg2 C.GTimeVal // in
-	var _cret C.gboolean // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(isoDate)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_time_val_from_iso8601(_arg1, &_arg2)
-	runtime.KeepAlive(isoDate)
-
-	var _time_ *TimeVal // out
-	var _ok bool        // out
-
-	_time_ = (*TimeVal)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _time_, _ok
 }

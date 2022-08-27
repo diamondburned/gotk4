@@ -110,8 +110,12 @@ func RelationTypeRegister(name string) RelationType {
 	return _relationType
 }
 
-// RelationOverrider contains methods that are overridable.
-type RelationOverrider interface {
+// RelationOverrides contains methods that are overridable.
+type RelationOverrides struct {
+}
+
+func defaultRelationOverrides(v *Relation) RelationOverrides {
+	return RelationOverrides{}
 }
 
 // Relation describes a relation between an object and one or more other
@@ -127,25 +131,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRelation,
-		GoType:        reflect.TypeOf((*Relation)(nil)),
-		InitClass:     initClassRelation,
-		FinalizeClass: finalizeClassRelation,
-	})
+	coreglib.RegisterClassInfo[*Relation, *RelationClass, RelationOverrides](
+		GTypeRelation,
+		initRelationClass,
+		wrapRelation,
+		defaultRelationOverrides,
+	)
 }
 
-func initClassRelation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitRelation(*RelationClass) }); ok {
-		klass := (*RelationClass)(gextras.NewStructNative(gclass))
-		goval.InitRelation(klass)
-	}
-}
-
-func finalizeClassRelation(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeRelation(*RelationClass) }); ok {
-		klass := (*RelationClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRelation(klass)
+func initRelationClass(gclass unsafe.Pointer, overrides RelationOverrides, classInitFunc func(*RelationClass)) {
+	if classInitFunc != nil {
+		class := (*RelationClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -197,25 +194,6 @@ func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 	_relation = wrapRelation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relation
-}
-
-// AddTarget adds the specified AtkObject to the target for the relation, if it
-// is not already present. See also atk_object_add_relationship().
-//
-// The function takes the following parameters:
-//
-//    - target: Object.
-//
-func (relation *Relation) AddTarget(target *AtkObject) {
-	var _arg0 *C.AtkRelation // out
-	var _arg1 *C.AtkObject   // out
-
-	_arg0 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-
-	C.atk_relation_add_target(_arg0, _arg1)
-	runtime.KeepAlive(relation)
-	runtime.KeepAlive(target)
 }
 
 // RelationType gets the type of relation.

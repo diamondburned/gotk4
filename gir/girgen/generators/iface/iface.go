@@ -14,6 +14,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
 // CanGenerate checks if the given class or interface can be generated.
@@ -62,6 +63,9 @@ type Signal struct {
 	CGoName string
 	CGoTail string
 	Block   string // type conversion trampoline
+
+	Header  *file.Header
+	Results []typeconv.ValueConverted
 
 	InfoElements gir.InfoElements
 }
@@ -142,6 +146,9 @@ func (g *Generator) IsInterface() bool { return !g.IsClass() }
 
 // OverriderName returns the name of the overrider interface.
 func (g *Generator) OverriderName() string {
+	if g.IsClass() {
+		return g.StructName + "Overrides"
+	}
 	return g.StructName + "Overrider"
 }
 
@@ -256,12 +263,6 @@ func (g *Generator) Use(typ interface{}) bool {
 
 	g.header.NeedsExternGLib()
 
-	g.Methods.setMethods(g, g.methods)
-	g.VirtualMethods.setVirtuals(g, g.virtuals)
-
-	g.renameGetters(g.Methods)
-	g.renameGetters(g.VirtualMethods)
-
 	var signals []gir.Signal
 
 	switch v := g.Root.Type.(type) {
@@ -283,6 +284,18 @@ func (g *Generator) Use(typ interface{}) bool {
 
 			// file.ApplyHeader(g, &g.cgen)
 			g.Constructors = append(g.Constructors, newMethod(&g.cgen))
+		}
+	}
+
+	g.Methods.setMethods(g, g.methods)
+	g.VirtualMethods.setVirtuals(g, g.virtuals)
+
+	g.renameGetters(g.Methods)
+	g.renameGetters(g.VirtualMethods)
+
+	if g.GLibTypeStruct != nil {
+		if !g.GLibTypeStruct.Init() {
+			g.GLibTypeStruct = nil
 		}
 	}
 
@@ -396,13 +409,6 @@ func (g *Generator) Use(typ interface{}) bool {
 
 		// Import the extern function header for the trampoline function.
 		types.AddCallableHeader(g.gen, &g.header, exportedSignal, sigCallable)
-		// Import everything that the conversion trampoline needs into the
-		// callable's headers.
-		g.header.ApplyFrom(callbackGen.Header())
-
-		// for _, res := range g.cgen.Results {
-		// 	res.Import(&g.header, true)
-		// }
 
 		g.Signals = append(g.Signals, Signal{
 			Signal:       &signals[i],
@@ -412,6 +418,8 @@ func (g *Generator) Use(typ interface{}) bool {
 			CGoTail:      callbackGen.CGoTail,
 			Block:        callbackGen.Block,
 			InfoElements: sig.InfoElements,
+			Header:       callbackGen.Header(),
+			Results:      callbackGen.Results,
 		})
 	}
 

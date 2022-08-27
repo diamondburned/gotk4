@@ -31,8 +31,12 @@ func init() {
 	})
 }
 
-// ConstraintLayoutOverrider contains methods that are overridable.
-type ConstraintLayoutOverrider interface {
+// ConstraintLayoutOverrides contains methods that are overridable.
+type ConstraintLayoutOverrides struct {
+}
+
+func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverrides {
+	return ConstraintLayoutOverrides{}
 }
 
 // ConstraintLayout: layout manager using constraints to describe relations
@@ -207,25 +211,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeConstraintLayout,
-		GoType:        reflect.TypeOf((*ConstraintLayout)(nil)),
-		InitClass:     initClassConstraintLayout,
-		FinalizeClass: finalizeClassConstraintLayout,
-	})
+	coreglib.RegisterClassInfo[*ConstraintLayout, *ConstraintLayoutClass, ConstraintLayoutOverrides](
+		GTypeConstraintLayout,
+		initConstraintLayoutClass,
+		wrapConstraintLayout,
+		defaultConstraintLayoutOverrides,
+	)
 }
 
-func initClassConstraintLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitConstraintLayout(*ConstraintLayoutClass) }); ok {
-		klass := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
-		goval.InitConstraintLayout(klass)
-	}
-}
-
-func finalizeClassConstraintLayout(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeConstraintLayout(*ConstraintLayoutClass) }); ok {
-		klass := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeConstraintLayout(klass)
+func initConstraintLayoutClass(gclass unsafe.Pointer, overrides ConstraintLayoutOverrides, classInitFunc func(*ConstraintLayoutClass)) {
+	if classInitFunc != nil {
+		class := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -584,8 +581,12 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	runtime.KeepAlive(guide)
 }
 
-// ConstraintLayoutChildOverrider contains methods that are overridable.
-type ConstraintLayoutChildOverrider interface {
+// ConstraintLayoutChildOverrides contains methods that are overridable.
+type ConstraintLayoutChildOverrides struct {
+}
+
+func defaultConstraintLayoutChildOverrides(v *ConstraintLayoutChild) ConstraintLayoutChildOverrides {
+	return ConstraintLayoutChildOverrides{}
 }
 
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a
@@ -600,29 +601,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeConstraintLayoutChild,
-		GoType:        reflect.TypeOf((*ConstraintLayoutChild)(nil)),
-		InitClass:     initClassConstraintLayoutChild,
-		FinalizeClass: finalizeClassConstraintLayoutChild,
-	})
+	coreglib.RegisterClassInfo[*ConstraintLayoutChild, *ConstraintLayoutChildClass, ConstraintLayoutChildOverrides](
+		GTypeConstraintLayoutChild,
+		initConstraintLayoutChildClass,
+		wrapConstraintLayoutChild,
+		defaultConstraintLayoutChildOverrides,
+	)
 }
 
-func initClassConstraintLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitConstraintLayoutChild(*ConstraintLayoutChildClass)
-	}); ok {
-		klass := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.InitConstraintLayoutChild(klass)
-	}
-}
-
-func finalizeClassConstraintLayoutChild(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeConstraintLayoutChild(*ConstraintLayoutChildClass)
-	}); ok {
-		klass := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeConstraintLayoutChild(klass)
+func initConstraintLayoutChildClass(gclass unsafe.Pointer, overrides ConstraintLayoutChildOverrides, classInitFunc func(*ConstraintLayoutChildClass)) {
+	if classInitFunc != nil {
+		class := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

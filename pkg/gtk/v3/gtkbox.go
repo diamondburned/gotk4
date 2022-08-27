@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// BoxOverrider contains methods that are overridable.
-type BoxOverrider interface {
+// BoxOverrides contains methods that are overridable.
+type BoxOverrides struct {
+}
+
+func defaultBoxOverrides(v *Box) BoxOverrides {
+	return BoxOverrides{}
 }
 
 // Box widget arranges child widgets into a single row or column, depending upon
@@ -93,25 +97,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBox,
-		GoType:        reflect.TypeOf((*Box)(nil)),
-		InitClass:     initClassBox,
-		FinalizeClass: finalizeClassBox,
-	})
+	coreglib.RegisterClassInfo[*Box, *BoxClass, BoxOverrides](
+		GTypeBox,
+		initBoxClass,
+		wrapBox,
+		defaultBoxOverrides,
+	)
 }
 
-func initClassBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBox(*BoxClass) }); ok {
-		klass := (*BoxClass)(gextras.NewStructNative(gclass))
-		goval.InitBox(klass)
-	}
-}
-
-func finalizeClassBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBox(*BoxClass) }); ok {
-		klass := (*BoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBox(klass)
+func initBoxClass(gclass unsafe.Pointer, overrides BoxOverrides, classInitFunc func(*BoxClass)) {
+	if classInitFunc != nil {
+		class := (*BoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -140,95 +137,6 @@ func wrapBox(obj *coreglib.Object) *Box {
 
 func marshalBox(p uintptr) (interface{}, error) {
 	return wrapBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewBox creates a new Box.
-//
-// The function takes the following parameters:
-//
-//    - orientation box’s orientation.
-//    - spacing: number of pixels to place by default between children.
-//
-// The function returns the following values:
-//
-//    - box: new Box.
-//
-func NewBox(orientation Orientation, spacing int) *Box {
-	var _arg1 C.GtkOrientation // out
-	var _arg2 C.gint           // out
-	var _cret *C.GtkWidget     // in
-
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = C.gint(spacing)
-
-	_cret = C.gtk_box_new(_arg1, _arg2)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(spacing)
-
-	var _box *Box // out
-
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _box
-}
-
-// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-//
-// The function returns the following values:
-//
-//    - baselinePosition: baseline position.
-//
-func (box *Box) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBox             // out
-	var _cret C.GtkBaselinePosition // in
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	_cret = C.gtk_box_get_baseline_position(_arg0)
-	runtime.KeepAlive(box)
-
-	var _baselinePosition BaselinePosition // out
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
-}
-
-// CenterWidget retrieves the center widget of the box.
-//
-// The function returns the following values:
-//
-//    - widget (optional): center widget or NULL in case no center widget is set.
-//
-func (box *Box) CenterWidget() Widgetter {
-	var _arg0 *C.GtkBox    // out
-	var _cret *C.GtkWidget // in
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	_cret = C.gtk_box_get_center_widget(_arg0)
-	runtime.KeepAlive(box)
-
-	var _widget Widgetter // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Widgetter)
-				return ok
-			})
-			rv, ok := casted.(Widgetter)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-			}
-			_widget = rv
-		}
-	}
-
-	return _widget
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the same
@@ -441,50 +349,6 @@ func (box *Box) ReorderChild(child Widgetter, position int) {
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(position)
-}
-
-// SetBaselinePosition sets the baseline position of a box. This affects only
-// horizontal boxes with at least one baseline aligned child. If there is more
-// vertical space available than requested, and the baseline is not allocated by
-// the parent then position is used to allocate the baseline wrt the extra space
-// available.
-//
-// The function takes the following parameters:
-//
-//    - position: BaselinePosition.
-//
-func (box *Box) SetBaselinePosition(position BaselinePosition) {
-	var _arg0 *C.GtkBox             // out
-	var _arg1 C.GtkBaselinePosition // out
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.GtkBaselinePosition(position)
-
-	C.gtk_box_set_baseline_position(_arg0, _arg1)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(position)
-}
-
-// SetCenterWidget sets a center widget; that is a child widget that will be
-// centered with respect to the full width of the box, even if the children at
-// either side take up different amounts of space.
-//
-// The function takes the following parameters:
-//
-//    - widget (optional) to center.
-//
-func (box *Box) SetCenterWidget(widget Widgetter) {
-	var _arg0 *C.GtkBox    // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	}
-
-	C.gtk_box_set_center_widget(_arg0, _arg1)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(widget)
 }
 
 // SetChildPacking sets the way child is packed into box.

@@ -27,8 +27,12 @@ func init() {
 	})
 }
 
-// TextMarkOverrider contains methods that are overridable.
-type TextMarkOverrider interface {
+// TextMarkOverrides contains methods that are overridable.
+type TextMarkOverrides struct {
+}
+
+func defaultTextMarkOverrides(v *TextMark) TextMarkOverrides {
+	return TextMarkOverrides{}
 }
 
 // TextMark: GtkTextMark is a position in a GtkTextbuffer that is preserved
@@ -71,25 +75,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeTextMark,
-		GoType:        reflect.TypeOf((*TextMark)(nil)),
-		InitClass:     initClassTextMark,
-		FinalizeClass: finalizeClassTextMark,
-	})
+	coreglib.RegisterClassInfo[*TextMark, *TextMarkClass, TextMarkOverrides](
+		GTypeTextMark,
+		initTextMarkClass,
+		wrapTextMark,
+		defaultTextMarkOverrides,
+	)
 }
 
-func initClassTextMark(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitTextMark(*TextMarkClass) }); ok {
-		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
-		goval.InitTextMark(klass)
-	}
-}
-
-func finalizeClassTextMark(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeTextMark(*TextMarkClass) }); ok {
-		klass := (*TextMarkClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeTextMark(klass)
+func initTextMarkClass(gclass unsafe.Pointer, overrides TextMarkOverrides, classInitFunc func(*TextMarkClass)) {
+	if classInitFunc != nil {
+		class := (*TextMarkClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

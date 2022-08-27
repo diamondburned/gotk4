@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ScrolledWindowAccessibleOverrider contains methods that are overridable.
-type ScrolledWindowAccessibleOverrider interface {
+// ScrolledWindowAccessibleOverrides contains methods that are overridable.
+type ScrolledWindowAccessibleOverrides struct {
+}
+
+func defaultScrolledWindowAccessibleOverrides(v *ScrolledWindowAccessible) ScrolledWindowAccessibleOverrides {
+	return ScrolledWindowAccessibleOverrides{}
 }
 
 type ScrolledWindowAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeScrolledWindowAccessible,
-		GoType:        reflect.TypeOf((*ScrolledWindowAccessible)(nil)),
-		InitClass:     initClassScrolledWindowAccessible,
-		FinalizeClass: finalizeClassScrolledWindowAccessible,
-	})
+	coreglib.RegisterClassInfo[*ScrolledWindowAccessible, *ScrolledWindowAccessibleClass, ScrolledWindowAccessibleOverrides](
+		GTypeScrolledWindowAccessible,
+		initScrolledWindowAccessibleClass,
+		wrapScrolledWindowAccessible,
+		defaultScrolledWindowAccessibleOverrides,
+	)
 }
 
-func initClassScrolledWindowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitScrolledWindowAccessible(*ScrolledWindowAccessibleClass)
-	}); ok {
-		klass := (*ScrolledWindowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitScrolledWindowAccessible(klass)
-	}
-}
-
-func finalizeClassScrolledWindowAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeScrolledWindowAccessible(*ScrolledWindowAccessibleClass)
-	}); ok {
-		klass := (*ScrolledWindowAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeScrolledWindowAccessible(klass)
+func initScrolledWindowAccessibleClass(gclass unsafe.Pointer, overrides ScrolledWindowAccessibleOverrides, classInitFunc func(*ScrolledWindowAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ScrolledWindowAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

@@ -80,38 +80,6 @@ func ContentTypeEquals(type1, type2 string) bool {
 	return _ok
 }
 
-// ContentTypeFromMIMEType tries to find a content type based on the mime type
-// name.
-//
-// The function takes the following parameters:
-//
-//    - mimeType: mime type string.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): newly allocated string with content type or NULL. Free
-//      with g_free().
-//
-func ContentTypeFromMIMEType(mimeType string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_content_type_from_mime_type(_arg1)
-	runtime.KeepAlive(mimeType)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
-	}
-
-	return _utf8
-}
-
 // ContentTypeGetDescription gets the human readable description of the content
 // type.
 //
@@ -138,41 +106,6 @@ func ContentTypeGetDescription(typ string) string {
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
-// ContentTypeGetGenericIconName gets the generic icon name for a content type.
-//
-// See the shared-mime-info
-// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-// specification for more on the generic icon name.
-//
-// The function takes the following parameters:
-//
-//    - typ: content type string.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): registered generic icon name for the given type, or NULL
-//      if unknown. Free with g_free().
-//
-func ContentTypeGetGenericIconName(typ string) string {
-	var _arg1 *C.gchar // out
-	var _cret *C.gchar // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_content_type_get_generic_icon_name(_arg1)
-	runtime.KeepAlive(typ)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
-	}
 
 	return _utf8
 }
@@ -205,39 +138,6 @@ func ContentTypeGetIcon(typ string) *Icon {
 	return _icon
 }
 
-// ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
-// from. See g_content_type_set_mime_dirs() for details.
-//
-// The function returns the following values:
-//
-//    - utf8s: NULL-terminated list of directories to load MIME data from,
-//      including any mime/ subdirectory, and with the first directory to try
-//      listed first.
-//
-func ContentTypeGetMIMEDirs() []string {
-	var _cret **C.gchar // in
-
-	_cret = C.g_content_type_get_mime_dirs()
-
-	var _utf8s []string // out
-
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-		}
-	}
-
-	return _utf8s
-}
-
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
 // registered.
 //
@@ -268,34 +168,6 @@ func ContentTypeGetMIMEType(typ string) string {
 	}
 
 	return _utf8
-}
-
-// ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-//
-// The function takes the following parameters:
-//
-//    - typ: content type string.
-//
-// The function returns the following values:
-//
-//    - icon: symbolic #GIcon corresponding to the content type. Free the
-//      returned object with g_object_unref().
-//
-func ContentTypeGetSymbolicIcon(typ string) *Icon {
-	var _arg1 *C.gchar // out
-	var _cret *C.GIcon // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_content_type_get_symbolic_icon(_arg1)
-	runtime.KeepAlive(typ)
-
-	var _icon *Icon // out
-
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _icon
 }
 
 // ContentTypeGuess guesses the content type based on example data. If the
@@ -347,58 +219,6 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	return _resultUncertain, _utf8
 }
 
-// ContentTypeGuessForTree tries to guess the type of the tree with root root,
-// by looking at the files it contains. The result is an array of content types,
-// with the best guess coming first.
-//
-// The types returned all have the form x-content/foo, e.g. x-content/audio-cdda
-// (for audio CDs) or x-content/image-dcf (for a camera memory card). See the
-// shared-mime-info
-// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
-// specification for more on x-content types.
-//
-// This function is useful in the implementation of
-// g_mount_guess_content_type().
-//
-// The function takes the following parameters:
-//
-//    - root of the tree to guess a type for.
-//
-// The function returns the following values:
-//
-//    - utf8s: NULL-terminated array of zero or more content types. Free with
-//      g_strfreev().
-//
-func ContentTypeGuessForTree(root Filer) []string {
-	var _arg1 *C.GFile  // out
-	var _cret **C.gchar // in
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(root).Native()))
-
-	_cret = C.g_content_type_guess_for_tree(_arg1)
-	runtime.KeepAlive(root)
-
-	var _utf8s []string // out
-
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
-
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
-		}
-	}
-
-	return _utf8s
-}
-
 // ContentTypeIsA determines if type is a subset of supertype.
 //
 // The function takes the following parameters:
@@ -423,41 +243,6 @@ func ContentTypeIsA(typ, supertype string) bool {
 	_cret = C.g_content_type_is_a(_arg1, _arg2)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(supertype)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ContentTypeIsMIMEType determines if type is a subset of mime_type.
-// Convenience wrapper around g_content_type_is_a().
-//
-// The function takes the following parameters:
-//
-//    - typ: content type string.
-//    - mimeType: mime type string.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if type is a kind of mime_type, FALSE otherwise.
-//
-func ContentTypeIsMIMEType(typ, mimeType string) bool {
-	var _arg1 *C.gchar   // out
-	var _arg2 *C.gchar   // out
-	var _cret C.gboolean // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(mimeType)
 
 	var _ok bool // out
 
@@ -497,55 +282,6 @@ func ContentTypeIsUnknown(typ string) bool {
 	}
 
 	return _ok
-}
-
-// ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
-// MIME database. If dirs is NULL, the directories used are the default:
-//
-//    - the mime subdirectory of the directory in $XDG_DATA_HOME
-//    - the mime subdirectory of every directory in $XDG_DATA_DIRS
-//
-// This function is intended to be used when writing tests that depend on
-// information stored in the MIME database, in order to control the data.
-//
-// Typically, in case your tests use G_TEST_OPTION_ISOLATE_DIRS, but they depend
-// on the system’s MIME database, you should call this function with dirs set to
-// NULL before calling g_test_init(), for instance:
-//
-//      // Load MIME data from the system
-//      g_content_type_set_mime_dirs (NULL);
-//      // Isolate the environment
-//      g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
-//
-//      …
-//
-//      return g_test_run ();.
-//
-// The function takes the following parameters:
-//
-//    - dirs (optional): NULL-terminated list of directories to load MIME data
-//      from, including any mime/ subdirectory, and with the first directory to
-//      try listed first.
-//
-func ContentTypeSetMIMEDirs(dirs []string) {
-	var _arg1 **C.gchar // out
-
-	{
-		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(dirs) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
-		{
-			out := unsafe.Slice(_arg1, len(dirs)+1)
-			var zero *C.gchar
-			out[len(dirs)] = zero
-			for i := range dirs {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(dirs[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-
-	C.g_content_type_set_mime_dirs(_arg1)
-	runtime.KeepAlive(dirs)
 }
 
 // ContentTypesGetRegistered gets a list of strings containing all the

@@ -18,8 +18,11 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_ColorSelectionClass_color_changed(GtkColorSelection*);
 // extern void _gotk4_gtk3_ColorSelection_ConnectColorChanged(gpointer, guintptr);
+// extern void _gotk4_gtk3_ColorSelectionClass_color_changed(GtkColorSelection*);
+// void _gotk4_gtk3_ColorSelection_virtual_color_changed(void* fnptr, GtkColorSelection* arg0) {
+//   ((void (*)(GtkColorSelection*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -33,9 +36,15 @@ func init() {
 	})
 }
 
-// ColorSelectionOverrider contains methods that are overridable.
-type ColorSelectionOverrider interface {
-	ColorChanged()
+// ColorSelectionOverrides contains methods that are overridable.
+type ColorSelectionOverrides struct {
+	ColorChanged func()
+}
+
+func defaultColorSelectionOverrides(v *ColorSelection) ColorSelectionOverrides {
+	return ColorSelectionOverrides{
+		ColorChanged: v.colorChanged,
+	}
 }
 
 type ColorSelection struct {
@@ -49,40 +58,25 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeColorSelection,
-		GoType:        reflect.TypeOf((*ColorSelection)(nil)),
-		InitClass:     initClassColorSelection,
-		FinalizeClass: finalizeClassColorSelection,
-	})
+	coreglib.RegisterClassInfo[*ColorSelection, *ColorSelectionClass, ColorSelectionOverrides](
+		GTypeColorSelection,
+		initColorSelectionClass,
+		wrapColorSelection,
+		defaultColorSelectionOverrides,
+	)
 }
 
-func initClassColorSelection(gclass unsafe.Pointer, goval any) {
+func initColorSelectionClass(gclass unsafe.Pointer, overrides ColorSelectionOverrides, classInitFunc func(*ColorSelectionClass)) {
+	pclass := (*C.GtkColorSelectionClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeColorSelection))))
 
-	pclass := (*C.GtkColorSelectionClass)(unsafe.Pointer(gclass))
-
-	if _, ok := goval.(interface{ ColorChanged() }); ok {
+	if overrides.ColorChanged != nil {
 		pclass.color_changed = (*[0]byte)(C._gotk4_gtk3_ColorSelectionClass_color_changed)
 	}
-	if goval, ok := goval.(interface{ InitColorSelection(*ColorSelectionClass) }); ok {
-		klass := (*ColorSelectionClass)(gextras.NewStructNative(gclass))
-		goval.InitColorSelection(klass)
+
+	if classInitFunc != nil {
+		class := (*ColorSelectionClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
-}
-
-func finalizeClassColorSelection(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeColorSelection(*ColorSelectionClass) }); ok {
-		klass := (*ColorSelectionClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeColorSelection(klass)
-	}
-}
-
-//export _gotk4_gtk3_ColorSelectionClass_color_changed
-func _gotk4_gtk3_ColorSelectionClass_color_changed(arg0 *C.GtkColorSelection) {
-	goval := coreglib.GoObjectFromInstance(unsafe.Pointer(arg0))
-	iface := goval.(interface{ ColorChanged() })
-
-	iface.ColorChanged()
 }
 
 func wrapColorSelection(obj *coreglib.Object) *ColorSelection {
@@ -112,22 +106,6 @@ func wrapColorSelection(obj *coreglib.Object) *ColorSelection {
 
 func marshalColorSelection(p uintptr) (interface{}, error) {
 	return wrapColorSelection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-//export _gotk4_gtk3_ColorSelection_ConnectColorChanged
-func _gotk4_gtk3_ColorSelection_ConnectColorChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 // ConnectColorChanged: this signal is emitted when the color changes in the
@@ -199,29 +177,6 @@ func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _color
-}
-
-// CurrentRGBA sets rgba to be the current color in the GtkColorSelection
-// widget.
-//
-// The function returns the following values:
-//
-//    - rgba to fill in with the current color.
-//
-func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkRGBA            // in
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	C.gtk_color_selection_get_current_rgba(_arg0, &_arg1)
-	runtime.KeepAlive(colorsel)
-
-	var _rgba *gdk.RGBA // out
-
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _rgba
 }
 
 // HasOpacityControl determines whether the colorsel has an opacity control.
@@ -318,28 +273,6 @@ func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 	return _color
 }
 
-// PreviousRGBA fills rgba in with the original color value.
-//
-// The function returns the following values:
-//
-//    - rgba to fill in with the original color value.
-//
-func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 C.GdkRGBA            // in
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	C.gtk_color_selection_get_previous_rgba(_arg0, &_arg1)
-	runtime.KeepAlive(colorsel)
-
-	var _rgba *gdk.RGBA // out
-
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _rgba
-}
-
 // IsAdjusting gets the current state of the colorsel.
 //
 // The function returns the following values:
@@ -407,27 +340,6 @@ func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 	C.gtk_color_selection_set_current_color(_arg0, _arg1)
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(color)
-}
-
-// SetCurrentRGBA sets the current color to be rgba.
-//
-// The first time this is called, it will also set the original color to be rgba
-// too.
-//
-// The function takes the following parameters:
-//
-//    - rgba to set the current color with.
-//
-func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
-	var _arg0 *C.GtkColorSelection // out
-	var _arg1 *C.GdkRGBA           // out
-
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	C.gtk_color_selection_set_current_rgba(_arg0, _arg1)
-	runtime.KeepAlive(colorsel)
-	runtime.KeepAlive(rgba)
 }
 
 // SetHasOpacityControl sets the colorsel to use or not use opacity.
@@ -517,27 +429,16 @@ func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 	runtime.KeepAlive(color)
 }
 
-// SetPreviousRGBA sets the “previous” color to be rgba.
-//
-// This function should be called with some hesitations, as it might seem
-// confusing to have that color change. Calling
-// gtk_color_selection_set_current_rgba() will also set this color the first
-// time it is called.
-//
-// The function takes the following parameters:
-//
-//    - rgba to set the previous color with.
-//
-func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
+func (colorSelection *ColorSelection) colorChanged() {
+	gclass := (*C.GtkColorSelectionClass)(coreglib.PeekParentClass(colorSelection))
+	fnarg := gclass.color_changed
+
 	var _arg0 *C.GtkColorSelection // out
-	var _arg1 *C.GdkRGBA           // out
 
-	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorSelection).Native()))
 
-	C.gtk_color_selection_set_previous_rgba(_arg0, _arg1)
-	runtime.KeepAlive(colorsel)
-	runtime.KeepAlive(rgba)
+	C._gotk4_gtk3_ColorSelection_virtual_color_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(colorSelection)
 }
 
 // ColorSelectionPaletteFromString parses a color palette string; the string is

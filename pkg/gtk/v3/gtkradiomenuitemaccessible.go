@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// RadioMenuItemAccessibleOverrider contains methods that are overridable.
-type RadioMenuItemAccessibleOverrider interface {
+// RadioMenuItemAccessibleOverrides contains methods that are overridable.
+type RadioMenuItemAccessibleOverrides struct {
+}
+
+func defaultRadioMenuItemAccessibleOverrides(v *RadioMenuItemAccessible) RadioMenuItemAccessibleOverrides {
+	return RadioMenuItemAccessibleOverrides{}
 }
 
 type RadioMenuItemAccessible struct {
@@ -43,29 +47,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeRadioMenuItemAccessible,
-		GoType:        reflect.TypeOf((*RadioMenuItemAccessible)(nil)),
-		InitClass:     initClassRadioMenuItemAccessible,
-		FinalizeClass: finalizeClassRadioMenuItemAccessible,
-	})
+	coreglib.RegisterClassInfo[*RadioMenuItemAccessible, *RadioMenuItemAccessibleClass, RadioMenuItemAccessibleOverrides](
+		GTypeRadioMenuItemAccessible,
+		initRadioMenuItemAccessibleClass,
+		wrapRadioMenuItemAccessible,
+		defaultRadioMenuItemAccessibleOverrides,
+	)
 }
 
-func initClassRadioMenuItemAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitRadioMenuItemAccessible(*RadioMenuItemAccessibleClass)
-	}); ok {
-		klass := (*RadioMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitRadioMenuItemAccessible(klass)
-	}
-}
-
-func finalizeClassRadioMenuItemAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeRadioMenuItemAccessible(*RadioMenuItemAccessibleClass)
-	}); ok {
-		klass := (*RadioMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeRadioMenuItemAccessible(klass)
+func initRadioMenuItemAccessibleClass(gclass unsafe.Pointer, overrides RadioMenuItemAccessibleOverrides, classInitFunc func(*RadioMenuItemAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*RadioMenuItemAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

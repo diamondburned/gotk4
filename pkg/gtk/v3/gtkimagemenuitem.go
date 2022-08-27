@@ -30,8 +30,12 @@ func init() {
 	})
 }
 
-// ImageMenuItemOverrider contains methods that are overridable.
-type ImageMenuItemOverrider interface {
+// ImageMenuItemOverrides contains methods that are overridable.
+type ImageMenuItemOverrides struct {
+}
+
+func defaultImageMenuItemOverrides(v *ImageMenuItem) ImageMenuItemOverrides {
+	return ImageMenuItemOverrides{}
 }
 
 // ImageMenuItem is a menu item which has an icon next to the text label.
@@ -69,25 +73,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeImageMenuItem,
-		GoType:        reflect.TypeOf((*ImageMenuItem)(nil)),
-		InitClass:     initClassImageMenuItem,
-		FinalizeClass: finalizeClassImageMenuItem,
-	})
+	coreglib.RegisterClassInfo[*ImageMenuItem, *ImageMenuItemClass, ImageMenuItemOverrides](
+		GTypeImageMenuItem,
+		initImageMenuItemClass,
+		wrapImageMenuItem,
+		defaultImageMenuItemOverrides,
+	)
 }
 
-func initClassImageMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitImageMenuItem(*ImageMenuItemClass) }); ok {
-		klass := (*ImageMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.InitImageMenuItem(klass)
-	}
-}
-
-func finalizeClassImageMenuItem(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeImageMenuItem(*ImageMenuItemClass) }); ok {
-		klass := (*ImageMenuItemClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeImageMenuItem(klass)
+func initImageMenuItemClass(gclass unsafe.Pointer, overrides ImageMenuItemOverrides, classInitFunc func(*ImageMenuItemClass)) {
+	if classInitFunc != nil {
+		class := (*ImageMenuItemClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 
@@ -260,33 +257,6 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	return _imageMenuItem
 }
 
-// AlwaysShowImage returns whether the menu item will ignore the
-// Settings:gtk-menu-images setting and always show the image, if available.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the menu item will always show the image.
-//
-func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
-
-	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
-	runtime.KeepAlive(imageMenuItem)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // Image gets the widget that is currently set as the image of image_menu_item.
 // See gtk_image_menu_item_set_image().
 //
@@ -328,86 +298,6 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 	return _widget
 }
 
-// UseStock checks whether the label set in the menuitem is used as a stock id
-// to select the stock item for the item.
-//
-// Deprecated: since version 3.10.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the label set in the menuitem is used as a stock id to select
-//      the stock item for the item.
-//
-func (imageMenuItem *ImageMenuItem) UseStock() bool {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _cret C.gboolean          // in
-
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
-
-	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
-	runtime.KeepAlive(imageMenuItem)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetAccelGroup specifies an accel_group to add the menu items accelerator to
-// (this only applies to stock items so a stock item must already be set, make
-// sure to call gtk_image_menu_item_set_use_stock() and
-// gtk_menu_item_set_label() with a valid stock item first).
-//
-// If you want this menu item to have changeable accelerators then you shouldnt
-// need this (see gtk_image_menu_item_new_from_stock()).
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - accelGroup: AccelGroup.
-//
-func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 *C.GtkAccelGroup    // out
-
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
-	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
-
-	C.gtk_image_menu_item_set_accel_group(_arg0, _arg1)
-	runtime.KeepAlive(imageMenuItem)
-	runtime.KeepAlive(accelGroup)
-}
-
-// SetAlwaysShowImage: if TRUE, the menu item will ignore the
-// Settings:gtk-menu-images setting and always show the image, if available.
-//
-// Use this property if the menuitem would be useless or hard to use without the
-// image.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - alwaysShow: TRUE if the menuitem should always show the image.
-//
-func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 C.gboolean          // out
-
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
-	if alwaysShow {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_image_menu_item_set_always_show_image(_arg0, _arg1)
-	runtime.KeepAlive(imageMenuItem)
-	runtime.KeepAlive(alwaysShow)
-}
-
 // SetImage sets the image of image_menu_item to the given widget. Note that it
 // depends on the show-menu-images setting whether the image will be displayed
 // or not.
@@ -430,29 +320,6 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	C.gtk_image_menu_item_set_image(_arg0, _arg1)
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(image)
-}
-
-// SetUseStock: if TRUE, the label set in the menuitem is used as a stock id to
-// select the stock item for the item.
-//
-// Deprecated: since version 3.10.
-//
-// The function takes the following parameters:
-//
-//    - useStock: TRUE if the menuitem should use a stock item.
-//
-func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
-	var _arg0 *C.GtkImageMenuItem // out
-	var _arg1 C.gboolean          // out
-
-	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
-	if useStock {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_image_menu_item_set_use_stock(_arg0, _arg1)
-	runtime.KeepAlive(imageMenuItem)
-	runtime.KeepAlive(useStock)
 }
 
 // ImageMenuItemClass: instance of this type is always passed by reference.

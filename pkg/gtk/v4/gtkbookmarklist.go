@@ -28,8 +28,12 @@ func init() {
 	})
 }
 
-// BookmarkListOverrider contains methods that are overridable.
-type BookmarkListOverrider interface {
+// BookmarkListOverrides contains methods that are overridable.
+type BookmarkListOverrides struct {
+}
+
+func defaultBookmarkListOverrides(v *BookmarkList) BookmarkListOverrides {
+	return BookmarkListOverrides{}
 }
 
 // BookmarkList: GtkBookmarkList is a list model that wraps GBookmarkFile.
@@ -51,25 +55,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeBookmarkList,
-		GoType:        reflect.TypeOf((*BookmarkList)(nil)),
-		InitClass:     initClassBookmarkList,
-		FinalizeClass: finalizeClassBookmarkList,
-	})
+	coreglib.RegisterClassInfo[*BookmarkList, *BookmarkListClass, BookmarkListOverrides](
+		GTypeBookmarkList,
+		initBookmarkListClass,
+		wrapBookmarkList,
+		defaultBookmarkListOverrides,
+	)
 }
 
-func initClassBookmarkList(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitBookmarkList(*BookmarkListClass) }); ok {
-		klass := (*BookmarkListClass)(gextras.NewStructNative(gclass))
-		goval.InitBookmarkList(klass)
-	}
-}
-
-func finalizeClassBookmarkList(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeBookmarkList(*BookmarkListClass) }); ok {
-		klass := (*BookmarkListClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeBookmarkList(klass)
+func initBookmarkListClass(gclass unsafe.Pointer, overrides BookmarkListOverrides, classInitFunc func(*BookmarkListClass)) {
+	if classInitFunc != nil {
+		class := (*BookmarkListClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

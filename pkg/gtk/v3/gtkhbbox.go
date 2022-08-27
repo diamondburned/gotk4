@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// HButtonBoxOverrider contains methods that are overridable.
-type HButtonBoxOverrider interface {
+// HButtonBoxOverrides contains methods that are overridable.
+type HButtonBoxOverrides struct {
+}
+
+func defaultHButtonBoxOverrides(v *HButtonBox) HButtonBoxOverrides {
+	return HButtonBoxOverrides{}
 }
 
 type HButtonBox struct {
@@ -44,25 +48,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeHButtonBox,
-		GoType:        reflect.TypeOf((*HButtonBox)(nil)),
-		InitClass:     initClassHButtonBox,
-		FinalizeClass: finalizeClassHButtonBox,
-	})
+	coreglib.RegisterClassInfo[*HButtonBox, *HButtonBoxClass, HButtonBoxOverrides](
+		GTypeHButtonBox,
+		initHButtonBoxClass,
+		wrapHButtonBox,
+		defaultHButtonBoxOverrides,
+	)
 }
 
-func initClassHButtonBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitHButtonBox(*HButtonBoxClass) }); ok {
-		klass := (*HButtonBoxClass)(gextras.NewStructNative(gclass))
-		goval.InitHButtonBox(klass)
-	}
-}
-
-func finalizeClassHButtonBox(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeHButtonBox(*HButtonBoxClass) }); ok {
-		klass := (*HButtonBoxClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeHButtonBox(klass)
+func initHButtonBoxClass(gclass unsafe.Pointer, overrides HButtonBoxOverrides, classInitFunc func(*HButtonBoxClass)) {
+	if classInitFunc != nil {
+		class := (*HButtonBoxClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

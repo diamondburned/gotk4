@@ -3,139 +3,16 @@
 package gtk
 
 import (
-	"reflect"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
-// #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// GType values.
-var (
-	GTypeFontChooserWidget = coreglib.Type(C.gtk_font_chooser_widget_get_type())
-)
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		coreglib.TypeMarshaler{T: GTypeFontChooserWidget, F: marshalFontChooserWidget},
-	})
-}
-
-// FontChooserWidgetOverrider contains methods that are overridable.
-type FontChooserWidgetOverrider interface {
-}
-
-// FontChooserWidget widget lists the available fonts, styles and sizes,
-// allowing the user to select a font. It is used in the FontChooserDialog
-// widget to provide a dialog box for selecting fonts.
-//
-// To set the font which is initially selected, use gtk_font_chooser_set_font()
-// or gtk_font_chooser_set_font_desc().
-//
-// To get the selected font use gtk_font_chooser_get_font() or
-// gtk_font_chooser_get_font_desc().
-//
-// To change the text which is shown in the preview area, use
-// gtk_font_chooser_set_preview_text().
-//
-//
-// CSS nodes
-//
-// GtkFontChooserWidget has a single CSS node with name fontchooser.
-type FontChooserWidget struct {
-	_ [0]func() // equal guard
-	Box
-
-	*coreglib.Object
-	FontChooser
-}
-
-var (
-	_ coreglib.Objector = (*FontChooserWidget)(nil)
-	_ Containerer       = (*FontChooserWidget)(nil)
-)
-
-func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeFontChooserWidget,
-		GoType:        reflect.TypeOf((*FontChooserWidget)(nil)),
-		InitClass:     initClassFontChooserWidget,
-		FinalizeClass: finalizeClassFontChooserWidget,
-	})
-}
-
-func initClassFontChooserWidget(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ InitFontChooserWidget(*FontChooserWidgetClass) }); ok {
-		klass := (*FontChooserWidgetClass)(gextras.NewStructNative(gclass))
-		goval.InitFontChooserWidget(klass)
-	}
-}
-
-func finalizeClassFontChooserWidget(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface{ FinalizeFontChooserWidget(*FontChooserWidgetClass) }); ok {
-		klass := (*FontChooserWidgetClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeFontChooserWidget(klass)
-	}
-}
-
-func wrapFontChooserWidget(obj *coreglib.Object) *FontChooserWidget {
-	return &FontChooserWidget{
-		Box: Box{
-			Container: Container{
-				Widget: Widget{
-					InitiallyUnowned: coreglib.InitiallyUnowned{
-						Object: obj,
-					},
-					Object: obj,
-					ImplementorIface: atk.ImplementorIface{
-						Object: obj,
-					},
-					Buildable: Buildable{
-						Object: obj,
-					},
-				},
-			},
-			Object: obj,
-			Orientable: Orientable{
-				Object: obj,
-			},
-		},
-		Object: obj,
-		FontChooser: FontChooser{
-			Object: obj,
-		},
-	}
-}
-
-func marshalFontChooserWidget(p uintptr) (interface{}, error) {
-	return wrapFontChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-// NewFontChooserWidget creates a new FontChooserWidget.
-//
-// The function returns the following values:
-//
-//    - fontChooserWidget: new FontChooserWidget.
-//
-func NewFontChooserWidget() *FontChooserWidget {
-	var _cret *C.GtkWidget // in
-
-	_cret = C.gtk_font_chooser_widget_new()
-
-	var _fontChooserWidget *FontChooserWidget // out
-
-	_fontChooserWidget = wrapFontChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _fontChooserWidget
-}
 
 // FontChooserWidgetClass: instance of this type is always passed by reference.
 type FontChooserWidgetClass struct {

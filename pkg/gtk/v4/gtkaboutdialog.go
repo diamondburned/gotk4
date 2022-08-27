@@ -228,32 +228,6 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return wrapAboutDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-//export _gotk4_gtk4_AboutDialog_ConnectActivateLink
-func _gotk4_gtk4_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(uri string) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(uri string) (ok bool))
-	}
-
-	var _uri string // out
-
-	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-
-	ok := f(_uri)
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // ConnectActivateLink is emitted every time a URL is activated.
 //
 // Applications may connect to it to override the default behaviour, which is to

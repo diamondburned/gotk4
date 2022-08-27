@@ -29,8 +29,12 @@ func init() {
 	})
 }
 
-// ScaleButtonAccessibleOverrider contains methods that are overridable.
-type ScaleButtonAccessibleOverrider interface {
+// ScaleButtonAccessibleOverrides contains methods that are overridable.
+type ScaleButtonAccessibleOverrides struct {
+}
+
+func defaultScaleButtonAccessibleOverrides(v *ScaleButtonAccessible) ScaleButtonAccessibleOverrides {
+	return ScaleButtonAccessibleOverrides{}
 }
 
 type ScaleButtonAccessible struct {
@@ -46,29 +50,18 @@ var (
 )
 
 func init() {
-	coreglib.RegisterClassInfo(coreglib.ClassTypeInfo{
-		GType:         GTypeScaleButtonAccessible,
-		GoType:        reflect.TypeOf((*ScaleButtonAccessible)(nil)),
-		InitClass:     initClassScaleButtonAccessible,
-		FinalizeClass: finalizeClassScaleButtonAccessible,
-	})
+	coreglib.RegisterClassInfo[*ScaleButtonAccessible, *ScaleButtonAccessibleClass, ScaleButtonAccessibleOverrides](
+		GTypeScaleButtonAccessible,
+		initScaleButtonAccessibleClass,
+		wrapScaleButtonAccessible,
+		defaultScaleButtonAccessibleOverrides,
+	)
 }
 
-func initClassScaleButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		InitScaleButtonAccessible(*ScaleButtonAccessibleClass)
-	}); ok {
-		klass := (*ScaleButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.InitScaleButtonAccessible(klass)
-	}
-}
-
-func finalizeClassScaleButtonAccessible(gclass unsafe.Pointer, goval any) {
-	if goval, ok := goval.(interface {
-		FinalizeScaleButtonAccessible(*ScaleButtonAccessibleClass)
-	}); ok {
-		klass := (*ScaleButtonAccessibleClass)(gextras.NewStructNative(gclass))
-		goval.FinalizeScaleButtonAccessible(klass)
+func initScaleButtonAccessibleClass(gclass unsafe.Pointer, overrides ScaleButtonAccessibleOverrides, classInitFunc func(*ScaleButtonAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*ScaleButtonAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
 	}
 }
 

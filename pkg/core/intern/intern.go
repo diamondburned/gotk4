@@ -45,14 +45,13 @@ func RegisterType[T any](ctor func(*Box) *T) BoxedType[T] {
 }
 
 func (t *BoxedType[T]) Get(box *Box) *T {
-	if t.ctor == nil {
-		ptr := atomic.LoadPointer(&box.data[t.id])
-		return (*T)(ptr)
-	}
-
 	old := atomic.LoadPointer(&box.data[t.id])
 	if old != nil {
 		return (*T)(old)
+	}
+
+	if t.ctor == nil {
+		return nil
 	}
 
 	new := t.ctor(box)
@@ -70,6 +69,9 @@ func (t *BoxedType[T]) Get(box *Box) *T {
 }
 
 func (t *BoxedType[T]) Set(box *Box, v *T) {
+	if t.ctor != nil {
+		panic("bug: Set not permitted if t.ctor != nil")
+	}
 	atomic.StorePointer(&box.data[t.id], unsafe.Pointer(v))
 }
 

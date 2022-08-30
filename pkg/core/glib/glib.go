@@ -294,7 +294,10 @@ func _gotk4_goMarshal(
 	// the GValue equivalent of the first.
 	rv := fsValue.Call(args)
 	if retValue != nil && len(rv) > 0 {
-		gv := NewValue(rv[0].Interface())
+		gv := allocateValue()
+		gv.InitGoValue(rv[0].Interface())
+		defer gv.unset()
+
 		ok := C.g_value_transform(gv.native(), retValue) != 0
 
 		if !ok {
@@ -829,7 +832,9 @@ func (v *Object) SetObjectProperty(name string, value interface{}) {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 
-	p := NewValue(value)
+	p := allocateValue()
+	p.InitGoValue(value)
+	defer p.unset()
 
 	C.g_object_set_property(v.native(), (*C.gchar)(cstr), p.native())
 	runtime.KeepAlive(v)
@@ -872,11 +877,17 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 	defer C.free(unsafe.Pointer(valv))
 
 	// Add args and valv
-	val := NewValue(v)
+	val := allocateValue()
+	val.InitGoValue(v)
+	defer val.unset()
+
 	C.val_list_insert(valv, C.int(0), val.native())
 
 	for i := range args {
-		val := NewValue(args[i])
+		val := allocateValue()
+		val.InitGoValue(args[i])
+		defer val.unset()
+
 		C.val_list_insert(valv, C.int(i+1), val.native())
 	}
 
@@ -888,7 +899,8 @@ func (v *Object) Emit(s string, args ...interface{}) interface{} {
 		return nil
 	}
 
-	ret := AllocateValue()
+	ret := allocateValue()
+	defer ret.unset()
 
 	C.g_signal_emitv(valv, id, C.GQuark(0), ret.native())
 	runtime.KeepAlive(v)
@@ -977,10 +989,8 @@ var (
 	never    bool
 )
 
-// AllocateValue allocates a Value but does not initialize it. It sets a
-// runtime finalizer to call g_value_unset() on the underlying GValue after
-// leaving scope.
-func AllocateValue() *Value {
+// allocateValue does not attach a finalizer.
+func allocateValue() *Value {
 	gvalue := new(C.GValue)
 	if never {
 		// Force the value to be on the Go heap, because we don't want it on the
@@ -990,13 +1000,21 @@ func AllocateValue() *Value {
 	}
 
 	v := &value{gvalue}
+	return &Value{v}
+}
+
+// AllocateValue allocates a Value but does not initialize it. It sets a
+// runtime finalizer to call g_value_unset() on the underlying GValue after
+// leaving scope.
+func AllocateValue() *Value {
+	v := allocateValue()
 
 	//An allocated GValue is not guaranteed to hold a value that can be unset
 	//We need to double check before unsetting, to prevent:
 	//`g_value_unset: assertion 'G_IS_VALUE (value)' failed`
-	runtime.SetFinalizer(v, (*value).unset)
+	runtime.SetFinalizer(v.value, (*value).unset)
 
-	return &Value{v}
+	return v
 }
 
 // InitValue is a wrapper around g_value_init() and allocates and initializes a

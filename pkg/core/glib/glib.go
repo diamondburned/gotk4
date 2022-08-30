@@ -436,6 +436,22 @@ func SourceRemove(src SourceHandle) bool {
 	return gobool(C.g_source_remove(C.guint(src)))
 }
 
+// WipeAllClosures wipes all the Go closures associated with the given object
+// away. BE EXTREMELY CAREFUL WHEN USING THIS FUNCTION! If not careful, your
+// program WILL crash!
+//
+// There is only one specific use case for this function: if your object has
+// closures connected to it where these closures capture the object itself, then
+// it might create a cyclic dependency on the GC, preventing its finalizer from
+// ever running. This will cause the program to leak memory. As a temporary
+// hack, this function is introduced for cases where the programmer knows for
+// sure that the object will never be used again, and it is significant enough
+// of a leak that having a workaround is better than not.
+func WipeAllClosures(objector Objector) {
+	v := BaseObject(objector)
+	closure.RegistryType.Delete(v.box)
+}
+
 // SignalHandle is the ID of a signal handler.
 type SignalHandle uint
 

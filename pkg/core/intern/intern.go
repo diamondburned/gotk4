@@ -73,6 +73,10 @@ func (t *BoxedType[T]) Set(box *Box, v *T) {
 	atomic.StorePointer(&box.data[t.id], unsafe.Pointer(v))
 }
 
+func (t *BoxedType[T]) Delete(box *Box) {
+	atomic.StorePointer(&box.data[t.id], nil)
+}
+
 // Box is an opaque type holding extra data.
 type Box struct {
 	data [maxTypesAllowed]unsafe.Pointer

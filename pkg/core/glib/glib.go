@@ -489,13 +489,14 @@ func ConnectGeneratedClosure(
 	closures.Register(unsafe.Pointer(gclosure), fs)
 
 	// Just in case.
-	// C.g_object_watch_closure(v.native(), gclosure)
+	C.g_object_watch_closure(v.native(), gclosure)
 
 	// TODO: intern this.
 	csignal := (*C.gchar)(C.CString(signal))
 	defer C.free(unsafe.Pointer(csignal))
 
 	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, gbool(after))
+	C.g_closure_sink(gclosure)
 
 	runtime.KeepAlive(obj)
 	return SignalHandle(id)

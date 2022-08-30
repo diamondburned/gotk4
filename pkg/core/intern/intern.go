@@ -3,11 +3,12 @@ package intern
 
 // #cgo pkg-config: gobject-2.0
 // #include <glib-object.h>
+//
 // extern void goToggleNotify(gpointer, GObject*, gboolean);
+// static const gchar* gotk4_object_type_name(gpointer obj) { return G_OBJECT_TYPE_NAME(obj); };
 import "C"
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -90,8 +91,9 @@ var never bool
 var sink interface{}
 
 var (
-	traceObjectFile *os.File
-	objectProfile   *pprof.Profile
+	traceObjects  *log.Logger
+	toggleRefs    *log.Logger
+	objectProfile *pprof.Profile
 )
 
 func init() {
@@ -103,17 +105,29 @@ func init() {
 	for _, flag := range strings.Split(debug, ",") {
 		switch flag {
 		case "trace-objects":
-			f, err := os.CreateTemp(os.TempDir(), fmt.Sprintf("gotk4-%d-*", os.Getpid()))
-			if err != nil {
-				log.Panicln("cannot create temp traceObjects file:", err)
-			}
-			traceObjectFile = f
+			traceObjects = mustDebugLogger("trace-objects")
+		case "toggle-refs":
+			toggleRefs = mustDebugLogger("toggle-refs")
 		case "profile-objects":
 			objectProfile = pprof.NewProfile("gotk4-object-box")
 		default:
 			log.Panicf("unknown GOTK4_DEBUG flag %q", flag)
 		}
 	}
+}
+
+func mustDebugLogger(name string) *log.Logger {
+	f, err := os.CreateTemp(os.TempDir(), fmt.Sprintf("gotk4-%s-%d-*", name, os.Getpid()))
+	if err != nil {
+		log.Panicln("cannot create temp", name, "file:", err)
+	}
+
+	log.Println("gotk4: intern: enabled debug file at", f.Name())
+	return log.New(f, "", log.LstdFlags)
+}
+
+func objInfo(obj unsafe.Pointer) string {
+	return fmt.Sprintf("%p (%s):", obj, C.GoString(C.gotk4_object_type_name(C.gpointer(obj))))
 }
 
 // newBox creates a zero-value instance of Box.
@@ -125,10 +139,8 @@ func newBox(obj unsafe.Pointer) *Box {
 		objectProfile.Add(obj, 3)
 	}
 
-	if traceObjectFile != nil {
-		var buf bytes.Buffer
-		fmt.Fprintf(&buf, "%p: %s\n", obj, debug.Stack())
-		traceObjectFile.Write(buf.Bytes())
+	if traceObjects != nil {
+		traceObjects.Printf("%p: %s", obj, debug.Stack())
 	}
 
 	// Force box on the heap. Objects on the stack can move, but not objects on
@@ -202,10 +214,10 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 
 	shared.mu.Unlock()
 
-	// We should already have a strong reference. Sink the object in case. This
-	// will force the reference to be truly strong.
-	if C.g_object_is_floating(C.gpointer(gobject)) != C.FALSE {
-		C.g_object_ref_sink(C.gpointer(gobject))
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(gobject),
+			"Get: will introduce new box, current ref =",
+			C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(gobject).ref_count))))
 	}
 
 	C.g_object_add_toggle_ref(
@@ -220,6 +232,12 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 		C.g_object_unref(C.gpointer(gobject))
 	}
 
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(gobject),
+			"Get: introduced new box, current ref =",
+			C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(gobject).ref_count))))
+	}
+
 	// Undo the initial ref_sink.
 	// C.g_object_unref(C.gpointer(gobject))
 
@@ -230,12 +248,19 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 // does so for as long as an object is stored only in the Go heap. Once the
 // object is also shared, the toggle notifier will strongly reference the Box.
 func finalizeBox(box *Box) {
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(box.GObject()), "finalizeBox: acquiring lock...")
+	}
+
 	shared.mu.Lock()
 
 	if !freeBox(box) {
 		// Delegate finalizing to the next cycle.
 		runtime.SetFinalizer(box, finalizeBox)
 		shared.mu.Unlock()
+		if toggleRefs != nil {
+			toggleRefs.Println(objInfo(box.GObject()), "finalizeBox: moving finalize to next GC cycle")
+		}
 	} else {
 		shared.mu.Unlock()
 		// Unreference the object. This will potentially free the object as
@@ -244,6 +269,9 @@ func finalizeBox(box *Box) {
 			(*C.GObject)(unsafe.Pointer(box.GObject())),
 			(*[0]byte)(C.goToggleNotify), nil,
 		)
+		if toggleRefs != nil {
+			toggleRefs.Println(objInfo(box.GObject()), "finalizeBox: removed toggle ref during GC")
+		}
 
 		if objectProfile != nil {
 			objectProfile.Remove(box.GObject())
@@ -257,8 +285,11 @@ func finalizeBox(box *Box) {
 //
 //go:nocheckptr
 func freeBox(box *Box) bool {
-	_, ok := shared.strong[box.GObject()]
+	b, ok := shared.strong[box.GObject()]
 	if ok {
+		if b != box {
+			panic("bug: multiple Box found for same GObject")
+		}
 		// If the closures are strong-referenced, then they might still be
 		// referenced from the C side, and those closures might access this
 		// object. Don't free.
@@ -291,17 +322,20 @@ func freeBox(box *Box) bool {
 //export goToggleNotify
 func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 	gobject := unsafe.Pointer(obj)
-	isLast := isLastInt != 0
+	isLast := isLastInt != C.FALSE
 
 	shared.mu.Lock()
-	defer shared.mu.Unlock()
-
 	if isLast {
 		// delete(shared.sharing, gobject)
 		makeWeak(gobject)
 	} else {
 		// shared.sharing[gobject] = struct{}{}
 		makeStrong(gobject)
+	}
+	shared.mu.Unlock()
+
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(unsafe.Pointer(obj)), "goToggleNotify: is last =", isLast)
 	}
 }
 
